@@ -1,6 +1,6 @@
 # Spanish Vocabulary Town development
 
-The Godot project is `Vocabulary_Town/`; run project-relative commands there.
+The Godot project is `BonAdventure/`; run project-relative commands there.
 Start with its `README.md` task table and `docs/README.md` documentation map,
 then read only the relevant sections of
 `docs/guides/ARCHITECTURE_REVIEW_PART1.md`, `docs/evidence/part2/HANDOFF.md` and
@@ -9,12 +9,12 @@ then read only the relevant sections of
 ## Design reference for AI agents
 
 For town/building design work, first read the
-[master design blueprint](Vocabulary_Town/docs/guides/TOWN_DESIGN_BRIEF.md#start-here-current-approved-design).
+[master design blueprint](BonAdventure/docs/guides/TOWN_DESIGN_BRIEF.md#start-here-current-approved-design).
 Exception (user, 16 Nov 2026): each minigame's **purpose and progression** design is owned by
-its learning card in the [game guide's minigames page](Vocabulary_Town/docs/game/minigames.md);
+its learning card in the [game guide's minigames page](BonAdventure/docs/game/minigames.md);
 record new decisions on those there (rule and code details still go in the game's design
 record). Never hand-write word lists in docs: `data/words.json` and the game data files are the
-only word source, and the guide's [words page](Vocabulary_Town/docs/game/words.md) is generated
+only word source, and the guide's [words page](BonAdventure/docs/game/words.md) is generated
 by `tools/vocabulary_report.gd -- --write`.
 It owns the approved programs, dimensional decisions, preservation boundaries and
 execution order. Follow its links to architectural standards, measured capacity
@@ -38,11 +38,11 @@ building resizes or deferred interior/vocabulary work.
 
 ## Ownership and conventions
 
-- Entry: `scenes/app.tscn` (profiles, loading, then the [welcome tutorial](Vocabulary_Town/docs/guides/ARCHITECTURE_REVIEW_PART1.md#welcome-tutorial) for a new profile; since 12 Nov 2026) → `scenes/main.tscn` → `scripts/core/main.gd`. Since 6 Nov 2026 the world is
-  the [modular town](Vocabulary_Town/docs/guides/MODULAR_TOWN.md): `scenes/town/base.scn` plus
+- Entry: `scenes/app.tscn` (profiles, loading, then the [welcome tutorial](BonAdventure/docs/guides/ARCHITECTURE_REVIEW_PART1.md#welcome-tutorial) for a new profile; since 12 Nov 2026) → `scenes/main.tscn` → `scripts/core/main.gd`. Since 6 Nov 2026 the world is
+  the [modular town](BonAdventure/docs/guides/MODULAR_TOWN.md): `scenes/town/base.scn` plus
   one scene per building (`data/buildings.json`); these scenes are the source of truth.
   Change a building with a step in its own script `scripts/buildings/<unit>.gd` and
-  `tools/bake_unit.gd -- <unit>` ([how](Vocabulary_Town/docs/guides/MODULAR_TOWN.md#changing-a-building)).
+  `tools/bake_unit.gd -- <unit>` ([how](BonAdventure/docs/guides/MODULAR_TOWN.md#changing-a-building)).
   The old startup passes (`world_refinements.gd`, the interior scripts), the full bake and
   the old saved worlds were deleted on 6 Nov 2026; read them in git history if needed, never
   restore them to build the town.
@@ -58,16 +58,16 @@ building resizes or deferred interior/vocabulary work.
   tabs/filters); when a list must scroll, it also scrolls by dragging the list itself. Since 12 Nov 2026
   (user, PWA restructure) the game is also a mobile web app (PWA) in LANDSCAPE: touch controls, the Web
   export preset and saves that survive in the browser are targets
-  ([web app](Vocabulary_Town/README.md#web-app-pwa)). Portrait/vertical phone layouts are not; ask
+  ([web app](BonAdventure/README.md#web-app-pwa)). Portrait/vertical phone layouts are not; ask
   before designing or testing for them. Since 13 Nov 2026 (user) a touch device held upright on the web
   shows the landscape game turned 90° (the Web preset's `html/head_include`); that is not a
   portrait layout, so keep designing for landscape only.
-- For minigames, start with [Building a minigame](Vocabulary_Town/docs/guides/MINIGAMES.md#building-a-minigame):
+- For minigames, start with [Building a minigame](BonAdventure/docs/guides/MINIGAMES.md#building-a-minigame):
   a new or changed game uses the shared `minigame_host.gd` (NPC, "!", talking, offers, leave question)
   and `minigame_zone.gd` (in-world fade, placing, doorway), not copies from older sessions.
 - **Reuse first** (user, 13 Nov 2026): before adding anything the player can use, hold, open or
   sit on, or anything a character does with its body, eyes or face, read
-  [Reusable components](Vocabulary_Town/docs/guides/COMPONENTS.md) and use or extend the component
+  [Reusable components](BonAdventure/docs/guides/COMPONENTS.md) and use or extend the component
   listed there (`interactable.gd`, `door_animator.gd` and the door scenes, `hand_hold.gd`,
   `seating_controller.gd`, `plush_life.gd`). Do not write a parallel version. Follow its
   ownership table: eyes are written only by `plush_life.gd`, and a plush's `Head` node (the
@@ -98,13 +98,13 @@ building resizes or deferred interior/vocabulary work.
   dimensions, data schema or verification changes. Link to details instead of
   copying them into multiple files. Preserve useful dated evidence, mark stale
   guidance, and record unresolved issues with priorities. Avoid a new hierarchy.
-- The [game guide](Vocabulary_Town/docs/game/README.md) (since 16 Nov 2026) is the user's
+- The [game guide](BonAdventure/docs/game/README.md) (since 16 Nov 2026) is the user's
   review view of what is built and the owner of minigame purpose and progression. When a
   change is visible to players, update its status row, its short entry (a few lines plus
   links, never the details), its learning card if it is a minigame and, if there is a newer
   one, its screenshot link. After changing a game's words, rerun the vocabulary report with
   `--write` and commit `docs/game/words.md` with the change.
-- Docs folders (16 Nov 2026, [layout](Vocabulary_Town/docs/README.md#folder-layout)):
+- Docs folders (16 Nov 2026, [layout](BonAdventure/docs/README.md#folder-layout)):
   `docs/game/` (game guide), `docs/guides/` (current references), `docs/evidence/`
   (one `<topic>-<yyyymmdd>/` folder per piece of work: its `verify.gd`, captures and
   screenshots) and `docs/archive/` (superseded reports). Put new checks and screenshots in a
@@ -114,7 +114,7 @@ building resizes or deferred interior/vocabulary work.
 
 ## Development focus switch
 
-`Vocabulary_Town/dev_focus.txt` limits which building units load (see the README); other
+`BonAdventure/dev_focus.txt` limits which building units load (see the README); other
 buildings are absent entirely, inside and out.
 It must read `all` for final verification, full-suite runs and commits. If it lists
 buildings, say so in any verification report and never describe that run as the full town.
@@ -125,11 +125,14 @@ file lists buildings or `spawn=`.
 
 ## Git
 
-- The repository root is this folder (`Spanish World/`); run git commands here.
+- The repository root is this folder (`Bon Adventure/`); run git commands here.
+- History (16 Nov 2026): this repository (`jameshho/bon-adventure`) starts with one commit. Everything
+  "in git history" from before that is in the private `jameshho/vocabulary-town` repository and the
+  local bundle `/Users/james/Documents/Codex/vocabulary-town-full-history-20261116.bundle`.
 - **Always ask the user before every commit.** Show the changed files and the
   proposed commit message, then wait for an explicit yes. Approval covers only
   that one commit. Never push, rewrite history or change branches without asking.
   Exception (user, 6 Nov 2026): during the
-  [modular town restructure](Vocabulary_Town/docs/guides/MODULAR_TOWN.md), commit verified,
+  [modular town restructure](BonAdventure/docs/guides/MODULAR_TOWN.md), commit verified,
   reasonably sized chunks without asking each time; ask when unsure.
 - Commit one finished, verified piece of work at a time, not every small edit.

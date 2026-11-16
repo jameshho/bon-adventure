@@ -14,7 +14,7 @@ punctuation, arrows, stars...). The full Noto Sans TC is ~12 MB; the subset is a
 Run it again whenever Chinese text is added or changed (words, phrases, signs, names, grammar,
 dialogue); `--check` only lists Chinese characters (and CJK punctuation) the subset lacks (exit 1).
 
-Usage (from Vocabulary_Town/, needs `pip install fonttools`):
+Usage (from BonAdventure/, needs `pip install fonttools`):
   python3 tools/build_cjk_font.py [--source NotoSansTC[wght].ttf] [--check]
 
 Without --source the variable Noto Sans TC (SIL OFL 1.1, docs/guides/licenses/noto-sans-tc-OFL.txt)

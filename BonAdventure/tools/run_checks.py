@@ -19,7 +19,7 @@ data/expected_check_failures.json and prints one table:
 FIXED lists expected labels that no longer fail (update the file).
 Exit code: 1 when any check is NEW, CRASH or TIMEOUT; otherwise 0.
 
-Usage (from Vocabulary_Town/):
+Usage (from BonAdventure/):
   python3 tools/run_checks.py                 # quick suite
   python3 tools/run_checks.py full            # full suite
   python3 tools/run_checks.py --list          # suites and checks

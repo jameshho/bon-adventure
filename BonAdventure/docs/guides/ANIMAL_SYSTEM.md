@@ -1,6 +1,6 @@
 # Animal system
 
-Authoritative project location: `/Users/james/Documents/Codex/Spanish World/Vocabulary_Town/docs/ANIMAL_SYSTEM.md`.
+Authoritative project location: `/Users/james/Documents/Codex/Bon Adventure/BonAdventure/docs/guides/ANIMAL_SYSTEM.md`.
 
 Current implementation and measurements: 31 October 2026. This guide supersedes
 animal scale/movement descriptions in the historical Part 2 handoff.

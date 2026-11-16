@@ -4904,7 +4904,7 @@ and `map_facades` already reported FIXED labels; that does not touch the split.
 
 Policy (Claude's recommendation, accepted by the user): the 61 untracked `.uid` files, all of
 tracked scripts and resources (checked one by one; 4 are the new `main.gd` helpers), are
-committed; `.import` files of documentation images (`Vocabulary_Town/docs/**/*.png.import`,
+committed; `.import` files of documentation images (`BonAdventure/docs/**/*.png.import`,
 `*.jpg.import`, 144 untracked) are ignored by the root `.gitignore`. No scene or script loads an
 image from `docs/` (searched `res://docs/…png|jpg` in `.gd`, `.tscn`, `.tres`, `.json`; capture
 scripts only write PNGs). `.gdignore` was not used: most docs image folders also hold check
@@ -7501,7 +7501,7 @@ references and their folders, plus `design-references/`), `evidence/` (179 dated
 `town-checks/` for the 220 loose October check, capture, screenshot and fixture files) or
 `archive/` (11 superseded reports); see the [layout](../README.md#folder-layout). A script
 rewrote 5,364 references in 2,389 files (markdown links recomputed from each file's new place;
-`res://docs/…`, `docs/…` and `Vocabulary_Town/docs/…` paths; docs-relative paths in backticks;
+`res://docs/…`, `docs/…` and `BonAdventure/docs/…` paths; docs-relative paths in backticks;
 the ignored `.import` sidecars; the memory notes). By hand: the six Python checks in
 `evidence/town-checks/` and `evidence/editor_import/verify.py` find the project folder three
 levels up (`parents[3]`), and four old capture scripts (`render_aircraft.gd`,

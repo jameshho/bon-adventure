@@ -3,7 +3,7 @@
 
 GitHub Pages hosting (user, 13 Nov 2026: ONE public repository; this replaces the separate
 build repository of 12 Nov): https://github.com/jameshho/bon-adventure, served at
-https://jameshho.github.io/bon-adventure/ (renamed from vocabulary-town, 16 Nov 2026). Source lives on `main`; the exported files live on `gh-pages`,
+https://jameshho.github.io/bon-adventure/ (a fresh repository since 16 Nov 2026; the earlier one is private). Source lives on `main`; the exported files live on `gh-pages`,
 which GitHub Pages serves (Settings > Pages > Deploy from a branch, branch "gh-pages",
 folder "/"). The script:
 
@@ -23,7 +23,7 @@ folder "/"). The script:
      branch or the working tree: check the build, then
        git push --force origin gh-pages
 
-Usage (from Vocabulary_Town/):
+Usage (from BonAdventure/):
   python3 tools/deploy_web.py [--out <folder>] [--publish] [--godot <binary>]
 
 The build works from any sub-path (https://<user>.github.io/<repo>/): every path in it is

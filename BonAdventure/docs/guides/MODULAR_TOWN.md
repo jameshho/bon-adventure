@@ -224,8 +224,10 @@ are saved at their `home` (where they were loaded) rather than where they scuttl
 
 Runtime behaviour (sessions, NPC logic, minigames) stays in its own scripts under
 `scripts/learning/`, `scripts/world/` and the node scripts; the own script only changes what
-the unit scene contains. The old passes are gone; `git log` shows how a building was first
-built (for example `git show a5059dd:Vocabulary_Town/scripts/world/police_interior.gd`).
+the unit scene contains. The old passes are gone. How a building was first built is in the history
+before 16 Nov 2026, which this repository does not carry: it is in the private `jameshho/vocabulary-town`
+repository and the local backup bundle (for example `git show a5059dd:Vocabulary_Town/scripts/world/police_interior.gd`
+there).
 
 The loader gives every saved node it places the town root as owner (as in the old saved town;
 prefab internals keep theirs), so nodes built by scripts at runtime stay ownerless and the

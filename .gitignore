@@ -6,8 +6,10 @@
 
 # Import settings Godot writes for documentation screenshots (nothing in the game loads them;
 # 7 Nov 2026). The older ones were untracked the same day (files kept on disk).
-Vocabulary_Town/docs/**/*.png.import
-Vocabulary_Town/docs/**/*.jpg.import
+BonAdventure/docs/**/*.png.import
+BonAdventure/docs/**/*.jpg.import
+BonAdventure/docs/**/*.webp.import
+BonAdventure/docs/**/*.svg.import
 
 # Godot export output (export credentials live in .godot/)
 *.pck

@@ -103,7 +103,7 @@ Removed 791 unreferenced numbered file copies (including scenes, scripts, docume
 
 Historical profile; superseded by the [4 November subtle grading](#boston-inspired-garden--4-november-2026).
 
-The user authorized building the terrain directly in Spanish World. The active
+The user authorized building the terrain directly in this project. The active
 runtime now adds five broad rises, up to 2.2 town units, that taper toward the
 existing low pond shoreline. The water is not lowered. Road edges, habitat pads,
 playground, chapel/gazebo, statue plaza, dock and bridge mouths stay level.

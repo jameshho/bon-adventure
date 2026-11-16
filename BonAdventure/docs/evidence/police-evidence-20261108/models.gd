@@ -1,7 +1,7 @@
 extends SceneTree
 ## Model sheet of the evidence objects and the result badges (8 Nov 2026, second pass), without
 ## the town: models.png (every kind and colour variant) and badges.png (the six pins).
-## Run from Vocabulary_Town/ (needs a window, not --headless):
+## Run from BonAdventure/ (needs a window, not --headless):
 ##   godot --path . --resolution 1280x800 --script docs/evidence/police-evidence-20261108/models.gd
 const EvidenceProps := preload("res://scripts/learning/evidence_props.gd")
 const OUT := "res://docs/evidence/police-evidence-20261108/"
