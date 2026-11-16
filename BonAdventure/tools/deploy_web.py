@@ -3,7 +3,10 @@
 
 GitHub Pages hosting (user, 13 Nov 2026: ONE public repository; this replaces the separate
 build repository of 12 Nov): https://github.com/jameshho/bon-adventure, served at
-https://jameshho.github.io/bon-adventure/ (a fresh repository since 16 Nov 2026; the earlier one is private). Source lives on `main`; the exported files live on `gh-pages`,
+https://jameshho.github.io/bon-adventure/ (a fresh repository since 16 Nov 2026; the earlier one is private).
+Since 16 Nov 2026 (user) the custom domain is https://boomingpodcast.com/ (Route 53 DNS points at
+Pages); the build carries a CNAME file (CUSTOM_DOMAIN) because a gh-pages commit without one
+removes the domain from Pages. Source lives on `main`; the exported files live on `gh-pages`,
 which GitHub Pages serves (Settings > Pages > Deploy from a branch, branch "gh-pages",
 folder "/"). The script:
 
@@ -47,6 +50,8 @@ SHORT_NAME = "Bon Adventure"
 # Left out of the web pack by export_presets.cfg's exclude_filter; no scene may name them.
 EXCLUDED_SCENE = re.compile(rb"res://scenes/animals/[A-Za-z0-9_]+_clay\.t?scn")
 BRANCH = "gh-pages"
+# Pages custom domain (user, 16 Nov 2026), written to the build's CNAME file.
+CUSTOM_DOMAIN = "boomingpodcast.com"
 
 
 def git(repo, *args, **kwargs):
@@ -86,6 +91,8 @@ def main() -> int:
         print("deploy_web: export failed (are the 4.x web export templates installed?)")
         return 1
     open(os.path.join(out, ".nojekyll"), "w").close()
+    with open(os.path.join(out, "CNAME"), "w") as f:
+        f.write(CUSTOM_DOMAIN + "\n")
     manifest_path = os.path.join(out, "index.manifest.json")
     with open(manifest_path) as f:
         manifest = json.load(f)

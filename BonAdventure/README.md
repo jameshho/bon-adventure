@@ -307,7 +307,9 @@ the export templates copied in), then serve the folder over HTTPS or `localhost`
 - **Hosting on GitHub Pages (user, 13 Nov 2026: one public repository; this replaces the
   separate build repository planned on 12 Nov):** repository
   <https://github.com/jameshho/bon-adventure> (public), game at
-  <https://jameshho.github.io/bon-adventure/>. The source is on `main`, the exported files on
+  <https://jameshho.github.io/bon-adventure/>, which since 16 Nov 2026 (user) redirects to the
+  custom domain <https://boomingpodcast.com/> (Route 53 A/AAAA records and `www` CNAME point at
+  Pages; `deploy_web.py` writes the `CNAME` file so a deploy keeps the domain). The source is on `main`, the exported files on
   the `gh-pages` branch, which Pages serves. `tools/deploy_web.py` exports to a folder outside the
   repository, adds `.nojekyll` and refuses files over GitHub's 100 MB limit; with `--publish` it
   makes `gh-pages` one parentless commit holding only the build (about 125 MB; old builds do not
