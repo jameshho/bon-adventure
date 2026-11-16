@@ -1,0 +1,76 @@
+[gd_scene format=3]
+
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/cow/body.res" id="1_c7fiw"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/cow/muzzle.res" id="2_6rqay"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/cow/horns.res" id="3_603xb"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/cow/ears.res" id="4_jbrxa"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/cow/hooves.res" id="5_iho1p"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/cow/udder.res" id="6_dbss6"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/cow/tail_tuft.res" id="7_hlhpg"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/cow/eyes.res" id="8_x52vl"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/cow/face_details.res" id="9_yhk8b"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_stbe6"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.86
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5dqjj"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kqlq3"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.75
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rs1u8"]
+size = Vector3(0.53056234, 1.5500001, 1.705379)
+
+[node name="CowClayDisplay" type="Node3D" unique_id=588283093]
+metadata/source = "User's Cow Character Blueprint, relax walk pose (11 Nov 2026)"
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=1256160373]
+material_override = SubResource("StandardMaterial3D_stbe6")
+mesh = ExtResource("1_c7fiw")
+
+[node name="Muzzle" type="MeshInstance3D" parent="." unique_id=1587368239]
+material_override = SubResource("StandardMaterial3D_stbe6")
+mesh = ExtResource("2_6rqay")
+
+[node name="Horns" type="MeshInstance3D" parent="." unique_id=456213636]
+material_override = SubResource("StandardMaterial3D_stbe6")
+mesh = ExtResource("3_603xb")
+
+[node name="Ears" type="MeshInstance3D" parent="." unique_id=769156377]
+material_override = SubResource("StandardMaterial3D_stbe6")
+mesh = ExtResource("4_jbrxa")
+
+[node name="Hooves" type="MeshInstance3D" parent="." unique_id=910948910]
+material_override = SubResource("StandardMaterial3D_stbe6")
+mesh = ExtResource("5_iho1p")
+
+[node name="Udder" type="MeshInstance3D" parent="." unique_id=25991615]
+material_override = SubResource("StandardMaterial3D_stbe6")
+mesh = ExtResource("6_dbss6")
+
+[node name="Tail tuft" type="MeshInstance3D" parent="." unique_id=196399275]
+material_override = SubResource("StandardMaterial3D_stbe6")
+mesh = ExtResource("7_hlhpg")
+
+[node name="Eyes" type="MeshInstance3D" parent="." unique_id=494408304]
+material_override = SubResource("StandardMaterial3D_5dqjj")
+cast_shadow = 0
+mesh = ExtResource("8_x52vl")
+
+[node name="Face details" type="MeshInstance3D" parent="." unique_id=533614435]
+material_override = SubResource("StandardMaterial3D_kqlq3")
+cast_shadow = 0
+mesh = ExtResource("9_yhk8b")
+
+[node name="Footprint" type="StaticBody3D" parent="." unique_id=1437842549]
+
+[node name="@CollisionShape3D@2" type="CollisionShape3D" parent="Footprint" unique_id=171331233]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.77500004, -0.15158936)
+shape = SubResource("BoxShape3D_rs1u8")

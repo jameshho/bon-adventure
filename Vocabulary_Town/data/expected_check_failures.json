@@ -1,0 +1,23 @@
+{
+  "_about": [
+    "Known failures per check for tools/run_checks.py (check ids are defined in its CHECKS table).",
+    "Each 'known' entry matches failure labels by exact 'label', 'prefix' or 'regex', or 'any': true",
+    "(any label; used for checks whose records give only a count). 'count' = how many labels the entry",
+    "may absorb (default 1); more are NEW. 'flaky': true = not reported as FIXED when it does not fail.",
+    "'broken' = the check cannot complete; the runner skips it unless --include-broken.",
+    "Update this file only with a dated reason, after the failure is understood or recorded in",
+    "docs/FINAL_VERIFICATION.md. Remove an entry when the runner reports it FIXED."
+  ],
+  "checks": {
+    "map_facades": {
+      "known": [
+        {"label": "street ray picks new facade HOSPITAL", "since": "2026-10-28", "reason": "Traced 7 Nov 2026: the ray hits Buildings/Hospital/Floor1/FacadeGlass3/Body (the hospital's glass front, no exterior_word) before the HOSPITAL facade, so a click there does not show the hospital word. Game, P3"}
+      ]
+    },
+    "rooftops": {
+      "known": [
+        {"regex": "^Walkable normal above (Barn roof lining Barn interior|MainRoof Barn)$", "count": 2, "since": "2026-11-07", "reason": "The barn's taller gambrel roof (user, 1 Nov 2026, approved) is steeper than the walkable normal 0.7, by design (Barn roof lining, MainRoof)"}
+      ]
+    }
+  }
+}

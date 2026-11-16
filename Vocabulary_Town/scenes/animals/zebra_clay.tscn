@@ -1,0 +1,76 @@
+[gd_scene format=3]
+
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/zebra/body.res" id="1_53hll"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/zebra/muzzle.res" id="2_jvtac"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/zebra/tongue.res" id="3_sc57q"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/zebra/mane.res" id="4_d3lsp"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/zebra/ears.res" id="5_r0p63"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/zebra/hooves.res" id="6_375qn"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/zebra/tail_tuft.res" id="7_tslm8"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/zebra/eyes.res" id="8_ue6t0"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/zebra/face_details.res" id="9_81cra"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jlqe4"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.86
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8oe4v"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.15
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fwamn"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.75
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lmsx8"]
+size = Vector3(0.46509436, 1.7, 1.2750001)
+
+[node name="ZebraClayDisplay" type="Node3D" unique_id=1428302063]
+metadata/source = "User's Zebra Character Blueprint, relax walk pose (11 Nov 2026)"
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=1077174126]
+material_override = SubResource("StandardMaterial3D_jlqe4")
+mesh = ExtResource("1_53hll")
+
+[node name="Muzzle" type="MeshInstance3D" parent="." unique_id=720778610]
+material_override = SubResource("StandardMaterial3D_jlqe4")
+mesh = ExtResource("2_jvtac")
+
+[node name="Tongue" type="MeshInstance3D" parent="." unique_id=416596295]
+material_override = SubResource("StandardMaterial3D_jlqe4")
+mesh = ExtResource("3_sc57q")
+
+[node name="Mane" type="MeshInstance3D" parent="." unique_id=641344072]
+material_override = SubResource("StandardMaterial3D_jlqe4")
+mesh = ExtResource("4_d3lsp")
+
+[node name="Ears" type="MeshInstance3D" parent="." unique_id=1318286400]
+material_override = SubResource("StandardMaterial3D_jlqe4")
+mesh = ExtResource("5_r0p63")
+
+[node name="Hooves" type="MeshInstance3D" parent="." unique_id=466465886]
+material_override = SubResource("StandardMaterial3D_jlqe4")
+mesh = ExtResource("6_375qn")
+
+[node name="Tail tuft" type="MeshInstance3D" parent="." unique_id=1789021216]
+material_override = SubResource("StandardMaterial3D_jlqe4")
+mesh = ExtResource("7_tslm8")
+
+[node name="Eyes" type="MeshInstance3D" parent="." unique_id=1694620532]
+material_override = SubResource("StandardMaterial3D_8oe4v")
+cast_shadow = 0
+mesh = ExtResource("8_ue6t0")
+
+[node name="Face details" type="MeshInstance3D" parent="." unique_id=745207124]
+material_override = SubResource("StandardMaterial3D_fwamn")
+cast_shadow = 0
+mesh = ExtResource("9_81cra")
+
+[node name="Footprint" type="StaticBody3D" parent="." unique_id=1098588158]
+
+[node name="@CollisionShape3D@2" type="CollisionShape3D" parent="Footprint" unique_id=1798622987]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, -0.13632074)
+shape = SubResource("BoxShape3D_lmsx8")

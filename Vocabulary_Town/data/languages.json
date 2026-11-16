@@ -1,0 +1,10 @@
+{
+  "about": "Which languages the game knows and which two it teaches with. 'native' is the player's own language (translations, help); 'foreign' is the language being learned. These two are the DEFAULTS: the player's choice in Settings is saved in user://settings.json (scripts/core/game_settings.gd) and replaces them at start-up. Each language needs a display name, a 'badge' (the short label on the translate button: EN, ES, 中) and a rules module (grammar, numbers; extends scripts/language/language_rules.gd), plus its text in data/words.json and data/phrases.json and samples in data/language_samples.json. Check with: godot --headless --path . --script res://tools/language_check.gd. A language with status 'draft' is being written: Settings does not offer it, and the checks validate the text it has and report what is missing instead of failing (Traditional Chinese was one during Stage 4 and became playable on 4 Nov 2026). Optional 'reading': a data file the rules module uses to show a pronunciation line under the foreign text (pinyin for Chinese, rules_zh.gd reading()). See docs/guides/ARCHITECTURE_REVIEW_PART1.md#adding-or-changing-a-language.",
+  "native": "en",
+  "foreign": "es",
+  "languages": {
+    "en": {"name": "English", "badge": "EN", "rules": "res://scripts/language/rules_en.gd"},
+    "es": {"name": "Español", "badge": "ES", "rules": "res://scripts/language/rules_es.gd"},
+    "zh": {"name": "中文（香港）", "badge": "中", "rules": "res://scripts/language/rules_zh.gd", "reading": "res://data/pinyin_zh.json"}
+  }
+}

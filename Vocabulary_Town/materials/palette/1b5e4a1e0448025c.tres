@@ -1,0 +1,6 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[resource]
+resource_name = "Bumpers and rubber strip"
+albedo_color = Color(0.152941, 0.180392, 0.207843, 1)
+roughness = 0.74

@@ -1,0 +1,32 @@
+[
+  {
+    "path": "scripts/ui/town_minimap.gd",
+    "original_sha256": "ec655fe9f3684cc2890813221487ae2eef0181b933bdd095211115d074e15989",
+    "updated_sha256": "72d16639f395fbf1d37f9ff1ee57021588677cba4d9142e8df1dfaa1be2cd589"
+  },
+  {
+    "path": "scripts/ui/vocabulary_hud.gd",
+    "original_sha256": "90f7c63cdcb9b445ebd36f72d36629b3e58d30761c9a8875ef9f54c1c3be569c",
+    "updated_sha256": "084e881fa31dbbe78823c8ffa008e71c8bcf88222d8cc316f03702daac0a0835"
+  },
+  {
+    "path": "scripts/core/main.gd",
+    "original_sha256": "88c7f4aa92b405667b3a22e407057d0660c79ad1d35dd02fa5bf9d640ffca7a2",
+    "updated_sha256": "7fc58401bb498c92657fd3b70ea6efd3f812babafb7433db2c8dd33b5ba8252c"
+  },
+  {
+    "path": "scripts/learning/learning_quests.gd",
+    "original_sha256": "755e882b5939d790cf96a13944cb832518315b132254f7edd5eaee348dc8f960",
+    "updated_sha256": "2184093d49bdff20490aef2944c86117dd360a36e089271ab38ab0d91fa49bb7"
+  },
+  {
+    "path": "scripts/world/driveable_vehicle.gd",
+    "original_sha256": "68fdaef26f45b3095c25ab270744548b1ee18c32eae5c5be19d7c6358b6f7fe4",
+    "updated_sha256": "7ddb5c22ad7239117ae92b27c1c7d8249199d3c971b2cd9a3759a38acd8c3c96"
+  },
+  {
+    "path": "scripts/player/player_controller.gd",
+    "original_sha256": "89655b8fcd55e2716085af2e319610480b7f406eee1a0449e98a87c4274b2c06",
+    "updated_sha256": "88ac5a335f30a270bae0f506a3a7ec2a85591f72a8179efaff5d8ad022fda1b1"
+  }
+]

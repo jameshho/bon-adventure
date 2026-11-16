@@ -1,0 +1,7 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[resource]
+resource_name = "Night-blue metallic paint"
+albedo_color = Color(0.055, 0.092, 0.142, 1)
+metallic = 0.19
+roughness = 0.31

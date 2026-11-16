@@ -1,0 +1,543 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/television.tscn" id="e1"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/computer.tscn" id="e2"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/laptop.tscn" id="e3"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/smartphone.tscn" id="e4"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/tablet.tscn" id="e5"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/keyboard.tscn" id="e6"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/mouse.tscn" id="e7"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/game_controller.tscn" id="e8"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/washing_machine.tscn" id="e9"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/dryer.tscn" id="e10"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/refrigerator.tscn" id="e11"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/microwave.tscn" id="e12"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/headphones.tscn" id="e13"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/speaker.tscn" id="e14"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/camera.tscn" id="e15"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/fan.tscn" id="e16"]
+
+[sub_resource type="BoxMesh" id="r1"]
+size = Vector3(1.550000, 0.100000, 1.400000)
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.78039, 0.70980, 0.58824, 1)
+roughness = 0.78
+
+[sub_resource type="BoxShape3D" id="r3"]
+size = Vector3(1.550000, 0.100000, 1.400000)
+
+[sub_resource type="BoxMesh" id="r4"]
+size = Vector3(0.090000, 0.940000, 1.200000)
+
+[sub_resource type="StandardMaterial3D" id="r5"]
+albedo_color = Color(0.67843, 0.48235, 0.31373, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r6"]
+size = Vector3(0.090000, 0.940000, 1.200000)
+
+[sub_resource type="BoxMesh" id="r7"]
+size = Vector3(1.550000, 0.100000, 1.400000)
+
+[sub_resource type="BoxShape3D" id="r8"]
+size = Vector3(1.550000, 0.100000, 1.400000)
+
+[sub_resource type="BoxMesh" id="r9"]
+size = Vector3(0.090000, 0.940000, 1.200000)
+
+[sub_resource type="BoxMesh" id="r10"]
+size = Vector3(0.090000, 0.940000, 1.200000)
+
+[sub_resource type="BoxMesh" id="r11"]
+size = Vector3(1.550000, 0.100000, 1.400000)
+
+[sub_resource type="BoxShape3D" id="r12"]
+size = Vector3(1.550000, 0.100000, 1.400000)
+
+[sub_resource type="BoxMesh" id="r13"]
+size = Vector3(0.090000, 0.940000, 1.200000)
+
+[sub_resource type="BoxMesh" id="r14"]
+size = Vector3(0.090000, 0.940000, 1.200000)
+
+[sub_resource type="BoxMesh" id="r15"]
+size = Vector3(1.550000, 0.100000, 1.400000)
+
+[sub_resource type="BoxShape3D" id="r16"]
+size = Vector3(1.550000, 0.100000, 1.400000)
+
+[sub_resource type="BoxMesh" id="r17"]
+size = Vector3(0.090000, 0.940000, 1.200000)
+
+[sub_resource type="BoxMesh" id="r18"]
+size = Vector3(0.090000, 0.940000, 1.200000)
+
+[sub_resource type="BoxMesh" id="r19"]
+size = Vector3(1.550000, 0.100000, 1.400000)
+
+[sub_resource type="BoxShape3D" id="r20"]
+size = Vector3(1.550000, 0.100000, 1.400000)
+
+[sub_resource type="BoxMesh" id="r21"]
+size = Vector3(0.090000, 0.940000, 1.200000)
+
+[sub_resource type="BoxMesh" id="r22"]
+size = Vector3(0.090000, 0.940000, 1.200000)
+
+[sub_resource type="BoxMesh" id="r23"]
+size = Vector3(1.550000, 0.100000, 1.400000)
+
+[sub_resource type="BoxShape3D" id="r24"]
+size = Vector3(1.550000, 0.100000, 1.400000)
+
+[sub_resource type="BoxMesh" id="r25"]
+size = Vector3(0.090000, 0.940000, 1.200000)
+
+[sub_resource type="BoxMesh" id="r26"]
+size = Vector3(0.090000, 0.940000, 1.200000)
+
+[sub_resource type="BoxMesh" id="r27"]
+size = Vector3(1.550000, 0.100000, 1.400000)
+
+[sub_resource type="BoxShape3D" id="r28"]
+size = Vector3(1.550000, 0.100000, 1.400000)
+
+[sub_resource type="BoxMesh" id="r29"]
+size = Vector3(0.090000, 0.940000, 1.200000)
+
+[sub_resource type="BoxMesh" id="r30"]
+size = Vector3(0.090000, 0.940000, 1.200000)
+
+[sub_resource type="BoxMesh" id="r31"]
+size = Vector3(1.550000, 0.100000, 1.400000)
+
+[sub_resource type="BoxShape3D" id="r32"]
+size = Vector3(1.550000, 0.100000, 1.400000)
+
+[sub_resource type="BoxMesh" id="r33"]
+size = Vector3(0.090000, 0.940000, 1.200000)
+
+[sub_resource type="BoxMesh" id="r34"]
+size = Vector3(0.090000, 0.940000, 1.200000)
+
+[sub_resource type="BoxMesh" id="r35"]
+size = Vector3(1.550000, 0.100000, 1.400000)
+
+[sub_resource type="BoxShape3D" id="r36"]
+size = Vector3(1.550000, 0.100000, 1.400000)
+
+[sub_resource type="BoxMesh" id="r37"]
+size = Vector3(0.090000, 0.940000, 1.200000)
+
+[sub_resource type="BoxMesh" id="r38"]
+size = Vector3(0.090000, 0.940000, 1.200000)
+
+[sub_resource type="BoxMesh" id="r39"]
+size = Vector3(1.550000, 0.100000, 1.400000)
+
+[sub_resource type="BoxShape3D" id="r40"]
+size = Vector3(1.550000, 0.100000, 1.400000)
+
+[sub_resource type="BoxMesh" id="r41"]
+size = Vector3(0.090000, 0.940000, 1.200000)
+
+[sub_resource type="BoxMesh" id="r42"]
+size = Vector3(0.090000, 0.940000, 1.200000)
+
+[sub_resource type="BoxMesh" id="r43"]
+size = Vector3(1.550000, 0.100000, 1.400000)
+
+[sub_resource type="BoxShape3D" id="r44"]
+size = Vector3(1.550000, 0.100000, 1.400000)
+
+[sub_resource type="BoxMesh" id="r45"]
+size = Vector3(0.090000, 0.940000, 1.200000)
+
+[sub_resource type="BoxMesh" id="r46"]
+size = Vector3(0.090000, 0.940000, 1.200000)
+
+[node name="ELECTRONICS" type="Node3D"]
+
+[node name="Television" parent="." instance=ExtResource("e1")]
+position = Vector3(-4.000000, 0.100000, -5.600000)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="DisplayTopcomputer_2" type="MeshInstance3D" parent="."]
+position = Vector3(-4.000000, 0.960000, -4.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r1")
+material_override = SubResource("r2")
+
+[node name="DisplayBodycomputer" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodycomputer"]
+position = Vector3(-4.000000, 0.960000, -4.000000)
+shape = SubResource("r3")
+
+[node name="DisplayLeg_5" type="MeshInstance3D" parent="."]
+position = Vector3(-4.550000, 0.470000, -4.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r4")
+material_override = SubResource("r5")
+
+[node name="DisplayLeg_6" type="MeshInstance3D" parent="."]
+position = Vector3(-3.450000, 0.470000, -4.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r6")
+material_override = SubResource("r5")
+
+[node name="Computer" parent="." instance=ExtResource("e2")]
+position = Vector3(-4.000000, 1.020000, -4.000000)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="DisplayToplaptop_7" type="MeshInstance3D" parent="."]
+position = Vector3(-4.000000, 0.960000, -2.400000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r7")
+material_override = SubResource("r2")
+
+[node name="DisplayBodylaptop" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodylaptop"]
+position = Vector3(-4.000000, 0.960000, -2.400000)
+shape = SubResource("r8")
+
+[node name="DisplayLeg_9" type="MeshInstance3D" parent="."]
+position = Vector3(-4.550000, 0.470000, -2.400000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r9")
+material_override = SubResource("r5")
+
+[node name="DisplayLeg_10" type="MeshInstance3D" parent="."]
+position = Vector3(-3.450000, 0.470000, -2.400000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r10")
+material_override = SubResource("r5")
+
+[node name="Laptop" parent="." instance=ExtResource("e3")]
+position = Vector3(-4.000000, 1.020000, -2.400000)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="DisplayTopsmartphone_11" type="MeshInstance3D" parent="."]
+position = Vector3(-4.000000, 0.960000, -0.800000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r11")
+material_override = SubResource("r2")
+
+[node name="DisplayBodysmartphone" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodysmartphone"]
+position = Vector3(-4.000000, 0.960000, -0.800000)
+shape = SubResource("r12")
+
+[node name="DisplayLeg_13" type="MeshInstance3D" parent="."]
+position = Vector3(-4.550000, 0.470000, -0.800000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r13")
+material_override = SubResource("r5")
+
+[node name="DisplayLeg_14" type="MeshInstance3D" parent="."]
+position = Vector3(-3.450000, 0.470000, -0.800000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r14")
+material_override = SubResource("r5")
+
+[node name="Smartphone" parent="." instance=ExtResource("e4")]
+position = Vector3(-4.000000, 1.020000, -0.800000)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="DisplayToptablet_15" type="MeshInstance3D" parent="."]
+position = Vector3(-4.000000, 0.960000, 0.800000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r15")
+material_override = SubResource("r2")
+
+[node name="DisplayBodytablet" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodytablet"]
+position = Vector3(-4.000000, 0.960000, 0.800000)
+shape = SubResource("r16")
+
+[node name="DisplayLeg_17" type="MeshInstance3D" parent="."]
+position = Vector3(-4.550000, 0.470000, 0.800000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r17")
+material_override = SubResource("r5")
+
+[node name="DisplayLeg_18" type="MeshInstance3D" parent="."]
+position = Vector3(-3.450000, 0.470000, 0.800000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r18")
+material_override = SubResource("r5")
+
+[node name="Tablet" parent="." instance=ExtResource("e5")]
+position = Vector3(-4.000000, 1.020000, 0.800000)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="DisplayTopkeyboard_19" type="MeshInstance3D" parent="."]
+position = Vector3(-4.000000, 0.960000, 2.400000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r19")
+material_override = SubResource("r2")
+
+[node name="DisplayBodykeyboard" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodykeyboard"]
+position = Vector3(-4.000000, 0.960000, 2.400000)
+shape = SubResource("r20")
+
+[node name="DisplayLeg_21" type="MeshInstance3D" parent="."]
+position = Vector3(-4.550000, 0.470000, 2.400000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r21")
+material_override = SubResource("r5")
+
+[node name="DisplayLeg_22" type="MeshInstance3D" parent="."]
+position = Vector3(-3.450000, 0.470000, 2.400000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r22")
+material_override = SubResource("r5")
+
+[node name="Keyboard" parent="." instance=ExtResource("e6")]
+position = Vector3(-4.000000, 1.020000, 2.400000)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="DisplayTopmouse_23" type="MeshInstance3D" parent="."]
+position = Vector3(-4.000000, 0.960000, 4.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r23")
+material_override = SubResource("r2")
+
+[node name="DisplayBodymouse" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodymouse"]
+position = Vector3(-4.000000, 0.960000, 4.000000)
+shape = SubResource("r24")
+
+[node name="DisplayLeg_25" type="MeshInstance3D" parent="."]
+position = Vector3(-4.550000, 0.470000, 4.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r25")
+material_override = SubResource("r5")
+
+[node name="DisplayLeg_26" type="MeshInstance3D" parent="."]
+position = Vector3(-3.450000, 0.470000, 4.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r26")
+material_override = SubResource("r5")
+
+[node name="Mouse" parent="." instance=ExtResource("e7")]
+position = Vector3(-4.000000, 1.020000, 4.000000)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="DisplayTopgame_controller_27" type="MeshInstance3D" parent="."]
+position = Vector3(-4.000000, 0.960000, 5.600000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r27")
+material_override = SubResource("r2")
+
+[node name="DisplayBodygame_controller" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodygame_controller"]
+position = Vector3(-4.000000, 0.960000, 5.600000)
+shape = SubResource("r28")
+
+[node name="DisplayLeg_29" type="MeshInstance3D" parent="."]
+position = Vector3(-4.550000, 0.470000, 5.600000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r29")
+material_override = SubResource("r5")
+
+[node name="DisplayLeg_30" type="MeshInstance3D" parent="."]
+position = Vector3(-3.450000, 0.470000, 5.600000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r30")
+material_override = SubResource("r5")
+
+[node name="Game_Controller" parent="." instance=ExtResource("e8")]
+position = Vector3(-4.000000, 1.020000, 5.600000)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="Washing_Machine" parent="." instance=ExtResource("e9")]
+position = Vector3(4.000000, 0.100000, -5.600000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Dryer" parent="." instance=ExtResource("e10")]
+position = Vector3(4.000000, 0.100000, -4.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Refrigerator" parent="." instance=ExtResource("e11")]
+position = Vector3(4.000000, 0.100000, -2.400000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="DisplayTopmicrowave_31" type="MeshInstance3D" parent="."]
+position = Vector3(4.000000, 0.960000, -0.800000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r31")
+material_override = SubResource("r2")
+
+[node name="DisplayBodymicrowave" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodymicrowave"]
+position = Vector3(4.000000, 0.960000, -0.800000)
+shape = SubResource("r32")
+
+[node name="DisplayLeg_33" type="MeshInstance3D" parent="."]
+position = Vector3(3.450000, 0.470000, -0.800000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r33")
+material_override = SubResource("r5")
+
+[node name="DisplayLeg_34" type="MeshInstance3D" parent="."]
+position = Vector3(4.550000, 0.470000, -0.800000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r34")
+material_override = SubResource("r5")
+
+[node name="Microwave" parent="." instance=ExtResource("e12")]
+position = Vector3(4.000000, 1.020000, -0.800000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="DisplayTopheadphones_35" type="MeshInstance3D" parent="."]
+position = Vector3(4.000000, 0.960000, 0.800000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r35")
+material_override = SubResource("r2")
+
+[node name="DisplayBodyheadphones" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodyheadphones"]
+position = Vector3(4.000000, 0.960000, 0.800000)
+shape = SubResource("r36")
+
+[node name="DisplayLeg_37" type="MeshInstance3D" parent="."]
+position = Vector3(3.450000, 0.470000, 0.800000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r37")
+material_override = SubResource("r5")
+
+[node name="DisplayLeg_38" type="MeshInstance3D" parent="."]
+position = Vector3(4.550000, 0.470000, 0.800000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r38")
+material_override = SubResource("r5")
+
+[node name="Headphones" parent="." instance=ExtResource("e13")]
+position = Vector3(4.000000, 1.020000, 0.800000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="DisplayTopspeaker_39" type="MeshInstance3D" parent="."]
+position = Vector3(4.000000, 0.960000, 2.400000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r39")
+material_override = SubResource("r2")
+
+[node name="DisplayBodyspeaker" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodyspeaker"]
+position = Vector3(4.000000, 0.960000, 2.400000)
+shape = SubResource("r40")
+
+[node name="DisplayLeg_41" type="MeshInstance3D" parent="."]
+position = Vector3(3.450000, 0.470000, 2.400000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r41")
+material_override = SubResource("r5")
+
+[node name="DisplayLeg_42" type="MeshInstance3D" parent="."]
+position = Vector3(4.550000, 0.470000, 2.400000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r42")
+material_override = SubResource("r5")
+
+[node name="Speaker" parent="." instance=ExtResource("e14")]
+position = Vector3(4.000000, 1.020000, 2.400000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="DisplayTopcamera_43" type="MeshInstance3D" parent="."]
+position = Vector3(4.000000, 0.960000, 4.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r43")
+material_override = SubResource("r2")
+
+[node name="DisplayBodycamera" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodycamera"]
+position = Vector3(4.000000, 0.960000, 4.000000)
+shape = SubResource("r44")
+
+[node name="DisplayLeg_45" type="MeshInstance3D" parent="."]
+position = Vector3(3.450000, 0.470000, 4.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r45")
+material_override = SubResource("r5")
+
+[node name="DisplayLeg_46" type="MeshInstance3D" parent="."]
+position = Vector3(4.550000, 0.470000, 4.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r46")
+material_override = SubResource("r5")
+
+[node name="Camera" parent="." instance=ExtResource("e15")]
+position = Vector3(4.000000, 1.020000, 4.000000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Fan" parent="." instance=ExtResource("e16")]
+position = Vector3(4.000000, 0.100000, 5.600000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Section280" type="Label3D" parent="."]
+position = Vector3(-3.850000, 2.850000, -6.600000)
+text = "SCREENS & COMPUTERS"
+font_size = 52
+pixel_size = 0.0045
+rotation_degrees = Vector3(0, 180, 0)
+modulate = Color(0.18, 0.24, 0.27, 1)
+outline_size = 0
+
+[node name="Section288" type="Label3D" parent="."]
+position = Vector3(3.850000, 2.850000, -6.600000)
+text = "APPLIANCES & AUDIO"
+font_size = 52
+pixel_size = 0.0045
+rotation_degrees = Vector3(0, 180, 0)
+modulate = Color(0.18, 0.24, 0.27, 1)
+outline_size = 0

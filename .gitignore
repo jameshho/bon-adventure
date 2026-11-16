@@ -1,0 +1,34 @@
+# Godot 4 generated cache (keep *.uid files and the *.import files of game assets: they are
+# tracked by design)
+.godot/
+.import/
+*.translation
+
+# Import settings Godot writes for documentation screenshots (nothing in the game loads them;
+# 7 Nov 2026). The older ones were untracked the same day (files kept on disk).
+Vocabulary_Town/docs/**/*.png.import
+Vocabulary_Town/docs/**/*.jpg.import
+
+# Godot export output (export credentials live in .godot/)
+*.pck
+*.apk
+*.aab
+
+# Archived material; already excluded from Godot by its .gdignore
+backups/
+
+# Snapshot archives
+*.zip
+
+# OS and editor clutter
+.DS_Store
+Thumbs.db
+*.tmp
+*~
+
+# Claude Code working folder (worktrees, local settings)
+.claude/
+
+# Python bytecode
+__pycache__/
+*.pyc

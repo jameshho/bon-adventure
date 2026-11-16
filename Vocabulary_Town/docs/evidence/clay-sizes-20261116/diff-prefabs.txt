@@ -1,0 +1,17 @@
+DIFF black_bear        max 244/255  off>8:  0.013%  rms 1.39/255
+DIFF black_bear_adult  max 239/255  off>8:  0.016%  rms 1.07/255
+DIFF cow               max 252/255  off>8:  0.014%  rms 1.53/255
+DIFF deer              max 255/255  off>8:  0.014%  rms 1.51/255
+DIFF duck              max 244/255  off>8:  0.016%  rms 1.27/255
+DIFF elephant          max 240/255  off>8:  0.010%  rms 1.06/255
+DIFF flamingo          max 248/255  off>8:  0.009%  rms 0.96/255
+DIFF giraffe           max 244/255  off>8:  0.008%  rms 1.27/255
+DIFF golden_retriever  max 221/255  off>8:  0.014%  rms 1.14/255
+DIFF gorilla           max 221/255  off>8:  0.009%  rms 1.25/255
+DIFF kangaroo          max 210/255  off>8:  0.014%  rms 1.28/255
+DIFF lion              max 218/255  off>8:  0.010%  rms 1.04/255
+DIFF panda             max 247/255  off>8:  0.011%  rms 1.52/255
+DIFF pig               max 255/255  off>8:  0.008%  rms 1.22/255
+DIFF red_panda         max 255/255  off>8:  0.013%  rms 1.57/255
+DIFF rhino             max 255/255  off>8:  0.009%  rms 1.10/255
+DIFF zebra             max 253/255  off>8:  0.013%  rms 1.55/255

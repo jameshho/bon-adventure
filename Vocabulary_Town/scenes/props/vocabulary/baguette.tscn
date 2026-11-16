@@ -1,0 +1,73 @@
+[gd_scene format=3]
+
+[sub_resource type="SphereMesh" id="r1"]
+radius = 0.5
+height = 1.0
+radial_segments = 16
+rings = 8
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.84314, 0.63529, 0.32941, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r3"]
+size = Vector3(0.280000, 0.020000, 0.045000)
+
+[sub_resource type="StandardMaterial3D" id="r4"]
+albedo_color = Color(0.94118, 0.85098, 0.62745, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r5"]
+size = Vector3(0.280000, 0.020000, 0.045000)
+
+[sub_resource type="BoxMesh" id="r6"]
+size = Vector3(0.280000, 0.020000, 0.045000)
+
+[sub_resource type="BoxMesh" id="r7"]
+size = Vector3(0.280000, 0.020000, 0.045000)
+
+[sub_resource type="BoxShape3D" id="r8"]
+size = Vector3(0.500000, 0.350000, 1.450000)
+
+[node name="Baguette" type="Node3D"]
+metadata/word_key = "baguette"
+metadata/learning_object = true
+
+[node name="Loaf_2" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.170000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r1")
+material_override = SubResource("r2")
+scale = Vector3(0.420000, 0.320000, 1.400000)
+
+[node name="Score_4" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.320000, -0.400000)
+rotation_degrees = Vector3(0.000000, 25.000000, 0.000000)
+mesh = SubResource("r3")
+material_override = SubResource("r4")
+
+[node name="Score_5" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.320000, -0.100000)
+rotation_degrees = Vector3(0.000000, 25.000000, 0.000000)
+mesh = SubResource("r5")
+material_override = SubResource("r4")
+
+[node name="Score_6" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.320000, 0.200000)
+rotation_degrees = Vector3(0.000000, 25.000000, 0.000000)
+mesh = SubResource("r6")
+material_override = SubResource("r4")
+
+[node name="Score_7" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.320000, 0.500000)
+rotation_degrees = Vector3(0.000000, 25.000000, 0.000000)
+mesh = SubResource("r7")
+material_override = SubResource("r4")
+
+[node name="Interaction" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Interaction"]
+position = Vector3(0.000000, 0.175000, 0.000000)
+shape = SubResource("r8")

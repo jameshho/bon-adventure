@@ -1,0 +1,112 @@
+[gd_scene format=3]
+
+[sub_resource type="CylinderMesh" id="r1"]
+top_radius = 0.1
+bottom_radius = 0.1
+height = 0.4
+radial_segments = 16
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.57647, 0.68627, 0.34118, 1)
+roughness = 0.78
+
+[sub_resource type="SphereMesh" id="r3"]
+radius = 0.5
+height = 1.0
+radial_segments = 16
+rings = 8
+
+[sub_resource type="StandardMaterial3D" id="r4"]
+albedo_color = Color(0.31373, 0.50196, 0.27843, 1)
+roughness = 0.78
+
+[sub_resource type="SphereMesh" id="r5"]
+radius = 0.5
+height = 1.0
+radial_segments = 16
+rings = 8
+
+[sub_resource type="SphereMesh" id="r6"]
+radius = 0.5
+height = 1.0
+radial_segments = 16
+rings = 8
+
+[sub_resource type="SphereMesh" id="r7"]
+radius = 0.5
+height = 1.0
+radial_segments = 16
+rings = 8
+
+[sub_resource type="SphereMesh" id="r8"]
+radius = 0.5
+height = 1.0
+radial_segments = 16
+rings = 8
+
+[sub_resource type="BoxShape3D" id="r9"]
+size = Vector3(0.850000, 0.900000, 0.800000)
+
+[sub_resource type="BoxShape3D" id="r10"]
+size = Vector3(0.782000, 0.800000, 0.736000)
+
+[node name="Broccoli" type="Node3D"]
+metadata/word_key = "broccoli"
+metadata/learning_object = true
+
+[node name="Stalk_2" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.220000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r1")
+material_override = SubResource("r2")
+
+[node name="Floret_4" type="MeshInstance3D" parent="."]
+position = Vector3(-0.200000, 0.500000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r3")
+material_override = SubResource("r4")
+scale = Vector3(0.400000, 0.340000, 0.400000)
+
+[node name="Floret_5" type="MeshInstance3D" parent="."]
+position = Vector3(0.200000, 0.500000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r5")
+material_override = SubResource("r4")
+scale = Vector3(0.400000, 0.340000, 0.400000)
+
+[node name="Floret_6" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.600000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r6")
+material_override = SubResource("r4")
+scale = Vector3(0.400000, 0.340000, 0.400000)
+
+[node name="Floret_7" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.470000, 0.200000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r7")
+material_override = SubResource("r4")
+scale = Vector3(0.400000, 0.340000, 0.400000)
+
+[node name="Floret_8" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.470000, -0.200000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r8")
+material_override = SubResource("r4")
+scale = Vector3(0.400000, 0.340000, 0.400000)
+
+[node name="Interaction" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Interaction"]
+position = Vector3(0.000000, 0.450000, 0.000000)
+shape = SubResource("r9")
+
+[node name="Footprint" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Footprint"]
+position = Vector3(0.000000, 0.400000, 0.000000)
+shape = SubResource("r10")

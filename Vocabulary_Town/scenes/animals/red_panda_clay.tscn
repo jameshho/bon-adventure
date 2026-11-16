@@ -1,0 +1,62 @@
+[gd_scene format=3]
+
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/red_panda/body.res" id="1_ugw3k"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/red_panda/head.res" id="2_gygbe"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/red_panda/ears.res" id="3_qfc1e"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/red_panda/tail.res" id="4_83jmr"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/red_panda/eyes.res" id="5_ypl63"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/red_panda/face_details.res" id="6_k6ki3"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_85bi4"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+metallic_specular = 0.3
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nx1dk"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.18
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ymo7r"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.45
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hv1vy"]
+size = Vector3(0.6485294, 0.90000004, 1.4029412)
+
+[node name="RedPandaClayDisplay" type="Node3D" unique_id=1715317817]
+metadata/source = "User's Red Panda Character Blueprint, relax walk pose (11 Nov 2026)"
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=1901338694]
+material_override = SubResource("StandardMaterial3D_85bi4")
+mesh = ExtResource("1_ugw3k")
+
+[node name="Head" type="MeshInstance3D" parent="." unique_id=1196457256]
+material_override = SubResource("StandardMaterial3D_85bi4")
+mesh = ExtResource("2_gygbe")
+
+[node name="Ears" type="MeshInstance3D" parent="." unique_id=2077048525]
+material_override = SubResource("StandardMaterial3D_85bi4")
+mesh = ExtResource("3_qfc1e")
+
+[node name="Tail" type="MeshInstance3D" parent="." unique_id=1318694230]
+material_override = SubResource("StandardMaterial3D_85bi4")
+mesh = ExtResource("4_83jmr")
+
+[node name="Eyes" type="MeshInstance3D" parent="." unique_id=1662398152]
+material_override = SubResource("StandardMaterial3D_nx1dk")
+cast_shadow = 0
+mesh = ExtResource("5_ypl63")
+
+[node name="Face details" type="MeshInstance3D" parent="." unique_id=686279319]
+material_override = SubResource("StandardMaterial3D_ymo7r")
+cast_shadow = 0
+mesh = ExtResource("6_k6ki3")
+
+[node name="Footprint" type="StaticBody3D" parent="." unique_id=134885379]
+
+[node name="@CollisionShape3D@2" type="CollisionShape3D" parent="Footprint" unique_id=1008896881]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45000002, 0.006617546)
+shape = SubResource("BoxShape3D_hv1vy")

@@ -1,0 +1,58 @@
+[gd_scene load_steps=6 format=3]
+
+[sub_resource type="BoxMesh" id="panel"]
+size = Vector3(1.12, 0.76, 0.085)
+
+[sub_resource type="BoxMesh" id="stripe"]
+size = Vector3(1.04, 0.1, 0.018)
+
+[sub_resource type="StandardMaterial3D" id="back"]
+albedo_color = Color(0.137254902, 0.215686275, 0.290196078, 1)
+roughness = 0.75
+
+[sub_resource type="StandardMaterial3D" id="stripe_mat"]
+albedo_color = Color(0.88627451, 0.678431373, 0.337254902, 1)
+roughness = 0.75
+
+[sub_resource type="BoxShape3D" id="hit"]
+size = Vector3(1.12, 0.76, 0.28)
+
+[node name="Morning" type="Node3D"]
+metadata/word_key = "morning"
+metadata/learning_object = true
+
+[node name="ReadablePlacard" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0, 0)
+rotation_degrees = Vector3(0, 0, 0)
+mesh = SubResource("panel")
+material_override = SubResource("back")
+
+[node name="CategoryStripe" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.32, -0.052)
+rotation_degrees = Vector3(0, 0, 0)
+mesh = SubResource("stripe")
+material_override = SubResource("stripe_mat")
+
+[node name="Symbol" type="Label3D" parent="."]
+position = Vector3(-0.35, 0.045, -0.065)
+text = "☀"
+font_size = 85
+pixel_size = 0.0032
+modulate = Color(0.988235294, 0.91372549, 0.643137255, 1)
+outline_size = 4
+
+[node name="Term" type="Label3D" parent="."]
+position = Vector3(0.16, -0.015, -0.064)
+text = "MAÑANA"
+font_size = 42
+pixel_size = 0.0032
+modulate = Color(1, 1, 1, 1)
+outline_size = 4
+
+[node name="Interaction" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Interaction"]
+position = Vector3(0, 0, 0)
+shape = SubResource("hit")

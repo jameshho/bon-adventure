@@ -1,0 +1,140 @@
+[gd_scene format=3]
+
+[sub_resource type="CylinderMesh" id="r1"]
+top_radius = 0.12
+bottom_radius = 0.17
+height = 2.16
+radial_segments = 12
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.5333333333333333, 0.3843137254901961, 0.26666666666666666, 1)
+roughness = 0.82
+
+[sub_resource type="BoxShape3D" id="r3"]
+size = Vector3(0.340000, 2.160000, 0.340000)
+
+[sub_resource type="CylinderMesh" id="r4"]
+top_radius = 0.025
+bottom_radius = 0.065
+height = 1.1
+radial_segments = 12
+
+[sub_resource type="SphereMesh" id="r5"]
+radius = 0.5
+height = 1.0
+radial_segments = 12
+rings = 6
+
+[sub_resource type="StandardMaterial3D" id="r6"]
+albedo_color = Color(0.7843137254901961, 0.4627450980392157, 0.23921568627450981, 1)
+roughness = 0.82
+
+[sub_resource type="StandardMaterial3D" id="r7"]
+albedo_color = Color(0.8470588235294118, 0.6039215686274509, 0.2823529411764706, 1)
+roughness = 0.82
+
+[sub_resource type="StandardMaterial3D" id="r8"]
+albedo_color = Color(0.7254901960784313, 0.34901960784313724, 0.21568627450980393, 1)
+roughness = 0.82
+
+[sub_resource type="BoxShape3D" id="r9"]
+size = Vector3(2.800000, 1.600000, 2.800000)
+
+[node name="MapleTree" type="Node3D"]
+metadata/word_key = "tree"
+
+[node name="Trunk" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 1.080000, 0.000000)
+mesh = SubResource("r1")
+material_override = SubResource("r2")
+
+[node name="Body" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Body"]
+position = Vector3(0.000000, 1.080000, 0.000000)
+shape = SubResource("r3")
+
+[node name="Branch" type="Node3D" parent="."]
+rotation = Vector3(0,0.0,0)
+
+[node name="Wood" type="MeshInstance3D" parent="Branch"]
+position = Vector3(0.350000, 1.920000, 0.000000)
+rotation = Vector3(0.000000, 0.000000, -0.650000)
+mesh = SubResource("r4")
+material_override = SubResource("r2")
+
+[node name="Foliage" type="MeshInstance3D" parent="."]
+position = Vector3(0.700000, 2.650000, 0.000000)
+scale = Vector3(1.600000, 1.700000, 1.500000)
+mesh = SubResource("r5")
+material_override = SubResource("r6")
+
+[node name="Branch2" type="Node3D" parent="."]
+rotation = Vector3(0,1.2566370614359172,0)
+
+[node name="Wood" type="MeshInstance3D" parent="Branch2"]
+position = Vector3(0.350000, 1.920000, 0.000000)
+rotation = Vector3(0.000000, 0.000000, -0.650000)
+mesh = SubResource("r4")
+material_override = SubResource("r2")
+
+[node name="Foliage2" type="MeshInstance3D" parent="."]
+position = Vector3(0.216312, 2.950000, 0.665740)
+scale = Vector3(1.600000, 1.700000, 1.500000)
+mesh = SubResource("r5")
+material_override = SubResource("r7")
+
+[node name="Branch3" type="Node3D" parent="."]
+rotation = Vector3(0,2.5132741228718345,0)
+
+[node name="Wood" type="MeshInstance3D" parent="Branch3"]
+position = Vector3(0.350000, 1.920000, 0.000000)
+rotation = Vector3(0.000000, 0.000000, -0.650000)
+mesh = SubResource("r4")
+material_override = SubResource("r2")
+
+[node name="Foliage3" type="MeshInstance3D" parent="."]
+position = Vector3(-0.566312, 2.650000, 0.411450)
+scale = Vector3(1.600000, 1.700000, 1.500000)
+mesh = SubResource("r5")
+material_override = SubResource("r8")
+
+[node name="Branch4" type="Node3D" parent="."]
+rotation = Vector3(0,3.7699111843077517,0)
+
+[node name="Wood" type="MeshInstance3D" parent="Branch4"]
+position = Vector3(0.350000, 1.920000, 0.000000)
+rotation = Vector3(0.000000, 0.000000, -0.650000)
+mesh = SubResource("r4")
+material_override = SubResource("r2")
+
+[node name="Foliage4" type="MeshInstance3D" parent="."]
+position = Vector3(-0.566312, 2.950000, -0.411450)
+scale = Vector3(1.600000, 1.700000, 1.500000)
+mesh = SubResource("r5")
+material_override = SubResource("r6")
+
+[node name="Branch5" type="Node3D" parent="."]
+rotation = Vector3(0,5.026548245743669,0)
+
+[node name="Wood" type="MeshInstance3D" parent="Branch5"]
+position = Vector3(0.350000, 1.920000, 0.000000)
+rotation = Vector3(0.000000, 0.000000, -0.650000)
+mesh = SubResource("r4")
+material_override = SubResource("r2")
+
+[node name="Foliage5" type="MeshInstance3D" parent="."]
+position = Vector3(0.216312, 2.650000, -0.665740)
+scale = Vector3(1.600000, 1.700000, 1.500000)
+mesh = SubResource("r5")
+material_override = SubResource("r7")
+
+[node name="StudyArea" type="Area3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="StudyArea"]
+position = Vector3(0.000000, 2.800000, 0.000000)
+shape = SubResource("r9")

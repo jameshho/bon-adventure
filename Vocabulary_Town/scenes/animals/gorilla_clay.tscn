@@ -1,0 +1,56 @@
+[gd_scene format=3]
+
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/gorilla/body.res" id="1_sca5n"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/gorilla/crest.res" id="2_td0yv"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/gorilla/ears.res" id="3_o14qo"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/gorilla/eyes.res" id="4_5m7xd"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/gorilla/face_details.res" id="5_kn7ak"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pbcpe"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.84
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_m4yph"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.16
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0l3ob"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.8
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_y8aey"]
+size = Vector3(1.4979686, 2.1000001, 1.8487585)
+
+[node name="GorillaClayDisplay" type="Node3D" unique_id=657575440]
+metadata/source = "User's Gorilla Character Blueprint, relax walk pose (11 Nov 2026)"
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=937187526]
+material_override = SubResource("StandardMaterial3D_pbcpe")
+mesh = ExtResource("1_sca5n")
+
+[node name="Crest" type="MeshInstance3D" parent="." unique_id=1340523531]
+material_override = SubResource("StandardMaterial3D_pbcpe")
+mesh = ExtResource("2_td0yv")
+
+[node name="Ears" type="MeshInstance3D" parent="." unique_id=1913771690]
+material_override = SubResource("StandardMaterial3D_pbcpe")
+mesh = ExtResource("3_o14qo")
+
+[node name="Eyes" type="MeshInstance3D" parent="." unique_id=1151948406]
+material_override = SubResource("StandardMaterial3D_m4yph")
+cast_shadow = 0
+mesh = ExtResource("4_5m7xd")
+
+[node name="Face details" type="MeshInstance3D" parent="." unique_id=198293894]
+material_override = SubResource("StandardMaterial3D_0l3ob")
+cast_shadow = 0
+mesh = ExtResource("5_kn7ak")
+
+[node name="Footprint" type="StaticBody3D" parent="." unique_id=1550680723]
+
+[node name="@CollisionShape3D@2" type="CollisionShape3D" parent="Footprint" unique_id=1789814759]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0500001, 0.0047402084)
+shape = SubResource("BoxShape3D_y8aey")

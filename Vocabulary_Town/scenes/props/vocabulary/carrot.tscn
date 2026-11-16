@@ -1,0 +1,83 @@
+[gd_scene format=3]
+
+[sub_resource type="CylinderMesh" id="r1"]
+top_radius = 0.18
+bottom_radius = 0.035
+height = 0.65
+radial_segments = 16
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.86275, 0.48627, 0.17647, 1)
+roughness = 0.78
+
+[sub_resource type="CylinderMesh" id="r3"]
+top_radius = 0.035
+bottom_radius = 0.035
+height = 0.35156791662493886
+radial_segments = 16
+
+[sub_resource type="StandardMaterial3D" id="r4"]
+albedo_color = Color(0.29020, 0.48235, 0.24706, 1)
+roughness = 0.78
+
+[sub_resource type="CylinderMesh" id="r5"]
+top_radius = 0.035
+bottom_radius = 0.035
+height = 0.32249030993194194
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="r6"]
+top_radius = 0.035
+bottom_radius = 0.035
+height = 0.35156791662493886
+radial_segments = 16
+
+[sub_resource type="BoxShape3D" id="r7"]
+size = Vector3(0.850000, 1.050000, 0.800000)
+
+[sub_resource type="BoxShape3D" id="r8"]
+size = Vector3(0.782000, 0.800000, 0.736000)
+
+[node name="Carrot" type="Node3D"]
+metadata/word_key = "carrot"
+metadata/learning_object = true
+
+[node name="TaperedRoot_2" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.350000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r1")
+material_override = SubResource("r2")
+
+[node name="Leaf_4" type="MeshInstance3D" parent="."]
+position = Vector3(-0.070000, 0.840000, 0.020000)
+rotation_degrees = Vector3(6.533033, 0.000000, 23.629378)
+mesh = SubResource("r3")
+material_override = SubResource("r4")
+
+[node name="Leaf_5" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.840000, 0.020000)
+rotation_degrees = Vector3(7.125016, 0.000000, -0.000000)
+mesh = SubResource("r5")
+material_override = SubResource("r4")
+
+[node name="Leaf_6" type="MeshInstance3D" parent="."]
+position = Vector3(0.070000, 0.840000, 0.020000)
+rotation_degrees = Vector3(6.533033, 0.000000, -23.629378)
+mesh = SubResource("r6")
+material_override = SubResource("r4")
+
+[node name="Interaction" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Interaction"]
+position = Vector3(0.000000, 0.525000, 0.000000)
+shape = SubResource("r7")
+
+[node name="Footprint" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Footprint"]
+position = Vector3(0.000000, 0.400000, 0.000000)
+shape = SubResource("r8")

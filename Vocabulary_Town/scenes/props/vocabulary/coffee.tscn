@@ -1,0 +1,93 @@
+[gd_scene load_steps=10 format=3]
+
+[sub_resource type="CylinderMesh" id="s1"]
+top_radius = 0.5
+bottom_radius = 0.5
+height = 1.0
+radial_segments = 18
+
+[sub_resource type="StandardMaterial3D" id="m1"]
+albedo_color = Color(0.960784314, 0.945098039, 0.905882353, 1)
+roughness = 0.82
+
+[sub_resource type="CylinderMesh" id="s2"]
+top_radius = 0.5
+bottom_radius = 0.5
+height = 1.0
+radial_segments = 18
+
+[sub_resource type="StandardMaterial3D" id="m2"]
+albedo_color = Color(0.349019608, 0.215686275, 0.152941176, 1)
+roughness = 0.82
+
+[sub_resource type="CylinderMesh" id="s3"]
+top_radius = 0.5
+bottom_radius = 0.5
+height = 1.0
+radial_segments = 18
+
+[sub_resource type="SphereMesh" id="s4"]
+radius = 0.5
+height = 1.0
+radial_segments = 14
+rings = 7
+
+[sub_resource type="SphereMesh" id="s5"]
+radius = 0.5
+height = 1.0
+radial_segments = 14
+rings = 7
+
+[sub_resource type="StandardMaterial3D" id="m3"]
+albedo_color = Color(0.97254902, 0.925490196, 0.8, 1)
+roughness = 0.82
+
+[sub_resource type="BoxShape3D" id="hit"]
+size = Vector3(1.1, 0.94, 1.1)
+
+[node name="Coffee" type="Node3D"]
+metadata/word_key = "coffee"
+metadata/learning_object = true
+
+[node name="Coffee_cup_body_00" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.31, 0)
+rotation_degrees = Vector3(0, 0, 0)
+mesh = SubResource("s1")
+material_override = SubResource("m1")
+scale = Vector3(0.49, 0.49, 0.49)
+
+[node name="Brewed_coffee_01" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.563, 0)
+rotation_degrees = Vector3(0, 0, 0)
+mesh = SubResource("s2")
+material_override = SubResource("m2")
+scale = Vector3(0.425, 0.013, 0.425)
+
+[node name="Saucer_02" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.048, 0)
+rotation_degrees = Vector3(0, 0, 0)
+mesh = SubResource("s3")
+material_override = SubResource("m1")
+scale = Vector3(0.7, 0.055, 0.7)
+
+[node name="Cup_handle_03" type="MeshInstance3D" parent="."]
+position = Vector3(0.32, 0.32, 0)
+rotation_degrees = Vector3(0, 0, 0)
+mesh = SubResource("s4")
+material_override = SubResource("m1")
+scale = Vector3(0.16, 0.2, 0.13)
+
+[node name="Coffee_aroma_04" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.74, 0)
+rotation_degrees = Vector3(0, 0, 0)
+mesh = SubResource("s5")
+material_override = SubResource("m3")
+scale = Vector3(0.14, 0.12, 0.14)
+
+[node name="Interaction" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Interaction"]
+position = Vector3(0, 0.45, 0)
+shape = SubResource("hit")

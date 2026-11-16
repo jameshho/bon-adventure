@@ -1,0 +1,71 @@
+[gd_scene format=3]
+
+[sub_resource type="BoxMesh" id="r1"]
+size = Vector3(0.230000, 0.500000, 0.140000)
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.92549, 0.90980, 0.87451, 1)
+roughness = 0.78
+
+[sub_resource type="CylinderMesh" id="r3"]
+top_radius = 0.065
+bottom_radius = 0.065
+height = 0.11
+radial_segments = 16
+
+[sub_resource type="StandardMaterial3D" id="r4"]
+albedo_color = Color(0.15686, 0.20392, 0.24314, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r5"]
+size = Vector3(0.200000, 0.200000, 0.015000)
+
+[sub_resource type="StandardMaterial3D" id="r6"]
+albedo_color = Color(0.72157, 0.29412, 0.25098, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r7"]
+size = Vector3(0.250000, 0.050000, 0.140000)
+
+[sub_resource type="StandardMaterial3D" id="r8"]
+albedo_color = Color(0.52941, 0.58039, 0.61176, 1)
+roughness = 0.78
+
+[sub_resource type="BoxShape3D" id="r9"]
+size = Vector3(0.300000, 0.700000, 0.200000)
+
+[node name="Paint_Tube" type="Node3D"]
+metadata/word_key = "paint tube"
+metadata/learning_object = true
+
+[node name="Tube_2" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.300000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r1")
+material_override = SubResource("r2")
+
+[node name="Cap_4" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.590000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r3")
+material_override = SubResource("r4")
+
+[node name="ColorBand_6" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.310000, -0.080000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r5")
+material_override = SubResource("r6")
+
+[node name="Crimp_8" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.040000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r7")
+material_override = SubResource("r8")
+
+[node name="Interaction" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Interaction"]
+position = Vector3(0.000000, 0.350000, 0.000000)
+shape = SubResource("r9")

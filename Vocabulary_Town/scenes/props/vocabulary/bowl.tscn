@@ -1,0 +1,61 @@
+[gd_scene format=3]
+
+[sub_resource type="CylinderMesh" id="r1"]
+top_radius = 0.44
+bottom_radius = 0.22
+height = 0.4
+radial_segments = 16
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.92549, 0.90980, 0.87451, 1)
+roughness = 0.78
+
+[sub_resource type="CylinderMesh" id="r3"]
+top_radius = 0.39
+bottom_radius = 0.39
+height = 0.012
+radial_segments = 16
+
+[sub_resource type="StandardMaterial3D" id="r4"]
+albedo_color = Color(0.72157, 0.78039, 0.79608, 1)
+roughness = 0.78
+
+[sub_resource type="TorusMesh" id="r5"]
+inner_radius = 0.39499999999999996
+outer_radius = 0.445
+rings = 24
+ring_segments = 8
+
+[sub_resource type="BoxShape3D" id="r6"]
+size = Vector3(0.950000, 0.460000, 0.950000)
+
+[node name="Bowl" type="Node3D"]
+metadata/word_key = "bowl"
+metadata/learning_object = true
+
+[node name="Bowl_2" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.200000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r1")
+material_override = SubResource("r2")
+
+[node name="Interior_4" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.400000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r3")
+material_override = SubResource("r4")
+
+[node name="Rim_5" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.400000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r5")
+material_override = SubResource("r2")
+scale = Vector3(1.000000, 1.000000, 1.000000)
+
+[node name="Interaction" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Interaction"]
+position = Vector3(0.000000, 0.230000, 0.000000)
+shape = SubResource("r6")

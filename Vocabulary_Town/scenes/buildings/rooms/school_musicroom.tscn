@@ -1,0 +1,139 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/piano.tscn" id="e1"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/guitar.tscn" id="e2"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/violin.tscn" id="e3"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/trumpet.tscn" id="e4"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/drum.tscn" id="e5"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/microphone.tscn" id="e6"]
+
+[sub_resource type="BoxMesh" id="r1"]
+size = Vector3(1.250000, 0.080000, 1.250000)
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.76863, 0.68627, 0.56863, 1)
+roughness = 0.78
+
+[sub_resource type="BoxShape3D" id="r3"]
+size = Vector3(1.250000, 0.080000, 1.250000)
+
+[sub_resource type="BoxMesh" id="r4"]
+size = Vector3(0.080000, 0.920000, 0.900000)
+
+[sub_resource type="StandardMaterial3D" id="r5"]
+albedo_color = Color(0.67843, 0.48235, 0.31373, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r6"]
+size = Vector3(0.080000, 0.920000, 0.900000)
+
+[sub_resource type="BoxMesh" id="r7"]
+size = Vector3(1.250000, 0.080000, 1.250000)
+
+[sub_resource type="BoxShape3D" id="r8"]
+size = Vector3(1.250000, 0.080000, 1.250000)
+
+[sub_resource type="BoxMesh" id="r9"]
+size = Vector3(0.080000, 0.920000, 0.900000)
+
+[sub_resource type="BoxMesh" id="r10"]
+size = Vector3(0.080000, 0.920000, 0.900000)
+
+[node name="MusicRoom" type="Node3D"]
+metadata/theme = "MUSIC ROOM"
+
+[node name="Piano" parent="." instance=ExtResource("e1")]
+position = Vector3(-2.600000, 0.090000, -3.550000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Guitar" parent="." instance=ExtResource("e2")]
+position = Vector3(0.000000, 0.090000, -3.550000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="Violin" parent="." instance=ExtResource("e3")]
+position = Vector3(2.600000, 0.090000, -3.550000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="DisplayToptrumpet_2" type="MeshInstance3D" parent="."]
+position = Vector3(-2.600000, 0.940000, 3.550000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r1")
+material_override = SubResource("r2")
+
+[node name="TableBodytrumpet" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="TableBodytrumpet"]
+position = Vector3(-2.600000, 0.940000, 3.550000)
+shape = SubResource("r3")
+
+[node name="DisplayLeg_5" type="MeshInstance3D" parent="."]
+position = Vector3(-3.040000, 0.460000, 3.550000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r4")
+material_override = SubResource("r5")
+
+[node name="DisplayLeg_6" type="MeshInstance3D" parent="."]
+position = Vector3(-2.160000, 0.460000, 3.550000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r6")
+material_override = SubResource("r5")
+
+[node name="Trumpet" parent="." instance=ExtResource("e4")]
+position = Vector3(-2.600000, 0.990000, 3.550000)
+rotation_degrees = Vector3(0, 0, 0)
+
+[node name="DisplayTopdrum_7" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.940000, 3.550000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r7")
+material_override = SubResource("r2")
+
+[node name="TableBodydrum" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="TableBodydrum"]
+position = Vector3(0.000000, 0.940000, 3.550000)
+shape = SubResource("r8")
+
+[node name="DisplayLeg_9" type="MeshInstance3D" parent="."]
+position = Vector3(-0.440000, 0.460000, 3.550000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r9")
+material_override = SubResource("r5")
+
+[node name="DisplayLeg_10" type="MeshInstance3D" parent="."]
+position = Vector3(0.440000, 0.460000, 3.550000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r10")
+material_override = SubResource("r5")
+
+[node name="Drum" parent="." instance=ExtResource("e5")]
+position = Vector3(0.000000, 0.990000, 3.550000)
+rotation_degrees = Vector3(0, 0, 0)
+
+[node name="Microphone" parent="." instance=ExtResource("e6")]
+position = Vector3(2.600000, 0.090000, 3.550000)
+rotation_degrees = Vector3(0, 0, 0)
+
+[node name="Section62" type="Label3D" parent="."]
+position = Vector3(0.000000, 3.100000, -4.900000)
+text = "MUSIC ROOM"
+font_size = 52
+pixel_size = 0.007
+rotation_degrees = Vector3(0, 180, 0)
+modulate = Color(0.18, 0.24, 0.27, 1)
+outline_size = 0
+
+[node name="RoomLight" type="OmniLight3D" parent="."]
+position = Vector3(0,4,0)
+omni_range = 9.0
+light_energy = 0.9
+shadow_enabled = false

@@ -1,0 +1,1062 @@
+[gd_scene load_steps=45 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/park_animals.gd" id="1_ks2l7"]
+
+[sub_resource type="StandardMaterial3D" id="MatSkin"]
+albedo_color = Color(0.470588, 0.607843, 0.364706, 1)
+roughness = 0.75
+
+[sub_resource type="StandardMaterial3D" id="MatSkinLight"]
+albedo_color = Color(0.552941, 0.67451, 0.419608, 1)
+roughness = 0.75
+
+[sub_resource type="StandardMaterial3D" id="MatSkinDark"]
+albedo_color = Color(0.321569, 0.45098, 0.294118, 1)
+roughness = 0.75
+
+[sub_resource type="StandardMaterial3D" id="MatHeadHighlight"]
+albedo_color = Color(0.607843, 0.721569, 0.47451, 1)
+roughness = 0.75
+
+[sub_resource type="StandardMaterial3D" id="MatCheek"]
+albedo_color = Color(0.564706, 0.678431, 0.439216, 1)
+roughness = 0.75
+
+[sub_resource type="StandardMaterial3D" id="MatPlastron"]
+albedo_color = Color(0.721569, 0.666667, 0.470588, 1)
+roughness = 0.75
+
+[sub_resource type="StandardMaterial3D" id="MatPlastronShade"]
+albedo_color = Color(0.54902, 0.52549, 0.392157, 1)
+roughness = 0.75
+
+[sub_resource type="StandardMaterial3D" id="MatCarapace"]
+albedo_color = Color(0.254902, 0.360784, 0.25098, 1)
+roughness = 0.83
+
+[sub_resource type="StandardMaterial3D" id="MatCarapaceLow"]
+albedo_color = Color(0.188235, 0.294118, 0.215686, 1)
+roughness = 0.75
+
+[sub_resource type="StandardMaterial3D" id="MatShellRim"]
+albedo_color = Color(0.192157, 0.270588, 0.180392, 1)
+roughness = 0.75
+
+[sub_resource type="StandardMaterial3D" id="MatRimHighlight"]
+albedo_color = Color(0.458824, 0.517647, 0.352941, 1)
+roughness = 0.75
+
+[sub_resource type="StandardMaterial3D" id="MatScuteA"]
+albedo_color = Color(0.337255, 0.443137, 0.282353, 1)
+roughness = 0.83
+
+[sub_resource type="StandardMaterial3D" id="MatScuteB"]
+albedo_color = Color(0.388235, 0.486275, 0.290196, 1)
+roughness = 0.83
+
+[sub_resource type="StandardMaterial3D" id="MatScuteC"]
+albedo_color = Color(0.423529, 0.505882, 0.329412, 1)
+roughness = 0.83
+
+[sub_resource type="StandardMaterial3D" id="MatScuteD"]
+albedo_color = Color(0.298039, 0.411765, 0.266667, 1)
+roughness = 0.83
+
+[sub_resource type="StandardMaterial3D" id="MatScuteEdge"]
+albedo_color = Color(0.164706, 0.270588, 0.203922, 1)
+roughness = 0.75
+
+[sub_resource type="StandardMaterial3D" id="MatScuteCenter"]
+albedo_color = Color(0.505882, 0.564706, 0.352941, 1)
+roughness = 0.83
+
+[sub_resource type="StandardMaterial3D" id="MatOuterA"]
+albedo_color = Color(0.341176, 0.423529, 0.266667, 1)
+roughness = 0.83
+
+[sub_resource type="StandardMaterial3D" id="MatOuterB"]
+albedo_color = Color(0.431373, 0.501961, 0.313725, 1)
+roughness = 0.83
+
+[sub_resource type="StandardMaterial3D" id="MatClaw"]
+albedo_color = Color(0.894118, 0.835294, 0.654902, 1)
+roughness = 0.66
+
+[sub_resource type="StandardMaterial3D" id="MatClawShade"]
+albedo_color = Color(0.729412, 0.666667, 0.513725, 1)
+roughness = 0.66
+
+[sub_resource type="StandardMaterial3D" id="MatEyeWhite"]
+albedo_color = Color(0.972549, 0.937255, 0.831373, 1)
+roughness = 0.25
+metallic = 0.02
+
+[sub_resource type="StandardMaterial3D" id="MatIris"]
+albedo_color = Color(0.556863, 0.407843, 0.25098, 1)
+roughness = 0.37
+
+[sub_resource type="StandardMaterial3D" id="MatPupil"]
+albedo_color = Color(0.090196, 0.14902, 0.141176, 1)
+roughness = 0.25
+metallic = 0.02
+
+[sub_resource type="StandardMaterial3D" id="MatGloss"]
+albedo_color = Color(1, 1, 1, 1)
+roughness = 0.25
+metallic = 0.02
+
+[sub_resource type="StandardMaterial3D" id="MatMouth"]
+albedo_color = Color(0.219608, 0.321569, 0.231373, 1)
+roughness = 0.75
+
+[sub_resource type="StandardMaterial3D" id="MatNostril"]
+albedo_color = Color(0.188235, 0.270588, 0.196078, 1)
+roughness = 0.75
+
+[sub_resource type="StandardMaterial3D" id="MatFreckle"]
+albedo_color = Color(0.384314, 0.513725, 0.329412, 1)
+roughness = 0.75
+
+[sub_resource type="SphereMesh" id="MeshBody"]
+radius = 1.0
+height = 2.0
+radial_segments = 32
+rings = 16
+
+[sub_resource type="SphereMesh" id="MeshHead"]
+radius = 1.0
+height = 2.0
+radial_segments = 32
+rings = 16
+
+[sub_resource type="SphereMesh" id="MeshSmallSphere"]
+radius = 1.0
+height = 2.0
+radial_segments = 16
+rings = 8
+
+[sub_resource type="SphereMesh" id="MeshEyeSphere"]
+radius = 1.0
+height = 2.0
+radial_segments = 24
+rings = 12
+
+[sub_resource type="SphereMesh" id="MeshShellDome"]
+radius = 1.0
+height = 2.0
+is_hemisphere = true
+radial_segments = 64
+rings = 20
+
+[sub_resource type="TorusMesh" id="MeshShellLining"]
+inner_radius = 0.915
+outer_radius = 1.035
+rings = 64
+ring_segments = 12
+
+[sub_resource type="TorusMesh" id="MeshRimTrim"]
+inner_radius = 0.968
+outer_radius = 0.999
+rings = 64
+ring_segments = 8
+
+[sub_resource type="CylinderMesh" id="MeshScuteBase"]
+top_radius = 1.0
+bottom_radius = 1.0
+height = 1.0
+radial_segments = 6
+rings = 1
+
+[sub_resource type="CylinderMesh" id="MeshScuteTop"]
+top_radius = 0.875
+bottom_radius = 1.0
+height = 1.0
+radial_segments = 6
+rings = 1
+
+[sub_resource type="CylinderMesh" id="MeshScuteCore"]
+top_radius = 0.94
+bottom_radius = 1.0
+height = 1.0
+radial_segments = 6
+rings = 1
+
+[sub_resource type="CapsuleMesh" id="MeshCapsule"]
+radius = 0.24
+height = 0.72
+radial_segments = 20
+rings = 10
+
+[sub_resource type="CapsuleMesh" id="MeshFineCapsule"]
+radius = 0.12
+height = 0.38
+radial_segments = 12
+rings = 8
+
+[sub_resource type="CylinderMesh" id="MeshCone"]
+top_radius = 0.0
+bottom_radius = 1.0
+height = 1.0
+radial_segments = 12
+rings = 1
+
+[sub_resource type="CylinderMesh" id="MeshLine"]
+top_radius = 1.0
+bottom_radius = 1.0
+height = 1.0
+radial_segments = 10
+rings = 1
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1lorj"]
+size = Vector3(1.2, 1.9, 2.2)
+
+[node name="Turtle" type="Node3D" unique_id=554300615]
+scale = Vector3(0.14353310, 0.14353310, 0.14353310)
+script = ExtResource("1_ks2l7")
+radius = 1.1
+metadata/word_key = "turtle"
+
+[node name="Part00" type="MeshInstance3D" parent="." unique_id=126511199]
+transform = Transform3D(0.82, 0, 0, 0, 0.36, 0, 0, 0, 1.04, 0, 0.4, -0.09)
+mesh = SubResource("MeshBody")
+material_override = SubResource("MatSkinDark")
+
+[node name="Plastron" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.77, 0, 0, 0, 0.25, 0, 0, 0, 1, 0, 0.29, -0.14)
+mesh = SubResource("MeshBody")
+material_override = SubResource("MatPlastron")
+
+[node name="PlastronCentralKeel" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.08, 0, 0, 0, 0.045, 0, 0, 0, 0.83, 0, 0.105, -0.14)
+mesh = SubResource("MeshBody")
+material_override = SubResource("MatPlastronShade")
+
+[node name="PlastronSeam01" type="MeshInstance3D" parent="."]
+transform = Transform3D(0, 0, 0.014, 1.24, 0, 0, 0, 0.014, 0, 0, 0.2, -0.67)
+mesh = SubResource("MeshLine")
+material_override = SubResource("MatPlastronShade")
+
+[node name="PlastronSeam02" type="MeshInstance3D" parent="."]
+transform = Transform3D(0, 0, 0.014, 1.24, 0, 0, 0, 0.014, 0, 0, 0.2, -0.29)
+mesh = SubResource("MeshLine")
+material_override = SubResource("MatPlastronShade")
+
+[node name="PlastronSeam03" type="MeshInstance3D" parent="."]
+transform = Transform3D(0, 0, 0.014, 1.24, 0, 0, 0, 0.014, 0, 0, 0.2, 0.09)
+mesh = SubResource("MeshLine")
+material_override = SubResource("MatPlastronShade")
+
+[node name="PlastronSeam04" type="MeshInstance3D" parent="."]
+transform = Transform3D(0, 0, 0.014, 1.24, 0, 0, 0, 0.014, 0, 0, 0.2, 0.48)
+mesh = SubResource("MeshLine")
+material_override = SubResource("MatPlastronShade")
+
+[node name="Neck" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.25, 0, 0, 0, 0.151325, 1.089542, 0, -1.238115, 0.17196, 0, 0.45, 0.8)
+mesh = SubResource("MeshCapsule")
+material_override = SubResource("MatSkin")
+
+[node name="Throat" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.335, 0, 0, 0, 0.205, 0, 0, 0, 0.43, 0, 0.365, 1.014)
+mesh = SubResource("MeshHead")
+material_override = SubResource("MatSkinLight")
+
+[node name="Part01" type="MeshInstance3D" parent="." unique_id=24111565]
+transform = Transform3D(0.44, 0, 0, 0, 0.39, 0, 0, 0, 0.48, 0, 0.58, 1.18)
+mesh = SubResource("MeshHead")
+material_override = SubResource("MatSkin")
+
+[node name="TopHeadCap" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.35, 0, 0, 0, 0.17, 0, 0, 0, 0.37, 0, 0.79, 1.18)
+mesh = SubResource("MeshHead")
+material_override = SubResource("MatHeadHighlight")
+
+[node name="LowerJaw" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.3, 0, 0, 0, 0.14, 0, 0, 0, 0.27, 0, 0.39, 1.445)
+mesh = SubResource("MeshHead")
+material_override = SubResource("MatSkinLight")
+
+[node name="Snout" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.365, 0, 0, 0, 0.205, 0, 0, 0, 0.295, 0, 0.49, 1.47)
+mesh = SubResource("MeshHead")
+material_override = SubResource("MatSkinLight")
+
+[node name="LeftCheek" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.16, 0, 0, 0, 0.15, 0, 0, 0, 0.155, -0.307, 0.475, 1.425)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatCheek")
+
+[node name="LeftTemple" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.15, 0, 0, 0, 0.19, 0, 0, 0, 0.225, -0.36, 0.755, 1.204)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatSkin")
+
+[node name="LeftEyeSocket" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.169, 0, 0, 0, 0.177, 0, 0, 0, 0.109, -0.293, 0.784, 1.466)
+mesh = SubResource("MeshEyeSphere")
+material_override = SubResource("MatSkinDark")
+
+[node name="LeftEyeball" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.139, 0, 0, 0, 0.147, 0, 0, 0, 0.102, -0.29, 0.781, 1.518)
+mesh = SubResource("MeshEyeSphere")
+material_override = SubResource("MatEyeWhite")
+
+[node name="LeftIris" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.082, 0, 0, 0, 0.096, 0, 0, 0, 0.031, -0.282, 0.777, 1.616)
+mesh = SubResource("MeshEyeSphere")
+material_override = SubResource("MatIris")
+
+[node name="Part02" type="MeshInstance3D" parent="." unique_id=977077462]
+transform = Transform3D(0.054, 0, 0, 0, 0.072, 0, 0, 0, 0.024, -0.28, 0.775, 1.64)
+mesh = SubResource("MeshEyeSphere")
+material_override = SubResource("MatPupil")
+
+[node name="LeftCatchlight" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.021, 0, 0, 0, 0.027, 0, 0, 0, 0.013, -0.302, 0.821, 1.658)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatGloss")
+cast_shadow = 0
+
+[node name="LeftBrow" type="MeshInstance3D" parent="."]
+transform = Transform3D(-0.002111, -0.0002, 0.032932, -0.201, -0.019, -0.013, 0.003106, -0.032854, 0, -0.2855, 0.9495, 1.4985)
+mesh = SubResource("MeshLine")
+material_override = SubResource("MatSkinDark")
+
+[node name="LeftNostril" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.031, 0, 0, 0, 0.022, 0, 0, 0, 0.011, -0.137, 0.589, 1.735)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatNostril")
+
+[node name="LeftCheekScale01" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.049, 0, 0, 0, 0.035, 0, 0, 0, 0.019, -0.387, 0.48, 1.512)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatSkinLight")
+
+[node name="LeftCheekScale02" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.034, 0, 0, 0, 0.027, 0, 0, 0, 0.016, -0.384, 0.535, 1.477)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatSkinLight")
+
+[node name="RightCheek" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.16, 0, 0, 0, 0.15, 0, 0, 0, 0.155, 0.307, 0.475, 1.425)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatCheek")
+
+[node name="RightTemple" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.15, 0, 0, 0, 0.19, 0, 0, 0, 0.225, 0.36, 0.755, 1.204)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatSkin")
+
+[node name="RightEyeSocket" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.169, 0, 0, 0, 0.177, 0, 0, 0, 0.109, 0.293, 0.784, 1.466)
+mesh = SubResource("MeshEyeSphere")
+material_override = SubResource("MatSkinDark")
+
+[node name="RightEyeball" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.139, 0, 0, 0, 0.147, 0, 0, 0, 0.102, 0.29, 0.781, 1.518)
+mesh = SubResource("MeshEyeSphere")
+material_override = SubResource("MatEyeWhite")
+
+[node name="RightIris" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.082, 0, 0, 0, 0.096, 0, 0, 0, 0.031, 0.282, 0.777, 1.616)
+mesh = SubResource("MeshEyeSphere")
+material_override = SubResource("MatIris")
+
+[node name="Part03" type="MeshInstance3D" parent="." unique_id=1926335705]
+transform = Transform3D(0.054, 0, 0, 0, 0.072, 0, 0, 0, 0.024, 0.28, 0.775, 1.64)
+mesh = SubResource("MeshEyeSphere")
+material_override = SubResource("MatPupil")
+
+[node name="RightCatchlight" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.021, 0, 0, 0, 0.027, 0, 0, 0, 0.013, 0.258, 0.821, 1.658)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatGloss")
+cast_shadow = 0
+
+[node name="RightBrow" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.002111, -0.0002, 0.032932, 0.201, -0.019, -0.013, 0.003106, 0.032854, 0, 0.2855, 0.9495, 1.4985)
+mesh = SubResource("MeshLine")
+material_override = SubResource("MatSkinDark")
+
+[node name="RightNostril" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.031, 0, 0, 0, 0.022, 0, 0, 0, 0.011, 0.137, 0.589, 1.735)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatNostril")
+
+[node name="RightCheekScale01" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.049, 0, 0, 0, 0.035, 0, 0, 0, 0.019, 0.387, 0.48, 1.512)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatSkinLight")
+
+[node name="RightCheekScale02" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.034, 0, 0, 0, 0.027, 0, 0, 0, 0.016, 0.384, 0.535, 1.477)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatSkinLight")
+
+[node name="SmileSegment01" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.005756, 0.006578, -0.008222, 0.05125, -0.0175, 0.021875, 0, -0.00937, -0.007496, -0.179375, 0.45225, 1.729937)
+mesh = SubResource("MeshLine")
+material_override = SubResource("MatMouth")
+
+[node name="SmileSegment02" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.004364, 0.006983, -0.008729, 0.05125, -0.0125, 0.015625, 0, -0.00937, -0.007496, -0.128125, 0.43725, 1.748687)
+mesh = SubResource("MeshLine")
+material_override = SubResource("MatMouth")
+
+[node name="SmileSegment03" type="MeshInstance3D" parent="."]
+transform = Transform3D(-0.002115, 0.000309, 0.011808, 0.05125, -0.0075, 0.009375, 0.001738, 0.011874, 0, -0.076875, 0.42725, 1.761187)
+mesh = SubResource("MeshLine")
+material_override = SubResource("MatMouth")
+
+[node name="SmileSegment04" type="MeshInstance3D" parent="."]
+transform = Transform3D(-0.000729, 0.000036, 0.011978, 0.05125, -0.0025, 0.003125, 0.000585, 0.011986, 0, -0.025625, 0.42225, 1.767437)
+mesh = SubResource("MeshLine")
+material_override = SubResource("MatMouth")
+
+[node name="SmileSegment05" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.000729, 0.000036, 0.011978, 0.05125, 0.0025, -0.003125, -0.000585, 0.011986, 0, 0.025625, 0.42225, 1.767437)
+mesh = SubResource("MeshLine")
+material_override = SubResource("MatMouth")
+
+[node name="SmileSegment06" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.002115, 0.000309, 0.011808, 0.05125, 0.0075, -0.009375, -0.001738, 0.011874, 0, 0.076875, 0.42725, 1.761187)
+mesh = SubResource("MeshLine")
+material_override = SubResource("MatMouth")
+
+[node name="SmileSegment07" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.004364, -0.006983, 0.008729, 0.05125, 0.0125, -0.015625, 0, 0.00937, 0.007496, 0.128125, 0.43725, 1.748687)
+mesh = SubResource("MeshLine")
+material_override = SubResource("MatMouth")
+
+[node name="SmileSegment08" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.005756, -0.006578, 0.008222, 0.05125, 0.0175, -0.021875, 0, 0.00937, 0.007496, 0.179375, 0.45225, 1.729937)
+mesh = SubResource("MeshLine")
+material_override = SubResource("MatMouth")
+
+[node name="Part04" type="MeshInstance3D" parent="." unique_id=613567184]
+transform = Transform3D(0.997, 0, 0, 0, 0.695, 0, 0, 0, 1.145, 0, 0.665, -0.145)
+mesh = SubResource("MeshShellDome")
+material_override = SubResource("MatCarapace")
+
+[node name="OuterShellLip" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.995, 0, 0, 0, 1, 0, 0, 0, 1.143, 0, 0.673, -0.145)
+mesh = SubResource("MeshShellLining")
+material_override = SubResource("MatShellRim")
+
+[node name="OuterShellLipHighlight" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.995, 0, 0, 0, 1, 0, 0, 0, 1.141, 0, 0.716, -0.145)
+mesh = SubResource("MeshRimTrim")
+material_override = SubResource("MatRimHighlight")
+
+[node name="CarapaceScutes" type="Node3D" parent="."]
+
+[node name="VertebralScute01_DarkSuture" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0.214709, 0.064947, 0.105587, 0, 0.01448, -0.008907, -0.114995, 0.104354, 0.169652, 0, 1.191492, -0.983577)
+mesh = SubResource("MeshScuteBase")
+material_override = SubResource("MatScuteEdge")
+
+[node name="VertebralScute01_BeveledScute" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0.203516, 0.061561, 0.100082, 0, 0.041736, -0.025672, -0.109, 0.098914, 0.160807, 0, 1.213638, -0.997199)
+mesh = SubResource("MeshScuteTop")
+material_override = SubResource("MatScuteB")
+
+[node name="VertebralScute01_GrowthCenter" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0.120074, 0.036321, 0.059048, 0, 0.006814, -0.004191, -0.06431, 0.058359, 0.094876, 0, 1.238339, -1.012393)
+mesh = SubResource("MeshScuteCore")
+material_override = SubResource("MatScuteCenter")
+
+[node name="VertebralScute02_DarkSuture" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0.252169, 0.032571, 0.1419, 0, 0.016569, -0.003803, -0.12871, 0.049874, 0.217282, 0, 1.358931, -0.560067)
+mesh = SubResource("MeshScuteBase")
+material_override = SubResource("MatScuteEdge")
+
+[node name="VertebralScute02_BeveledScute" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0.239023, 0.030873, 0.134502, 0, 0.047758, -0.010962, -0.122, 0.047274, 0.205954, 0, 1.384272, -0.565884)
+mesh = SubResource("MeshScuteTop")
+material_override = SubResource("MatScuteA")
+
+[node name="VertebralScute02_GrowthCenter" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0.141024, 0.018215, 0.079356, 0, 0.007797, -0.00179, -0.07198, 0.027892, 0.121513, 0, 1.412537, -0.572372)
+mesh = SubResource("MeshScuteCore")
+material_override = SubResource("MatScuteCenter")
+
+[node name="VertebralScute03_DarkSuture" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0.269529, 0, 0.155612, 0, 0.017, 0, -0.13715, 0, 0.237551, 0, 1.405, -0.145)
+mesh = SubResource("MeshScuteBase")
+material_override = SubResource("MatScuteEdge")
+
+[node name="VertebralScute03_BeveledScute" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0.255477, 0, 0.1475, 0, 0.049, 0, -0.13, 0, 0.225167, 0, 1.431, -0.145)
+mesh = SubResource("MeshScuteTop")
+material_override = SubResource("MatScuteC")
+
+[node name="VertebralScute03_GrowthCenter" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0.150732, 0, 0.087025, 0, 0.008, 0, -0.0767, 0, 0.132848, 0, 1.46, -0.145)
+mesh = SubResource("MeshScuteCore")
+material_override = SubResource("MatScuteCenter")
+
+[node name="VertebralScute04_DarkSuture" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0.251256, -0.032453, 0.141386, 0, 0.016569, 0.003803, -0.12871, -0.049874, 0.217282, 0, 1.358931, 0.270067)
+mesh = SubResource("MeshScuteBase")
+material_override = SubResource("MatScuteEdge")
+
+[node name="VertebralScute04_BeveledScute" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0.238157, -0.030761, 0.134015, 0, 0.047758, 0.010962, -0.122, -0.047274, 0.205954, 0, 1.384272, 0.275884)
+mesh = SubResource("MeshScuteTop")
+material_override = SubResource("MatScuteA")
+
+[node name="VertebralScute04_GrowthCenter" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0.140513, -0.018149, 0.079069, 0, 0.007797, 0.00179, -0.07198, -0.027892, 0.121513, 0, 1.412537, 0.282372)
+mesh = SubResource("MeshScuteCore")
+material_override = SubResource("MatScuteCenter")
+
+[node name="VertebralScute05_DarkSuture" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0.221105, -0.066882, 0.108732, 0, 0.01448, 0.008907, -0.113412, -0.102918, 0.167317, 0, 1.191492, 0.693577)
+mesh = SubResource("MeshScuteBase")
+material_override = SubResource("MatScuteEdge")
+
+[node name="VertebralScute05_BeveledScute" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0.209578, -0.063395, 0.103063, 0, 0.041736, 0.025672, -0.1075, -0.097553, 0.158594, 0, 1.213638, 0.707199)
+mesh = SubResource("MeshScuteTop")
+material_override = SubResource("MatScuteB")
+
+[node name="VertebralScute05_GrowthCenter" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0.123651, -0.037403, 0.060807, 0, 0.006814, 0.004191, -0.063425, -0.057556, 0.093571, 0, 1.238339, 0.722393)
+mesh = SubResource("MeshScuteCore")
+material_override = SubResource("MatScuteCenter")
+
+[node name="LeftCostalScute01_DarkSuture" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0.219035, 0.149722, 0.084737, -0.007119, 0.014043, -0.006411, -0.117359, 0.04372, 0.226108, -0.519845, 1.182403, -0.756969)
+mesh = SubResource("MeshScuteBase")
+material_override = SubResource("MatScuteEdge")
+
+[node name="LeftCostalScute01_BeveledScute" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0.207616, 0.141917, 0.08032, -0.020521, 0.040478, -0.018478, -0.11124, 0.04144, 0.21432, -0.530734, 1.203881, -0.766774)
+mesh = SubResource("MeshScuteTop")
+material_override = SubResource("MatScuteD")
+
+[node name="LeftCostalScute01_GrowthCenter" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0.122493, 0.083731, 0.047389, -0.00335, 0.006609, -0.003017, -0.065632, 0.02445, 0.126449, -0.542879, 1.227838, -0.77771)
+mesh = SubResource("MeshScuteCore")
+material_override = SubResource("MatScuteCenter")
+
+[node name="LeftCostalScute02_DarkSuture" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0.22487, 0.108085, 0.12847, -0.006448, 0.01562, -0.001854, -0.123972, -0.023113, 0.236442, -0.51807, 1.296053, -0.339908)
+mesh = SubResource("MeshScuteBase")
+material_override = SubResource("MatScuteEdge")
+
+[node name="LeftCostalScute02_BeveledScute" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0.213147, 0.10245, 0.121772, -0.018587, 0.045022, -0.005344, -0.117509, -0.021908, 0.224116, -0.527932, 1.319943, -0.342744)
+mesh = SubResource("MeshScuteTop")
+material_override = SubResource("MatScuteB")
+
+[node name="LeftCostalScute02_GrowthCenter" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0.125756, 0.060446, 0.071846, -0.003035, 0.007351, -0.000873, -0.06933, -0.012926, 0.132228, -0.538932, 1.346588, -0.345907)
+mesh = SubResource("MeshScuteCore")
+material_override = SubResource("MatScuteCenter")
+
+[node name="LeftCostalScute03_DarkSuture" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0.223793, 0.070395, 0.152064, -0.006488, 0.015536, 0.002356, -0.123356, -0.085023, 0.220903, -0.518174, 1.289075, 0.101238)
+mesh = SubResource("MeshScuteBase")
+material_override = SubResource("MatScuteEdge")
+
+[node name="LeftCostalScute03_BeveledScute" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0.212126, 0.066725, 0.144137, -0.018701, 0.044779, 0.006792, -0.116925, -0.080591, 0.209386, -0.528097, 1.312835, 0.104842)
+mesh = SubResource("MeshScuteTop")
+material_override = SubResource("MatScuteA")
+
+[node name="LeftCostalScute03_GrowthCenter" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0.125154, 0.039368, 0.085041, -0.003053, 0.007311, 0.001109, -0.068986, -0.047549, 0.123538, -0.539165, 1.339337, 0.108862)
+mesh = SubResource("MeshScuteCore")
+material_override = SubResource("MatScuteCenter")
+
+[node name="LeftCostalScute04_DarkSuture" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0.20374, 0.024029, 0.160677, -0.007311, 0.013529, 0.007247, -0.11382, -0.150896, 0.166891, -0.520352, 1.151354, 0.529182)
+mesh = SubResource("MeshScuteBase")
+material_override = SubResource("MatScuteEdge")
+
+[node name="LeftCostalScute04_BeveledScute" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0.193119, 0.022777, 0.1523, -0.021072, 0.038996, 0.020887, -0.107886, -0.143029, 0.158191, -0.531533, 1.172046, 0.540266)
+mesh = SubResource("MeshScuteTop")
+material_override = SubResource("MatScuteC")
+
+[node name="LeftCostalScute04_GrowthCenter" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0.11394, 0.013438, 0.089857, -0.00344, 0.006367, 0.00341, -0.063653, -0.084387, 0.093333, -0.544004, 1.195125, 0.552627)
+mesh = SubResource("MeshScuteCore")
+material_override = SubResource("MatScuteCenter")
+
+[node name="RightCostalScute01_DarkSuture" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0.219035, -0.034062, 0.168632, 0.007119, 0.014043, -0.006411, -0.117359, 0.142191, 0.181157, 0.519845, 1.182403, -0.756969)
+mesh = SubResource("MeshScuteBase")
+material_override = SubResource("MatScuteEdge")
+
+[node name="RightCostalScute01_BeveledScute" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0.207616, -0.032287, 0.159841, 0.020521, 0.040478, -0.018478, -0.11124, 0.134778, 0.171713, 0.530734, 1.203881, -0.766774)
+mesh = SubResource("MeshScuteTop")
+material_override = SubResource("MatScuteD")
+
+[node name="RightCostalScute01_GrowthCenter" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0.122493, -0.019049, 0.094306, 0.00335, 0.006609, -0.003017, -0.065632, 0.079519, 0.101311, 0.542879, 1.227838, -0.77771)
+mesh = SubResource("MeshScuteCore")
+material_override = SubResource("MatScuteCenter")
+
+[node name="RightCostalScute02_DarkSuture" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0.22487, -0.075005, 0.150204, 0.006448, 0.01562, -0.001854, -0.123972, 0.077825, 0.22446, 0.51807, 1.296053, -0.339908)
+mesh = SubResource("MeshScuteBase")
+material_override = SubResource("MatScuteEdge")
+
+[node name="RightCostalScute02_BeveledScute" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0.213147, -0.071095, 0.142373, 0.018587, 0.045022, -0.005344, -0.117509, 0.073768, 0.212758, 0.527932, 1.319943, -0.342744)
+mesh = SubResource("MeshScuteTop")
+material_override = SubResource("MatScuteB")
+
+[node name="RightCostalScute02_GrowthCenter" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0.125756, -0.041946, 0.084, 0.003035, 0.007351, -0.000873, -0.06933, 0.043523, 0.125527, 0.538932, 1.346588, -0.345907)
+mesh = SubResource("MeshScuteCore")
+material_override = SubResource("MatScuteCenter")
+
+[node name="RightCostalScute03_DarkSuture" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0.223793, -0.112323, 0.124349, 0.006488, 0.015536, 0.002356, -0.123356, 0.015692, 0.236179, 0.518174, 1.289075, 0.101238)
+mesh = SubResource("MeshScuteBase")
+material_override = SubResource("MatScuteEdge")
+
+[node name="RightCostalScute03_BeveledScute" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0.212126, -0.106467, 0.117866, 0.018701, 0.044779, 0.006792, -0.116925, 0.014874, 0.223867, 0.528097, 1.312835, 0.104842)
+mesh = SubResource("MeshScuteTop")
+material_override = SubResource("MatScuteA")
+
+[node name="RightCostalScute03_GrowthCenter" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0.125154, -0.062815, 0.069541, 0.003053, 0.007311, 0.001109, -0.068986, 0.008776, 0.132081, 0.539165, 1.339337, 0.108862)
+mesh = SubResource("MeshScuteCore")
+material_override = SubResource("MatScuteCenter")
+
+[node name="RightCostalScute04_DarkSuture" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0.20374, -0.147068, 0.069032, 0.007311, 0.013529, 0.007247, -0.11382, -0.055312, 0.218089, 0.520352, 1.151354, 0.529182)
+mesh = SubResource("MeshScuteBase")
+material_override = SubResource("MatScuteEdge")
+
+[node name="RightCostalScute04_BeveledScute" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0.193119, -0.139401, 0.065433, 0.021072, 0.038996, 0.020887, -0.107886, -0.052428, 0.206719, 0.531533, 1.172046, 0.540266)
+mesh = SubResource("MeshScuteTop")
+material_override = SubResource("MatScuteC")
+
+[node name="RightCostalScute04_GrowthCenter" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0.11394, -0.082247, 0.038605, 0.00344, 0.006367, 0.00341, -0.063653, -0.030933, 0.121964, 0.544004, 1.195125, 0.552627)
+mesh = SubResource("MeshScuteCore")
+material_override = SubResource("MatScuteCenter")
+
+[node name="MarginalScute01_BeveledScute" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0.101091, -0.116175, 0, 0.024895, 0.021662, 0, 0, 0, 0.153, 0.888645, 1.056955, -0.145)
+mesh = SubResource("MeshScuteTop")
+material_override = SubResource("MatOuterA")
+
+[node name="MarginalScute02_BeveledScute" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0.101303, -0.115116, 0.014215, 0.023833, 0.021806, 0.006743, -0.032702, -0.010365, 0.149105, 0.84538, 1.057164, 0.167328)
+mesh = SubResource("MeshScuteTop")
+material_override = SubResource("MatOuterB")
+
+[node name="MarginalScute03_BeveledScute" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0.097222, -0.113048, 0.038523, 0.020637, 0.022196, 0.013055, -0.070177, -0.014279, 0.135205, 0.719651, 1.057732, 0.449417)
+mesh = SubResource("MeshScuteTop")
+material_override = SubResource("MatOuterA")
+
+[node name="MarginalScute04_BeveledScute" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0.080145, -0.111096, 0.070359, 0.01534, 0.022709, 0.018384, -0.109594, -0.011865, 0.106101, 0.523361, 1.058478, 0.673748)
+mesh = SubResource("MeshScuteTop")
+material_override = SubResource("MatOuterB")
+
+[node name="MarginalScute05_BeveledScute" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0.046088, -0.109559, 0.097922, 0.008222, 0.023151, 0.022033, -0.140923, -0.006333, 0.059241, 0.275375, 1.059121, 0.818108)
+mesh = SubResource("MeshScuteTop")
+material_override = SubResource("MatOuterA")
+
+[node name="MarginalScute06_BeveledScute" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0, -0.108931, 0.108858, 0, 0.023327, 0.023342, -0.153, 0, 0, 0, 1.059376, 0.867927)
+mesh = SubResource("MeshScuteTop")
+material_override = SubResource("MatOuterB")
+
+[node name="MarginalScute07_BeveledScute" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(-0.046088, -0.109559, 0.097922, -0.008222, 0.023151, 0.022033, -0.140923, 0.006333, -0.059241, -0.275375, 1.059121, 0.818108)
+mesh = SubResource("MeshScuteTop")
+material_override = SubResource("MatOuterA")
+
+[node name="MarginalScute08_BeveledScute" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(-0.080145, -0.111096, 0.070359, -0.01534, 0.022709, 0.018384, -0.109594, 0.011865, -0.106101, -0.523361, 1.058478, 0.673748)
+mesh = SubResource("MeshScuteTop")
+material_override = SubResource("MatOuterB")
+
+[node name="MarginalScute09_BeveledScute" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(-0.097222, -0.113048, 0.038523, -0.020637, 0.022196, 0.013055, -0.070177, 0.014279, -0.135205, -0.719651, 1.057732, 0.449417)
+mesh = SubResource("MeshScuteTop")
+material_override = SubResource("MatOuterA")
+
+[node name="MarginalScute10_BeveledScute" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(-0.101303, -0.115116, 0.014215, -0.023833, 0.021806, 0.006743, -0.032702, 0.010365, -0.149105, -0.84538, 1.057164, 0.167328)
+mesh = SubResource("MeshScuteTop")
+material_override = SubResource("MatOuterB")
+
+[node name="MarginalScute11_BeveledScute" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(-0.101091, -0.116175, 0, -0.024895, 0.021662, 0, 0, 0, -0.153, -0.888645, 1.056955, -0.145)
+mesh = SubResource("MeshScuteTop")
+material_override = SubResource("MatOuterA")
+
+[node name="MarginalScute12_BeveledScute" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(-0.101303, -0.115116, -0.014215, -0.023833, 0.021806, -0.006743, 0.032702, -0.010365, -0.149105, -0.84538, 1.057164, -0.457328)
+mesh = SubResource("MeshScuteTop")
+material_override = SubResource("MatOuterB")
+
+[node name="MarginalScute13_BeveledScute" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(-0.097222, -0.113048, -0.038523, -0.020637, 0.022196, -0.013055, 0.070177, -0.014279, -0.135205, -0.719651, 1.057732, -0.739417)
+mesh = SubResource("MeshScuteTop")
+material_override = SubResource("MatOuterA")
+
+[node name="MarginalScute14_BeveledScute" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(-0.080145, -0.111096, -0.070359, -0.01534, 0.022709, -0.018384, 0.109594, -0.011865, -0.106101, -0.523361, 1.058478, -0.963748)
+mesh = SubResource("MeshScuteTop")
+material_override = SubResource("MatOuterB")
+
+[node name="MarginalScute15_BeveledScute" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(-0.046088, -0.109559, -0.097922, -0.008222, 0.023151, -0.022033, 0.140923, -0.006333, -0.059241, -0.275375, 1.059121, -1.108108)
+mesh = SubResource("MeshScuteTop")
+material_override = SubResource("MatOuterA")
+
+[node name="MarginalScute16_BeveledScute" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0, -0.108931, -0.108858, 0, 0.023327, -0.023342, 0.153, 0, 0, 0, 1.059376, -1.157927)
+mesh = SubResource("MeshScuteTop")
+material_override = SubResource("MatOuterB")
+
+[node name="MarginalScute17_BeveledScute" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0.046088, -0.109559, -0.097922, 0.008222, 0.023151, -0.022033, 0.140923, 0.006333, 0.059241, 0.275375, 1.059121, -1.108108)
+mesh = SubResource("MeshScuteTop")
+material_override = SubResource("MatOuterA")
+
+[node name="MarginalScute18_BeveledScute" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0.080145, -0.111096, -0.070359, 0.01534, 0.022709, -0.018384, 0.109594, 0.011865, 0.106101, 0.523361, 1.058478, -0.963748)
+mesh = SubResource("MeshScuteTop")
+material_override = SubResource("MatOuterB")
+
+[node name="MarginalScute19_BeveledScute" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0.097222, -0.113048, -0.038523, 0.020637, 0.022196, -0.013055, 0.070177, 0.014279, 0.135205, 0.719651, 1.057732, -0.739417)
+mesh = SubResource("MeshScuteTop")
+material_override = SubResource("MatOuterA")
+
+[node name="MarginalScute20_BeveledScute" type="MeshInstance3D" parent="CarapaceScutes"]
+transform = Transform3D(0.101303, -0.115116, -0.014215, 0.023833, 0.021806, -0.006743, 0.032702, 0.010365, 0.149105, 0.84538, 1.057164, -0.457328)
+mesh = SubResource("MeshScuteTop")
+material_override = SubResource("MatOuterB")
+
+[node name="Tail" type="Node3D" parent="."]
+
+[node name="TailRoot" type="MeshInstance3D" parent="Tail"]
+transform = Transform3D(0.19, 0, 0, 0, 0.16, 0, 0, 0, 0.23, 0, 0.311, -1.14)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatSkinDark")
+
+[node name="TaperedTail" type="MeshInstance3D" parent="Tail"]
+transform = Transform3D(0.145, 0, 0, 0, -0.036816, -0.368164, 0, 0.14428, -0.014428, 0, 0.3, -1.355)
+mesh = SubResource("MeshCone")
+material_override = SubResource("MatSkin")
+
+[node name="FrontLeftLeg" type="Node3D" parent="."]
+
+[node name="UpperLeg" type="MeshInstance3D" parent="FrontLeftLeg"]
+transform = Transform3D(0.78417, -0.571379, 0.426854, 0.536111, 0.472222, -0.352778, 0, 0.6344, 0.849197, -0.867, 0.35, 0.789)
+mesh = SubResource("MeshCapsule")
+material_override = SubResource("MatSkin")
+
+[node name="Knee" type="MeshInstance3D" parent="FrontLeftLeg"]
+transform = Transform3D(0.195, 0, 0, 0, 0.18, 0, 0, 0, 0.2, -0.91, 0.33, 0.742)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatSkinLight")
+
+[node name="BroadFoot" type="MeshInstance3D" parent="FrontLeftLeg"]
+transform = Transform3D(0.263, 0, 0, 0, 0.145, 0, 0, 0, 0.296, -1.065, 0.141, 0.916)
+mesh = SubResource("MeshBody")
+material_override = SubResource("MatSkin")
+
+[node name="FootTop" type="MeshInstance3D" parent="FrontLeftLeg"]
+transform = Transform3D(0.198, 0, 0, 0, 0.058, 0, 0, 0, 0.215, -1.078, 0.235, 0.945)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatSkinLight")
+
+[node name="Toe01" type="MeshInstance3D" parent="FrontLeftLeg"]
+transform = Transform3D(0.096, 0, 0, 0, 0.101, 0, 0, 0, 0.172, -1.231, 0.108, 1.12)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatSkinLight")
+
+[node name="Knuckle01" type="MeshInstance3D" parent="FrontLeftLeg"]
+transform = Transform3D(0.071, 0, 0, 0, 0.043, 0, 0, 0, 0.095, -1.231, 0.189, 1.04)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatSkin")
+
+[node name="Claw01" type="MeshInstance3D" parent="FrontLeftLeg"]
+transform = Transform3D(0.059, 0, 0, 0, -0.030808, 0.192551, 0, -0.058259, -0.009321, -1.231, 0.095, 1.27)
+mesh = SubResource("MeshCone")
+material_override = SubResource("MatClaw")
+
+[node name="Toe02" type="MeshInstance3D" parent="FrontLeftLeg"]
+transform = Transform3D(0.096, 0, 0, 0, 0.101, 0, 0, 0, 0.172, -1.065, 0.108, 1.12)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatSkinLight")
+
+[node name="Knuckle02" type="MeshInstance3D" parent="FrontLeftLeg"]
+transform = Transform3D(0.071, 0, 0, 0, 0.043, 0, 0, 0, 0.095, -1.065, 0.189, 1.04)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatSkin")
+
+[node name="Claw02" type="MeshInstance3D" parent="FrontLeftLeg"]
+transform = Transform3D(0.059, 0, 0, 0, -0.030808, 0.192551, 0, -0.058259, -0.009321, -1.065, 0.095, 1.27)
+mesh = SubResource("MeshCone")
+material_override = SubResource("MatClaw")
+
+[node name="Toe03" type="MeshInstance3D" parent="FrontLeftLeg"]
+transform = Transform3D(0.096, 0, 0, 0, 0.101, 0, 0, 0, 0.172, -0.899, 0.108, 1.12)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatSkinLight")
+
+[node name="Knuckle03" type="MeshInstance3D" parent="FrontLeftLeg"]
+transform = Transform3D(0.071, 0, 0, 0, 0.043, 0, 0, 0, 0.095, -0.899, 0.189, 1.04)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatSkin")
+
+[node name="Claw03" type="MeshInstance3D" parent="FrontLeftLeg"]
+transform = Transform3D(0.059, 0, 0, 0, -0.030808, 0.192551, 0, -0.058259, -0.009321, -0.899, 0.095, 1.27)
+mesh = SubResource("MeshCone")
+material_override = SubResource("MatClaw")
+
+[node name="RearLeftLeg" type="Node3D" parent="."]
+
+[node name="UpperLeg" type="MeshInstance3D" parent="RearLeftLeg"]
+transform = Transform3D(0.731912, -0.707523, -0.295495, 0.536111, 0.472222, 0.197222, 0, -0.408509, 0.978121, -0.867, 0.35, -0.836)
+mesh = SubResource("MeshCapsule")
+material_override = SubResource("MatSkin")
+
+[node name="Knee" type="MeshInstance3D" parent="RearLeftLeg"]
+transform = Transform3D(0.195, 0, 0, 0, 0.18, 0, 0, 0, 0.2, -0.91, 0.33, -0.845)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatSkinLight")
+
+[node name="BroadFoot" type="MeshInstance3D" parent="RearLeftLeg"]
+transform = Transform3D(0.263, 0, 0, 0, 0.145, 0, 0, 0, 0.296, -1.065, 0.141, -0.907)
+mesh = SubResource("MeshBody")
+material_override = SubResource("MatSkin")
+
+[node name="FootTop" type="MeshInstance3D" parent="RearLeftLeg"]
+transform = Transform3D(0.198, 0, 0, 0, 0.058, 0, 0, 0, 0.215, -1.078, 0.235, -0.936)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatSkinLight")
+
+[node name="Toe01" type="MeshInstance3D" parent="RearLeftLeg"]
+transform = Transform3D(0.096, 0, 0, 0, 0.101, 0, 0, 0, 0.172, -1.231, 0.108, -1.111)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatSkinLight")
+
+[node name="Knuckle01" type="MeshInstance3D" parent="RearLeftLeg"]
+transform = Transform3D(0.071, 0, 0, 0, 0.043, 0, 0, 0, 0.095, -1.231, 0.189, -1.031)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatSkin")
+
+[node name="Claw01" type="MeshInstance3D" parent="RearLeftLeg"]
+transform = Transform3D(0.059, 0, 0, 0, -0.030808, -0.192551, 0, 0.058259, -0.009321, -1.231, 0.095, -1.261)
+mesh = SubResource("MeshCone")
+material_override = SubResource("MatClaw")
+
+[node name="Toe02" type="MeshInstance3D" parent="RearLeftLeg"]
+transform = Transform3D(0.096, 0, 0, 0, 0.101, 0, 0, 0, 0.172, -1.065, 0.108, -1.111)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatSkinLight")
+
+[node name="Knuckle02" type="MeshInstance3D" parent="RearLeftLeg"]
+transform = Transform3D(0.071, 0, 0, 0, 0.043, 0, 0, 0, 0.095, -1.065, 0.189, -1.031)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatSkin")
+
+[node name="Claw02" type="MeshInstance3D" parent="RearLeftLeg"]
+transform = Transform3D(0.059, 0, 0, 0, -0.030808, -0.192551, 0, 0.058259, -0.009321, -1.065, 0.095, -1.261)
+mesh = SubResource("MeshCone")
+material_override = SubResource("MatClaw")
+
+[node name="Toe03" type="MeshInstance3D" parent="RearLeftLeg"]
+transform = Transform3D(0.096, 0, 0, 0, 0.101, 0, 0, 0, 0.172, -0.899, 0.108, -1.111)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatSkinLight")
+
+[node name="Knuckle03" type="MeshInstance3D" parent="RearLeftLeg"]
+transform = Transform3D(0.071, 0, 0, 0, 0.043, 0, 0, 0, 0.095, -0.899, 0.189, -1.031)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatSkin")
+
+[node name="Claw03" type="MeshInstance3D" parent="RearLeftLeg"]
+transform = Transform3D(0.059, 0, 0, 0, -0.030808, -0.192551, 0, 0.058259, -0.009321, -0.899, 0.095, -1.261)
+mesh = SubResource("MeshCone")
+material_override = SubResource("MatClaw")
+
+[node name="FrontRightLeg" type="Node3D" parent="."]
+
+[node name="UpperLeg" type="MeshInstance3D" parent="FrontRightLeg"]
+transform = Transform3D(0.78417, 0.571379, -0.426854, -0.536111, 0.472222, -0.352778, 0, 0.6344, 0.849197, 0.867, 0.35, 0.789)
+mesh = SubResource("MeshCapsule")
+material_override = SubResource("MatSkin")
+
+[node name="Knee" type="MeshInstance3D" parent="FrontRightLeg"]
+transform = Transform3D(0.195, 0, 0, 0, 0.18, 0, 0, 0, 0.2, 0.91, 0.33, 0.742)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatSkinLight")
+
+[node name="BroadFoot" type="MeshInstance3D" parent="FrontRightLeg"]
+transform = Transform3D(0.263, 0, 0, 0, 0.145, 0, 0, 0, 0.296, 1.065, 0.141, 0.916)
+mesh = SubResource("MeshBody")
+material_override = SubResource("MatSkin")
+
+[node name="FootTop" type="MeshInstance3D" parent="FrontRightLeg"]
+transform = Transform3D(0.198, 0, 0, 0, 0.058, 0, 0, 0, 0.215, 1.078, 0.235, 0.945)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatSkinLight")
+
+[node name="Toe01" type="MeshInstance3D" parent="FrontRightLeg"]
+transform = Transform3D(0.096, 0, 0, 0, 0.101, 0, 0, 0, 0.172, 0.899, 0.108, 1.12)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatSkinLight")
+
+[node name="Knuckle01" type="MeshInstance3D" parent="FrontRightLeg"]
+transform = Transform3D(0.071, 0, 0, 0, 0.043, 0, 0, 0, 0.095, 0.899, 0.189, 1.04)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatSkin")
+
+[node name="Claw01" type="MeshInstance3D" parent="FrontRightLeg"]
+transform = Transform3D(0.059, 0, 0, 0, -0.030808, 0.192551, 0, -0.058259, -0.009321, 0.899, 0.095, 1.27)
+mesh = SubResource("MeshCone")
+material_override = SubResource("MatClaw")
+
+[node name="Toe02" type="MeshInstance3D" parent="FrontRightLeg"]
+transform = Transform3D(0.096, 0, 0, 0, 0.101, 0, 0, 0, 0.172, 1.065, 0.108, 1.12)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatSkinLight")
+
+[node name="Knuckle02" type="MeshInstance3D" parent="FrontRightLeg"]
+transform = Transform3D(0.071, 0, 0, 0, 0.043, 0, 0, 0, 0.095, 1.065, 0.189, 1.04)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatSkin")
+
+[node name="Claw02" type="MeshInstance3D" parent="FrontRightLeg"]
+transform = Transform3D(0.059, 0, 0, 0, -0.030808, 0.192551, 0, -0.058259, -0.009321, 1.065, 0.095, 1.27)
+mesh = SubResource("MeshCone")
+material_override = SubResource("MatClaw")
+
+[node name="Toe03" type="MeshInstance3D" parent="FrontRightLeg"]
+transform = Transform3D(0.096, 0, 0, 0, 0.101, 0, 0, 0, 0.172, 1.231, 0.108, 1.12)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatSkinLight")
+
+[node name="Knuckle03" type="MeshInstance3D" parent="FrontRightLeg"]
+transform = Transform3D(0.071, 0, 0, 0, 0.043, 0, 0, 0, 0.095, 1.231, 0.189, 1.04)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatSkin")
+
+[node name="Claw03" type="MeshInstance3D" parent="FrontRightLeg"]
+transform = Transform3D(0.059, 0, 0, 0, -0.030808, 0.192551, 0, -0.058259, -0.009321, 1.231, 0.095, 1.27)
+mesh = SubResource("MeshCone")
+material_override = SubResource("MatClaw")
+
+[node name="RearRightLeg" type="Node3D" parent="."]
+
+[node name="UpperLeg" type="MeshInstance3D" parent="RearRightLeg"]
+transform = Transform3D(0.731912, 0.707523, 0.295495, -0.536111, 0.472222, 0.197222, 0, -0.408509, 0.978121, 0.867, 0.35, -0.836)
+mesh = SubResource("MeshCapsule")
+material_override = SubResource("MatSkin")
+
+[node name="Knee" type="MeshInstance3D" parent="RearRightLeg"]
+transform = Transform3D(0.195, 0, 0, 0, 0.18, 0, 0, 0, 0.2, 0.91, 0.33, -0.845)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatSkinLight")
+
+[node name="BroadFoot" type="MeshInstance3D" parent="RearRightLeg"]
+transform = Transform3D(0.263, 0, 0, 0, 0.145, 0, 0, 0, 0.296, 1.065, 0.141, -0.907)
+mesh = SubResource("MeshBody")
+material_override = SubResource("MatSkin")
+
+[node name="FootTop" type="MeshInstance3D" parent="RearRightLeg"]
+transform = Transform3D(0.198, 0, 0, 0, 0.058, 0, 0, 0, 0.215, 1.078, 0.235, -0.936)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatSkinLight")
+
+[node name="Toe01" type="MeshInstance3D" parent="RearRightLeg"]
+transform = Transform3D(0.096, 0, 0, 0, 0.101, 0, 0, 0, 0.172, 0.899, 0.108, -1.111)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatSkinLight")
+
+[node name="Knuckle01" type="MeshInstance3D" parent="RearRightLeg"]
+transform = Transform3D(0.071, 0, 0, 0, 0.043, 0, 0, 0, 0.095, 0.899, 0.189, -1.031)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatSkin")
+
+[node name="Claw01" type="MeshInstance3D" parent="RearRightLeg"]
+transform = Transform3D(0.059, 0, 0, 0, -0.030808, -0.192551, 0, 0.058259, -0.009321, 0.899, 0.095, -1.261)
+mesh = SubResource("MeshCone")
+material_override = SubResource("MatClaw")
+
+[node name="Toe02" type="MeshInstance3D" parent="RearRightLeg"]
+transform = Transform3D(0.096, 0, 0, 0, 0.101, 0, 0, 0, 0.172, 1.065, 0.108, -1.111)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatSkinLight")
+
+[node name="Knuckle02" type="MeshInstance3D" parent="RearRightLeg"]
+transform = Transform3D(0.071, 0, 0, 0, 0.043, 0, 0, 0, 0.095, 1.065, 0.189, -1.031)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatSkin")
+
+[node name="Claw02" type="MeshInstance3D" parent="RearRightLeg"]
+transform = Transform3D(0.059, 0, 0, 0, -0.030808, -0.192551, 0, 0.058259, -0.009321, 1.065, 0.095, -1.261)
+mesh = SubResource("MeshCone")
+material_override = SubResource("MatClaw")
+
+[node name="Toe03" type="MeshInstance3D" parent="RearRightLeg"]
+transform = Transform3D(0.096, 0, 0, 0, 0.101, 0, 0, 0, 0.172, 1.231, 0.108, -1.111)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatSkinLight")
+
+[node name="Knuckle03" type="MeshInstance3D" parent="RearRightLeg"]
+transform = Transform3D(0.071, 0, 0, 0, 0.043, 0, 0, 0, 0.095, 1.231, 0.189, -1.031)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatSkin")
+
+[node name="Claw03" type="MeshInstance3D" parent="RearRightLeg"]
+transform = Transform3D(0.059, 0, 0, 0, -0.030808, -0.192551, 0, 0.058259, -0.009321, 1.231, 0.095, -1.261)
+mesh = SubResource("MeshCone")
+material_override = SubResource("MatClaw")
+
+[node name="LeftNeckScale01" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.067, 0, 0, 0, 0.043, 0, 0, 0, 0.077, -0.286, 0.59, 0.78)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatSkinLight")
+
+[node name="LeftNeckScale02" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.067, 0, 0, 0, 0.043, 0, 0, 0, 0.077, -0.319, 0.607, 0.902)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatSkinLight")
+
+[node name="LeftNeckScale03" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.067, 0, 0, 0, 0.043, 0, 0, 0, 0.077, -0.352, 0.624, 1.024)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatSkinLight")
+
+[node name="RightNeckScale01" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.067, 0, 0, 0, 0.043, 0, 0, 0, 0.077, 0.286, 0.59, 0.78)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatSkinLight")
+
+[node name="RightNeckScale02" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.067, 0, 0, 0, 0.043, 0, 0, 0, 0.077, 0.319, 0.607, 0.902)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatSkinLight")
+
+[node name="RightNeckScale03" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.067, 0, 0, 0, 0.043, 0, 0, 0, 0.077, 0.352, 0.624, 1.024)
+mesh = SubResource("MeshSmallSphere")
+material_override = SubResource("MatSkinLight")
+
+[node name="VocabularyArea" type="Area3D" parent="." unique_id=29268779]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VocabularyArea" unique_id=699194104]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, 0)
+shape = SubResource("BoxShape3D_1lorj")

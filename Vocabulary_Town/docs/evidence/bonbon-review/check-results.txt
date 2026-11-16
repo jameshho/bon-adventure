@@ -1,0 +1,20 @@
+('check_interaction', 0, ['PASS: interaction targeting, highlights, cards, signals, doors, dismissal and range'])
+('check_zoo_upgrade', 0, ['PASS: 20 independent animal scenes, editable meshes, zoo scene, physics picking, bounded movement, vocabulary and 3 interiors'])
+('check_island', 0, ['ISLAND: 0 failures; 15 trees, compact shoreline, beach support, home relocation, three-floor civic buildings'])
+('check_home_refresh', 0, ['HOME REFRESH: 0 failures'])
+('check_public_interiors', 0, ['INTERIOR ROUTES: 0 failures, 8 paths checked'])
+('check_bonbon', 0, ['BONBON: 0 failures'])
+('check_building_exteriors', 0, ['PASS: all 12 building types, removed signs, facade clearance and bilingual physics picking'])
+('check_park_bridge', 0, [])
+('check_vocabulary_categories', 0, ['PASS: 469 categories, 137 catalog entries, aliases, saved progress normalization, and scene loading'])
+('check_civic_expansion', 0, ['CIVIC EXPANSION: 43 displays; road folds, car bounds, eight rooms, passages, targets and popups: 0 failures'])
+('check_vehicle_collision', 0, ['VEHICLES: 0 failures; 8 types block player from four directions, allow walking around, and 8 saved instances remain selectable'])
+('check_house', 0, ['House checks: 0 failures; 7 walking routes, 4 doors, drawer origins, wall geometry, vocabulary and fixture placements checked.'])
+('check_vocabulary_aliases', 0, ['PASS: vocabulary alias loading, migration, interaction resolution and prefab loading'])
+('check_learning_stores', 0, ['LEARNING STORES: 96 objects, 0 failures'])
+('check_town_layout', 0, ['TOWN CHECK: 0 failures, 148 park path samples'])
+('check_hospital_floors', 0, ['HOSPITAL FLOORS: 0 failures; real player climbed and descended both storeys without jumping'])
+('check_hospital_floors_school', 0, ['SCHOOL FLOORS: 0 failures; real player climbed and descended both storeys without jumping'])
+check_bonbon_ui: exit 0, zero failures
+428 literal resource references, zero missing
+Rendered capture: OpenGL Compatibility, Godot 4.7.2, no script/shader errors

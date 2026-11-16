@@ -1,0 +1,75 @@
+[gd_scene format=3]
+
+[sub_resource type="BoxMesh" id="r1"]
+size = Vector3(0.480000, 0.600000, 0.060000)
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.93333, 0.89020, 0.80000, 1)
+roughness = 0.78
+
+[sub_resource type="PrismMesh" id="r3"]
+size = Vector3(0.8, 0.7, 0.08)
+
+[sub_resource type="TorusMesh" id="r4"]
+inner_radius = 0.135
+outer_radius = 0.185
+rings = 24
+ring_segments = 8
+
+[sub_resource type="StandardMaterial3D" id="r5"]
+albedo_color = Color(0.74118, 0.50980, 0.38431, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r6"]
+size = Vector3(0.300000, 0.200000, 0.025000)
+
+[sub_resource type="BoxShape3D" id="r7"]
+size = Vector3(0.850000, 1.450000, 0.180000)
+
+[sub_resource type="BoxShape3D" id="r8"]
+size = Vector3(0.782000, 0.800000, 0.165600)
+
+[node name="Apron" type="Node3D"]
+metadata/word_key = "apron"
+metadata/learning_object = true
+
+[node name="Bib_2" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.850000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r1")
+material_override = SubResource("r2")
+
+[node name="Skirt_3" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.300000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r3")
+material_override = SubResource("r2")
+
+[node name="NeckStrap_5" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 1.220000, 0.000000)
+rotation_degrees = Vector3(90.000000, 0.000000, 0.000000)
+mesh = SubResource("r4")
+material_override = SubResource("r5")
+scale = Vector3(1.000000, 1.000000, 1.000000)
+
+[node name="Pocket_6" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.450000, -0.045000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r6")
+material_override = SubResource("r5")
+
+[node name="Interaction" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Interaction"]
+position = Vector3(0.000000, 0.725000, 0.000000)
+shape = SubResource("r7")
+
+[node name="Footprint" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Footprint"]
+position = Vector3(0.000000, 0.400000, 0.000000)
+shape = SubResource("r8")

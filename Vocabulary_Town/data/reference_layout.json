@@ -1,0 +1,771 @@
+{
+  "units_per_reference_pixel": 0.3,
+  "reference_origin_pixel": [
+    627,
+    1080
+  ],
+  "world_origin": [
+    0,
+    6
+  ],
+  "map_bounds": [
+    -198,
+    -42,
+    402,
+    387
+  ],
+  "spawn": [
+    4.5,
+    0.15,
+    22
+  ],
+  "sites": {
+    "Home": {
+      "label": "HOME",
+      "source": [
+        0,
+        6
+      ],
+      "target": [
+        0,
+        7
+      ],
+      "source_rect": [
+        -16,
+        -5,
+        37,
+        31
+      ],
+      "scene_path": "Buildings/HouseStructure"
+    },
+    "Hospital": {
+      "label": "HOSPITAL",
+      "source": [
+        -32,
+        128
+      ],
+      "target": [
+        -56,
+        280
+      ],
+      "source_rect": [
+        -44,
+        100,
+        26,
+        59
+      ],
+      "scene_path": "Buildings/Hospital"
+    },
+    "School": {
+      "label": "SCHOOL",
+      "source": [
+        -4,
+        128
+      ],
+      "target": [
+        0,
+        280
+      ],
+      "source_rect": [
+        -18,
+        100,
+        29,
+        59
+      ],
+      "scene_path": "Buildings/School"
+    },
+    "Furniture": {
+      "label": "FURNITURE",
+      "source": [
+        -52,
+        118
+      ],
+      "target": [
+        -124,
+        261
+      ],
+      "source_rect": [
+        -64,
+        99,
+        22,
+        39
+      ],
+      "scene_path": "Buildings/FurnitureStore"
+    },
+    "Clothing": {
+      "label": "CLOTHING",
+      "source": [
+        50.5,
+        112
+      ],
+      "target": [
+        139,
+        184
+      ],
+      "source_rect": [
+        42,
+        99,
+        18,
+        28
+      ],
+      "scene_path": "Buildings/ClothingStore"
+    },
+    "Electronics": {
+      "label": "ELECTRONICS",
+      "source": [
+        -59.5,
+        45
+      ],
+      "target": [
+        -135,
+        133
+      ],
+      "source_rect": [
+        -69,
+        34,
+        18,
+        22
+      ],
+      "scene_path": "Buildings/ElectronicsStore"
+    },
+    "Sports": {
+      "label": "SPORTS",
+      "source": [
+        26,
+        116
+      ],
+      "target": [
+        -98,
+        282
+      ],
+      "source_rect": [
+        17,
+        100,
+        20,
+        34
+      ],
+      "scene_path": "Buildings/SportsStore"
+    },
+    "Bakery": {
+      "label": "BAKERY / CAFE",
+      "source": [
+        -61,
+        76
+      ],
+      "target": [
+        -135,
+        192
+      ],
+      "source_rect": [
+        -70,
+        61,
+        18,
+        31
+      ],
+      "scene_path": "Buildings/BakeryCafe"
+    },
+    "Supermarket": {
+      "label": "SUPERMARKET",
+      "source": [
+        -33,
+        43
+      ],
+      "target": [
+        140,
+        134
+      ],
+      "source_rect": [
+        -45,
+        28,
+        23,
+        27
+      ],
+      "scene_path": "Buildings/MarketDisplays"
+    },
+    "Library": {
+      "label": "LIBRARY",
+      "source": [
+        -15,
+        45
+      ],
+      "target": [
+        0,
+        73
+      ],
+      "source_rect": [
+        -23,
+        33,
+        16,
+        23
+      ],
+      "scene_path": ""
+    },
+    "Bank": {
+      "label": "BANK",
+      "source": [
+        25,
+        45
+      ],
+      "target": [
+        -135,
+        94
+      ],
+      "source_rect": [
+        18,
+        33,
+        15,
+        22
+      ],
+      "scene_path": ""
+    },
+    "Police": {
+      "label": "POLICE STATION",
+      "source": [
+        43,
+        45
+      ],
+      "target": [
+        77,
+        70
+      ],
+      "source_rect": [
+        35.5,
+        33,
+        15,
+        22
+      ],
+      "scene_path": ""
+    },
+    "Chapel": {
+      "label": "CHAPEL",
+      "source": [
+        46.5,
+        75
+      ],
+      "target": [
+        71,
+        139
+      ],
+      "source_rect": [
+        40,
+        68,
+        14,
+        15
+      ],
+      "scene_path": ""
+    },
+    "Gazebo": {
+      "label": "GAZEBO",
+      "source": [
+        -15,
+        72
+      ],
+      "target": [
+        51,
+        111
+      ],
+      "source_rect": [
+        -20,
+        68,
+        11,
+        9
+      ],
+      "scene_path": ""
+    },
+    "Playground": {
+      "label": "PLAYGROUND",
+      "source": [
+        12,
+        79
+      ],
+      "target": [
+        37,
+        197
+      ],
+      "source_rect": [
+        6,
+        75,
+        11,
+        9
+      ],
+      "scene_path": ""
+    },
+    "Pond": {
+      "label": "POND / BRIDGE",
+      "source": [
+        17,
+        68
+      ],
+      "target": [
+        20,
+        130
+      ],
+      "source_rect": [
+        5,
+        59,
+        25,
+        18
+      ],
+      "scene_path": ""
+    },
+    "Travel": {
+      "label": "AIRPORT TRANSPORT",
+      "source": [
+        -22,
+        90
+      ],
+      "target": [
+        93,
+        238
+      ],
+      "source_rect": [
+        -32,
+        87,
+        23,
+        8
+      ],
+      "scene_path": ""
+    }
+  },
+  "loop_pixels": [
+    [
+      360,
+      350
+    ],
+    [
+      530,
+      350
+    ],
+    [
+      700,
+      350
+    ],
+    [
+      810,
+      355
+    ],
+    [
+      870,
+      386
+    ],
+    [
+      905,
+      455
+    ],
+    [
+      920,
+      535
+    ],
+    [
+      953,
+      585
+    ],
+    [
+      976,
+      700
+    ],
+    [
+      1005,
+      825
+    ],
+    [
+      1030,
+      925
+    ],
+    [
+      1000,
+      1000
+    ],
+    [
+      920,
+      1020
+    ],
+    [
+      770,
+      1010
+    ],
+    [
+      610,
+      995
+    ],
+    [
+      480,
+      1000
+    ],
+    [
+      345,
+      995
+    ],
+    [
+      275,
+      970
+    ],
+    [
+      245,
+      920
+    ],
+    [
+      253,
+      825
+    ],
+    [
+      270,
+      700
+    ],
+    [
+      280,
+      560
+    ],
+    [
+      288,
+      430
+    ],
+    [
+      295,
+      390
+    ]
+  ],
+  "coast_pixels": [
+    [
+      290,
+      60
+    ],
+    [
+      480,
+      26
+    ],
+    [
+      720,
+      26
+    ],
+    [
+      940,
+      35
+    ],
+    [
+      1100,
+      65
+    ],
+    [
+      1175,
+      180
+    ],
+    [
+      1212,
+      380
+    ],
+    [
+      1220,
+      620
+    ],
+    [
+      1220,
+      830
+    ],
+    [
+      1140,
+      990
+    ],
+    [
+      950,
+      1085
+    ],
+    [
+      760,
+      1160
+    ],
+    [
+      540,
+      1165
+    ],
+    [
+      350,
+      1085
+    ],
+    [
+      220,
+      965
+    ],
+    [
+      95,
+      805
+    ],
+    [
+      65,
+      610
+    ],
+    [
+      66,
+      390
+    ],
+    [
+      135,
+      210
+    ]
+  ],
+  "new_sites": {
+    "Airport": [
+      96,
+      280
+    ],
+    "Restaurants": [
+      148,
+      85
+    ],
+    "WashingtonStatue": [
+      -53,
+      139
+    ],
+    "Barn": [
+      -63,
+      70
+    ]
+  },
+  "compact_layout": {
+    "coordinate_space": "town-local, +X west / +Z north; rigid moves from the saved/runtime baseline",
+    "loop": {
+      "west": 103,
+      "east": -112,
+      "south": 65,
+      "north": 200,
+      "radius": 16
+    },
+    "sites": {
+      "Home": [
+        [
+          0,
+          7
+        ],
+        [
+          0,
+          35
+        ],
+        0
+      ],
+      "Hospital": [
+        [
+          56,
+          280
+        ],
+        [
+          56,
+          245
+        ],
+        0
+      ],
+      "School": [
+        [
+          0,
+          280
+        ],
+        [
+          10,
+          245
+        ],
+        0
+      ],
+      "Furniture": [
+        [
+          124,
+          261
+        ],
+        [
+          126,
+          242
+        ],
+        0
+      ],
+      "Sports": [
+        [
+          98,
+          282
+        ],
+        [
+          96,
+          242
+        ],
+        0
+      ],
+      "Bakery": [
+        [
+          135,
+          192
+        ],
+        [
+          137,
+          166
+        ],
+        90
+      ],
+      "Electronics": [
+        [
+          135,
+          133
+        ],
+        [
+          133,
+          137
+        ],
+        90
+      ],
+      "Bank": [
+        [
+          135,
+          94
+        ],
+        [
+          134,
+          108
+        ],
+        90
+      ],
+      "Clothing": [
+        [
+          -139,
+          184
+        ],
+        [
+          -137,
+          164
+        ],
+        -90
+      ],
+      "Supermarket": [
+        [
+          -140,
+          134
+        ],
+        [
+          -142,
+          126
+        ],
+        -90
+      ],
+      "Library": [
+        [
+          0,
+          73
+        ],
+        [
+          51,
+          33
+        ],
+        180
+      ],
+      "Police": [
+        [
+          -77,
+          70
+        ],
+        [
+          -146.5,
+          80
+        ],
+        -90
+      ],
+      "Chapel": [
+        [
+          -71,
+          139
+        ],
+        [
+          -79,
+          175
+        ],
+        0
+      ],
+      "Playground": [
+        [
+          -34,
+          203
+        ],
+        [
+          62,
+          178
+        ],
+        0
+      ],
+      "Gazebo": [
+        [
+          -57,
+          111
+        ],
+        [
+          -95,
+          151
+        ],
+        0
+      ],
+      "Travel": [
+        [
+          -93,
+          238
+        ],
+        [
+          -93,
+          203
+        ],
+        0
+      ]
+    },
+    "groups": {
+      "Airport": [
+        [
+          -96,
+          280
+        ],
+        [
+          -96,
+          245
+        ],
+        0
+      ],
+      "Restaurants": [
+        [
+          -148,
+          85
+        ],
+        [
+          -45,
+          34
+        ],
+        180
+      ],
+      "Barn": [
+        [
+          63,
+          70
+        ],
+        [
+          66,
+          80
+        ],
+        180
+      ]
+    },
+    "habitats": {
+      "wildlife": [
+        [
+          63,
+          196
+        ],
+        [
+          -78,
+          105
+        ],
+        180
+      ],
+      "farm": [
+        [
+          63,
+          59
+        ],
+        [
+          66,
+          91
+        ],
+        180
+      ]
+    }
+  }
+}

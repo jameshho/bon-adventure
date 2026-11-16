@@ -1,0 +1,764 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/basketball.tscn" id="e1"]
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/soccer_ball.tscn" id="e2"]
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/volleyball.tscn" id="e3"]
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/tennis_ball.tscn" id="e4"]
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/baseball.tscn" id="e5"]
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/baseball_glove.tscn" id="e6"]
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/baseball_bat.tscn" id="e7"]
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/tennis_racket.tscn" id="e8"]
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/bicycle.tscn" id="e9"]
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/skateboard.tscn" id="e10"]
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/helmet.tscn" id="e11"]
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/dumbbell.tscn" id="e12"]
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/barbell.tscn" id="e13"]
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/jump_rope.tscn" id="e14"]
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/basketball_hoop.tscn" id="e15"]
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/goal.tscn" id="e16"]
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.89412, 0.87451, 0.82353, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r1"]
+size = Vector3(14, 0.1, 24)
+
+[sub_resource type="BoxShape3D" id="r3"]
+size = Vector3(14, 0.1, 24)
+
+[sub_resource type="StandardMaterial3D" id="r5"]
+albedo_color = Color(0.89412, 0.90588, 0.8902, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r4"]
+size = Vector3(14, 4.6, 0.18)
+
+[sub_resource type="BoxShape3D" id="r6"]
+size = Vector3(14, 4.6, 0.18)
+
+[sub_resource type="BoxMesh" id="r7"]
+size = Vector3(0.18, 4.6, 24)
+
+[sub_resource type="BoxShape3D" id="r8"]
+size = Vector3(0.18, 4.6, 24)
+
+[sub_resource type="BoxMesh" id="r9"]
+size = Vector3(0.18, 4.6, 24)
+
+[sub_resource type="BoxShape3D" id="r10"]
+size = Vector3(0.18, 4.6, 24)
+
+[sub_resource type="BoxMesh" id="r11"]
+size = Vector3(5.2, 4.6, 0.18)
+
+[sub_resource type="BoxShape3D" id="r12"]
+size = Vector3(5.2, 4.6, 0.18)
+
+[sub_resource type="BoxMesh" id="r13"]
+size = Vector3(5.2, 4.6, 0.18)
+
+[sub_resource type="BoxShape3D" id="r14"]
+size = Vector3(5.2, 4.6, 0.18)
+
+[sub_resource type="BoxMesh" id="r15"]
+size = Vector3(3.6, 1.2, 0.18)
+
+[sub_resource type="BoxShape3D" id="r16"]
+size = Vector3(3.6, 1.2, 0.18)
+
+[sub_resource type="StandardMaterial3D" id="r18"]
+albedo_color = Color(0.84314, 0.68235, 0.37647, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r17"]
+size = Vector3(14.3, 0.18, 24.3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_u663x"]
+size = Vector3(14.3, 0.18, 24.3)
+
+[sub_resource type="BoxMesh" id="r19"]
+size = Vector3(13.5, 0.75, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="r21"]
+albedo_color = Color(0.84706, 0.83529, 0.79608, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r20"]
+size = Vector3(3.5, 0.04, 3)
+
+[sub_resource type="StandardMaterial3D" id="r23"]
+albedo_color = Color(0.78039, 0.7098, 0.58824, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r22"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxShape3D" id="r24"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="StandardMaterial3D" id="r26"]
+albedo_color = Color(0.67843, 0.48235, 0.31373, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r25"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r27"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r28"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxShape3D" id="r29"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxMesh" id="r30"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r31"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r32"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxShape3D" id="r33"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxMesh" id="r34"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r35"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r36"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxShape3D" id="r37"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxMesh" id="r38"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r39"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r40"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxShape3D" id="r41"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxMesh" id="r42"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r43"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r44"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxShape3D" id="r45"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxMesh" id="r46"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r47"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r48"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxShape3D" id="r49"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxMesh" id="r50"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r51"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r52"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxShape3D" id="r53"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxMesh" id="r54"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r55"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r56"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxShape3D" id="r57"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxMesh" id="r58"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r59"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r60"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxShape3D" id="r61"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxMesh" id="r62"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r63"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r64"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxShape3D" id="r65"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxMesh" id="r66"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r67"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r68"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxShape3D" id="r69"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxMesh" id="r70"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r71"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r72"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxShape3D" id="r73"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxMesh" id="r74"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r75"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[node name="SPORTS" type="Node3D" unique_id=114507898]
+
+[node name="Floor_2" type="MeshInstance3D" parent="." unique_id=1533226191]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.02, 0)
+material_override = SubResource("r2")
+mesh = SubResource("r1")
+
+[node name="FloorBody" type="StaticBody3D" parent="." unique_id=347990367]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="FloorBody" unique_id=369150464]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.02, 0)
+shape = SubResource("r3")
+
+[node name="Rear_5" type="MeshInstance3D" parent="." unique_id=865534088]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, 12)
+material_override = SubResource("r5")
+mesh = SubResource("r4")
+metadata/exterior_word = "sports store"
+
+[node name="RearBody" type="StaticBody3D" parent="." unique_id=1033860811]
+collision_mask = 0
+metadata/exterior_word = "sports store"
+
+[node name="Shape" type="CollisionShape3D" parent="RearBody" unique_id=321862780]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, 12)
+shape = SubResource("r6")
+
+[node name="Left_7" type="MeshInstance3D" parent="." unique_id=1674179362]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 2.3, 0)
+material_override = SubResource("r5")
+mesh = SubResource("r7")
+metadata/exterior_word = "sports store"
+
+[node name="LeftBody" type="StaticBody3D" parent="." unique_id=966624288]
+collision_mask = 0
+metadata/exterior_word = "sports store"
+
+[node name="Shape" type="CollisionShape3D" parent="LeftBody" unique_id=872547519]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 2.3, 0)
+shape = SubResource("r8")
+
+[node name="Right_9" type="MeshInstance3D" parent="." unique_id=944363119]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 2.3, 0)
+material_override = SubResource("r5")
+mesh = SubResource("r9")
+metadata/exterior_word = "sports store"
+
+[node name="RightBody" type="StaticBody3D" parent="." unique_id=600355470]
+collision_mask = 0
+metadata/exterior_word = "sports store"
+
+[node name="Shape" type="CollisionShape3D" parent="RightBody" unique_id=1097705040]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 2.3, 0)
+shape = SubResource("r10")
+
+[node name="FrontLeft_11" type="MeshInstance3D" parent="." unique_id=829546972]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.4, 2.3, -12)
+material_override = SubResource("r5")
+mesh = SubResource("r11")
+metadata/exterior_word = "sports store"
+
+[node name="FrontLeftBody" type="StaticBody3D" parent="." unique_id=709768530]
+collision_mask = 0
+metadata/exterior_word = "sports store"
+
+[node name="Shape" type="CollisionShape3D" parent="FrontLeftBody" unique_id=749346083]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.4, 2.3, -12)
+shape = SubResource("r12")
+
+[node name="FrontRight_13" type="MeshInstance3D" parent="." unique_id=399169251]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.4, 2.3, -12)
+material_override = SubResource("r5")
+mesh = SubResource("r13")
+metadata/exterior_word = "sports store"
+
+[node name="FrontRightBody" type="StaticBody3D" parent="." unique_id=662443673]
+collision_mask = 0
+metadata/exterior_word = "sports store"
+
+[node name="Shape" type="CollisionShape3D" parent="FrontRightBody" unique_id=1863296794]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.4, 2.3, -12)
+shape = SubResource("r14")
+
+[node name="Lintel_15" type="MeshInstance3D" parent="." unique_id=271249149]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, -12)
+material_override = SubResource("r5")
+mesh = SubResource("r15")
+metadata/exterior_word = "sports store"
+
+[node name="LintelBody" type="StaticBody3D" parent="." unique_id=903731248]
+collision_mask = 0
+metadata/exterior_word = "sports store"
+
+[node name="Shape" type="CollisionShape3D" parent="LintelBody" unique_id=1381133350]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, -12)
+shape = SubResource("r16")
+
+[node name="Roof_18" type="MeshInstance3D" parent="." unique_id=1866190842]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.7, 0)
+material_override = SubResource("r18")
+mesh = SubResource("r17")
+metadata/exterior_word = "sports store"
+
+[node name="RoofSolid" type="StaticBody3D" parent="Roof_18" unique_id=375433275]
+
+[node name="Collision" type="CollisionShape3D" parent="Roof_18/RoofSolid" unique_id=2030179487]
+shape = SubResource("BoxShape3D_u663x")
+
+[node name="SignBoard_19" type="MeshInstance3D" parent="." unique_id=708044266]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.75, -12.14)
+material_override = SubResource("r18")
+mesh = SubResource("r19")
+metadata/exterior_word = "sports store"
+
+[node name="Section88" type="Label3D" parent="." unique_id=1460656155]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 3.75, -12.21)
+pixel_size = 0.007
+modulate = Color(0.18, 0.24, 0.27, 1)
+text = "SPORTS"
+font_size = 52
+outline_size = 0
+
+[node name="InteriorLight96" type="OmniLight3D" parent="." unique_id=1492553778]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.8, -6.72)
+light_energy = 0.65
+omni_range = 11.0
+omni_attenuation = 0.6
+
+[node name="InteriorLight102" type="OmniLight3D" parent="." unique_id=737349090]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.8, 6.72)
+light_energy = 0.65
+omni_range = 11.0
+omni_attenuation = 0.6
+
+[node name="EntrancePath_21" type="MeshInstance3D" parent="." unique_id=917597887]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.025, -13.5)
+material_override = SubResource("r21")
+mesh = SubResource("r20")
+
+[node name="DisplayTopbasketball_23" type="MeshInstance3D" parent="." unique_id=2104897205]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.35, 0.96, -10)
+material_override = SubResource("r23")
+mesh = SubResource("r22")
+
+[node name="DisplayBodybasketball" type="StaticBody3D" parent="." unique_id=308842602]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodybasketball" unique_id=282517494]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.35, 0.96, -10)
+shape = SubResource("r24")
+
+[node name="DisplayLeg_26" type="MeshInstance3D" parent="." unique_id=1594161126]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.9, 0.47, -10)
+material_override = SubResource("r26")
+mesh = SubResource("r25")
+
+[node name="DisplayLeg_27" type="MeshInstance3D" parent="." unique_id=1264309095]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.8, 0.47, -10)
+material_override = SubResource("r26")
+mesh = SubResource("r27")
+
+[node name="Basketball" type="Node3D" parent="." unique_id=1712632278 instance=ExtResource("e1")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -5.35, 1.02, -10)
+metadata/word_key = "basketball"
+metadata/learning_object = true
+
+[node name="DisplayTopsoccer_ball_28" type="MeshInstance3D" parent="." unique_id=759880460]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.35, 0.96, -7.142857)
+material_override = SubResource("r23")
+mesh = SubResource("r28")
+
+[node name="DisplayBodysoccer_ball" type="StaticBody3D" parent="." unique_id=1994777273]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodysoccer_ball" unique_id=1513294521]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.35, 0.96, -7.142857)
+shape = SubResource("r29")
+
+[node name="DisplayLeg_30" type="MeshInstance3D" parent="." unique_id=1958003547]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.9, 0.47, -7.142857)
+material_override = SubResource("r26")
+mesh = SubResource("r30")
+
+[node name="DisplayLeg_31" type="MeshInstance3D" parent="." unique_id=16574102]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.8, 0.47, -7.142857)
+material_override = SubResource("r26")
+mesh = SubResource("r31")
+
+[node name="Soccer_Ball" type="Node3D" parent="." unique_id=829058383 instance=ExtResource("e2")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -5.35, 1.02, -7.142857)
+metadata/word_key = "soccer ball"
+metadata/learning_object = true
+
+[node name="DisplayTopvolleyball_32" type="MeshInstance3D" parent="." unique_id=882137639]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.35, 0.96, -4.285714)
+material_override = SubResource("r23")
+mesh = SubResource("r32")
+
+[node name="DisplayBodyvolleyball" type="StaticBody3D" parent="." unique_id=1373535280]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodyvolleyball" unique_id=1029370692]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.35, 0.96, -4.285714)
+shape = SubResource("r33")
+
+[node name="DisplayLeg_34" type="MeshInstance3D" parent="." unique_id=1942147203]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.9, 0.47, -4.285714)
+material_override = SubResource("r26")
+mesh = SubResource("r34")
+
+[node name="DisplayLeg_35" type="MeshInstance3D" parent="." unique_id=37041257]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.8, 0.47, -4.285714)
+material_override = SubResource("r26")
+mesh = SubResource("r35")
+
+[node name="Volleyball" type="Node3D" parent="." unique_id=1462073740 instance=ExtResource("e3")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -5.35, 1.02, -4.285714)
+metadata/word_key = "volleyball"
+metadata/learning_object = true
+
+[node name="DisplayToptennis_ball_36" type="MeshInstance3D" parent="." unique_id=1255279263]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.35, 0.96, -1.428571)
+material_override = SubResource("r23")
+mesh = SubResource("r36")
+
+[node name="DisplayBodytennis_ball" type="StaticBody3D" parent="." unique_id=885075330]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodytennis_ball" unique_id=318971314]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.35, 0.96, -1.428571)
+shape = SubResource("r37")
+
+[node name="DisplayLeg_38" type="MeshInstance3D" parent="." unique_id=808801805]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.9, 0.47, -1.428571)
+material_override = SubResource("r26")
+mesh = SubResource("r38")
+
+[node name="DisplayLeg_39" type="MeshInstance3D" parent="." unique_id=1304619961]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.8, 0.47, -1.428571)
+material_override = SubResource("r26")
+mesh = SubResource("r39")
+
+[node name="Tennis_Ball" type="Node3D" parent="." unique_id=988177209 instance=ExtResource("e4")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -5.35, 1.02, -1.428571)
+
+[node name="DisplayTopbaseball_40" type="MeshInstance3D" parent="." unique_id=1149495629]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.35, 0.96, 1.428571)
+material_override = SubResource("r23")
+mesh = SubResource("r40")
+
+[node name="DisplayBodybaseball" type="StaticBody3D" parent="." unique_id=1875804856]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodybaseball" unique_id=1976136169]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.35, 0.96, 1.428571)
+shape = SubResource("r41")
+
+[node name="DisplayLeg_42" type="MeshInstance3D" parent="." unique_id=1949432164]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.9, 0.47, 1.428571)
+material_override = SubResource("r26")
+mesh = SubResource("r42")
+
+[node name="DisplayLeg_43" type="MeshInstance3D" parent="." unique_id=1205811632]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.8, 0.47, 1.428571)
+material_override = SubResource("r26")
+mesh = SubResource("r43")
+
+[node name="Baseball" type="Node3D" parent="." unique_id=1289443790 instance=ExtResource("e5")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -5.35, 1.02, 1.428571)
+
+[node name="DisplayTopbaseball_glove_44" type="MeshInstance3D" parent="." unique_id=1293669541]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.35, 0.96, 4.285714)
+material_override = SubResource("r23")
+mesh = SubResource("r44")
+
+[node name="DisplayBodybaseball_glove" type="StaticBody3D" parent="." unique_id=1325902060]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodybaseball_glove" unique_id=1896614294]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.35, 0.96, 4.285714)
+shape = SubResource("r45")
+
+[node name="DisplayLeg_46" type="MeshInstance3D" parent="." unique_id=227664890]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.9, 0.47, 4.285714)
+material_override = SubResource("r26")
+mesh = SubResource("r46")
+
+[node name="DisplayLeg_47" type="MeshInstance3D" parent="." unique_id=128613004]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.8, 0.47, 4.285714)
+material_override = SubResource("r26")
+mesh = SubResource("r47")
+
+[node name="Baseball_Glove" type="Node3D" parent="." unique_id=1549386122 instance=ExtResource("e6")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -5.35, 1.02, 4.285714)
+
+[node name="DisplayTopbaseball_bat_48" type="MeshInstance3D" parent="." unique_id=1788010731]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.35, 0.96, 7.142857)
+material_override = SubResource("r23")
+mesh = SubResource("r48")
+
+[node name="DisplayBodybaseball_bat" type="StaticBody3D" parent="." unique_id=1946182412]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodybaseball_bat" unique_id=1170478001]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.35, 0.96, 7.142857)
+shape = SubResource("r49")
+
+[node name="DisplayLeg_50" type="MeshInstance3D" parent="." unique_id=1152536948]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.9, 0.47, 7.142857)
+material_override = SubResource("r26")
+mesh = SubResource("r50")
+
+[node name="DisplayLeg_51" type="MeshInstance3D" parent="." unique_id=1903960559]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.8, 0.47, 7.142857)
+material_override = SubResource("r26")
+mesh = SubResource("r51")
+
+[node name="Baseball_Bat" type="Node3D" parent="." unique_id=1385361911 instance=ExtResource("e7")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -5.35, 1.02, 7.142857)
+
+[node name="Tennis_Racket" type="Node3D" parent="." unique_id=747055696 instance=ExtResource("e8")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -5.35, 0.1, 10)
+metadata/word_key = "tennis racket"
+metadata/learning_object = true
+
+[node name="Bicycle" type="Node3D" parent="." unique_id=645139594 instance=ExtResource("e9")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 5.35, 0.1, -10)
+metadata/word_key = "bicycle"
+metadata/learning_object = true
+
+[node name="DisplayTopskateboard_52" type="MeshInstance3D" parent="." unique_id=270045130]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.35, 0.96, -7.142857)
+material_override = SubResource("r23")
+mesh = SubResource("r52")
+
+[node name="DisplayBodyskateboard" type="StaticBody3D" parent="." unique_id=1945736282]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodyskateboard" unique_id=1611345748]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.35, 0.96, -7.142857)
+shape = SubResource("r53")
+
+[node name="DisplayLeg_54" type="MeshInstance3D" parent="." unique_id=1319717213]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.8, 0.47, -7.142857)
+material_override = SubResource("r26")
+mesh = SubResource("r54")
+
+[node name="DisplayLeg_55" type="MeshInstance3D" parent="." unique_id=553691018]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.9, 0.47, -7.142857)
+material_override = SubResource("r26")
+mesh = SubResource("r55")
+
+[node name="Skateboard" type="Node3D" parent="." unique_id=455590625 instance=ExtResource("e10")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 5.35, 1.02, -7.142857)
+metadata/word_key = "skateboard"
+metadata/learning_object = true
+
+[node name="DisplayTophelmet_56" type="MeshInstance3D" parent="." unique_id=1211815370]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.35, 0.96, -4.285714)
+material_override = SubResource("r23")
+mesh = SubResource("r56")
+
+[node name="DisplayBodyhelmet" type="StaticBody3D" parent="." unique_id=1634241319]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodyhelmet" unique_id=577311240]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.35, 0.96, -4.285714)
+shape = SubResource("r57")
+
+[node name="DisplayLeg_58" type="MeshInstance3D" parent="." unique_id=2087030966]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.8, 0.47, -4.285714)
+material_override = SubResource("r26")
+mesh = SubResource("r58")
+
+[node name="DisplayLeg_59" type="MeshInstance3D" parent="." unique_id=640849586]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.9, 0.47, -4.285714)
+material_override = SubResource("r26")
+mesh = SubResource("r59")
+
+[node name="Helmet" type="Node3D" parent="." unique_id=960642108 instance=ExtResource("e11")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 5.35, 1.02, -4.285714)
+metadata/word_key = "helmet"
+metadata/learning_object = true
+
+[node name="DisplayTopdumbbell_60" type="MeshInstance3D" parent="." unique_id=423774792]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.35, 0.96, -1.428571)
+material_override = SubResource("r23")
+mesh = SubResource("r60")
+
+[node name="DisplayBodydumbbell" type="StaticBody3D" parent="." unique_id=1823638691]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodydumbbell" unique_id=1139941871]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.35, 0.96, -1.428571)
+shape = SubResource("r61")
+
+[node name="DisplayLeg_62" type="MeshInstance3D" parent="." unique_id=607827402]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.8, 0.47, -1.428571)
+material_override = SubResource("r26")
+mesh = SubResource("r62")
+
+[node name="DisplayLeg_63" type="MeshInstance3D" parent="." unique_id=481979412]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.9, 0.47, -1.428571)
+material_override = SubResource("r26")
+mesh = SubResource("r63")
+
+[node name="Dumbbell" type="Node3D" parent="." unique_id=1294521088 instance=ExtResource("e12")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 5.35, 1.02, -1.428571)
+metadata/word_key = "dumbbell"
+metadata/learning_object = true
+
+[node name="DisplayTopbarbell_64" type="MeshInstance3D" parent="." unique_id=893992678]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.35, 0.96, 1.428571)
+material_override = SubResource("r23")
+mesh = SubResource("r64")
+
+[node name="DisplayBodybarbell" type="StaticBody3D" parent="." unique_id=1365241397]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodybarbell" unique_id=551885358]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.35, 0.96, 1.428571)
+shape = SubResource("r65")
+
+[node name="DisplayLeg_66" type="MeshInstance3D" parent="." unique_id=43853560]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.8, 0.47, 1.428571)
+material_override = SubResource("r26")
+mesh = SubResource("r66")
+
+[node name="DisplayLeg_67" type="MeshInstance3D" parent="." unique_id=1803184074]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.9, 0.47, 1.428571)
+material_override = SubResource("r26")
+mesh = SubResource("r67")
+
+[node name="Barbell" type="Node3D" parent="." unique_id=22837339 instance=ExtResource("e13")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 5.35, 1.02, 1.428571)
+
+[node name="DisplayTopjump_rope_68" type="MeshInstance3D" parent="." unique_id=2002859806]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.35, 0.96, 4.285714)
+material_override = SubResource("r23")
+mesh = SubResource("r68")
+
+[node name="DisplayBodyjump_rope" type="StaticBody3D" parent="." unique_id=901007557]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodyjump_rope" unique_id=1954710644]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.35, 0.96, 4.285714)
+shape = SubResource("r69")
+
+[node name="DisplayLeg_70" type="MeshInstance3D" parent="." unique_id=2147241773]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.8, 0.47, 4.285714)
+material_override = SubResource("r26")
+mesh = SubResource("r70")
+
+[node name="DisplayLeg_71" type="MeshInstance3D" parent="." unique_id=1928078716]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.9, 0.47, 4.285714)
+material_override = SubResource("r26")
+mesh = SubResource("r71")
+
+[node name="Jump_Rope" type="Node3D" parent="." unique_id=1566325892 instance=ExtResource("e14")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 5.35, 1.02, 4.285714)
+metadata/word_key = "jump rope"
+metadata/learning_object = true
+
+[node name="Basketball_Hoop" type="Node3D" parent="." unique_id=742148853 instance=ExtResource("e15")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 5.35, 0.1, 7.142857)
+metadata/word_key = "basketball hoop"
+metadata/learning_object = true
+
+[node name="DisplayTopgoal_72" type="MeshInstance3D" parent="." unique_id=1425512247]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.35, 0.96, 10)
+material_override = SubResource("r23")
+mesh = SubResource("r72")
+
+[node name="DisplayBodygoal" type="StaticBody3D" parent="." unique_id=967710040]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodygoal" unique_id=202704650]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.35, 0.96, 10)
+shape = SubResource("r73")
+
+[node name="DisplayLeg_74" type="MeshInstance3D" parent="." unique_id=31720253]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.8, 0.47, 10)
+material_override = SubResource("r26")
+mesh = SubResource("r74")
+
+[node name="DisplayLeg_75" type="MeshInstance3D" parent="." unique_id=1923668349]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.9, 0.47, 10)
+material_override = SubResource("r26")
+mesh = SubResource("r75")
+
+[node name="Goal" type="Node3D" parent="." unique_id=207480378 instance=ExtResource("e16")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 5.35, 1.02, 10)
+metadata/word_key = "goal"
+metadata/learning_object = true
+
+[node name="Section434" type="Label3D" parent="." unique_id=379320938]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -5.2, 2.85, -11)
+pixel_size = 0.0045
+modulate = Color(0.18, 0.24, 0.27, 1)
+text = "BALLS & RACKETS"
+font_size = 52
+outline_size = 0
+
+[node name="Section442" type="Label3D" parent="." unique_id=747056912]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 5.2, 2.85, -11)
+pixel_size = 0.0045
+modulate = Color(0.18, 0.24, 0.27, 1)
+text = "EQUIPMENT"
+font_size = 52
+outline_size = 0

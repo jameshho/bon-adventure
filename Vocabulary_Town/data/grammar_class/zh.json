@@ -1,0 +1,366 @@
+{
+  "about": "Grammar Classroom questions taught in Chinese (Lana's class in the school; scripts/learning/grammar_questions.gd reads them, scripts/learning/grammar_session.gd plays them; guide: docs/guides/GRAMMAR_CLASS.md). One file per taught language, named by its code in data/languages.json; a language without a file has no class. Each question: 'id' (unique, never reused), 'topic' (a key of 'topics'), 'level' (1 = beginner), 'text' (the sentence in this language with exactly one ___ blank), 'choices' (four different answers in this language; the order here does not matter, desks are shuffled), 'answer' (one of the choices: the answer is the word itself, so shuffling can never change it), 'explain' (one short reason per OTHER language: the player's native language), 'meaning' (optional: the sentence in each other language) and, for Chinese, 'noun' (the words.json key of the noun, so the class uses the game's own word). Every wrong choice must be impossible in that sentence, not just less usual; sentences where two answers work are left out (user decisions 6 Nov 2026: Chinese uses only measure words that are the same in Mandarin and Hong Kong writing; no Simplified Chinese; no made-up answers at runtime). Checked by tools/language_check.gd. Chinese and the Chinese explanations are Claude's draft, awaiting review by a speaker.",
+  "language": "zh",
+  "topics": {
+    "measure_words": {
+      "name": {
+        "en": "Measure words",
+        "es": "Clasificadores"
+      }
+    }
+  },
+  "questions": [
+    {
+      "id": "zh-001",
+      "topic": "measure_words",
+      "level": 1,
+      "text": "一 ___ 貓",
+      "choices": [
+        "隻",
+        "本",
+        "張",
+        "條"
+      ],
+      "answer": "隻",
+      "explain": {
+        "en": "隻 is used for cats and many other animals.",
+        "es": "隻 se usa con los gatos y con muchos otros animales."
+      },
+      "meaning": {
+        "en": "a cat",
+        "es": "un gato"
+      },
+      "noun": "cat"
+    },
+    {
+      "id": "zh-002",
+      "topic": "measure_words",
+      "level": 1,
+      "text": "一 ___ 書",
+      "choices": [
+        "本",
+        "杯",
+        "條",
+        "隻"
+      ],
+      "answer": "本",
+      "explain": {
+        "en": "本 is used for books.",
+        "es": "本 se usa con los libros."
+      },
+      "meaning": {
+        "en": "a book",
+        "es": "un libro"
+      },
+      "noun": "book"
+    },
+    {
+      "id": "zh-003",
+      "topic": "measure_words",
+      "level": 1,
+      "text": "一 ___ 地圖",
+      "choices": [
+        "張",
+        "本",
+        "隻",
+        "件"
+      ],
+      "answer": "張",
+      "explain": {
+        "en": "張 is used for flat things, such as maps.",
+        "es": "張 se usa con cosas planas, como los mapas."
+      },
+      "meaning": {
+        "en": "a map",
+        "es": "un mapa"
+      },
+      "noun": "map"
+    },
+    {
+      "id": "zh-004",
+      "topic": "measure_words",
+      "level": 1,
+      "text": "一 ___ 魚",
+      "choices": [
+        "條",
+        "本",
+        "張",
+        "件"
+      ],
+      "answer": "條",
+      "explain": {
+        "en": "條 is used for long, thin things, such as fish.",
+        "es": "條 se usa con cosas largas y delgadas, como los peces."
+      },
+      "meaning": {
+        "en": "a fish",
+        "es": "un pez"
+      },
+      "noun": "fish"
+    },
+    {
+      "id": "zh-005",
+      "topic": "measure_words",
+      "level": 1,
+      "text": "一 ___ 長褲",
+      "choices": [
+        "條",
+        "本",
+        "張",
+        "隻"
+      ],
+      "answer": "條",
+      "explain": {
+        "en": "條 is used for pants.",
+        "es": "條 se usa con los pantalones."
+      },
+      "meaning": {
+        "en": "a pair of pants",
+        "es": "unos pantalones"
+      },
+      "noun": "pants"
+    },
+    {
+      "id": "zh-006",
+      "topic": "measure_words",
+      "level": 1,
+      "text": "一 ___ 恤衫",
+      "choices": [
+        "件",
+        "條",
+        "本",
+        "張"
+      ],
+      "answer": "件",
+      "explain": {
+        "en": "件 is used for shirts and jackets.",
+        "es": "件 se usa con las camisas y las chaquetas."
+      },
+      "meaning": {
+        "en": "a shirt",
+        "es": "una camisa"
+      },
+      "noun": "shirt"
+    },
+    {
+      "id": "zh-007",
+      "topic": "measure_words",
+      "level": 1,
+      "text": "一 ___ 床",
+      "choices": [
+        "張",
+        "條",
+        "本",
+        "件"
+      ],
+      "answer": "張",
+      "explain": {
+        "en": "張 is used for beds and tables, which have flat tops.",
+        "es": "張 se usa con camas y mesas, que tienen la parte de arriba plana."
+      },
+      "meaning": {
+        "en": "a bed",
+        "es": "una cama"
+      },
+      "noun": "bed"
+    },
+    {
+      "id": "zh-008",
+      "topic": "measure_words",
+      "level": 1,
+      "text": "一 ___ 書枱",
+      "choices": [
+        "張",
+        "本",
+        "條",
+        "件"
+      ],
+      "answer": "張",
+      "explain": {
+        "en": "張 is used for tables and desks.",
+        "es": "張 se usa con mesas y escritorios."
+      },
+      "meaning": {
+        "en": "a desk",
+        "es": "un escritorio"
+      },
+      "noun": "desk"
+    },
+    {
+      "id": "zh-009",
+      "topic": "measure_words",
+      "level": 1,
+      "text": "一 ___ 鴨",
+      "choices": [
+        "隻",
+        "本",
+        "張",
+        "件"
+      ],
+      "answer": "隻",
+      "explain": {
+        "en": "隻 is used for ducks.",
+        "es": "隻 se usa con los patos."
+      },
+      "meaning": {
+        "en": "a duck",
+        "es": "un pato"
+      },
+      "noun": "duck"
+    },
+    {
+      "id": "zh-010",
+      "topic": "measure_words",
+      "level": 1,
+      "text": "一 ___ 馬",
+      "choices": [
+        "匹",
+        "本",
+        "張",
+        "件"
+      ],
+      "answer": "匹",
+      "explain": {
+        "en": "匹 is used for horses.",
+        "es": "匹 se usa con los caballos."
+      },
+      "meaning": {
+        "en": "a horse",
+        "es": "un caballo"
+      },
+      "noun": "horse"
+    },
+    {
+      "id": "zh-011",
+      "topic": "measure_words",
+      "level": 1,
+      "text": "一 ___ 牛",
+      "choices": [
+        "頭",
+        "本",
+        "張",
+        "件"
+      ],
+      "answer": "頭",
+      "explain": {
+        "en": "頭 is used for cattle.",
+        "es": "頭 se usa con las vacas."
+      },
+      "meaning": {
+        "en": "a cow",
+        "es": "una vaca"
+      },
+      "noun": "cow"
+    },
+    {
+      "id": "zh-012",
+      "topic": "measure_words",
+      "level": 1,
+      "text": "一 ___ 狗",
+      "choices": [
+        "隻",
+        "本",
+        "張",
+        "件"
+      ],
+      "answer": "隻",
+      "explain": {
+        "en": "隻 is used for dogs.",
+        "es": "隻 se usa con los perros."
+      },
+      "meaning": {
+        "en": "a dog",
+        "es": "un perro"
+      },
+      "noun": "dog"
+    },
+    {
+      "id": "zh-013",
+      "topic": "measure_words",
+      "level": 1,
+      "text": "一 ___ 蘋果",
+      "choices": [
+        "個",
+        "本",
+        "張",
+        "件"
+      ],
+      "answer": "個",
+      "explain": {
+        "en": "個 is the general measure word; apples take it.",
+        "es": "個 es el clasificador general; se usa con las manzanas."
+      },
+      "meaning": {
+        "en": "an apple",
+        "es": "una manzana"
+      },
+      "noun": "apple"
+    },
+    {
+      "id": "zh-014",
+      "topic": "measure_words",
+      "level": 1,
+      "text": "一 ___ 刀",
+      "choices": [
+        "把",
+        "本",
+        "件",
+        "杯"
+      ],
+      "answer": "把",
+      "explain": {
+        "en": "把 is used for things held by a handle.",
+        "es": "把 se usa con cosas que se agarran por el mango."
+      },
+      "meaning": {
+        "en": "a knife",
+        "es": "un cuchillo"
+      },
+      "noun": "knife"
+    },
+    {
+      "id": "zh-015",
+      "topic": "measure_words",
+      "level": 1,
+      "text": "一 ___ 水",
+      "choices": [
+        "杯",
+        "本",
+        "張",
+        "件"
+      ],
+      "answer": "杯",
+      "explain": {
+        "en": "杯 means a glass of: a glass of water.",
+        "es": "杯 significa «un vaso de»: un vaso de agua."
+      },
+      "meaning": {
+        "en": "a glass of water",
+        "es": "un vaso de agua"
+      },
+      "noun": "water"
+    },
+    {
+      "id": "zh-016",
+      "topic": "measure_words",
+      "level": 1,
+      "text": "一 ___ 碗",
+      "choices": [
+        "個",
+        "本",
+        "張",
+        "條"
+      ],
+      "answer": "個",
+      "explain": {
+        "en": "個 is the general measure word; bowls take it.",
+        "es": "個 es el clasificador general; se usa con los tazones."
+      },
+      "meaning": {
+        "en": "a bowl",
+        "es": "un tazón"
+      },
+      "noun": "bowl"
+    }
+  ]
+}

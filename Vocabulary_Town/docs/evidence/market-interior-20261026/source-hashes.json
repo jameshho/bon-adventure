@@ -1,0 +1,8 @@
+{
+  "scripts/world/library_market_interiors.gd": "4a88ade1b026e4085d39a97f7bf38f083935f0898808120c2e4a1de9849b3f03",
+  "scripts/world/world_refinements.gd": "3f64892cb2948255be9c3017af39bc257160f3e18d2d249e203c3b818b0c81a6",
+  "scripts/world/reference_world_layout.gd": "f532af1ce3d25d06c4bf528a655bf16e837478d33af6247ce5ed9556c7ee0573",
+  "scripts/world/building_exteriors.gd": "38b12060b6bc8e1c283bc958adda4d5c39eed7b8287c85cc6362c603b3cb6423",
+  "docs/check_market_interior.gd": "28c0d7dad575fd486b89a979dcac04c166d8907f3d21bad7e1d487fe07f949e1",
+  "docs/evidence/town-checks/capture_market_interior.gd": "f32e0b9c8dcbb2eba1cd7630bee8991d1094b72367f6da9d583b95e441d619d6"
+}

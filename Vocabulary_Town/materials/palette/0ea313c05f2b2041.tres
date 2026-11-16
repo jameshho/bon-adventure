@@ -1,0 +1,7 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[resource]
+resource_name = "Bronze gold shield"
+albedo_color = Color(0.86, 0.64, 0.22, 1)
+metallic = 0.54
+roughness = 0.31

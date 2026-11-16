@@ -1,0 +1,116 @@
+{
+  "note": "Outfits for the Home plush characters, built by scripts/characters/plush_costume.gd. species: per-scene fit anchors in plush model space (+Y up, faces -Z, +X is the character's right; right-side values, mirrored for the left). collar_y is the top of a garment below the chin and any hanging ears; shoulder/hand are the arm root and paw tip; hide lists parts hidden while a piece is worn; hide and press are keyed by piece (cap, straw_hat, chef_hat, shirt); tuck lists parts pulled inside the body below collar_y while a piece is worn (Leo's mane goes under the shirt); press lists hair pressed flat under the cap, and hat_sink lowers the cap into that hair. Widths are not stored: garments are fitted to each body's measured mesh, fur and wool included. outfits: pieces in build order; colors are hex; layer 0 sits on the body, layer 1 over layer 0. Spot names: left_chest, right_chest, left_badge, right_badge, left_hip, right_hip, or [x share of half-width (negative = character's left), y offset from collar_y].",
+  "species": {
+    "pig_plush": {"collar_y": 1.30, "shoulder": [0.70, 0.92, -0.04], "hand": [0.935, 0.854, -0.04]},
+    "BonBon": {"collar_y": 1.30, "shoulder": [0.70, 0.92, -0.04], "hand": [0.935, 0.854, -0.04]},
+    "lion_plush": {"collar_y": 1.22, "shoulder": [0.55, 1.04, 0.0], "hand": [0.78, 0.811, 0.0], "tuck": {"shirt": ["Mane/Front", "Mane/Back"]}, "press": {"cap": ["Mane/Front", "Mane/Back"], "straw_hat": ["Mane/Front", "Mane/Back"], "chef_hat": ["Mane/Front", "Mane/Back"]}, "hat_sink": 0.08},
+    "bear_plush": {"collar_y": 1.30, "shoulder": [0.633, 1.18, 0.0], "hand": [0.889, 0.924, 0.0]},
+    "cat_plush": {"collar_y": 1.28, "shoulder": [0.538, 1.08, 0.0], "hand": [0.768, 0.85, 0.0]},
+    "samoyed_plush": {"collar_y": 1.30, "shoulder": [0.656, 1.22, 0.0], "hand": [0.913, 0.964, 0.0]},
+    "sheep_plush": {"collar_y": 1.20, "shoulder": [0.606, 1.04, 0.0], "hand": [0.801, 0.846, 0.0], "press": {"cap": ["Torso/Visual"], "straw_hat": ["Torso/Visual"], "chef_hat": ["Torso/Visual"]}, "hat_sink": 0.1},
+    "golden_plush": {"collar_y": 1.25, "shoulder": [0.56, 1.20, 0.0], "hand": [0.803, 0.957, 0.0]},
+    "beagle_plush": {"collar_y": 1.24, "shoulder": [0.486, 1.16, 0.0], "hand": [0.715, 0.93, 0.0]},
+    "crocodile_plush": {"collar_y": 1.22, "shoulder": [0.575, 1.16, 0.0], "hand": [0.832, 0.904, 0.0], "hide": {"cap": ["Head/Spikes"], "straw_hat": ["Head/Spikes"], "chef_hat": ["Head/Spikes"]}}
+  },
+  "outfits": {
+    "shopkeeper": {"pieces": [
+      {"piece": "shirt", "color": "fafafa", "sleeve": 0.2, "bottom": 0.5, "collar": true},
+      {"piece": "apron", "color": "2f7d57", "layer": 1, "pocket": true, "bib": 0.3},
+      {"piece": "name_tag", "at": [0.17, -0.27], "layer": 1, "stripe": "d9534a"},
+      {"piece": "pen", "at": [0.10, -0.70], "layer": 1, "color": "2d5aa0"}
+    ]},
+    "furniture_shopkeeper": {"pieces": [
+      {"piece": "shirt", "color": "fafafa", "sleeve": 0.2, "bottom": 0.5, "collar": true},
+      {"piece": "apron", "color": "2f7d63", "layer": 1, "pocket": true, "bib": 0.3},
+      {"piece": "name_tag", "at": [0.17, -0.27], "layer": 1, "stripe": "c98f4e"},
+      {"piece": "pen", "at": [0.10, -0.70], "layer": 1, "color": "8a5a2b"}
+    ]},
+    "sports_shopkeeper": {"pieces": [
+      {"piece": "shirt", "color": "fafafa", "sleeve": 0.2, "bottom": 0.5, "collar": true},
+      {"piece": "apron", "color": "2c4f86", "layer": 1, "pocket": true, "bib": 0.3},
+      {"piece": "name_tag", "at": [0.17, -0.27], "layer": 1, "stripe": "ec7b2c"},
+      {"piece": "pen", "at": [0.10, -0.70], "layer": 1, "color": "d8453a"}
+    ]},
+    "clothing_shopkeeper": {"pieces": [
+      {"piece": "shirt", "color": "fafafa", "sleeve": 0.2, "bottom": 0.5, "collar": true},
+      {"piece": "apron", "color": "8e2f3c", "layer": 1, "pocket": true, "bib": 0.3},
+      {"piece": "name_tag", "at": [0.17, -0.27], "layer": 1, "stripe": "e0605c"},
+      {"piece": "pen", "at": [0.10, -0.70], "layer": 1, "color": "2c4f86"}
+    ]},
+    "grocery_shopkeeper": {"pieces": [
+      {"piece": "shirt", "color": "fafafa", "sleeve": 0.2, "bottom": 0.5, "collar": true},
+      {"piece": "apron", "color": "2b5a8c", "layer": 1, "pocket": true, "bib": 0.3},
+      {"piece": "name_tag", "at": [0.17, -0.27], "layer": 1, "stripe": "e8b04b"},
+      {"piece": "pen", "at": [0.10, -0.70], "layer": 1, "color": "d8453a"}
+    ]},
+    "police": {"pieces": [
+      {"piece": "shirt", "color": "2c3e66", "sleeve": 0.45, "bottom": 0.45, "collar": true, "buttons": "c9ced6", "pockets": ["left_chest", "right_chest"], "flaps": true},
+      {"piece": "belt", "color": "1b1c22", "buckle": "c9ced6", "y": 0.48},
+      {"piece": "badge", "at": "left_badge", "color": "e2bd4f"},
+      {"piece": "cap", "color": "2c3e66", "band": "1a1f2b", "visor": "15171c", "badge": "e2bd4f"}
+    ]},
+    "doctor": {"pieces": [
+      {"piece": "shirt", "color": "9fcde3", "bottom": 0.8, "v": true, "dip": 0.12, "dip_width": 0.45},
+      {"piece": "shirt", "color": "eef3f7", "layer": 1, "sleeve": 0.82, "bottom": 0.28, "v": true, "dip": 0.36, "dip_width": 0.6, "hem": 0.024, "buttons": "cfd6de", "pockets": [{"at": [-0.5, -0.3], "size": [0.13, 0.11]}, "left_hip", "right_hip"], "placket": true},
+      {"piece": "pen", "at": [-0.56, -0.33], "layer": 1, "color": "2d5aa0"},
+      {"piece": "pen", "at": [-0.46, -0.33], "layer": 1, "color": "d9534a"},
+      {"piece": "stethoscope", "layer": 1, "thickness": 0.032, "chest_piece": 0.13},
+      {"piece": "name_tag", "at": "right_badge", "layer": 1, "stripe": "3b7fc4"}
+    ]},
+    "waiter": {"pieces": [
+      {"piece": "shirt", "color": "26262b", "sleeve": 0.75, "bottom": 0.42, "collar": true, "buttons": "5c5c64", "pockets": ["left_chest"]},
+      {"piece": "notepad", "at": "left_chest"}
+    ]},
+    "driver": {"pieces": [
+      {"piece": "shirt", "color": "9cc3e6", "sleeve": 0.42, "bottom": 0.5, "collar": true},
+      {"piece": "tie", "color": "1f2a44"},
+      {"piece": "shirt", "color": "2c3550", "layer": 1, "bottom": 0.42, "v": true, "dip": 0.32, "dip_width": 0.5, "hem": 0.02, "buttons": "c9ced6", "button_count": 3, "pockets": ["left_hip", "right_hip"]},
+      {"piece": "name_tag", "at": "left_badge", "layer": 1, "stripe": "2c3550"},
+      {"piece": "cap", "color": "2c3550", "band": "1a1f2b", "visor": "15171c", "cord": "e2bd4f", "emblem": "bus", "badge": "fbfbf8"}
+    ]},
+    "teacher": {"pieces": [
+      {"piece": "shirt", "color": "fbfaf5", "bottom": 0.5, "collar": true},
+      {"piece": "tie", "color": "b83a3a"},
+      {"piece": "shirt", "color": "d9b98a", "layer": 1, "bottom": 0.46, "v": true, "dip": 0.28, "dip_width": 0.4, "hem": 0.014},
+      {"piece": "shirt", "color": "7a5236", "layer": 2, "sleeve": 0.82, "bottom": 0.4, "v": true, "dip": 0.44, "dip_width": 0.72, "hem": 0.02, "lapels": 0.1, "buttons": "4a3121", "button_count": 1, "pockets": ["left_hip", "right_hip"]}
+    ]},
+    "gardener": {"pieces": [
+      {"piece": "shirt", "color": "fbf7ee", "sleeve": 0.4, "bottom": 0.5, "collar": true},
+      {"piece": "overalls", "color": "6a9a3c", "buttons": "f2c33d", "bib": 0.34},
+      {"piece": "straw_hat", "color": "e8c27a", "band": "8a5a2b", "brim": 0.86}
+    ]},
+    "pilot": {"pieces": [
+      {"piece": "shirt", "color": "fbfbf8", "bottom": 0.5, "collar": true},
+      {"piece": "tie", "color": "1f2a44"},
+      {"piece": "shirt", "color": "253460", "layer": 1, "sleeve": 0.82, "bottom": 0.4, "v": true, "dip": 0.24, "dip_width": 0.5, "hem": 0.02, "lapels": 0.12, "buttons": "e2bd4f", "button_columns": [-0.24, 0.24], "button_count": 3, "button_size": 0.026, "button_step": 0.12, "cuff_stripes": "e2bd4f", "stripe_count": 2},
+      {"piece": "wings", "at": "left_badge", "layer": 1},
+      {"piece": "cap", "color": "253460", "band": "1a1f2b", "visor": "15171c", "cord": "e2bd4f", "emblem": "wings"}
+    ]},
+    "businessman": {"pieces": [
+      {"piece": "shirt", "color": "fbfbf8", "bottom": 0.5, "collar": true},
+      {"piece": "tie", "color": "2f5fa7"},
+      {"piece": "shirt", "color": "3a3a40", "layer": 1, "sleeve": 0.82, "bottom": 0.4, "v": true, "dip": 0.42, "dip_width": 0.62, "hem": 0.02, "lapels": 0.12, "buttons": "222226", "button_count": 2, "pockets": ["left_hip", "right_hip"], "flaps": true},
+      {"piece": "pocket_square", "at": [-0.42, -0.2], "layer": 1}
+    ]},
+    "chef": {"pieces": [
+      {"piece": "shirt", "color": "222226", "sleeve": 0.82, "bottom": 0.38, "dip": 0.03, "stand_collar": true, "hem": 0.02, "buttons": "d8d8d8", "button_columns": [-0.3, 0.3], "button_count": 3, "button_size": 0.034, "button_step": 0.14},
+      {"piece": "chef_hat", "color": "222226", "height": 0.24}
+    ]},
+    "warehouse_worker": {"pieces": [
+      {"piece": "shirt", "color": "5d6f86", "sleeve": 0.42, "bottom": 0.48, "collar": true, "buttons": "c9ced6", "pockets": ["left_chest", "right_chest"]},
+      {"piece": "shirt", "color": "f2c230", "layer": 1, "bottom": 0.44, "v": true, "dip": 0.3, "dip_width": 0.5, "hem": 0.02, "pockets": ["left_hip", "right_hip"]},
+      {"piece": "name_tag", "at": "left_badge", "layer": 1, "stripe": "3f464e"},
+      {"piece": "cap", "color": "3f464e", "band": "2d3138", "visor": "f2c230"}
+    ]},
+    "fortune_teller": {"note": "Madame Luna, the Mystery House fortune-teller (cat plush, 9 Nov 2026): a long purple robe with gold buttons and cuffs, a gold belt, a tall pointed hat.", "pieces": [
+      {"piece": "shirt", "color": "5b2fa3", "sleeve": 0.9, "bottom": 0.24, "dip": 0.05, "hem": 0.03, "cuff_stripes": "e2b54e", "buttons": "e2b54e", "button_count": 3},
+      {"piece": "belt", "y": 0.62, "color": "e2b54e", "buckle": "b98cff"},
+      {"piece": "wizard_hat", "color": "4a2a86", "height": 0.6}
+    ]},
+    "librarian": {"note": "Rosa, the library's librarian (samoyed plush, 11 Nov 2026): a cream collared blouse under a plum cardigan with gold buttons and hip pockets, a green-striped name tag.", "pieces": [
+      {"piece": "shirt", "color": "f6efe2", "bottom": 0.5, "collar": true},
+      {"piece": "shirt", "color": "7a3f6e", "layer": 1, "sleeve": 0.8, "bottom": 0.42, "v": true, "dip": 0.34, "dip_width": 0.55, "hem": 0.02, "buttons": "e2c27a", "button_count": 3, "pockets": ["left_hip", "right_hip"]},
+      {"piece": "name_tag", "at": "left_badge", "layer": 1, "stripe": "2f7d57"}
+    ]}
+  }
+}

@@ -1,0 +1,765 @@
+[gd_scene format=3]
+
+[ext_resource type="Material" path="res://scenes/animals/shared/color_bdc799ff.tres" id="1_gr1ct"]
+[ext_resource type="BoxMesh" path="res://scenes/animals/shared/box_000.tres" id="2_3sys7"]
+[ext_resource type="Material" path="res://scenes/animals/shared/color_b58c64ff.tres" id="3_j4lcc"]
+[ext_resource type="BoxMesh" path="res://scenes/animals/shared/box_001.tres" id="4_hjicd"]
+[ext_resource type="BoxMesh" path="res://scenes/animals/shared/box_002.tres" id="5_l40to"]
+[ext_resource type="BoxMesh" path="res://scenes/animals/shared/box_003.tres" id="6_vkoe5"]
+[ext_resource type="BoxMesh" path="res://scenes/animals/shared/box_004.tres" id="7_cx4o3"]
+[ext_resource type="Material" path="res://scenes/animals/shared/color_86684fff.tres" id="8_wntcv"]
+[ext_resource type="BoxMesh" path="res://scenes/animals/shared/box_005.tres" id="9_rvx3p"]
+[ext_resource type="Material" path="res://scenes/animals/shared/color_386d60ff.tres" id="10_mtkx1"]
+[ext_resource type="BoxMesh" path="res://scenes/animals/shared/box_006.tres" id="11_45p4f"]
+[ext_resource type="Material" path="res://scenes/animals/shared/color_c9bb87ff.tres" id="12_lbqtc"]
+[ext_resource type="BoxMesh" path="res://scenes/animals/shared/box_007.tres" id="13_as3dq"]
+[ext_resource type="BoxMesh" path="res://scenes/animals/shared/box_008.tres" id="14_woy5g"]
+[ext_resource type="BoxMesh" path="res://scenes/animals/shared/box_009.tres" id="15_65jjj"]
+[ext_resource type="Material" path="res://scenes/animals/shared/color_ddcba7ff.tres" id="16_qayd8"]
+[ext_resource type="BoxMesh" path="res://scenes/animals/shared/box_010.tres" id="17_dlycp"]
+[ext_resource type="BoxMesh" path="res://scenes/animals/shared/box_011.tres" id="18_y153i"]
+[ext_resource type="Material" path="res://scenes/animals/shared/color_a88560ff.tres" id="19_uu74d"]
+[ext_resource type="BoxMesh" path="res://scenes/animals/shared/box_012.tres" id="20_dxayt"]
+[ext_resource type="PackedScene" path="res://scenes/animals/tiger.tscn" id="23_llqqr"]
+[ext_resource type="PackedScene" path="res://scenes/animals/elephant.tscn" id="24_bbfwi"]
+[ext_resource type="PackedScene" path="res://scenes/animals/bear.tscn" id="25_veg3p"]
+[ext_resource type="PackedScene" path="res://scenes/animals/monkey.tscn" id="26_vcskv"]
+[ext_resource type="PackedScene" path="res://scenes/animals/snake.tscn" id="27_selgu"]
+[ext_resource type="PackedScene" path="res://scenes/animals/giraffe.tscn" id="28_7vyk3"]
+[ext_resource type="PackedScene" path="res://scenes/animals/cow.tscn" id="29_x73mf"]
+[ext_resource type="PackedScene" path="res://scenes/animals/pig.tscn" id="30_bg1ct"]
+[ext_resource type="PackedScene" path="res://scenes/animals/horse.tscn" id="31_12x01"]
+[ext_resource type="PackedScene" path="res://scenes/animals/hen.tscn" id="32_5b6gg"]
+[ext_resource type="PackedScene" path="res://scenes/animals/duck.tscn" id="33_5051a"]
+[ext_resource type="PackedScene" path="res://scenes/animals/sheep.tscn" id="34_mih2y"]
+[ext_resource type="PackedScene" path="res://scenes/animals/dog.tscn" id="35_t41mo"]
+[ext_resource type="PackedScene" path="res://scenes/animals/cat.tscn" id="36_dvkn0"]
+[ext_resource type="PackedScene" path="res://scenes/animals/rabbit.tscn" id="37_fw1g8"]
+[ext_resource type="PackedScene" path="res://scenes/animals/field_mouse.tscn" id="38_n3yxd"]
+[ext_resource type="PackedScene" path="res://scenes/animals/turtle.tscn" id="40_3kqth"]
+[ext_resource type="PackedScene" path="res://scenes/animals/fish.tscn" id="41_h2kae"]
+[ext_resource type="Material" path="res://scenes/animals/shared/color_8c6951ff.tres" id="42_hmajh"]
+[ext_resource type="BoxMesh" path="res://scenes/animals/shared/box_013.tres" id="43_akgke"]
+[ext_resource type="BoxMesh" path="res://scenes/animals/shared/box_014.tres" id="44_5f2nm"]
+[ext_resource type="Material" path="res://scenes/animals/shared/color_7f9c9dff.tres" id="45_ny0gt"]
+[ext_resource type="BoxMesh" path="res://scenes/animals/shared/box_015.tres" id="46_00jim"]
+[ext_resource type="Material" path="res://scenes/animals/shared/color_8bc5d0ff.tres" id="47_7772m"]
+[ext_resource type="BoxMesh" path="res://scenes/animals/shared/box_016.tres" id="48_x7brh"]
+[ext_resource type="Material" path="res://scenes/animals/shared/color_d9ba69ff.tres" id="49_8r0pb"]
+[ext_resource type="BoxMesh" path="res://scenes/animals/shared/box_017.tres" id="50_po1os"]
+
+[ext_resource type="PackedScene" path="res://scenes/world/zoo_gate.tscn" id="zoo_gate"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wcwnt"]
+size = Vector3(0.08, 1.1, 14)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qi2j6"]
+size = Vector3(12, 1.1, 0.08)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_i86g5"]
+size = Vector3(0.08, 1.1, 14)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cmob2"]
+size = Vector3(12, 1.1, 0.08)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_y8axr"]
+size = Vector3(0.08, 1.1, 10)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_f4x81"]
+size = Vector3(12, 1.1, 0.08)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ktviw"]
+size = Vector3(0.08, 1.1, 10)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4sdmc"]
+size = Vector3(12, 1.1, 0.08)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_a6yfe"]
+size = Vector3(0.14, 2.8, 0.14)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3u4hj"]
+size = Vector3(0.14, 2.8, 0.14)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2e6mh"]
+size = Vector3(0.14, 2.7, 0.14)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_v5iek"]
+size = Vector3(0.14, 2.7, 0.14)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_nse8p"]
+size = Vector3(2, 0.6, 0.75)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_uoi51"]
+size = Vector3(0.14, 2.7, 0.14)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_o4fnb"]
+size = Vector3(0.14, 2.7, 0.14)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4o18v"]
+size = Vector3(2, 0.6, 0.75)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_17mi8"]
+size = Vector3(1.5, 0.7, 0.8)
+
+[node name="ParkZoo" type="Node3D" unique_id=408499765]
+
+[node name="ANIMALES SALVAJES lawn" type="MeshInstance3D" parent="." unique_id=785304280]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34, 0.08, 76)
+material_override = ExtResource("1_gr1ct")
+mesh = ExtResource("2_3sys7")
+
+[node name="Fence rail" type="MeshInstance3D" parent="." unique_id=1461823798]
+transform = Transform3D(0.33333333, 0, 0, 0, 1, 0, 0, 0, 1, -38, 0.55, 69)
+material_override = ExtResource("3_j4lcc")
+mesh = ExtResource("4_hjicd")
+
+[node name="Fence rail2" type="MeshInstance3D" parent="." unique_id=965208812]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40, 0.55, 76)
+material_override = ExtResource("3_j4lcc")
+mesh = ExtResource("5_l40to")
+
+[node name="Fence rail3" type="MeshInstance3D" parent="." unique_id=632046431]
+transform = Transform3D(0.33333333, 0, 0, 0, 1, 0, 0, 0, 1, -38, 1.05, 69)
+material_override = ExtResource("3_j4lcc")
+mesh = ExtResource("4_hjicd")
+
+[node name="Fence rail4" type="MeshInstance3D" parent="." unique_id=1258763102]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40, 1.05, 76)
+material_override = ExtResource("3_j4lcc")
+mesh = ExtResource("5_l40to")
+
+[node name="Fence boundary" type="MeshInstance3D" parent="." unique_id=96616534]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40, 0.55, 76)
+visible = false
+material_override = ExtResource("3_j4lcc")
+mesh = ExtResource("6_vkoe5")
+
+[node name="@StaticBody3D@31" type="StaticBody3D" parent="Fence boundary" unique_id=760917831]
+
+[node name="@CollisionShape3D@32" type="CollisionShape3D" parent="Fence boundary/@StaticBody3D@31" unique_id=883853719]
+shape = SubResource("BoxShape3D_wcwnt")
+
+[node name="Fence boundary2" type="MeshInstance3D" parent="." unique_id=72979725]
+transform = Transform3D(0.33333333, 0, 0, 0, 1, 0, 0, 0, 1, -38, 0.55, 69)
+visible = false
+material_override = ExtResource("3_j4lcc")
+mesh = ExtResource("7_cx4o3")
+
+[node name="@StaticBody3D@33" type="StaticBody3D" parent="Fence boundary2" unique_id=286736626]
+
+[node name="@CollisionShape3D@34" type="CollisionShape3D" parent="Fence boundary2/@StaticBody3D@33" unique_id=1474269436]
+shape = SubResource("BoxShape3D_qi2j6")
+
+[node name="Fence post" type="MeshInstance3D" parent="." unique_id=604208063]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40, 0.65, 69)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post2" type="MeshInstance3D" parent="." unique_id=1476493902]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40, 0.65, 71)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post3" type="MeshInstance3D" parent="." unique_id=789035237]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40, 0.65, 73)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post4" type="MeshInstance3D" parent="." unique_id=960549712]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40, 0.65, 75)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post5" type="MeshInstance3D" parent="." unique_id=1465854905]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40, 0.65, 77)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post6" type="MeshInstance3D" parent="." unique_id=26205643]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40, 0.65, 79)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post7" type="MeshInstance3D" parent="." unique_id=1269084165]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40, 0.65, 81)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post8" type="MeshInstance3D" parent="." unique_id=1638730948]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40, 0.65, 83)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post9" type="MeshInstance3D" parent="." unique_id=403078769]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40, 0.65, 69)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post10" type="MeshInstance3D" parent="." unique_id=1858063327]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38, 0.65, 69)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post11" type="MeshInstance3D" parent="." unique_id=1531793552]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -36, 0.65, 69)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+
+[node name="Fence post13" type="MeshInstance3D" parent="." unique_id=828912031]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 0.65, 69)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post14" type="MeshInstance3D" parent="." unique_id=262297608]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0.65, 69)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post15" type="MeshInstance3D" parent="." unique_id=1880217643]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 0.65, 69)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence rail5" type="MeshInstance3D" parent="." unique_id=333091519]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34, 0.55, 83)
+material_override = ExtResource("3_j4lcc")
+mesh = ExtResource("4_hjicd")
+
+[node name="Fence rail6" type="MeshInstance3D" parent="." unique_id=203770582]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 0.55, 76)
+material_override = ExtResource("3_j4lcc")
+mesh = ExtResource("5_l40to")
+
+[node name="Fence rail7" type="MeshInstance3D" parent="." unique_id=1382416621]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34, 1.05, 83)
+material_override = ExtResource("3_j4lcc")
+mesh = ExtResource("4_hjicd")
+
+[node name="Fence rail8" type="MeshInstance3D" parent="." unique_id=1197215758]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 1.05, 76)
+material_override = ExtResource("3_j4lcc")
+mesh = ExtResource("5_l40to")
+
+[node name="Fence boundary3" type="MeshInstance3D" parent="." unique_id=161152607]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 0.55, 76)
+visible = false
+material_override = ExtResource("3_j4lcc")
+mesh = ExtResource("6_vkoe5")
+
+[node name="@StaticBody3D@35" type="StaticBody3D" parent="Fence boundary3" unique_id=1230266951]
+
+[node name="@CollisionShape3D@36" type="CollisionShape3D" parent="Fence boundary3/@StaticBody3D@35" unique_id=564612919]
+shape = SubResource("BoxShape3D_i86g5")
+
+[node name="Fence boundary4" type="MeshInstance3D" parent="." unique_id=979533367]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34, 0.55, 83)
+visible = false
+material_override = ExtResource("3_j4lcc")
+mesh = ExtResource("7_cx4o3")
+
+[node name="@StaticBody3D@37" type="StaticBody3D" parent="Fence boundary4" unique_id=931178384]
+
+[node name="@CollisionShape3D@38" type="CollisionShape3D" parent="Fence boundary4/@StaticBody3D@37" unique_id=1696553546]
+shape = SubResource("BoxShape3D_cmob2")
+
+[node name="Fence post16" type="MeshInstance3D" parent="." unique_id=1412225810]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 0.65, 69)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post17" type="MeshInstance3D" parent="." unique_id=652829620]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 0.65, 71)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post18" type="MeshInstance3D" parent="." unique_id=827870573]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 0.65, 73)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post19" type="MeshInstance3D" parent="." unique_id=471655773]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 0.65, 75)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post20" type="MeshInstance3D" parent="." unique_id=159594961]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 0.65, 77)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post21" type="MeshInstance3D" parent="." unique_id=1214556332]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 0.65, 79)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post22" type="MeshInstance3D" parent="." unique_id=53388559]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 0.65, 81)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post23" type="MeshInstance3D" parent="." unique_id=304894699]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 0.65, 83)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post24" type="MeshInstance3D" parent="." unique_id=26236775]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40, 0.65, 83)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post25" type="MeshInstance3D" parent="." unique_id=268849751]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38, 0.65, 83)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post26" type="MeshInstance3D" parent="." unique_id=517217809]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -36, 0.65, 83)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post27" type="MeshInstance3D" parent="." unique_id=1473147899]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34, 0.65, 83)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post28" type="MeshInstance3D" parent="." unique_id=271303096]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 0.65, 83)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post29" type="MeshInstance3D" parent="." unique_id=834219987]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0.65, 83)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post30" type="MeshInstance3D" parent="." unique_id=499383285]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 0.65, 83)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Habitat sign" type="MeshInstance3D" parent="." unique_id=357003433]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34, 1.8, 69)
+material_override = ExtResource("10_mtkx1")
+mesh = ExtResource("11_45p4f")
+
+[node name="@Label3D@39" type="Label3D" parent="." unique_id=1480224985]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -34, 1.8, 68.92)
+pixel_size = 0.008
+modulate = Color(1, 0.9529412, 0.84313726, 1)
+text = "ANIMALES SALVAJES"
+
+[node name="LA GRANJA lawn" type="MeshInstance3D" parent="." unique_id=262670724]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34, 0.08, 59)
+material_override = ExtResource("12_lbqtc")
+mesh = ExtResource("13_as3dq")
+
+[node name="Fence rail9" type="MeshInstance3D" parent="." unique_id=1494342504]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34, 0.55, 54)
+material_override = ExtResource("3_j4lcc")
+mesh = ExtResource("4_hjicd")
+
+[node name="Fence rail10" type="MeshInstance3D" parent="." unique_id=1638872224]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40, 0.55, 59)
+material_override = ExtResource("3_j4lcc")
+mesh = ExtResource("14_woy5g")
+
+[node name="Fence rail11" type="MeshInstance3D" parent="." unique_id=2137072144]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34, 1.05, 54)
+material_override = ExtResource("3_j4lcc")
+mesh = ExtResource("4_hjicd")
+
+[node name="Fence rail12" type="MeshInstance3D" parent="." unique_id=183767630]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40, 1.05, 59)
+material_override = ExtResource("3_j4lcc")
+mesh = ExtResource("14_woy5g")
+
+[node name="Fence boundary5" type="MeshInstance3D" parent="." unique_id=1189193863]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40, 0.55, 59)
+visible = false
+material_override = ExtResource("3_j4lcc")
+mesh = ExtResource("15_65jjj")
+
+[node name="@StaticBody3D@40" type="StaticBody3D" parent="Fence boundary5" unique_id=335815096]
+
+[node name="@CollisionShape3D@41" type="CollisionShape3D" parent="Fence boundary5/@StaticBody3D@40" unique_id=1072087942]
+shape = SubResource("BoxShape3D_y8axr")
+
+[node name="Fence boundary6" type="MeshInstance3D" parent="." unique_id=768228988]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34, 0.55, 54)
+visible = false
+material_override = ExtResource("3_j4lcc")
+mesh = ExtResource("7_cx4o3")
+
+[node name="@StaticBody3D@42" type="StaticBody3D" parent="Fence boundary6" unique_id=1746664444]
+
+[node name="@CollisionShape3D@43" type="CollisionShape3D" parent="Fence boundary6/@StaticBody3D@42" unique_id=1904775860]
+shape = SubResource("BoxShape3D_f4x81")
+
+[node name="Fence post31" type="MeshInstance3D" parent="." unique_id=1978800508]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40, 0.65, 54)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post32" type="MeshInstance3D" parent="." unique_id=2019292059]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40, 0.65, 56)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post33" type="MeshInstance3D" parent="." unique_id=1511725961]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40, 0.65, 58)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post34" type="MeshInstance3D" parent="." unique_id=950271143]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40, 0.65, 60)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post35" type="MeshInstance3D" parent="." unique_id=152995493]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40, 0.65, 62)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post36" type="MeshInstance3D" parent="." unique_id=486323087]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40, 0.65, 64)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post37" type="MeshInstance3D" parent="." unique_id=924450093]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40, 0.65, 54)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post38" type="MeshInstance3D" parent="." unique_id=1706451617]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38, 0.65, 54)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post39" type="MeshInstance3D" parent="." unique_id=2059314101]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -36, 0.65, 54)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post40" type="MeshInstance3D" parent="." unique_id=589747809]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34, 0.65, 54)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post41" type="MeshInstance3D" parent="." unique_id=2097579938]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 0.65, 54)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post42" type="MeshInstance3D" parent="." unique_id=1706457459]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0.65, 54)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post43" type="MeshInstance3D" parent="." unique_id=310078284]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 0.65, 54)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence rail13" type="MeshInstance3D" parent="." unique_id=1192935060]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34, 0.55, 64)
+material_override = ExtResource("3_j4lcc")
+mesh = ExtResource("4_hjicd")
+
+[node name="Fence rail14" type="MeshInstance3D" parent="." unique_id=252413026]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 0.55, 59)
+material_override = ExtResource("3_j4lcc")
+mesh = ExtResource("14_woy5g")
+
+[node name="Fence rail15" type="MeshInstance3D" parent="." unique_id=253112191]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34, 1.05, 64)
+material_override = ExtResource("3_j4lcc")
+mesh = ExtResource("4_hjicd")
+
+[node name="Fence rail16" type="MeshInstance3D" parent="." unique_id=1064548977]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 1.05, 59)
+material_override = ExtResource("3_j4lcc")
+mesh = ExtResource("14_woy5g")
+
+[node name="Fence boundary7" type="MeshInstance3D" parent="." unique_id=448277731]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 0.55, 59)
+visible = false
+material_override = ExtResource("3_j4lcc")
+mesh = ExtResource("15_65jjj")
+
+[node name="@StaticBody3D@44" type="StaticBody3D" parent="Fence boundary7" unique_id=106754845]
+
+[node name="@CollisionShape3D@45" type="CollisionShape3D" parent="Fence boundary7/@StaticBody3D@44" unique_id=151655454]
+shape = SubResource("BoxShape3D_ktviw")
+
+[node name="Fence boundary8" type="MeshInstance3D" parent="." unique_id=247778065]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34, 0.55, 64)
+visible = false
+material_override = ExtResource("3_j4lcc")
+mesh = ExtResource("7_cx4o3")
+
+[node name="@StaticBody3D@46" type="StaticBody3D" parent="Fence boundary8" unique_id=2018173142]
+
+[node name="@CollisionShape3D@47" type="CollisionShape3D" parent="Fence boundary8/@StaticBody3D@46" unique_id=1003793325]
+shape = SubResource("BoxShape3D_4sdmc")
+
+[node name="Fence post44" type="MeshInstance3D" parent="." unique_id=1829856318]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 0.65, 54)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post45" type="MeshInstance3D" parent="." unique_id=514136500]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 0.65, 56)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post46" type="MeshInstance3D" parent="." unique_id=2109362656]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 0.65, 58)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post47" type="MeshInstance3D" parent="." unique_id=1517438397]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 0.65, 60)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post48" type="MeshInstance3D" parent="." unique_id=485880265]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 0.65, 62)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post49" type="MeshInstance3D" parent="." unique_id=1892503842]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 0.65, 64)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post50" type="MeshInstance3D" parent="." unique_id=1018106167]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40, 0.65, 64)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post51" type="MeshInstance3D" parent="." unique_id=165123878]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38, 0.65, 64)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post52" type="MeshInstance3D" parent="." unique_id=1705107513]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -36, 0.65, 64)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post53" type="MeshInstance3D" parent="." unique_id=1803050794]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34, 0.65, 64)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post54" type="MeshInstance3D" parent="." unique_id=1219066587]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 0.65, 64)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post55" type="MeshInstance3D" parent="." unique_id=992747701]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0.65, 64)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Fence post56" type="MeshInstance3D" parent="." unique_id=2146075313]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 0.65, 64)
+material_override = ExtResource("8_wntcv")
+mesh = ExtResource("9_rvx3p")
+
+[node name="Habitat sign2" type="MeshInstance3D" parent="." unique_id=577861810]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34, 1.8, 54)
+material_override = ExtResource("10_mtkx1")
+mesh = ExtResource("11_45p4f")
+
+[node name="@Label3D@48" type="Label3D" parent="." unique_id=290851526]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -34, 1.8, 53.92)
+pixel_size = 0.008
+modulate = Color(1, 0.9529412, 0.84313726, 1)
+text = "LA GRANJA"
+
+[node name="Visitor walk" type="MeshInstance3D" parent="." unique_id=271893694]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26, 0.11, 68.5)
+material_override = ExtResource("16_qayd8")
+mesh = ExtResource("17_dlycp")
+
+[node name="Zoo welcome" type="MeshInstance3D" parent="." unique_id=1517315045]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26, 2.8, 64.9)
+material_override = ExtResource("10_mtkx1")
+mesh = ExtResource("18_y153i")
+
+[node name="@Label3D@49" type="Label3D" parent="." unique_id=145685238]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -26, 2.8, 64.79)
+pixel_size = 0.008
+text = "EL ZOOLÓGICO"
+font_size = 40
+
+[node name="Welcome post" type="MeshInstance3D" parent="." unique_id=1318754945]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28.5, 1.4, 64.9)
+material_override = ExtResource("19_uu74d")
+mesh = ExtResource("20_dxayt")
+
+[node name="@StaticBody3D@50" type="StaticBody3D" parent="Welcome post" unique_id=155984949]
+
+[node name="@CollisionShape3D@51" type="CollisionShape3D" parent="Welcome post/@StaticBody3D@50" unique_id=1608103133]
+shape = SubResource("BoxShape3D_a6yfe")
+
+[node name="Welcome post2" type="MeshInstance3D" parent="." unique_id=1871886970]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23.5, 1.4, 64.9)
+material_override = ExtResource("19_uu74d")
+mesh = ExtResource("20_dxayt")
+
+[node name="@StaticBody3D@52" type="StaticBody3D" parent="Welcome post2" unique_id=1849340587]
+
+[node name="@CollisionShape3D@53" type="CollisionShape3D" parent="Welcome post2/@StaticBody3D@52" unique_id=1644272974]
+shape = SubResource("BoxShape3D_3u4hj")
+
+[node name="Tiger" parent="." unique_id=180999407 instance=ExtResource("23_llqqr")]
+position = Vector3(-31, 0.14744084, 71)
+
+[node name="Elephant" parent="." unique_id=1724719397 instance=ExtResource("24_bbfwi")]
+position = Vector3(-37, 0.20191915, 74)
+
+[node name="Bear" parent="." unique_id=762423541 instance=ExtResource("25_veg3p")]
+position = Vector3(-31, 0.17243376, 74)
+
+[node name="Monkey" parent="." unique_id=951361360 instance=ExtResource("26_vcskv")]
+position = Vector3(-37, 0.13041095, 77)
+
+[node name="Snake" parent="." unique_id=445586350 instance=ExtResource("27_selgu")]
+position = Vector3(-31, 0.13050264, 77)
+
+[node name="Giraffe" parent="." unique_id=1161216080 instance=ExtResource("28_7vyk3")]
+position = Vector3(-37, 0.15731585, 80)
+
+[node name="Cow" parent="." unique_id=1478122261 instance=ExtResource("29_x73mf")]
+position = Vector3(-37, 0.11565857, 56.2)
+
+[node name="Pig" parent="." unique_id=1704436895 instance=ExtResource("30_bg1ct")]
+position = Vector3(-31, 0.12746048, 56.2)
+
+[node name="Horse" parent="." unique_id=2028146025 instance=ExtResource("31_12x01")]
+position = Vector3(-37, 0.13332987, 58.9)
+
+[node name="Hen" parent="." unique_id=149915057 instance=ExtResource("32_5b6gg")]
+position = Vector3(-31, 0.13239461, 58.9)
+
+[node name="Duck" parent="." unique_id=1101207445 instance=ExtResource("33_5051a")]
+position = Vector3(-37, 0.13238026, 61.6)
+
+[node name="Sheep" parent="." unique_id=946860960 instance=ExtResource("34_mih2y")]
+position = Vector3(-31, 0.12524762, 61.6)
+
+[node name="Dog" parent="." unique_id=1779450896 instance=ExtResource("35_t41mo")]
+position = Vector3(-20, 0.14437236, 65)
+
+[node name="Cat" parent="." unique_id=1572763076 instance=ExtResource("36_dvkn0")]
+position = Vector3(-7, 0.13483667, 63)
+
+[node name="Rabbit" parent="." unique_id=1128081811 instance=ExtResource("37_fw1g8")]
+position = Vector3(-9, 0.13484725, 77)
+
+[node name="Field Mouse" parent="." unique_id=978006571 instance=ExtResource("38_n3yxd")]
+position = Vector3(-20, 0.13889357, 73)
+
+[node name="Turtle" parent="." unique_id=554300615 instance=ExtResource("40_3kqth")]
+position = Vector3(5, 0.28056341, 72)
+
+[node name="Fish" parent="." unique_id=106226910 instance=ExtResource("41_h2kae")]
+position = Vector3(15, 0.25, 65)
+
+[node name="Shelter roof" type="MeshInstance3D" parent="." unique_id=995868645]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38, 2.7, 59)
+material_override = ExtResource("42_hmajh")
+mesh = ExtResource("43_akgke")
+
+[node name="Shelter post" type="MeshInstance3D" parent="." unique_id=734619773]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -39.5, 1.35, 59.9)
+material_override = ExtResource("42_hmajh")
+mesh = ExtResource("44_5f2nm")
+
+[node name="@StaticBody3D@340" type="StaticBody3D" parent="Shelter post" unique_id=1297744936]
+
+[node name="@CollisionShape3D@341" type="CollisionShape3D" parent="Shelter post/@StaticBody3D@340" unique_id=367057443]
+shape = SubResource("BoxShape3D_2e6mh")
+
+[node name="Shelter post2" type="MeshInstance3D" parent="." unique_id=1265392142]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -36.5, 1.35, 59.9)
+material_override = ExtResource("42_hmajh")
+mesh = ExtResource("44_5f2nm")
+
+[node name="@StaticBody3D@342" type="StaticBody3D" parent="Shelter post2" unique_id=547318825]
+
+[node name="@CollisionShape3D@343" type="CollisionShape3D" parent="Shelter post2/@StaticBody3D@342" unique_id=559315805]
+shape = SubResource("BoxShape3D_v5iek")
+
+[node name="Water trough" type="MeshInstance3D" parent="." unique_id=1321081927]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38, 0.35, 58)
+material_override = ExtResource("45_ny0gt")
+mesh = ExtResource("46_00jim")
+
+[node name="@StaticBody3D@344" type="StaticBody3D" parent="Water trough" unique_id=1095345490]
+
+[node name="@CollisionShape3D@345" type="CollisionShape3D" parent="Water trough/@StaticBody3D@344" unique_id=1364505930]
+shape = SubResource("BoxShape3D_nse8p")
+
+[node name="Water surface" type="MeshInstance3D" parent="." unique_id=984125444]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38, 0.66, 58)
+material_override = ExtResource("47_7772m")
+mesh = ExtResource("48_x7brh")
+
+
+
+
+
+
+
+[node name="Water trough2" type="MeshInstance3D" parent="." unique_id=156700776]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38, 0.35, 78)
+material_override = ExtResource("45_ny0gt")
+mesh = ExtResource("46_00jim")
+
+[node name="@StaticBody3D@350" type="StaticBody3D" parent="Water trough2" unique_id=1967180606]
+
+[node name="@CollisionShape3D@351" type="CollisionShape3D" parent="Water trough2/@StaticBody3D@350" unique_id=1660877618]
+shape = SubResource("BoxShape3D_4o18v")
+
+[node name="Water surface2" type="MeshInstance3D" parent="." unique_id=1956485299]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38, 0.66, 78)
+material_override = ExtResource("47_7772m")
+mesh = ExtResource("48_x7brh")
+
+[node name="Hay bale" type="MeshInstance3D" parent="." unique_id=1784834342]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0.4, 62)
+material_override = ExtResource("49_8r0pb")
+mesh = ExtResource("50_po1os")
+
+[node name="@StaticBody3D@352" type="StaticBody3D" parent="Hay bale" unique_id=636168108]
+
+[node name="@CollisionShape3D@353" type="CollisionShape3D" parent="Hay bale/@StaticBody3D@352" unique_id=1241623559]
+shape = SubResource("BoxShape3D_17mi8")
+
+[node name="Fence rail right low" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.33333333, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0.55, 69)
+material_override = ExtResource("3_j4lcc")
+mesh = ExtResource("4_hjicd")
+
+[node name="Fence rail right high" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.33333333, 0, 0, 0, 1, 0, 0, 0, 1, -30, 1.05, 69)
+material_override = ExtResource("3_j4lcc")
+mesh = ExtResource("4_hjicd")
+
+[node name="Fence boundary right" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.33333333, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0.55, 69)
+visible = false
+material_override = ExtResource("3_j4lcc")
+mesh = ExtResource("7_cx4o3")
+
+[node name="RightFenceSolid" type="StaticBody3D" parent="Fence boundary right"]
+
+[node name="RightFenceShape" type="CollisionShape3D" parent="Fence boundary right/RightFenceSolid"]
+shape = SubResource("BoxShape3D_qi2j6")
+
+[node name="ZooEntranceGate" parent="." instance=ExtResource("zoo_gate")]
+position = Vector3(-34, 0, 69)

@@ -1,0 +1,955 @@
+[gd_scene format=4]
+
+[ext_resource type="Script" path="res://scripts/world/driveable_vehicle.gd" id="drive_script"]
+
+[sub_resource type="StandardMaterial3D" id="mat_navy"]
+resource_name = "Night-blue metallic paint"
+albedo_color = Color(0.055, 0.092, 0.142, 1)
+metallic = 0.19
+roughness = 0.31
+
+[sub_resource type="BoxMesh" id="unit_box"]
+
+[sub_resource type="StandardMaterial3D" id="mat_black"]
+resource_name = "Rubber and body trim"
+albedo_color = Color(0.025, 0.035, 0.044, 1)
+roughness = 0.88
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_tau0v"]
+_surfaces = [{
+"aabb": AABB(-1.8, 0.48, -1.68, 3.6, 0.5799999, 1.68),
+"attribute_data": PackedByteArray("AAAAAGZm5j4AAIA/ZmbmPgAAgD8AAAA/AACAP1juKT8AAIA/AACAPwAAAD8AAIA/AACAPwAAAD8AAAAAAAAAPwAAAABmZuY+AACAP2Zm5j4AAAAAZmbmPgAAAADNzMw+AAAAPwAAgD8AAAAAAACAPwAAAABY7ik/AAAAAAAAAAAAAIA/AAAAAAAAgD/NzEw9eHdnP9QICz+amXk/r9wTPwAAgD9Y7ik/AAAAAM3MTD0AAIA/zcxMPQAAgD/NzMw9AAAAAM3MzD0AAIA/zczMPQAAgD+amRk+eHdnP9QICz8AAIA/WO4pP0REBD+v3BM/REQEP6/cEz8iImI/AAAAP3h3Zz/UCAs/AAAAAJqZGT4AAIA/mpkZPgAAgD/NzEw+AACAP83MTD0AAAAAzcxMPQAAAAAAAAAAAACAP83MzD0AAAAAzczMPQAAAADNzEw9AACAP5qZGT4AAAAAmpkZPgAAAADNzMw9AAAAAFjuKT/JzMw8r9wTP0NExD3UCAs/eHf3Pq/cEz8AAAAAWO4pP0NExD3UCAs/Q0TEPdQICz/v7u49AAAAP3h39z6v3BM/AAAAAM3MzD4AAIA/zczMPgAAgD9mZuY+AAAAPwAAgD8AAAA/NMIyP0REBD+v3BM/AAAAADMzsz4AAIA/MzOzPgAAgD/NzMw+AACAP83MzD4AAAAAzczMPgAAAAAzM7M+eHf3Pq/cEz8AAAA/NMIyPwAAAD8AAIA/AACAP1juKT8AAAA/AACAP0REBD+v3BM/mZkZP9QICz/e3R0/AAAAPyIiYj8AAAA/REQEP6/cEz+ZmRk/1AgLPyIiYj8AAAA/AAAAAM3MTD4AAIA/zcxMPgAAgD8AAIA+AAAAAAAAgD4AAIA/AACAPgAAgD+amZk+AAAAAJqZmT4AAIA/mpmZPgAAgD8zM7M+eHf3Pq/cEz8AAAA/AACAPwAAAABY7ik/AACAP83MTD4AAAAAzcxMPgAAAACamRk+7+7uPQAAAD9FRMQ+AAAAP87MzD7UCAs/7+7uPQAAAD/OzMw+1AgLP3h39z6v3BM/AACAPzMzsz4AAAAAMzOzPgAAAACamZk+AACAPwAAgD4AAAAAAACAPgAAAADNzEw+AACAP5qZmT4AAAAAmpmZPgAAAAAAAIA+"),
+"format": 34359738391,
+"material": SubResource("mat_navy"),
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 108,
+"vertex_data": PackedByteArray("Zmbmv4/C9T4AAAAAZmbmv4/C9T49Cte/Zmbmv1K4Xj89Cte/Zmbmv1K4Xj89Cte/Zmbmv4/C9T49Cte/ZmbmP4/C9T49Cte/Zmbmv1K4Xj89Cte/Zmbmv1K4Xj8AAAAAZmbmv4/C9T4AAAAAZmbmv4/C9T49Cte/Zmbmv4/C9T4AAAAAZmbmP4/C9T4AAAAAZmbmP4/C9T4AAAAAZmbmv4/C9T4AAAAAZmbmv1K4Xj8AAAAAZmbmv1K4Xj8AAAAAZmbmv1K4Xj89Cte/KVzPv+xReD89Cte/exSOv65HgT89Cte/KVzPv+xReD89Cte/Zmbmv1K4Xj89Cte/KVzPv+xReD8AAAAAKVzPv+xReD89Cte/exSOv65HgT89Cte/exSOv65HgT8AAAAAexSOv65HgT89Cte/j8J1vxSuhz89Cte/exSOv65HgT89Cte/Zmbmv1K4Xj89Cte/PQrXP+xReD89Cte/PQrXP+xReD89Cte/j8J1vxSuhz89Cte/exSOv65HgT89Cte/j8J1vxSuhz8AAAAAj8J1vxSuhz89Cte/j8J1PxSuhz89Cte/KVzPv+xReD89Cte/KVzPv+xReD8AAAAAZmbmv1K4Xj8AAAAAexSOv65HgT89Cte/exSOv65HgT8AAAAAKVzPv+xReD8AAAAAj8J1vxSuhz89Cte/j8J1vxSuhz8AAAAAexSOv65HgT8AAAAAZmbmv1K4Xj8AAAAAKVzPv+xReD8AAAAAexSOv65HgT8AAAAAPQrXP+xReD8AAAAAZmbmv1K4Xj8AAAAAexSOv65HgT8AAAAAexSOv65HgT8AAAAAj8J1vxSuhz8AAAAAPQrXP+xReD8AAAAAZmbmP4/C9T4AAAAAZmbmP4/C9T49Cte/Zmbmv4/C9T49Cte/ZmbmP4/C9T49Cte/ZmbmP+F6VD89Cte/PQrXP+xReD89Cte/ZmbmP+F6VD8AAAAAZmbmP+F6VD89Cte/ZmbmP4/C9T49Cte/ZmbmP4/C9T49Cte/ZmbmP4/C9T4AAAAAZmbmP+F6VD8AAAAAPQrXP+xReD8AAAAAZmbmP+F6VD8AAAAAZmbmP4/C9T4AAAAAZmbmv1K4Xj89Cte/ZmbmP4/C9T49Cte/PQrXP+xReD89Cte/cT2KP65HgT89Cte/j8J1PxSuhz89Cte/j8J1vxSuhz89Cte/PQrXP+xReD89Cte/cT2KP65HgT89Cte/j8J1vxSuhz89Cte/j8J1PxSuhz8AAAAAj8J1PxSuhz89Cte/cT2KP65HgT89Cte/cT2KP65HgT8AAAAAcT2KP65HgT89Cte/PQrXP+xReD89Cte/PQrXP+xReD8AAAAAPQrXP+xReD89Cte/ZmbmP+F6VD89Cte/PQrXP+xReD8AAAAAZmbmP4/C9T4AAAAAZmbmv1K4Xj8AAAAAj8J1PxSuhz89Cte/j8J1PxSuhz8AAAAAj8J1vxSuhz8AAAAAj8J1vxSuhz8AAAAAj8J1PxSuhz8AAAAAcT2KP65HgT8AAAAAj8J1vxSuhz8AAAAAcT2KP65HgT8AAAAAPQrXP+xReD8AAAAAZmbmP+F6VD89Cte/ZmbmP+F6VD8AAAAAPQrXP+xReD8AAAAAcT2KP65HgT89Cte/cT2KP65HgT8AAAAAj8J1PxSuhz8AAAAAPQrXP+xReD89Cte/PQrXP+xReD8AAAAAcT2KP65HgT8AAAAAAAD/f/////8AAP9//////wAA/3///////////wAA/7//////AAD/v/////8AAP+/AAD/f/////8AAP9//////wAA/3///////38AAP//////fwAA//////9/AAD//////3//f////7//f/9/////v/9//3////+/SFJI0v////9IUkjS/////0hSSNL//////////wAA/7//////AAD/v/////8AAP+/sHav9v////+wdq/2/////7B2r/b//////1//3///////X//f//////9f/9///////////wAA/7//////AAD/v/////8AAP+//////wAA/7//////AAD/v/////8AAP+//3//////////f/////////9/////////SFJI0v////9IUkjS/////0hSSNL/////sHav9v////+wdq/2/////7B2r/b//////1//3///////X//f//////9f/9///////3//f////7//f/9//v//v/9//3////+//3//f/7//7//f/9/////v/9//3////+//3//f////7//f/9/////v/9//3/+//+//38AAP//////fwAA//////9/AAD//////////wAA/7//////AAD/v/////8AAP+/////f/////////9//////////3//////////f/////////9//////////3///////3//f/7//7//f/9//v//v/9//3////+//////wAA/7//////AAD/v/////8AAP+//////wAA/7//////AAD/v/////8AAP+//////wAA/7//////AAD/v/////8AAP+/pKVZ2v////+kpVna/////6SlWdr//////4f/9///////h//3//////+H//f/////68QSu//////rxBK7/////+vEErv//////3//f/7//7//f/9/////v/9//3////+//3//////////f/////////9//////////3//f////7//f/9/////v/9//3////+//3//f////7//f/9/////v/9//3/+//+/68QSu//////rxBK7/////+vEErv/////pKVZ2v////+kpVna/////6SlWdr//////4f/9///////h//3//////+H//f/////")
+}]
+
+[sub_resource type="StandardMaterial3D" id="mat_white"]
+resource_name = "Pearl white painted metal"
+albedo_color = Color(0.89, 0.92, 0.93, 1)
+metallic = 0.07
+roughness = 0.32
+
+[sub_resource type="StandardMaterial3D" id="mat_wind"]
+resource_name = "Windshield blue-tinted glass"
+albedo_color = Color(0.115, 0.255, 0.315, 1)
+metallic = 0.14
+roughness = 0.18
+
+[sub_resource type="StandardMaterial3D" id="mat_seam"]
+resource_name = "Subtle panel seams"
+albedo_color = Color(0.16, 0.21, 0.26, 1)
+metallic = 0.05
+roughness = 0.57
+
+[sub_resource type="StandardMaterial3D" id="mat_glass"]
+resource_name = "Dark blue tinted vehicle glazing"
+albedo_color = Color(0.085, 0.185, 0.255, 1)
+metallic = 0.18
+roughness = 0.17
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_88s2m"]
+_surfaces = [{
+"aabb": AABB(-1.04, -0.54, -1.39, 2.08, 0.49800003, 1.39),
+"attribute_data": PackedByteArray("AAAAAAAAwD4AAIA/AADAPgAAgD8AAAA/nthpPwAAAD8AAIA/AACAPwAAAD8AAIA/AACAPwAAwD4AAAAAAADAPgAAAAAAAIA+AAAAPwAAgD8AAAAAAACAPxM7sT0AAAA/AAAAAAAAAAAAAIA/AAAAAAAAgD8AAAA+AACAPwAAAD8AAAAAAAAAPwAAAAAAAMA+AAAAAAAAgD4AAIA/AACAPgAAgD8AAMA+AACAPwAAgD4AAAAAAACAPgAAAAAAAAA+AAAAPwAAgD92Yhc/AAAAP57YaT8AAAA/AAAAAAAAAD4AAIA/AAAAPgAAgD8AAIA+EzuxPQAAAD8VO9E+AAAAPwAAAD8AAIA/AACAPwAAAD4AAAAAAAAAPgAAAAAAAAAA"),
+"format": 34359738391,
+"material": SubResource("mat_glass"),
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 36,
+"vertex_data": PackedByteArray("uB6Fv3E9Cr8AAAAAuB6Fv3E9Cr+F67G/exQuvzEILL2F67G/exQuvzEILL2F67G/uB6Fv3E9Cr+F67G/uB6FP3E9Cr+F67G/uB6Fv3E9Cr+F67G/uB6Fv3E9Cr8AAAAAuB6FP3E9Cr8AAAAAuB6FP3E9Cr8AAAAAuB6Fv3E9Cr8AAAAAexQuvzEILL0AAAAAexQuvzEILL0AAAAAexQuvzEILL2F67G/w/UoPzEILL2F67G/exQuvzEILL2F67G/exQuvzEILL0AAAAAuB6Fv3E9Cr8AAAAAuB6FP3E9Cr8AAAAAuB6FP3E9Cr+F67G/uB6Fv3E9Cr+F67G/uB6FP3E9Cr+F67G/uB6FP3E9Cr8AAAAAw/UoPzEILL0AAAAAuB6FP3E9Cr+F67G/w/UoPzEILL2F67G/exQuvzEILL2F67G/w/UoPzEILL0AAAAAw/UoPzEILL2F67G/uB6FP3E9Cr+F67G/exQuvzEILL0AAAAAw/UoPzEILL0AAAAAuB6FP3E9Cr8AAAAAw/UoPzEILL2F67G/w/UoPzEILL0AAAAAexQuvzEILL0AAAAAtDW0tf////+0NbS1/////7Q1tLX//////////wAA/7//////AAD/v/////8AAP+//38AAP//////fwAA//////9/AAD//////3//f////7//f/9/////v/9//3////+//3//////////f/////////9/////////tDW0tf////+0NbS1/////7Q1tLX//////38AAP//////fwAA//////9/AAD/////mchlt/////+ZyGW3/////5nIZbf//////////wAA/7//////AAD/v/////8AAP+/mchlt/////+ZyGW3/////5nIZbf//////3//f////7//f/9/////v/9//3////+//3//////////f/////////9/////////")
+}]
+
+[sub_resource type="StandardMaterial3D" id="mat_chrome"]
+resource_name = "Brushed aluminum chrome"
+albedo_color = Color(0.54, 0.62, 0.66, 1)
+metallic = 0.77
+roughness = 0.25
+
+[sub_resource type="StandardMaterial3D" id="mat_badge"]
+resource_name = "Bronze gold shield"
+albedo_color = Color(0.86, 0.64, 0.22, 1)
+metallic = 0.54
+roughness = 0.31
+
+[sub_resource type="CylinderMesh" id="badge_mesh"]
+top_radius = 0.079
+bottom_radius = 0.079
+height = 0.012
+radial_segments = 6
+
+[sub_resource type="StandardMaterial3D" id="mat_blue"]
+resource_name = "Emergency blue LED light"
+albedo_color = Color(0.06, 0.32, 0.96, 1)
+roughness = 0.22
+emission_enabled = true
+emission = Color(0.06, 0.32, 0.96, 1)
+
+[sub_resource type="StandardMaterial3D" id="mat_tire"]
+resource_name = "Dark tire rubber"
+albedo_color = Color(0.043, 0.047, 0.05, 1)
+roughness = 0.96
+
+[sub_resource type="CylinderMesh" id="tire_mesh"]
+top_radius = 0.36
+bottom_radius = 0.36
+height = 0.22
+radial_segments = 24
+
+[sub_resource type="StandardMaterial3D" id="mat_rim"]
+resource_name = "Alloy wheel surfaces"
+albedo_color = Color(0.35, 0.43, 0.49, 1)
+metallic = 0.58
+roughness = 0.31
+
+[sub_resource type="CylinderMesh" id="rim_mesh"]
+top_radius = 0.235
+bottom_radius = 0.235
+height = 0.024
+radial_segments = 24
+
+[sub_resource type="CylinderMesh" id="hub_mesh"]
+top_radius = 0.09
+bottom_radius = 0.09
+height = 0.039
+radial_segments = 12
+
+[sub_resource type="SphereMesh" id="bolt_mesh"]
+radius = 0.019
+height = 0.038
+radial_segments = 8
+rings = 4
+
+[sub_resource type="CylinderShape3D" id="tire_shape"]
+height = 0.22
+radius = 0.36
+
+[sub_resource type="StandardMaterial3D" id="mat_head"]
+resource_name = "Warm white headlights"
+albedo_color = Color(1, 0.89, 0.65, 1)
+roughness = 0.22
+emission_enabled = true
+emission = Color(1, 0.89, 0.65, 1)
+emission_energy_multiplier = 0.42
+
+[sub_resource type="StandardMaterial3D" id="mat_amber"]
+resource_name = "Amber turn signals"
+albedo_color = Color(0.99, 0.49, 0.08, 1)
+roughness = 0.32
+emission_enabled = true
+emission = Color(0.99, 0.49, 0.08, 1)
+emission_energy_multiplier = 0.42
+
+[sub_resource type="StandardMaterial3D" id="mat_tail"]
+resource_name = "Taillight lens"
+albedo_color = Color(0.89, 0.055, 0.07, 1)
+roughness = 0.3
+emission_enabled = true
+emission = Color(0.89, 0.055, 0.07, 1)
+emission_energy_multiplier = 0.42
+
+[sub_resource type="CylinderMesh" id="antenna_mesh"]
+top_radius = 0.006
+bottom_radius = 0.012
+height = 0.43
+radial_segments = 8
+
+[sub_resource type="StandardMaterial3D" id="mat_red"]
+resource_name = "Emergency red LED light"
+albedo_color = Color(0.9, 0.1, 0.12, 1)
+roughness = 0.21
+emission_enabled = true
+emission = Color(0.9, 0.1, 0.12, 1)
+
+[sub_resource type="BoxShape3D" id="study_shape"]
+size = Vector3(4.2, 2.06, 2.1)
+
+[node name="PoliceCar" type="Node3D" unique_id=1942427999]
+script = ExtResource("drive_script")
+metadata/word_key = "police car"
+metadata/geometry_centered = true
+
+[node name="Body" type="Node3D" parent="." unique_id=1948208008]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.69, 0)
+
+[node name="Visual" type="MeshInstance3D" parent="Body" unique_id=347552268]
+transform = Transform3D(3.4, 0, 0, 0, 0.34, 0, 0, 0, 1.62, 0, 0, 0)
+material_override = SubResource("mat_navy")
+mesh = SubResource("unit_box")
+
+[node name="Hood" type="MeshInstance3D" parent="Body" unique_id=1631849391]
+transform = Transform3D(0.72, 0, 0, 0, 0.025, 0, 0, 0, 1.53, -1.34, 0.321, 0)
+material_override = SubResource("mat_navy")
+mesh = SubResource("unit_box")
+
+[node name="TrunkLid" type="MeshInstance3D" parent="Body" unique_id=945184103]
+transform = Transform3D(0.68, 0, 0, 0, 0.025, 0, 0, 0, 1.52, 1.36, 0.314, 0)
+material_override = SubResource("mat_navy")
+mesh = SubResource("unit_box")
+
+[node name="LeftRocker" type="MeshInstance3D" parent="Body" unique_id=1643775726]
+transform = Transform3D(1.92, 0, 0, 0, 0.085, 0, 0, 0, 0.026, -0.01, -0.187, -0.835)
+material_override = SubResource("mat_black")
+mesh = SubResource("unit_box")
+
+[node name="RightRocker" type="MeshInstance3D" parent="Body" unique_id=313413942]
+transform = Transform3D(1.92, 0, 0, 0, 0.085, 0, 0, 0, 0.026, -0.01, -0.187, 0.835)
+material_override = SubResource("mat_black")
+mesh = SubResource("unit_box")
+
+[node name="SculptedBody" type="MeshInstance3D" parent="Body" unique_id=379298198]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.69, 0.84)
+mesh = SubResource("ArrayMesh_tau0v")
+
+[node name="Cab" type="Node3D" parent="." unique_id=1679130099]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.59, 0)
+
+[node name="Visual" type="MeshInstance3D" parent="Cab" unique_id=1974582570]
+transform = Transform3D(1.36, 0, 0, 0, 0.09, 0, 0, 0, 1.43, -0.01, 0, 0)
+material_override = SubResource("mat_white")
+mesh = SubResource("unit_box")
+
+[node name="Windshield" type="MeshInstance3D" parent="Cab" unique_id=352333519]
+transform = Transform3D(0.026212867, 0.34127802, 0, -0.018354448, 0.4873955, 0, 0, 0, 1.26, -0.865, -0.29, 0)
+material_override = SubResource("mat_wind")
+mesh = SubResource("unit_box")
+
+[node name="RearWindshield" type="MeshInstance3D" parent="Cab" unique_id=930815627]
+transform = Transform3D(0.025387308, -0.36525688, 0, 0.019480366, 0.47601202, 0, 0, 0, 1.22, 0.851, -0.29, 0)
+material_override = SubResource("mat_wind")
+mesh = SubResource("unit_box")
+
+[node name="LeftRoofRail" type="MeshInstance3D" parent="Cab" unique_id=443555984]
+transform = Transform3D(1.42, 0, 0, 0, 0.09, 0, 0, 0, 0.062, -0.01, -0.001, -0.713)
+material_override = SubResource("mat_white")
+mesh = SubResource("unit_box")
+
+[node name="LeftAPillar" type="MeshInstance3D" parent="Cab" unique_id=207497902]
+transform = Transform3D(0.062410966, 0.32775277, 0, -0.039760172, 0.5144688, 0, 0, 0, 0.072, -0.854, -0.291, -0.713)
+material_override = SubResource("mat_white")
+mesh = SubResource("unit_box")
+
+[node name="LeftBPillar" type="MeshInstance3D" parent="Cab" unique_id=1470964986]
+transform = Transform3D(0.073, 0, 0, 0, 0.47, 0, 0, 0, 0.072, 0.03, -0.281, -0.713)
+material_override = SubResource("mat_seam")
+mesh = SubResource("unit_box")
+
+[node name="LeftCPillar" type="MeshInstance3D" parent="Cab" unique_id=464272800]
+transform = Transform3D(0.06822839, -0.3835197, 0, 0.052353486, 0.49981257, 0, 0, 0, 0.076, 0.841, -0.291, -0.713)
+material_override = SubResource("mat_white")
+mesh = SubResource("unit_box")
+
+[node name="LeftWindowSill" type="MeshInstance3D" parent="Cab" unique_id=56028935]
+transform = Transform3D(2.1, 0, 0, 0, 0.047, 0, 0, 0, 0.062, 0, -0.539, -0.713)
+material_override = SubResource("mat_black")
+mesh = SubResource("unit_box")
+
+[node name="RightRoofRail" type="MeshInstance3D" parent="Cab" unique_id=1274661983]
+transform = Transform3D(1.42, 0, 0, 0, 0.09, 0, 0, 0, 0.062, -0.01, -0.001, 0.713)
+material_override = SubResource("mat_white")
+mesh = SubResource("unit_box")
+
+[node name="RightAPillar" type="MeshInstance3D" parent="Cab" unique_id=1470506960]
+transform = Transform3D(0.062410966, 0.32775277, 0, -0.039760172, 0.5144688, 0, 0, 0, 0.072, -0.854, -0.291, 0.713)
+material_override = SubResource("mat_white")
+mesh = SubResource("unit_box")
+
+[node name="RightBPillar" type="MeshInstance3D" parent="Cab" unique_id=944959289]
+transform = Transform3D(0.073, 0, 0, 0, 0.47, 0, 0, 0, 0.072, 0.03, -0.281, 0.713)
+material_override = SubResource("mat_seam")
+mesh = SubResource("unit_box")
+
+[node name="RightCPillar" type="MeshInstance3D" parent="Cab" unique_id=1485056841]
+transform = Transform3D(0.06822839, -0.3835197, 0, 0.052353486, 0.49981257, 0, 0, 0, 0.076, 0.841, -0.291, 0.713)
+material_override = SubResource("mat_white")
+mesh = SubResource("unit_box")
+
+[node name="RightWindowSill" type="MeshInstance3D" parent="Cab" unique_id=1608955462]
+transform = Transform3D(2.1, 0, 0, 0, 0.047, 0, 0, 0, 0.062, 0, -0.539, 0.713)
+material_override = SubResource("mat_black")
+mesh = SubResource("unit_box")
+
+[node name="FrontWindowShade" type="MeshInstance3D" parent="Cab" unique_id=1758289847]
+transform = Transform3D(0.020478802, 0.043018237, 0, -0.014339412, 0.061436407, 0, 0, 0, 1.25, -0.734, -0.078, 0)
+material_override = SubResource("mat_glass")
+mesh = SubResource("unit_box")
+
+[node name="TintedWindowCabin" type="MeshInstance3D" parent="Cab" unique_id=885718961]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.695)
+mesh = SubResource("ArrayMesh_88s2m")
+
+[node name="Doors" type="Node3D" parent="." unique_id=576237160]
+
+[node name="LeftFrontDoor" type="MeshInstance3D" parent="Doors" unique_id=1977833121]
+transform = Transform3D(0.89, 0, 0, 0, 0.44, 0, 0, 0, 0.034, -0.435, 0.802, -0.852)
+material_override = SubResource("mat_white")
+mesh = SubResource("unit_box")
+
+[node name="LeftRearDoor" type="MeshInstance3D" parent="Doors" unique_id=1440335374]
+transform = Transform3D(0.89, 0, 0, 0, 0.44, 0, 0, 0, 0.034, 0.455, 0.802, -0.852)
+material_override = SubResource("mat_white")
+mesh = SubResource("unit_box")
+
+[node name="LeftCenterDoorSeam" type="MeshInstance3D" parent="Doors" unique_id=1862280161]
+transform = Transform3D(0.011, 0, 0, 0, 0.432, 0, 0, 0, 0.008, 0.01, 0.797, -0.874)
+material_override = SubResource("mat_seam")
+mesh = SubResource("unit_box")
+
+[node name="LeftFrontDoorEdge" type="MeshInstance3D" parent="Doors" unique_id=412934178]
+transform = Transform3D(0.012, 0, 0, 0, 0.43, 0, 0, 0, 0.008, -0.88, 0.795, -0.874)
+material_override = SubResource("mat_seam")
+mesh = SubResource("unit_box")
+
+[node name="LeftRearDoorEdge" type="MeshInstance3D" parent="Doors" unique_id=2071628075]
+transform = Transform3D(0.012, 0, 0, 0, 0.43, 0, 0, 0, 0.008, 0.9, 0.795, -0.874)
+material_override = SubResource("mat_seam")
+mesh = SubResource("unit_box")
+
+[node name="LeftFrontHandle" type="MeshInstance3D" parent="Doors" unique_id=942262433]
+transform = Transform3D(0.155, 0, 0, 0, 0.033, 0, 0, 0, 0.025, -0.31, 0.958, -0.886)
+material_override = SubResource("mat_black")
+mesh = SubResource("unit_box")
+
+[node name="LeftFrontHandleShine" type="MeshInstance3D" parent="Doors" unique_id=941147537]
+transform = Transform3D(0.1, 0, 0, 0, 0.009, 0, 0, 0, 0.01, -0.31, 0.968, -0.904)
+material_override = SubResource("mat_chrome")
+mesh = SubResource("unit_box")
+
+[node name="LeftRearHandle" type="MeshInstance3D" parent="Doors" unique_id=224863524]
+transform = Transform3D(0.155, 0, 0, 0, 0.033, 0, 0, 0, 0.025, 0.57, 0.958, -0.886)
+material_override = SubResource("mat_black")
+mesh = SubResource("unit_box")
+
+[node name="LeftRearHandleShine" type="MeshInstance3D" parent="Doors" unique_id=1289960834]
+transform = Transform3D(0.1, 0, 0, 0, 0.009, 0, 0, 0, 0.01, 0.57, 0.968, -0.904)
+material_override = SubResource("mat_chrome")
+mesh = SubResource("unit_box")
+
+[node name="LeftShieldBadge" type="MeshInstance3D" parent="Doors" unique_id=434630752]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -0.68, 0.802, -0.895)
+material_override = SubResource("mat_badge")
+mesh = SubResource("badge_mesh")
+
+[node name="LeftPoliceLettering" type="Label3D" parent="Doors" unique_id=967544188]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0.16, 0.786, -0.895)
+pixel_size = 0.00365
+shaded = true
+double_sided = false
+modulate = Color(0.025, 0.046, 0.076, 1)
+text = "POLICE"
+font_size = 52
+outline_size = 0
+
+[node name="LeftMotto" type="Label3D" parent="Doors" unique_id=1455268155]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0.17, 0.678, -0.894)
+pixel_size = 0.00315
+shaded = true
+double_sided = false
+modulate = Color(0.025, 0.046, 0.076, 1)
+text = "CITY PATROL"
+font_size = 24
+outline_size = 0
+
+[node name="LeftEmergencyNumber" type="Label3D" parent="Doors" unique_id=202637360]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 1.43, 0.791, -0.853)
+pixel_size = 0.0036
+shaded = true
+double_sided = false
+modulate = Color(0.92, 0.94, 0.97, 1)
+text = "911"
+outline_size = 0
+
+[node name="LeftBeltlineTrim" type="MeshInstance3D" parent="Doors" unique_id=740074662]
+transform = Transform3D(2.05, 0, 0, 0, 0.023, 0, 0, 0, 0.019, 0, 1.061, -0.849)
+material_override = SubResource("mat_chrome")
+mesh = SubResource("unit_box")
+
+[node name="LeftMirrorStem" type="MeshInstance3D" parent="Doors" unique_id=1372412415]
+transform = Transform3D(0.14, 0, 0, 0, 0.043, 0, 0, 0, 0.25, -0.775, 1.151, -0.766)
+material_override = SubResource("mat_black")
+mesh = SubResource("unit_box")
+
+[node name="LeftMirrorHousing" type="MeshInstance3D" parent="Doors" unique_id=262918115]
+transform = Transform3D(0.22, 0, 0, 0, 0.135, 0, 0, 0, 0.17, -0.79, 1.174, -0.903)
+material_override = SubResource("mat_navy")
+mesh = SubResource("unit_box")
+
+[node name="LeftMirrorGlass" type="MeshInstance3D" parent="Doors" unique_id=1649263354]
+transform = Transform3D(0.159, 0, 0, 0, 0.083, 0, 0, 0, 0.012, -0.79, 1.174, -1.005)
+material_override = SubResource("mat_chrome")
+mesh = SubResource("unit_box")
+
+[node name="RightFrontDoor" type="MeshInstance3D" parent="Doors" unique_id=4431453]
+transform = Transform3D(0.89, 0, 0, 0, 0.44, 0, 0, 0, 0.034, -0.435, 0.802, 0.852)
+material_override = SubResource("mat_white")
+mesh = SubResource("unit_box")
+
+[node name="RightRearDoor" type="MeshInstance3D" parent="Doors" unique_id=1832967743]
+transform = Transform3D(0.89, 0, 0, 0, 0.44, 0, 0, 0, 0.034, 0.455, 0.802, 0.852)
+material_override = SubResource("mat_white")
+mesh = SubResource("unit_box")
+
+[node name="RightCenterDoorSeam" type="MeshInstance3D" parent="Doors" unique_id=310388759]
+transform = Transform3D(0.011, 0, 0, 0, 0.432, 0, 0, 0, 0.008, 0.01, 0.797, 0.874)
+material_override = SubResource("mat_seam")
+mesh = SubResource("unit_box")
+
+[node name="RightFrontDoorEdge" type="MeshInstance3D" parent="Doors" unique_id=1655497481]
+transform = Transform3D(0.012, 0, 0, 0, 0.43, 0, 0, 0, 0.008, -0.88, 0.795, 0.874)
+material_override = SubResource("mat_seam")
+mesh = SubResource("unit_box")
+
+[node name="RightRearDoorEdge" type="MeshInstance3D" parent="Doors" unique_id=829873123]
+transform = Transform3D(0.012, 0, 0, 0, 0.43, 0, 0, 0, 0.008, 0.9, 0.795, 0.874)
+material_override = SubResource("mat_seam")
+mesh = SubResource("unit_box")
+
+[node name="RightFrontHandle" type="MeshInstance3D" parent="Doors" unique_id=1071586221]
+transform = Transform3D(0.155, 0, 0, 0, 0.033, 0, 0, 0, 0.025, -0.31, 0.958, 0.886)
+material_override = SubResource("mat_black")
+mesh = SubResource("unit_box")
+
+[node name="RightFrontHandleShine" type="MeshInstance3D" parent="Doors" unique_id=1216587855]
+transform = Transform3D(0.1, 0, 0, 0, 0.009, 0, 0, 0, 0.01, -0.31, 0.968, 0.904)
+material_override = SubResource("mat_chrome")
+mesh = SubResource("unit_box")
+
+[node name="RightRearHandle" type="MeshInstance3D" parent="Doors" unique_id=411980344]
+transform = Transform3D(0.155, 0, 0, 0, 0.033, 0, 0, 0, 0.025, 0.57, 0.958, 0.886)
+material_override = SubResource("mat_black")
+mesh = SubResource("unit_box")
+
+[node name="RightRearHandleShine" type="MeshInstance3D" parent="Doors" unique_id=2078215731]
+transform = Transform3D(0.1, 0, 0, 0, 0.009, 0, 0, 0, 0.01, 0.57, 0.968, 0.904)
+material_override = SubResource("mat_chrome")
+mesh = SubResource("unit_box")
+
+[node name="RightShieldBadge" type="MeshInstance3D" parent="Doors" unique_id=1013046924]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -0.68, 0.802, 0.895)
+material_override = SubResource("mat_badge")
+mesh = SubResource("badge_mesh")
+
+[node name="RightPoliceLettering" type="Label3D" parent="Doors" unique_id=843535168]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.16, 0.786, 0.895)
+pixel_size = 0.00365
+shaded = true
+double_sided = false
+modulate = Color(0.025, 0.046, 0.076, 1)
+text = "POLICE"
+font_size = 52
+outline_size = 0
+
+[node name="RightMotto" type="Label3D" parent="Doors" unique_id=449867453]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.17, 0.678, 0.894)
+pixel_size = 0.00315
+shaded = true
+double_sided = false
+modulate = Color(0.025, 0.046, 0.076, 1)
+text = "CITY PATROL"
+font_size = 24
+outline_size = 0
+
+[node name="RightEmergencyNumber" type="Label3D" parent="Doors" unique_id=892755477]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.43, 0.791, 0.853)
+pixel_size = 0.0036
+shaded = true
+double_sided = false
+modulate = Color(0.92, 0.94, 0.97, 1)
+text = "911"
+outline_size = 0
+
+[node name="RightBeltlineTrim" type="MeshInstance3D" parent="Doors" unique_id=609544537]
+transform = Transform3D(2.05, 0, 0, 0, 0.023, 0, 0, 0, 0.019, 0, 1.061, 0.849)
+material_override = SubResource("mat_chrome")
+mesh = SubResource("unit_box")
+
+[node name="RightMirrorStem" type="MeshInstance3D" parent="Doors" unique_id=1094615330]
+transform = Transform3D(0.14, 0, 0, 0, 0.043, 0, 0, 0, 0.25, -0.775, 1.151, 0.766)
+material_override = SubResource("mat_black")
+mesh = SubResource("unit_box")
+
+[node name="RightMirrorHousing" type="MeshInstance3D" parent="Doors" unique_id=1311088187]
+transform = Transform3D(0.22, 0, 0, 0, 0.135, 0, 0, 0, 0.17, -0.79, 1.174, 0.903)
+material_override = SubResource("mat_navy")
+mesh = SubResource("unit_box")
+
+[node name="RightMirrorGlass" type="MeshInstance3D" parent="Doors" unique_id=1356017562]
+transform = Transform3D(0.159, 0, 0, 0, 0.083, 0, 0, 0, 0.012, -0.79, 1.174, 1.005)
+material_override = SubResource("mat_chrome")
+mesh = SubResource("unit_box")
+
+[node name="LeftGoldPinstripe" type="MeshInstance3D" parent="Doors" unique_id=1751792016]
+transform = Transform3D(3.2, 0, 0, 0, 0.015, 0, 0, 0, 0.016, -0.01, 0.526, -0.862)
+material_override = SubResource("mat_badge")
+mesh = SubResource("unit_box")
+
+[node name="RightGoldPinstripe" type="MeshInstance3D" parent="Doors" unique_id=1986392335]
+transform = Transform3D(3.2, 0, 0, 0, 0.015, 0, 0, 0, 0.016, -0.01, 0.526, 0.862)
+material_override = SubResource("mat_badge")
+mesh = SubResource("unit_box")
+
+[node name="BlueStripe" type="Node3D" parent="." unique_id=1665843888]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.563, -0.852)
+
+[node name="Visual" type="MeshInstance3D" parent="BlueStripe" unique_id=2079651882]
+transform = Transform3D(3.23, 0, 0, 0, 0.062, 0, 0, 0, 0.027, 0, 0, 0)
+material_override = SubResource("mat_blue")
+mesh = SubResource("unit_box")
+
+[node name="BlueStripeRight" type="Node3D" parent="." unique_id=672664495]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.563, 0.852)
+
+[node name="Visual" type="MeshInstance3D" parent="BlueStripeRight" unique_id=8031768]
+transform = Transform3D(3.23, 0, 0, 0, 0.062, 0, 0, 0, 0.027, 0, 0, 0)
+material_override = SubResource("mat_blue")
+mesh = SubResource("unit_box")
+
+[node name="Tire" type="Node3D" parent="." unique_id=1161288175]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -1.12, 0.36, -0.86)
+metadata/word_key = "wheel"
+
+[node name="Visual" type="MeshInstance3D" parent="Tire" unique_id=2072755828]
+material_override = SubResource("mat_tire")
+mesh = SubResource("tire_mesh")
+
+[node name="Rim" type="MeshInstance3D" parent="Tire" unique_id=1129672608]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.129, 0)
+material_override = SubResource("mat_rim")
+mesh = SubResource("rim_mesh")
+
+[node name="Hubcap" type="MeshInstance3D" parent="Tire" unique_id=404757240]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.14964, 0)
+material_override = SubResource("mat_chrome")
+mesh = SubResource("hub_mesh")
+
+[node name="Bolt1" type="MeshInstance3D" parent="Tire" unique_id=1008515178]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1548, 0.138)
+material_override = SubResource("mat_chrome")
+mesh = SubResource("bolt_mesh")
+
+[node name="Bolt2" type="MeshInstance3D" parent="Tire" unique_id=1124852887]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.13125, -0.1548, 0.04264)
+material_override = SubResource("mat_chrome")
+mesh = SubResource("bolt_mesh")
+
+[node name="Bolt3" type="MeshInstance3D" parent="Tire" unique_id=2022162246]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.08111, -0.1548, -0.11164)
+material_override = SubResource("mat_chrome")
+mesh = SubResource("bolt_mesh")
+
+[node name="Bolt4" type="MeshInstance3D" parent="Tire" unique_id=902987667]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.08111, -0.1548, -0.11164)
+material_override = SubResource("mat_chrome")
+mesh = SubResource("bolt_mesh")
+
+[node name="Bolt5" type="MeshInstance3D" parent="Tire" unique_id=1143982220]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.13125, -0.1548, 0.04264)
+material_override = SubResource("mat_chrome")
+mesh = SubResource("bolt_mesh")
+
+[node name="Body" type="Area3D" parent="Tire" unique_id=811315320]
+collision_mask = 0
+metadata/word = "wheel"
+
+[node name="Collision" type="CollisionShape3D" parent="Tire/Body" unique_id=878895525]
+shape = SubResource("tire_shape")
+
+[node name="Tire_2" type="Node3D" parent="." unique_id=1048442968]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -1.12, 0.36, 0.86)
+metadata/word_key = "wheel"
+
+[node name="Visual" type="MeshInstance3D" parent="Tire_2" unique_id=1861839372]
+material_override = SubResource("mat_tire")
+mesh = SubResource("tire_mesh")
+
+[node name="Rim" type="MeshInstance3D" parent="Tire_2" unique_id=1659191664]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.129, 0)
+material_override = SubResource("mat_rim")
+mesh = SubResource("rim_mesh")
+
+[node name="Hubcap" type="MeshInstance3D" parent="Tire_2" unique_id=1373404007]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.14964, 0)
+material_override = SubResource("mat_chrome")
+mesh = SubResource("hub_mesh")
+
+[node name="Bolt1" type="MeshInstance3D" parent="Tire_2" unique_id=528721049]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1548, 0.138)
+material_override = SubResource("mat_chrome")
+mesh = SubResource("bolt_mesh")
+
+[node name="Bolt2" type="MeshInstance3D" parent="Tire_2" unique_id=1775649608]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.13125, 0.1548, 0.04264)
+material_override = SubResource("mat_chrome")
+mesh = SubResource("bolt_mesh")
+
+[node name="Bolt3" type="MeshInstance3D" parent="Tire_2" unique_id=1629117148]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.08111, 0.1548, -0.11164)
+material_override = SubResource("mat_chrome")
+mesh = SubResource("bolt_mesh")
+
+[node name="Bolt4" type="MeshInstance3D" parent="Tire_2" unique_id=1709160668]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.08111, 0.1548, -0.11164)
+material_override = SubResource("mat_chrome")
+mesh = SubResource("bolt_mesh")
+
+[node name="Bolt5" type="MeshInstance3D" parent="Tire_2" unique_id=1465617329]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.13125, 0.1548, 0.04264)
+material_override = SubResource("mat_chrome")
+mesh = SubResource("bolt_mesh")
+
+[node name="Body" type="Area3D" parent="Tire_2" unique_id=1673503334]
+collision_mask = 0
+metadata/word = "wheel"
+
+[node name="Collision" type="CollisionShape3D" parent="Tire_2/Body" unique_id=1478629634]
+shape = SubResource("tire_shape")
+
+[node name="Tire_3" type="Node3D" parent="." unique_id=377632241]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 1.12, 0.36, -0.86)
+metadata/word_key = "wheel"
+
+[node name="Visual" type="MeshInstance3D" parent="Tire_3" unique_id=329801]
+material_override = SubResource("mat_tire")
+mesh = SubResource("tire_mesh")
+
+[node name="Rim" type="MeshInstance3D" parent="Tire_3" unique_id=1641783258]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.129, 0)
+material_override = SubResource("mat_rim")
+mesh = SubResource("rim_mesh")
+
+[node name="Hubcap" type="MeshInstance3D" parent="Tire_3" unique_id=710740582]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.14964, 0)
+material_override = SubResource("mat_chrome")
+mesh = SubResource("hub_mesh")
+
+[node name="Bolt1" type="MeshInstance3D" parent="Tire_3" unique_id=1671883345]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1548, 0.138)
+material_override = SubResource("mat_chrome")
+mesh = SubResource("bolt_mesh")
+
+[node name="Bolt2" type="MeshInstance3D" parent="Tire_3" unique_id=2000001447]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.13125, -0.1548, 0.04264)
+material_override = SubResource("mat_chrome")
+mesh = SubResource("bolt_mesh")
+
+[node name="Bolt3" type="MeshInstance3D" parent="Tire_3" unique_id=2041990841]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.08111, -0.1548, -0.11164)
+material_override = SubResource("mat_chrome")
+mesh = SubResource("bolt_mesh")
+
+[node name="Bolt4" type="MeshInstance3D" parent="Tire_3" unique_id=1434127546]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.08111, -0.1548, -0.11164)
+material_override = SubResource("mat_chrome")
+mesh = SubResource("bolt_mesh")
+
+[node name="Bolt5" type="MeshInstance3D" parent="Tire_3" unique_id=1767017878]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.13125, -0.1548, 0.04264)
+material_override = SubResource("mat_chrome")
+mesh = SubResource("bolt_mesh")
+
+[node name="Body" type="Area3D" parent="Tire_3" unique_id=1805424617]
+collision_mask = 0
+metadata/word = "wheel"
+
+[node name="Collision" type="CollisionShape3D" parent="Tire_3/Body" unique_id=1002793971]
+shape = SubResource("tire_shape")
+
+[node name="Tire_4" type="Node3D" parent="." unique_id=1278898220]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 1.12, 0.36, 0.86)
+metadata/word_key = "wheel"
+
+[node name="Visual" type="MeshInstance3D" parent="Tire_4" unique_id=1888688204]
+material_override = SubResource("mat_tire")
+mesh = SubResource("tire_mesh")
+
+[node name="Rim" type="MeshInstance3D" parent="Tire_4" unique_id=1496248124]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.129, 0)
+material_override = SubResource("mat_rim")
+mesh = SubResource("rim_mesh")
+
+[node name="Hubcap" type="MeshInstance3D" parent="Tire_4" unique_id=1798945591]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.14964, 0)
+material_override = SubResource("mat_chrome")
+mesh = SubResource("hub_mesh")
+
+[node name="Bolt1" type="MeshInstance3D" parent="Tire_4" unique_id=1250027516]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1548, 0.138)
+material_override = SubResource("mat_chrome")
+mesh = SubResource("bolt_mesh")
+
+[node name="Bolt2" type="MeshInstance3D" parent="Tire_4" unique_id=996390031]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.13125, 0.1548, 0.04264)
+material_override = SubResource("mat_chrome")
+mesh = SubResource("bolt_mesh")
+
+[node name="Bolt3" type="MeshInstance3D" parent="Tire_4" unique_id=825960721]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.08111, 0.1548, -0.11164)
+material_override = SubResource("mat_chrome")
+mesh = SubResource("bolt_mesh")
+
+[node name="Bolt4" type="MeshInstance3D" parent="Tire_4" unique_id=1846398413]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.08111, 0.1548, -0.11164)
+material_override = SubResource("mat_chrome")
+mesh = SubResource("bolt_mesh")
+
+[node name="Bolt5" type="MeshInstance3D" parent="Tire_4" unique_id=1942252354]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.13125, 0.1548, 0.04264)
+material_override = SubResource("mat_chrome")
+mesh = SubResource("bolt_mesh")
+
+[node name="Body" type="Area3D" parent="Tire_4" unique_id=1239518338]
+collision_mask = 0
+metadata/word = "wheel"
+
+[node name="Collision" type="CollisionShape3D" parent="Tire_4/Body" unique_id=1805661705]
+shape = SubResource("tire_shape")
+
+[node name="Lamp" type="Node3D" parent="." unique_id=786971715]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.79, 0.827, -0.61)
+
+[node name="Visual" type="MeshInstance3D" parent="Lamp" unique_id=585570690]
+transform = Transform3D(0.066, 0, 0, 0, 0.19, 0, 0, 0, 0.31, 0, 0, 0)
+material_override = SubResource("mat_head")
+mesh = SubResource("unit_box")
+
+[node name="AmberIndicator" type="MeshInstance3D" parent="Lamp" unique_id=755682167]
+transform = Transform3D(0.068, 0, 0, 0, 0.033, 0, 0, 0, 0.3, -0.001, -0.076, 0)
+material_override = SubResource("mat_amber")
+mesh = SubResource("unit_box")
+
+[node name="Lamp_2" type="Node3D" parent="." unique_id=71693816]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.79, 0.827, 0.61)
+
+[node name="Visual" type="MeshInstance3D" parent="Lamp_2" unique_id=1909550184]
+transform = Transform3D(0.066, 0, 0, 0, 0.19, 0, 0, 0, 0.31, 0, 0, 0)
+material_override = SubResource("mat_head")
+mesh = SubResource("unit_box")
+
+[node name="AmberIndicator" type="MeshInstance3D" parent="Lamp_2" unique_id=1513093579]
+transform = Transform3D(0.068, 0, 0, 0, 0.033, 0, 0, 0, 0.3, -0.001, -0.076, 0)
+material_override = SubResource("mat_amber")
+mesh = SubResource("unit_box")
+
+[node name="Lamp_3" type="Node3D" parent="." unique_id=1045579022]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.79, 0.827, -0.59)
+
+[node name="Visual" type="MeshInstance3D" parent="Lamp_3" unique_id=1681486347]
+transform = Transform3D(0.066, 0, 0, 0, 0.19, 0, 0, 0, 0.31, 0, 0, 0)
+material_override = SubResource("mat_tail")
+mesh = SubResource("unit_box")
+
+[node name="ReverseLamp" type="MeshInstance3D" parent="Lamp_3" unique_id=100883437]
+transform = Transform3D(0.07, 0, 0, 0, 0.052, 0, 0, 0, 0.08, 0, -0.04, 0.02)
+material_override = SubResource("mat_head")
+mesh = SubResource("unit_box")
+
+[node name="Lamp_4" type="Node3D" parent="." unique_id=448543490]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.79, 0.827, 0.59)
+
+[node name="Visual" type="MeshInstance3D" parent="Lamp_4" unique_id=1664350768]
+transform = Transform3D(0.066, 0, 0, 0, 0.19, 0, 0, 0, 0.31, 0, 0, 0)
+material_override = SubResource("mat_tail")
+mesh = SubResource("unit_box")
+
+[node name="ReverseLamp" type="MeshInstance3D" parent="Lamp_4" unique_id=1614309945]
+transform = Transform3D(0.07, 0, 0, 0, 0.052, 0, 0, 0, 0.08, 0, -0.04, 0.02)
+material_override = SubResource("mat_head")
+mesh = SubResource("unit_box")
+
+[node name="FrontDetails" type="Node3D" parent="." unique_id=1002970141]
+
+[node name="BlackGrille" type="MeshInstance3D" parent="FrontDetails" unique_id=1764851432]
+transform = Transform3D(0.033, 0, 0, 0, 0.23, 0, 0, 0, 0.87, -1.816, 0.796, 0)
+material_override = SubResource("mat_black")
+mesh = SubResource("unit_box")
+
+[node name="GrilleChromeSlat1" type="MeshInstance3D" parent="FrontDetails" unique_id=1877858918]
+transform = Transform3D(0.023, 0, 0, 0, 0.014, 0, 0, 0, 0.77, -1.846, 0.72, 0)
+material_override = SubResource("mat_chrome")
+mesh = SubResource("unit_box")
+
+[node name="GrilleChromeSlat2" type="MeshInstance3D" parent="FrontDetails" unique_id=1386013133]
+transform = Transform3D(0.023, 0, 0, 0, 0.014, 0, 0, 0, 0.77, -1.846, 0.77, 0)
+material_override = SubResource("mat_chrome")
+mesh = SubResource("unit_box")
+
+[node name="GrilleChromeSlat3" type="MeshInstance3D" parent="FrontDetails" unique_id=1674231279]
+transform = Transform3D(0.023, 0, 0, 0, 0.014, 0, 0, 0, 0.77, -1.846, 0.82, 0)
+material_override = SubResource("mat_chrome")
+mesh = SubResource("unit_box")
+
+[node name="GrilleChromeSlat4" type="MeshInstance3D" parent="FrontDetails" unique_id=173005094]
+transform = Transform3D(0.023, 0, 0, 0, 0.014, 0, 0, 0, 0.77, -1.846, 0.87, 0)
+material_override = SubResource("mat_chrome")
+mesh = SubResource("unit_box")
+
+[node name="FrontBumper" type="MeshInstance3D" parent="FrontDetails" unique_id=1716266872]
+transform = Transform3D(0.18, 0, 0, 0, 0.18, 0, 0, 0, 1.73, -1.836, 0.53, 0)
+material_override = SubResource("mat_black")
+mesh = SubResource("unit_box")
+
+[node name="BumperHighlight" type="MeshInstance3D" parent="FrontDetails" unique_id=1461022342]
+transform = Transform3D(0.018, 0, 0, 0, 0.044, 0, 0, 0, 1.53, -1.945, 0.571, 0)
+material_override = SubResource("mat_chrome")
+mesh = SubResource("unit_box")
+
+[node name="LeftPushBarUpright" type="MeshInstance3D" parent="FrontDetails" unique_id=1505016246]
+transform = Transform3D(0.079, 0, 0, 0, 0.42, 0, 0, 0, 0.074, -1.964, 0.776, -0.477)
+material_override = SubResource("mat_black")
+mesh = SubResource("unit_box")
+
+[node name="LeftPushBarProtectivePad" type="MeshInstance3D" parent="FrontDetails" unique_id=1785851631]
+transform = Transform3D(0.036, 0, 0, 0, 0.22, 0, 0, 0, 0.09, -2.01, 0.801, -0.477)
+material_override = SubResource("mat_black")
+mesh = SubResource("unit_box")
+
+[node name="RightPushBarUpright" type="MeshInstance3D" parent="FrontDetails" unique_id=1153457777]
+transform = Transform3D(0.079, 0, 0, 0, 0.42, 0, 0, 0, 0.074, -1.964, 0.776, 0.477)
+material_override = SubResource("mat_black")
+mesh = SubResource("unit_box")
+
+[node name="RightPushBarProtectivePad" type="MeshInstance3D" parent="FrontDetails" unique_id=842785395]
+transform = Transform3D(0.036, 0, 0, 0, 0.22, 0, 0, 0, 0.09, -2.01, 0.801, 0.477)
+material_override = SubResource("mat_black")
+mesh = SubResource("unit_box")
+
+[node name="PushBarCrossbar" type="MeshInstance3D" parent="FrontDetails" unique_id=614476963]
+transform = Transform3D(0.068, 0, 0, 0, 0.06, 0, 0, 0, 1.05, -1.971, 0.697, 0)
+material_override = SubResource("mat_black")
+mesh = SubResource("unit_box")
+
+[node name="FrontNumberPlate" type="MeshInstance3D" parent="FrontDetails" unique_id=1514775380]
+transform = Transform3D(0.025, 0, 0, 0, 0.122, 0, 0, 0, 0.39, -1.955, 0.558, 0)
+material_override = SubResource("mat_white")
+mesh = SubResource("unit_box")
+
+[node name="FrontPlateText" type="Label3D" parent="FrontDetails" unique_id=1320024631]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -1.975, 0.555, 0)
+pixel_size = 0.00245
+shaded = true
+double_sided = false
+modulate = Color(0.025, 0.046, 0.076, 1)
+text = "P-007"
+font_size = 29
+outline_size = 0
+
+[node name="RearDetails" type="Node3D" parent="." unique_id=81543303]
+
+[node name="RearBumper" type="MeshInstance3D" parent="RearDetails" unique_id=157768249]
+transform = Transform3D(0.16, 0, 0, 0, 0.175, 0, 0, 0, 1.73, 1.826, 0.52, 0)
+material_override = SubResource("mat_black")
+mesh = SubResource("unit_box")
+
+[node name="RearBumperChrome" type="MeshInstance3D" parent="RearDetails" unique_id=1031980782]
+transform = Transform3D(0.016, 0, 0, 0, 0.039, 0, 0, 0, 1.49, 1.925, 0.559, 0)
+material_override = SubResource("mat_chrome")
+mesh = SubResource("unit_box")
+
+[node name="RearLicense" type="MeshInstance3D" parent="RearDetails" unique_id=1736999963]
+transform = Transform3D(0.022, 0, 0, 0, 0.13, 0, 0, 0, 0.4, 1.829, 0.809, 0)
+material_override = SubResource("mat_white")
+mesh = SubResource("unit_box")
+
+[node name="RearPlateText" type="Label3D" parent="RearDetails" unique_id=1607846151]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 1.852, 0.804, 0)
+pixel_size = 0.0024
+shaded = true
+double_sided = false
+modulate = Color(0.025, 0.046, 0.076, 1)
+text = "P-007"
+font_size = 29
+outline_size = 0
+
+[node name="ExhaustTip" type="MeshInstance3D" parent="RearDetails" unique_id=221619360]
+transform = Transform3D(0.19, 0, 0, 0, 0.06, 0, 0, 0, 0.14, 1.93, 0.418, 0.55)
+material_override = SubResource("mat_chrome")
+mesh = SubResource("unit_box")
+
+[node name="RadioAntenna" type="MeshInstance3D" parent="RearDetails" unique_id=1580409343]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.38, 1.208, -0.38)
+material_override = SubResource("mat_black")
+mesh = SubResource("antenna_mesh")
+
+[node name="AntennaBase" type="MeshInstance3D" parent="RearDetails" unique_id=1942054034]
+transform = Transform3D(0.09, 0, 0, 0, 0.041, 0, 0, 0, 0.09, 1.38, 0.985, -0.38)
+material_override = SubResource("mat_black")
+mesh = SubResource("unit_box")
+
+[node name="Lightbar" type="Node3D" parent="." unique_id=1846889819]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.015, 1.728, 0)
+
+[node name="Visual" type="MeshInstance3D" parent="Lightbar" unique_id=444809836]
+transform = Transform3D(0.39, 0, 0, 0, 0.075, 0, 0, 0, 1.23, 0, -0.012, 0)
+material_override = SubResource("mat_black")
+mesh = SubResource("unit_box")
+
+[node name="LeftLEDHousing" type="MeshInstance3D" parent="Lightbar" unique_id=36559221]
+transform = Transform3D(0.335, 0, 0, 0, 0.14, 0, 0, 0, 0.49, 0, 0.06, -0.37)
+material_override = SubResource("mat_red")
+mesh = SubResource("unit_box")
+
+[node name="LeftLensRidge1" type="MeshInstance3D" parent="Lightbar" unique_id=416951724]
+transform = Transform3D(0.012, 0, 0, 0, 0.102, 0, 0, 0, 0.018, -0.172, 0.068, -0.52)
+material_override = SubResource("mat_chrome")
+mesh = SubResource("unit_box")
+
+[node name="LeftLensRidge2" type="MeshInstance3D" parent="Lightbar" unique_id=1528159030]
+transform = Transform3D(0.012, 0, 0, 0, 0.102, 0, 0, 0, 0.018, -0.172, 0.068, -0.37)
+material_override = SubResource("mat_chrome")
+mesh = SubResource("unit_box")
+
+[node name="LeftLensRidge3" type="MeshInstance3D" parent="Lightbar" unique_id=1009652370]
+transform = Transform3D(0.012, 0, 0, 0, 0.102, 0, 0, 0, 0.018, -0.172, 0.068, -0.22)
+material_override = SubResource("mat_chrome")
+mesh = SubResource("unit_box")
+
+[node name="RightLEDHousing" type="MeshInstance3D" parent="Lightbar" unique_id=250661032]
+transform = Transform3D(0.335, 0, 0, 0, 0.14, 0, 0, 0, 0.49, 0, 0.06, 0.37)
+material_override = SubResource("mat_blue")
+mesh = SubResource("unit_box")
+
+[node name="RightLensRidge1" type="MeshInstance3D" parent="Lightbar" unique_id=1789378664]
+transform = Transform3D(0.012, 0, 0, 0, 0.102, 0, 0, 0, 0.018, -0.172, 0.068, 0.22)
+material_override = SubResource("mat_chrome")
+mesh = SubResource("unit_box")
+
+[node name="RightLensRidge2" type="MeshInstance3D" parent="Lightbar" unique_id=672113445]
+transform = Transform3D(0.012, 0, 0, 0, 0.102, 0, 0, 0, 0.018, -0.172, 0.068, 0.37)
+material_override = SubResource("mat_chrome")
+mesh = SubResource("unit_box")
+
+[node name="RightLensRidge3" type="MeshInstance3D" parent="Lightbar" unique_id=2079366251]
+transform = Transform3D(0.012, 0, 0, 0, 0.102, 0, 0, 0, 0.018, -0.172, 0.068, 0.52)
+material_override = SubResource("mat_chrome")
+mesh = SubResource("unit_box")
+
+[node name="CenterLightbarDivider" type="MeshInstance3D" parent="Lightbar" unique_id=1321687733]
+transform = Transform3D(0.351, 0, 0, 0, 0.15, 0, 0, 0, 0.064, 0, 0.064, 0)
+material_override = SubResource("mat_black")
+mesh = SubResource("unit_box")
+
+[node name="LightbarFrontReflector" type="MeshInstance3D" parent="Lightbar" unique_id=1589283496]
+transform = Transform3D(0.018, 0, 0, 0, 0.082, 0, 0, 0, 1.1, -0.19, 0.056, 0)
+material_override = SubResource("mat_chrome")
+mesh = SubResource("unit_box")
+
+[node name="LeftMount" type="MeshInstance3D" parent="Lightbar" unique_id=627767837]
+transform = Transform3D(0.13, 0, 0, 0, 0.11, 0, 0, 0, 0.09, 0, -0.089, -0.4)
+material_override = SubResource("mat_black")
+mesh = SubResource("unit_box")
+
+[node name="RightMount" type="MeshInstance3D" parent="Lightbar" unique_id=1486595452]
+transform = Transform3D(0.13, 0, 0, 0, 0.11, 0, 0, 0, 0.09, 0, -0.089, 0.4)
+material_override = SubResource("mat_black")
+mesh = SubResource("unit_box")
+
+[node name="StudyArea" type="StaticBody3D" parent="." unique_id=685317465]
+collision_mask = 0
+metadata/word = "police car"
+
+[node name="StudyShape" type="CollisionShape3D" parent="StudyArea" unique_id=1723197259]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.97, 0)
+shape = SubResource("study_shape")

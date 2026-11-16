@@ -1,0 +1,36 @@
+{
+  "note": "Day-night lighting (scripts/world/day_night.gd, docs/guides/performance/README.md#day-night-cycle--9-november-2026). cycle_minutes: real minutes for one full game day. Keyframes are blended linearly by hour (wrapping at midnight); every keyframe lists every value. The 08:00-16:00 keyframes are the town's original daylight, slightly softened (user, 9 Nov 2026). lamps: 0 = off, 1 = full glow of the streetlight and bridge globe heads. indoor: the ambient fill used under a roof and between walls at every hour; the sun, shadows and sky are not changed indoors, so the outside seen through doors keeps the time of day. disc: colour of the sun disc in the sky by day and the moon by night (it follows the light's direction); moon_size: 0-1 size of the moon disc (only used at night, so the moon fades in and out instead of popping); clouds: tint of the sky clouds. The 06:00 sunrise keyframe is the exact midpoint of its neighbours except for disc and clouds.",
+  "cycle_minutes": 30,
+  "sun": {
+    "sunrise": 6.0,
+    "sunset": 18.5,
+    "peak_elevation": 53.0,
+    "noon_yaw": -18.0,
+    "yaw_per_hour": 12.0,
+    "min_elevation": 4.0,
+    "night_from": 19.0,
+    "night_until": 5.5,
+    "moon_elevation": 48.0,
+    "moon_yaw": 150.0,
+    "shadow_min_energy": 0.12
+  },
+  "indoor": {
+    "ambient_color": "fff4e4",
+    "ambient_energy": 0.54
+  },
+  "lamp_glow": "ffd58a",
+  "lamp_energy": 2.2,
+  "keyframes": [
+    {"hour": 0.0, "sun_color": "aabdff", "sun_energy": 0.16, "sky_top": "131f52", "sky_horizon": "34477f", "ground_horizon": "34477f", "ground_bottom": "1c2a57", "ambient_color": "aebbe0", "ambient_energy": 0.46, "fog_color": "34477f", "lamps": 1.0, "disc": "eef1ff", "moon_size": 1.0, "clouds": "56638f"},
+    {"hour": 4.75, "sun_color": "aabdff", "sun_energy": 0.16, "sky_top": "131f52", "sky_horizon": "34477f", "ground_horizon": "34477f", "ground_bottom": "1c2a57", "ambient_color": "aebbe0", "ambient_energy": 0.46, "fog_color": "34477f", "lamps": 1.0, "disc": "eef1ff", "moon_size": 1.0, "clouds": "56638f"},
+    {"hour": 5.5, "sun_color": "c7b3e6", "sun_energy": 0.0, "sky_top": "2c3a78", "sky_horizon": "9a86b8", "ground_horizon": "9a86b8", "ground_bottom": "3d4f80", "ambient_color": "b9b4e0", "ambient_energy": 0.46, "fog_color": "8f86b5", "lamps": 1.0, "disc": "eef1ff", "moon_size": 0.0, "clouds": "a094c0"},
+    {"hour": 6.0, "sun_color": "e3b4b2", "sun_energy": 0.18, "sky_top": "4b63a0", "sky_horizon": "cca5aa", "ground_horizon": "cca5aa", "ground_bottom": "5e77a0", "ambient_color": "dccbd6", "ambient_energy": 0.47, "fog_color": "c2a6ae", "lamps": 0.675, "disc": "ff8a3c", "moon_size": 0.0, "clouds": "ffc6b8"},
+    {"hour": 6.5, "sun_color": "ffb57e", "sun_energy": 0.36, "sky_top": "6a8cc8", "sky_horizon": "ffc49c", "ground_horizon": "ffc49c", "ground_bottom": "7e9fc0", "ambient_color": "ffe2cc", "ambient_energy": 0.48, "fog_color": "f6c6a6", "lamps": 0.35, "disc": "ffa64d", "moon_size": 0.0, "clouds": "ffe0cc"},
+    {"hour": 8.0, "sun_color": "fff1dc", "sun_energy": 0.56, "sky_top": "4f8fd0", "sky_horizon": "c9e2ef", "ground_horizon": "c9e2ef", "ground_bottom": "6fa9bf", "ambient_color": "fff4e4", "ambient_energy": 0.54, "fog_color": "c9e2ef", "lamps": 0.0, "disc": "ffe271", "moon_size": 0.0, "clouds": "ffffff"},
+    {"hour": 16.0, "sun_color": "fff1dc", "sun_energy": 0.56, "sky_top": "4f8fd0", "sky_horizon": "c9e2ef", "ground_horizon": "c9e2ef", "ground_bottom": "6fa9bf", "ambient_color": "fff4e4", "ambient_energy": 0.54, "fog_color": "c9e2ef", "lamps": 0.0, "disc": "ffe271", "moon_size": 0.0, "clouds": "ffffff"},
+    {"hour": 17.5, "sun_color": "ffd18e", "sun_energy": 0.52, "sky_top": "5a8ccc", "sky_horizon": "ffdcae", "ground_horizon": "ffdcae", "ground_bottom": "7aa6bd", "ambient_color": "fff0d6", "ambient_energy": 0.52, "fog_color": "f4dcb8", "lamps": 0.0, "disc": "ffc85a", "moon_size": 0.0, "clouds": "fff1de"},
+    {"hour": 18.4, "sun_color": "ff9c62", "sun_energy": 0.3, "sky_top": "4a5fa8", "sky_horizon": "ffa27c", "ground_horizon": "ffa27c", "ground_bottom": "5d6f9f", "ambient_color": "ffd6c0", "ambient_energy": 0.48, "fog_color": "eaa58d", "lamps": 0.6, "disc": "ff7a3a", "moon_size": 0.0, "clouds": "ffb8a0"},
+    {"hour": 19.0, "sun_color": "c79ab8", "sun_energy": 0.0, "sky_top": "27336f", "sky_horizon": "8a6c9c", "ground_horizon": "8a6c9c", "ground_bottom": "34447a", "ambient_color": "b8acd8", "ambient_energy": 0.46, "fog_color": "7d6e9e", "lamps": 1.0, "disc": "ff6e48", "moon_size": 0.0, "clouds": "9a86b2"},
+    {"hour": 20.0, "sun_color": "aabdff", "sun_energy": 0.16, "sky_top": "131f52", "sky_horizon": "34477f", "ground_horizon": "34477f", "ground_bottom": "1c2a57", "ambient_color": "aebbe0", "ambient_energy": 0.46, "fog_color": "34477f", "lamps": 1.0, "disc": "eef1ff", "moon_size": 1.0, "clouds": "56638f"}
+  ]
+}

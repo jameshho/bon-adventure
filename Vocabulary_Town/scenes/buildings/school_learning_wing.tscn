@@ -1,0 +1,446 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/buildings/rooms/school_sciencelab.tscn" id="room0"]
+[ext_resource type="PackedScene" path="res://scenes/buildings/rooms/school_artstudio.tscn" id="room1"]
+[ext_resource type="PackedScene" path="res://scenes/buildings/rooms/school_musicroom.tscn" id="room2"]
+[ext_resource type="PackedScene" path="res://scenes/buildings/rooms/school_geographyroom.tscn" id="room3"]
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.87843, 0.84706, 0.78039, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r1"]
+size = Vector3(20, 0.09, 24)
+
+[sub_resource type="BoxShape3D" id="r3"]
+size = Vector3(20, 0.09, 24)
+
+[sub_resource type="StandardMaterial3D" id="r5"]
+albedo_color = Color(0.91373, 0.89412, 0.85098, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r4"]
+size = Vector3(20, 5.2, 0.18)
+
+[sub_resource type="BoxShape3D" id="r6"]
+size = Vector3(20, 5.2, 0.18)
+
+[sub_resource type="BoxMesh" id="r7"]
+size = Vector3(0.18, 5.2, 24)
+
+[sub_resource type="BoxShape3D" id="r8"]
+size = Vector3(0.18, 5.2, 24)
+
+[sub_resource type="BoxMesh" id="r9"]
+size = Vector3(0.18, 5.2, 24)
+
+[sub_resource type="BoxShape3D" id="r10"]
+size = Vector3(0.18, 5.2, 24)
+
+[sub_resource type="StandardMaterial3D" id="r12"]
+albedo_color = Color(0.70588, 0.6, 0.5098, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r11"]
+size = Vector3(20.15, 0.15, 24.1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rkpvq"]
+size = Vector3(20.15, 0.15, 24.1)
+
+[sub_resource type="BoxMesh" id="r13"]
+size = Vector3(0.14, 5.2, 4)
+
+[sub_resource type="BoxShape3D" id="r14"]
+size = Vector3(0.14, 5.2, 4)
+
+[sub_resource type="BoxMesh" id="r15"]
+size = Vector3(0.14, 5.2, 10)
+
+[sub_resource type="BoxShape3D" id="r16"]
+size = Vector3(0.14, 5.2, 10)
+
+[sub_resource type="BoxMesh" id="r17"]
+size = Vector3(0.14, 5.2, 4)
+
+[sub_resource type="BoxShape3D" id="r18"]
+size = Vector3(0.14, 5.2, 4)
+
+[sub_resource type="BoxMesh" id="r19"]
+size = Vector3(0.14, 1.4, 3)
+
+[sub_resource type="BoxShape3D" id="r20"]
+size = Vector3(0.14, 1.4, 3)
+
+[sub_resource type="BoxMesh" id="r21"]
+size = Vector3(0.14, 1.4, 3)
+
+[sub_resource type="BoxShape3D" id="r22"]
+size = Vector3(0.14, 1.4, 3)
+
+[sub_resource type="BoxMesh" id="r23"]
+size = Vector3(8.2, 5.2, 0.14)
+
+[sub_resource type="BoxShape3D" id="r24"]
+size = Vector3(8.2, 5.2, 0.14)
+
+[sub_resource type="BoxMesh" id="r25"]
+size = Vector3(8.2, 5.2, 0.14)
+
+[sub_resource type="BoxShape3D" id="r26"]
+size = Vector3(8.2, 5.2, 0.14)
+
+[sub_resource type="BoxMesh" id="r27"]
+size = Vector3(0.14, 5.2, 4)
+
+[sub_resource type="BoxShape3D" id="r28"]
+size = Vector3(0.14, 5.2, 4)
+
+[sub_resource type="BoxMesh" id="r29"]
+size = Vector3(0.14, 5.2, 10)
+
+[sub_resource type="BoxShape3D" id="r30"]
+size = Vector3(0.14, 5.2, 10)
+
+[sub_resource type="BoxMesh" id="r31"]
+size = Vector3(0.14, 5.2, 4)
+
+[sub_resource type="BoxShape3D" id="r32"]
+size = Vector3(0.14, 5.2, 4)
+
+[sub_resource type="BoxMesh" id="r33"]
+size = Vector3(0.14, 1.4, 3)
+
+[sub_resource type="BoxShape3D" id="r34"]
+size = Vector3(0.14, 1.4, 3)
+
+[sub_resource type="BoxMesh" id="r35"]
+size = Vector3(0.14, 1.4, 3)
+
+[sub_resource type="BoxShape3D" id="r36"]
+size = Vector3(0.14, 1.4, 3)
+
+[sub_resource type="BoxMesh" id="r37"]
+size = Vector3(8.2, 5.2, 0.14)
+
+[sub_resource type="BoxShape3D" id="r38"]
+size = Vector3(8.2, 5.2, 0.14)
+
+[sub_resource type="BoxMesh" id="r39"]
+size = Vector3(8.2, 5.2, 0.14)
+
+[sub_resource type="BoxShape3D" id="r40"]
+size = Vector3(8.2, 5.2, 0.14)
+
+[node name="SchoolLearningWing" type="Node3D" unique_id=1418506423]
+metadata/expanded_wing = true
+
+[node name="Floor_2" type="MeshInstance3D" parent="." unique_id=334455331]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.035, 12)
+material_override = SubResource("r2")
+mesh = SubResource("r1")
+
+[node name="FloorBody" type="StaticBody3D" parent="." unique_id=1960592769]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="FloorBody" unique_id=972883616]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.035, 12)
+shape = SubResource("r3")
+
+[node name="Rear_5" type="MeshInstance3D" parent="." unique_id=1231194895]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, 24)
+material_override = SubResource("r5")
+mesh = SubResource("r4")
+
+[node name="RearBody" type="StaticBody3D" parent="." unique_id=1339630298]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="RearBody" unique_id=913410921]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, 24)
+shape = SubResource("r6")
+
+[node name="OuterWallL10_7" type="MeshInstance3D" parent="." unique_id=1522749905]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 2.6, 12)
+material_override = SubResource("r5")
+mesh = SubResource("r7")
+metadata/exterior_word = "school"
+
+[node name="OuterWallL10Body" type="StaticBody3D" parent="." unique_id=1359780743]
+collision_mask = 0
+metadata/exterior_word = "school"
+
+[node name="Shape" type="CollisionShape3D" parent="OuterWallL10Body" unique_id=630674679]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 2.6, 12)
+shape = SubResource("r8")
+
+[node name="OuterWall10_9" type="MeshInstance3D" parent="." unique_id=49715389]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 2.6, 12)
+material_override = SubResource("r5")
+mesh = SubResource("r9")
+metadata/exterior_word = "school"
+
+[node name="OuterWall10Body" type="StaticBody3D" parent="." unique_id=2077281574]
+collision_mask = 0
+metadata/exterior_word = "school"
+
+[node name="Shape" type="CollisionShape3D" parent="OuterWall10Body" unique_id=1278541356]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 2.6, 12)
+shape = SubResource("r10")
+
+[node name="Roof_12" type="MeshInstance3D" parent="." unique_id=557849267]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.3, 12)
+material_override = SubResource("r12")
+mesh = SubResource("r11")
+metadata/exterior_word = "school"
+
+[node name="RoofSolid" type="StaticBody3D" parent="Roof_12" unique_id=158183004]
+
+[node name="Collision" type="CollisionShape3D" parent="Roof_12/RoofSolid" unique_id=1906750893]
+shape = SubResource("BoxShape3D_rkpvq")
+
+[node name="CorridorWall1_0_13" type="MeshInstance3D" parent="." unique_id=1061118956]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 2.6, 2)
+material_override = SubResource("r5")
+mesh = SubResource("r13")
+
+[node name="CorridorWall-1_0Body" type="StaticBody3D" parent="." unique_id=1712442578]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="CorridorWall-1_0Body" unique_id=2082859648]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 2.6, 2)
+shape = SubResource("r14")
+
+[node name="CorridorWall1_1_15" type="MeshInstance3D" parent="." unique_id=1815610393]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 2.6, 12)
+material_override = SubResource("r5")
+mesh = SubResource("r15")
+
+[node name="CorridorWall-1_1Body" type="StaticBody3D" parent="." unique_id=1258384488]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="CorridorWall-1_1Body" unique_id=419900952]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 2.6, 12)
+shape = SubResource("r16")
+
+[node name="CorridorWall1_2_17" type="MeshInstance3D" parent="." unique_id=1071409070]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 2.6, 22)
+material_override = SubResource("r5")
+mesh = SubResource("r17")
+
+[node name="CorridorWall-1_2Body" type="StaticBody3D" parent="." unique_id=1866735483]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="CorridorWall-1_2Body" unique_id=1246517818]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 2.6, 22)
+shape = SubResource("r18")
+
+[node name="DoorHeader1_0_19" type="MeshInstance3D" parent="." unique_id=988555617]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 4.5, 5.5)
+material_override = SubResource("r5")
+mesh = SubResource("r19")
+
+[node name="DoorHeader-1_0Body" type="StaticBody3D" parent="." unique_id=684980736]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DoorHeader-1_0Body" unique_id=1282614108]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 4.5, 5.5)
+shape = SubResource("r20")
+
+[node name="DoorHeader1_1_21" type="MeshInstance3D" parent="." unique_id=1196627975]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 4.5, 18.5)
+material_override = SubResource("r5")
+mesh = SubResource("r21")
+
+[node name="DoorHeader-1_1Body" type="StaticBody3D" parent="." unique_id=795848593]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DoorHeader-1_1Body" unique_id=1766720626]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 4.5, 18.5)
+shape = SubResource("r22")
+
+[node name="CrossHall1_11_23" type="MeshInstance3D" parent="." unique_id=1884740942]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.9, 2.6, 11)
+material_override = SubResource("r5")
+mesh = SubResource("r23")
+
+[node name="CrossHall-1_11Body" type="StaticBody3D" parent="." unique_id=529762710]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="CrossHall-1_11Body" unique_id=138027607]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.9, 2.6, 11)
+shape = SubResource("r24")
+
+[node name="CrossHall1_13_25" type="MeshInstance3D" parent="." unique_id=1615649876]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.9, 2.6, 13)
+material_override = SubResource("r5")
+mesh = SubResource("r25")
+
+[node name="CrossHall-1_13Body" type="StaticBody3D" parent="." unique_id=681100679]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="CrossHall-1_13Body" unique_id=2028490594]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.9, 2.6, 13)
+shape = SubResource("r26")
+
+[node name="CorridorWall1_0_27" type="MeshInstance3D" parent="." unique_id=1539313539]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8, 2.6, 2)
+material_override = SubResource("r5")
+mesh = SubResource("r27")
+
+[node name="CorridorWall1_0Body" type="StaticBody3D" parent="." unique_id=314380047]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="CorridorWall1_0Body" unique_id=276470021]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8, 2.6, 2)
+shape = SubResource("r28")
+
+[node name="CorridorWall1_1_29" type="MeshInstance3D" parent="." unique_id=2135270024]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8, 2.6, 12)
+material_override = SubResource("r5")
+mesh = SubResource("r29")
+
+[node name="CorridorWall1_1Body" type="StaticBody3D" parent="." unique_id=751202588]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="CorridorWall1_1Body" unique_id=1180624931]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8, 2.6, 12)
+shape = SubResource("r30")
+
+[node name="CorridorWall1_2_31" type="MeshInstance3D" parent="." unique_id=1951503424]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8, 2.6, 22)
+material_override = SubResource("r5")
+mesh = SubResource("r31")
+
+[node name="CorridorWall1_2Body" type="StaticBody3D" parent="." unique_id=745919546]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="CorridorWall1_2Body" unique_id=223430108]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8, 2.6, 22)
+shape = SubResource("r32")
+
+[node name="DoorHeader1_0_33" type="MeshInstance3D" parent="." unique_id=1824004765]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8, 4.5, 5.5)
+material_override = SubResource("r5")
+mesh = SubResource("r33")
+
+[node name="DoorHeader1_0Body" type="StaticBody3D" parent="." unique_id=696220848]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DoorHeader1_0Body" unique_id=664853024]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8, 4.5, 5.5)
+shape = SubResource("r34")
+
+[node name="DoorHeader1_1_35" type="MeshInstance3D" parent="." unique_id=902777522]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8, 4.5, 18.5)
+material_override = SubResource("r5")
+mesh = SubResource("r35")
+
+[node name="DoorHeader1_1Body" type="StaticBody3D" parent="." unique_id=475689476]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DoorHeader1_1Body" unique_id=1759377433]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8, 4.5, 18.5)
+shape = SubResource("r36")
+
+[node name="CrossHall1_11_37" type="MeshInstance3D" parent="." unique_id=656550363]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.9, 2.6, 11)
+material_override = SubResource("r5")
+mesh = SubResource("r37")
+
+[node name="CrossHall1_11Body" type="StaticBody3D" parent="." unique_id=1457874962]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="CrossHall1_11Body" unique_id=73098312]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.9, 2.6, 11)
+shape = SubResource("r38")
+
+[node name="CrossHall1_13_39" type="MeshInstance3D" parent="." unique_id=1379644488]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.9, 2.6, 13)
+material_override = SubResource("r5")
+mesh = SubResource("r39")
+
+[node name="CrossHall1_13Body" type="StaticBody3D" parent="." unique_id=1355579032]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="CrossHall1_13Body" unique_id=1082702637]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.9, 2.6, 13)
+shape = SubResource("r40")
+
+[node name="HallLight3" type="OmniLight3D" parent="." unique_id=1501975516]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.2, 3)
+light_energy = 0.75
+omni_range = 9.0
+
+[node name="HallLight9" type="OmniLight3D" parent="." unique_id=1621812764]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.2, 9)
+light_energy = 0.75
+omni_range = 9.0
+
+[node name="HallLight15" type="OmniLight3D" parent="." unique_id=1018318432]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.2, 15)
+light_energy = 0.75
+omni_range = 9.0
+
+[node name="HallLight21" type="OmniLight3D" parent="." unique_id=667131402]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.2, 21)
+light_energy = 0.75
+omni_range = 9.0
+
+[node name="Section225" type="Label3D" parent="." unique_id=1719218042]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 3.8, 0.4)
+pixel_size = 0.006
+modulate = Color(0.18, 0.24, 0.27, 1)
+text = "NEW CLASSROOMS"
+font_size = 52
+outline_size = 0
+
+[node name="ScienceLab" type="Node3D" parent="." unique_id=584726822 instance=ExtResource("room0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.9, 0, 5.5)
+metadata/theme = "SCIENCE CLASSROOM"
+
+[node name="Section235" type="Label3D" parent="." unique_id=118239943]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -1.65, 3.1, 5.5)
+pixel_size = 0.0045
+billboard = 1
+modulate = Color(0.18, 0.24, 0.27, 1)
+text = "SCIENCE CLASSROOM"
+font_size = 52
+outline_size = 0
+
+[node name="ArtStudio" type="Node3D" parent="." unique_id=1529373151 instance=ExtResource("room1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.9, 0, 5.5)
+metadata/theme = "ART STUDIO"
+
+[node name="Section246" type="Label3D" parent="." unique_id=1608232125]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 1.65, 3.1, 5.5)
+pixel_size = 0.0045
+billboard = 1
+modulate = Color(0.18, 0.24, 0.27, 1)
+text = "ART STUDIO"
+font_size = 52
+outline_size = 0
+
+[node name="MusicRoom" type="Node3D" parent="." unique_id=127500149 instance=ExtResource("room2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.9, 0, 18.5)
+metadata/theme = "MUSIC ROOM"
+
+[node name="Section257" type="Label3D" parent="." unique_id=1026771541]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -1.65, 3.1, 18.5)
+pixel_size = 0.0045
+billboard = 1
+modulate = Color(0.18, 0.24, 0.27, 1)
+text = "MUSIC ROOM"
+font_size = 52
+outline_size = 0
+
+[node name="GeographyRoom" type="Node3D" parent="." unique_id=346216885 instance=ExtResource("room3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.9, 0, 18.5)
+metadata/theme = "GEOGRAPHY & READING"
+
+[node name="Section268" type="Label3D" parent="." unique_id=422931309]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 1.65, 3.1, 18.5)
+pixel_size = 0.0045
+billboard = 1
+modulate = Color(0.18, 0.24, 0.27, 1)
+text = "GEOGRAPHY & READING"
+font_size = 52
+outline_size = 0

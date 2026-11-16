@@ -1,0 +1,685 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/buildings/electronics_displays.tscn" id="learning_display"]
+
+[sub_resource type="StandardMaterial3D" id="r3"]
+albedo_color = Color(0.89412, 0.92549, 0.94118, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="r1"]
+size = Vector3(11.3, 0.09, 15.2)
+
+[sub_resource type="BoxShape3D" id="r2"]
+size = Vector3(11.3, 0.09, 15.2)
+
+[sub_resource type="StandardMaterial3D" id="r6"]
+albedo_color = Color(0.86275, 0.90196, 0.92941, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="r4"]
+size = Vector3(3.95, 5.25, 0.17)
+
+[sub_resource type="BoxShape3D" id="r5"]
+size = Vector3(3.95, 5.25, 0.17)
+
+[sub_resource type="BoxMesh" id="r7"]
+size = Vector3(3.6, 1.06, 0.19)
+
+[sub_resource type="BoxShape3D" id="r8"]
+size = Vector3(3.6, 1.06, 0.19)
+
+[sub_resource type="BoxMesh" id="r9"]
+size = Vector3(11.5, 5.25, 0.16)
+
+[sub_resource type="BoxShape3D" id="r10"]
+size = Vector3(11.5, 5.25, 0.16)
+
+[sub_resource type="BoxMesh" id="r11"]
+size = Vector3(0.18, 5.25, 3.234)
+
+[sub_resource type="BoxShape3D" id="r12"]
+size = Vector3(0.18, 5.25, 3.234)
+
+[sub_resource type="BoxMesh" id="r13"]
+size = Vector3(0.18, 5.25, 4.62)
+
+[sub_resource type="BoxShape3D" id="r14"]
+size = Vector3(0.18, 5.25, 4.62)
+
+[sub_resource type="BoxMesh" id="r15"]
+size = Vector3(0.18, 2.08, 2.156)
+
+[sub_resource type="BoxShape3D" id="r16"]
+size = Vector3(0.18, 2.08, 2.156)
+
+[sub_resource type="BoxMesh" id="r17"]
+size = Vector3(0.18, 1.59, 2.156)
+
+[sub_resource type="BoxShape3D" id="r18"]
+size = Vector3(0.18, 1.59, 2.156)
+
+[sub_resource type="StandardMaterial3D" id="r21"]
+albedo_color = Color(0.64706, 0.80392, 0.83137, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="r19"]
+size = Vector3(0.045, 1.52, 2.066)
+
+[sub_resource type="BoxShape3D" id="r20"]
+size = Vector3(0.045, 1.52, 2.066)
+
+[sub_resource type="StandardMaterial3D" id="r24"]
+albedo_color = Color(0.92941, 0.90196, 0.85098, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="r22"]
+size = Vector3(0.24, 0.09, 2.156)
+
+[sub_resource type="BoxShape3D" id="r23"]
+size = Vector3(0.24, 0.09, 2.156)
+
+[sub_resource type="StandardMaterial3D" id="r27"]
+albedo_color = Color(0.47451, 0.58039, 0.69412, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="r25"]
+size = Vector3(12.1, 0.2, 16.05)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4fg0d"]
+size = Vector3(12.1, 0.2, 16.05)
+
+[sub_resource type="BoxShape3D" id="r26"]
+size = Vector3(12.1, 0.2, 16.05)
+
+[sub_resource type="StandardMaterial3D" id="r30"]
+albedo_color = Color(0.56863, 0.7098, 0.80784, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="r28"]
+size = Vector3(11.85, 0.32, 0.18)
+
+[sub_resource type="StandardMaterial3D" id="r33"]
+albedo_color = Color(0.98431, 0.96078, 0.91373, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="r31"]
+size = Vector3(8, 0.6, 0.12)
+
+[sub_resource type="BoxShape3D" id="r32"]
+size = Vector3(8, 0.6, 0.12)
+
+[sub_resource type="StandardMaterial3D" id="r36"]
+albedo_color = Color(0.95294, 0.92549, 0.88627, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="r34"]
+size = Vector3(0.12, 3.15, 0.18)
+
+[sub_resource type="BoxShape3D" id="r35"]
+size = Vector3(0.12, 3.15, 0.18)
+
+[sub_resource type="StandardMaterial3D" id="r39"]
+albedo_color = Color(0.78039, 0.78039, 0.7451, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="r37"]
+size = Vector3(2.55, 0.1, 1.36)
+
+[sub_resource type="BoxShape3D" id="r38"]
+size = Vector3(2.55, 0.1, 1.36)
+
+[sub_resource type="StandardMaterial3D" id="r42"]
+albedo_color = Color(0.97647, 0.95294, 0.89804, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="r40"]
+size = Vector3(2.9, 0.47, 0.08)
+
+[sub_resource type="BoxShape3D" id="r41"]
+size = Vector3(2.9, 0.47, 0.08)
+
+[node name="ElectronicsStore" type="Node3D" unique_id=442007675]
+
+[node name="Single_Finished_Floor" type="Node3D" parent="." unique_id=444768338]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.035, 0)
+metadata/word_key = "floor"
+
+[node name="Visual" type="MeshInstance3D" parent="Single_Finished_Floor" unique_id=145439587]
+material_override = SubResource("r3")
+mesh = SubResource("r1")
+
+[node name="Body" type="StaticBody3D" parent="Single_Finished_Floor" unique_id=188191600]
+metadata/word = "floor"
+
+[node name="Collision" type="CollisionShape3D" parent="Single_Finished_Floor/Body" unique_id=1053801921]
+shape = SubResource("r2")
+
+[node name="FrontWallLeft" type="Node3D" parent="." unique_id=1514861979]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.775, 2.625, -7.7)
+metadata/word_key = "wall"
+metadata/exterior_word = "electronics store"
+
+[node name="Visual" type="MeshInstance3D" parent="FrontWallLeft" unique_id=915029438]
+material_override = SubResource("r6")
+mesh = SubResource("r4")
+
+[node name="Body" type="StaticBody3D" parent="FrontWallLeft" unique_id=2077907829]
+metadata/word = "wall"
+
+[node name="Collision" type="CollisionShape3D" parent="FrontWallLeft/Body" unique_id=1864581172]
+shape = SubResource("r5")
+
+[node name="FrontWallRight" type="Node3D" parent="." unique_id=1486622788]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.775, 2.625, -7.7)
+metadata/word_key = "wall"
+metadata/exterior_word = "electronics store"
+
+[node name="Visual" type="MeshInstance3D" parent="FrontWallRight" unique_id=1976798506]
+material_override = SubResource("r6")
+mesh = SubResource("r4")
+
+[node name="Body" type="StaticBody3D" parent="FrontWallRight" unique_id=932361218]
+metadata/word = "wall"
+
+[node name="Collision" type="CollisionShape3D" parent="FrontWallRight/Body" unique_id=1771800022]
+shape = SubResource("r5")
+
+[node name="FrontHeader" type="Node3D" parent="." unique_id=1820128934]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.72, -7.7)
+metadata/exterior_word = "electronics store"
+
+[node name="Visual" type="MeshInstance3D" parent="FrontHeader" unique_id=2044328248]
+material_override = SubResource("r6")
+mesh = SubResource("r7")
+
+[node name="Body" type="StaticBody3D" parent="FrontHeader" unique_id=685711504]
+
+[node name="Collision" type="CollisionShape3D" parent="FrontHeader/Body" unique_id=997385169]
+shape = SubResource("r8")
+
+[node name="RearWall" type="Node3D" parent="." unique_id=698915670]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.625, 7.7)
+metadata/word_key = "wall"
+metadata/exterior_word = "electronics store"
+
+[node name="Visual" type="MeshInstance3D" parent="RearWall" unique_id=1535673123]
+material_override = SubResource("r6")
+mesh = SubResource("r9")
+
+[node name="Body" type="StaticBody3D" parent="RearWall" unique_id=836937144]
+metadata/word = "wall"
+
+[node name="Collision" type="CollisionShape3D" parent="RearWall/Body" unique_id=121824685]
+shape = SubResource("r10")
+
+[node name="ExteriorSidePier" type="Node3D" parent="." unique_id=479424672]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.75, 2.625, -6.083)
+metadata/word_key = "wall"
+
+[node name="Visual" type="MeshInstance3D" parent="ExteriorSidePier" unique_id=1935131396]
+material_override = SubResource("r6")
+mesh = SubResource("r11")
+
+[node name="Body" type="StaticBody3D" parent="ExteriorSidePier" unique_id=1484007480]
+metadata/word = "wall"
+
+[node name="Collision" type="CollisionShape3D" parent="ExteriorSidePier/Body" unique_id=1274717530]
+shape = SubResource("r12")
+
+[node name="ExteriorSidePier_2" type="Node3D" parent="." unique_id=1971379448]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.75, 2.625, 0)
+metadata/word_key = "wall"
+
+[node name="Visual" type="MeshInstance3D" parent="ExteriorSidePier_2" unique_id=1929584160]
+material_override = SubResource("r6")
+mesh = SubResource("r13")
+
+[node name="Body" type="StaticBody3D" parent="ExteriorSidePier_2" unique_id=1458441075]
+metadata/word = "wall"
+
+[node name="Collision" type="CollisionShape3D" parent="ExteriorSidePier_2/Body" unique_id=4581933]
+shape = SubResource("r14")
+
+[node name="ExteriorSidePier_3" type="Node3D" parent="." unique_id=1454849586]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.75, 2.625, 6.083)
+metadata/word_key = "wall"
+
+[node name="Visual" type="MeshInstance3D" parent="ExteriorSidePier_3" unique_id=2052572907]
+material_override = SubResource("r6")
+mesh = SubResource("r11")
+
+[node name="Body" type="StaticBody3D" parent="ExteriorSidePier_3" unique_id=219108514]
+metadata/word = "wall"
+
+[node name="Collision" type="CollisionShape3D" parent="ExteriorSidePier_3/Body" unique_id=1958349787]
+shape = SubResource("r12")
+
+[node name="BelowWindow" type="Node3D" parent="." unique_id=1028513380]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.75, 1.04, -3.388)
+metadata/word_key = "wall"
+metadata/exterior_word = "electronics store"
+
+[node name="Visual" type="MeshInstance3D" parent="BelowWindow" unique_id=1984197173]
+material_override = SubResource("r6")
+mesh = SubResource("r15")
+
+[node name="Body" type="StaticBody3D" parent="BelowWindow" unique_id=1413625414]
+metadata/word = "wall"
+
+[node name="Collision" type="CollisionShape3D" parent="BelowWindow/Body" unique_id=1023165436]
+shape = SubResource("r16")
+
+[node name="AboveWindow" type="Node3D" parent="." unique_id=455953193]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.75, 4.455, -3.388)
+metadata/word_key = "wall"
+metadata/exterior_word = "electronics store"
+
+[node name="Visual" type="MeshInstance3D" parent="AboveWindow" unique_id=1832771478]
+material_override = SubResource("r6")
+mesh = SubResource("r17")
+
+[node name="Body" type="StaticBody3D" parent="AboveWindow" unique_id=1508824611]
+metadata/word = "wall"
+
+[node name="Collision" type="CollisionShape3D" parent="AboveWindow/Body" unique_id=98301366]
+shape = SubResource("r18")
+
+[node name="WindowPane" type="Node3D" parent="." unique_id=1891808665]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.75, 2.84, -3.388)
+metadata/word_key = "window"
+metadata/exterior_word = "electronics store"
+
+[node name="Visual" type="MeshInstance3D" parent="WindowPane" unique_id=1022859645]
+material_override = SubResource("r21")
+mesh = SubResource("r19")
+
+[node name="Body" type="Area3D" parent="WindowPane" unique_id=1684462710]
+collision_mask = 0
+metadata/word = "window"
+
+[node name="Collision" type="CollisionShape3D" parent="WindowPane/Body" unique_id=533020335]
+shape = SubResource("r20")
+
+[node name="WindowSill" type="Node3D" parent="." unique_id=240820087]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.75, 2.1, -3.388)
+metadata/exterior_word = "electronics store"
+
+[node name="Visual" type="MeshInstance3D" parent="WindowSill" unique_id=812470718]
+material_override = SubResource("r24")
+mesh = SubResource("r22")
+
+[node name="Body" type="Area3D" parent="WindowSill" unique_id=1156315915]
+collision_layer = 0
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="Collision" type="CollisionShape3D" parent="WindowSill/Body" unique_id=1286918365]
+shape = SubResource("r23")
+
+[node name="BelowWindow_2" type="Node3D" parent="." unique_id=884187208]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.75, 1.04, 3.388)
+metadata/word_key = "wall"
+metadata/exterior_word = "electronics store"
+
+[node name="Visual" type="MeshInstance3D" parent="BelowWindow_2" unique_id=1288155208]
+material_override = SubResource("r6")
+mesh = SubResource("r15")
+
+[node name="Body" type="StaticBody3D" parent="BelowWindow_2" unique_id=1543792032]
+metadata/word = "wall"
+
+[node name="Collision" type="CollisionShape3D" parent="BelowWindow_2/Body" unique_id=1733982157]
+shape = SubResource("r16")
+
+[node name="AboveWindow_2" type="Node3D" parent="." unique_id=1225026613]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.75, 4.455, 3.388)
+metadata/word_key = "wall"
+metadata/exterior_word = "electronics store"
+
+[node name="Visual" type="MeshInstance3D" parent="AboveWindow_2" unique_id=504743820]
+material_override = SubResource("r6")
+mesh = SubResource("r17")
+
+[node name="Body" type="StaticBody3D" parent="AboveWindow_2" unique_id=332179393]
+metadata/word = "wall"
+
+[node name="Collision" type="CollisionShape3D" parent="AboveWindow_2/Body" unique_id=1515172777]
+shape = SubResource("r18")
+
+[node name="WindowPane_2" type="Node3D" parent="." unique_id=741362351]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.75, 2.84, 3.388)
+metadata/word_key = "window"
+metadata/exterior_word = "electronics store"
+
+[node name="Visual" type="MeshInstance3D" parent="WindowPane_2" unique_id=1874228157]
+material_override = SubResource("r21")
+mesh = SubResource("r19")
+
+[node name="Body" type="Area3D" parent="WindowPane_2" unique_id=910180372]
+collision_mask = 0
+metadata/word = "window"
+
+[node name="Collision" type="CollisionShape3D" parent="WindowPane_2/Body" unique_id=1717833369]
+shape = SubResource("r20")
+
+[node name="WindowSill_2" type="Node3D" parent="." unique_id=350992141]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.75, 2.1, 3.388)
+metadata/exterior_word = "electronics store"
+
+[node name="Visual" type="MeshInstance3D" parent="WindowSill_2" unique_id=1909117645]
+material_override = SubResource("r24")
+mesh = SubResource("r22")
+
+[node name="Body" type="Area3D" parent="WindowSill_2" unique_id=1973638509]
+collision_layer = 0
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="Collision" type="CollisionShape3D" parent="WindowSill_2/Body" unique_id=49419086]
+shape = SubResource("r23")
+
+[node name="ExteriorSidePier_4" type="Node3D" parent="." unique_id=1994116305]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.75, 2.625, -6.083)
+metadata/word_key = "wall"
+
+[node name="Visual" type="MeshInstance3D" parent="ExteriorSidePier_4" unique_id=1972169247]
+material_override = SubResource("r6")
+mesh = SubResource("r11")
+
+[node name="Body" type="StaticBody3D" parent="ExteriorSidePier_4" unique_id=1057517766]
+metadata/word = "wall"
+
+[node name="Collision" type="CollisionShape3D" parent="ExteriorSidePier_4/Body" unique_id=1295825659]
+shape = SubResource("r12")
+
+[node name="ExteriorSidePier_5" type="Node3D" parent="." unique_id=1140045143]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.75, 2.625, 0)
+metadata/word_key = "wall"
+
+[node name="Visual" type="MeshInstance3D" parent="ExteriorSidePier_5" unique_id=418456714]
+material_override = SubResource("r6")
+mesh = SubResource("r13")
+
+[node name="Body" type="StaticBody3D" parent="ExteriorSidePier_5" unique_id=1195021801]
+metadata/word = "wall"
+
+[node name="Collision" type="CollisionShape3D" parent="ExteriorSidePier_5/Body" unique_id=1748970716]
+shape = SubResource("r14")
+
+[node name="ExteriorSidePier_6" type="Node3D" parent="." unique_id=408452103]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.75, 2.625, 6.083)
+metadata/word_key = "wall"
+
+[node name="Visual" type="MeshInstance3D" parent="ExteriorSidePier_6" unique_id=1568969571]
+material_override = SubResource("r6")
+mesh = SubResource("r11")
+
+[node name="Body" type="StaticBody3D" parent="ExteriorSidePier_6" unique_id=1836406553]
+metadata/word = "wall"
+
+[node name="Collision" type="CollisionShape3D" parent="ExteriorSidePier_6/Body" unique_id=353024782]
+shape = SubResource("r12")
+
+[node name="BelowWindow_3" type="Node3D" parent="." unique_id=978891943]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.75, 1.04, -3.388)
+metadata/word_key = "wall"
+metadata/exterior_word = "electronics store"
+
+[node name="Visual" type="MeshInstance3D" parent="BelowWindow_3" unique_id=1131725863]
+material_override = SubResource("r6")
+mesh = SubResource("r15")
+
+[node name="Body" type="StaticBody3D" parent="BelowWindow_3" unique_id=744073976]
+metadata/word = "wall"
+
+[node name="Collision" type="CollisionShape3D" parent="BelowWindow_3/Body" unique_id=2102551439]
+shape = SubResource("r16")
+
+[node name="AboveWindow_3" type="Node3D" parent="." unique_id=213658508]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.75, 4.455, -3.388)
+metadata/word_key = "wall"
+metadata/exterior_word = "electronics store"
+
+[node name="Visual" type="MeshInstance3D" parent="AboveWindow_3" unique_id=1313593850]
+material_override = SubResource("r6")
+mesh = SubResource("r17")
+
+[node name="Body" type="StaticBody3D" parent="AboveWindow_3" unique_id=1256258698]
+metadata/word = "wall"
+
+[node name="Collision" type="CollisionShape3D" parent="AboveWindow_3/Body" unique_id=1713212802]
+shape = SubResource("r18")
+
+[node name="WindowPane_3" type="Node3D" parent="." unique_id=1698973372]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.75, 2.84, -3.388)
+metadata/word_key = "window"
+metadata/exterior_word = "electronics store"
+
+[node name="Visual" type="MeshInstance3D" parent="WindowPane_3" unique_id=1051214101]
+material_override = SubResource("r21")
+mesh = SubResource("r19")
+
+[node name="Body" type="Area3D" parent="WindowPane_3" unique_id=938448692]
+collision_mask = 0
+metadata/word = "window"
+
+[node name="Collision" type="CollisionShape3D" parent="WindowPane_3/Body" unique_id=1758991076]
+shape = SubResource("r20")
+
+[node name="WindowSill_3" type="Node3D" parent="." unique_id=545472535]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.75, 2.1, -3.388)
+metadata/exterior_word = "electronics store"
+
+[node name="Visual" type="MeshInstance3D" parent="WindowSill_3" unique_id=657716120]
+material_override = SubResource("r24")
+mesh = SubResource("r22")
+
+[node name="Body" type="Area3D" parent="WindowSill_3" unique_id=922163305]
+collision_layer = 0
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="Collision" type="CollisionShape3D" parent="WindowSill_3/Body" unique_id=473481024]
+shape = SubResource("r23")
+
+[node name="BelowWindow_4" type="Node3D" parent="." unique_id=111414706]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.75, 1.04, 3.388)
+metadata/word_key = "wall"
+metadata/exterior_word = "electronics store"
+
+[node name="Visual" type="MeshInstance3D" parent="BelowWindow_4" unique_id=69905314]
+material_override = SubResource("r6")
+mesh = SubResource("r15")
+
+[node name="Body" type="StaticBody3D" parent="BelowWindow_4" unique_id=213223738]
+metadata/word = "wall"
+
+[node name="Collision" type="CollisionShape3D" parent="BelowWindow_4/Body" unique_id=271707857]
+shape = SubResource("r16")
+
+[node name="AboveWindow_4" type="Node3D" parent="." unique_id=1080294307]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.75, 4.455, 3.388)
+metadata/word_key = "wall"
+metadata/exterior_word = "electronics store"
+
+[node name="Visual" type="MeshInstance3D" parent="AboveWindow_4" unique_id=581363174]
+material_override = SubResource("r6")
+mesh = SubResource("r17")
+
+[node name="Body" type="StaticBody3D" parent="AboveWindow_4" unique_id=885464816]
+metadata/word = "wall"
+
+[node name="Collision" type="CollisionShape3D" parent="AboveWindow_4/Body" unique_id=241186397]
+shape = SubResource("r18")
+
+[node name="WindowPane_4" type="Node3D" parent="." unique_id=1078775188]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.75, 2.84, 3.388)
+metadata/word_key = "window"
+metadata/exterior_word = "electronics store"
+
+[node name="Visual" type="MeshInstance3D" parent="WindowPane_4" unique_id=288122862]
+material_override = SubResource("r21")
+mesh = SubResource("r19")
+
+[node name="Body" type="Area3D" parent="WindowPane_4" unique_id=819621411]
+collision_mask = 0
+metadata/word = "window"
+
+[node name="Collision" type="CollisionShape3D" parent="WindowPane_4/Body" unique_id=556240789]
+shape = SubResource("r20")
+
+[node name="WindowSill_4" type="Node3D" parent="." unique_id=1447900059]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.75, 2.1, 3.388)
+metadata/exterior_word = "electronics store"
+
+[node name="Visual" type="MeshInstance3D" parent="WindowSill_4" unique_id=1388445598]
+material_override = SubResource("r24")
+mesh = SubResource("r22")
+
+[node name="Body" type="Area3D" parent="WindowSill_4" unique_id=1825560932]
+collision_layer = 0
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="Collision" type="CollisionShape3D" parent="WindowSill_4/Body" unique_id=193299608]
+shape = SubResource("r23")
+
+[node name="FlatRoof" type="Node3D" parent="." unique_id=1172367427]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.4, 0)
+metadata/word_key = "roof"
+metadata/exterior_word = "electronics store"
+
+[node name="Visual" type="MeshInstance3D" parent="FlatRoof" unique_id=1929616859]
+material_override = SubResource("r27")
+mesh = SubResource("r25")
+
+[node name="RoofSolid" type="StaticBody3D" parent="FlatRoof/Visual" unique_id=450383307]
+
+[node name="Collision" type="CollisionShape3D" parent="FlatRoof/Visual/RoofSolid" unique_id=920358194]
+shape = SubResource("BoxShape3D_4fg0d")
+
+[node name="Body" type="Area3D" parent="FlatRoof" unique_id=199806580]
+collision_mask = 0
+metadata/word = "roof"
+
+[node name="Collision" type="CollisionShape3D" parent="FlatRoof/Body" unique_id=2090762412]
+shape = SubResource("r26")
+
+[node name="Fascia" type="Node3D" parent="." unique_id=84202936]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.08, -7.89)
+
+[node name="Visual" type="MeshInstance3D" parent="Fascia" unique_id=1747441849]
+material_override = SubResource("r30")
+mesh = SubResource("r28")
+
+[node name="ShopSignPanel" type="Node3D" parent="." unique_id=1246420714]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.58, -7.92)
+metadata/word_key = "sign"
+metadata/exterior_word = "electronics store"
+
+[node name="Visual" type="MeshInstance3D" parent="ShopSignPanel" unique_id=976303177]
+material_override = SubResource("r33")
+mesh = SubResource("r31")
+
+[node name="Body" type="Area3D" parent="ShopSignPanel" unique_id=979086175]
+collision_mask = 0
+metadata/word = "sign"
+
+[node name="Collision" type="CollisionShape3D" parent="ShopSignPanel/Body" unique_id=1604928144]
+shape = SubResource("r32")
+
+[node name="Sign_ELECTRONICS_STORE" type="Label3D" parent="." unique_id=1936266940]
+transform = Transform3D(-1, 0, 2.5351817e-06, 0, 1, 0, -2.5351817e-06, 0, -1, 0, 4.46, -8.01)
+pixel_size = 0.0047
+modulate = Color(0.25882, 0.33333, 0.39608, 1)
+text = "ELECTRONICS STORE"
+font_size = 55
+outline_size = 6
+
+[node name="DoorJamb" type="Node3D" parent="." unique_id=1632152736]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 1.6, -7.86)
+
+[node name="Visual" type="MeshInstance3D" parent="DoorJamb" unique_id=1624343855]
+material_override = SubResource("r36")
+mesh = SubResource("r34")
+
+[node name="Body" type="Area3D" parent="DoorJamb" unique_id=1654540793]
+collision_layer = 0
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="Collision" type="CollisionShape3D" parent="DoorJamb/Body" unique_id=1839209739]
+shape = SubResource("r35")
+
+[node name="DoorJamb_2" type="Node3D" parent="." unique_id=1494408494]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8, 1.6, -7.86)
+
+[node name="Visual" type="MeshInstance3D" parent="DoorJamb_2" unique_id=574165010]
+material_override = SubResource("r36")
+mesh = SubResource("r34")
+
+[node name="Body" type="Area3D" parent="DoorJamb_2" unique_id=654010284]
+collision_layer = 0
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="Collision" type="CollisionShape3D" parent="DoorJamb_2/Body" unique_id=1538936599]
+shape = SubResource("r35")
+
+[node name="DoorStep" type="Node3D" parent="." unique_id=1963538048]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, -8.6)
+metadata/word_key = "entrance"
+
+[node name="Visual" type="MeshInstance3D" parent="DoorStep" unique_id=326727032]
+material_override = SubResource("r39")
+mesh = SubResource("r37")
+
+[node name="Body" type="Area3D" parent="DoorStep" unique_id=1145721598]
+collision_mask = 0
+metadata/word = "entrance"
+
+[node name="Collision" type="CollisionShape3D" parent="DoorStep/Body" unique_id=1375100841]
+shape = SubResource("r38")
+
+[node name="WarmCeilingLight" type="OmniLight3D" parent="." unique_id=1398892270]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.66, -3.388)
+light_color = Color(1, 0.95294, 0.87451, 1)
+light_energy = 0.34
+omni_range = 8.6
+
+[node name="WarmCeilingLight_2" type="OmniLight3D" parent="." unique_id=1992437343]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.66, 3.388)
+light_color = Color(1, 0.95294, 0.87451, 1)
+light_energy = 0.34
+omni_range = 8.6
+
+[node name="RoomPlaque" type="Node3D" parent="." unique_id=1921455622]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.1, -5.3)
+metadata/word_key = "sign"
+
+[node name="Visual" type="MeshInstance3D" parent="RoomPlaque" unique_id=622112800]
+material_override = SubResource("r42")
+mesh = SubResource("r40")
+
+[node name="Body" type="Area3D" parent="RoomPlaque" unique_id=1828238555]
+collision_mask = 0
+metadata/word = "sign"
+
+[node name="Collision" type="CollisionShape3D" parent="RoomPlaque/Body" unique_id=35204236]
+shape = SubResource("r41")
+
+[node name="Sign_ELECTRONICS" type="Label3D" parent="." unique_id=2127015040]
+transform = Transform3D(-1, 0, 2.5351817e-06, 0, 1, 0, -2.5351817e-06, 0, -1, 0, 2.98, -5.38)
+pixel_size = 0.0035
+modulate = Color(0.25882, 0.41176, 0.52941, 1)
+text = "ELECTRONICS"
+font_size = 55
+outline_size = 6
+
+[node name="LearningDisplays" type="Node3D" parent="." unique_id=386383779 instance=ExtResource("learning_display")]

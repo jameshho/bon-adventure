@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/shopping_basket.gd" id="1_basket"]
+
+[node name="ShoppingBasket" type="Node3D"]
+script = ExtResource("1_basket")
+metadata/word_key = "basket"

@@ -1,0 +1,157 @@
+[gd_scene format=3]
+
+[sub_resource type="CylinderMesh" id="r1"]
+top_radius = 0.55
+bottom_radius = 0.55
+height = 0.6
+radial_segments = 16
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.84314, 0.63529, 0.32941, 1)
+roughness = 0.78
+
+[sub_resource type="CylinderMesh" id="r3"]
+top_radius = 0.56
+bottom_radius = 0.56
+height = 0.09
+radial_segments = 16
+
+[sub_resource type="StandardMaterial3D" id="r4"]
+albedo_color = Color(0.92549, 0.90980, 0.87451, 1)
+roughness = 0.78
+
+[sub_resource type="CylinderMesh" id="r5"]
+top_radius = 0.57
+bottom_radius = 0.57
+height = 0.09
+radial_segments = 16
+
+[sub_resource type="StandardMaterial3D" id="r6"]
+albedo_color = Color(0.94118, 0.83529, 0.78039, 1)
+roughness = 0.78
+
+[sub_resource type="SphereMesh" id="r7"]
+radius = 0.5
+height = 1.0
+radial_segments = 16
+rings = 8
+
+[sub_resource type="StandardMaterial3D" id="r8"]
+albedo_color = Color(0.73333, 0.27059, 0.22353, 1)
+roughness = 0.78
+
+[sub_resource type="SphereMesh" id="r9"]
+radius = 0.5
+height = 1.0
+radial_segments = 16
+rings = 8
+
+[sub_resource type="SphereMesh" id="r10"]
+radius = 0.5
+height = 1.0
+radial_segments = 16
+rings = 8
+
+[sub_resource type="SphereMesh" id="r11"]
+radius = 0.5
+height = 1.0
+radial_segments = 16
+rings = 8
+
+[sub_resource type="SphereMesh" id="r12"]
+radius = 0.5
+height = 1.0
+radial_segments = 16
+rings = 8
+
+[sub_resource type="SphereMesh" id="r13"]
+radius = 0.5
+height = 1.0
+radial_segments = 16
+rings = 8
+
+[sub_resource type="BoxShape3D" id="r14"]
+size = Vector3(1.200000, 0.850000, 1.200000)
+
+[sub_resource type="BoxShape3D" id="r15"]
+size = Vector3(1.104000, 0.800000, 1.104000)
+
+[node name="Cake" type="Node3D"]
+metadata/word_key = "cake"
+metadata/learning_object = true
+
+[node name="Sponge_2" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.320000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r1")
+material_override = SubResource("r2")
+
+[node name="CreamLayer_4" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.320000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r3")
+material_override = SubResource("r4")
+
+[node name="Icing_6" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.640000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r5")
+material_override = SubResource("r6")
+
+[node name="Strawberry_8" type="MeshInstance3D" parent="."]
+position = Vector3(0.360000, 0.740000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r7")
+material_override = SubResource("r8")
+scale = Vector3(0.150000, 0.170000, 0.150000)
+
+[node name="Strawberry_9" type="MeshInstance3D" parent="."]
+position = Vector3(0.180000, 0.740000, 0.311769)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r9")
+material_override = SubResource("r8")
+scale = Vector3(0.150000, 0.170000, 0.150000)
+
+[node name="Strawberry_10" type="MeshInstance3D" parent="."]
+position = Vector3(-0.180000, 0.740000, 0.311769)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r10")
+material_override = SubResource("r8")
+scale = Vector3(0.150000, 0.170000, 0.150000)
+
+[node name="Strawberry_11" type="MeshInstance3D" parent="."]
+position = Vector3(-0.360000, 0.740000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r11")
+material_override = SubResource("r8")
+scale = Vector3(0.150000, 0.170000, 0.150000)
+
+[node name="Strawberry_12" type="MeshInstance3D" parent="."]
+position = Vector3(-0.180000, 0.740000, -0.311769)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r12")
+material_override = SubResource("r8")
+scale = Vector3(0.150000, 0.170000, 0.150000)
+
+[node name="Strawberry_13" type="MeshInstance3D" parent="."]
+position = Vector3(0.180000, 0.740000, -0.311769)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r13")
+material_override = SubResource("r8")
+scale = Vector3(0.150000, 0.170000, 0.150000)
+
+[node name="Interaction" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Interaction"]
+position = Vector3(0.000000, 0.425000, 0.000000)
+shape = SubResource("r14")
+
+[node name="Footprint" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Footprint"]
+position = Vector3(0.000000, 0.400000, 0.000000)
+shape = SubResource("r15")

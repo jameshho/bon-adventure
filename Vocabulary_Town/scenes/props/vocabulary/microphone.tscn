@@ -1,0 +1,112 @@
+[gd_scene format=3]
+
+[sub_resource type="CylinderMesh" id="r1"]
+top_radius = 0.3
+bottom_radius = 0.3
+height = 0.1
+radial_segments = 16
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.15686, 0.20392, 0.24314, 1)
+roughness = 0.78
+
+[sub_resource type="CylinderMesh" id="r3"]
+top_radius = 0.025
+bottom_radius = 0.025
+height = 1.4
+radial_segments = 16
+
+[sub_resource type="StandardMaterial3D" id="r4"]
+albedo_color = Color(0.52941, 0.58039, 0.61176, 1)
+roughness = 0.78
+
+[sub_resource type="CylinderMesh" id="r5"]
+top_radius = 0.055
+bottom_radius = 0.055
+height = 0.25
+radial_segments = 16
+
+[sub_resource type="SphereMesh" id="r6"]
+radius = 0.5
+height = 1.0
+radial_segments = 16
+rings = 8
+
+[sub_resource type="TorusMesh" id="r7"]
+inner_radius = 0.07200000000000001
+outer_radius = 0.088
+rings = 24
+ring_segments = 8
+
+[sub_resource type="TorusMesh" id="r8"]
+inner_radius = 0.07200000000000001
+outer_radius = 0.088
+rings = 24
+ring_segments = 8
+
+[sub_resource type="TorusMesh" id="r9"]
+inner_radius = 0.07200000000000001
+outer_radius = 0.088
+rings = 24
+ring_segments = 8
+
+[sub_resource type="BoxShape3D" id="r10"]
+size = Vector3(0.700000, 1.900000, 0.700000)
+
+[node name="Microphone" type="Node3D"]
+metadata/word_key = "microphone"
+metadata/learning_object = true
+
+[node name="Base_2" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.050000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r1")
+material_override = SubResource("r2")
+
+[node name="Stand_4" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.750000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r3")
+material_override = SubResource("r4")
+
+[node name="Handle_5" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 1.550000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r5")
+material_override = SubResource("r2")
+
+[node name="MeshHead_6" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 1.750000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r6")
+material_override = SubResource("r4")
+scale = Vector3(0.180000, 0.230000, 0.180000)
+
+[node name="Grille_7" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 1.700000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r7")
+material_override = SubResource("r2")
+scale = Vector3(1.000000, 1.000000, 1.000000)
+
+[node name="Grille_8" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 1.750000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r8")
+material_override = SubResource("r2")
+scale = Vector3(1.000000, 1.000000, 1.000000)
+
+[node name="Grille_9" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 1.800000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r9")
+material_override = SubResource("r2")
+scale = Vector3(1.000000, 1.000000, 1.000000)
+
+[node name="Interaction" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Interaction"]
+position = Vector3(0.000000, 0.950000, 0.000000)
+shape = SubResource("r10")

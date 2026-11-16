@@ -1,0 +1,67 @@
+[gd_scene format=3]
+
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/pig/body.res" id="1_xaub5"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/pig/snout.res" id="2_s1fkg"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/pig/ears.res" id="3_80hfw"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/pig/hooves.res" id="4_wu26e"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/pig/tail.res" id="5_72tvv"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/pig/eyes.res" id="6_qgti0"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/pig/face_details.res" id="7_8pv3k"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iusau"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.88
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cpb8q"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+metallic_specular = 0.12
+roughness = 0.4
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jsncw"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.75
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5t8ps"]
+size = Vector3(0.7307692, 0.95, 1.520696)
+
+[node name="PigClayDisplay" type="Node3D" unique_id=880631877]
+metadata/source = "User's Pig (Black & White) Character Blueprint, relax walk pose (11 Nov 2026)"
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=1869408967]
+material_override = SubResource("StandardMaterial3D_iusau")
+mesh = ExtResource("1_xaub5")
+
+[node name="Snout" type="MeshInstance3D" parent="." unique_id=2056857652]
+material_override = SubResource("StandardMaterial3D_iusau")
+mesh = ExtResource("2_s1fkg")
+
+[node name="Ears" type="MeshInstance3D" parent="." unique_id=757360964]
+material_override = SubResource("StandardMaterial3D_iusau")
+mesh = ExtResource("3_80hfw")
+
+[node name="Hooves" type="MeshInstance3D" parent="." unique_id=136727435]
+material_override = SubResource("StandardMaterial3D_iusau")
+mesh = ExtResource("4_wu26e")
+
+[node name="Tail" type="MeshInstance3D" parent="." unique_id=1498701187]
+material_override = SubResource("StandardMaterial3D_iusau")
+mesh = ExtResource("5_72tvv")
+
+[node name="Eyes" type="MeshInstance3D" parent="." unique_id=1553204226]
+material_override = SubResource("StandardMaterial3D_cpb8q")
+cast_shadow = 0
+mesh = ExtResource("6_qgti0")
+
+[node name="Face details" type="MeshInstance3D" parent="." unique_id=646474102]
+material_override = SubResource("StandardMaterial3D_jsncw")
+cast_shadow = 0
+mesh = ExtResource("7_8pv3k")
+
+[node name="Footprint" type="StaticBody3D" parent="." unique_id=2113619559]
+
+[node name="@CollisionShape3D@2" type="CollisionShape3D" parent="Footprint" unique_id=773011384]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.475, 0.015659332)
+shape = SubResource("BoxShape3D_5t8ps")

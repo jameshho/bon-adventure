@@ -1,0 +1,123 @@
+[gd_scene format=3]
+
+[sub_resource type="CylinderMesh" id="r1"]
+top_radius = 0.24
+bottom_radius = 0.24
+height = 1.2
+radial_segments = 16
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.46667, 0.63137, 0.56863, 1)
+roughness = 0.78
+
+[sub_resource type="SphereMesh" id="r3"]
+radius = 0.5
+height = 1.0
+radial_segments = 16
+rings = 8
+
+[sub_resource type="CylinderMesh" id="r4"]
+top_radius = 0.055
+bottom_radius = 0.055
+height = 0.22
+radial_segments = 16
+
+[sub_resource type="StandardMaterial3D" id="r5"]
+albedo_color = Color(0.52941, 0.58039, 0.61176, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r6"]
+size = Vector3(0.250000, 0.040000, 0.060000)
+
+[sub_resource type="StandardMaterial3D" id="r7"]
+albedo_color = Color(0.15686, 0.20392, 0.24314, 1)
+roughness = 0.78
+
+[sub_resource type="CylinderMesh" id="r8"]
+top_radius = 0.11
+bottom_radius = 0.11
+height = 0.05
+radial_segments = 16
+
+[sub_resource type="StandardMaterial3D" id="r9"]
+albedo_color = Color(0.92549, 0.90980, 0.87451, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r10"]
+size = Vector3(0.010000, 0.130000, 0.010000)
+
+[sub_resource type="TorusMesh" id="r11"]
+inner_radius = 0.312
+outer_radius = 0.34800000000000003
+rings = 24
+ring_segments = 8
+
+[sub_resource type="BoxShape3D" id="r12"]
+size = Vector3(0.950000, 1.700000, 0.600000)
+
+[sub_resource type="BoxShape3D" id="r13"]
+size = Vector3(0.855000, 0.700000, 0.540000)
+
+[node name="Oxygen_Tank" type="Node3D"]
+metadata/word_key = "oxygen tank"
+metadata/learning_object = true
+
+[node name="Tank_2" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.690000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r1")
+material_override = SubResource("r2")
+
+[node name="Shoulder_3" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 1.290000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r3")
+material_override = SubResource("r2")
+scale = Vector3(0.480000, 0.300000, 0.480000)
+
+[node name="Valve_5" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 1.510000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r4")
+material_override = SubResource("r5")
+
+[node name="Tap_7" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 1.630000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r6")
+material_override = SubResource("r7")
+
+[node name="Gauge_9" type="MeshInstance3D" parent="."]
+position = Vector3(0.160000, 1.530000, -0.060000)
+rotation_degrees = Vector3(90.000000, 0.000000, 0.000000)
+mesh = SubResource("r8")
+material_override = SubResource("r9")
+
+[node name="GaugeNeedle_10" type="MeshInstance3D" parent="."]
+position = Vector3(0.160000, 1.540000, -0.100000)
+rotation_degrees = Vector3(0.000000, 0.000000, 30.000000)
+mesh = SubResource("r10")
+material_override = SubResource("r7")
+
+[node name="Tubing_11" type="MeshInstance3D" parent="."]
+position = Vector3(0.250000, 1.050000, 0.000000)
+rotation_degrees = Vector3(90.000000, 0.000000, 0.000000)
+mesh = SubResource("r11")
+material_override = SubResource("r7")
+scale = Vector3(0.600000, 1.000000, 1.500000)
+
+[node name="Interaction" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Interaction"]
+position = Vector3(0.000000, 0.850000, 0.000000)
+shape = SubResource("r12")
+
+[node name="Footprint" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Footprint"]
+position = Vector3(0.000000, 0.350000, 0.000000)
+shape = SubResource("r13")

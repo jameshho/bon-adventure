@@ -1,0 +1,89 @@
+[gd_scene format=3]
+
+[ext_resource type="ArrayMesh" path="res://scenes/props/vehicles/motorcycle_wheel_detail.res" id="2_hylac"]
+[ext_resource type="ArrayMesh" path="res://scenes/props/vehicles/motorcycle_wheel_2_detail.res" id="3_4rcuc"]
+[ext_resource type="ArrayMesh" path="res://scenes/props/vehicles/motorcycle_fork.res" id="4_fnnir"]
+[ext_resource type="ArrayMesh" path="res://scenes/props/vehicles/motorcycle_parts.res" id="5_5bm0v"]
+[ext_resource type="ArrayMesh" path="res://scenes/props/vehicles/motorcycle_mechanics.res" id="6_jfp4i"]
+[ext_resource type="Script" path="res://scripts/world/driveable_vehicle.gd" id="drive_script"]
+
+[sub_resource type="StandardMaterial3D" id="rubber"]
+albedo_color = Color(0.052, 0.058, 0.067, 1)
+roughness = 0.96
+
+[sub_resource type="TorusMesh" id="tire"]
+inner_radius = 0.236
+outer_radius = 0.34
+rings = 12
+ring_segments = 28
+
+[sub_resource type="CylinderShape3D" id="wheel_collision"]
+height = 0.16
+radius = 0.34
+
+[sub_resource type="BoxShape3D" id="study_collision"]
+size = Vector3(2.32, 1.55, 0.77)
+
+[node name="Motorcycle" type="Node3D" unique_id=991054077]
+script = ExtResource("drive_script")
+metadata/word_key = "motorcycle"
+
+[node name="Wheel" type="Node3D" parent="." unique_id=226653539]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -0.75, 0.35, 0)
+metadata/word_key = "wheel"
+
+[node name="Visual" type="MeshInstance3D" parent="Wheel" unique_id=1588302835]
+transform = Transform3D(1, 0, 0, 0, 1.52, 0, 0, 0, 1, 0, 0, 0)
+material_override = SubResource("rubber")
+mesh = SubResource("tire")
+
+[node name="Body" type="Area3D" parent="Wheel" unique_id=1777212613]
+collision_mask = 0
+metadata/word = "wheel"
+
+[node name="Collision" type="CollisionShape3D" parent="Wheel/Body" unique_id=505020330]
+shape = SubResource("wheel_collision")
+
+[node name="Detail" type="MeshInstance3D" parent="Wheel" unique_id=1721594634]
+visibility_range_end = 120.0
+mesh = ExtResource("2_hylac")
+
+[node name="Wheel_2" type="Node3D" parent="." unique_id=1505819336]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0.75, 0.35, 0)
+metadata/word_key = "wheel"
+
+[node name="Visual" type="MeshInstance3D" parent="Wheel_2" unique_id=1836780364]
+transform = Transform3D(1, 0, 0, 0, 1.52, 0, 0, 0, 1, 0, 0, 0)
+material_override = SubResource("rubber")
+mesh = SubResource("tire")
+
+[node name="Body" type="Area3D" parent="Wheel_2" unique_id=611748191]
+collision_mask = 0
+metadata/word = "wheel"
+
+[node name="Collision" type="CollisionShape3D" parent="Wheel_2/Body" unique_id=15857192]
+shape = SubResource("wheel_collision")
+
+[node name="Detail" type="MeshInstance3D" parent="Wheel_2" unique_id=1088523904]
+visibility_range_end = 120.0
+mesh = ExtResource("3_4rcuc")
+
+[node name="FrontFork" type="Node3D" parent="." unique_id=899318281]
+
+[node name="Visual" type="MeshInstance3D" parent="FrontFork" unique_id=1915481882]
+mesh = ExtResource("4_fnnir")
+
+[node name="StudyArea" type="StaticBody3D" parent="." unique_id=937405003]
+collision_mask = 0
+metadata/word = "motorcycle"
+
+[node name="StudyShape" type="CollisionShape3D" parent="StudyArea" unique_id=1755404930]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.702, 0)
+shape = SubResource("study_collision")
+
+[node name="Parts" type="MeshInstance3D" parent="." unique_id=126299446]
+mesh = ExtResource("5_5bm0v")
+
+[node name="Mechanics" type="MeshInstance3D" parent="." unique_id=602705684]
+visibility_range_end = 120.0
+mesh = ExtResource("6_jfp4i")

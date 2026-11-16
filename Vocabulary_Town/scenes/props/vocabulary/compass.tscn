@@ -1,0 +1,110 @@
+[gd_scene format=3]
+
+[sub_resource type="CylinderMesh" id="r1"]
+top_radius = 0.32
+bottom_radius = 0.32
+height = 0.14
+radial_segments = 16
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.52941, 0.58039, 0.61176, 1)
+roughness = 0.78
+
+[sub_resource type="CylinderMesh" id="r3"]
+top_radius = 0.29
+bottom_radius = 0.29
+height = 0.02
+radial_segments = 16
+
+[sub_resource type="StandardMaterial3D" id="r4"]
+albedo_color = Color(0.92549, 0.90980, 0.87451, 1)
+roughness = 0.78
+
+[sub_resource type="PrismMesh" id="r5"]
+size = Vector3(0.14, 0.42, 0.025)
+
+[sub_resource type="StandardMaterial3D" id="r6"]
+albedo_color = Color(0.69804, 0.29804, 0.25882, 1)
+roughness = 0.78
+
+[sub_resource type="PrismMesh" id="r7"]
+size = Vector3(0.14, 0.42, 0.025)
+
+[sub_resource type="StandardMaterial3D" id="r8"]
+albedo_color = Color(0.15686, 0.20392, 0.24314, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r9"]
+size = Vector3(0.025000, 0.015000, 0.025000)
+
+[sub_resource type="BoxMesh" id="r10"]
+size = Vector3(0.025000, 0.015000, 0.025000)
+
+[sub_resource type="BoxMesh" id="r11"]
+size = Vector3(0.025000, 0.015000, 0.025000)
+
+[sub_resource type="BoxMesh" id="r12"]
+size = Vector3(0.025000, 0.015000, 0.025000)
+
+[sub_resource type="BoxShape3D" id="r13"]
+size = Vector3(0.750000, 0.250000, 0.750000)
+
+[node name="Compass" type="Node3D"]
+metadata/word_key = "compass"
+metadata/learning_object = true
+
+[node name="Case_2" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.070000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r1")
+material_override = SubResource("r2")
+
+[node name="Face_4" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.150000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r3")
+material_override = SubResource("r4")
+
+[node name="Needle_6" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.180000, 0.000000)
+rotation_degrees = Vector3(90.000000, 0.000000, 0.000000)
+mesh = SubResource("r5")
+material_override = SubResource("r6")
+
+[node name="Needle_8" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.180000, 0.000000)
+rotation_degrees = Vector3(90.000000, 0.000000, 180.000000)
+mesh = SubResource("r7")
+material_override = SubResource("r8")
+
+[node name="Tick_9" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.170000, 0.240000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r9")
+material_override = SubResource("r8")
+
+[node name="Tick_10" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.170000, -0.240000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r10")
+material_override = SubResource("r8")
+
+[node name="Tick_11" type="MeshInstance3D" parent="."]
+position = Vector3(0.240000, 0.170000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r11")
+material_override = SubResource("r8")
+
+[node name="Tick_12" type="MeshInstance3D" parent="."]
+position = Vector3(-0.240000, 0.170000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r12")
+material_override = SubResource("r8")
+
+[node name="Interaction" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Interaction"]
+position = Vector3(0.000000, 0.125000, 0.000000)
+shape = SubResource("r13")

@@ -1,0 +1,32 @@
+{
+  "about": "Airport flight game (Captain Bruno, information desk): rules for the fictional flight schedule and the questions, no text (sentences are data/phrases.json group 'flight'; countries and time words are data/words.json). Read by scripts/learning/flight_schedule.gd and flight_questions.gd. Redesign of 7 Nov 2026, revised 8 Nov 2026 (user decisions): the game tests understanding of time expressions; board only, flights from 'board_days'[0] to [1] days around the shared 'today' / 'now' (scripts/learning/game_clock.gd). 'countries' is the pool of country word keys (flags that are easy to recognise and never alike: no Italy beside Mexico). 'airports' is the code shown next to each flag on the board (rows never show the country name). Question-first board (user decisions, 8 Nov 2026, after play-testing): every question gets its own board (flight_questions.gd design()) with 'tab_rows' departures and 'tab_rows' arrivals, at most 'max_per_country' flights of a country per tab; the answer and its near misses are 'target_rows' flights of one country taken from a cluster ('cluster_for': the cluster kinds that give each question kind its near misses; see flight_schedule.gd), plus a country trap and a verb trap at a matching time, plus fillers. Flight times are on the hour or half hour between 'first_time' and 'last_time' (user decision, 5 Nov 2026: no quarter past / quarter to), never in an hour of 'no_flight_hours' (user decisions, 8 Nov 2026: no 12 o'clock flights, so no 12 p.m. / mediodía; no flights from 7:00 to 8:59 p.m., where de la tarde turns into de la noche and speakers disagree). 'directions': departures ('dep', salir; the Salidas tab) and arrivals ('arr', llegar; the Llegadas tab). 'long_kinds' are question kinds whose time expression is already long (a day and a clock time; hace / dentro de N horas): they never name a country and never use the 'va a' future (user decision, 8 Nov 2026: one main thing per question); 'max_words' is the longest question the logic check accepts, in Spanish words. 'kinds' are the question generators of flight_questions.gd with a pick weight; every question is checked against every flight: exactly one may match, at least 'min_decoys' others share its country (when named), direction and tense, and a near miss differs only in the tested expression. 'day_in_words' lists languages that write the day of a spoken date in words (kept for the date phrases, which the planned calendar game will use).",
+  "code_prefix": "VT",
+  "first_time": "06:00",
+  "last_time": "23:30",
+  "day_in_words": ["zh"],
+  "board_days": [-2, 2],
+  "min_decoys": 2,
+  "long_kinds": ["clock", "hours"],
+  "max_words": 12,
+  "no_flight_hours": [12, 19, 20],
+  "directions": ["dep", "arr"],
+  "tab_rows": 6,
+  "target_rows": 3,
+  "max_per_country": 3,
+  "countries": ["united states", "mexico", "canada", "spain", "france", "germany", "brazil", "japan"],
+  "airports": {"united states": "JFK", "mexico": "MEX", "canada": "YYZ", "spain": "MAD", "france": "CDG", "germany": "FRA", "brazil": "GRU", "japan": "NRT"},
+  "cluster_for": {
+    "day": ["days", "mix"],
+    "weekday": ["days", "mix"],
+    "clock": ["mix", "days"],
+    "part": ["parts"],
+    "hours": ["hours"]
+  },
+  "kinds": {
+    "day": 1,
+    "part": 1,
+    "clock": 1,
+    "weekday": 1,
+    "hours": 1
+  }
+}

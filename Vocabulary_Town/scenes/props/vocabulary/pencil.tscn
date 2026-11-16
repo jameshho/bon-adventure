@@ -1,0 +1,80 @@
+[gd_scene format=3]
+
+[sub_resource type="CylinderMesh" id="r1"]
+top_radius = 0.045
+bottom_radius = 0.045
+height = 0.66
+radial_segments = 16
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.88235, 0.71765, 0.29020, 1)
+roughness = 0.78
+
+[sub_resource type="CylinderMesh" id="r3"]
+top_radius = 0
+bottom_radius = 0.045
+height = 0.1
+radial_segments = 16
+
+[sub_resource type="StandardMaterial3D" id="r4"]
+albedo_color = Color(0.67843, 0.48235, 0.31373, 1)
+roughness = 0.78
+
+[sub_resource type="CylinderMesh" id="r5"]
+top_radius = 0.047
+bottom_radius = 0.047
+height = 0.1
+radial_segments = 16
+
+[sub_resource type="StandardMaterial3D" id="r6"]
+albedo_color = Color(0.80784, 0.54510, 0.54510, 1)
+roughness = 0.78
+
+[sub_resource type="CylinderMesh" id="r7"]
+top_radius = 0.048
+bottom_radius = 0.048
+height = 0.07
+radial_segments = 16
+
+[sub_resource type="StandardMaterial3D" id="r8"]
+albedo_color = Color(0.52941, 0.58039, 0.61176, 1)
+roughness = 0.78
+
+[sub_resource type="BoxShape3D" id="r9"]
+size = Vector3(0.150000, 0.850000, 0.150000)
+
+[node name="Pencil" type="Node3D"]
+metadata/word_key = "pencil"
+metadata/learning_object = true
+
+[node name="HexagonalBody_2" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.390000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r1")
+material_override = SubResource("r2")
+
+[node name="WoodTip_4" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.050000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r3")
+material_override = SubResource("r4")
+
+[node name="Eraser_6" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.760000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r5")
+material_override = SubResource("r6")
+
+[node name="Ferrule_8" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.700000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r7")
+material_override = SubResource("r8")
+
+[node name="Interaction" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Interaction"]
+position = Vector3(0.000000, 0.425000, 0.000000)
+shape = SubResource("r9")

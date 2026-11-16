@@ -1,0 +1,66 @@
+[gd_scene format=3]
+
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/flamingo/body.res" id="1_6l5ng"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/flamingo/beak.res" id="2_xnlyn"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/flamingo/crest.res" id="3_7ccwh"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/flamingo/wings.res" id="4_yr2p4"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/flamingo/legs.res" id="5_uaokl"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/flamingo/eyes.res" id="6_spg68"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/flamingo/face_details.res" id="7_e3hpi"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_03vd6"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.86
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2ce7j"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.15
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vutwp"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.75
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cf7us"]
+size = Vector3(0.39634705, 1.4000001, 0.8150686)
+
+[node name="FlamingoClayDisplay" type="Node3D" unique_id=763127373]
+metadata/source = "User's Flamingo Character Blueprint, relax walk pose (11 Nov 2026)"
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=1977289774]
+material_override = SubResource("StandardMaterial3D_03vd6")
+mesh = ExtResource("1_6l5ng")
+
+[node name="Beak" type="MeshInstance3D" parent="." unique_id=867282687]
+material_override = SubResource("StandardMaterial3D_03vd6")
+mesh = ExtResource("2_xnlyn")
+
+[node name="Crest" type="MeshInstance3D" parent="." unique_id=2031661985]
+material_override = SubResource("StandardMaterial3D_03vd6")
+mesh = ExtResource("3_7ccwh")
+
+[node name="Wings" type="MeshInstance3D" parent="." unique_id=1287145169]
+material_override = SubResource("StandardMaterial3D_03vd6")
+mesh = ExtResource("4_yr2p4")
+
+[node name="Legs" type="MeshInstance3D" parent="." unique_id=500745992]
+material_override = SubResource("StandardMaterial3D_03vd6")
+mesh = ExtResource("5_uaokl")
+
+[node name="Eyes" type="MeshInstance3D" parent="." unique_id=871416624]
+material_override = SubResource("StandardMaterial3D_2ce7j")
+cast_shadow = 0
+mesh = ExtResource("6_spg68")
+
+[node name="Face details" type="MeshInstance3D" parent="." unique_id=1019155934]
+material_override = SubResource("StandardMaterial3D_vutwp")
+cast_shadow = 0
+mesh = ExtResource("7_e3hpi")
+
+[node name="Footprint" type="StaticBody3D" parent="." unique_id=1664168488]
+
+[node name="@CollisionShape3D@2" type="CollisionShape3D" parent="Footprint" unique_id=598940833]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.70000005, -0.02397263)
+shape = SubResource("BoxShape3D_cf7us")

@@ -1,0 +1,84 @@
+{
+  "about": "Alta Cocina restaurant game (Twinkle the beagle waiter at the host stand sends the player to seated customers, who order a dish for each of 2-3 courses since 11 Nov 2026): the property schema, the course sequence, menu sizes, difficulty switches and the dish catalog. No text: dish names and property words are data/words.json keys, order sentences and fragments are data/phrases.json group 'restaurant'. Read by scripts/learning/restaurant_orders.gd (menus, matching, order generation) and drawn by scripts/ui/food_icons.gd ('art' and the property icons). See docs/guides/ARCHITECTURE_REVIEW_PART1.md#restaurant-game-ownership--6-november-2026.\n\nproperties: 'taste' are scales 0-3 (0 none, 1 a little, 2 normal, 3 very); 'temperature' is one level 0-4 (frozen, cold, room temperature, warm, hot) and 'temperature_words' says which levels each temperature word covers (only these are ever asked); 'ingredient' entries are yes/no tags listed in a dish's 'has' (textures and extras such as crunchy, fizzy or with ice were removed on 11 Nov 2026 at the user's request, so the game is about taste, temperature and ingredients). Each property's 'word' is the data/words.json key taught on the posters and used in orders; an ingredient's 'with' / 'without' are the phrases.json fragments used in orders (Spanish needs the bare noun: con pollo).\n\ncourses: the courses and their menu order (a visit asks 2-3 of them at random, always in this order; the session's progress target is data/activities.json restaurant_twinkle). menu_size: dishes on the menu per course [min, max]. difficulty: 'sizes' weights the number of requirements per order (user decision, 6 Nov 2026: steady, 1-2 properties); 'max_size' is the most the generator may add to make an order unique; 'intensity_chance' is how often a taste of 1 or 3 is asked as 'un poco' / 'muy' (light intensity on); 'negation_chance' is how often an order adds 'pero no...' (0: off, built and tested). Every order is checked against every dish of its course on the current menu: exactly one may match.\n\ndishes: id (permanent), word (data/words.json key of its name), course, price (cents, shown with currency.gd usd()), taste {property: 1-3; missing = 0}, temperature (0-4), has [tags], art (how food_icons.gd draws it: a 'base' vessel and 'layers' [shape, colour?] drawn in order). Add a dish here (and its name word); no code changes.",
+  "courses": ["starter", "main", "dessert", "drink"],
+  "menu_size": [4, 5],
+  "difficulty": {
+    "sizes": {"1": 1, "2": 1},
+    "max_size": 3,
+    "intensity_chance": 0.3,
+    "negation_chance": 0.0
+  },
+  "properties": {
+    "taste": {
+      "sweet": {"word": "sweet", "color": "e05a9a"},
+      "salty": {"word": "salty", "color": "7f93a8"},
+      "sour": {"word": "sour", "color": "e6c021"},
+      "bitter": {"word": "bitter", "color": "7a4a2a"},
+      "spicy": {"word": "spicy", "color": "d8352a"}
+    },
+    "temperature": {
+      "levels": ["frozen", "cold", "room", "warm", "hot"],
+      "colors": ["3d6fd6", "6fb6ea", "9fb59a", "f0a040", "e0442c"]
+    },
+    "temperature_words": {
+      "cold": {"word": "cold", "levels": [0, 1]},
+      "warm": {"word": "warm", "levels": [3]},
+      "hot": {"word": "hot", "levels": [4]}
+    },
+    "ingredient": {
+      "chicken": {"word": "chicken", "with": "restaurant.with_chicken", "without": "restaurant.without_chicken"},
+      "fish": {"word": "fish", "with": "restaurant.with_fish", "without": "restaurant.without_fish"},
+      "beef": {"word": "beef", "with": "restaurant.with_beef", "without": "restaurant.without_beef"},
+      "pork": {"word": "pork", "with": "restaurant.with_pork", "without": "restaurant.without_pork"},
+      "lamb": {"word": "lamb", "with": "restaurant.with_lamb", "without": "restaurant.without_lamb"},
+      "shrimp": {"word": "shrimp", "with": "restaurant.with_shrimp", "without": "restaurant.without_shrimp"},
+      "vegetables": {"word": "vegetables", "with": "restaurant.with_vegetables", "without": "restaurant.without_vegetables"},
+      "fruit": {"word": "fruit", "with": "restaurant.with_fruit", "without": "restaurant.without_fruit"},
+      "cheese": {"word": "cheese", "with": "restaurant.with_cheese", "without": "restaurant.without_cheese"},
+      "chocolate": {"word": "chocolate", "with": "restaurant.with_chocolate", "without": "restaurant.without_chocolate"}
+    }
+  },
+  "dishes": [
+    {"id": "salad", "word": "salad", "course": "starter", "price": 650, "taste": {"sour": 1}, "temperature": 1, "has": ["vegetables"], "art": {"base": "bowl", "layers": [["leaves"], ["tomatoes"]]}},
+    {"id": "vegetable_soup", "word": "soup", "course": "starter", "price": 550, "taste": {"salty": 2}, "temperature": 4, "has": ["vegetables"], "art": {"base": "bowl", "fill": "e0a040", "layers": [["veg_bits"], ["steam"]]}},
+    {"id": "gazpacho", "word": "gazpacho", "course": "starter", "price": 600, "taste": {"sour": 1, "salty": 1}, "temperature": 1, "has": ["vegetables"], "art": {"base": "bowl", "fill": "d8442e", "layers": [["herb_bits"], ["cucumber"]]}},
+    {"id": "french_fries", "word": "french fries", "course": "starter", "price": 450, "taste": {"salty": 3}, "temperature": 4, "has": [], "art": {"base": "none", "layers": [["fries"], ["steam"]]}},
+    {"id": "cheese_bread", "word": "cheese bread", "course": "starter", "price": 500, "taste": {"salty": 1}, "temperature": 3, "has": ["cheese"], "art": {"base": "board", "layers": [["bread"], ["cheese_melt"]]}},
+    {"id": "lemon_shrimp", "word": "lemon shrimp", "course": "starter", "price": 900, "taste": {"sour": 2, "salty": 1}, "temperature": 1, "has": ["shrimp"], "art": {"base": "plate", "layers": [["shrimp"], ["lemon_wedge"]]}},
+    {"id": "nachos", "word": "nachos", "course": "starter", "price": 700, "taste": {"salty": 2, "spicy": 1}, "temperature": 3, "has": ["cheese"], "art": {"base": "plate", "layers": [["chips"], ["cheese_melt"], ["jalapenos"]]}},
+    {"id": "spicy_wings", "word": "spicy wings", "course": "starter", "price": 850, "taste": {"spicy": 3, "salty": 2}, "temperature": 4, "has": ["chicken"], "art": {"base": "plate", "layers": [["wings"], ["steam"]]}},
+
+    {"id": "grilled_chicken", "word": "grilled chicken", "course": "main", "price": 1400, "taste": {"salty": 2}, "temperature": 4, "has": ["chicken"], "art": {"base": "plate", "layers": [["drumstick"], ["grill_marks"], ["steam"]]}},
+    {"id": "spicy_tacos", "word": "taco", "course": "main", "price": 1100, "taste": {"spicy": 3, "salty": 1}, "temperature": 4, "has": ["beef", "vegetables"], "art": {"base": "plate", "layers": [["taco"], ["chili_small"]]}},
+    {"id": "lemon_fish", "word": "lemon fish", "course": "main", "price": 1600, "taste": {"sour": 2, "salty": 1}, "temperature": 4, "has": ["fish"], "art": {"base": "plate", "layers": [["fish"], ["lemon_wedge"], ["steam"]]}},
+    {"id": "roast_lamb", "word": "roast lamb", "course": "main", "price": 1900, "taste": {"salty": 2}, "temperature": 4, "has": ["lamb"], "art": {"base": "plate", "layers": [["roast"], ["herb_bits"], ["steam"]]}},
+    {"id": "beef_vegetables", "word": "beef with vegetables", "course": "main", "price": 1700, "taste": {"salty": 2}, "temperature": 4, "has": ["beef", "vegetables"], "art": {"base": "plate", "layers": [["beef_chunks"], ["veg_bits"], ["steam"]]}},
+    {"id": "crispy_pork", "word": "crispy pork", "course": "main", "price": 1500, "taste": {"salty": 3}, "temperature": 4, "has": ["pork"], "art": {"base": "plate", "layers": [["pork_slab"], ["steam"]]}},
+    {"id": "lasagna", "word": "lasagna", "course": "main", "price": 1500, "taste": {"salty": 2}, "temperature": 4, "has": ["beef", "cheese"], "art": {"base": "plate", "layers": [["lasagna"], ["steam"]]}},
+    {"id": "pizza", "word": "pizza", "course": "main", "price": 1300, "taste": {"salty": 2, "sour": 1}, "temperature": 4, "has": ["cheese"], "art": {"base": "plate", "layers": [["pizza"]]}},
+    {"id": "spaghetti_meatballs", "word": "meatballs", "course": "main", "price": 1400, "taste": {"salty": 2, "sour": 1}, "temperature": 3, "has": ["beef"], "art": {"base": "plate", "layers": [["spaghetti"], ["meatballs"]]}},
+    {"id": "steak", "word": "steak", "course": "main", "price": 2200, "taste": {"salty": 1}, "temperature": 4, "has": ["beef"], "art": {"base": "plate", "layers": [["steak"], ["grill_marks"], ["steam"]]}},
+
+    {"id": "vanilla_ice_cream", "word": "ice cream", "course": "dessert", "price": 500, "taste": {"sweet": 2}, "temperature": 0, "has": [], "art": {"base": "dessert_cup", "layers": [["scoops", "f6e7b8"]]}},
+    {"id": "chocolate_cake", "word": "chocolate cake", "course": "dessert", "price": 650, "taste": {"sweet": 3}, "temperature": 2, "has": ["chocolate"], "art": {"base": "plate", "layers": [["cake_slice", "6b3b22"]]}},
+    {"id": "brownie", "word": "brownie", "course": "dessert", "price": 550, "taste": {"sweet": 3, "bitter": 1}, "temperature": 3, "has": ["chocolate"], "art": {"base": "plate", "layers": [["brownie"], ["steam"]]}},
+    {"id": "fruit_yogurt", "word": "fruit yogurt", "course": "dessert", "price": 500, "taste": {"sweet": 2, "sour": 1}, "temperature": 1, "has": ["fruit"], "art": {"base": "dessert_cup", "layers": [["yogurt"], ["berries"]]}},
+    {"id": "hard_candy", "word": "hard candy", "course": "dessert", "price": 200, "taste": {"sweet": 3}, "temperature": 2, "has": [], "art": {"base": "plate", "layers": [["candies"]]}},
+    {"id": "fruit_salad", "word": "fruit salad", "course": "dessert", "price": 550, "taste": {"sweet": 2, "sour": 1}, "temperature": 1, "has": ["fruit"], "art": {"base": "bowl", "layers": [["fruit_bits"]]}},
+    {"id": "tiramisu", "word": "tiramisu", "course": "dessert", "price": 750, "taste": {"sweet": 2, "bitter": 1}, "temperature": 1, "has": ["chocolate"], "art": {"base": "plate", "layers": [["tiramisu"]]}},
+    {"id": "flan", "word": "flan", "course": "dessert", "price": 550, "taste": {"sweet": 3}, "temperature": 1, "has": [], "art": {"base": "plate", "layers": [["flan"]]}},
+    {"id": "apple_pie", "word": "apple pie", "course": "dessert", "price": 600, "taste": {"sweet": 2}, "temperature": 3, "has": ["fruit"], "art": {"base": "plate", "layers": [["pie_slice"], ["steam"]]}},
+    {"id": "cookies", "word": "cookie", "course": "dessert", "price": 350, "taste": {"sweet": 2}, "temperature": 2, "has": [], "art": {"base": "plate", "layers": [["cookies"]]}},
+
+    {"id": "lemonade", "word": "lemonade", "course": "drink", "price": 350, "taste": {"sour": 2, "sweet": 1}, "temperature": 1, "has": [], "art": {"base": "glass", "fill": "f4e58a", "layers": [["ice"], ["lemon_rim"], ["straw"]]}},
+    {"id": "hot_chocolate", "word": "hot chocolate", "course": "drink", "price": 400, "taste": {"sweet": 2}, "temperature": 4, "has": ["chocolate"], "art": {"base": "mug", "fill": "6b3b22", "layers": [["whipped"], ["steam"]]}},
+    {"id": "soda", "word": "soda", "course": "drink", "price": 300, "taste": {"sweet": 3}, "temperature": 1, "has": [], "art": {"base": "glass", "fill": "7a3b1e", "layers": [["bubbles"], ["ice"], ["straw"]]}},
+    {"id": "orange_juice", "word": "orange juice", "course": "drink", "price": 400, "taste": {"sweet": 2, "sour": 1}, "temperature": 1, "has": ["fruit"], "art": {"base": "glass", "fill": "f5a524", "layers": [["orange_rim"]]}},
+    {"id": "black_coffee", "word": "coffee", "course": "drink", "price": 300, "taste": {"bitter": 3}, "temperature": 4, "has": [], "art": {"base": "cup", "fill": "3a2216", "layers": [["steam"]]}},
+    {"id": "hot_tea", "word": "tea", "course": "drink", "price": 300, "taste": {"bitter": 1}, "temperature": 4, "has": [], "art": {"base": "cup", "fill": "b8702a", "layers": [["tea_tag"], ["steam"]]}},
+    {"id": "ice_water", "word": "water", "course": "drink", "price": 100, "taste": {}, "temperature": 1, "has": [], "art": {"base": "glass", "fill": "cfeaf6", "layers": [["ice"]]}},
+    {"id": "iced_tea", "word": "iced tea", "course": "drink", "price": 350, "taste": {"bitter": 1, "sweet": 1}, "temperature": 1, "has": [], "art": {"base": "glass", "fill": "c07a2c", "layers": [["ice"], ["lemon_rim"]]}},
+    {"id": "strawberry_milkshake", "word": "milkshake", "course": "drink", "price": 500, "taste": {"sweet": 3}, "temperature": 1, "has": ["fruit"], "art": {"base": "glass", "fill": "f2a2b8", "layers": [["whipped"], ["strawberry_top"], ["straw"]]}},
+    {"id": "sparkling_water", "word": "sparkling water", "course": "drink", "price": 200, "taste": {}, "temperature": 1, "has": [], "art": {"base": "glass", "fill": "dff2f8", "layers": [["bubbles"]]}}
+  ]
+}

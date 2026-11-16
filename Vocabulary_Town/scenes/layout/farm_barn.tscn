@@ -1,0 +1,187 @@
+[gd_scene format=3]
+
+[sub_resource type="BoxMesh" id="r1"]
+size = Vector3(12.000000, 0.100000, 9.000000)
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.8470588235294118, 0.8274509803921568, 0.7803921568627451, 1)
+roughness = 0.82
+
+[sub_resource type="BoxShape3D" id="r3"]
+size = Vector3(12.000000, 0.100000, 9.000000)
+
+[sub_resource type="BoxMesh" id="r4"]
+size = Vector3(0.250000, 5.000000, 9.000000)
+
+[sub_resource type="StandardMaterial3D" id="r5"]
+albedo_color = Color(0.7019607843137254, 0.43529411764705883, 0.3568627450980392, 1)
+roughness = 0.82
+
+[sub_resource type="BoxShape3D" id="r6"]
+size = Vector3(0.250000, 5.000000, 9.000000)
+
+[sub_resource type="BoxMesh" id="r7"]
+size = Vector3(12.000000, 5.000000, 0.250000)
+
+[sub_resource type="BoxShape3D" id="r8"]
+size = Vector3(12.000000, 5.000000, 0.250000)
+
+[sub_resource type="BoxMesh" id="r9"]
+size = Vector3(4.300000, 5.000000, 0.250000)
+
+[sub_resource type="BoxShape3D" id="r10"]
+size = Vector3(4.300000, 5.000000, 0.250000)
+
+[sub_resource type="BoxMesh" id="r11"]
+size = Vector3(3.400000, 1.400000, 0.250000)
+
+[sub_resource type="BoxShape3D" id="r12"]
+size = Vector3(3.400000, 1.400000, 0.250000)
+
+[sub_resource type="BoxMesh" id="r13"]
+size = Vector3(12.600000, 0.240000, 9.600000)
+
+[sub_resource type="StandardMaterial3D" id="r14"]
+albedo_color = Color(0.5568627450980392, 0.6078431372549019, 0.6078431372549019, 1)
+roughness = 0.82
+
+[sub_resource type="BoxShape3D" id="r15"]
+size = Vector3(12.600000, 0.240000, 9.600000)
+
+[sub_resource type="BoxMesh" id="r16"]
+size = Vector3(6.600000, 0.240000, 10.000000)
+
+[sub_resource type="StandardMaterial3D" id="r17"]
+albedo_color = Color(0.49411764705882355, 0.5019607843137255, 0.4666666666666667, 1)
+roughness = 0.82
+
+[sub_resource type="BoxShape3D" id="r18"]
+size = Vector3(6.600000, 0.240000, 10.000000)
+
+[node name="FarmBarn" type="Node3D"]
+metadata/layout_shell = true
+
+[node name="Barn" type="Node3D" parent="."]
+position = Vector3(0.000000, 0.000000, 0.000000)
+metadata/layout_shell = true
+
+[node name="Foundation" type="MeshInstance3D" parent="Barn"]
+position = Vector3(0.000000, 0.030000, 0.000000)
+mesh = SubResource("r1")
+material_override = SubResource("r2")
+
+[node name="Body" type="StaticBody3D" parent="Barn/Foundation"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="Barn/Foundation/Body"]
+shape = SubResource("r3")
+
+[node name="WestWall" type="MeshInstance3D" parent="Barn"]
+position = Vector3(-6.000000, 2.500000, 0.000000)
+mesh = SubResource("r4")
+material_override = SubResource("r5")
+
+[node name="Body" type="StaticBody3D" parent="Barn/WestWall"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="Barn/WestWall/Body"]
+shape = SubResource("r6")
+
+[node name="EastWall" type="MeshInstance3D" parent="Barn"]
+position = Vector3(6.000000, 2.500000, 0.000000)
+mesh = SubResource("r4")
+material_override = SubResource("r5")
+
+[node name="Body" type="StaticBody3D" parent="Barn/EastWall"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="Barn/EastWall/Body"]
+shape = SubResource("r6")
+
+[node name="RearWall" type="MeshInstance3D" parent="Barn"]
+position = Vector3(0.000000, 2.500000, 4.500000)
+mesh = SubResource("r7")
+material_override = SubResource("r5")
+
+[node name="Body" type="StaticBody3D" parent="Barn/RearWall"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="Barn/RearWall/Body"]
+shape = SubResource("r8")
+
+[node name="FrontPier" type="MeshInstance3D" parent="Barn"]
+position = Vector3(-3.850000, 2.500000, -4.500000)
+mesh = SubResource("r9")
+material_override = SubResource("r5")
+
+[node name="Body" type="StaticBody3D" parent="Barn/FrontPier"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="Barn/FrontPier/Body"]
+shape = SubResource("r10")
+
+[node name="FrontPier2" type="MeshInstance3D" parent="Barn"]
+position = Vector3(3.850000, 2.500000, -4.500000)
+mesh = SubResource("r9")
+material_override = SubResource("r5")
+
+[node name="Body" type="StaticBody3D" parent="Barn/FrontPier2"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="Barn/FrontPier2/Body"]
+shape = SubResource("r10")
+
+[node name="DoorHeader" type="MeshInstance3D" parent="Barn"]
+position = Vector3(0.000000, 4.300000, -4.500000)
+mesh = SubResource("r11")
+material_override = SubResource("r5")
+
+[node name="Body" type="StaticBody3D" parent="Barn/DoorHeader"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="Barn/DoorHeader/Body"]
+shape = SubResource("r12")
+
+[node name="Roof" type="MeshInstance3D" parent="Barn"]
+position = Vector3(0.000000, 5.120000, 0.000000)
+mesh = SubResource("r13")
+material_override = SubResource("r14")
+
+[node name="Body" type="StaticBody3D" parent="Barn/Roof"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="Barn/Roof/Body"]
+shape = SubResource("r15")
+
+[node name="GableLeft" type="MeshInstance3D" parent="."]
+position = Vector3(-3.000000, 5.900000, 0.000000)
+mesh = SubResource("r16")
+material_override = SubResource("r17")
+rotation = Vector3(0.000000, 0.000000, 0.300000)
+
+[node name="Body" type="StaticBody3D" parent="GableLeft"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="GableLeft/Body"]
+shape = SubResource("r18")
+
+[node name="GableRight" type="MeshInstance3D" parent="."]
+position = Vector3(3.000000, 5.900000, 0.000000)
+mesh = SubResource("r16")
+material_override = SubResource("r17")
+rotation = Vector3(0.000000, 0.000000, -0.300000)
+
+[node name="Body" type="StaticBody3D" parent="GableRight"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="GableRight/Body"]
+shape = SubResource("r18")
+
+[node name="FarmSign" type="Label3D" parent="."]
+position = Vector3(0.000000, 3.600000, -4.700000)
+rotation = Vector3(0, 3.141592653589793, 0)
+text = "FARM"
+font_size = 36
+pixel_size = 0.008
+outline_size = 4
+no_depth_test = false

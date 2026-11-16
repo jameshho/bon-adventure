@@ -1,0 +1,80 @@
+[gd_scene load_steps=9 format=3]
+
+[sub_resource type="BoxMesh" id="board"]
+size = Vector3(1.05, 0.76, 0.09)
+
+[sub_resource type="BoxMesh" id="paper"]
+size = Vector3(0.87, 0.5, 0.02)
+
+[sub_resource type="BoxMesh" id="stripe"]
+size = Vector3(0.08, 0.4, 0.024)
+
+[sub_resource type="BoxMesh" id="stem"]
+size = Vector3(0.06, 1.4, 0.06)
+
+[sub_resource type="StandardMaterial3D" id="boardmat"]
+albedo_color = Color(0.188235294, 0.305882353, 0.333333333, 1)
+roughness = 0.75
+
+[sub_resource type="StandardMaterial3D" id="papermat"]
+albedo_color = Color(1, 0.945098039, 0.8, 1)
+roughness = 0.75
+
+[sub_resource type="StandardMaterial3D" id="linemat"]
+albedo_color = Color(0.917647059, 0.62745098, 0.309803922, 1)
+roughness = 0.75
+
+[sub_resource type="BoxShape3D" id="hit"]
+size = Vector3(1.12, 0.82, 0.29)
+
+[node name="Ticket" type="Node3D"]
+metadata/word_key = "ticket"
+metadata/learning_object = true
+
+[node name="TicketBoard" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0, 0)
+rotation_degrees = Vector3(0, 0, 0)
+mesh = SubResource("board")
+material_override = SubResource("boardmat")
+
+[node name="TicketPaper" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0, -0.08)
+rotation_degrees = Vector3(0, 0, 0)
+mesh = SubResource("paper")
+material_override = SubResource("papermat")
+
+[node name="TicketStripe" type="MeshInstance3D" parent="."]
+position = Vector3(-0.24, 0, -0.1)
+rotation_degrees = Vector3(0, 0, 0)
+mesh = SubResource("stripe")
+material_override = SubResource("linemat")
+
+[node name="TicketStand" type="MeshInstance3D" parent="."]
+position = Vector3(0, -1.05, 0.06)
+rotation_degrees = Vector3(0, 0, 0)
+mesh = SubResource("stem")
+material_override = SubResource("boardmat")
+
+[node name="TicketCaption" type="Label3D" parent="."]
+position = Vector3(0.09, 0.015, -0.11)
+text = "BOLETO"
+font_size = 42
+pixel_size = 0.0032
+modulate = Color(0.156862745, 0.254901961, 0.298039216, 1)
+outline_size = 4
+
+[node name="TicketPrice" type="Label3D" parent="."]
+position = Vector3(0.09, -0.16, -0.11)
+text = "$ 2"
+font_size = 35
+pixel_size = 0.0032
+modulate = Color(0.156862745, 0.254901961, 0.298039216, 1)
+outline_size = 4
+
+[node name="Interaction" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Interaction"]
+position = Vector3(0, 0, 0)
+shape = SubResource("hit")

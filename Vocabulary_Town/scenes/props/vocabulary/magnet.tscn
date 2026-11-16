@@ -1,0 +1,73 @@
+[gd_scene format=3]
+
+[sub_resource type="BoxMesh" id="r1"]
+size = Vector3(0.160000, 0.600000, 0.150000)
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.69804, 0.30196, 0.27059, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r3"]
+size = Vector3(0.160000, 0.120000, 0.150000)
+
+[sub_resource type="StandardMaterial3D" id="r4"]
+albedo_color = Color(0.52941, 0.58039, 0.61176, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r5"]
+size = Vector3(0.160000, 0.600000, 0.150000)
+
+[sub_resource type="StandardMaterial3D" id="r6"]
+albedo_color = Color(0.27451, 0.47843, 0.60784, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r7"]
+size = Vector3(0.160000, 0.120000, 0.150000)
+
+[sub_resource type="BoxMesh" id="r8"]
+size = Vector3(0.600000, 0.180000, 0.150000)
+
+[sub_resource type="BoxShape3D" id="r9"]
+size = Vector3(0.700000, 0.900000, 0.250000)
+
+[node name="Magnet" type="Node3D"]
+metadata/word_key = "magnet"
+metadata/learning_object = true
+
+[node name="Arm_2" type="MeshInstance3D" parent="."]
+position = Vector3(-0.220000, 0.400000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r1")
+material_override = SubResource("r2")
+
+[node name="Pole_4" type="MeshInstance3D" parent="."]
+position = Vector3(-0.220000, 0.730000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r3")
+material_override = SubResource("r4")
+
+[node name="Arm_6" type="MeshInstance3D" parent="."]
+position = Vector3(0.220000, 0.400000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r5")
+material_override = SubResource("r6")
+
+[node name="Pole_7" type="MeshInstance3D" parent="."]
+position = Vector3(0.220000, 0.730000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r7")
+material_override = SubResource("r4")
+
+[node name="Bend_8" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.100000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r8")
+material_override = SubResource("r2")
+
+[node name="Interaction" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Interaction"]
+position = Vector3(0.000000, 0.450000, 0.000000)
+shape = SubResource("r9")

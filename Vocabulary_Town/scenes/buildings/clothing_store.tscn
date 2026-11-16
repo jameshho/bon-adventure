@@ -1,0 +1,685 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/buildings/clothing_displays.tscn" id="learning_display"]
+
+[sub_resource type="StandardMaterial3D" id="r3"]
+albedo_color = Color(0.91765, 0.85882, 0.81569, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="r1"]
+size = Vector3(11, 0.09, 15)
+
+[sub_resource type="BoxShape3D" id="r2"]
+size = Vector3(11, 0.09, 15)
+
+[sub_resource type="StandardMaterial3D" id="r6"]
+albedo_color = Color(0.91765, 0.87451, 0.84314, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="r4"]
+size = Vector3(3.8, 5.2, 0.17)
+
+[sub_resource type="BoxShape3D" id="r5"]
+size = Vector3(3.8, 5.2, 0.17)
+
+[sub_resource type="BoxMesh" id="r7"]
+size = Vector3(3.6, 1.06, 0.19)
+
+[sub_resource type="BoxShape3D" id="r8"]
+size = Vector3(3.6, 1.06, 0.19)
+
+[sub_resource type="BoxMesh" id="r9"]
+size = Vector3(11.2, 5.2, 0.16)
+
+[sub_resource type="BoxShape3D" id="r10"]
+size = Vector3(11.2, 5.2, 0.16)
+
+[sub_resource type="BoxMesh" id="r11"]
+size = Vector3(0.18, 5.2, 3.192)
+
+[sub_resource type="BoxShape3D" id="r12"]
+size = Vector3(0.18, 5.2, 3.192)
+
+[sub_resource type="BoxMesh" id="r13"]
+size = Vector3(0.18, 5.2, 4.56)
+
+[sub_resource type="BoxShape3D" id="r14"]
+size = Vector3(0.18, 5.2, 4.56)
+
+[sub_resource type="BoxMesh" id="r15"]
+size = Vector3(0.18, 2.08, 2.128)
+
+[sub_resource type="BoxShape3D" id="r16"]
+size = Vector3(0.18, 2.08, 2.128)
+
+[sub_resource type="BoxMesh" id="r17"]
+size = Vector3(0.18, 1.54, 2.128)
+
+[sub_resource type="BoxShape3D" id="r18"]
+size = Vector3(0.18, 1.54, 2.128)
+
+[sub_resource type="StandardMaterial3D" id="r21"]
+albedo_color = Color(0.64706, 0.80392, 0.83137, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="r19"]
+size = Vector3(0.045, 1.52, 2.038)
+
+[sub_resource type="BoxShape3D" id="r20"]
+size = Vector3(0.045, 1.52, 2.038)
+
+[sub_resource type="StandardMaterial3D" id="r24"]
+albedo_color = Color(0.92941, 0.90196, 0.85098, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="r22"]
+size = Vector3(0.24, 0.09, 2.128)
+
+[sub_resource type="BoxShape3D" id="r23"]
+size = Vector3(0.24, 0.09, 2.128)
+
+[sub_resource type="StandardMaterial3D" id="r27"]
+albedo_color = Color(0.78039, 0.56471, 0.56471, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="r25"]
+size = Vector3(11.8, 0.2, 15.85)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_kes57"]
+size = Vector3(11.8, 0.2, 15.85)
+
+[sub_resource type="BoxShape3D" id="r26"]
+size = Vector3(11.8, 0.2, 15.85)
+
+[sub_resource type="StandardMaterial3D" id="r30"]
+albedo_color = Color(0.78431, 0.61569, 0.57647, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="r28"]
+size = Vector3(11.55, 0.32, 0.18)
+
+[sub_resource type="StandardMaterial3D" id="r33"]
+albedo_color = Color(0.98431, 0.96078, 0.91373, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="r31"]
+size = Vector3(8, 0.6, 0.12)
+
+[sub_resource type="BoxShape3D" id="r32"]
+size = Vector3(8, 0.6, 0.12)
+
+[sub_resource type="StandardMaterial3D" id="r36"]
+albedo_color = Color(0.95294, 0.92549, 0.88627, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="r34"]
+size = Vector3(0.12, 3.15, 0.18)
+
+[sub_resource type="BoxShape3D" id="r35"]
+size = Vector3(0.12, 3.15, 0.18)
+
+[sub_resource type="StandardMaterial3D" id="r39"]
+albedo_color = Color(0.78039, 0.78039, 0.7451, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="r37"]
+size = Vector3(2.55, 0.1, 1.36)
+
+[sub_resource type="BoxShape3D" id="r38"]
+size = Vector3(2.55, 0.1, 1.36)
+
+[sub_resource type="StandardMaterial3D" id="r42"]
+albedo_color = Color(0.97647, 0.95294, 0.89804, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="r40"]
+size = Vector3(2.9, 0.47, 0.08)
+
+[sub_resource type="BoxShape3D" id="r41"]
+size = Vector3(2.9, 0.47, 0.08)
+
+[node name="ClothingStore" type="Node3D" unique_id=351639035]
+
+[node name="Single_Finished_Floor" type="Node3D" parent="." unique_id=826663883]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.035, 0)
+metadata/word_key = "floor"
+
+[node name="Visual" type="MeshInstance3D" parent="Single_Finished_Floor" unique_id=976953446]
+material_override = SubResource("r3")
+mesh = SubResource("r1")
+
+[node name="Body" type="StaticBody3D" parent="Single_Finished_Floor" unique_id=501299072]
+metadata/word = "floor"
+
+[node name="Collision" type="CollisionShape3D" parent="Single_Finished_Floor/Body" unique_id=2001182129]
+shape = SubResource("r2")
+
+[node name="FrontWallLeft" type="Node3D" parent="." unique_id=1938645053]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.7, 2.6, -7.6)
+metadata/word_key = "wall"
+metadata/exterior_word = "clothing store"
+
+[node name="Visual" type="MeshInstance3D" parent="FrontWallLeft" unique_id=1771211599]
+material_override = SubResource("r6")
+mesh = SubResource("r4")
+
+[node name="Body" type="StaticBody3D" parent="FrontWallLeft" unique_id=374463225]
+metadata/word = "wall"
+
+[node name="Collision" type="CollisionShape3D" parent="FrontWallLeft/Body" unique_id=1345515693]
+shape = SubResource("r5")
+
+[node name="FrontWallRight" type="Node3D" parent="." unique_id=1902118194]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.7, 2.6, -7.6)
+metadata/word_key = "wall"
+metadata/exterior_word = "clothing store"
+
+[node name="Visual" type="MeshInstance3D" parent="FrontWallRight" unique_id=2123749402]
+material_override = SubResource("r6")
+mesh = SubResource("r4")
+
+[node name="Body" type="StaticBody3D" parent="FrontWallRight" unique_id=1120243055]
+metadata/word = "wall"
+
+[node name="Collision" type="CollisionShape3D" parent="FrontWallRight/Body" unique_id=1085843288]
+shape = SubResource("r5")
+
+[node name="FrontHeader" type="Node3D" parent="." unique_id=1969874837]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.67, -7.6)
+metadata/exterior_word = "clothing store"
+
+[node name="Visual" type="MeshInstance3D" parent="FrontHeader" unique_id=1937753794]
+material_override = SubResource("r6")
+mesh = SubResource("r7")
+
+[node name="Body" type="StaticBody3D" parent="FrontHeader" unique_id=408140251]
+
+[node name="Collision" type="CollisionShape3D" parent="FrontHeader/Body" unique_id=696407108]
+shape = SubResource("r8")
+
+[node name="RearWall" type="Node3D" parent="." unique_id=1312610558]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, 7.6)
+metadata/word_key = "wall"
+metadata/exterior_word = "clothing store"
+
+[node name="Visual" type="MeshInstance3D" parent="RearWall" unique_id=586509994]
+material_override = SubResource("r6")
+mesh = SubResource("r9")
+
+[node name="Body" type="StaticBody3D" parent="RearWall" unique_id=1356337069]
+metadata/word = "wall"
+
+[node name="Collision" type="CollisionShape3D" parent="RearWall/Body" unique_id=1367816572]
+shape = SubResource("r10")
+
+[node name="ExteriorSidePier" type="Node3D" parent="." unique_id=931445348]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.6, 2.6, -6.004)
+metadata/word_key = "wall"
+
+[node name="Visual" type="MeshInstance3D" parent="ExteriorSidePier" unique_id=1725063894]
+material_override = SubResource("r6")
+mesh = SubResource("r11")
+
+[node name="Body" type="StaticBody3D" parent="ExteriorSidePier" unique_id=2130420159]
+metadata/word = "wall"
+
+[node name="Collision" type="CollisionShape3D" parent="ExteriorSidePier/Body" unique_id=806749518]
+shape = SubResource("r12")
+
+[node name="ExteriorSidePier_2" type="Node3D" parent="." unique_id=534597674]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.6, 2.6, 0)
+metadata/word_key = "wall"
+
+[node name="Visual" type="MeshInstance3D" parent="ExteriorSidePier_2" unique_id=391633570]
+material_override = SubResource("r6")
+mesh = SubResource("r13")
+
+[node name="Body" type="StaticBody3D" parent="ExteriorSidePier_2" unique_id=904974017]
+metadata/word = "wall"
+
+[node name="Collision" type="CollisionShape3D" parent="ExteriorSidePier_2/Body" unique_id=489772367]
+shape = SubResource("r14")
+
+[node name="ExteriorSidePier_3" type="Node3D" parent="." unique_id=225755214]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.6, 2.6, 6.004)
+metadata/word_key = "wall"
+
+[node name="Visual" type="MeshInstance3D" parent="ExteriorSidePier_3" unique_id=538237477]
+material_override = SubResource("r6")
+mesh = SubResource("r11")
+
+[node name="Body" type="StaticBody3D" parent="ExteriorSidePier_3" unique_id=296075950]
+metadata/word = "wall"
+
+[node name="Collision" type="CollisionShape3D" parent="ExteriorSidePier_3/Body" unique_id=139995831]
+shape = SubResource("r12")
+
+[node name="BelowWindow" type="Node3D" parent="." unique_id=938058084]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.6, 1.04, -3.344)
+metadata/word_key = "wall"
+metadata/exterior_word = "clothing store"
+
+[node name="Visual" type="MeshInstance3D" parent="BelowWindow" unique_id=2077321203]
+material_override = SubResource("r6")
+mesh = SubResource("r15")
+
+[node name="Body" type="StaticBody3D" parent="BelowWindow" unique_id=582215780]
+metadata/word = "wall"
+
+[node name="Collision" type="CollisionShape3D" parent="BelowWindow/Body" unique_id=336207932]
+shape = SubResource("r16")
+
+[node name="AboveWindow" type="Node3D" parent="." unique_id=1087842500]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.6, 4.43, -3.344)
+metadata/word_key = "wall"
+metadata/exterior_word = "clothing store"
+
+[node name="Visual" type="MeshInstance3D" parent="AboveWindow" unique_id=1428945419]
+material_override = SubResource("r6")
+mesh = SubResource("r17")
+
+[node name="Body" type="StaticBody3D" parent="AboveWindow" unique_id=1264218736]
+metadata/word = "wall"
+
+[node name="Collision" type="CollisionShape3D" parent="AboveWindow/Body" unique_id=717315924]
+shape = SubResource("r18")
+
+[node name="WindowPane" type="Node3D" parent="." unique_id=1726839038]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.6, 2.84, -3.344)
+metadata/word_key = "window"
+metadata/exterior_word = "clothing store"
+
+[node name="Visual" type="MeshInstance3D" parent="WindowPane" unique_id=480710251]
+material_override = SubResource("r21")
+mesh = SubResource("r19")
+
+[node name="Body" type="Area3D" parent="WindowPane" unique_id=1574413782]
+collision_mask = 0
+metadata/word = "window"
+
+[node name="Collision" type="CollisionShape3D" parent="WindowPane/Body" unique_id=852006934]
+shape = SubResource("r20")
+
+[node name="WindowSill" type="Node3D" parent="." unique_id=1038294264]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.6, 2.1, -3.344)
+metadata/exterior_word = "clothing store"
+
+[node name="Visual" type="MeshInstance3D" parent="WindowSill" unique_id=1851519920]
+material_override = SubResource("r24")
+mesh = SubResource("r22")
+
+[node name="Body" type="Area3D" parent="WindowSill" unique_id=795273104]
+collision_layer = 0
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="Collision" type="CollisionShape3D" parent="WindowSill/Body" unique_id=2121506918]
+shape = SubResource("r23")
+
+[node name="BelowWindow_2" type="Node3D" parent="." unique_id=1477484292]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.6, 1.04, 3.344)
+metadata/word_key = "wall"
+metadata/exterior_word = "clothing store"
+
+[node name="Visual" type="MeshInstance3D" parent="BelowWindow_2" unique_id=129707498]
+material_override = SubResource("r6")
+mesh = SubResource("r15")
+
+[node name="Body" type="StaticBody3D" parent="BelowWindow_2" unique_id=436843249]
+metadata/word = "wall"
+
+[node name="Collision" type="CollisionShape3D" parent="BelowWindow_2/Body" unique_id=417259347]
+shape = SubResource("r16")
+
+[node name="AboveWindow_2" type="Node3D" parent="." unique_id=1349541966]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.6, 4.43, 3.344)
+metadata/word_key = "wall"
+metadata/exterior_word = "clothing store"
+
+[node name="Visual" type="MeshInstance3D" parent="AboveWindow_2" unique_id=513828259]
+material_override = SubResource("r6")
+mesh = SubResource("r17")
+
+[node name="Body" type="StaticBody3D" parent="AboveWindow_2" unique_id=1544535707]
+metadata/word = "wall"
+
+[node name="Collision" type="CollisionShape3D" parent="AboveWindow_2/Body" unique_id=1296284850]
+shape = SubResource("r18")
+
+[node name="WindowPane_2" type="Node3D" parent="." unique_id=310484816]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.6, 2.84, 3.344)
+metadata/word_key = "window"
+metadata/exterior_word = "clothing store"
+
+[node name="Visual" type="MeshInstance3D" parent="WindowPane_2" unique_id=698739029]
+material_override = SubResource("r21")
+mesh = SubResource("r19")
+
+[node name="Body" type="Area3D" parent="WindowPane_2" unique_id=174901231]
+collision_mask = 0
+metadata/word = "window"
+
+[node name="Collision" type="CollisionShape3D" parent="WindowPane_2/Body" unique_id=797395960]
+shape = SubResource("r20")
+
+[node name="WindowSill_2" type="Node3D" parent="." unique_id=1125703638]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.6, 2.1, 3.344)
+metadata/exterior_word = "clothing store"
+
+[node name="Visual" type="MeshInstance3D" parent="WindowSill_2" unique_id=608407311]
+material_override = SubResource("r24")
+mesh = SubResource("r22")
+
+[node name="Body" type="Area3D" parent="WindowSill_2" unique_id=2046260599]
+collision_layer = 0
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="Collision" type="CollisionShape3D" parent="WindowSill_2/Body" unique_id=1123742929]
+shape = SubResource("r23")
+
+[node name="ExteriorSidePier_4" type="Node3D" parent="." unique_id=1210330302]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.6, 2.6, -6.004)
+metadata/word_key = "wall"
+
+[node name="Visual" type="MeshInstance3D" parent="ExteriorSidePier_4" unique_id=1321986317]
+material_override = SubResource("r6")
+mesh = SubResource("r11")
+
+[node name="Body" type="StaticBody3D" parent="ExteriorSidePier_4" unique_id=703356161]
+metadata/word = "wall"
+
+[node name="Collision" type="CollisionShape3D" parent="ExteriorSidePier_4/Body" unique_id=1260853875]
+shape = SubResource("r12")
+
+[node name="ExteriorSidePier_5" type="Node3D" parent="." unique_id=446425597]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.6, 2.6, 0)
+metadata/word_key = "wall"
+
+[node name="Visual" type="MeshInstance3D" parent="ExteriorSidePier_5" unique_id=2041106014]
+material_override = SubResource("r6")
+mesh = SubResource("r13")
+
+[node name="Body" type="StaticBody3D" parent="ExteriorSidePier_5" unique_id=360529039]
+metadata/word = "wall"
+
+[node name="Collision" type="CollisionShape3D" parent="ExteriorSidePier_5/Body" unique_id=1669381883]
+shape = SubResource("r14")
+
+[node name="ExteriorSidePier_6" type="Node3D" parent="." unique_id=259843205]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.6, 2.6, 6.004)
+metadata/word_key = "wall"
+
+[node name="Visual" type="MeshInstance3D" parent="ExteriorSidePier_6" unique_id=1691440489]
+material_override = SubResource("r6")
+mesh = SubResource("r11")
+
+[node name="Body" type="StaticBody3D" parent="ExteriorSidePier_6" unique_id=301063415]
+metadata/word = "wall"
+
+[node name="Collision" type="CollisionShape3D" parent="ExteriorSidePier_6/Body" unique_id=1522156464]
+shape = SubResource("r12")
+
+[node name="BelowWindow_3" type="Node3D" parent="." unique_id=1426071834]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.6, 1.04, -3.344)
+metadata/word_key = "wall"
+metadata/exterior_word = "clothing store"
+
+[node name="Visual" type="MeshInstance3D" parent="BelowWindow_3" unique_id=392526614]
+material_override = SubResource("r6")
+mesh = SubResource("r15")
+
+[node name="Body" type="StaticBody3D" parent="BelowWindow_3" unique_id=1502127446]
+metadata/word = "wall"
+
+[node name="Collision" type="CollisionShape3D" parent="BelowWindow_3/Body" unique_id=1710678954]
+shape = SubResource("r16")
+
+[node name="AboveWindow_3" type="Node3D" parent="." unique_id=1381755332]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.6, 4.43, -3.344)
+metadata/word_key = "wall"
+metadata/exterior_word = "clothing store"
+
+[node name="Visual" type="MeshInstance3D" parent="AboveWindow_3" unique_id=2023661371]
+material_override = SubResource("r6")
+mesh = SubResource("r17")
+
+[node name="Body" type="StaticBody3D" parent="AboveWindow_3" unique_id=25201069]
+metadata/word = "wall"
+
+[node name="Collision" type="CollisionShape3D" parent="AboveWindow_3/Body" unique_id=1460355690]
+shape = SubResource("r18")
+
+[node name="WindowPane_3" type="Node3D" parent="." unique_id=1595508321]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.6, 2.84, -3.344)
+metadata/word_key = "window"
+metadata/exterior_word = "clothing store"
+
+[node name="Visual" type="MeshInstance3D" parent="WindowPane_3" unique_id=2146193850]
+material_override = SubResource("r21")
+mesh = SubResource("r19")
+
+[node name="Body" type="Area3D" parent="WindowPane_3" unique_id=8120758]
+collision_mask = 0
+metadata/word = "window"
+
+[node name="Collision" type="CollisionShape3D" parent="WindowPane_3/Body" unique_id=120284364]
+shape = SubResource("r20")
+
+[node name="WindowSill_3" type="Node3D" parent="." unique_id=100994151]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.6, 2.1, -3.344)
+metadata/exterior_word = "clothing store"
+
+[node name="Visual" type="MeshInstance3D" parent="WindowSill_3" unique_id=1718202355]
+material_override = SubResource("r24")
+mesh = SubResource("r22")
+
+[node name="Body" type="Area3D" parent="WindowSill_3" unique_id=1591908239]
+collision_layer = 0
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="Collision" type="CollisionShape3D" parent="WindowSill_3/Body" unique_id=1168978878]
+shape = SubResource("r23")
+
+[node name="BelowWindow_4" type="Node3D" parent="." unique_id=373449945]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.6, 1.04, 3.344)
+metadata/word_key = "wall"
+metadata/exterior_word = "clothing store"
+
+[node name="Visual" type="MeshInstance3D" parent="BelowWindow_4" unique_id=2145297711]
+material_override = SubResource("r6")
+mesh = SubResource("r15")
+
+[node name="Body" type="StaticBody3D" parent="BelowWindow_4" unique_id=1822681404]
+metadata/word = "wall"
+
+[node name="Collision" type="CollisionShape3D" parent="BelowWindow_4/Body" unique_id=1927700949]
+shape = SubResource("r16")
+
+[node name="AboveWindow_4" type="Node3D" parent="." unique_id=1495925204]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.6, 4.43, 3.344)
+metadata/word_key = "wall"
+metadata/exterior_word = "clothing store"
+
+[node name="Visual" type="MeshInstance3D" parent="AboveWindow_4" unique_id=439771735]
+material_override = SubResource("r6")
+mesh = SubResource("r17")
+
+[node name="Body" type="StaticBody3D" parent="AboveWindow_4" unique_id=150284454]
+metadata/word = "wall"
+
+[node name="Collision" type="CollisionShape3D" parent="AboveWindow_4/Body" unique_id=1326209448]
+shape = SubResource("r18")
+
+[node name="WindowPane_4" type="Node3D" parent="." unique_id=698960168]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.6, 2.84, 3.344)
+metadata/word_key = "window"
+metadata/exterior_word = "clothing store"
+
+[node name="Visual" type="MeshInstance3D" parent="WindowPane_4" unique_id=1016089038]
+material_override = SubResource("r21")
+mesh = SubResource("r19")
+
+[node name="Body" type="Area3D" parent="WindowPane_4" unique_id=257860369]
+collision_mask = 0
+metadata/word = "window"
+
+[node name="Collision" type="CollisionShape3D" parent="WindowPane_4/Body" unique_id=27284072]
+shape = SubResource("r20")
+
+[node name="WindowSill_4" type="Node3D" parent="." unique_id=806087333]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.6, 2.1, 3.344)
+metadata/exterior_word = "clothing store"
+
+[node name="Visual" type="MeshInstance3D" parent="WindowSill_4" unique_id=1469100813]
+material_override = SubResource("r24")
+mesh = SubResource("r22")
+
+[node name="Body" type="Area3D" parent="WindowSill_4" unique_id=1451927328]
+collision_layer = 0
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="Collision" type="CollisionShape3D" parent="WindowSill_4/Body" unique_id=434348298]
+shape = SubResource("r23")
+
+[node name="FlatRoof" type="Node3D" parent="." unique_id=366965804]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.35, 0)
+metadata/word_key = "roof"
+metadata/exterior_word = "clothing store"
+
+[node name="Visual" type="MeshInstance3D" parent="FlatRoof" unique_id=1984558549]
+material_override = SubResource("r27")
+mesh = SubResource("r25")
+
+[node name="RoofSolid" type="StaticBody3D" parent="FlatRoof/Visual" unique_id=1359679635]
+
+[node name="Collision" type="CollisionShape3D" parent="FlatRoof/Visual/RoofSolid" unique_id=237470079]
+shape = SubResource("BoxShape3D_kes57")
+
+[node name="Body" type="Area3D" parent="FlatRoof" unique_id=1763891053]
+collision_mask = 0
+metadata/word = "roof"
+
+[node name="Collision" type="CollisionShape3D" parent="FlatRoof/Body" unique_id=1110631125]
+shape = SubResource("r26")
+
+[node name="Fascia" type="Node3D" parent="." unique_id=1135958323]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.03, -7.79)
+
+[node name="Visual" type="MeshInstance3D" parent="Fascia" unique_id=768917759]
+material_override = SubResource("r30")
+mesh = SubResource("r28")
+
+[node name="ShopSignPanel" type="Node3D" parent="." unique_id=670289035]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.53, -7.82)
+metadata/word_key = "sign"
+metadata/exterior_word = "clothing store"
+
+[node name="Visual" type="MeshInstance3D" parent="ShopSignPanel" unique_id=1479500470]
+material_override = SubResource("r33")
+mesh = SubResource("r31")
+
+[node name="Body" type="Area3D" parent="ShopSignPanel" unique_id=2107679901]
+collision_mask = 0
+metadata/word = "sign"
+
+[node name="Collision" type="CollisionShape3D" parent="ShopSignPanel/Body" unique_id=1942068082]
+shape = SubResource("r32")
+
+[node name="Sign_CLOTHING_STORE" type="Label3D" parent="." unique_id=1898786071]
+transform = Transform3D(-1, 0, 2.5351817e-06, 0, 1, 0, -2.5351817e-06, 0, -1, 0, 4.41, -7.91)
+pixel_size = 0.0047
+modulate = Color(0.25882, 0.33333, 0.39608, 1)
+text = "CLOTHING STORE"
+font_size = 55
+outline_size = 6
+
+[node name="DoorJamb" type="Node3D" parent="." unique_id=1034639199]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 1.6, -7.76)
+
+[node name="Visual" type="MeshInstance3D" parent="DoorJamb" unique_id=1681834113]
+material_override = SubResource("r36")
+mesh = SubResource("r34")
+
+[node name="Body" type="Area3D" parent="DoorJamb" unique_id=1496353529]
+collision_layer = 0
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="Collision" type="CollisionShape3D" parent="DoorJamb/Body" unique_id=560310995]
+shape = SubResource("r35")
+
+[node name="DoorJamb_2" type="Node3D" parent="." unique_id=639187553]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8, 1.6, -7.76)
+
+[node name="Visual" type="MeshInstance3D" parent="DoorJamb_2" unique_id=361086393]
+material_override = SubResource("r36")
+mesh = SubResource("r34")
+
+[node name="Body" type="Area3D" parent="DoorJamb_2" unique_id=1178030952]
+collision_layer = 0
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="Collision" type="CollisionShape3D" parent="DoorJamb_2/Body" unique_id=1803759258]
+shape = SubResource("r35")
+
+[node name="DoorStep" type="Node3D" parent="." unique_id=933309827]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, -8.5)
+metadata/word_key = "entrance"
+
+[node name="Visual" type="MeshInstance3D" parent="DoorStep" unique_id=968096234]
+material_override = SubResource("r39")
+mesh = SubResource("r37")
+
+[node name="Body" type="Area3D" parent="DoorStep" unique_id=1047211821]
+collision_mask = 0
+metadata/word = "entrance"
+
+[node name="Collision" type="CollisionShape3D" parent="DoorStep/Body" unique_id=362384059]
+shape = SubResource("r38")
+
+[node name="WarmCeilingLight" type="OmniLight3D" parent="." unique_id=854537705]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.61, -3.344)
+light_color = Color(1, 0.95294, 0.87451, 1)
+light_energy = 0.34
+omni_range = 8.6
+
+[node name="WarmCeilingLight_2" type="OmniLight3D" parent="." unique_id=1699743420]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.61, 3.344)
+light_color = Color(1, 0.95294, 0.87451, 1)
+light_energy = 0.34
+omni_range = 8.6
+
+[node name="RoomPlaque" type="Node3D" parent="." unique_id=1877858763]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.1, -5.2)
+metadata/word_key = "sign"
+
+[node name="Visual" type="MeshInstance3D" parent="RoomPlaque" unique_id=1178245208]
+material_override = SubResource("r42")
+mesh = SubResource("r40")
+
+[node name="Body" type="Area3D" parent="RoomPlaque" unique_id=626681337]
+collision_mask = 0
+metadata/word = "sign"
+
+[node name="Collision" type="CollisionShape3D" parent="RoomPlaque/Body" unique_id=702197344]
+shape = SubResource("r41")
+
+[node name="Sign_CLOTHING" type="Label3D" parent="." unique_id=953246667]
+transform = Transform3D(-1, 0, 2.5351817e-06, 0, 1, 0, -2.5351817e-06, 0, -1, 0, 2.98, -5.28)
+pixel_size = 0.0035
+modulate = Color(0.53333, 0.35294, 0.38824, 1)
+text = "CLOTHING"
+font_size = 55
+outline_size = 6
+
+[node name="LearningDisplays" type="Node3D" parent="." unique_id=1563254804 instance=ExtResource("learning_display")]

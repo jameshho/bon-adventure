@@ -1,0 +1,491 @@
+[gd_scene format=3]
+
+[sub_resource type="CylinderMesh" id="r1"]
+top_radius = 0.12
+bottom_radius = 0.17
+height = 2.16
+radial_segments = 12
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.5333333333333333, 0.3843137254901961, 0.26666666666666666, 1)
+roughness = 0.82
+
+[sub_resource type="BoxShape3D" id="r3"]
+size = Vector3(0.340000, 2.160000, 0.340000)
+
+[sub_resource type="CylinderMesh" id="r4"]
+top_radius = 0.025
+bottom_radius = 0.065
+height = 1.1
+radial_segments = 12
+
+[sub_resource type="SphereMesh" id="r5"]
+radius = 0.5
+height = 1.0
+radial_segments = 12
+rings = 6
+
+[sub_resource type="StandardMaterial3D" id="r6"]
+albedo_color = Color(0.33725490196078434, 0.5764705882352941, 0.32941176470588235, 1)
+roughness = 0.82
+
+[sub_resource type="StandardMaterial3D" id="r7"]
+albedo_color = Color(0.8117647058823529, 0.28627450980392155, 0.24313725490196078, 1)
+roughness = 0.82
+
+[sub_resource type="BoxShape3D" id="r8"]
+size = Vector3(0.240000, 0.250000, 0.240000)
+
+[sub_resource type="BoxMesh" id="r9"]
+size = Vector3(0.025000, 0.060000, 0.025000)
+
+[sub_resource type="StandardMaterial3D" id="r10"]
+albedo_color = Color(0.43137254901960786, 0.34901960784313724, 0.23137254901960785, 1)
+roughness = 0.82
+
+[sub_resource type="BoxShape3D" id="r11"]
+size = Vector3(2.800000, 1.600000, 2.800000)
+
+[node name="AppleTree" type="Node3D"]
+metadata/word_key = "tree"
+
+[node name="Trunk" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 1.080000, 0.000000)
+mesh = SubResource("r1")
+material_override = SubResource("r2")
+
+[node name="Body" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Body"]
+position = Vector3(0.000000, 1.080000, 0.000000)
+shape = SubResource("r3")
+
+[node name="Branch" type="Node3D" parent="."]
+rotation = Vector3(0,0.0,0)
+
+[node name="Wood" type="MeshInstance3D" parent="Branch"]
+position = Vector3(0.350000, 1.920000, 0.000000)
+rotation = Vector3(0.000000, 0.000000, -0.650000)
+mesh = SubResource("r4")
+material_override = SubResource("r2")
+
+[node name="Foliage" type="MeshInstance3D" parent="."]
+position = Vector3(0.700000, 2.650000, 0.000000)
+scale = Vector3(1.600000, 1.700000, 1.500000)
+mesh = SubResource("r5")
+material_override = SubResource("r6")
+
+[node name="Fruit" type="Node3D" parent="."]
+position = Vector3(1.340000, 2.420000, 0.000000)
+metadata/word_key = "apple"
+
+[node name="FruitMesh" type="MeshInstance3D" parent="Fruit"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+scale = Vector3(0.220000, 0.230000, 0.220000)
+mesh = SubResource("r5")
+material_override = SubResource("r7")
+
+[node name="StudyArea" type="Area3D" parent="Fruit"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Fruit/StudyArea"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+shape = SubResource("r8")
+
+[node name="Stem" type="MeshInstance3D" parent="Fruit"]
+position = Vector3(0.000000, 0.135000, 0.000000)
+mesh = SubResource("r9")
+material_override = SubResource("r10")
+
+[node name="Fruit2" type="Node3D" parent="."]
+position = Vector3(1.189499, 2.710000, 0.412299)
+metadata/word_key = "apple"
+
+[node name="FruitMesh" type="MeshInstance3D" parent="Fruit2"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+scale = Vector3(0.220000, 0.230000, 0.220000)
+mesh = SubResource("r5")
+material_override = SubResource("r7")
+
+[node name="StudyArea" type="Area3D" parent="Fruit2"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Fruit2/StudyArea"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+shape = SubResource("r8")
+
+[node name="Stem" type="MeshInstance3D" parent="Fruit2"]
+position = Vector3(0.000000, 0.135000, 0.000000)
+mesh = SubResource("r9")
+material_override = SubResource("r10")
+
+[node name="Fruit3" type="Node3D" parent="."]
+position = Vector3(0.808779, 3.000000, 0.630688)
+metadata/word_key = "apple"
+
+[node name="FruitMesh" type="MeshInstance3D" parent="Fruit3"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+scale = Vector3(0.220000, 0.230000, 0.220000)
+mesh = SubResource("r5")
+material_override = SubResource("r7")
+
+[node name="StudyArea" type="Area3D" parent="Fruit3"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Fruit3/StudyArea"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+shape = SubResource("r8")
+
+[node name="Stem" type="MeshInstance3D" parent="Fruit3"]
+position = Vector3(0.000000, 0.135000, 0.000000)
+mesh = SubResource("r9")
+material_override = SubResource("r10")
+
+[node name="Branch2" type="Node3D" parent="."]
+rotation = Vector3(0,1.2566370614359172,0)
+
+[node name="Wood" type="MeshInstance3D" parent="Branch2"]
+position = Vector3(0.350000, 1.920000, 0.000000)
+rotation = Vector3(0.000000, 0.000000, -0.650000)
+mesh = SubResource("r4")
+material_override = SubResource("r2")
+
+[node name="Foliage2" type="MeshInstance3D" parent="."]
+position = Vector3(0.216312, 2.950000, 0.665740)
+scale = Vector3(1.600000, 1.700000, 1.500000)
+mesh = SubResource("r5")
+material_override = SubResource("r6")
+
+[node name="Fruit4" type="Node3D" parent="."]
+position = Vector3(0.414083, 2.420000, 1.274416)
+metadata/word_key = "apple"
+
+[node name="FruitMesh" type="MeshInstance3D" parent="Fruit4"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+scale = Vector3(0.220000, 0.230000, 0.220000)
+mesh = SubResource("r5")
+material_override = SubResource("r7")
+
+[node name="StudyArea" type="Area3D" parent="Fruit4"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Fruit4/StudyArea"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+shape = SubResource("r8")
+
+[node name="Stem" type="MeshInstance3D" parent="Fruit4"]
+position = Vector3(0.000000, 0.135000, 0.000000)
+mesh = SubResource("r9")
+material_override = SubResource("r10")
+
+[node name="Fruit5" type="Node3D" parent="."]
+position = Vector3(-0.024545, 2.710000, 1.258688)
+metadata/word_key = "apple"
+
+[node name="FruitMesh" type="MeshInstance3D" parent="Fruit5"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+scale = Vector3(0.220000, 0.230000, 0.220000)
+mesh = SubResource("r5")
+material_override = SubResource("r7")
+
+[node name="StudyArea" type="Area3D" parent="Fruit5"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Fruit5/StudyArea"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+shape = SubResource("r8")
+
+[node name="Stem" type="MeshInstance3D" parent="Fruit5"]
+position = Vector3(0.000000, 0.135000, 0.000000)
+mesh = SubResource("r9")
+material_override = SubResource("r10")
+
+[node name="Fruit6" type="Node3D" parent="."]
+position = Vector3(-0.349893, 3.000000, 0.964088)
+metadata/word_key = "apple"
+
+[node name="FruitMesh" type="MeshInstance3D" parent="Fruit6"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+scale = Vector3(0.220000, 0.230000, 0.220000)
+mesh = SubResource("r5")
+material_override = SubResource("r7")
+
+[node name="StudyArea" type="Area3D" parent="Fruit6"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Fruit6/StudyArea"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+shape = SubResource("r8")
+
+[node name="Stem" type="MeshInstance3D" parent="Fruit6"]
+position = Vector3(0.000000, 0.135000, 0.000000)
+mesh = SubResource("r9")
+material_override = SubResource("r10")
+
+[node name="Branch3" type="Node3D" parent="."]
+rotation = Vector3(0,2.5132741228718345,0)
+
+[node name="Wood" type="MeshInstance3D" parent="Branch3"]
+position = Vector3(0.350000, 1.920000, 0.000000)
+rotation = Vector3(0.000000, 0.000000, -0.650000)
+mesh = SubResource("r4")
+material_override = SubResource("r2")
+
+[node name="Foliage3" type="MeshInstance3D" parent="."]
+position = Vector3(-0.566312, 2.650000, 0.411450)
+scale = Vector3(1.600000, 1.700000, 1.500000)
+mesh = SubResource("r5")
+material_override = SubResource("r6")
+
+[node name="Fruit7" type="Node3D" parent="."]
+position = Vector3(-1.084083, 2.420000, 0.787632)
+metadata/word_key = "apple"
+
+[node name="FruitMesh" type="MeshInstance3D" parent="Fruit7"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+scale = Vector3(0.220000, 0.230000, 0.220000)
+mesh = SubResource("r5")
+material_override = SubResource("r7")
+
+[node name="StudyArea" type="Area3D" parent="Fruit7"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Fruit7/StudyArea"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+shape = SubResource("r8")
+
+[node name="Stem" type="MeshInstance3D" parent="Fruit7"]
+position = Vector3(0.000000, 0.135000, 0.000000)
+mesh = SubResource("r9")
+material_override = SubResource("r10")
+
+[node name="Fruit8" type="Node3D" parent="."]
+position = Vector3(-1.204668, 2.710000, 0.365613)
+metadata/word_key = "apple"
+
+[node name="FruitMesh" type="MeshInstance3D" parent="Fruit8"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+scale = Vector3(0.220000, 0.230000, 0.220000)
+mesh = SubResource("r5")
+material_override = SubResource("r7")
+
+[node name="StudyArea" type="Area3D" parent="Fruit8"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Fruit8/StudyArea"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+shape = SubResource("r8")
+
+[node name="Stem" type="MeshInstance3D" parent="Fruit8"]
+position = Vector3(0.000000, 0.135000, 0.000000)
+mesh = SubResource("r9")
+material_override = SubResource("r10")
+
+[node name="Fruit9" type="Node3D" parent="."]
+position = Vector3(-1.025025, 3.000000, -0.034849)
+metadata/word_key = "apple"
+
+[node name="FruitMesh" type="MeshInstance3D" parent="Fruit9"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+scale = Vector3(0.220000, 0.230000, 0.220000)
+mesh = SubResource("r5")
+material_override = SubResource("r7")
+
+[node name="StudyArea" type="Area3D" parent="Fruit9"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Fruit9/StudyArea"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+shape = SubResource("r8")
+
+[node name="Stem" type="MeshInstance3D" parent="Fruit9"]
+position = Vector3(0.000000, 0.135000, 0.000000)
+mesh = SubResource("r9")
+material_override = SubResource("r10")
+
+[node name="Branch4" type="Node3D" parent="."]
+rotation = Vector3(0,3.7699111843077517,0)
+
+[node name="Wood" type="MeshInstance3D" parent="Branch4"]
+position = Vector3(0.350000, 1.920000, 0.000000)
+rotation = Vector3(0.000000, 0.000000, -0.650000)
+mesh = SubResource("r4")
+material_override = SubResource("r2")
+
+[node name="Foliage4" type="MeshInstance3D" parent="."]
+position = Vector3(-0.566312, 2.950000, -0.411450)
+scale = Vector3(1.600000, 1.700000, 1.500000)
+mesh = SubResource("r5")
+material_override = SubResource("r6")
+
+[node name="Fruit10" type="Node3D" parent="."]
+position = Vector3(-1.084083, 2.420000, -0.787632)
+metadata/word_key = "apple"
+
+[node name="FruitMesh" type="MeshInstance3D" parent="Fruit10"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+scale = Vector3(0.220000, 0.230000, 0.220000)
+mesh = SubResource("r5")
+material_override = SubResource("r7")
+
+[node name="StudyArea" type="Area3D" parent="Fruit10"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Fruit10/StudyArea"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+shape = SubResource("r8")
+
+[node name="Stem" type="MeshInstance3D" parent="Fruit10"]
+position = Vector3(0.000000, 0.135000, 0.000000)
+mesh = SubResource("r9")
+material_override = SubResource("r10")
+
+[node name="Fruit11" type="Node3D" parent="."]
+position = Vector3(-0.719981, 2.710000, -1.032727)
+metadata/word_key = "apple"
+
+[node name="FruitMesh" type="MeshInstance3D" parent="Fruit11"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+scale = Vector3(0.220000, 0.230000, 0.220000)
+mesh = SubResource("r5")
+material_override = SubResource("r7")
+
+[node name="StudyArea" type="Area3D" parent="Fruit11"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Fruit11/StudyArea"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+shape = SubResource("r8")
+
+[node name="Stem" type="MeshInstance3D" parent="Fruit11"]
+position = Vector3(0.000000, 0.135000, 0.000000)
+mesh = SubResource("r9")
+material_override = SubResource("r10")
+
+[node name="Fruit12" type="Node3D" parent="."]
+position = Vector3(-0.283607, 3.000000, -0.985626)
+metadata/word_key = "apple"
+
+[node name="FruitMesh" type="MeshInstance3D" parent="Fruit12"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+scale = Vector3(0.220000, 0.230000, 0.220000)
+mesh = SubResource("r5")
+material_override = SubResource("r7")
+
+[node name="StudyArea" type="Area3D" parent="Fruit12"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Fruit12/StudyArea"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+shape = SubResource("r8")
+
+[node name="Stem" type="MeshInstance3D" parent="Fruit12"]
+position = Vector3(0.000000, 0.135000, 0.000000)
+mesh = SubResource("r9")
+material_override = SubResource("r10")
+
+[node name="Branch5" type="Node3D" parent="."]
+rotation = Vector3(0,5.026548245743669,0)
+
+[node name="Wood" type="MeshInstance3D" parent="Branch5"]
+position = Vector3(0.350000, 1.920000, 0.000000)
+rotation = Vector3(0.000000, 0.000000, -0.650000)
+mesh = SubResource("r4")
+material_override = SubResource("r2")
+
+[node name="Foliage5" type="MeshInstance3D" parent="."]
+position = Vector3(0.216312, 2.650000, -0.665740)
+scale = Vector3(1.600000, 1.700000, 1.500000)
+mesh = SubResource("r5")
+material_override = SubResource("r6")
+
+[node name="Fruit13" type="Node3D" parent="."]
+position = Vector3(0.414083, 2.420000, -1.274416)
+metadata/word_key = "apple"
+
+[node name="FruitMesh" type="MeshInstance3D" parent="Fruit13"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+scale = Vector3(0.220000, 0.230000, 0.220000)
+mesh = SubResource("r5")
+material_override = SubResource("r7")
+
+[node name="StudyArea" type="Area3D" parent="Fruit13"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Fruit13/StudyArea"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+shape = SubResource("r8")
+
+[node name="Stem" type="MeshInstance3D" parent="Fruit13"]
+position = Vector3(0.000000, 0.135000, 0.000000)
+mesh = SubResource("r9")
+material_override = SubResource("r10")
+
+[node name="Fruit14" type="Node3D" parent="."]
+position = Vector3(0.759695, 2.710000, -1.003873)
+metadata/word_key = "apple"
+
+[node name="FruitMesh" type="MeshInstance3D" parent="Fruit14"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+scale = Vector3(0.220000, 0.230000, 0.220000)
+mesh = SubResource("r5")
+material_override = SubResource("r7")
+
+[node name="StudyArea" type="Area3D" parent="Fruit14"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Fruit14/StudyArea"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+shape = SubResource("r8")
+
+[node name="Stem" type="MeshInstance3D" parent="Fruit14"]
+position = Vector3(0.000000, 0.135000, 0.000000)
+mesh = SubResource("r9")
+material_override = SubResource("r10")
+
+[node name="Fruit15" type="Node3D" parent="."]
+position = Vector3(0.849746, 3.000000, -0.574301)
+metadata/word_key = "apple"
+
+[node name="FruitMesh" type="MeshInstance3D" parent="Fruit15"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+scale = Vector3(0.220000, 0.230000, 0.220000)
+mesh = SubResource("r5")
+material_override = SubResource("r7")
+
+[node name="StudyArea" type="Area3D" parent="Fruit15"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Fruit15/StudyArea"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+shape = SubResource("r8")
+
+[node name="Stem" type="MeshInstance3D" parent="Fruit15"]
+position = Vector3(0.000000, 0.135000, 0.000000)
+mesh = SubResource("r9")
+material_override = SubResource("r10")
+
+[node name="StudyArea" type="Area3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="StudyArea"]
+position = Vector3(0.000000, 2.800000, 0.000000)
+shape = SubResource("r11")

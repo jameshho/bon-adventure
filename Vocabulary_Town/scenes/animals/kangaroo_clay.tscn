@@ -1,0 +1,51 @@
+[gd_scene format=3]
+
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/kangaroo/body.res" id="1_qo0r7"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/kangaroo/ears.res" id="2_fnjjp"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/kangaroo/eyes.res" id="3_g6lcc"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/kangaroo/face_details.res" id="4_2nujo"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qcpp2"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.88
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tqmxm"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8tdr8"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.7
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3414d"]
+size = Vector3(0.8117648, 2.3000002, 1.3811275)
+
+[node name="KangarooClayDisplay" type="Node3D" unique_id=16083662]
+metadata/source = "User's Kangaroo Character Blueprint, relax walk pose (11 Nov 2026)"
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=960452145]
+material_override = SubResource("StandardMaterial3D_qcpp2")
+mesh = ExtResource("1_qo0r7")
+
+[node name="Ears" type="MeshInstance3D" parent="." unique_id=881641395]
+material_override = SubResource("StandardMaterial3D_qcpp2")
+mesh = ExtResource("2_fnjjp")
+
+[node name="Eyes" type="MeshInstance3D" parent="." unique_id=141326445]
+material_override = SubResource("StandardMaterial3D_tqmxm")
+cast_shadow = 0
+mesh = ExtResource("3_g6lcc")
+
+[node name="Face details" type="MeshInstance3D" parent="." unique_id=718500487]
+material_override = SubResource("StandardMaterial3D_8tdr8")
+cast_shadow = 0
+mesh = ExtResource("4_2nujo")
+
+[node name="Footprint" type="StaticBody3D" parent="." unique_id=662691149]
+
+[node name="@CollisionShape3D@2" type="CollisionShape3D" parent="Footprint" unique_id=806893742]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1500001, -0.23958345)
+shape = SubResource("BoxShape3D_3414d")

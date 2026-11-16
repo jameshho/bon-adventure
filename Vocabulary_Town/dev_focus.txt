@@ -1,0 +1,8 @@
+# Development switch: which building units to load (data/buildings.json; the base world always
+# loads, other buildings are left out entirely, inside and out).
+# Examples:  bank, restaurants   |   supermarket   |   all
+# Names: home supermarket library restaurants sports clothing electronics furniture bank police
+#        airport (tower) bakery playground barn school hospital chapel warehouse mystery
+# Optional: spawn=<building> (any name above; also restaurant = Alta Cocina, burger, pizza, taqueria) starts the player at that door.
+# Leave this as "all" (or empty), with no spawn=, when committing and for any final verification.
+all

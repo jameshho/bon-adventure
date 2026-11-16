@@ -1,0 +1,110 @@
+[gd_scene format=3]
+
+[sub_resource type="TorusMesh" id="r1"]
+inner_radius = 0.71
+outer_radius = 1.35
+rings = 24
+ring_segments = 8
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.92549, 0.90980, 0.87451, 1)
+roughness = 0.78
+
+[sub_resource type="TorusMesh" id="r3"]
+inner_radius = 0.6849999999999999
+outer_radius = 0.795
+rings = 24
+ring_segments = 8
+
+[sub_resource type="StandardMaterial3D" id="r4"]
+albedo_color = Color(0.54510, 0.64706, 0.69020, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r5"]
+size = Vector3(2.250000, 0.480000, 1.100000)
+
+[sub_resource type="BoxMesh" id="r6"]
+size = Vector3(0.700000, 0.140000, 2.800000)
+
+[sub_resource type="StandardMaterial3D" id="r7"]
+albedo_color = Color(0.27451, 0.47843, 0.60784, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r8"]
+size = Vector3(0.450000, 0.600000, 1.900000)
+
+[sub_resource type="BoxMesh" id="r9"]
+size = Vector3(0.140000, 0.450000, 0.045000)
+
+[sub_resource type="BoxMesh" id="r10"]
+size = Vector3(0.140000, 0.450000, 0.045000)
+
+[sub_resource type="BoxShape3D" id="r11"]
+size = Vector3(2.900000, 2.950000, 3.200000)
+
+[sub_resource type="BoxShape3D" id="r12"]
+size = Vector3(2.610000, 0.700000, 2.880000)
+
+[node name="Mri_Scanner" type="Node3D"]
+metadata/word_key = "MRI scanner"
+metadata/learning_object = true
+
+[node name="ScannerBore_2" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 1.500000, 0.500000)
+rotation_degrees = Vector3(90.000000, 0.000000, 0.000000)
+mesh = SubResource("r1")
+material_override = SubResource("r2")
+scale = Vector3(1.000000, 1.000000, 1.000000)
+
+[node name="InnerBore_4" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 1.500000, 0.370000)
+rotation_degrees = Vector3(90.000000, 0.000000, 0.000000)
+mesh = SubResource("r3")
+material_override = SubResource("r4")
+scale = Vector3(1.000000, 1.000000, 1.000000)
+
+[node name="Pedestal_5" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.240000, 0.500000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r5")
+material_override = SubResource("r2")
+
+[node name="SlidingTable_7" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.680000, -0.700000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r6")
+material_override = SubResource("r7")
+
+[node name="TableSupport_8" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.300000, -0.900000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r8")
+material_override = SubResource("r2")
+
+[node name="ControlStrip_9" type="MeshInstance3D" parent="."]
+position = Vector3(-1.080000, 1.400000, 0.120000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r9")
+material_override = SubResource("r7")
+
+[node name="ControlStrip_10" type="MeshInstance3D" parent="."]
+position = Vector3(1.080000, 1.400000, 0.120000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r10")
+material_override = SubResource("r7")
+
+[node name="Interaction" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Interaction"]
+position = Vector3(0.000000, 1.475000, 0.000000)
+shape = SubResource("r11")
+
+[node name="Footprint" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Footprint"]
+position = Vector3(0.000000, 0.350000, 0.000000)
+shape = SubResource("r12")

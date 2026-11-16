@@ -1,0 +1,733 @@
+[gd_scene load_steps=21 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/park_animals.gd" id="1_tiesh"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_FurBrown"]
+albedo_color = Color(0.42, 0.258, 0.166, 1)
+roughness = 0.92
+
+[sub_resource type="StandardMaterial3D" id="Mat_FurLight"]
+albedo_color = Color(0.515, 0.333, 0.219, 1)
+roughness = 0.93
+
+[sub_resource type="StandardMaterial3D" id="Mat_FurShade"]
+albedo_color = Color(0.300, 0.177, 0.119, 1)
+roughness = 0.96
+
+[sub_resource type="StandardMaterial3D" id="Mat_FurWarm"]
+albedo_color = Color(0.463, 0.283, 0.177, 1)
+roughness = 0.91
+
+[sub_resource type="StandardMaterial3D" id="Mat_FurTip"]
+albedo_color = Color(0.577, 0.405, 0.288, 1)
+roughness = 0.93
+
+[sub_resource type="StandardMaterial3D" id="Mat_FaceBrown"]
+albedo_color = Color(0.389, 0.228, 0.15, 1)
+roughness = 0.96
+
+[sub_resource type="StandardMaterial3D" id="Mat_MuzzleTan"]
+albedo_color = Color(0.660, 0.499, 0.351, 1)
+roughness = 0.91
+
+[sub_resource type="StandardMaterial3D" id="Mat_MuzzleLight"]
+albedo_color = Color(0.750, 0.614, 0.456, 1)
+roughness = 0.94
+
+[sub_resource type="StandardMaterial3D" id="Mat_EarInner"]
+albedo_color = Color(0.232, 0.128, 0.120, 1)
+roughness = 0.96
+
+[sub_resource type="StandardMaterial3D" id="Mat_Socket"]
+albedo_color = Color(0.230, 0.134, 0.105, 1)
+roughness = 0.91
+
+[sub_resource type="StandardMaterial3D" id="Mat_Iris"]
+albedo_color = Color(0.360, 0.202, 0.101, 1)
+roughness = 0.55
+
+[sub_resource type="StandardMaterial3D" id="Mat_Eye"]
+albedo_color = Color(0.047, 0.063, 0.061, 1)
+roughness = 0.16
+
+[sub_resource type="StandardMaterial3D" id="Mat_Nose"]
+albedo_color = Color(0.090, 0.102, 0.098, 1)
+roughness = 0.30
+
+[sub_resource type="StandardMaterial3D" id="Mat_Mouth"]
+albedo_color = Color(0.175, 0.103, 0.086, 1)
+roughness = 0.94
+
+[sub_resource type="StandardMaterial3D" id="Mat_Claw"]
+albedo_color = Color(0.762, 0.692, 0.523, 1)
+roughness = 0.58
+
+[sub_resource type="StandardMaterial3D" id="Mat_Catchlight"]
+albedo_color = Color(0.985, 0.973, 0.891, 1)
+roughness = 0.08
+
+[sub_resource type="SphereMesh" id="SmoothSphere"]
+radius = 1.0
+height = 2.0
+radial_segments = 20
+rings = 12
+
+[sub_resource type="CylinderMesh" id="TaperedClaw"]
+top_radius = 0.012
+bottom_radius = 0.048
+height = 0.205
+radial_segments = 9
+rings = 1
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wcetl"]
+size = Vector3(1.85, 2.16, 3.6)
+
+[node name="Bear" type="Node3D" unique_id=762423541]
+scale = Vector3(0.55743354, 0.55743354, 0.55743354)
+script = ExtResource("1_tiesh")
+metadata/word_key = "bear"
+
+[node name="Part00" type="MeshInstance3D" parent="." unique_id=359481094]
+transform = Transform3D(0.69, 0, 0, 0, 0.68, 0, 0, 0, 1.05, 0, 0.97, -0.18)
+material_override = SubResource("Mat_FurBrown")
+mesh = SubResource("SmoothSphere")
+
+[node name="Part01" type="MeshInstance3D" parent="." unique_id=840401276]
+transform = Transform3D(0.49, 0, 0, 0, 0.46, 0, 0, 0, 0.52, 0, 1.48, 1.02)
+material_override = SubResource("Mat_FaceBrown")
+mesh = SubResource("SmoothSphere")
+
+[node name="Part02" type="MeshInstance3D" parent="." unique_id=825608403]
+transform = Transform3D(0.07, 0, 0, 0, 0.076, 0, 0, 0, 0.056, -0.295, 1.605, 1.46)
+material_override = SubResource("Mat_Eye")
+mesh = SubResource("SmoothSphere")
+
+[node name="Part03" type="MeshInstance3D" parent="." unique_id=1461484506]
+transform = Transform3D(0.18935, -0.05789, 0, 0.06491, 0.2123, 0, 0, 0, 0.132, -0.415, 1.873, 0.864)
+material_override = SubResource("Mat_FurBrown")
+mesh = SubResource("SmoothSphere")
+
+[node name="Part04" type="MeshInstance3D" parent="." unique_id=1266810254]
+transform = Transform3D(0.07, 0, 0, 0, 0.076, 0, 0, 0, 0.056, 0.295, 1.605, 1.46)
+material_override = SubResource("Mat_Eye")
+mesh = SubResource("SmoothSphere")
+
+[node name="Part05" type="MeshInstance3D" parent="." unique_id=1778121456]
+transform = Transform3D(0.18935, 0.05789, 0, -0.06491, 0.2123, 0, 0, 0, 0.132, 0.415, 1.873, 0.864)
+material_override = SubResource("Mat_FurBrown")
+mesh = SubResource("SmoothSphere")
+
+[node name="Part06" type="MeshInstance3D" parent="." unique_id=1530558674]
+transform = Transform3D(0.30882, -0.02702, 0, 0.04177, 0.47747, -0.10188, 0.00634, 0.07249, 0.34235, -0.49, 0.58, -0.78)
+material_override = SubResource("Mat_FurBrown")
+mesh = SubResource("SmoothSphere")
+
+[node name="Part07" type="MeshInstance3D" parent="." unique_id=1293419860]
+transform = Transform3D(0.26963, -0.01413, 0, 0.0285, 0.5439, 0.07655, -0.00215, -0.041, 0.29213, -0.49, 0.59, 0.55)
+material_override = SubResource("Mat_FurWarm")
+mesh = SubResource("SmoothSphere")
+
+[node name="Part08" type="MeshInstance3D" parent="." unique_id=1665132642]
+transform = Transform3D(0.30882, 0.02702, 0, -0.04177, 0.47747, -0.10188, -0.00634, 0.07249, 0.34235, 0.49, 0.58, -0.78)
+material_override = SubResource("Mat_FurBrown")
+mesh = SubResource("SmoothSphere")
+
+[node name="Part09" type="MeshInstance3D" parent="." unique_id=951006087]
+transform = Transform3D(0.26963, 0.01413, 0, -0.0285, 0.5439, 0.07655, 0.00215, -0.041, 0.29213, 0.49, 0.59, 0.55)
+material_override = SubResource("Mat_FurWarm")
+mesh = SubResource("SmoothSphere")
+
+[node name="Part10" type="MeshInstance3D" parent="." unique_id=740218093]
+transform = Transform3D(0.342, 0, 0, 0, 0.225, 0, 0, 0, 0.329, 0, 1.295, 1.5)
+material_override = SubResource("Mat_MuzzleTan")
+mesh = SubResource("SmoothSphere")
+
+[node name="Part11" type="MeshInstance3D" parent="." unique_id=1057958574]
+transform = Transform3D(0.175, 0, 0, 0, 0.17387, -0.04659, 0, 0.05953, 0.22216, 0, 0.895, -1.192)
+material_override = SubResource("Mat_FurBrown")
+mesh = SubResource("SmoothSphere")
+
+[node name="BodySculpt" type="Node3D" parent="."]
+
+[node name="DeepShoulderMass" type="MeshInstance3D" parent="BodySculpt"]
+transform = Transform3D(0.722, 0, 0, 0, 0.733, 0, 0, 0, 0.648, 0, 1.1, 0.43)
+material_override = SubResource("Mat_FurBrown")
+mesh = SubResource("SmoothSphere")
+
+[node name="HighShoulderHump" type="MeshInstance3D" parent="BodySculpt"]
+transform = Transform3D(0.577, 0, 0, 0, 0.32475, -0.06903, 0, 0.11518, 0.54189, 0, 1.408, 0.25)
+material_override = SubResource("Mat_FurLight")
+mesh = SubResource("SmoothSphere")
+
+[node name="RoundedRump" type="MeshInstance3D" parent="BodySculpt"]
+transform = Transform3D(0.638, 0, 0, 0, 0.612, 0, 0, 0, 0.618, 0, 0.992, -0.711)
+material_override = SubResource("Mat_FurBrown")
+mesh = SubResource("SmoothSphere")
+
+[node name="LowerBelly" type="MeshInstance3D" parent="BodySculpt"]
+transform = Transform3D(0.532, 0, 0, 0, 0.35, 0, 0, 0, 0.805, 0, 0.658, -0.19)
+material_override = SubResource("Mat_FurShade")
+mesh = SubResource("SmoothSphere")
+
+[node name="UpperBackFur" type="MeshInstance3D" parent="BodySculpt"]
+transform = Transform3D(0.485, 0, 0, 0, 0.18561, -0.02279, 0, 0.08677, 0.70669, 0, 1.465, -0.27)
+material_override = SubResource("Mat_FurBrown")
+mesh = SubResource("SmoothSphere")
+
+[node name="ThickNeck" type="MeshInstance3D" parent="BodySculpt"]
+transform = Transform3D(0.584, 0, 0, 0, 0.56048, 0.11913, 0, -0.09148, 0.43038, 0, 1.292, 0.705)
+material_override = SubResource("Mat_FurBrown")
+mesh = SubResource("SmoothSphere")
+
+[node name="ChestApron" type="MeshInstance3D" parent="BodySculpt"]
+transform = Transform3D(0.453, 0, 0, 0, 0.46045, -0.16759, 0, 0.08482, 0.23304, 0, 0.998, 1.042)
+material_override = SubResource("Mat_FurLight")
+mesh = SubResource("SmoothSphere")
+
+[node name="ChestCenter" type="MeshInstance3D" parent="BodySculpt"]
+transform = Transform3D(0.275, 0, 0, 0, 0.29149, 0.06196, 0, -0.03992, 0.1878, 0, 0.807, 1.116)
+material_override = SubResource("Mat_FurWarm")
+mesh = SubResource("SmoothSphere")
+
+[node name="LeftShoulderBlade" type="MeshInstance3D" parent="BodySculpt"]
+transform = Transform3D(0.21532, -0.0341, 0, 0.05402, 0.34107, -0.15375, 0.03137, 0.19805, 0.45038, -0.604, 1.158, 0.393)
+material_override = SubResource("Mat_FurWarm")
+mesh = SubResource("SmoothSphere")
+
+[node name="RightShoulderBlade" type="MeshInstance3D" parent="BodySculpt"]
+transform = Transform3D(0.21532, 0.0341, 0, -0.05402, 0.34107, -0.15375, -0.03137, 0.19805, 0.45038, 0.604, 1.158, 0.393)
+material_override = SubResource("Mat_FurWarm")
+mesh = SubResource("SmoothSphere")
+
+[node name="LeftHaunch" type="MeshInstance3D" parent="BodySculpt"]
+transform = Transform3D(0.265, 0, 0, 0, 0.43036, -0.07588, 0, 0.06981, 0.39589, -0.557, 0.955, -0.667)
+material_override = SubResource("Mat_FurWarm")
+mesh = SubResource("SmoothSphere")
+
+[node name="RightHaunch" type="MeshInstance3D" parent="BodySculpt"]
+transform = Transform3D(0.265, 0, 0, 0, 0.43036, -0.07588, 0, 0.06981, 0.39589, 0.557, 0.955, -0.667)
+material_override = SubResource("Mat_FurWarm")
+mesh = SubResource("SmoothSphere")
+
+[node name="FaceDetails" type="Node3D" parent="."]
+
+[node name="ForwardBrow" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.376, 0, 0, 0, 0.20082, -0.0614, 0, 0.06374, 0.20847, 0, 1.757, 1.308)
+material_override = SubResource("Mat_FaceBrown")
+mesh = SubResource("SmoothSphere")
+
+[node name="NasalBridge" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.245, 0, 0, 0, 0.17905, -0.07972, 0, 0.11023, 0.24757, 0, 1.445, 1.573)
+material_override = SubResource("Mat_MuzzleTan")
+mesh = SubResource("SmoothSphere")
+
+[node name="LeftMuzzleJowl" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.186, 0, 0, 0, 0.157, 0, 0, 0, 0.183, -0.177, 1.283, 1.679)
+material_override = SubResource("Mat_MuzzleLight")
+mesh = SubResource("SmoothSphere")
+
+[node name="RightMuzzleJowl" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.186, 0, 0, 0, 0.157, 0, 0, 0, 0.183, 0.177, 1.283, 1.679)
+material_override = SubResource("Mat_MuzzleLight")
+mesh = SubResource("SmoothSphere")
+
+[node name="MuzzlePhiltrum" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.02, 0, 0, 0, 0.08442, -0.01641, 0, 0.0042, 0.0216, 0, 1.213, 1.791)
+material_override = SubResource("Mat_Mouth")
+mesh = SubResource("SmoothSphere")
+
+[node name="LowerMouthLine" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.228, 0, 0, 0, 0.018, 0, 0, 0, 0.039, 0, 1.164, 1.724)
+material_override = SubResource("Mat_Mouth")
+mesh = SubResource("SmoothSphere")
+
+[node name="RoundedLowerJaw" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.295, 0, 0, 0, 0.135, 0, 0, 0, 0.221, 0, 1.141, 1.547)
+material_override = SubResource("Mat_MuzzleTan")
+mesh = SubResource("SmoothSphere")
+
+[node name="NoseBulb" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.211, 0, 0, 0, 0.11487, -0.01614, 0, 0.01684, 0.11982, 0, 1.386, 1.836)
+material_override = SubResource("Mat_Nose")
+mesh = SubResource("SmoothSphere")
+
+[node name="NoseLowerRidge" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.119, 0, 0, 0, 0.043, 0, 0, 0, 0.062, 0, 1.319, 1.886)
+material_override = SubResource("Mat_Nose")
+mesh = SubResource("SmoothSphere")
+
+[node name="LeftNostril" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.038, 0, 0, 0, 0.026, 0, 0, 0, 0.016, -0.115, 1.383, 1.938)
+material_override = SubResource("Mat_Eye")
+mesh = SubResource("SmoothSphere")
+
+[node name="RightNostril" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.038, 0, 0, 0, 0.026, 0, 0, 0, 0.016, 0.115, 1.383, 1.938)
+material_override = SubResource("Mat_Eye")
+mesh = SubResource("SmoothSphere")
+
+[node name="LeftCheek" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.24846, -0.05736, 0, 0.06389, 0.27672, 0, 0, 0, 0.277, -0.344, 1.352, 1.329)
+material_override = SubResource("Mat_FaceBrown")
+mesh = SubResource("SmoothSphere")
+
+[node name="RightCheek" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.24846, 0.05736, 0, -0.06389, 0.27672, 0, 0, 0, 0.277, 0.344, 1.352, 1.329)
+material_override = SubResource("Mat_FaceBrown")
+mesh = SubResource("SmoothSphere")
+
+[node name="LeftCheekHighlight" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.13156, -0.04788, 0, 0.05233, 0.14377, 0, 0, 0, 0.167, -0.397, 1.295, 1.39)
+material_override = SubResource("Mat_FurWarm")
+mesh = SubResource("SmoothSphere")
+
+[node name="RightCheekHighlight" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.13156, 0.04788, 0, -0.05233, 0.14377, 0, 0, 0, 0.167, 0.397, 1.295, 1.39)
+material_override = SubResource("Mat_FurWarm")
+mesh = SubResource("SmoothSphere")
+
+[node name="LeftEyeSocket" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.12912, 0, 0.02744, 0, 0.121, 0, -0.02225, 0, 0.10466, -0.295, 1.608, 1.404)
+material_override = SubResource("Mat_Socket")
+mesh = SubResource("SmoothSphere")
+
+[node name="LeftIrisRim" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.052, 0, 0, 0, 0.055, 0, 0, 0, 0.025, -0.295, 1.613, 1.511)
+material_override = SubResource("Mat_Iris")
+mesh = SubResource("SmoothSphere")
+
+[node name="LeftPupil" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.034, 0, 0, 0, 0.042, 0, 0, 0, 0.017, -0.295, 1.608, 1.535)
+material_override = SubResource("Mat_Eye")
+mesh = SubResource("SmoothSphere")
+
+[node name="LeftEyeGlint" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.015, 0, 0, 0, 0.017, 0, 0, 0, 0.009, -0.277, 1.63, 1.554)
+material_override = SubResource("Mat_Catchlight")
+mesh = SubResource("SmoothSphere")
+
+[node name="LeftTopEyelid" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.13567, -0.01907, 0, 0.00612, 0.04357, 0, 0, 0, 0.102, -0.295, 1.711, 1.395)
+material_override = SubResource("Mat_FaceBrown")
+mesh = SubResource("SmoothSphere")
+
+[node name="LeftExpressiveBrow" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.18711, -0.03299, 0, 0.01385, 0.07857, -0.02288, 0.00613, 0.03475, 0.12304, -0.307, 1.756, 1.363)
+material_override = SubResource("Mat_FurBrown")
+mesh = SubResource("SmoothSphere")
+
+[node name="LeftEarCavity" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.11858, -0.03625, 0, 0.04181, 0.13675, 0, 0, 0, 0.054, -0.426, 1.883, 0.992)
+material_override = SubResource("Mat_EarInner")
+mesh = SubResource("SmoothSphere")
+
+[node name="LeftEarInnerFur" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.07268, -0.02222, 0, 0.02164, 0.07077, 0, 0, 0, 0.021, -0.425, 1.833, 1.038)
+material_override = SubResource("Mat_FurTip")
+mesh = SubResource("SmoothSphere")
+
+[node name="LeftEarBase" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.1758, -0.04711, 0, 0.03339, 0.1246, 0, 0, 0, 0.164, -0.4, 1.76, 0.843)
+material_override = SubResource("Mat_FaceBrown")
+mesh = SubResource("SmoothSphere")
+
+[node name="RightEyeSocket" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.12912, 0, -0.02744, 0, 0.121, 0, 0.02225, 0, 0.10466, 0.295, 1.608, 1.404)
+material_override = SubResource("Mat_Socket")
+mesh = SubResource("SmoothSphere")
+
+[node name="RightIrisRim" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.052, 0, 0, 0, 0.055, 0, 0, 0, 0.025, 0.295, 1.613, 1.511)
+material_override = SubResource("Mat_Iris")
+mesh = SubResource("SmoothSphere")
+
+[node name="RightPupil" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.034, 0, 0, 0, 0.042, 0, 0, 0, 0.017, 0.295, 1.608, 1.535)
+material_override = SubResource("Mat_Eye")
+mesh = SubResource("SmoothSphere")
+
+[node name="RightEyeGlint" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.015, 0, 0, 0, 0.017, 0, 0, 0, 0.009, 0.277, 1.63, 1.554)
+material_override = SubResource("Mat_Catchlight")
+mesh = SubResource("SmoothSphere")
+
+[node name="RightTopEyelid" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.13567, 0.01907, 0, -0.00612, 0.04357, 0, 0, 0, 0.102, 0.295, 1.711, 1.395)
+material_override = SubResource("Mat_FaceBrown")
+mesh = SubResource("SmoothSphere")
+
+[node name="RightExpressiveBrow" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.18711, 0.03299, 0, -0.01385, 0.07857, -0.02288, -0.00613, 0.03475, 0.12304, 0.307, 1.756, 1.363)
+material_override = SubResource("Mat_FurBrown")
+mesh = SubResource("SmoothSphere")
+
+[node name="RightEarCavity" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.11858, 0.03625, 0, -0.04181, 0.13675, 0, 0, 0, 0.054, 0.426, 1.883, 0.992)
+material_override = SubResource("Mat_EarInner")
+mesh = SubResource("SmoothSphere")
+
+[node name="RightEarInnerFur" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.07268, 0.02222, 0, -0.02164, 0.07077, 0, 0, 0, 0.021, 0.425, 1.833, 1.038)
+material_override = SubResource("Mat_FurTip")
+mesh = SubResource("SmoothSphere")
+
+[node name="RightEarBase" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.1758, 0.04711, 0, -0.03339, 0.1246, 0, 0, 0, 0.164, 0.4, 1.76, 0.843)
+material_override = SubResource("Mat_FaceBrown")
+mesh = SubResource("SmoothSphere")
+
+[node name="LeftFrontPaw" type="Node3D" parent="."]
+
+[node name="BroadFoot" type="MeshInstance3D" parent="LeftFrontPaw"]
+transform = Transform3D(0.31324, 0, 0.0219, 0.00092, 0.18854, -0.01315, -0.02777, 0.02783, 0.39706, -0.492, 0.197, 0.792)
+material_override = SubResource("Mat_FurBrown")
+mesh = SubResource("SmoothSphere")
+
+[node name="AnkleJoint" type="MeshInstance3D" parent="LeftFrontPaw"]
+transform = Transform3D(0.28093, -0.02458, 0, 0.02066, 0.2361, 0, 0, 0, 0.282, -0.492, 0.337, 0.569)
+material_override = SubResource("Mat_FurWarm")
+mesh = SubResource("SmoothSphere")
+
+[node name="UpperMuscle" type="MeshInstance3D" parent="LeftFrontPaw"]
+transform = Transform3D(0.282, 0, 0, 0, 0.31878, -0.02789, 0, 0.02894, 0.33074, -0.492, 0.733, 0.513)
+material_override = SubResource("Mat_FurBrown")
+mesh = SubResource("SmoothSphere")
+
+[node name="Toe_01" type="MeshInstance3D" parent="LeftFrontPaw"]
+transform = Transform3D(0.083, 0, 0, 0, 0.10819, -0.01328, 0, 0.01755, 0.14293, -0.6975, 0.142, 1.08434)
+material_override = SubResource("Mat_FurLight")
+mesh = SubResource("SmoothSphere")
+
+[node name="Claw_01" type="MeshInstance3D" parent="LeftFrontPaw"]
+transform = Transform3D(0.74589, 0, -0.0784, 0.09941, -0.30902, 0.94585, -0.0323, -0.95106, -0.30732, -0.6975, 0.125, 1.25334)
+material_override = SubResource("Mat_Claw")
+mesh = SubResource("TaperedClaw")
+
+[node name="Toe_02" type="MeshInstance3D" parent="LeftFrontPaw"]
+transform = Transform3D(0.083, 0, 0, 0, 0.10819, -0.01328, 0, 0.01755, 0.14293, -0.5605, 0.142, 1.10078)
+material_override = SubResource("Mat_FurLight")
+mesh = SubResource("SmoothSphere")
+
+[node name="Claw_02" type="MeshInstance3D" parent="LeftFrontPaw"]
+transform = Transform3D(0.74954, 0, -0.02617, 0.03319, -0.30902, 0.95048, -0.01078, -0.95106, -0.30883, -0.5605, 0.125, 1.26978)
+material_override = SubResource("Mat_Claw")
+mesh = SubResource("TaperedClaw")
+
+[node name="Toe_03" type="MeshInstance3D" parent="LeftFrontPaw"]
+transform = Transform3D(0.083, 0, 0, 0, 0.10819, -0.01328, 0, 0.01755, 0.14293, -0.4235, 0.142, 1.10078)
+material_override = SubResource("Mat_FurLight")
+mesh = SubResource("SmoothSphere")
+
+[node name="Claw_03" type="MeshInstance3D" parent="LeftFrontPaw"]
+transform = Transform3D(0.74954, 0, 0.02617, -0.03319, -0.30902, 0.95048, 0.01078, -0.95106, -0.30883, -0.4235, 0.125, 1.26978)
+material_override = SubResource("Mat_Claw")
+mesh = SubResource("TaperedClaw")
+
+[node name="Toe_04" type="MeshInstance3D" parent="LeftFrontPaw"]
+transform = Transform3D(0.083, 0, 0, 0, 0.10819, -0.01328, 0, 0.01755, 0.14293, -0.2865, 0.142, 1.08434)
+material_override = SubResource("Mat_FurLight")
+mesh = SubResource("SmoothSphere")
+
+[node name="Claw_04" type="MeshInstance3D" parent="LeftFrontPaw"]
+transform = Transform3D(0.74589, 0, 0.0784, -0.09941, -0.30902, 0.94585, 0.0323, -0.95106, -0.30732, -0.2865, 0.125, 1.25334)
+material_override = SubResource("Mat_Claw")
+mesh = SubResource("TaperedClaw")
+
+[node name="LeftHindPaw" type="Node3D" parent="."]
+
+[node name="BroadFoot" type="MeshInstance3D" parent="LeftHindPaw"]
+transform = Transform3D(0.33618, 0, 0.02351, 0.00096, 0.19652, -0.01371, -0.02686, 0.02693, 0.38412, -0.492, 0.197, -0.687)
+material_override = SubResource("Mat_FurBrown")
+mesh = SubResource("SmoothSphere")
+
+[node name="AnkleJoint" type="MeshInstance3D" parent="LeftHindPaw"]
+transform = Transform3D(0.28093, -0.02458, 0, 0.02066, 0.2361, 0, 0, 0, 0.282, -0.492, 0.337, -0.801)
+material_override = SubResource("Mat_FurWarm")
+mesh = SubResource("SmoothSphere")
+
+[node name="UpperMuscle" type="MeshInstance3D" parent="LeftHindPaw"]
+transform = Transform3D(0.282, 0, 0, 0, 0.31878, -0.02789, 0, 0.02894, 0.33074, -0.492, 0.733, -0.761)
+material_override = SubResource("Mat_FurBrown")
+mesh = SubResource("SmoothSphere")
+
+[node name="HeavyHock" type="MeshInstance3D" parent="LeftHindPaw"]
+transform = Transform3D(0.318, 0, 0, 0, 0.31586, -0.08463, 0, 0.07739, 0.28881, -0.492, 0.455, -0.855)
+material_override = SubResource("Mat_FurWarm")
+mesh = SubResource("SmoothSphere")
+
+[node name="Toe_01" type="MeshInstance3D" parent="LeftHindPaw"]
+transform = Transform3D(0.083, 0, 0, 0, 0.10819, -0.01328, 0, 0.01755, 0.14293, -0.6975, 0.142, -0.41166)
+material_override = SubResource("Mat_FurLight")
+mesh = SubResource("SmoothSphere")
+
+[node name="Claw_01" type="MeshInstance3D" parent="LeftHindPaw"]
+transform = Transform3D(0.74589, 0, -0.0784, 0.09941, -0.30902, 0.94585, -0.0323, -0.95106, -0.30732, -0.6975, 0.125, -0.24266)
+material_override = SubResource("Mat_Claw")
+mesh = SubResource("TaperedClaw")
+
+[node name="Toe_02" type="MeshInstance3D" parent="LeftHindPaw"]
+transform = Transform3D(0.083, 0, 0, 0, 0.10819, -0.01328, 0, 0.01755, 0.14293, -0.5605, 0.142, -0.39522)
+material_override = SubResource("Mat_FurLight")
+mesh = SubResource("SmoothSphere")
+
+[node name="Claw_02" type="MeshInstance3D" parent="LeftHindPaw"]
+transform = Transform3D(0.74954, 0, -0.02617, 0.03319, -0.30902, 0.95048, -0.01078, -0.95106, -0.30883, -0.5605, 0.125, -0.22622)
+material_override = SubResource("Mat_Claw")
+mesh = SubResource("TaperedClaw")
+
+[node name="Toe_03" type="MeshInstance3D" parent="LeftHindPaw"]
+transform = Transform3D(0.083, 0, 0, 0, 0.10819, -0.01328, 0, 0.01755, 0.14293, -0.4235, 0.142, -0.39522)
+material_override = SubResource("Mat_FurLight")
+mesh = SubResource("SmoothSphere")
+
+[node name="Claw_03" type="MeshInstance3D" parent="LeftHindPaw"]
+transform = Transform3D(0.74954, 0, 0.02617, -0.03319, -0.30902, 0.95048, 0.01078, -0.95106, -0.30883, -0.4235, 0.125, -0.22622)
+material_override = SubResource("Mat_Claw")
+mesh = SubResource("TaperedClaw")
+
+[node name="Toe_04" type="MeshInstance3D" parent="LeftHindPaw"]
+transform = Transform3D(0.083, 0, 0, 0, 0.10819, -0.01328, 0, 0.01755, 0.14293, -0.2865, 0.142, -0.41166)
+material_override = SubResource("Mat_FurLight")
+mesh = SubResource("SmoothSphere")
+
+[node name="Claw_04" type="MeshInstance3D" parent="LeftHindPaw"]
+transform = Transform3D(0.74589, 0, 0.0784, -0.09941, -0.30902, 0.94585, 0.0323, -0.95106, -0.30732, -0.2865, 0.125, -0.24266)
+material_override = SubResource("Mat_Claw")
+mesh = SubResource("TaperedClaw")
+
+[node name="RightFrontPaw" type="Node3D" parent="."]
+
+[node name="BroadFoot" type="MeshInstance3D" parent="RightFrontPaw"]
+transform = Transform3D(0.31324, 0, -0.0219, -0.00092, 0.18854, -0.01315, 0.02777, 0.02783, 0.39706, 0.492, 0.197, 0.792)
+material_override = SubResource("Mat_FurBrown")
+mesh = SubResource("SmoothSphere")
+
+[node name="AnkleJoint" type="MeshInstance3D" parent="RightFrontPaw"]
+transform = Transform3D(0.28093, 0.02458, 0, -0.02066, 0.2361, 0, 0, 0, 0.282, 0.492, 0.337, 0.569)
+material_override = SubResource("Mat_FurWarm")
+mesh = SubResource("SmoothSphere")
+
+[node name="UpperMuscle" type="MeshInstance3D" parent="RightFrontPaw"]
+transform = Transform3D(0.282, 0, 0, 0, 0.31878, -0.02789, 0, 0.02894, 0.33074, 0.492, 0.733, 0.513)
+material_override = SubResource("Mat_FurBrown")
+mesh = SubResource("SmoothSphere")
+
+[node name="Toe_01" type="MeshInstance3D" parent="RightFrontPaw"]
+transform = Transform3D(0.083, 0, 0, 0, 0.10819, -0.01328, 0, 0.01755, 0.14293, 0.2865, 0.142, 1.08434)
+material_override = SubResource("Mat_FurLight")
+mesh = SubResource("SmoothSphere")
+
+[node name="Claw_01" type="MeshInstance3D" parent="RightFrontPaw"]
+transform = Transform3D(0.74589, 0, 0.0784, -0.09941, -0.30902, 0.94585, 0.0323, -0.95106, -0.30732, 0.2865, 0.125, 1.25334)
+material_override = SubResource("Mat_Claw")
+mesh = SubResource("TaperedClaw")
+
+[node name="Toe_02" type="MeshInstance3D" parent="RightFrontPaw"]
+transform = Transform3D(0.083, 0, 0, 0, 0.10819, -0.01328, 0, 0.01755, 0.14293, 0.4235, 0.142, 1.10078)
+material_override = SubResource("Mat_FurLight")
+mesh = SubResource("SmoothSphere")
+
+[node name="Claw_02" type="MeshInstance3D" parent="RightFrontPaw"]
+transform = Transform3D(0.74954, 0, 0.02617, -0.03319, -0.30902, 0.95048, 0.01078, -0.95106, -0.30883, 0.4235, 0.125, 1.26978)
+material_override = SubResource("Mat_Claw")
+mesh = SubResource("TaperedClaw")
+
+[node name="Toe_03" type="MeshInstance3D" parent="RightFrontPaw"]
+transform = Transform3D(0.083, 0, 0, 0, 0.10819, -0.01328, 0, 0.01755, 0.14293, 0.5605, 0.142, 1.10078)
+material_override = SubResource("Mat_FurLight")
+mesh = SubResource("SmoothSphere")
+
+[node name="Claw_03" type="MeshInstance3D" parent="RightFrontPaw"]
+transform = Transform3D(0.74954, 0, -0.02617, 0.03319, -0.30902, 0.95048, -0.01078, -0.95106, -0.30883, 0.5605, 0.125, 1.26978)
+material_override = SubResource("Mat_Claw")
+mesh = SubResource("TaperedClaw")
+
+[node name="Toe_04" type="MeshInstance3D" parent="RightFrontPaw"]
+transform = Transform3D(0.083, 0, 0, 0, 0.10819, -0.01328, 0, 0.01755, 0.14293, 0.6975, 0.142, 1.08434)
+material_override = SubResource("Mat_FurLight")
+mesh = SubResource("SmoothSphere")
+
+[node name="Claw_04" type="MeshInstance3D" parent="RightFrontPaw"]
+transform = Transform3D(0.74589, 0, -0.0784, 0.09941, -0.30902, 0.94585, -0.0323, -0.95106, -0.30732, 0.6975, 0.125, 1.25334)
+material_override = SubResource("Mat_Claw")
+mesh = SubResource("TaperedClaw")
+
+[node name="RightHindPaw" type="Node3D" parent="."]
+
+[node name="BroadFoot" type="MeshInstance3D" parent="RightHindPaw"]
+transform = Transform3D(0.33618, 0, -0.02351, -0.00096, 0.19652, -0.01371, 0.02686, 0.02693, 0.38412, 0.492, 0.197, -0.687)
+material_override = SubResource("Mat_FurBrown")
+mesh = SubResource("SmoothSphere")
+
+[node name="AnkleJoint" type="MeshInstance3D" parent="RightHindPaw"]
+transform = Transform3D(0.28093, 0.02458, 0, -0.02066, 0.2361, 0, 0, 0, 0.282, 0.492, 0.337, -0.801)
+material_override = SubResource("Mat_FurWarm")
+mesh = SubResource("SmoothSphere")
+
+[node name="UpperMuscle" type="MeshInstance3D" parent="RightHindPaw"]
+transform = Transform3D(0.282, 0, 0, 0, 0.31878, -0.02789, 0, 0.02894, 0.33074, 0.492, 0.733, -0.761)
+material_override = SubResource("Mat_FurBrown")
+mesh = SubResource("SmoothSphere")
+
+[node name="HeavyHock" type="MeshInstance3D" parent="RightHindPaw"]
+transform = Transform3D(0.318, 0, 0, 0, 0.31586, -0.08463, 0, 0.07739, 0.28881, 0.492, 0.455, -0.855)
+material_override = SubResource("Mat_FurWarm")
+mesh = SubResource("SmoothSphere")
+
+[node name="Toe_01" type="MeshInstance3D" parent="RightHindPaw"]
+transform = Transform3D(0.083, 0, 0, 0, 0.10819, -0.01328, 0, 0.01755, 0.14293, 0.2865, 0.142, -0.41166)
+material_override = SubResource("Mat_FurLight")
+mesh = SubResource("SmoothSphere")
+
+[node name="Claw_01" type="MeshInstance3D" parent="RightHindPaw"]
+transform = Transform3D(0.74589, 0, 0.0784, -0.09941, -0.30902, 0.94585, 0.0323, -0.95106, -0.30732, 0.2865, 0.125, -0.24266)
+material_override = SubResource("Mat_Claw")
+mesh = SubResource("TaperedClaw")
+
+[node name="Toe_02" type="MeshInstance3D" parent="RightHindPaw"]
+transform = Transform3D(0.083, 0, 0, 0, 0.10819, -0.01328, 0, 0.01755, 0.14293, 0.4235, 0.142, -0.39522)
+material_override = SubResource("Mat_FurLight")
+mesh = SubResource("SmoothSphere")
+
+[node name="Claw_02" type="MeshInstance3D" parent="RightHindPaw"]
+transform = Transform3D(0.74954, 0, 0.02617, -0.03319, -0.30902, 0.95048, 0.01078, -0.95106, -0.30883, 0.4235, 0.125, -0.22622)
+material_override = SubResource("Mat_Claw")
+mesh = SubResource("TaperedClaw")
+
+[node name="Toe_03" type="MeshInstance3D" parent="RightHindPaw"]
+transform = Transform3D(0.083, 0, 0, 0, 0.10819, -0.01328, 0, 0.01755, 0.14293, 0.5605, 0.142, -0.39522)
+material_override = SubResource("Mat_FurLight")
+mesh = SubResource("SmoothSphere")
+
+[node name="Claw_03" type="MeshInstance3D" parent="RightHindPaw"]
+transform = Transform3D(0.74954, 0, -0.02617, 0.03319, -0.30902, 0.95048, -0.01078, -0.95106, -0.30883, 0.5605, 0.125, -0.22622)
+material_override = SubResource("Mat_Claw")
+mesh = SubResource("TaperedClaw")
+
+[node name="Toe_04" type="MeshInstance3D" parent="RightHindPaw"]
+transform = Transform3D(0.083, 0, 0, 0, 0.10819, -0.01328, 0, 0.01755, 0.14293, 0.6975, 0.142, -0.41166)
+material_override = SubResource("Mat_FurLight")
+mesh = SubResource("SmoothSphere")
+
+[node name="Claw_04" type="MeshInstance3D" parent="RightHindPaw"]
+transform = Transform3D(0.74589, 0, -0.0784, 0.09941, -0.30902, 0.94585, -0.0323, -0.95106, -0.30732, 0.6975, 0.125, -0.24266)
+material_override = SubResource("Mat_Claw")
+mesh = SubResource("TaperedClaw")
+
+[node name="FurContours" type="Node3D" parent="."]
+
+[node name="LeftShoulderTuft_1" type="MeshInstance3D" parent="FurContours"]
+transform = Transform3D(0.11439, -0.0328, 0, 0.06517, 0.22727, -0.09552, 0.01972, 0.06878, 0.17709, -0.64, 1.42, 0.44)
+material_override = SubResource("Mat_FurWarm")
+mesh = SubResource("SmoothSphere")
+
+[node name="LeftShoulderTuft_2" type="MeshInstance3D" parent="FurContours"]
+transform = Transform3D(0.1278, -0.04651, 0, 0.07294, 0.20039, -0.08616, 0.02024, 0.05562, 0.1465, -0.593, 1.22, 0.775)
+material_override = SubResource("Mat_FurWarm")
+mesh = SubResource("SmoothSphere")
+
+[node name="LeftShoulderTuft_3" type="MeshInstance3D" parent="FurContours"]
+transform = Transform3D(0.1078, -0.04799, 0, 0.07731, 0.17364, -0.07679, 0.02209, 0.04962, 0.13444, -0.546, 1.055, 0.945)
+material_override = SubResource("Mat_FurWarm")
+mesh = SubResource("SmoothSphere")
+
+[node name="LeftShoulderTuft_4" type="MeshInstance3D" parent="FurContours"]
+transform = Transform3D(0.09271, -0.04929, 0, 0.07269, 0.13672, -0.06256, 0.02128, 0.04002, 0.11219, -0.499, 0.9, 1.06)
+material_override = SubResource("Mat_FurWarm")
+mesh = SubResource("SmoothSphere")
+
+[node name="LeftFlankFur_1" type="MeshInstance3D" parent="FurContours"]
+transform = Transform3D(0.10199, -0.04121, 0, 0.0758, 0.18761, 0.06967, -0.02183, -0.05403, 0.16925, -0.658, 1.25, -0.43)
+material_override = SubResource("Mat_FurBrown")
+mesh = SubResource("SmoothSphere")
+
+[node name="LeftFlankFur_2" type="MeshInstance3D" parent="FurContours"]
+transform = Transform3D(0.10199, -0.04121, 0, 0.0758, 0.18761, 0.06967, -0.02183, -0.05403, 0.16925, -0.658, 1.13, -0.7)
+material_override = SubResource("Mat_FurBrown")
+mesh = SubResource("SmoothSphere")
+
+[node name="LeftFlankFur_3" type="MeshInstance3D" parent="FurContours"]
+transform = Transform3D(0.10199, -0.04121, 0, 0.0758, 0.18761, 0.06967, -0.02183, -0.05403, 0.16925, -0.658, 0.93, -0.95)
+material_override = SubResource("Mat_FurBrown")
+mesh = SubResource("SmoothSphere")
+
+[node name="LeftChestFur_1" type="MeshInstance3D" parent="FurContours"]
+transform = Transform3D(0.15035, -0.05472, 0, 0.06979, 0.19174, 0.10396, -0.01863, -0.05119, 0.10692, -0.294, 1.22, 1.041)
+material_override = SubResource("Mat_FurTip")
+mesh = SubResource("SmoothSphere")
+
+[node name="LeftChestFur_2" type="MeshInstance3D" parent="FurContours"]
+transform = Transform3D(0.15035, -0.05472, 0, 0.06979, 0.19174, 0.10396, -0.01863, -0.05119, 0.10692, -0.294, 1.08, 1.153)
+material_override = SubResource("Mat_FurTip")
+mesh = SubResource("SmoothSphere")
+
+[node name="RightShoulderTuft_1" type="MeshInstance3D" parent="FurContours"]
+transform = Transform3D(0.11439, 0.0328, 0, -0.06517, 0.22727, -0.09552, -0.01972, 0.06878, 0.17709, 0.64, 1.42, 0.44)
+material_override = SubResource("Mat_FurWarm")
+mesh = SubResource("SmoothSphere")
+
+[node name="RightShoulderTuft_2" type="MeshInstance3D" parent="FurContours"]
+transform = Transform3D(0.1278, 0.04651, 0, -0.07294, 0.20039, -0.08616, -0.02024, 0.05562, 0.1465, 0.593, 1.22, 0.775)
+material_override = SubResource("Mat_FurWarm")
+mesh = SubResource("SmoothSphere")
+
+[node name="RightShoulderTuft_3" type="MeshInstance3D" parent="FurContours"]
+transform = Transform3D(0.1078, 0.04799, 0, -0.07731, 0.17364, -0.07679, -0.02209, 0.04962, 0.13444, 0.546, 1.055, 0.945)
+material_override = SubResource("Mat_FurWarm")
+mesh = SubResource("SmoothSphere")
+
+[node name="RightShoulderTuft_4" type="MeshInstance3D" parent="FurContours"]
+transform = Transform3D(0.09271, 0.04929, 0, -0.07269, 0.13672, -0.06256, -0.02128, 0.04002, 0.11219, 0.499, 0.9, 1.06)
+material_override = SubResource("Mat_FurWarm")
+mesh = SubResource("SmoothSphere")
+
+[node name="RightFlankFur_1" type="MeshInstance3D" parent="FurContours"]
+transform = Transform3D(0.10199, 0.04121, 0, -0.0758, 0.18761, 0.06967, 0.02183, -0.05403, 0.16925, 0.658, 1.25, -0.43)
+material_override = SubResource("Mat_FurBrown")
+mesh = SubResource("SmoothSphere")
+
+[node name="RightFlankFur_2" type="MeshInstance3D" parent="FurContours"]
+transform = Transform3D(0.10199, 0.04121, 0, -0.0758, 0.18761, 0.06967, 0.02183, -0.05403, 0.16925, 0.658, 1.13, -0.7)
+material_override = SubResource("Mat_FurBrown")
+mesh = SubResource("SmoothSphere")
+
+[node name="RightFlankFur_3" type="MeshInstance3D" parent="FurContours"]
+transform = Transform3D(0.10199, 0.04121, 0, -0.0758, 0.18761, 0.06967, 0.02183, -0.05403, 0.16925, 0.658, 0.93, -0.95)
+material_override = SubResource("Mat_FurBrown")
+mesh = SubResource("SmoothSphere")
+
+[node name="RightChestFur_1" type="MeshInstance3D" parent="FurContours"]
+transform = Transform3D(0.15035, 0.05472, 0, -0.06979, 0.19174, 0.10396, 0.01863, -0.05119, 0.10692, 0.294, 1.22, 1.041)
+material_override = SubResource("Mat_FurTip")
+mesh = SubResource("SmoothSphere")
+
+[node name="RightChestFur_2" type="MeshInstance3D" parent="FurContours"]
+transform = Transform3D(0.15035, 0.05472, 0, -0.06979, 0.19174, 0.10396, 0.01863, -0.05119, 0.10692, 0.294, 1.08, 1.153)
+material_override = SubResource("Mat_FurTip")
+mesh = SubResource("SmoothSphere")
+
+[node name="DorsalCoat_1" type="MeshInstance3D" parent="FurContours"]
+transform = Transform3D(0.355, 0, 0, 0, 0.12939, -0.02049, 0, 0.03442, 0.21729, 0, 1.47, -0.89)
+material_override = SubResource("Mat_FurBrown")
+mesh = SubResource("SmoothSphere")
+
+[node name="DorsalCoat_2" type="MeshInstance3D" parent="FurContours"]
+transform = Transform3D(0.355, 0, 0, 0, 0.12939, -0.02049, 0, 0.04693, 0.29631, 0, 1.557, -0.51)
+material_override = SubResource("Mat_FurBrown")
+mesh = SubResource("SmoothSphere")
+
+[node name="DorsalCoat_3" type="MeshInstance3D" parent="FurContours"]
+transform = Transform3D(0.355, 0, 0, 0, 0.12939, -0.02049, 0, 0.05162, 0.32594, 0, 1.6, -0.1)
+material_override = SubResource("Mat_FurBrown")
+mesh = SubResource("SmoothSphere")
+
+[node name="DorsalCoat_4" type="MeshInstance3D" parent="FurContours"]
+transform = Transform3D(0.355, 0, 0, 0, 0.12939, -0.02049, 0, 0.03911, 0.24692, 0, 1.672, 0.25)
+material_override = SubResource("Mat_FurBrown")
+mesh = SubResource("SmoothSphere")
+
+[node name="VocabularyArea" type="Area3D" parent="." unique_id=1781949898]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VocabularyArea" unique_id=1760884940]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.075, 0.29)
+shape = SubResource("BoxShape3D_wcetl")

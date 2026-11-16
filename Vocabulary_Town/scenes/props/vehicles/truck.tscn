@@ -1,0 +1,2233 @@
+[gd_scene load_steps=140 format=3 uid="uid://bgvwj5xp3v1i2"]
+
+[ext_resource type="Script" path="res://scripts/world/driveable_vehicle.gd" id="drive_script"]
+
+[sub_resource type="StandardMaterial3D" id="paint_marine_teal"]
+albedo_color = Color(0.115, 0.54, 0.605, 1.0)
+metallic = 0.28
+roughness = 0.31
+
+[sub_resource type="StandardMaterial3D" id="paint_highlight"]
+albedo_color = Color(0.195, 0.675, 0.713, 1.0)
+metallic = 0.25
+roughness = 0.3
+
+[sub_resource type="StandardMaterial3D" id="paint_shadow"]
+albedo_color = Color(0.065, 0.315, 0.377, 1.0)
+metallic = 0.22
+roughness = 0.38
+
+[sub_resource type="StandardMaterial3D" id="roof_ivory"]
+albedo_color = Color(0.91, 0.905, 0.84, 1.0)
+metallic = 0.08
+roughness = 0.38
+
+[sub_resource type="StandardMaterial3D" id="roof_edge"]
+albedo_color = Color(0.76, 0.82, 0.77, 1.0)
+metallic = 0.13
+roughness = 0.36
+
+[sub_resource type="StandardMaterial3D" id="black_trim"]
+albedo_color = Color(0.068, 0.093, 0.103, 1.0)
+metallic = 0.0
+roughness = 0.68
+
+[sub_resource type="StandardMaterial3D" id="underbody"]
+albedo_color = Color(0.115, 0.16, 0.175, 1.0)
+metallic = 0.24
+roughness = 0.64
+
+[sub_resource type="StandardMaterial3D" id="tire_rubber"]
+albedo_color = Color(0.055, 0.065, 0.075, 1.0)
+metallic = 0.0
+roughness = 0.91
+
+[sub_resource type="StandardMaterial3D" id="tire_sidewall"]
+albedo_color = Color(0.087, 0.101, 0.111, 1.0)
+metallic = 0.0
+roughness = 0.82
+
+[sub_resource type="StandardMaterial3D" id="tire_tread"]
+albedo_color = Color(0.038, 0.046, 0.055, 1.0)
+metallic = 0.0
+roughness = 0.95
+
+[sub_resource type="StandardMaterial3D" id="chrome"]
+albedo_color = Color(0.73, 0.81, 0.82, 1.0)
+metallic = 0.79
+roughness = 0.18
+
+[sub_resource type="StandardMaterial3D" id="wheel_alloy"]
+albedo_color = Color(0.5, 0.62, 0.66, 1.0)
+metallic = 0.73
+roughness = 0.23
+
+[sub_resource type="StandardMaterial3D" id="wheel_recess"]
+albedo_color = Color(0.17, 0.235, 0.26, 1.0)
+metallic = 0.63
+roughness = 0.41
+
+[sub_resource type="StandardMaterial3D" id="smoked_blue_glass"]
+albedo_color = Color(0.105, 0.265, 0.315, 0.79)
+metallic = 0.2
+roughness = 0.17
+transparency = 1
+
+[sub_resource type="StandardMaterial3D" id="glass_reflection"]
+albedo_color = Color(0.58, 0.81, 0.86, 0.19)
+metallic = 0.16
+roughness = 0.13
+transparency = 1
+
+[sub_resource type="StandardMaterial3D" id="headlight_led"]
+albedo_color = Color(0.96, 0.97, 0.82, 1.0)
+metallic = 0.0
+roughness = 0.18
+emission_enabled = true
+emission = Color(0.75, 0.8, 0.59, 1.0)
+emission_energy_multiplier = 0.9
+
+[sub_resource type="StandardMaterial3D" id="amber_signals"]
+albedo_color = Color(0.99, 0.56, 0.16, 1.0)
+metallic = 0.0
+roughness = 0.25
+emission_enabled = true
+emission = Color(0.76, 0.32, 0.05, 1.0)
+emission_energy_multiplier = 0.9
+
+[sub_resource type="StandardMaterial3D" id="tail_lights"]
+albedo_color = Color(0.94, 0.12, 0.11, 1.0)
+metallic = 0.0
+roughness = 0.2
+emission_enabled = true
+emission = Color(0.65, 0.035, 0.028, 1.0)
+emission_energy_multiplier = 0.9
+
+[sub_resource type="StandardMaterial3D" id="reverse_light"]
+albedo_color = Color(0.84, 0.92, 0.89, 1.0)
+metallic = 0.0
+roughness = 0.18
+emission_enabled = true
+emission = Color(0.36, 0.45, 0.43, 1.0)
+emission_energy_multiplier = 0.9
+
+[sub_resource type="StandardMaterial3D" id="license_plate"]
+albedo_color = Color(0.93, 0.94, 0.86, 1.0)
+metallic = 0.0
+roughness = 0.4
+
+[sub_resource type="StandardMaterial3D" id="seat_fabric"]
+albedo_color = Color(0.44, 0.39, 0.31, 1.0)
+metallic = 0.0
+roughness = 0.95
+
+[sub_resource type="StandardMaterial3D" id="seat_frame"]
+albedo_color = Color(0.23, 0.24, 0.235, 1.0)
+metallic = 0.0
+roughness = 0.82
+
+[sub_resource type="StandardMaterial3D" id="cargo_bed_liner"]
+albedo_color = Color(0.13, 0.19, 0.2, 1.0)
+metallic = 0.0
+roughness = 0.93
+
+[sub_resource type="StandardMaterial3D" id="cargo_bed_ribs"]
+albedo_color = Color(0.21, 0.29, 0.31, 1.0)
+metallic = 0.0
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="side_marker"]
+albedo_color = Color(0.94, 0.65, 0.28, 1.0)
+metallic = 0.0
+roughness = 0.26
+emission_enabled = true
+emission = Color(0.42, 0.2, 0.04, 1.0)
+emission_energy_multiplier = 0.9
+
+[sub_resource type="CylinderShape3D" id="r8"]
+height = 0.17
+radius = 0.33
+
+[sub_resource type="BoxShape3D" id="r17"]
+size = Vector3(4.32, 2.4, 1.98)
+
+[sub_resource type="BoxMesh" id="box_000"]
+size = Vector3(4.2, 0.67, 1.76)
+
+[sub_resource type="BoxMesh" id="box_001"]
+size = Vector3(4.18, 0.21, 1.42)
+
+[sub_resource type="BoxMesh" id="box_002"]
+size = Vector3(3.9, 0.045, 0.035)
+
+[sub_resource type="BoxMesh" id="box_003"]
+size = Vector3(2.78, 0.14, 0.105)
+
+[sub_resource type="BoxMesh" id="box_004"]
+size = Vector3(0.99, 0.42, 1.76)
+
+[sub_resource type="BoxMesh" id="box_005"]
+size = Vector3(1.0, 0.135, 1.72)
+
+[sub_resource type="BoxMesh" id="box_006"]
+size = Vector3(0.72, 0.024, 1.05)
+
+[sub_resource type="CapsuleMesh" id="capsule_007"]
+radius = 0.065
+height = 0.95
+radial_segments = 12
+rings = 6
+
+[sub_resource type="BoxMesh" id="box_008"]
+size = Vector3(0.19, 0.018, 0.21)
+
+[sub_resource type="BoxMesh" id="box_009"]
+size = Vector3(0.16, 0.012, 0.012)
+
+[sub_resource type="BoxMesh" id="box_010"]
+size = Vector3(1.42, 0.68, 1.755)
+
+[sub_resource type="BoxMesh" id="box_011"]
+size = Vector3(1.31, 0.105, 1.8)
+
+[sub_resource type="BoxMesh" id="box_012"]
+size = Vector3(1.42, 0.155, 1.72)
+
+[sub_resource type="BoxMesh" id="box_013"]
+size = Vector3(1.06, 0.022, 1.3)
+
+[sub_resource type="BoxMesh" id="box_014"]
+size = Vector3(0.12, 0.12, 1.74)
+
+[sub_resource type="BoxMesh" id="box_015"]
+size = Vector3(0.12, 0.17, 1.76)
+
+[sub_resource type="CapsuleMesh" id="capsule_016"]
+radius = 0.073
+height = 1.42
+radial_segments = 12
+rings = 6
+
+[sub_resource type="BoxMesh" id="box_017"]
+size = Vector3(0.12, 0.68, 0.135)
+
+[sub_resource type="BoxMesh" id="box_018"]
+size = Vector3(0.14, 0.77, 0.135)
+
+[sub_resource type="BoxMesh" id="box_019"]
+size = Vector3(1.12, 0.49, 0.021)
+
+[sub_resource type="BoxMesh" id="box_020"]
+size = Vector3(0.64, 0.037, 0.008)
+
+[sub_resource type="BoxMesh" id="box_021"]
+size = Vector3(1.19, 0.044, 0.06)
+
+[sub_resource type="BoxMesh" id="box_022"]
+size = Vector3(0.046, 0.47, 0.05)
+
+[sub_resource type="BoxMesh" id="box_023"]
+size = Vector3(1.19, 0.34, 0.028)
+
+[sub_resource type="BoxMesh" id="box_024"]
+size = Vector3(0.026, 0.63, 0.027)
+
+[sub_resource type="BoxMesh" id="box_025"]
+size = Vector3(0.026, 0.6, 0.029)
+
+[sub_resource type="BoxMesh" id="box_026"]
+size = Vector3(0.22, 0.083, 0.04)
+
+[sub_resource type="BoxMesh" id="box_027"]
+size = Vector3(0.163, 0.04, 0.065)
+
+[sub_resource type="BoxMesh" id="box_028"]
+size = Vector3(1.25, 0.075, 0.22)
+
+[sub_resource type="BoxMesh" id="box_029"]
+size = Vector3(1.06, 0.018, 0.105)
+
+[sub_resource type="BoxMesh" id="box_030"]
+size = Vector3(0.06, 0.67, 1.53)
+
+[sub_resource type="BoxMesh" id="box_031"]
+size = Vector3(0.068, 0.56, 1.42)
+
+[sub_resource type="BoxMesh" id="box_032"]
+size = Vector3(0.015, 0.27, 1.3)
+
+[sub_resource type="BoxMesh" id="box_033"]
+size = Vector3(0.055, 0.63, 1.48)
+
+[sub_resource type="BoxMesh" id="box_034"]
+size = Vector3(0.062, 0.51, 1.33)
+
+[sub_resource type="BoxMesh" id="box_035"]
+size = Vector3(0.018, 0.025, 0.49)
+
+[sub_resource type="BoxMesh" id="box_036"]
+size = Vector3(0.015, 0.025, 0.56)
+
+[sub_resource type="BoxMesh" id="box_037"]
+size = Vector3(1.31, 0.095, 1.44)
+
+[sub_resource type="BoxMesh" id="box_038"]
+size = Vector3(0.19, 0.18, 1.47)
+
+[sub_resource type="BoxMesh" id="box_039"]
+size = Vector3(0.04, 0.032, 1.25)
+
+[sub_resource type="SphereMesh" id="sphere_040"]
+radius = 0.5
+height = 1.0
+radial_segments = 16
+rings = 8
+
+[sub_resource type="BoxMesh" id="box_041"]
+size = Vector3(0.19, 0.21, 0.27)
+
+[sub_resource type="TorusMesh" id="torus_042"]
+inner_radius = 0.12
+outer_radius = 0.16
+rings = 12
+ring_segments = 36
+
+[sub_resource type="CylinderMesh" id="cylinder_043"]
+top_radius = 0.048
+bottom_radius = 0.048
+height = 0.09
+radial_segments = 32
+
+[sub_resource type="BoxMesh" id="box_044"]
+size = Vector3(0.023, 0.024, 0.125)
+
+[sub_resource type="BoxMesh" id="box_045"]
+size = Vector3(0.095, 0.044, 0.25)
+
+[sub_resource type="BoxMesh" id="box_046"]
+size = Vector3(0.014, 0.14, 0.15)
+
+[sub_resource type="BoxMesh" id="box_047"]
+size = Vector3(0.035, 0.025, 0.13)
+
+[sub_resource type="CylinderMesh" id="cylinder_048"]
+top_radius = 0.087
+bottom_radius = 0.087
+height = 1.86
+radial_segments = 12
+
+[sub_resource type="CylinderMesh" id="cylinder_049"]
+top_radius = 0.367
+bottom_radius = 0.367
+height = 0.267
+radial_segments = 32
+
+[sub_resource type="CylinderMesh" id="cylinder_050"]
+top_radius = 0.34
+bottom_radius = 0.34
+height = 0.016
+radial_segments = 32
+
+[sub_resource type="CylinderMesh" id="cylinder_051"]
+top_radius = 0.228
+bottom_radius = 0.228
+height = 0.015
+radial_segments = 32
+
+[sub_resource type="TorusMesh" id="torus_052"]
+inner_radius = 0.203
+outer_radius = 0.254
+rings = 12
+ring_segments = 36
+
+[sub_resource type="CylinderMesh" id="cylinder_053"]
+top_radius = 0.072
+bottom_radius = 0.072
+height = 0.024
+radial_segments = 32
+
+[sub_resource type="BoxMesh" id="box_054"]
+size = Vector3(0.18, 0.025, 0.05)
+
+[sub_resource type="TorusMesh" id="torus_055"]
+inner_radius = 0.354
+outer_radius = 0.375
+rings = 8
+ring_segments = 32
+
+[sub_resource type="BoxMesh" id="box_056"]
+size = Vector3(0.145, 0.042, 0.07)
+
+[sub_resource type="BoxMesh" id="box_057"]
+size = Vector3(0.1, 0.25, 0.059)
+
+[sub_resource type="BoxMesh" id="box_058"]
+size = Vector3(0.066, 0.3, 0.26)
+
+[sub_resource type="BoxMesh" id="box_059"]
+size = Vector3(1.85, 0.2, 1.76)
+
+[sub_resource type="BoxMesh" id="box_060"]
+size = Vector3(1.71, 0.027, 1.54)
+
+[sub_resource type="BoxMesh" id="box_061"]
+size = Vector3(1.62, 0.018, 0.023)
+
+[sub_resource type="BoxMesh" id="box_062"]
+size = Vector3(1.88, 0.49, 0.127)
+
+[sub_resource type="BoxMesh" id="box_063"]
+size = Vector3(1.72, 0.33, 0.026)
+
+[sub_resource type="BoxMesh" id="box_064"]
+size = Vector3(1.94, 0.07, 0.16)
+
+[sub_resource type="BoxMesh" id="box_065"]
+size = Vector3(1.79, 0.026, 0.06)
+
+[sub_resource type="BoxMesh" id="box_066"]
+size = Vector3(0.124, 0.5, 1.71)
+
+[sub_resource type="BoxMesh" id="box_067"]
+size = Vector3(0.024, 0.33, 1.51)
+
+[sub_resource type="BoxMesh" id="box_068"]
+size = Vector3(0.135, 0.53, 1.75)
+
+[sub_resource type="BoxMesh" id="box_069"]
+size = Vector3(0.16, 0.069, 1.81)
+
+[sub_resource type="BoxMesh" id="box_070"]
+size = Vector3(0.031, 0.26, 1.36)
+
+[sub_resource type="BoxMesh" id="box_071"]
+size = Vector3(0.039, 0.14, 0.4)
+
+[sub_resource type="BoxMesh" id="box_072"]
+size = Vector3(0.058, 0.093, 0.25)
+
+[sub_resource type="BoxMesh" id="box_073"]
+size = Vector3(0.062, 0.03, 0.18)
+
+[sub_resource type="BoxMesh" id="box_074"]
+size = Vector3(0.11, 0.085, 0.09)
+
+[sub_resource type="BoxMesh" id="box_075"]
+size = Vector3(0.035, 0.04, 0.24)
+
+[sub_resource type="BoxMesh" id="box_076"]
+size = Vector3(0.16, 0.19, 1.91)
+
+[sub_resource type="BoxMesh" id="box_077"]
+size = Vector3(0.18, 0.058, 1.83)
+
+[sub_resource type="BoxMesh" id="box_078"]
+size = Vector3(0.14, 0.09, 1.76)
+
+[sub_resource type="BoxMesh" id="box_079"]
+size = Vector3(0.054, 0.33, 1.08)
+
+[sub_resource type="BoxMesh" id="box_080"]
+size = Vector3(0.052, 0.395, 1.17)
+
+[sub_resource type="BoxMesh" id="box_081"]
+size = Vector3(0.063, 0.305, 1.056)
+
+[sub_resource type="BoxMesh" id="box_082"]
+size = Vector3(0.075, 0.036, 1.025)
+
+[sub_resource type="BoxMesh" id="box_083"]
+size = Vector3(0.075, 0.135, 0.22)
+
+[sub_resource type="BoxMesh" id="box_084"]
+size = Vector3(0.079, 0.028, 0.172)
+
+[sub_resource type="BoxMesh" id="box_085"]
+size = Vector3(0.041, 0.144, 0.44)
+
+[sub_resource type="BoxMesh" id="box_086"]
+size = Vector3(0.046, 0.122, 0.376)
+
+[sub_resource type="BoxMesh" id="box_087"]
+size = Vector3(0.088, 0.235, 0.379)
+
+[sub_resource type="BoxMesh" id="box_088"]
+size = Vector3(0.092, 0.155, 0.315)
+
+[sub_resource type="BoxMesh" id="box_089"]
+size = Vector3(0.099, 0.067, 0.335)
+
+[sub_resource type="BoxMesh" id="box_090"]
+size = Vector3(0.05, 0.135, 0.21)
+
+[sub_resource type="BoxMesh" id="box_091"]
+size = Vector3(0.055, 0.092, 0.15)
+
+[sub_resource type="BoxMesh" id="box_092"]
+size = Vector3(0.026, 0.075, 0.125)
+
+[sub_resource type="BoxMesh" id="box_093"]
+size = Vector3(0.18, 0.2, 1.89)
+
+[sub_resource type="BoxMesh" id="box_094"]
+size = Vector3(0.196, 0.067, 1.7)
+
+[sub_resource type="BoxMesh" id="box_095"]
+size = Vector3(0.047, 0.16, 0.43)
+
+[sub_resource type="BoxMesh" id="box_096"]
+size = Vector3(0.054, 0.119, 0.36)
+
+[sub_resource type="BoxMesh" id="box_097"]
+size = Vector3(0.23, 0.16, 0.24)
+
+[sub_resource type="CylinderMesh" id="cylinder_098"]
+top_radius = 0.085
+bottom_radius = 0.085
+height = 0.38
+radial_segments = 14
+
+[sub_resource type="TorusMesh" id="torus_099"]
+inner_radius = 0.055
+outer_radius = 0.083
+rings = 8
+ring_segments = 18
+
+[sub_resource type="BoxMesh" id="box_100"]
+size = Vector3(0.255, 0.07, 0.3)
+
+[sub_resource type="BoxMesh" id="box_101"]
+size = Vector3(0.055, 0.145, 0.3)
+
+[sub_resource type="BoxMesh" id="box_102"]
+size = Vector3(0.064, 0.028, 0.302)
+
+[sub_resource type="BoxMesh" id="box_103"]
+size = Vector3(0.065, 0.35, 0.175)
+
+[sub_resource type="BoxMesh" id="box_104"]
+size = Vector3(0.055, 0.41, 0.21)
+
+[sub_resource type="BoxMesh" id="box_105"]
+size = Vector3(0.078, 0.091, 0.128)
+
+[sub_resource type="BoxMesh" id="box_106"]
+size = Vector3(0.079, 0.1, 0.148)
+
+[sub_resource type="BoxMesh" id="box_107"]
+size = Vector3(0.22, 0.084, 0.025)
+
+[sub_resource type="BoxMesh" id="box_108"]
+size = Vector3(0.17, 0.073, 0.025)
+
+[sub_resource type="CylinderMesh" id="cylinder_109"]
+top_radius = 0.065
+bottom_radius = 0.065
+height = 0.035
+radial_segments = 12
+
+[sub_resource type="CylinderMesh" id="cylinder_110"]
+top_radius = 0.017
+bottom_radius = 0.017
+height = 0.37
+radial_segments = 8
+
+[node name="Truck" type="Node3D" unique_id=113261363]
+script = ExtResource("drive_script")
+metadata/word_key = "truck"
+
+[node name="Body" type="Node3D" parent="." unique_id=953584300]
+position = Vector3(0.0, 0.69, 0.0)
+
+[node name="Visual" type="MeshInstance3D" parent="Body" unique_id=1889375377]
+position = Vector3(0.0, 0.045, 0.0)
+material_override = SubResource("paint_marine_teal")
+mesh = SubResource("box_000")
+
+[node name="ChassisFrame" type="MeshInstance3D" parent="Body"]
+position = Vector3(0.0, -0.28, 0.0)
+material_override = SubResource("underbody")
+mesh = SubResource("box_001")
+
+[node name="SidePinstripeLeft" type="MeshInstance3D" parent="Body"]
+position = Vector3(0.0, 0.33, -0.886)
+material_override = SubResource("paint_highlight")
+mesh = SubResource("box_002")
+
+[node name="SidePinstripeRight" type="MeshInstance3D" parent="Body"]
+position = Vector3(0.0, 0.33, 0.886)
+material_override = SubResource("paint_highlight")
+mesh = SubResource("box_002")
+
+[node name="LowerRockerLeft" type="MeshInstance3D" parent="Body"]
+position = Vector3(-0.04, -0.15, -0.895)
+material_override = SubResource("paint_shadow")
+mesh = SubResource("box_003")
+
+[node name="LowerRockerRight" type="MeshInstance3D" parent="Body"]
+position = Vector3(-0.04, -0.15, 0.895)
+material_override = SubResource("paint_shadow")
+mesh = SubResource("box_003")
+
+[node name="EngineHood" type="Node3D" parent="."]
+
+[node name="HoodLower" type="MeshInstance3D" parent="EngineHood"]
+position = Vector3(-1.65, 1.07, 0.0)
+material_override = SubResource("paint_marine_teal")
+mesh = SubResource("box_004")
+
+[node name="HoodSlopingTop" type="MeshInstance3D" parent="EngineHood"]
+position = Vector3(-1.66, 1.327, 0.0)
+rotation_degrees = Vector3(0.0, 0.0, 9.0)
+material_override = SubResource("paint_highlight")
+mesh = SubResource("box_005")
+
+[node name="HoodCentralInset" type="MeshInstance3D" parent="EngineHood"]
+position = Vector3(-1.65, 1.405, 0.0)
+rotation_degrees = Vector3(0.0, 0.0, 9.0)
+material_override = SubResource("paint_marine_teal")
+mesh = SubResource("box_006")
+
+[node name="HoodRoundedShoulderLeft" type="MeshInstance3D" parent="EngineHood"]
+position = Vector3(-1.65, 1.36, -0.79)
+rotation_degrees = Vector3(0.0, 0.0, 81.0)
+material_override = SubResource("paint_marine_teal")
+mesh = SubResource("capsule_007")
+
+[node name="HoodVentLeft" type="MeshInstance3D" parent="EngineHood"]
+position = Vector3(-1.46, 1.465, -0.57)
+rotation_degrees = Vector3(0.0, 0.0, 9.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_008")
+
+[node name="HoodVentChromeLeft" type="MeshInstance3D" parent="EngineHood"]
+position = Vector3(-1.46, 1.474, -0.56)
+rotation_degrees = Vector3(0.0, 0.0, 9.0)
+material_override = SubResource("wheel_alloy")
+mesh = SubResource("box_009")
+
+[node name="HoodRoundedShoulderRight" type="MeshInstance3D" parent="EngineHood"]
+position = Vector3(-1.65, 1.36, 0.79)
+rotation_degrees = Vector3(0.0, 0.0, 81.0)
+material_override = SubResource("paint_marine_teal")
+mesh = SubResource("capsule_007")
+
+[node name="HoodVentRight" type="MeshInstance3D" parent="EngineHood"]
+position = Vector3(-1.46, 1.465, 0.57)
+rotation_degrees = Vector3(0.0, 0.0, 9.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_008")
+
+[node name="HoodVentChromeRight" type="MeshInstance3D" parent="EngineHood"]
+position = Vector3(-1.46, 1.474, 0.56)
+rotation_degrees = Vector3(0.0, 0.0, 9.0)
+material_override = SubResource("wheel_alloy")
+mesh = SubResource("box_009")
+
+[node name="Cab" type="Node3D" parent="." unique_id=777803434]
+position = Vector3(-0.06, 1.78, 0.0)
+
+[node name="Visual" type="MeshInstance3D" parent="Cab" unique_id=121135009]
+position = Vector3(-0.5, -0.43, 0.0)
+material_override = SubResource("paint_marine_teal")
+mesh = SubResource("box_010")
+
+[node name="DoorTopTrim" type="MeshInstance3D" parent="Cab"]
+position = Vector3(-0.51, -0.21, 0.0)
+material_override = SubResource("paint_highlight")
+mesh = SubResource("box_011")
+
+[node name="CabRoof" type="MeshInstance3D" parent="Cab"]
+position = Vector3(-0.38, 0.48, 0.0)
+material_override = SubResource("roof_ivory")
+mesh = SubResource("box_012")
+
+[node name="RoofInset" type="MeshInstance3D" parent="Cab"]
+position = Vector3(-0.375, 0.57, 0.0)
+material_override = SubResource("roof_edge")
+mesh = SubResource("box_013")
+
+[node name="RoofFrontLip" type="MeshInstance3D" parent="Cab"]
+position = Vector3(-1.07, 0.43, 0.0)
+material_override = SubResource("roof_ivory")
+mesh = SubResource("box_014")
+
+[node name="RoofBackLip" type="MeshInstance3D" parent="Cab"]
+position = Vector3(0.28, 0.435, 0.0)
+material_override = SubResource("roof_ivory")
+mesh = SubResource("box_015")
+
+[node name="RoofRoundRailLeft" type="MeshInstance3D" parent="Cab"]
+position = Vector3(-0.38, 0.49, -0.825)
+rotation_degrees = Vector3(0.0, 0.0, 90.0)
+material_override = SubResource("roof_ivory")
+mesh = SubResource("capsule_016")
+
+[node name="FrontRoofPillarLeft" type="MeshInstance3D" parent="Cab"]
+position = Vector3(-1.035, 0.115, -0.825)
+rotation_degrees = Vector3(0.0, 0.0, -17.0)
+material_override = SubResource("roof_ivory")
+mesh = SubResource("box_017")
+
+[node name="RearRoofPillarLeft" type="MeshInstance3D" parent="Cab"]
+position = Vector3(0.25, 0.12, -0.825)
+material_override = SubResource("roof_ivory")
+mesh = SubResource("box_018")
+
+[node name="SideGlassLeft" type="MeshInstance3D" parent="Cab"]
+position = Vector3(-0.398, 0.15, -0.886)
+material_override = SubResource("smoked_blue_glass")
+mesh = SubResource("box_019")
+
+[node name="WindowTopShineLeft" type="MeshInstance3D" parent="Cab"]
+position = Vector3(-0.49, 0.335, -0.899)
+material_override = SubResource("glass_reflection")
+mesh = SubResource("box_020")
+
+[node name="WindowSillLeft" type="MeshInstance3D" parent="Cab"]
+position = Vector3(-0.412, -0.134, -0.89)
+material_override = SubResource("chrome")
+mesh = SubResource("box_021")
+
+[node name="WindowRearDividerLeft" type="MeshInstance3D" parent="Cab"]
+position = Vector3(0.065, 0.148, -0.899)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_022")
+
+[node name="DoorPaintInsetLeft" type="MeshInstance3D" parent="Cab"]
+position = Vector3(-0.44, -0.48, -0.901)
+material_override = SubResource("paint_highlight")
+mesh = SubResource("box_023")
+
+[node name="DoorSeamFrontLeft" type="MeshInstance3D" parent="Cab"]
+position = Vector3(-1.14, -0.52, -0.922)
+material_override = SubResource("paint_shadow")
+mesh = SubResource("box_024")
+
+[node name="DoorSeamBackLeft" type="MeshInstance3D" parent="Cab"]
+position = Vector3(0.23, -0.54, -0.922)
+material_override = SubResource("paint_shadow")
+mesh = SubResource("box_025")
+
+[node name="DoorHandleSocketLeft" type="MeshInstance3D" parent="Cab"]
+position = Vector3(-0.08, -0.34, -0.934)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_026")
+
+[node name="DoorHandleLeft" type="MeshInstance3D" parent="Cab"]
+position = Vector3(-0.09, -0.316, -0.963)
+material_override = SubResource("chrome")
+mesh = SubResource("box_027")
+
+[node name="SideStepLeft" type="MeshInstance3D" parent="Cab"]
+position = Vector3(-0.39, -1.1, -1.03)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_028")
+
+[node name="StepHighlightLeft" type="MeshInstance3D" parent="Cab"]
+position = Vector3(-0.39, -1.055, -1.03)
+material_override = SubResource("wheel_alloy")
+mesh = SubResource("box_029")
+
+[node name="RoofRoundRailRight" type="MeshInstance3D" parent="Cab"]
+position = Vector3(-0.38, 0.49, 0.825)
+rotation_degrees = Vector3(0.0, 0.0, 90.0)
+material_override = SubResource("roof_ivory")
+mesh = SubResource("capsule_016")
+
+[node name="FrontRoofPillarRight" type="MeshInstance3D" parent="Cab"]
+position = Vector3(-1.035, 0.115, 0.825)
+rotation_degrees = Vector3(0.0, 0.0, -17.0)
+material_override = SubResource("roof_ivory")
+mesh = SubResource("box_017")
+
+[node name="RearRoofPillarRight" type="MeshInstance3D" parent="Cab"]
+position = Vector3(0.25, 0.12, 0.825)
+material_override = SubResource("roof_ivory")
+mesh = SubResource("box_018")
+
+[node name="SideGlassRight" type="MeshInstance3D" parent="Cab"]
+position = Vector3(-0.398, 0.15, 0.886)
+material_override = SubResource("smoked_blue_glass")
+mesh = SubResource("box_019")
+
+[node name="WindowTopShineRight" type="MeshInstance3D" parent="Cab"]
+position = Vector3(-0.49, 0.335, 0.899)
+material_override = SubResource("glass_reflection")
+mesh = SubResource("box_020")
+
+[node name="WindowSillRight" type="MeshInstance3D" parent="Cab"]
+position = Vector3(-0.412, -0.134, 0.89)
+material_override = SubResource("chrome")
+mesh = SubResource("box_021")
+
+[node name="WindowRearDividerRight" type="MeshInstance3D" parent="Cab"]
+position = Vector3(0.065, 0.148, 0.899)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_022")
+
+[node name="DoorPaintInsetRight" type="MeshInstance3D" parent="Cab"]
+position = Vector3(-0.44, -0.48, 0.901)
+material_override = SubResource("paint_highlight")
+mesh = SubResource("box_023")
+
+[node name="DoorSeamFrontRight" type="MeshInstance3D" parent="Cab"]
+position = Vector3(-1.14, -0.52, 0.922)
+material_override = SubResource("paint_shadow")
+mesh = SubResource("box_024")
+
+[node name="DoorSeamBackRight" type="MeshInstance3D" parent="Cab"]
+position = Vector3(0.23, -0.54, 0.922)
+material_override = SubResource("paint_shadow")
+mesh = SubResource("box_025")
+
+[node name="DoorHandleSocketRight" type="MeshInstance3D" parent="Cab"]
+position = Vector3(-0.08, -0.34, 0.934)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_026")
+
+[node name="DoorHandleRight" type="MeshInstance3D" parent="Cab"]
+position = Vector3(-0.09, -0.316, 0.963)
+material_override = SubResource("chrome")
+mesh = SubResource("box_027")
+
+[node name="SideStepRight" type="MeshInstance3D" parent="Cab"]
+position = Vector3(-0.39, -1.1, 1.03)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_028")
+
+[node name="StepHighlightRight" type="MeshInstance3D" parent="Cab"]
+position = Vector3(-0.39, -1.055, 1.03)
+material_override = SubResource("wheel_alloy")
+mesh = SubResource("box_029")
+
+[node name="FrontWindscreenSurround" type="MeshInstance3D" parent="Cab"]
+position = Vector3(-1.05, 0.12, 0.0)
+rotation_degrees = Vector3(0.0, 0.0, -17.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_030")
+
+[node name="FrontWindscreenGlass" type="MeshInstance3D" parent="Cab"]
+position = Vector3(-1.092, 0.14, 0.0)
+rotation_degrees = Vector3(0.0, 0.0, -17.0)
+material_override = SubResource("smoked_blue_glass")
+mesh = SubResource("box_031")
+
+[node name="WindshieldTopReflection" type="MeshInstance3D" parent="Cab"]
+position = Vector3(-1.098, 0.245, 0.0)
+rotation_degrees = Vector3(0.0, 0.0, -17.0)
+material_override = SubResource("glass_reflection")
+mesh = SubResource("box_032")
+
+[node name="RearWindowFrame" type="MeshInstance3D" parent="Cab"]
+position = Vector3(0.3, 0.128, 0.0)
+rotation_degrees = Vector3(0.0, 0.0, 5.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_033")
+
+[node name="RearCabWindow" type="MeshInstance3D" parent="Cab"]
+position = Vector3(0.334, 0.13, 0.0)
+rotation_degrees = Vector3(0.0, 0.0, 5.0)
+material_override = SubResource("smoked_blue_glass")
+mesh = SubResource("box_034")
+
+[node name="WindshieldWiperArmLeft" type="MeshInstance3D" parent="Cab"]
+position = Vector3(-1.222, -0.177, -0.385)
+rotation_degrees = Vector3(0.0, 0.0, -17.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_035")
+
+[node name="WiperBladeLeft" type="MeshInstance3D" parent="Cab"]
+position = Vector3(-1.23, -0.16, -0.39)
+rotation_degrees = Vector3(0.0, 0.0, -17.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_036")
+
+[node name="WindshieldWiperArmRight" type="MeshInstance3D" parent="Cab"]
+position = Vector3(-1.222, -0.177, 0.385)
+rotation_degrees = Vector3(0.0, 0.0, -17.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_035")
+
+[node name="WiperBladeRight" type="MeshInstance3D" parent="Cab"]
+position = Vector3(-1.23, -0.16, 0.39)
+rotation_degrees = Vector3(0.0, 0.0, -17.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_036")
+
+[node name="CabInterior" type="Node3D" parent="Cab"]
+
+[node name="CabFloor" type="MeshInstance3D" parent="Cab/CabInterior"]
+position = Vector3(-0.36, -0.71, 0.0)
+material_override = SubResource("underbody")
+mesh = SubResource("box_037")
+
+[node name="Dashboard" type="MeshInstance3D" parent="Cab/CabInterior"]
+position = Vector3(-0.98, -0.29, 0.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_038")
+
+[node name="DashboardAccent" type="MeshInstance3D" parent="Cab/CabInterior"]
+position = Vector3(-0.992, -0.19, 0.0)
+material_override = SubResource("chrome")
+mesh = SubResource("box_039")
+
+[node name="SeatCushionLeft" type="MeshInstance3D" parent="Cab/CabInterior"]
+position = Vector3(-0.38, -0.39, -0.38)
+scale = Vector3(0.56, 0.22, 0.52)
+material_override = SubResource("seat_fabric")
+mesh = SubResource("sphere_040")
+
+[node name="SeatBackLeft" type="MeshInstance3D" parent="Cab/CabInterior"]
+position = Vector3(-0.13, -0.1, -0.38)
+scale = Vector3(0.18, 0.68, 0.5)
+material_override = SubResource("seat_fabric")
+mesh = SubResource("sphere_040")
+
+[node name="SeatHeadrestLeft" type="MeshInstance3D" parent="Cab/CabInterior"]
+position = Vector3(-0.115, 0.31, -0.38)
+material_override = SubResource("seat_frame")
+mesh = SubResource("box_041")
+
+[node name="SeatCushionRight" type="MeshInstance3D" parent="Cab/CabInterior"]
+position = Vector3(-0.38, -0.39, 0.38)
+scale = Vector3(0.56, 0.22, 0.52)
+material_override = SubResource("seat_fabric")
+mesh = SubResource("sphere_040")
+
+[node name="SeatBackRight" type="MeshInstance3D" parent="Cab/CabInterior"]
+position = Vector3(-0.13, -0.1, 0.38)
+scale = Vector3(0.18, 0.68, 0.5)
+material_override = SubResource("seat_fabric")
+mesh = SubResource("sphere_040")
+
+[node name="SeatHeadrestRight" type="MeshInstance3D" parent="Cab/CabInterior"]
+position = Vector3(-0.115, 0.31, 0.38)
+material_override = SubResource("seat_frame")
+mesh = SubResource("box_041")
+
+[node name="SteeringWheelRim" type="MeshInstance3D" parent="Cab/CabInterior"]
+position = Vector3(-0.8, -0.14, -0.36)
+rotation_degrees = Vector3(0.0, 0.0, 90.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("torus_042")
+
+[node name="SteeringWheelHub" type="MeshInstance3D" parent="Cab/CabInterior"]
+position = Vector3(-0.8, -0.14, -0.36)
+rotation_degrees = Vector3(0.0, 0.0, 90.0)
+material_override = SubResource("chrome")
+mesh = SubResource("cylinder_043")
+
+[node name="SteeringSpoke0" type="MeshInstance3D" parent="Cab/CabInterior"]
+position = Vector3(-0.799, -0.14, -0.305)
+rotation_degrees = Vector3(0.0, 0.0, 0.0)
+material_override = SubResource("wheel_alloy")
+mesh = SubResource("box_044")
+
+[node name="SteeringSpoke120" type="MeshInstance3D" parent="Cab/CabInterior"]
+position = Vector3(-0.799, -0.092369, -0.3875)
+rotation_degrees = Vector3(120.0, 0.0, 0.0)
+material_override = SubResource("wheel_alloy")
+mesh = SubResource("box_044")
+
+[node name="SteeringSpoke240" type="MeshInstance3D" parent="Cab/CabInterior"]
+position = Vector3(-0.799, -0.187631, -0.3875)
+rotation_degrees = Vector3(240.0, 0.0, 0.0)
+material_override = SubResource("wheel_alloy")
+mesh = SubResource("box_044")
+
+[node name="SideMirrorLeft" type="Node3D" parent="Cab"]
+position = Vector3(-0.998, -0.02, -0.943)
+
+[node name="Support" type="MeshInstance3D" parent="Cab/SideMirrorLeft"]
+position = Vector3(0.0, 0.0, -0.11)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_045")
+
+[node name="Housing" type="MeshInstance3D" parent="Cab/SideMirrorLeft"]
+position = Vector3(-0.045, 0.032, -0.29)
+scale = Vector3(0.25, 0.21, 0.22)
+material_override = SubResource("black_trim")
+mesh = SubResource("sphere_040")
+
+[node name="MirrorGlass" type="MeshInstance3D" parent="Cab/SideMirrorLeft"]
+position = Vector3(-0.159, 0.041, -0.29)
+material_override = SubResource("wheel_alloy")
+mesh = SubResource("box_046")
+
+[node name="SignalRepeater" type="MeshInstance3D" parent="Cab/SideMirrorLeft"]
+position = Vector3(-0.046, 0.01, -0.404)
+material_override = SubResource("amber_signals")
+mesh = SubResource("box_047")
+
+[node name="SideMirrorRight" type="Node3D" parent="Cab"]
+position = Vector3(-0.998, -0.02, 0.943)
+
+[node name="Support" type="MeshInstance3D" parent="Cab/SideMirrorRight"]
+position = Vector3(0.0, 0.0, 0.11)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_045")
+
+[node name="Housing" type="MeshInstance3D" parent="Cab/SideMirrorRight"]
+position = Vector3(-0.045, 0.032, 0.29)
+scale = Vector3(0.25, 0.21, 0.22)
+material_override = SubResource("black_trim")
+mesh = SubResource("sphere_040")
+
+[node name="MirrorGlass" type="MeshInstance3D" parent="Cab/SideMirrorRight"]
+position = Vector3(-0.159, 0.041, 0.29)
+material_override = SubResource("wheel_alloy")
+mesh = SubResource("box_046")
+
+[node name="SignalRepeater" type="MeshInstance3D" parent="Cab/SideMirrorRight"]
+position = Vector3(-0.046, 0.01, 0.404)
+material_override = SubResource("amber_signals")
+mesh = SubResource("box_047")
+
+[node name="Axles" type="Node3D" parent="."]
+
+[node name="FrontAxle" type="MeshInstance3D" parent="Axles"]
+position = Vector3(-1.428, 0.35, 0.0)
+rotation_degrees = Vector3(90.0, 0.0, 0.0)
+material_override = SubResource("underbody")
+mesh = SubResource("cylinder_048")
+
+[node name="RearAxle" type="MeshInstance3D" parent="Axles"]
+position = Vector3(1.428, 0.35, 0.0)
+rotation_degrees = Vector3(90.0, 0.0, 0.0)
+material_override = SubResource("underbody")
+mesh = SubResource("cylinder_048")
+
+[node name="Tire" type="Node3D" parent="." unique_id=1977558298]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -1.428, 0.35, -0.9672)
+metadata/word_key = "wheel"
+
+[node name="Visual" type="MeshInstance3D" parent="Tire" unique_id=1474703813]
+material_override = SubResource("tire_rubber")
+mesh = SubResource("cylinder_049")
+
+[node name="SidewallExterior" type="MeshInstance3D" parent="Tire"]
+position = Vector3(0.0, -0.139, 0.0)
+material_override = SubResource("tire_sidewall")
+mesh = SubResource("cylinder_050")
+
+[node name="AlloyRimExterior" type="MeshInstance3D" parent="Tire"]
+position = Vector3(0.0, -0.153, 0.0)
+material_override = SubResource("wheel_recess")
+mesh = SubResource("cylinder_051")
+
+[node name="PolishedRimLipExterior" type="MeshInstance3D" parent="Tire"]
+position = Vector3(0.0, -0.16, 0.0)
+material_override = SubResource("chrome")
+mesh = SubResource("torus_052")
+
+[node name="CenterHubExterior" type="MeshInstance3D" parent="Tire"]
+position = Vector3(0.0, -0.174, 0.0)
+material_override = SubResource("chrome")
+mesh = SubResource("cylinder_053")
+
+[node name="RimSpokeExterior1" type="MeshInstance3D" parent="Tire"]
+position = Vector3(0.14, -0.172, 0.0)
+rotation_degrees = Vector3(0.0, 0.0, 0.0)
+material_override = SubResource("wheel_alloy")
+mesh = SubResource("box_054")
+
+[node name="RimSpokeExterior2" type="MeshInstance3D" parent="Tire"]
+position = Vector3(0.07, -0.172, 0.121244)
+rotation_degrees = Vector3(0.0, -60.0, 0.0)
+material_override = SubResource("wheel_alloy")
+mesh = SubResource("box_054")
+
+[node name="RimSpokeExterior3" type="MeshInstance3D" parent="Tire"]
+position = Vector3(-0.07, -0.172, 0.121244)
+rotation_degrees = Vector3(0.0, -120.0, 0.0)
+material_override = SubResource("wheel_alloy")
+mesh = SubResource("box_054")
+
+[node name="RimSpokeExterior4" type="MeshInstance3D" parent="Tire"]
+position = Vector3(-0.14, -0.172, 0.0)
+rotation_degrees = Vector3(0.0, -180.0, 0.0)
+material_override = SubResource("wheel_alloy")
+mesh = SubResource("box_054")
+
+[node name="RimSpokeExterior5" type="MeshInstance3D" parent="Tire"]
+position = Vector3(-0.07, -0.172, -0.121244)
+rotation_degrees = Vector3(0.0, -240.0, 0.0)
+material_override = SubResource("wheel_alloy")
+mesh = SubResource("box_054")
+
+[node name="RimSpokeExterior6" type="MeshInstance3D" parent="Tire"]
+position = Vector3(0.07, -0.172, -0.121244)
+rotation_degrees = Vector3(0.0, -300.0, 0.0)
+material_override = SubResource("wheel_alloy")
+mesh = SubResource("box_054")
+
+[node name="LugExterior1" type="MeshInstance3D" parent="Tire"]
+position = Vector3(0.104, -0.19, 0.0)
+scale = Vector3(0.027, 0.013, 0.027)
+material_override = SubResource("chrome")
+mesh = SubResource("sphere_040")
+
+[node name="LugExterior2" type="MeshInstance3D" parent="Tire"]
+position = Vector3(0.032138, -0.19, 0.09891)
+scale = Vector3(0.027, 0.013, 0.027)
+material_override = SubResource("chrome")
+mesh = SubResource("sphere_040")
+
+[node name="LugExterior3" type="MeshInstance3D" parent="Tire"]
+position = Vector3(-0.084138, -0.19, 0.06113)
+scale = Vector3(0.027, 0.013, 0.027)
+material_override = SubResource("chrome")
+mesh = SubResource("sphere_040")
+
+[node name="LugExterior4" type="MeshInstance3D" parent="Tire"]
+position = Vector3(-0.084138, -0.19, -0.06113)
+scale = Vector3(0.027, 0.013, 0.027)
+material_override = SubResource("chrome")
+mesh = SubResource("sphere_040")
+
+[node name="LugExterior5" type="MeshInstance3D" parent="Tire"]
+position = Vector3(0.032138, -0.19, -0.09891)
+scale = Vector3(0.027, 0.013, 0.027)
+material_override = SubResource("chrome")
+mesh = SubResource("sphere_040")
+
+[node name="TreadBand1" type="MeshInstance3D" parent="Tire"]
+position = Vector3(0.0, -0.08, 0.0)
+material_override = SubResource("tire_tread")
+mesh = SubResource("torus_055")
+
+[node name="TreadBand2" type="MeshInstance3D" parent="Tire"]
+position = Vector3(0.0, 0.0, 0.0)
+material_override = SubResource("tire_tread")
+mesh = SubResource("torus_055")
+
+[node name="TreadBand3" type="MeshInstance3D" parent="Tire"]
+position = Vector3(0.0, 0.08, 0.0)
+material_override = SubResource("tire_tread")
+mesh = SubResource("torus_055")
+
+[node name="Body" type="Area3D" parent="Tire" unique_id=9447152]
+collision_mask = 0
+metadata/word = "wheel"
+
+[node name="Collision" type="CollisionShape3D" parent="Tire/Body" unique_id=1526948558]
+shape = SubResource("r8")
+
+[node name="Tire_2" type="Node3D" parent="." unique_id=955286143]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -1.428, 0.35, 0.9672)
+metadata/word_key = "wheel"
+
+[node name="Visual" type="MeshInstance3D" parent="Tire_2" unique_id=1398423181]
+material_override = SubResource("tire_rubber")
+mesh = SubResource("cylinder_049")
+
+[node name="SidewallExterior" type="MeshInstance3D" parent="Tire_2"]
+position = Vector3(0.0, 0.139, 0.0)
+material_override = SubResource("tire_sidewall")
+mesh = SubResource("cylinder_050")
+
+[node name="AlloyRimExterior" type="MeshInstance3D" parent="Tire_2"]
+position = Vector3(0.0, 0.153, 0.0)
+material_override = SubResource("wheel_recess")
+mesh = SubResource("cylinder_051")
+
+[node name="PolishedRimLipExterior" type="MeshInstance3D" parent="Tire_2"]
+position = Vector3(0.0, 0.16, 0.0)
+material_override = SubResource("chrome")
+mesh = SubResource("torus_052")
+
+[node name="CenterHubExterior" type="MeshInstance3D" parent="Tire_2"]
+position = Vector3(0.0, 0.174, 0.0)
+material_override = SubResource("chrome")
+mesh = SubResource("cylinder_053")
+
+[node name="RimSpokeExterior1" type="MeshInstance3D" parent="Tire_2"]
+position = Vector3(0.14, 0.172, 0.0)
+rotation_degrees = Vector3(0.0, 0.0, 0.0)
+material_override = SubResource("wheel_alloy")
+mesh = SubResource("box_054")
+
+[node name="RimSpokeExterior2" type="MeshInstance3D" parent="Tire_2"]
+position = Vector3(0.07, 0.172, 0.121244)
+rotation_degrees = Vector3(0.0, -60.0, 0.0)
+material_override = SubResource("wheel_alloy")
+mesh = SubResource("box_054")
+
+[node name="RimSpokeExterior3" type="MeshInstance3D" parent="Tire_2"]
+position = Vector3(-0.07, 0.172, 0.121244)
+rotation_degrees = Vector3(0.0, -120.0, 0.0)
+material_override = SubResource("wheel_alloy")
+mesh = SubResource("box_054")
+
+[node name="RimSpokeExterior4" type="MeshInstance3D" parent="Tire_2"]
+position = Vector3(-0.14, 0.172, 0.0)
+rotation_degrees = Vector3(0.0, -180.0, 0.0)
+material_override = SubResource("wheel_alloy")
+mesh = SubResource("box_054")
+
+[node name="RimSpokeExterior5" type="MeshInstance3D" parent="Tire_2"]
+position = Vector3(-0.07, 0.172, -0.121244)
+rotation_degrees = Vector3(0.0, -240.0, 0.0)
+material_override = SubResource("wheel_alloy")
+mesh = SubResource("box_054")
+
+[node name="RimSpokeExterior6" type="MeshInstance3D" parent="Tire_2"]
+position = Vector3(0.07, 0.172, -0.121244)
+rotation_degrees = Vector3(0.0, -300.0, 0.0)
+material_override = SubResource("wheel_alloy")
+mesh = SubResource("box_054")
+
+[node name="LugExterior1" type="MeshInstance3D" parent="Tire_2"]
+position = Vector3(0.104, 0.19, 0.0)
+scale = Vector3(0.027, 0.013, 0.027)
+material_override = SubResource("chrome")
+mesh = SubResource("sphere_040")
+
+[node name="LugExterior2" type="MeshInstance3D" parent="Tire_2"]
+position = Vector3(0.032138, 0.19, 0.09891)
+scale = Vector3(0.027, 0.013, 0.027)
+material_override = SubResource("chrome")
+mesh = SubResource("sphere_040")
+
+[node name="LugExterior3" type="MeshInstance3D" parent="Tire_2"]
+position = Vector3(-0.084138, 0.19, 0.06113)
+scale = Vector3(0.027, 0.013, 0.027)
+material_override = SubResource("chrome")
+mesh = SubResource("sphere_040")
+
+[node name="LugExterior4" type="MeshInstance3D" parent="Tire_2"]
+position = Vector3(-0.084138, 0.19, -0.06113)
+scale = Vector3(0.027, 0.013, 0.027)
+material_override = SubResource("chrome")
+mesh = SubResource("sphere_040")
+
+[node name="LugExterior5" type="MeshInstance3D" parent="Tire_2"]
+position = Vector3(0.032138, 0.19, -0.09891)
+scale = Vector3(0.027, 0.013, 0.027)
+material_override = SubResource("chrome")
+mesh = SubResource("sphere_040")
+
+[node name="TreadBand1" type="MeshInstance3D" parent="Tire_2"]
+position = Vector3(0.0, -0.08, 0.0)
+material_override = SubResource("tire_tread")
+mesh = SubResource("torus_055")
+
+[node name="TreadBand2" type="MeshInstance3D" parent="Tire_2"]
+position = Vector3(0.0, 0.0, 0.0)
+material_override = SubResource("tire_tread")
+mesh = SubResource("torus_055")
+
+[node name="TreadBand3" type="MeshInstance3D" parent="Tire_2"]
+position = Vector3(0.0, 0.08, 0.0)
+material_override = SubResource("tire_tread")
+mesh = SubResource("torus_055")
+
+[node name="Body" type="Area3D" parent="Tire_2" unique_id=2089978834]
+collision_mask = 0
+metadata/word = "wheel"
+
+[node name="Collision" type="CollisionShape3D" parent="Tire_2/Body" unique_id=810999234]
+shape = SubResource("r8")
+
+[node name="Tire_3" type="Node3D" parent="." unique_id=444296036]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 1.428, 0.35, -0.9672)
+metadata/word_key = "wheel"
+
+[node name="Visual" type="MeshInstance3D" parent="Tire_3" unique_id=61471828]
+material_override = SubResource("tire_rubber")
+mesh = SubResource("cylinder_049")
+
+[node name="SidewallExterior" type="MeshInstance3D" parent="Tire_3"]
+position = Vector3(0.0, -0.139, 0.0)
+material_override = SubResource("tire_sidewall")
+mesh = SubResource("cylinder_050")
+
+[node name="AlloyRimExterior" type="MeshInstance3D" parent="Tire_3"]
+position = Vector3(0.0, -0.153, 0.0)
+material_override = SubResource("wheel_recess")
+mesh = SubResource("cylinder_051")
+
+[node name="PolishedRimLipExterior" type="MeshInstance3D" parent="Tire_3"]
+position = Vector3(0.0, -0.16, 0.0)
+material_override = SubResource("chrome")
+mesh = SubResource("torus_052")
+
+[node name="CenterHubExterior" type="MeshInstance3D" parent="Tire_3"]
+position = Vector3(0.0, -0.174, 0.0)
+material_override = SubResource("chrome")
+mesh = SubResource("cylinder_053")
+
+[node name="RimSpokeExterior1" type="MeshInstance3D" parent="Tire_3"]
+position = Vector3(0.14, -0.172, 0.0)
+rotation_degrees = Vector3(0.0, 0.0, 0.0)
+material_override = SubResource("wheel_alloy")
+mesh = SubResource("box_054")
+
+[node name="RimSpokeExterior2" type="MeshInstance3D" parent="Tire_3"]
+position = Vector3(0.07, -0.172, 0.121244)
+rotation_degrees = Vector3(0.0, -60.0, 0.0)
+material_override = SubResource("wheel_alloy")
+mesh = SubResource("box_054")
+
+[node name="RimSpokeExterior3" type="MeshInstance3D" parent="Tire_3"]
+position = Vector3(-0.07, -0.172, 0.121244)
+rotation_degrees = Vector3(0.0, -120.0, 0.0)
+material_override = SubResource("wheel_alloy")
+mesh = SubResource("box_054")
+
+[node name="RimSpokeExterior4" type="MeshInstance3D" parent="Tire_3"]
+position = Vector3(-0.14, -0.172, 0.0)
+rotation_degrees = Vector3(0.0, -180.0, 0.0)
+material_override = SubResource("wheel_alloy")
+mesh = SubResource("box_054")
+
+[node name="RimSpokeExterior5" type="MeshInstance3D" parent="Tire_3"]
+position = Vector3(-0.07, -0.172, -0.121244)
+rotation_degrees = Vector3(0.0, -240.0, 0.0)
+material_override = SubResource("wheel_alloy")
+mesh = SubResource("box_054")
+
+[node name="RimSpokeExterior6" type="MeshInstance3D" parent="Tire_3"]
+position = Vector3(0.07, -0.172, -0.121244)
+rotation_degrees = Vector3(0.0, -300.0, 0.0)
+material_override = SubResource("wheel_alloy")
+mesh = SubResource("box_054")
+
+[node name="LugExterior1" type="MeshInstance3D" parent="Tire_3"]
+position = Vector3(0.104, -0.19, 0.0)
+scale = Vector3(0.027, 0.013, 0.027)
+material_override = SubResource("chrome")
+mesh = SubResource("sphere_040")
+
+[node name="LugExterior2" type="MeshInstance3D" parent="Tire_3"]
+position = Vector3(0.032138, -0.19, 0.09891)
+scale = Vector3(0.027, 0.013, 0.027)
+material_override = SubResource("chrome")
+mesh = SubResource("sphere_040")
+
+[node name="LugExterior3" type="MeshInstance3D" parent="Tire_3"]
+position = Vector3(-0.084138, -0.19, 0.06113)
+scale = Vector3(0.027, 0.013, 0.027)
+material_override = SubResource("chrome")
+mesh = SubResource("sphere_040")
+
+[node name="LugExterior4" type="MeshInstance3D" parent="Tire_3"]
+position = Vector3(-0.084138, -0.19, -0.06113)
+scale = Vector3(0.027, 0.013, 0.027)
+material_override = SubResource("chrome")
+mesh = SubResource("sphere_040")
+
+[node name="LugExterior5" type="MeshInstance3D" parent="Tire_3"]
+position = Vector3(0.032138, -0.19, -0.09891)
+scale = Vector3(0.027, 0.013, 0.027)
+material_override = SubResource("chrome")
+mesh = SubResource("sphere_040")
+
+[node name="TreadBand1" type="MeshInstance3D" parent="Tire_3"]
+position = Vector3(0.0, -0.08, 0.0)
+material_override = SubResource("tire_tread")
+mesh = SubResource("torus_055")
+
+[node name="TreadBand2" type="MeshInstance3D" parent="Tire_3"]
+position = Vector3(0.0, 0.0, 0.0)
+material_override = SubResource("tire_tread")
+mesh = SubResource("torus_055")
+
+[node name="TreadBand3" type="MeshInstance3D" parent="Tire_3"]
+position = Vector3(0.0, 0.08, 0.0)
+material_override = SubResource("tire_tread")
+mesh = SubResource("torus_055")
+
+[node name="Body" type="Area3D" parent="Tire_3" unique_id=1233101126]
+collision_mask = 0
+metadata/word = "wheel"
+
+[node name="Collision" type="CollisionShape3D" parent="Tire_3/Body" unique_id=1476309697]
+shape = SubResource("r8")
+
+[node name="Tire_4" type="Node3D" parent="." unique_id=1824403479]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 1.428, 0.35, 0.9672)
+metadata/word_key = "wheel"
+
+[node name="Visual" type="MeshInstance3D" parent="Tire_4" unique_id=1103638564]
+material_override = SubResource("tire_rubber")
+mesh = SubResource("cylinder_049")
+
+[node name="SidewallExterior" type="MeshInstance3D" parent="Tire_4"]
+position = Vector3(0.0, 0.139, 0.0)
+material_override = SubResource("tire_sidewall")
+mesh = SubResource("cylinder_050")
+
+[node name="AlloyRimExterior" type="MeshInstance3D" parent="Tire_4"]
+position = Vector3(0.0, 0.153, 0.0)
+material_override = SubResource("wheel_recess")
+mesh = SubResource("cylinder_051")
+
+[node name="PolishedRimLipExterior" type="MeshInstance3D" parent="Tire_4"]
+position = Vector3(0.0, 0.16, 0.0)
+material_override = SubResource("chrome")
+mesh = SubResource("torus_052")
+
+[node name="CenterHubExterior" type="MeshInstance3D" parent="Tire_4"]
+position = Vector3(0.0, 0.174, 0.0)
+material_override = SubResource("chrome")
+mesh = SubResource("cylinder_053")
+
+[node name="RimSpokeExterior1" type="MeshInstance3D" parent="Tire_4"]
+position = Vector3(0.14, 0.172, 0.0)
+rotation_degrees = Vector3(0.0, 0.0, 0.0)
+material_override = SubResource("wheel_alloy")
+mesh = SubResource("box_054")
+
+[node name="RimSpokeExterior2" type="MeshInstance3D" parent="Tire_4"]
+position = Vector3(0.07, 0.172, 0.121244)
+rotation_degrees = Vector3(0.0, -60.0, 0.0)
+material_override = SubResource("wheel_alloy")
+mesh = SubResource("box_054")
+
+[node name="RimSpokeExterior3" type="MeshInstance3D" parent="Tire_4"]
+position = Vector3(-0.07, 0.172, 0.121244)
+rotation_degrees = Vector3(0.0, -120.0, 0.0)
+material_override = SubResource("wheel_alloy")
+mesh = SubResource("box_054")
+
+[node name="RimSpokeExterior4" type="MeshInstance3D" parent="Tire_4"]
+position = Vector3(-0.14, 0.172, 0.0)
+rotation_degrees = Vector3(0.0, -180.0, 0.0)
+material_override = SubResource("wheel_alloy")
+mesh = SubResource("box_054")
+
+[node name="RimSpokeExterior5" type="MeshInstance3D" parent="Tire_4"]
+position = Vector3(-0.07, 0.172, -0.121244)
+rotation_degrees = Vector3(0.0, -240.0, 0.0)
+material_override = SubResource("wheel_alloy")
+mesh = SubResource("box_054")
+
+[node name="RimSpokeExterior6" type="MeshInstance3D" parent="Tire_4"]
+position = Vector3(0.07, 0.172, -0.121244)
+rotation_degrees = Vector3(0.0, -300.0, 0.0)
+material_override = SubResource("wheel_alloy")
+mesh = SubResource("box_054")
+
+[node name="LugExterior1" type="MeshInstance3D" parent="Tire_4"]
+position = Vector3(0.104, 0.19, 0.0)
+scale = Vector3(0.027, 0.013, 0.027)
+material_override = SubResource("chrome")
+mesh = SubResource("sphere_040")
+
+[node name="LugExterior2" type="MeshInstance3D" parent="Tire_4"]
+position = Vector3(0.032138, 0.19, 0.09891)
+scale = Vector3(0.027, 0.013, 0.027)
+material_override = SubResource("chrome")
+mesh = SubResource("sphere_040")
+
+[node name="LugExterior3" type="MeshInstance3D" parent="Tire_4"]
+position = Vector3(-0.084138, 0.19, 0.06113)
+scale = Vector3(0.027, 0.013, 0.027)
+material_override = SubResource("chrome")
+mesh = SubResource("sphere_040")
+
+[node name="LugExterior4" type="MeshInstance3D" parent="Tire_4"]
+position = Vector3(-0.084138, 0.19, -0.06113)
+scale = Vector3(0.027, 0.013, 0.027)
+material_override = SubResource("chrome")
+mesh = SubResource("sphere_040")
+
+[node name="LugExterior5" type="MeshInstance3D" parent="Tire_4"]
+position = Vector3(0.032138, 0.19, -0.09891)
+scale = Vector3(0.027, 0.013, 0.027)
+material_override = SubResource("chrome")
+mesh = SubResource("sphere_040")
+
+[node name="TreadBand1" type="MeshInstance3D" parent="Tire_4"]
+position = Vector3(0.0, -0.08, 0.0)
+material_override = SubResource("tire_tread")
+mesh = SubResource("torus_055")
+
+[node name="TreadBand2" type="MeshInstance3D" parent="Tire_4"]
+position = Vector3(0.0, 0.0, 0.0)
+material_override = SubResource("tire_tread")
+mesh = SubResource("torus_055")
+
+[node name="TreadBand3" type="MeshInstance3D" parent="Tire_4"]
+position = Vector3(0.0, 0.08, 0.0)
+material_override = SubResource("tire_tread")
+mesh = SubResource("torus_055")
+
+[node name="Body" type="Area3D" parent="Tire_4" unique_id=350011073]
+collision_mask = 0
+metadata/word = "wheel"
+
+[node name="Collision" type="CollisionShape3D" parent="Tire_4/Body" unique_id=2122090952]
+shape = SubResource("r8")
+
+[node name="WheelArches" type="Node3D" parent="."]
+
+[node name="FrontLeft" type="Node3D" parent="WheelArches"]
+
+[node name="FenderArchSegment01" type="MeshInstance3D" parent="WheelArches/FrontLeft"]
+position = Vector3(-0.982952, 0.529811, -1.005)
+rotation_degrees = Vector3(0.0, 0.0, 112.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_056")
+
+[node name="FenderArchSegment02" type="MeshInstance3D" parent="WheelArches/FrontLeft"]
+position = Vector3(-1.05497, 0.652074, -1.005)
+rotation_degrees = Vector3(0.0, 0.0, 129.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_056")
+
+[node name="FenderArchSegment03" type="MeshInstance3D" parent="WheelArches/FrontLeft"]
+position = Vector3(-1.159587, 0.747938, -1.005)
+rotation_degrees = Vector3(0.0, 0.0, 146.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_056")
+
+[node name="FenderArchSegment04" type="MeshInstance3D" parent="WheelArches/FrontLeft"]
+position = Vector3(-1.287662, 0.809026, -1.005)
+rotation_degrees = Vector3(0.0, 0.0, 163.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_056")
+
+[node name="FenderArchSegment05" type="MeshInstance3D" parent="WheelArches/FrontLeft"]
+position = Vector3(-1.428, 0.83, -1.005)
+rotation_degrees = Vector3(0.0, 0.0, 180.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_056")
+
+[node name="FenderArchSegment06" type="MeshInstance3D" parent="WheelArches/FrontLeft"]
+position = Vector3(-1.568338, 0.809026, -1.005)
+rotation_degrees = Vector3(0.0, 0.0, 197.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_056")
+
+[node name="FenderArchSegment07" type="MeshInstance3D" parent="WheelArches/FrontLeft"]
+position = Vector3(-1.696413, 0.747938, -1.005)
+rotation_degrees = Vector3(0.0, 0.0, 214.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_056")
+
+[node name="FenderArchSegment08" type="MeshInstance3D" parent="WheelArches/FrontLeft"]
+position = Vector3(-1.80103, 0.652074, -1.005)
+rotation_degrees = Vector3(0.0, 0.0, 231.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_056")
+
+[node name="FenderArchSegment09" type="MeshInstance3D" parent="WheelArches/FrontLeft"]
+position = Vector3(-1.873048, 0.529811, -1.005)
+rotation_degrees = Vector3(0.0, 0.0, 248.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_056")
+
+[node name="FenderFrontVertical" type="MeshInstance3D" parent="WheelArches/FrontLeft"]
+position = Vector3(-1.898, 0.535, -0.946)
+material_override = SubResource("paint_shadow")
+mesh = SubResource("box_057")
+
+[node name="FenderRearVertical" type="MeshInstance3D" parent="WheelArches/FrontLeft"]
+position = Vector3(-0.958, 0.535, -0.946)
+material_override = SubResource("paint_shadow")
+mesh = SubResource("box_057")
+
+[node name="MudFlap" type="MeshInstance3D" parent="WheelArches/FrontLeft"]
+position = Vector3(-1.023, 0.275, -0.92)
+material_override = SubResource("tire_rubber")
+mesh = SubResource("box_058")
+
+[node name="FrontRight" type="Node3D" parent="WheelArches"]
+
+[node name="FenderArchSegment01" type="MeshInstance3D" parent="WheelArches/FrontRight"]
+position = Vector3(-0.982952, 0.529811, 1.005)
+rotation_degrees = Vector3(0.0, 0.0, 112.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_056")
+
+[node name="FenderArchSegment02" type="MeshInstance3D" parent="WheelArches/FrontRight"]
+position = Vector3(-1.05497, 0.652074, 1.005)
+rotation_degrees = Vector3(0.0, 0.0, 129.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_056")
+
+[node name="FenderArchSegment03" type="MeshInstance3D" parent="WheelArches/FrontRight"]
+position = Vector3(-1.159587, 0.747938, 1.005)
+rotation_degrees = Vector3(0.0, 0.0, 146.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_056")
+
+[node name="FenderArchSegment04" type="MeshInstance3D" parent="WheelArches/FrontRight"]
+position = Vector3(-1.287662, 0.809026, 1.005)
+rotation_degrees = Vector3(0.0, 0.0, 163.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_056")
+
+[node name="FenderArchSegment05" type="MeshInstance3D" parent="WheelArches/FrontRight"]
+position = Vector3(-1.428, 0.83, 1.005)
+rotation_degrees = Vector3(0.0, 0.0, 180.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_056")
+
+[node name="FenderArchSegment06" type="MeshInstance3D" parent="WheelArches/FrontRight"]
+position = Vector3(-1.568338, 0.809026, 1.005)
+rotation_degrees = Vector3(0.0, 0.0, 197.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_056")
+
+[node name="FenderArchSegment07" type="MeshInstance3D" parent="WheelArches/FrontRight"]
+position = Vector3(-1.696413, 0.747938, 1.005)
+rotation_degrees = Vector3(0.0, 0.0, 214.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_056")
+
+[node name="FenderArchSegment08" type="MeshInstance3D" parent="WheelArches/FrontRight"]
+position = Vector3(-1.80103, 0.652074, 1.005)
+rotation_degrees = Vector3(0.0, 0.0, 231.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_056")
+
+[node name="FenderArchSegment09" type="MeshInstance3D" parent="WheelArches/FrontRight"]
+position = Vector3(-1.873048, 0.529811, 1.005)
+rotation_degrees = Vector3(0.0, 0.0, 248.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_056")
+
+[node name="FenderFrontVertical" type="MeshInstance3D" parent="WheelArches/FrontRight"]
+position = Vector3(-1.898, 0.535, 0.946)
+material_override = SubResource("paint_shadow")
+mesh = SubResource("box_057")
+
+[node name="FenderRearVertical" type="MeshInstance3D" parent="WheelArches/FrontRight"]
+position = Vector3(-0.958, 0.535, 0.946)
+material_override = SubResource("paint_shadow")
+mesh = SubResource("box_057")
+
+[node name="MudFlap" type="MeshInstance3D" parent="WheelArches/FrontRight"]
+position = Vector3(-1.023, 0.275, 0.92)
+material_override = SubResource("tire_rubber")
+mesh = SubResource("box_058")
+
+[node name="RearLeft" type="Node3D" parent="WheelArches"]
+
+[node name="FenderArchSegment01" type="MeshInstance3D" parent="WheelArches/RearLeft"]
+position = Vector3(1.873048, 0.529811, -1.005)
+rotation_degrees = Vector3(0.0, 0.0, 112.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_056")
+
+[node name="FenderArchSegment02" type="MeshInstance3D" parent="WheelArches/RearLeft"]
+position = Vector3(1.80103, 0.652074, -1.005)
+rotation_degrees = Vector3(0.0, 0.0, 129.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_056")
+
+[node name="FenderArchSegment03" type="MeshInstance3D" parent="WheelArches/RearLeft"]
+position = Vector3(1.696413, 0.747938, -1.005)
+rotation_degrees = Vector3(0.0, 0.0, 146.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_056")
+
+[node name="FenderArchSegment04" type="MeshInstance3D" parent="WheelArches/RearLeft"]
+position = Vector3(1.568338, 0.809026, -1.005)
+rotation_degrees = Vector3(0.0, 0.0, 163.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_056")
+
+[node name="FenderArchSegment05" type="MeshInstance3D" parent="WheelArches/RearLeft"]
+position = Vector3(1.428, 0.83, -1.005)
+rotation_degrees = Vector3(0.0, 0.0, 180.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_056")
+
+[node name="FenderArchSegment06" type="MeshInstance3D" parent="WheelArches/RearLeft"]
+position = Vector3(1.287662, 0.809026, -1.005)
+rotation_degrees = Vector3(0.0, 0.0, 197.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_056")
+
+[node name="FenderArchSegment07" type="MeshInstance3D" parent="WheelArches/RearLeft"]
+position = Vector3(1.159587, 0.747938, -1.005)
+rotation_degrees = Vector3(0.0, 0.0, 214.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_056")
+
+[node name="FenderArchSegment08" type="MeshInstance3D" parent="WheelArches/RearLeft"]
+position = Vector3(1.05497, 0.652074, -1.005)
+rotation_degrees = Vector3(0.0, 0.0, 231.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_056")
+
+[node name="FenderArchSegment09" type="MeshInstance3D" parent="WheelArches/RearLeft"]
+position = Vector3(0.982952, 0.529811, -1.005)
+rotation_degrees = Vector3(0.0, 0.0, 248.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_056")
+
+[node name="FenderFrontVertical" type="MeshInstance3D" parent="WheelArches/RearLeft"]
+position = Vector3(0.958, 0.535, -0.946)
+material_override = SubResource("paint_shadow")
+mesh = SubResource("box_057")
+
+[node name="FenderRearVertical" type="MeshInstance3D" parent="WheelArches/RearLeft"]
+position = Vector3(1.898, 0.535, -0.946)
+material_override = SubResource("paint_shadow")
+mesh = SubResource("box_057")
+
+[node name="MudFlap" type="MeshInstance3D" parent="WheelArches/RearLeft"]
+position = Vector3(1.833, 0.275, -0.92)
+material_override = SubResource("tire_rubber")
+mesh = SubResource("box_058")
+
+[node name="RearRight" type="Node3D" parent="WheelArches"]
+
+[node name="FenderArchSegment01" type="MeshInstance3D" parent="WheelArches/RearRight"]
+position = Vector3(1.873048, 0.529811, 1.005)
+rotation_degrees = Vector3(0.0, 0.0, 112.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_056")
+
+[node name="FenderArchSegment02" type="MeshInstance3D" parent="WheelArches/RearRight"]
+position = Vector3(1.80103, 0.652074, 1.005)
+rotation_degrees = Vector3(0.0, 0.0, 129.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_056")
+
+[node name="FenderArchSegment03" type="MeshInstance3D" parent="WheelArches/RearRight"]
+position = Vector3(1.696413, 0.747938, 1.005)
+rotation_degrees = Vector3(0.0, 0.0, 146.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_056")
+
+[node name="FenderArchSegment04" type="MeshInstance3D" parent="WheelArches/RearRight"]
+position = Vector3(1.568338, 0.809026, 1.005)
+rotation_degrees = Vector3(0.0, 0.0, 163.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_056")
+
+[node name="FenderArchSegment05" type="MeshInstance3D" parent="WheelArches/RearRight"]
+position = Vector3(1.428, 0.83, 1.005)
+rotation_degrees = Vector3(0.0, 0.0, 180.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_056")
+
+[node name="FenderArchSegment06" type="MeshInstance3D" parent="WheelArches/RearRight"]
+position = Vector3(1.287662, 0.809026, 1.005)
+rotation_degrees = Vector3(0.0, 0.0, 197.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_056")
+
+[node name="FenderArchSegment07" type="MeshInstance3D" parent="WheelArches/RearRight"]
+position = Vector3(1.159587, 0.747938, 1.005)
+rotation_degrees = Vector3(0.0, 0.0, 214.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_056")
+
+[node name="FenderArchSegment08" type="MeshInstance3D" parent="WheelArches/RearRight"]
+position = Vector3(1.05497, 0.652074, 1.005)
+rotation_degrees = Vector3(0.0, 0.0, 231.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_056")
+
+[node name="FenderArchSegment09" type="MeshInstance3D" parent="WheelArches/RearRight"]
+position = Vector3(0.982952, 0.529811, 1.005)
+rotation_degrees = Vector3(0.0, 0.0, 248.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_056")
+
+[node name="FenderFrontVertical" type="MeshInstance3D" parent="WheelArches/RearRight"]
+position = Vector3(0.958, 0.535, 0.946)
+material_override = SubResource("paint_shadow")
+mesh = SubResource("box_057")
+
+[node name="FenderRearVertical" type="MeshInstance3D" parent="WheelArches/RearRight"]
+position = Vector3(1.898, 0.535, 0.946)
+material_override = SubResource("paint_shadow")
+mesh = SubResource("box_057")
+
+[node name="MudFlap" type="MeshInstance3D" parent="WheelArches/RearRight"]
+position = Vector3(1.833, 0.275, 0.92)
+material_override = SubResource("tire_rubber")
+mesh = SubResource("box_058")
+
+[node name="CargoBed" type="Node3D" parent="." unique_id=500058789]
+position = Vector3(1.0, 1.17, 0.0)
+
+[node name="Visual" type="MeshInstance3D" parent="CargoBed" unique_id=1538657179]
+position = Vector3(0.245, -0.045, 0.0)
+material_override = SubResource("paint_marine_teal")
+mesh = SubResource("box_059")
+
+[node name="BedInnerFloor" type="MeshInstance3D" parent="CargoBed"]
+position = Vector3(0.25, 0.068, 0.0)
+material_override = SubResource("cargo_bed_liner")
+mesh = SubResource("box_060")
+
+[node name="FloorGripRib01" type="MeshInstance3D" parent="CargoBed"]
+position = Vector3(0.25, 0.09, -0.62)
+material_override = SubResource("cargo_bed_ribs")
+mesh = SubResource("box_061")
+
+[node name="FloorGripRib02" type="MeshInstance3D" parent="CargoBed"]
+position = Vector3(0.25, 0.09, -0.465)
+material_override = SubResource("cargo_bed_ribs")
+mesh = SubResource("box_061")
+
+[node name="FloorGripRib03" type="MeshInstance3D" parent="CargoBed"]
+position = Vector3(0.25, 0.09, -0.31)
+material_override = SubResource("cargo_bed_ribs")
+mesh = SubResource("box_061")
+
+[node name="FloorGripRib04" type="MeshInstance3D" parent="CargoBed"]
+position = Vector3(0.25, 0.09, -0.155)
+material_override = SubResource("cargo_bed_ribs")
+mesh = SubResource("box_061")
+
+[node name="FloorGripRib05" type="MeshInstance3D" parent="CargoBed"]
+position = Vector3(0.25, 0.09, 0.0)
+material_override = SubResource("cargo_bed_ribs")
+mesh = SubResource("box_061")
+
+[node name="FloorGripRib06" type="MeshInstance3D" parent="CargoBed"]
+position = Vector3(0.25, 0.09, 0.155)
+material_override = SubResource("cargo_bed_ribs")
+mesh = SubResource("box_061")
+
+[node name="FloorGripRib07" type="MeshInstance3D" parent="CargoBed"]
+position = Vector3(0.25, 0.09, 0.31)
+material_override = SubResource("cargo_bed_ribs")
+mesh = SubResource("box_061")
+
+[node name="FloorGripRib08" type="MeshInstance3D" parent="CargoBed"]
+position = Vector3(0.25, 0.09, 0.465)
+material_override = SubResource("cargo_bed_ribs")
+mesh = SubResource("box_061")
+
+[node name="FloorGripRib09" type="MeshInstance3D" parent="CargoBed"]
+position = Vector3(0.25, 0.09, 0.62)
+material_override = SubResource("cargo_bed_ribs")
+mesh = SubResource("box_061")
+
+[node name="BedOuterWallLeft" type="MeshInstance3D" parent="CargoBed"]
+position = Vector3(0.245, 0.239, -0.839)
+material_override = SubResource("paint_marine_teal")
+mesh = SubResource("box_062")
+
+[node name="BedInnerWallLeft" type="MeshInstance3D" parent="CargoBed"]
+position = Vector3(0.245, 0.225, -0.759)
+material_override = SubResource("cargo_bed_liner")
+mesh = SubResource("box_063")
+
+[node name="BedUpperRailLeft" type="MeshInstance3D" parent="CargoBed"]
+position = Vector3(0.24, 0.51, -0.839)
+material_override = SubResource("chrome")
+mesh = SubResource("box_064")
+
+[node name="RailShadowInsetLeft" type="MeshInstance3D" parent="CargoBed"]
+position = Vector3(0.24, 0.55, -0.839)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_065")
+
+[node name="TieDownBoltLeft1" type="MeshInstance3D" parent="CargoBed"]
+position = Vector3(-0.51, 0.57, -0.79)
+scale = Vector3(0.084, 0.038, 0.084)
+material_override = SubResource("chrome")
+mesh = SubResource("sphere_040")
+
+[node name="TieDownBoltLeft2" type="MeshInstance3D" parent="CargoBed"]
+position = Vector3(1.01, 0.57, -0.79)
+scale = Vector3(0.084, 0.038, 0.084)
+material_override = SubResource("chrome")
+mesh = SubResource("sphere_040")
+
+[node name="BedOuterWallRight" type="MeshInstance3D" parent="CargoBed"]
+position = Vector3(0.245, 0.239, 0.839)
+material_override = SubResource("paint_marine_teal")
+mesh = SubResource("box_062")
+
+[node name="BedInnerWallRight" type="MeshInstance3D" parent="CargoBed"]
+position = Vector3(0.245, 0.225, 0.759)
+material_override = SubResource("cargo_bed_liner")
+mesh = SubResource("box_063")
+
+[node name="BedUpperRailRight" type="MeshInstance3D" parent="CargoBed"]
+position = Vector3(0.24, 0.51, 0.839)
+material_override = SubResource("chrome")
+mesh = SubResource("box_064")
+
+[node name="RailShadowInsetRight" type="MeshInstance3D" parent="CargoBed"]
+position = Vector3(0.24, 0.55, 0.839)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_065")
+
+[node name="TieDownBoltRight1" type="MeshInstance3D" parent="CargoBed"]
+position = Vector3(-0.51, 0.57, 0.79)
+scale = Vector3(0.084, 0.038, 0.084)
+material_override = SubResource("chrome")
+mesh = SubResource("sphere_040")
+
+[node name="TieDownBoltRight2" type="MeshInstance3D" parent="CargoBed"]
+position = Vector3(1.01, 0.57, 0.79)
+scale = Vector3(0.084, 0.038, 0.084)
+material_override = SubResource("chrome")
+mesh = SubResource("sphere_040")
+
+[node name="FrontBedBulkhead" type="MeshInstance3D" parent="CargoBed"]
+position = Vector3(-0.704, 0.243, 0.0)
+material_override = SubResource("paint_marine_teal")
+mesh = SubResource("box_066")
+
+[node name="BulkheadBedliner" type="MeshInstance3D" parent="CargoBed"]
+position = Vector3(-0.63, 0.22, 0.0)
+material_override = SubResource("cargo_bed_liner")
+mesh = SubResource("box_067")
+
+[node name="TailgatePanel" type="MeshInstance3D" parent="CargoBed"]
+position = Vector3(1.202, 0.224, 0.0)
+material_override = SubResource("paint_marine_teal")
+mesh = SubResource("box_068")
+
+[node name="TailgateTopEdge" type="MeshInstance3D" parent="CargoBed"]
+position = Vector3(1.2, 0.504, 0.0)
+material_override = SubResource("chrome")
+mesh = SubResource("box_069")
+
+[node name="TailgateLowerStamp" type="MeshInstance3D" parent="CargoBed"]
+position = Vector3(1.29, 0.211, 0.0)
+material_override = SubResource("paint_highlight")
+mesh = SubResource("box_070")
+
+[node name="TailgateCenterBadge" type="MeshInstance3D" parent="CargoBed"]
+position = Vector3(1.318, 0.275, 0.0)
+material_override = SubResource("chrome")
+mesh = SubResource("box_071")
+
+[node name="TailgateHandleRecess" type="MeshInstance3D" parent="CargoBed"]
+position = Vector3(1.318, 0.43, 0.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_072")
+
+[node name="TailgatePull" type="MeshInstance3D" parent="CargoBed"]
+position = Vector3(1.352, 0.451, 0.0)
+material_override = SubResource("chrome")
+mesh = SubResource("box_073")
+
+[node name="TailgateHingeLeft" type="MeshInstance3D" parent="CargoBed"]
+position = Vector3(1.176, -0.022, -0.69)
+material_override = SubResource("underbody")
+mesh = SubResource("box_074")
+
+[node name="TailgateReflectorLeft" type="MeshInstance3D" parent="CargoBed"]
+position = Vector3(1.299, 0.017, -0.59)
+material_override = SubResource("reverse_light")
+mesh = SubResource("box_075")
+
+[node name="TailgateHingeRight" type="MeshInstance3D" parent="CargoBed"]
+position = Vector3(1.176, -0.022, 0.69)
+material_override = SubResource("underbody")
+mesh = SubResource("box_074")
+
+[node name="TailgateReflectorRight" type="MeshInstance3D" parent="CargoBed"]
+position = Vector3(1.299, 0.017, 0.59)
+material_override = SubResource("reverse_light")
+mesh = SubResource("box_075")
+
+[node name="FrontEnd" type="Node3D" parent="."]
+
+[node name="FrontBumperMain" type="MeshInstance3D" parent="FrontEnd"]
+position = Vector3(-2.22, 0.65, 0.0)
+material_override = SubResource("chrome")
+mesh = SubResource("box_076")
+
+[node name="FrontBumperStep" type="MeshInstance3D" parent="FrontEnd"]
+position = Vector3(-2.22, 0.76, 0.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_077")
+
+[node name="FrontBumperUnderLip" type="MeshInstance3D" parent="FrontEnd"]
+position = Vector3(-2.23, 0.535, 0.0)
+material_override = SubResource("paint_shadow")
+mesh = SubResource("box_078")
+
+[node name="GrilleBack" type="MeshInstance3D" parent="FrontEnd"]
+position = Vector3(-2.232, 0.98, 0.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_079")
+
+[node name="GrilleSurround" type="MeshInstance3D" parent="FrontEnd"]
+position = Vector3(-2.214, 0.976, 0.0)
+material_override = SubResource("chrome")
+mesh = SubResource("box_080")
+
+[node name="GrilleOpening" type="MeshInstance3D" parent="FrontEnd"]
+position = Vector3(-2.259, 0.98, 0.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_081")
+
+[node name="GrilleSlat1" type="MeshInstance3D" parent="FrontEnd"]
+position = Vector3(-2.283, 0.858, 0.0)
+material_override = SubResource("wheel_alloy")
+mesh = SubResource("box_082")
+
+[node name="GrilleSlat2" type="MeshInstance3D" parent="FrontEnd"]
+position = Vector3(-2.283, 0.939, 0.0)
+material_override = SubResource("wheel_alloy")
+mesh = SubResource("box_082")
+
+[node name="GrilleSlat3" type="MeshInstance3D" parent="FrontEnd"]
+position = Vector3(-2.283, 1.02, 0.0)
+material_override = SubResource("wheel_alloy")
+mesh = SubResource("box_082")
+
+[node name="GrilleSlat4" type="MeshInstance3D" parent="FrontEnd"]
+position = Vector3(-2.283, 1.101, 0.0)
+material_override = SubResource("wheel_alloy")
+mesh = SubResource("box_082")
+
+[node name="BrandBadge" type="MeshInstance3D" parent="FrontEnd"]
+position = Vector3(-2.306, 1.145, 0.0)
+material_override = SubResource("paint_highlight")
+mesh = SubResource("box_083")
+
+[node name="BadgeStripe" type="MeshInstance3D" parent="FrontEnd"]
+position = Vector3(-2.349, 1.15, 0.0)
+material_override = SubResource("roof_ivory")
+mesh = SubResource("box_084")
+
+[node name="FrontPlateBracket" type="MeshInstance3D" parent="FrontEnd"]
+position = Vector3(-2.322, 0.645, 0.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_085")
+
+[node name="FrontLicensePlate" type="MeshInstance3D" parent="FrontEnd"]
+position = Vector3(-2.347, 0.645, 0.0)
+material_override = SubResource("license_plate")
+mesh = SubResource("box_086")
+
+[node name="HeadlampHousingLeft" type="MeshInstance3D" parent="FrontEnd"]
+position = Vector3(-2.202, 1.062, -0.759)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_087")
+
+[node name="HeadlampLensLeft" type="MeshInstance3D" parent="FrontEnd"]
+position = Vector3(-2.252, 1.086, -0.759)
+material_override = SubResource("headlight_led")
+mesh = SubResource("box_088")
+
+[node name="IndicatorLensLeft" type="MeshInstance3D" parent="FrontEnd"]
+position = Vector3(-2.249, 0.954, -0.759)
+material_override = SubResource("amber_signals")
+mesh = SubResource("box_089")
+
+[node name="LowerFogLightBucketLeft" type="MeshInstance3D" parent="FrontEnd"]
+position = Vector3(-2.301, 0.62, -0.74)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_090")
+
+[node name="LowerFogLightLeft" type="MeshInstance3D" parent="FrontEnd"]
+position = Vector3(-2.332, 0.621, -0.74)
+material_override = SubResource("headlight_led")
+mesh = SubResource("box_091")
+
+[node name="FrontReflectorLeft" type="MeshInstance3D" parent="FrontEnd"]
+position = Vector3(-2.205, 0.839, -0.956)
+material_override = SubResource("side_marker")
+mesh = SubResource("box_092")
+
+[node name="HeadlampHousingRight" type="MeshInstance3D" parent="FrontEnd"]
+position = Vector3(-2.202, 1.062, 0.759)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_087")
+
+[node name="HeadlampLensRight" type="MeshInstance3D" parent="FrontEnd"]
+position = Vector3(-2.252, 1.086, 0.759)
+material_override = SubResource("headlight_led")
+mesh = SubResource("box_088")
+
+[node name="IndicatorLensRight" type="MeshInstance3D" parent="FrontEnd"]
+position = Vector3(-2.249, 0.954, 0.759)
+material_override = SubResource("amber_signals")
+mesh = SubResource("box_089")
+
+[node name="LowerFogLightBucketRight" type="MeshInstance3D" parent="FrontEnd"]
+position = Vector3(-2.301, 0.62, 0.74)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_090")
+
+[node name="LowerFogLightRight" type="MeshInstance3D" parent="FrontEnd"]
+position = Vector3(-2.332, 0.621, 0.74)
+material_override = SubResource("headlight_led")
+mesh = SubResource("box_091")
+
+[node name="FrontReflectorRight" type="MeshInstance3D" parent="FrontEnd"]
+position = Vector3(-2.205, 0.839, 0.956)
+material_override = SubResource("side_marker")
+mesh = SubResource("box_092")
+
+[node name="RearEnd" type="Node3D" parent="."]
+
+[node name="RearBumperMain" type="MeshInstance3D" parent="RearEnd"]
+position = Vector3(2.235, 0.59, 0.0)
+material_override = SubResource("chrome")
+mesh = SubResource("box_093")
+
+[node name="RearBumperRubber" type="MeshInstance3D" parent="RearEnd"]
+position = Vector3(2.24, 0.68, 0.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_094")
+
+[node name="RearPlateSocket" type="MeshInstance3D" parent="RearEnd"]
+position = Vector3(2.337, 0.607, 0.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_095")
+
+[node name="RearLicensePlate" type="MeshInstance3D" parent="RearEnd"]
+position = Vector3(2.37, 0.61, 0.0)
+material_override = SubResource("license_plate")
+mesh = SubResource("box_096")
+
+[node name="RearTowReceiver" type="MeshInstance3D" parent="RearEnd"]
+position = Vector3(2.374, 0.36, 0.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_097")
+
+[node name="TowHitchBall" type="MeshInstance3D" parent="RearEnd"]
+position = Vector3(2.47, 0.404, 0.0)
+scale = Vector3(0.145, 0.145, 0.145)
+material_override = SubResource("chrome")
+mesh = SubResource("sphere_040")
+
+[node name="ExhaustPipe" type="MeshInstance3D" parent="RearEnd"]
+position = Vector3(2.02, 0.346, -0.56)
+rotation_degrees = Vector3(0.0, 0.0, 90.0)
+material_override = SubResource("wheel_alloy")
+mesh = SubResource("cylinder_098")
+
+[node name="TailpipeOpening" type="MeshInstance3D" parent="RearEnd"]
+position = Vector3(2.23, 0.35, -0.56)
+rotation_degrees = Vector3(0.0, 0.0, 90.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("torus_099")
+
+[node name="CornerStepLeft" type="MeshInstance3D" parent="RearEnd"]
+position = Vector3(2.19, 0.7, -0.765)
+material_override = SubResource("underbody")
+mesh = SubResource("box_100")
+
+[node name="CornerStepRight" type="MeshInstance3D" parent="RearEnd"]
+position = Vector3(2.19, 0.7, 0.765)
+material_override = SubResource("underbody")
+mesh = SubResource("box_100")
+
+[node name="Lamp" type="Node3D" parent="." unique_id=1282799936]
+position = Vector3(-2.248, 1.08, -0.705)
+
+[node name="Visual" type="MeshInstance3D" parent="Lamp" unique_id=2058975284]
+material_override = SubResource("headlight_led")
+mesh = SubResource("box_101")
+
+[node name="LightEdge" type="MeshInstance3D" parent="Lamp"]
+position = Vector3(-0.004, 0.085, 0.0)
+material_override = SubResource("chrome")
+mesh = SubResource("box_102")
+
+[node name="Lamp_2" type="Node3D" parent="." unique_id=1240445230]
+position = Vector3(-2.248, 1.08, 0.705)
+
+[node name="Visual" type="MeshInstance3D" parent="Lamp_2" unique_id=1811760790]
+material_override = SubResource("headlight_led")
+mesh = SubResource("box_101")
+
+[node name="LightEdge" type="MeshInstance3D" parent="Lamp_2"]
+position = Vector3(-0.004, 0.085, 0.0)
+material_override = SubResource("chrome")
+mesh = SubResource("box_102")
+
+[node name="Lamp_3" type="Node3D" parent="." unique_id=38717139]
+position = Vector3(2.238, 1.225, -0.83)
+
+[node name="Visual" type="MeshInstance3D" parent="Lamp_3" unique_id=1794531186]
+material_override = SubResource("tail_lights")
+mesh = SubResource("box_103")
+
+[node name="LampBlackFrame" type="MeshInstance3D" parent="Lamp_3"]
+position = Vector3(-0.065, 0.0, 0.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_104")
+
+[node name="WhiteReversingSegment" type="MeshInstance3D" parent="Lamp_3"]
+position = Vector3(0.025, -0.082, 0.0)
+material_override = SubResource("reverse_light")
+mesh = SubResource("box_105")
+
+[node name="RedTopSegment" type="MeshInstance3D" parent="Lamp_3"]
+position = Vector3(0.025, 0.142, 0.0)
+material_override = SubResource("tail_lights")
+mesh = SubResource("box_106")
+
+[node name="Lamp_4" type="Node3D" parent="." unique_id=1257687445]
+position = Vector3(2.238, 1.225, 0.83)
+
+[node name="Visual" type="MeshInstance3D" parent="Lamp_4" unique_id=505453623]
+material_override = SubResource("tail_lights")
+mesh = SubResource("box_103")
+
+[node name="LampBlackFrame" type="MeshInstance3D" parent="Lamp_4"]
+position = Vector3(-0.065, 0.0, 0.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("box_104")
+
+[node name="WhiteReversingSegment" type="MeshInstance3D" parent="Lamp_4"]
+position = Vector3(0.025, -0.082, 0.0)
+material_override = SubResource("reverse_light")
+mesh = SubResource("box_105")
+
+[node name="RedTopSegment" type="MeshInstance3D" parent="Lamp_4"]
+position = Vector3(0.025, 0.142, 0.0)
+material_override = SubResource("tail_lights")
+mesh = SubResource("box_106")
+
+[node name="FrontSideAmberLeft" type="MeshInstance3D" parent="."]
+position = Vector3(-1.92, 1.055, -0.905)
+material_override = SubResource("side_marker")
+mesh = SubResource("box_107")
+
+[node name="RearSideRedLeft" type="MeshInstance3D" parent="."]
+position = Vector3(2.03, 0.995, -0.902)
+material_override = SubResource("tail_lights")
+mesh = SubResource("box_108")
+
+[node name="FrontSideAmberRight" type="MeshInstance3D" parent="."]
+position = Vector3(-1.92, 1.055, 0.905)
+material_override = SubResource("side_marker")
+mesh = SubResource("box_107")
+
+[node name="RearSideRedRight" type="MeshInstance3D" parent="."]
+position = Vector3(2.03, 0.995, 0.902)
+material_override = SubResource("tail_lights")
+mesh = SubResource("box_108")
+
+[node name="RoofAccessories" type="Node3D" parent="."]
+
+[node name="AntennaBase" type="MeshInstance3D" parent="RoofAccessories"]
+position = Vector3(0.11, 2.354, -0.48)
+material_override = SubResource("black_trim")
+mesh = SubResource("cylinder_109")
+
+[node name="RadioAntenna" type="MeshInstance3D" parent="RoofAccessories"]
+position = Vector3(0.11, 2.55, -0.48)
+rotation_degrees = Vector3(0.0, 0.0, 8.0)
+material_override = SubResource("black_trim")
+mesh = SubResource("cylinder_110")
+
+[node name="AntennaTip" type="MeshInstance3D" parent="RoofAccessories"]
+position = Vector3(0.086, 2.742, -0.48)
+scale = Vector3(0.044, 0.044, 0.044)
+material_override = SubResource("chrome")
+mesh = SubResource("sphere_040")
+
+[node name="StudyArea" type="StaticBody3D" parent="." unique_id=1523767575]
+collision_mask = 0
+metadata/word = "truck"
+
+[node name="StudyShape" type="CollisionShape3D" parent="StudyArea" unique_id=1815890730]
+position = Vector3(0.0, 1.161, 0.0)
+shape = SubResource("r17")

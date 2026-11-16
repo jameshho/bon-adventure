@@ -1,0 +1,102 @@
+[gd_scene format=3]
+
+[sub_resource type="CylinderMesh" id="r1"]
+top_radius = 0.022
+bottom_radius = 0.022
+height = 2.25
+radial_segments = 12
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.5843137254901961, 0.47058823529411764, 0.3411764705882353, 1)
+roughness = 0.82
+
+[sub_resource type="BoxMesh" id="r3"]
+size = Vector3(0.077000, 1.900000, 0.045000)
+
+[sub_resource type="StandardMaterial3D" id="r4"]
+albedo_color = Color(0.8941176470588236, 0.803921568627451, 0.7254901960784313, 1)
+roughness = 0.82
+
+[sub_resource type="BoxShape3D" id="r5"]
+size = Vector3(0.360000, 1.900000, 0.120000)
+
+[node name="Curtains" type="Node3D"]
+metadata/word_key = "curtain"
+
+[node name="Rod" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 2.020000, 0.000000)
+rotation = Vector3(0.000000, 0.000000, 1.570796)
+mesh = SubResource("r1")
+material_override = SubResource("r2")
+
+[node name="Panel" type="Node3D" parent="."]
+position = Vector3(-0.890000, 1.040000, 0.000000)
+
+[node name="Fold" type="MeshInstance3D" parent="Panel"]
+position = Vector3(-0.136000, 0.000000, 0.000000)
+mesh = SubResource("r3")
+material_override = SubResource("r4")
+
+[node name="Fold2" type="MeshInstance3D" parent="Panel"]
+position = Vector3(-0.068000, 0.000000, 0.035000)
+mesh = SubResource("r3")
+material_override = SubResource("r4")
+
+[node name="Fold3" type="MeshInstance3D" parent="Panel"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r3")
+material_override = SubResource("r4")
+
+[node name="Fold4" type="MeshInstance3D" parent="Panel"]
+position = Vector3(0.068000, 0.000000, -0.035000)
+mesh = SubResource("r3")
+material_override = SubResource("r4")
+
+[node name="Fold5" type="MeshInstance3D" parent="Panel"]
+position = Vector3(0.136000, 0.000000, -0.000000)
+mesh = SubResource("r3")
+material_override = SubResource("r4")
+
+[node name="StudyArea" type="Area3D" parent="Panel"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Panel/StudyArea"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+shape = SubResource("r5")
+
+[node name="Panel2" type="Node3D" parent="."]
+position = Vector3(0.890000, 1.040000, 0.000000)
+
+[node name="Fold" type="MeshInstance3D" parent="Panel2"]
+position = Vector3(-0.136000, 0.000000, 0.000000)
+mesh = SubResource("r3")
+material_override = SubResource("r4")
+
+[node name="Fold2" type="MeshInstance3D" parent="Panel2"]
+position = Vector3(-0.068000, 0.000000, 0.035000)
+mesh = SubResource("r3")
+material_override = SubResource("r4")
+
+[node name="Fold3" type="MeshInstance3D" parent="Panel2"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r3")
+material_override = SubResource("r4")
+
+[node name="Fold4" type="MeshInstance3D" parent="Panel2"]
+position = Vector3(0.068000, 0.000000, -0.035000)
+mesh = SubResource("r3")
+material_override = SubResource("r4")
+
+[node name="Fold5" type="MeshInstance3D" parent="Panel2"]
+position = Vector3(0.136000, 0.000000, -0.000000)
+mesh = SubResource("r3")
+material_override = SubResource("r4")
+
+[node name="StudyArea" type="Area3D" parent="Panel2"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Panel2/StudyArea"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+shape = SubResource("r5")

@@ -1,0 +1,580 @@
+{
+  "about": "Hong Kong mahjong at the table in front of the home (docs/guides/MAHJONG.md). Read by scripts/learning/mahjong_rules.gd (fan values, limit) and mahjong_session.gd (modes, pacing). User decisions, 9 Nov 2026: the player and 3 NPCs, one hand per game, 136 tiles (no flowers, so none of the flower bonuses and no 'no flowers' fan), the prevailing wind is East, two modes chosen when sitting down: win only with at least 3 fan, or win with any fan. The fan values follow the user's 'Hong Kong Mahjong, common winning hands' sheet. dragon_pung (+1 for each pung or kong of a dragon outside the three-dragon hands) is standard Hong Kong scoring but is NOT on the sheet: set it to 0 to drop it. seven_pairs (seven distinct pairs) is a house rule on the sheet: a limit hand at this table (user, 9 Nov 2026; it was 4 fan before). Without it in limit_hands it would score fan.seven_pairs. Limit hands score limit_fan; no hand scores more.",
+  "fan": {
+    "all_chows": 1,
+    "all_pungs": 3,
+    "mixed_one_suit": 3,
+    "pure_one_suit": 7,
+    "small_three_dragons": 5,
+    "big_three_dragons": 8,
+    "small_four_winds": 6,
+    "dragon_pung": 1,
+    "prevailing_wind": 1,
+    "seat_wind": 1,
+    "self_drawn": 1
+  },
+  "limit_fan": 13,
+  "limit_hands": ["big_four_winds", "all_honors", "thirteen_orphans", "four_kongs", "seven_pairs"],
+  "seven_pairs": true,
+  "modes": {"three": 3, "any": 0},
+  "preset": {
+    "about": "The game in progress on the table before the player sits down (user, 9 Nov 2026), laid out from the user's screenshot: Bao (seat 1) dealt, the dealer's and Mei's walls are used up and Kiko's is partly used; Kiko has a pung of white dragons, Mei a 2-3-4 bamboo chow; it is Mei's turn and she has just drawn the 5 bamboo. Bao's, Awoo's and Kiko's concealed tiles are a fixed shuffle of the tiles left. Only for show: sitting down deals a fresh hand. Seats: 0 Mei, 1 Bao, 2 Awoo, 3 Kiko; tiles: mahjong_rules.gd kinds (0-8 characters, 9-17 dots, 18-26 bamboo, 27-30 winds ESWN, 31-33 red, green, white dragons). The wall is the rest; no kind may appear more than 4 times (checked by docs/evidence/mahjong-20261109/verify.gd).",
+    "dealer": 1,
+    "turn": 0,
+    "drawn": 22,
+    "hands": [
+      [19, 21, 21, 22, 23, 25, 25, 26, 27, 28, 29],
+      [2, 5, 5, 11, 11, 15, 16, 17, 18, 20, 22, 24, 24],
+      [1, 4, 6, 7, 15, 18, 18, 26, 29, 30, 31, 32, 32],
+      [0, 9, 9, 10, 14, 14, 22, 24, 25, 32]
+    ],
+    "melds": [
+      [{"type": "chow", "tile": 19}],
+      [],
+      [],
+      [{"type": "pung", "tile": 33}]
+    ],
+    "discards": [
+      [17, 0, 0, 18, 3, 30],
+      [20, 7, 2, 16, 24, 11, 1],
+      [1, 14, 3, 23, 26, 31, 13],
+      [1, 32, 12, 3, 2, 27]
+    ]
+  },
+  "points_note": "Lessons (docs/guides/MAHJONG.md#lessons; user 9 Nov 2026). points: fan -> points of the example table; a hand under min_fan pays as min_fan. discard_pays: how many times the points the discarder pays; on a self-drawn win each other player pays the points once.",
+"points": {
+  "min_fan": 1,
+  "discard_pays": 2,
+  "table": [
+    [
+      1,
+      2
+    ],
+    [
+      2,
+      4
+    ],
+    [
+      3,
+      8
+    ],
+    [
+      4,
+      16
+    ],
+    [
+      5,
+      24
+    ],
+    [
+      6,
+      32
+    ],
+    [
+      7,
+      48
+    ],
+    [
+      8,
+      64
+    ],
+    [
+      9,
+      96
+    ],
+    [
+      10,
+      128
+    ]
+  ]
+},
+"lessons": [
+  {
+    "id": "basics",
+    "tab": "mahjong.lesson_tab_basics",
+    "pages": [
+      {
+        "title": "mahjong.l1p1_title",
+        "text": [
+          "mahjong.l1p1_a",
+          "mahjong.l1p1_b",
+          "mahjong.l1p1_c"
+        ],
+        "picture": {
+          "type": "rows",
+          "rows": [
+            {
+              "label": "mahjong.suit_characters",
+              "tiles": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ]
+            },
+            {
+              "label": "mahjong.suit_dots",
+              "tiles": [
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                17
+              ]
+            },
+            {
+              "label": "mahjong.suit_bamboo",
+              "tiles": [
+                18,
+                19,
+                20,
+                21,
+                22,
+                23,
+                24,
+                25,
+                26
+              ]
+            },
+            {
+              "label": "mahjong.suit_honors",
+              "tiles": [
+                27,
+                28,
+                29,
+                30,
+                31,
+                32,
+                33
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "title": "mahjong.l1p2_title",
+        "text": [
+          "mahjong.l1p2_a",
+          "mahjong.l1p2_b",
+          "mahjong.l1p2_c"
+        ],
+        "picture": {
+          "type": "groups",
+          "groups": [
+            {
+              "tiles": [
+                10,
+                11,
+                12
+              ],
+              "label": "mahjong.l_set"
+            },
+            {
+              "tiles": [
+                23,
+                23,
+                23
+              ],
+              "label": "mahjong.l_set"
+            },
+            {
+              "tiles": [
+                6,
+                7,
+                8
+              ],
+              "label": "mahjong.l_set"
+            },
+            {
+              "tiles": [
+                27,
+                27,
+                27
+              ],
+              "label": "mahjong.l_set"
+            },
+            {
+              "tiles": [
+                31,
+                31
+              ],
+              "label": "mahjong.l_pair"
+            }
+          ],
+          "flow": [
+            "mahjong.l_draw",
+            "mahjong.l_discard"
+          ]
+        }
+      },
+      {
+        "title": "mahjong.l1p3_title",
+        "text": [
+          "mahjong.l1p3_a",
+          "mahjong.l1p3_b",
+          "mahjong.l1p3_c"
+        ],
+        "picture": {
+          "type": "sets",
+          "sets": [
+            {
+              "name": "mahjong.btn_chow",
+              "tiles": [
+                20,
+                21,
+                22
+              ],
+              "from": "before",
+              "note": "mahjong.l_before_you"
+            },
+            {
+              "name": "mahjong.btn_pung",
+              "tiles": [
+                6,
+                6,
+                6
+              ],
+              "from": "anyone",
+              "note": "mahjong.l_anyone"
+            },
+            {
+              "name": "mahjong.btn_kong",
+              "tiles": [
+                30,
+                30,
+                30,
+                30
+              ],
+              "from": "anyone",
+              "note": "mahjong.l_extra_tile",
+              "extra": true
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "scoring",
+    "tab": "mahjong.lesson_tab_scoring",
+    "pages": [
+      {
+        "title": "mahjong.l2p1_title",
+        "text": [
+          "mahjong.l2p1_a",
+          "mahjong.l2p1_b",
+          "mahjong.l2p1_c"
+        ],
+        "picture": {
+          "type": "card",
+          "rows": [
+            {
+              "tiles": [
+                9,
+                10,
+                11
+              ],
+              "names": [
+                "mahjong.hand_all_chows"
+              ],
+              "fan": "all_chows"
+            },
+            {
+              "tiles": [
+                22,
+                22,
+                22
+              ],
+              "names": [
+                "mahjong.hand_all_pungs"
+              ],
+              "fan": "all_pungs"
+            },
+            {
+              "tiles": [
+                12,
+                13,
+                14,
+                31
+              ],
+              "names": [
+                "mahjong.hand_mixed_one_suit"
+              ],
+              "fan": "mixed_one_suit"
+            },
+            {
+              "tiles": [
+                31,
+                31,
+                32,
+                32
+              ],
+              "names": [
+                "mahjong.hand_small_three_dragons"
+              ],
+              "fan": "small_three_dragons"
+            },
+            {
+              "tiles": [
+                27,
+                28,
+                29,
+                30
+              ],
+              "names": [
+                "mahjong.hand_small_four_winds"
+              ],
+              "fan": "small_four_winds"
+            },
+            {
+              "tiles": [
+                18,
+                19,
+                20,
+                21
+              ],
+              "names": [
+                "mahjong.hand_pure_one_suit"
+              ],
+              "fan": "pure_one_suit"
+            },
+            {
+              "tiles": [
+                31,
+                32,
+                33
+              ],
+              "names": [
+                "mahjong.hand_big_three_dragons"
+              ],
+              "fan": "big_three_dragons"
+            },
+            {
+              "tiles": [
+                32,
+                32,
+                32
+              ],
+              "names": [
+                "mahjong.hand_dragon_pung"
+              ],
+              "fan": "dragon_pung",
+              "bonus": true
+            },
+            {
+              "tiles": [
+                27,
+                27,
+                27
+              ],
+              "names": [
+                "mahjong.hand_seat_wind",
+                "mahjong.hand_prevailing_wind"
+              ],
+              "fan": "seat_wind",
+              "bonus": true
+            },
+            {
+              "tiles": [
+                -1
+              ],
+              "names": [
+                "mahjong.hand_self_drawn"
+              ],
+              "fan": "self_drawn",
+              "bonus": true
+            }
+          ]
+        }
+      },
+      {
+        "title": "mahjong.l2p2_title",
+        "text": [
+          "mahjong.l2p2_a",
+          "mahjong.l2p2_b",
+          "mahjong.l2p2_c"
+        ],
+        "picture": {
+          "type": "worked",
+          "examples": [
+            {
+              "groups": [
+                [
+                  9,
+                  10,
+                  11
+                ],
+                [
+                  13,
+                  13,
+                  13
+                ],
+                [
+                  15,
+                  16,
+                  17
+                ],
+                [
+                  31,
+                  31,
+                  31
+                ],
+                [
+                  30,
+                  30
+                ]
+              ],
+              "chip": "mahjong.l_self_drawn",
+              "context": {
+                "self_drawn": true,
+                "seat_wind": 28,
+                "prevailing": 27
+              },
+              "parts": [
+                {
+                  "fan": "mixed_one_suit",
+                  "groups": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4
+                  ]
+                },
+                {
+                  "fan": "dragon_pung",
+                  "groups": [
+                    3
+                  ]
+                },
+                {
+                  "fan": "self_drawn",
+                  "groups": []
+                }
+              ]
+            },
+            {
+              "groups": [
+                [
+                  1,
+                  1,
+                  1
+                ],
+                [
+                  26,
+                  26,
+                  26
+                ],
+                [
+                  12,
+                  12,
+                  12
+                ],
+                [
+                  27,
+                  27,
+                  27
+                ],
+                [
+                  14,
+                  14
+                ]
+              ],
+              "chip": "mahjong.l_seat_east",
+              "context": {
+                "self_drawn": false,
+                "seat_wind": 27,
+                "prevailing": 27
+              },
+              "parts": [
+                {
+                  "fan": "all_pungs",
+                  "groups": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4
+                  ]
+                },
+                {
+                  "fan": "seat_wind",
+                  "groups": [
+                    3
+                  ]
+                },
+                {
+                  "fan": "prevailing_wind",
+                  "groups": [
+                    3
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "title": "mahjong.l2p3_title",
+        "text": [
+          "mahjong.l2p3_a",
+          "mahjong.l2p3_b",
+          "mahjong.l2p3_c",
+          "mahjong.l2p3_d"
+        ],
+        "picture": {
+          "type": "balances",
+          "players": [
+            [
+              "cat",
+              "mahjong.mei"
+            ],
+            [
+              "bear",
+              "mahjong.bao"
+            ],
+            [
+              "samoyed",
+              "mahjong.awoo"
+            ],
+            [
+              "golden",
+              "mahjong.kiko"
+            ]
+          ],
+          "hands": [
+            {
+              "text": "mahjong.l_hand1",
+              "winner": 1,
+              "from": 3,
+              "fan": 3
+            },
+            {
+              "text": "mahjong.l_hand2",
+              "winner": 2,
+              "from": -1,
+              "fan": 4
+            }
+          ]
+        }
+      }
+    ]
+  }
+],
+  "pace": {
+    "npc_turn": 0.56,
+    "claim_pause": 0.44,
+    "call_seconds": 0.9,
+    "call_hold": 1.0,
+    "auto_discard": 0.5
+  }
+}

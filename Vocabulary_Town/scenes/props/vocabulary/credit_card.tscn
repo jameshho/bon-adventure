@@ -1,0 +1,64 @@
+[gd_scene load_steps=8 format=3]
+
+[sub_resource type="BoxMesh" id="s1"]
+size = Vector3(0.86, 0.54, 0.048)
+
+[sub_resource type="StandardMaterial3D" id="m1"]
+albedo_color = Color(0.270588235, 0.494117647, 0.647058824, 1)
+roughness = 0.82
+
+[sub_resource type="BoxMesh" id="s2"]
+size = Vector3(0.16, 0.12, 0.014)
+
+[sub_resource type="StandardMaterial3D" id="m2"]
+albedo_color = Color(0.890196078, 0.764705882, 0.431372549, 1)
+roughness = 0.82
+
+[sub_resource type="BoxMesh" id="s3"]
+size = Vector3(0.68, 0.045, 0.012)
+
+[sub_resource type="StandardMaterial3D" id="m3"]
+albedo_color = Color(0.835294118, 0.858823529, 0.878431373, 1)
+roughness = 0.82
+
+[sub_resource type="BoxShape3D" id="hit"]
+size = Vector3(1.1, 0.94, 1.1)
+
+[node name="Credit_Card" type="Node3D"]
+metadata/word_key = "credit card"
+metadata/learning_object = true
+
+[node name="Card_body_00" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.26, 0)
+rotation_degrees = Vector3(0, 0, 0)
+mesh = SubResource("s1")
+material_override = SubResource("m1")
+
+[node name="Chip_01" type="MeshInstance3D" parent="."]
+position = Vector3(-0.22, 0.31, -0.033)
+rotation_degrees = Vector3(0, 0, 0)
+mesh = SubResource("s2")
+material_override = SubResource("m2")
+
+[node name="Card_stripe_02" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.06, -0.032)
+rotation_degrees = Vector3(0, 0, 0)
+mesh = SubResource("s3")
+material_override = SubResource("m3")
+
+[node name="Text_03" type="Label3D" parent="."]
+position = Vector3(0.12, 0.37, -0.036)
+rotation_degrees = Vector3(0, 0, 0)
+text = "CRÉDITO"
+font_size = 55
+pixel_size = 0.0023
+modulate = Color(0.984313725, 0.960784314, 0.91372549, 1)
+outline_size = 0
+
+[node name="Interaction" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Interaction"]
+position = Vector3(0, 0.45, 0)
+shape = SubResource("hit")

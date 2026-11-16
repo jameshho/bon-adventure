@@ -1,0 +1,42 @@
+PASS All original vocabulary keys and translations preserved
+PASS Legacy progress aliases remain compatible
+PASS Vocabulary semantic coverage includes original 500 words
+PASS Standing + actual picker coverage: 501/501
+PASS Market entrance admits BonBon capsule
+PASS Bank entrance admits BonBon capsule
+PASS Police entrance admits BonBon capsule
+PASS Police rear corridor admits BonBon capsule
+PASS Manager office blocks when closed
+PASS Manager office opens for BonBon
+PASS Manager office refuses to close on BonBon
+PASS Vault entrance blocks when closed
+PASS Vault entrance opens for BonBon
+PASS Vault entrance refuses to close on BonBon
+PASS Interview room blocks when closed
+PASS Interview room opens for BonBon
+PASS Interview room refuses to close on BonBon
+PASS Holding cell blocks when closed
+PASS Holding cell opens for BonBon
+PASS Holding cell refuses to close on BonBon
+PASS Original hospital helicopter can lift off its helipad
+PASS Helicopter accelerates smoothly
+PASS Stable hover with pilot assist
+PASS Controlled ascent
+PASS Controlled descent
+PASS Unsafe altitude exit rejected
+PASS Swept rotor volume blocks thin wall
+PASS Rotor volume blocks overhead obstacles
+PASS Both skids detect landing on elevated surface
+PASS Fuselage and skids do not penetrate landing slab
+PASS Clear grounded exit succeeds
+PASS Main-scene E boarding enters original helicopter
+PASS Following camera retains wall collision while aboard
+PASS Main-scene E exit restores BonBon collision safely
+PASS Original helicopter vocabulary preserved
+PASS All obstructed exit positions are rejected
+PASS BonBon lands and stands on reachable cloud
+PASS Cloud collision is the supporting surface
+PASS BonBon jumps off cloud
+PASS Reachable cloud landed from ground with three Space jumps
+PASS BonBon can walk on the cloud without falling through
+Failures: 0

@@ -1,0 +1,450 @@
+{
+  "BonBon": {
+    "height": 2.23919057846069
+  },
+  "animals": [
+    {
+      "height": 1.94999988946131,
+      "name": "Lion",
+      "path": "/root/Main/Apartment/ParkZoo/Lion",
+      "relative_bonbon": 0.870850345753873,
+      "scale": "(0.606455, 0.606455, 0.606455)",
+      "size": "(1.527353, 1.95, 2.821027)"
+    },
+    {
+      "height": 2.33999980285944,
+      "name": "Tiger",
+      "path": "/root/Main/Apartment/ParkZoo/Tiger",
+      "relative_bonbon": 1.04502038610222,
+      "scale": "(0.80609, 0.80609, 0.80609)",
+      "size": "(1.720404, 2.34, 3.958457)"
+    },
+    {
+      "height": 4.09500018341191,
+      "name": "Elephant",
+      "path": "/root/Main/Apartment/ParkZoo/Elephant",
+      "relative_bonbon": 1.82878591166053,
+      "scale": "(1.302306, 1.302306, 1.302306)",
+      "size": "(4.9492, 4.095, 6.63798)"
+    },
+    {
+      "height": 2.40499975990716,
+      "name": "Bear",
+      "path": "/root/Main/Apartment/ParkZoo/Bear",
+      "relative_bonbon": 1.07404871342414,
+      "scale": "(0.837892, 0.837892, 0.837892)",
+      "size": "(1.855773, 2.405, 3.751255)"
+    },
+    {
+      "height": 1.10499996896884,
+      "name": "Monkey",
+      "path": "/root/Main/Apartment/ParkZoo/Monkey",
+      "relative_bonbon": 0.493481876709423,
+      "scale": "(0.465753, 0.465753, 0.465753)",
+      "size": "(0.501754, 1.105, 1.376308)"
+    },
+    {
+      "height": 1.01399987412733,
+      "name": "Snake",
+      "path": "/root/Main/Apartment/ParkZoo/Snake",
+      "relative_bonbon": 0.452842149248588,
+      "scale": "(0.602782, 0.602782, 0.602782)",
+      "size": "(1.219787, 1.014, 2.009432)"
+    },
+    {
+      "height": 5.71999880622204,
+      "name": "Giraffe",
+      "path": "/root/Main/Apartment/ParkZoo/Giraffe",
+      "relative_bonbon": 2.55449395922083,
+      "scale": "(1.165254, 1.165254, 1.165254)",
+      "size": "(2.737714, 5.719999, 4.281328)"
+    },
+    {
+      "height": 2.01499989133174,
+      "name": "Cow",
+      "path": "/root/Main/Apartment/ParkZoo/Cow",
+      "relative_bonbon": 0.899878693093167,
+      "scale": "(0.849315, 0.849315, 0.849315)",
+      "size": "(0.991475, 2.015, 2.509739)"
+    },
+    {
+      "height": 1.23500006856682,
+      "name": "Pig",
+      "path": "/root/Main/Apartment/ParkZoo/Pig",
+      "relative_bonbon": 0.551538614196835,
+      "scale": "(0.419846, 0.419846, 0.419846)",
+      "size": "(0.971445, 1.235, 1.829078)"
+    },
+    {
+      "height": 2.46999921186841,
+      "name": "Horse",
+      "path": "/root/Main/Apartment/ParkZoo/Horse",
+      "relative_bonbon": 1.10307681517952,
+      "scale": "(0.713213, 0.713213, 0.713213)",
+      "size": "(1.027224, 2.469999, 3.440518)"
+    },
+    {
+      "height": 1.01399996260869,
+      "name": "Hen",
+      "path": "/root/Main/Apartment/ParkZoo/Hen",
+      "relative_bonbon": 0.452842188763476,
+      "scale": "(0.440678, 0.440678, 0.440678)",
+      "size": "(0.563855, 1.014, 0.930192)"
+    },
+    {
+      "height": 1.0139999939563,
+      "name": "Duck",
+      "path": "/root/Main/Apartment/ParkZoo/Duck",
+      "relative_bonbon": 0.452842202763003,
+      "scale": "(0.490566, 0.490566, 0.490566)",
+      "size": "(0.627682, 1.014, 1.035487)"
+    },
+    {
+      "height": 1.36499972662378,
+      "name": "Sheep",
+      "path": "/root/Main/Apartment/ParkZoo/Sheep",
+      "relative_bonbon": 0.609595154496467,
+      "scale": "(0.47836, 0.47836, 0.47836)",
+      "size": "(1.288417, 1.365, 2.500679)"
+    },
+    {
+      "height": 1.03999997610964,
+      "name": "Dog",
+      "path": "/root/Main/Apartment/ParkZoo/Dog",
+      "relative_bonbon": 0.464453533394454,
+      "scale": "(0.406005, 0.406005, 0.406005)",
+      "size": "(0.801948, 1.04, 1.80753)"
+    },
+    {
+      "height": 1.01400000286264,
+      "name": "Cat",
+      "path": "/root/Main/Apartment/ParkZoo/Cat",
+      "relative_bonbon": 0.452842206740485,
+      "scale": "(0.427397, 0.427397, 0.427397)",
+      "size": "(0.460433, 1.014, 1.262965)"
+    },
+    {
+      "height": 1.01400009375982,
+      "name": "Rabbit",
+      "path": "/root/Main/Apartment/ParkZoo/Rabbit",
+      "relative_bonbon": 0.45284224733425,
+      "scale": "(0.373206, 0.373206, 0.373206)",
+      "size": "(0.402053, 1.014, 1.102843)"
+    },
+    {
+      "height": 1.01400015902274,
+      "name": "Field Mouse",
+      "path": "/root/Main/Apartment/ParkZoo/Field Mouse",
+      "relative_bonbon": 0.452842276480015,
+      "scale": "(0.427397, 0.427397, 0.427397)",
+      "size": "(0.460433, 1.014, 1.262948)"
+    },
+    {
+      "height": 1.01400082711658,
+      "name": "Bird",
+      "path": "/root/Main/Apartment/ParkZoo/Bird",
+      "relative_bonbon": 0.452842574844004,
+      "scale": "(0.490567, 0.490567, 0.490567)",
+      "size": "(0.62768, 1.014001, 1.035488)"
+    },
+    {
+      "height": 1.01399987512428,
+      "name": "Turtle",
+      "path": "/root/Main/Apartment/ParkZoo/Turtle",
+      "relative_bonbon": 0.452842149693818,
+      "scale": "(0.25706, 0.25706, 0.25706)",
+      "size": "(0.914503, 1.014, 1.074568)"
+    },
+    {
+      "height": 1.01400017738342,
+      "name": "Fish",
+      "path": "/root/Main/Apartment/ParkZoo/Fish",
+      "relative_bonbon": 0.45284228467971,
+      "scale": "(0.78, 0.78, 0.78)",
+      "size": "(0.840291, 1.014, 2.16356)"
+    },
+    {
+      "height": 1.01400036765665,
+      "name": "Crab",
+      "path": "/root/Main/Apartment/Coast/Crab",
+      "relative_bonbon": 0.45284236965382,
+      "scale": "(2.491827, 2.491827, 2.491827)",
+      "size": "(2.239197, 1.014, 1.771382)"
+    },
+    {
+      "height": 1.01399998149304,
+      "name": "Crab2",
+      "path": "/root/Main/Apartment/Coast/Crab2",
+      "relative_bonbon": 0.452842197197036,
+      "scale": "(2.491827, 2.491827, 2.491827)",
+      "size": "(2.239197, 1.014, 1.771382)"
+    },
+    {
+      "height": 1.01400007803394,
+      "name": "Crab3",
+      "path": "/root/Main/Apartment/Coast/Crab3",
+      "relative_bonbon": 0.452842240311232,
+      "scale": "(2.491827, 2.491827, 2.491827)",
+      "size": "(2.239197, 1.014, 1.771382)"
+    },
+    {
+      "height": 1.01400007803394,
+      "name": "Crab4",
+      "path": "/root/Main/Apartment/Coast/Crab4",
+      "relative_bonbon": 0.452842240311232,
+      "scale": "(2.491827, 2.491827, 2.491827)",
+      "size": "(2.239197, 1.014, 1.771382)"
+    },
+    {
+      "height": 1.01400007803394,
+      "name": "Crab5",
+      "path": "/root/Main/Apartment/Coast/Crab5",
+      "relative_bonbon": 0.452842240311232,
+      "scale": "(2.491827, 2.491827, 2.491827)",
+      "size": "(2.239197, 1.014, 1.771382)"
+    },
+    {
+      "height": 1.01399998149304,
+      "name": "Crab6",
+      "path": "/root/Main/Apartment/Coast/Crab6",
+      "relative_bonbon": 0.452842197197036,
+      "scale": "(2.491827, 2.491827, 2.491827)",
+      "size": "(2.239197, 1.014, 1.771382)"
+    },
+    {
+      "height": 1.01400007803394,
+      "name": "Crab7",
+      "path": "/root/Main/Apartment/Coast/Crab7",
+      "relative_bonbon": 0.452842240311232,
+      "scale": "(2.491827, 2.491827, 2.491827)",
+      "size": "(2.239197, 1.014, 1.771382)"
+    },
+    {
+      "height": 1.01399992877278,
+      "name": "Crab8",
+      "path": "/root/Main/Apartment/Coast/Crab8",
+      "relative_bonbon": 0.452842173652695,
+      "scale": "(2.491827, 2.491827, 2.491827)",
+      "size": "(2.239197, 1.014, 1.771382)"
+    },
+    {
+      "height": 1.01400007803394,
+      "name": "Crab",
+      "path": "/root/Main/Apartment/Coast/Deserted island/Crab",
+      "relative_bonbon": 0.452842240311232,
+      "scale": "(2.491827, 2.491827, 2.491827)",
+      "size": "(2.239197, 1.014, 1.771382)"
+    },
+    {
+      "height": 1.01400007803394,
+      "name": "Crab2",
+      "path": "/root/Main/Apartment/Coast/Deserted island/Crab2",
+      "relative_bonbon": 0.452842240311232,
+      "scale": "(2.491827, 2.491827, 2.491827)",
+      "size": "(2.239197, 1.014, 1.771382)"
+    }
+  ],
+  "movement": [
+    {
+      "excursion": 2.38543319702148,
+      "name": "Lion",
+      "probes": 417,
+      "states": [
+        "idle",
+        "walking",
+        "resting"
+      ]
+    },
+    {
+      "excursion": 2.72059297561646,
+      "name": "Tiger",
+      "probes": 494,
+      "states": [
+        "idle",
+        "walking",
+        "resting"
+      ]
+    },
+    {
+      "excursion": 3.30491900444031,
+      "name": "Elephant",
+      "probes": 553,
+      "states": [
+        "idle",
+        "walking",
+        "resting"
+      ]
+    },
+    {
+      "excursion": 2.7346031665802,
+      "name": "Bear",
+      "probes": 459,
+      "states": [
+        "idle",
+        "walking",
+        "resting"
+      ]
+    },
+    {
+      "excursion": 2.84913873672485,
+      "name": "Monkey",
+      "probes": 741,
+      "states": [
+        "idle",
+        "walking",
+        "resting"
+      ]
+    },
+    {
+      "excursion": 1.46407210826874,
+      "name": "Snake",
+      "probes": 422,
+      "states": [
+        "idle",
+        "walking",
+        "resting"
+      ]
+    },
+    {
+      "excursion": 3.03455209732056,
+      "name": "Giraffe",
+      "probes": 501,
+      "states": [
+        "idle",
+        "walking",
+        "resting"
+      ]
+    },
+    {
+      "excursion": 2.62521505355835,
+      "name": "Cow",
+      "probes": 469,
+      "states": [
+        "idle",
+        "walking",
+        "resting"
+      ]
+    },
+    {
+      "excursion": 2.77809381484985,
+      "name": "Pig",
+      "probes": 590,
+      "states": [
+        "idle",
+        "walking",
+        "resting"
+      ]
+    },
+    {
+      "excursion": 2.83415055274963,
+      "name": "Horse",
+      "probes": 452,
+      "states": [
+        "idle",
+        "walking",
+        "resting"
+      ]
+    },
+    {
+      "excursion": 2.18482375144958,
+      "name": "Hen",
+      "probes": 792,
+      "states": [
+        "idle",
+        "walking",
+        "resting"
+      ]
+    },
+    {
+      "excursion": 2.17616319656372,
+      "name": "Duck",
+      "probes": 633,
+      "states": [
+        "idle",
+        "walking",
+        "resting"
+      ]
+    },
+    {
+      "excursion": 2.48286938667297,
+      "name": "Sheep",
+      "probes": 440,
+      "states": [
+        "idle",
+        "walking",
+        "resting"
+      ]
+    },
+    {
+      "excursion": 1.02164340019226,
+      "name": "Dog",
+      "probes": 401,
+      "states": [
+        "idle",
+        "walking",
+        "resting"
+      ]
+    },
+    {
+      "excursion": 0.991189062595367,
+      "name": "Cat",
+      "probes": 241,
+      "states": [
+        "idle",
+        "walking",
+        "resting"
+      ]
+    },
+    {
+      "excursion": 1.01565504074097,
+      "name": "Rabbit",
+      "probes": 408,
+      "states": [
+        "idle",
+        "walking",
+        "resting"
+      ]
+    },
+    {
+      "excursion": 0.993770182132721,
+      "name": "Field Mouse",
+      "probes": 498,
+      "states": [
+        "idle",
+        "walking",
+        "resting"
+      ]
+    },
+    {
+      "excursion": 0.981758236885071,
+      "name": "Bird",
+      "probes": 570,
+      "states": [
+        "idle",
+        "walking",
+        "resting"
+      ]
+    },
+    {
+      "excursion": 0.755768835544586,
+      "name": "Turtle",
+      "probes": 345,
+      "states": [
+        "idle",
+        "walking",
+        "resting"
+      ]
+    },
+    {
+      "excursion": 1.72814953327179,
+      "name": "Fish",
+      "probes": 828,
+      "states": [
+        "idle",
+        "walking",
+        "resting"
+      ]
+    }
+  ],
+  "movement_ms_per_frame": 0.0896052777777778
+}

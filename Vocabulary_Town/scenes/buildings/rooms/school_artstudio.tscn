@@ -1,0 +1,253 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/easel.tscn" id="e1"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/palette.tscn" id="e2"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/paintbrush.tscn" id="e3"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/scissors.tscn" id="e4"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/ruler.tscn" id="e5"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/paint_tube.tscn" id="e6"]
+
+[sub_resource type="BoxMesh" id="r1"]
+size = Vector3(1.250000, 0.080000, 1.250000)
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.76863, 0.68627, 0.56863, 1)
+roughness = 0.78
+
+[sub_resource type="BoxShape3D" id="r3"]
+size = Vector3(1.250000, 0.080000, 1.250000)
+
+[sub_resource type="BoxMesh" id="r4"]
+size = Vector3(0.080000, 0.920000, 0.900000)
+
+[sub_resource type="StandardMaterial3D" id="r5"]
+albedo_color = Color(0.67843, 0.48235, 0.31373, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r6"]
+size = Vector3(0.080000, 0.920000, 0.900000)
+
+[sub_resource type="BoxMesh" id="r7"]
+size = Vector3(1.250000, 0.080000, 1.250000)
+
+[sub_resource type="BoxShape3D" id="r8"]
+size = Vector3(1.250000, 0.080000, 1.250000)
+
+[sub_resource type="BoxMesh" id="r9"]
+size = Vector3(0.080000, 0.920000, 0.900000)
+
+[sub_resource type="BoxMesh" id="r10"]
+size = Vector3(0.080000, 0.920000, 0.900000)
+
+[sub_resource type="BoxMesh" id="r11"]
+size = Vector3(1.250000, 0.080000, 1.250000)
+
+[sub_resource type="BoxShape3D" id="r12"]
+size = Vector3(1.250000, 0.080000, 1.250000)
+
+[sub_resource type="BoxMesh" id="r13"]
+size = Vector3(0.080000, 0.920000, 0.900000)
+
+[sub_resource type="BoxMesh" id="r14"]
+size = Vector3(0.080000, 0.920000, 0.900000)
+
+[sub_resource type="BoxMesh" id="r15"]
+size = Vector3(1.250000, 0.080000, 1.250000)
+
+[sub_resource type="BoxShape3D" id="r16"]
+size = Vector3(1.250000, 0.080000, 1.250000)
+
+[sub_resource type="BoxMesh" id="r17"]
+size = Vector3(0.080000, 0.920000, 0.900000)
+
+[sub_resource type="BoxMesh" id="r18"]
+size = Vector3(0.080000, 0.920000, 0.900000)
+
+[sub_resource type="BoxMesh" id="r19"]
+size = Vector3(1.250000, 0.080000, 1.250000)
+
+[sub_resource type="BoxShape3D" id="r20"]
+size = Vector3(1.250000, 0.080000, 1.250000)
+
+[sub_resource type="BoxMesh" id="r21"]
+size = Vector3(0.080000, 0.920000, 0.900000)
+
+[sub_resource type="BoxMesh" id="r22"]
+size = Vector3(0.080000, 0.920000, 0.900000)
+
+[node name="ArtStudio" type="Node3D"]
+metadata/theme = "ART STUDIO"
+
+[node name="Easel" parent="." instance=ExtResource("e1")]
+position = Vector3(-2.600000, 0.090000, -3.550000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="DisplayToppalette_2" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.940000, -3.550000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r1")
+material_override = SubResource("r2")
+
+[node name="TableBodypalette" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="TableBodypalette"]
+position = Vector3(0.000000, 0.940000, -3.550000)
+shape = SubResource("r3")
+
+[node name="DisplayLeg_5" type="MeshInstance3D" parent="."]
+position = Vector3(-0.440000, 0.460000, -3.550000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r4")
+material_override = SubResource("r5")
+
+[node name="DisplayLeg_6" type="MeshInstance3D" parent="."]
+position = Vector3(0.440000, 0.460000, -3.550000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r6")
+material_override = SubResource("r5")
+
+[node name="Palette" parent="." instance=ExtResource("e2")]
+position = Vector3(0.000000, 0.990000, -3.550000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="DisplayToppaintbrush_7" type="MeshInstance3D" parent="."]
+position = Vector3(2.600000, 0.940000, -3.550000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r7")
+material_override = SubResource("r2")
+
+[node name="TableBodypaintbrush" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="TableBodypaintbrush"]
+position = Vector3(2.600000, 0.940000, -3.550000)
+shape = SubResource("r8")
+
+[node name="DisplayLeg_9" type="MeshInstance3D" parent="."]
+position = Vector3(2.160000, 0.460000, -3.550000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r9")
+material_override = SubResource("r5")
+
+[node name="DisplayLeg_10" type="MeshInstance3D" parent="."]
+position = Vector3(3.040000, 0.460000, -3.550000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r10")
+material_override = SubResource("r5")
+
+[node name="Paintbrush" parent="." instance=ExtResource("e3")]
+position = Vector3(2.600000, 0.990000, -3.550000)
+rotation_degrees = Vector3(0, 180, 0)
+
+[node name="DisplayTopscissors_11" type="MeshInstance3D" parent="."]
+position = Vector3(-2.600000, 0.940000, 3.550000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r11")
+material_override = SubResource("r2")
+
+[node name="TableBodyscissors" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="TableBodyscissors"]
+position = Vector3(-2.600000, 0.940000, 3.550000)
+shape = SubResource("r12")
+
+[node name="DisplayLeg_13" type="MeshInstance3D" parent="."]
+position = Vector3(-3.040000, 0.460000, 3.550000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r13")
+material_override = SubResource("r5")
+
+[node name="DisplayLeg_14" type="MeshInstance3D" parent="."]
+position = Vector3(-2.160000, 0.460000, 3.550000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r14")
+material_override = SubResource("r5")
+
+[node name="Scissors" parent="." instance=ExtResource("e4")]
+position = Vector3(-2.600000, 0.990000, 3.550000)
+rotation_degrees = Vector3(0, 0, 0)
+
+[node name="DisplayTopruler_15" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.940000, 3.550000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r15")
+material_override = SubResource("r2")
+
+[node name="TableBodyruler" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="TableBodyruler"]
+position = Vector3(0.000000, 0.940000, 3.550000)
+shape = SubResource("r16")
+
+[node name="DisplayLeg_17" type="MeshInstance3D" parent="."]
+position = Vector3(-0.440000, 0.460000, 3.550000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r17")
+material_override = SubResource("r5")
+
+[node name="DisplayLeg_18" type="MeshInstance3D" parent="."]
+position = Vector3(0.440000, 0.460000, 3.550000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r18")
+material_override = SubResource("r5")
+
+[node name="Ruler" parent="." instance=ExtResource("e5")]
+position = Vector3(0.000000, 0.990000, 3.550000)
+rotation_degrees = Vector3(0, 0, 0)
+
+[node name="DisplayToppaint_tube_19" type="MeshInstance3D" parent="."]
+position = Vector3(2.600000, 0.940000, 3.550000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r19")
+material_override = SubResource("r2")
+
+[node name="TableBodypaint_tube" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="TableBodypaint_tube"]
+position = Vector3(2.600000, 0.940000, 3.550000)
+shape = SubResource("r20")
+
+[node name="DisplayLeg_21" type="MeshInstance3D" parent="."]
+position = Vector3(2.160000, 0.460000, 3.550000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r21")
+material_override = SubResource("r5")
+
+[node name="DisplayLeg_22" type="MeshInstance3D" parent="."]
+position = Vector3(3.040000, 0.460000, 3.550000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r22")
+material_override = SubResource("r5")
+
+[node name="Paint_Tube" parent="." instance=ExtResource("e6")]
+position = Vector3(2.600000, 0.990000, 3.550000)
+rotation_degrees = Vector3(0, 0, 0)
+
+[node name="Section125" type="Label3D" parent="."]
+position = Vector3(0.000000, 3.100000, -4.900000)
+text = "ART STUDIO"
+font_size = 52
+pixel_size = 0.007
+rotation_degrees = Vector3(0, 180, 0)
+modulate = Color(0.18, 0.24, 0.27, 1)
+outline_size = 0
+
+[node name="RoomLight" type="OmniLight3D" parent="."]
+position = Vector3(0,4,0)
+omni_range = 9.0
+light_energy = 0.9
+shadow_enabled = false

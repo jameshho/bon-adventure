@@ -1,0 +1,71 @@
+[gd_scene format=3]
+
+[sub_resource type="CylinderMesh" id="r1"]
+top_radius = 0.15
+bottom_radius = 0.15
+height = 0.05
+radial_segments = 12
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.6549019607843137, 0.5411764705882353, 0.3803921568627451, 1)
+roughness = 0.82
+
+[sub_resource type="CylinderMesh" id="r3"]
+top_radius = 0.025
+bottom_radius = 0.025
+height = 0.35
+radial_segments = 12
+
+[sub_resource type="CylinderMesh" id="r4"]
+top_radius = 0.14
+bottom_radius = 0.22
+height = 0.26
+radial_segments = 12
+
+[sub_resource type="StandardMaterial3D" id="r5"]
+albedo_color = Color(0.9411764705882353, 0.8745098039215686, 0.7137254901960784, 1)
+roughness = 0.82
+
+[sub_resource type="CylinderMesh" id="r6"]
+top_radius = 0.065
+bottom_radius = 0.065
+height = 0.06
+radial_segments = 12
+
+[sub_resource type="StandardMaterial3D" id="r7"]
+albedo_color = Color(1.0, 0.9568627450980393, 0.8, 1)
+roughness = 0.82
+
+[sub_resource type="BoxShape3D" id="r8"]
+size = Vector3(0.440000, 0.600000, 0.440000)
+
+[node name="BedsideLamp" type="Node3D"]
+metadata/word_key = "lamp"
+
+[node name="Base" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.025000, 0.000000)
+mesh = SubResource("r1")
+material_override = SubResource("r2")
+
+[node name="Stem" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.210000, 0.000000)
+mesh = SubResource("r3")
+material_override = SubResource("r2")
+
+[node name="Shade" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.470000, 0.000000)
+mesh = SubResource("r4")
+material_override = SubResource("r5")
+
+[node name="Bulb" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.370000, 0.000000)
+mesh = SubResource("r6")
+material_override = SubResource("r7")
+
+[node name="StudyArea" type="Area3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="StudyArea"]
+position = Vector3(0.000000, 0.300000, 0.000000)
+shape = SubResource("r8")

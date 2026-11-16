@@ -1,0 +1,76 @@
+[gd_scene format=3]
+
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/duck/body.res" id="1_qqi22"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/duck/bill.res" id="2_u7axk"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/duck/bill_lower.res" id="3_66lyo"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/duck/crest.res" id="4_vjnem"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/duck/wings.res" id="5_517yl"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/duck/tail.res" id="6_2xxi3"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/duck/legs.res" id="7_0sk0q"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/duck/eyes.res" id="8_yqrv1"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/duck/face_details.res" id="9_mg3ug"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_olcf8"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.86
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7p6li"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.12
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_l5aue"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.75
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_dbrit"]
+size = Vector3(0.19512196, 0.45000002, 0.36585367)
+
+[node name="DuckClayDisplay" type="Node3D" unique_id=1700621338]
+metadata/source = "User's Duck Character Blueprint, relax walk pose (11 Nov 2026)"
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=130042067]
+material_override = SubResource("StandardMaterial3D_olcf8")
+mesh = ExtResource("1_qqi22")
+
+[node name="Bill" type="MeshInstance3D" parent="." unique_id=498994442]
+material_override = SubResource("StandardMaterial3D_olcf8")
+mesh = ExtResource("2_u7axk")
+
+[node name="Bill lower" type="MeshInstance3D" parent="." unique_id=1629829925]
+material_override = SubResource("StandardMaterial3D_olcf8")
+mesh = ExtResource("3_66lyo")
+
+[node name="Crest" type="MeshInstance3D" parent="." unique_id=783132215]
+material_override = SubResource("StandardMaterial3D_olcf8")
+mesh = ExtResource("4_vjnem")
+
+[node name="Wings" type="MeshInstance3D" parent="." unique_id=987883311]
+material_override = SubResource("StandardMaterial3D_olcf8")
+mesh = ExtResource("5_517yl")
+
+[node name="Tail" type="MeshInstance3D" parent="." unique_id=1042960481]
+material_override = SubResource("StandardMaterial3D_olcf8")
+mesh = ExtResource("6_2xxi3")
+
+[node name="Legs" type="MeshInstance3D" parent="." unique_id=1686100786]
+material_override = SubResource("StandardMaterial3D_olcf8")
+mesh = ExtResource("7_0sk0q")
+
+[node name="Eyes" type="MeshInstance3D" parent="." unique_id=1690382739]
+material_override = SubResource("StandardMaterial3D_7p6li")
+cast_shadow = 0
+mesh = ExtResource("8_yqrv1")
+
+[node name="Face details" type="MeshInstance3D" parent="." unique_id=1615645892]
+material_override = SubResource("StandardMaterial3D_l5aue")
+cast_shadow = 0
+mesh = ExtResource("9_mg3ug")
+
+[node name="Footprint" type="StaticBody3D" parent="." unique_id=1905601631]
+
+[node name="@CollisionShape3D@2" type="CollisionShape3D" parent="Footprint" unique_id=512200104]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.22500001, -0.018292688)
+shape = SubResource("BoxShape3D_dbrit")

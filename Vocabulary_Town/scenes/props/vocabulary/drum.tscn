@@ -1,0 +1,141 @@
+[gd_scene format=3]
+
+[sub_resource type="CylinderMesh" id="r1"]
+top_radius = 0.43
+bottom_radius = 0.43
+height = 0.65
+radial_segments = 16
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.63529, 0.28627, 0.24314, 1)
+roughness = 0.78
+
+[sub_resource type="CylinderMesh" id="r3"]
+top_radius = 0.44
+bottom_radius = 0.44
+height = 0.04
+radial_segments = 16
+
+[sub_resource type="StandardMaterial3D" id="r4"]
+albedo_color = Color(0.92549, 0.90980, 0.87451, 1)
+roughness = 0.78
+
+[sub_resource type="TorusMesh" id="r5"]
+inner_radius = 0.408
+outer_radius = 0.452
+rings = 24
+ring_segments = 8
+
+[sub_resource type="StandardMaterial3D" id="r6"]
+albedo_color = Color(0.52941, 0.58039, 0.61176, 1)
+roughness = 0.78
+
+[sub_resource type="TorusMesh" id="r7"]
+inner_radius = 0.408
+outer_radius = 0.452
+rings = 24
+ring_segments = 8
+
+[sub_resource type="CylinderMesh" id="r8"]
+top_radius = 0.012
+bottom_radius = 0.012
+height = 0.58
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="r9"]
+top_radius = 0.012
+bottom_radius = 0.012
+height = 0.58
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="r10"]
+top_radius = 0.018
+bottom_radius = 0.018
+height = 0.7810249675906654
+radial_segments = 16
+
+[sub_resource type="StandardMaterial3D" id="r11"]
+albedo_color = Color(0.67843, 0.48235, 0.31373, 1)
+roughness = 0.78
+
+[sub_resource type="CylinderMesh" id="r12"]
+top_radius = 0.018
+bottom_radius = 0.018
+height = 0.7810249675906654
+radial_segments = 16
+
+[sub_resource type="BoxShape3D" id="r13"]
+size = Vector3(1.000000, 0.900000, 1.000000)
+
+[sub_resource type="BoxShape3D" id="r14"]
+size = Vector3(0.900000, 0.700000, 0.900000)
+
+[node name="Drum" type="Node3D"]
+metadata/word_key = "drum"
+metadata/learning_object = true
+
+[node name="Shell_2" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.400000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r1")
+material_override = SubResource("r2")
+
+[node name="DrumHead_4" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.750000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r3")
+material_override = SubResource("r4")
+
+[node name="Rim_6" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.080000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r5")
+material_override = SubResource("r6")
+scale = Vector3(1.000000, 1.000000, 1.000000)
+
+[node name="Rim_7" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.720000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r7")
+material_override = SubResource("r6")
+scale = Vector3(1.000000, 1.000000, 1.000000)
+
+[node name="TensionRod_8" type="MeshInstance3D" parent="."]
+position = Vector3(-0.380000, 0.410000, -0.100000)
+rotation_degrees = Vector3(0.000000, 0.000000, -0.000000)
+mesh = SubResource("r8")
+material_override = SubResource("r6")
+
+[node name="TensionRod_9" type="MeshInstance3D" parent="."]
+position = Vector3(0.380000, 0.410000, -0.100000)
+rotation_degrees = Vector3(0.000000, 0.000000, -0.000000)
+mesh = SubResource("r9")
+material_override = SubResource("r6")
+
+[node name="StickA_11" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.800000, 0.000000)
+rotation_degrees = Vector3(39.805571, 0.000000, -90.000000)
+mesh = SubResource("r10")
+material_override = SubResource("r11")
+
+[node name="StickB_12" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.830000, 0.000000)
+rotation_degrees = Vector3(-39.805571, 0.000000, -90.000000)
+mesh = SubResource("r12")
+material_override = SubResource("r11")
+
+[node name="Interaction" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Interaction"]
+position = Vector3(0.000000, 0.450000, 0.000000)
+shape = SubResource("r13")
+
+[node name="Footprint" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Footprint"]
+position = Vector3(0.000000, 0.350000, 0.000000)
+shape = SubResource("r14")

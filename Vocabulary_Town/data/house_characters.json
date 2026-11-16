@@ -1,0 +1,14 @@
+{
+  "note": "Named plush NPCs in the Home zone. position is Apartment-local (+X west, +Z north) on the surface they rest on; facing is the direction they look (sit/stand) or their head points (lie); sit uses the shared seated pose (paws forward, slight recline). Optional back is an Apartment-local [x, z] point on the backrest face the sitter leans against. id is the character's permanent identity: unique, lowercase, never reused or changed once saves can refer to it (outfit choices, quests). name is only what the click popup shows, so rename freely, and several characters may share a name, species or scene as long as each has its own id. in_house: false keeps a character out of the house (14 Nov 2026, user: only the welcome tutorial's BonBon, Sunny and Leo stay there); the entry stays because every id is also a profile avatar and a tutorial stand-in, and its position is kept in case it moves back.",
+  "characters": [
+    {"id": "bonbon", "name": "BonBon", "species": "Pig", "scene": "res://scenes/characters/pig_plush.tscn", "pose": "sit", "position": [12.85, 0.55, 29.7], "facing": "-x", "back": [13.1, 29.7]},
+    {"id": "leo", "name": "Leo", "species": "Lion", "scene": "res://scenes/characters/lion_plush.tscn", "pose": "sit", "position": [2.9, 0.81, 32.09], "facing": "-x", "back": [3.13, 32.09]},
+    {"id": "bruno", "in_house": false, "name": "Bruno", "species": "Bear", "scene": "res://scenes/characters/bear_plush.tscn", "pose": "sit", "position": [2.9, 0.81, 35.11], "facing": "-x", "back": [3.13, 35.11]},
+    {"id": "miso", "in_house": false, "name": "Miso", "species": "Siamese Cat", "scene": "res://scenes/characters/cat_plush.tscn", "pose": "sit", "position": [0.9, 0.73, 30.5], "facing": [-0.88, 0.48], "back": [1.26, 30.3]},
+    {"id": "awoo", "in_house": false, "name": "Sam", "species": "Samoyed", "scene": "res://scenes/characters/samoyed_plush.tscn", "pose": "sit", "position": [11, 0.55, 27.9], "facing": "+z", "back": [11, 27.66]},
+    {"id": "poppy", "in_house": false, "name": "Poppy", "species": "Sheep", "scene": "res://scenes/characters/sheep_plush.tscn", "pose": "sit", "position": [-1.55, 0.675, 23.8], "facing": [0.53, -0.85], "back": [-1.55, 24.17]},
+    {"id": "sunny", "name": "Sunny", "species": "Golden Retriever", "scene": "res://scenes/characters/golden_plush.tscn", "pose": "sit", "position": [9.15, 0.55, 31.3], "facing": "+x", "back": [8.9, 31.3]},
+    {"id": "twinkle", "in_house": false, "name": "Twinkle", "species": "Beagle", "scene": "res://scenes/characters/beagle_plush.tscn", "pose": "sit", "position": [1.55, 0.675, 23.8], "facing": [-0.53, -0.85], "back": [1.55, 24.17]},
+    {"id": "cocodrilo", "in_house": false, "name": "Cocodrilo", "species": "Crocodile", "scene": "res://scenes/characters/crocodile_plush.tscn", "pose": "stand", "position": [15.0, -0.96, 18.0], "facing": "+z"}
+  ]
+}

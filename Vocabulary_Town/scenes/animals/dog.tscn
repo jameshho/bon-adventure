@@ -1,0 +1,712 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/world/park_animals.gd" id="1_8xxji"]
+
+[sub_resource type="StandardMaterial3D" id="GoldenCoat"]
+albedo_color = Color(0.730, 0.540, 0.369, 1)
+roughness = 0.79
+
+[sub_resource type="StandardMaterial3D" id="GoldenHighlights"]
+albedo_color = Color(0.865, 0.679, 0.467, 1)
+roughness = 0.80
+
+[sub_resource type="StandardMaterial3D" id="CreamFur"]
+albedo_color = Color(0.931, 0.809, 0.648, 1)
+roughness = 0.84
+
+[sub_resource type="StandardMaterial3D" id="EarChocolate"]
+albedo_color = Color(0.462, 0.278, 0.182, 1)
+roughness = 0.91
+
+[sub_resource type="StandardMaterial3D" id="EarInner"]
+albedo_color = Color(0.603, 0.360, 0.307, 1)
+roughness = 0.92
+
+[sub_resource type="StandardMaterial3D" id="MuzzleTan"]
+albedo_color = Color(0.831, 0.669, 0.496, 1)
+roughness = 0.86
+
+[sub_resource type="StandardMaterial3D" id="EyeSocket"]
+albedo_color = Color(0.326, 0.226, 0.169, 1)
+roughness = 0.87
+
+[sub_resource type="StandardMaterial3D" id="EyeGloss"]
+albedo_color = Color(0.085, 0.069, 0.061, 1)
+roughness = 0.14
+
+[sub_resource type="StandardMaterial3D" id="EyeLight"]
+albedo_color = Color(1.000, 0.968, 0.874, 1)
+roughness = 0.24
+
+[sub_resource type="StandardMaterial3D" id="WetNose"]
+albedo_color = Color(0.099, 0.121, 0.127, 1)
+roughness = 0.22
+
+[sub_resource type="StandardMaterial3D" id="MouthLine"]
+albedo_color = Color(0.229, 0.145, 0.146, 1)
+roughness = 0.75
+
+[sub_resource type="StandardMaterial3D" id="TongueRose"]
+albedo_color = Color(0.825, 0.358, 0.398, 1)
+roughness = 0.65
+
+[sub_resource type="StandardMaterial3D" id="PawNails"]
+albedo_color = Color(0.433, 0.351, 0.301, 1)
+roughness = 0.88
+
+[sub_resource type="StandardMaterial3D" id="CollarBlue"]
+albedo_color = Color(0.087, 0.407, 0.547, 1)
+roughness = 0.37
+metallic = 0.13
+
+[sub_resource type="StandardMaterial3D" id="CollarTrim"]
+albedo_color = Color(0.026, 0.256, 0.335, 1)
+roughness = 0.45
+metallic = 0.13
+
+[sub_resource type="StandardMaterial3D" id="BrassTag"]
+albedo_color = Color(0.906, 0.664, 0.242, 1)
+roughness = 0.34
+metallic = 0.62
+
+[sub_resource type="SphereMesh" id="SphereSmooth"]
+radius = 1.0
+height = 2.0
+radial_segments = 24
+rings = 14
+
+[sub_resource type="SphereMesh" id="SphereTiny"]
+radius = 1.0
+height = 2.0
+radial_segments = 12
+rings = 8
+
+[sub_resource type="CylinderMesh" id="CollarBand"]
+top_radius = 0.422
+bottom_radius = 0.433
+height = 0.135
+radial_segments = 32
+
+[sub_resource type="CylinderMesh" id="CollarRim"]
+top_radius = 0.433
+bottom_radius = 0.433
+height = 0.021
+radial_segments = 32
+
+[sub_resource type="CylinderMesh" id="TagDisc"]
+top_radius = 0.125
+bottom_radius = 0.125
+height = 0.043
+radial_segments = 24
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_of8ck"]
+size = Vector3(1.2, 1.9, 2.2)
+
+[node name="Dog" type="Node3D" unique_id=1779450896]
+scale = Vector3(0.27327255, 0.27327255, 0.27327255)
+script = ExtResource("1_8xxji")
+radius = 1.1
+metadata/word_key = "dog"
+
+[node name="Part00" type="MeshInstance3D" parent="." unique_id=1710808906]
+position = Vector3(0, 0.89, -0.1)
+scale = Vector3(0.57, 0.49, 0.85)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("GoldenCoat")
+
+[node name="RumpRound" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.91, -0.56)
+scale = Vector3(0.53, 0.45, 0.44)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("GoldenCoat")
+
+[node name="BackShoulderBridge" type="MeshInstance3D" parent="."]
+position = Vector3(0, 1.015, 0.4)
+scale = Vector3(0.51, 0.45, 0.39)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("GoldenCoat")
+
+[node name="LowerBelly" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.64, -0.06)
+scale = Vector3(0.43, 0.22, 0.64)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("GoldenHighlights")
+
+[node name="ChestRuff" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.98, 0.57)
+scale = Vector3(0.39, 0.4, 0.3)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("CreamFur")
+
+[node name="ChestLowerV" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.69, 0.68)
+scale = Vector3(0.25, 0.24, 0.17)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("CreamFur")
+
+[node name="NeckUndercoat" type="MeshInstance3D" parent="."]
+position = Vector3(0, 1.255, 0.49)
+scale = Vector3(0.35, 0.34, 0.34)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("GoldenHighlights")
+
+[node name="NeckSideLeft" type="MeshInstance3D" parent="."]
+position = Vector3(-0.27, 1.23, 0.52)
+rotation = Vector3(0, 0, -0.18)
+scale = Vector3(0.19, 0.3, 0.26)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("GoldenCoat")
+
+[node name="NeckSideRight" type="MeshInstance3D" parent="."]
+position = Vector3(0.27, 1.23, 0.52)
+rotation = Vector3(0, 0, 0.18)
+scale = Vector3(0.19, 0.3, 0.26)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("GoldenCoat")
+
+[node name="Part01" type="MeshInstance3D" parent="." unique_id=821201571]
+position = Vector3(0, 1.49, 0.76)
+scale = Vector3(0.46, 0.425, 0.425)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("GoldenCoat")
+
+[node name="ForeheadCap" type="MeshInstance3D" parent="."]
+position = Vector3(0, 1.71, 0.95)
+scale = Vector3(0.35, 0.205, 0.245)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("GoldenHighlights")
+
+[node name="NoseBridge" type="MeshInstance3D" parent="."]
+position = Vector3(0, 1.43, 1.137)
+scale = Vector3(0.202, 0.215, 0.245)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("GoldenHighlights")
+
+[node name="Part10" type="MeshInstance3D" parent="." unique_id=1195453867]
+position = Vector3(0, 1.272, 1.238)
+scale = Vector3(0.34, 0.235, 0.308)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("MuzzleTan")
+
+[node name="MuzzleCheekLeft" type="MeshInstance3D" parent="."]
+position = Vector3(-0.162, 1.241, 1.341)
+scale = Vector3(0.196, 0.144, 0.163)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("CreamFur")
+
+[node name="MuzzleCheekRight" type="MeshInstance3D" parent="."]
+position = Vector3(0.162, 1.241, 1.341)
+scale = Vector3(0.196, 0.144, 0.163)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("CreamFur")
+
+[node name="LowerJaw" type="MeshInstance3D" parent="."]
+position = Vector3(0, 1.117, 1.302)
+scale = Vector3(0.29, 0.12, 0.204)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("GoldenHighlights")
+
+[node name="NosePad" type="MeshInstance3D" parent="."]
+position = Vector3(0, 1.361, 1.509)
+scale = Vector3(0.2, 0.122, 0.12)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("WetNose")
+
+[node name="NoseTipLight" type="MeshInstance3D" parent="."]
+position = Vector3(-0.063, 1.423, 1.612)
+scale = Vector3(0.048, 0.024, 0.012)
+mesh = SubResource("SphereTiny")
+material_override = SubResource("EyeLight")
+
+[node name="NostrilLeft" type="MeshInstance3D" parent="."]
+position = Vector3(-0.108, 1.318, 1.606)
+scale = Vector3(0.036, 0.025, 0.014)
+mesh = SubResource("SphereTiny")
+material_override = SubResource("EyeGloss")
+
+[node name="NostrilRight" type="MeshInstance3D" parent="."]
+position = Vector3(0.108, 1.318, 1.606)
+scale = Vector3(0.036, 0.025, 0.014)
+mesh = SubResource("SphereTiny")
+material_override = SubResource("EyeGloss")
+
+[node name="MouthCenter" type="MeshInstance3D" parent="."]
+position = Vector3(0, 1.163, 1.502)
+scale = Vector3(0.017, 0.093, 0.017)
+mesh = SubResource("SphereTiny")
+material_override = SubResource("MouthLine")
+
+[node name="SmileLeft" type="MeshInstance3D" parent="."]
+position = Vector3(-0.12, 1.145, 1.482)
+rotation = Vector3(0, 0, -0.22)
+scale = Vector3(0.12, 0.022, 0.022)
+mesh = SubResource("SphereTiny")
+material_override = SubResource("MouthLine")
+
+[node name="SmileRight" type="MeshInstance3D" parent="."]
+position = Vector3(0.12, 1.145, 1.482)
+rotation = Vector3(0, 0, 0.22)
+scale = Vector3(0.12, 0.022, 0.022)
+mesh = SubResource("SphereTiny")
+material_override = SubResource("MouthLine")
+
+[node name="TongueTip" type="MeshInstance3D" parent="."]
+position = Vector3(0, 1.075, 1.491)
+scale = Vector3(0.083, 0.067, 0.035)
+mesh = SubResource("SphereTiny")
+material_override = SubResource("TongueRose")
+
+[node name="Part03" type="MeshInstance3D" parent="." unique_id=1946290265]
+position = Vector3(-0.494, 1.467, 0.68)
+rotation = Vector3(0, 0, -0.22)
+scale = Vector3(0.193, 0.325, 0.168)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("EarChocolate")
+
+[node name="Part05" type="MeshInstance3D" parent="." unique_id=1231323515]
+position = Vector3(0.494, 1.467, 0.68)
+rotation = Vector3(0, 0, 0.22)
+scale = Vector3(0.193, 0.325, 0.168)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("EarChocolate")
+
+[node name="LeftEarUpper" type="MeshInstance3D" parent="."]
+position = Vector3(-0.433, 1.733, 0.665)
+rotation = Vector3(0, 0, -0.23)
+scale = Vector3(0.195, 0.182, 0.18)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("GoldenCoat")
+
+[node name="RightEarUpper" type="MeshInstance3D" parent="."]
+position = Vector3(0.433, 1.733, 0.665)
+rotation = Vector3(0, 0, 0.23)
+scale = Vector3(0.195, 0.182, 0.18)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("GoldenCoat")
+
+[node name="LeftEarInner" type="MeshInstance3D" parent="."]
+position = Vector3(-0.537, 1.433, 0.834)
+rotation = Vector3(0, 0, -0.18)
+scale = Vector3(0.107, 0.215, 0.027)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("EarInner")
+
+[node name="RightEarInner" type="MeshInstance3D" parent="."]
+position = Vector3(0.537, 1.433, 0.834)
+rotation = Vector3(0, 0, 0.18)
+scale = Vector3(0.107, 0.215, 0.027)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("EarInner")
+
+[node name="LeftEarTip" type="MeshInstance3D" parent="."]
+position = Vector3(-0.575, 1.238, 0.676)
+rotation = Vector3(0, 0, -0.32)
+scale = Vector3(0.142, 0.161, 0.137)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("EarChocolate")
+
+[node name="RightEarTip" type="MeshInstance3D" parent="."]
+position = Vector3(0.575, 1.238, 0.676)
+rotation = Vector3(0, 0, 0.32)
+scale = Vector3(0.142, 0.161, 0.137)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("EarChocolate")
+
+[node name="LeftEyeSocket" type="MeshInstance3D" parent="."]
+position = Vector3(-0.227, 1.58, 1.111)
+scale = Vector3(0.119, 0.131, 0.047)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("EyeSocket")
+
+[node name="LeftEyeWhite" type="MeshInstance3D" parent="."]
+position = Vector3(-0.227, 1.588, 1.149)
+scale = Vector3(0.096, 0.106, 0.034)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("EyeLight")
+
+[node name="Part02" type="MeshInstance3D" parent="." unique_id=337954566]
+position = Vector3(-0.227, 1.584, 1.176)
+scale = Vector3(0.072, 0.088, 0.04)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("EyeGloss")
+
+[node name="LeftEyeSpark" type="MeshInstance3D" parent="."]
+position = Vector3(-0.205, 1.629, 1.214)
+scale = Vector3(0.027, 0.026, 0.012)
+mesh = SubResource("SphereTiny")
+material_override = SubResource("EyeLight")
+
+[node name="LeftEyebrow" type="MeshInstance3D" parent="."]
+position = Vector3(-0.24, 1.735, 1.08)
+rotation = Vector3(0, 0, 0.16)
+scale = Vector3(0.14, 0.04, 0.063)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("GoldenHighlights")
+
+[node name="RightEyeSocket" type="MeshInstance3D" parent="."]
+position = Vector3(0.227, 1.58, 1.111)
+scale = Vector3(0.119, 0.131, 0.047)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("EyeSocket")
+
+[node name="RightEyeWhite" type="MeshInstance3D" parent="."]
+position = Vector3(0.227, 1.588, 1.149)
+scale = Vector3(0.096, 0.106, 0.034)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("EyeLight")
+
+[node name="Part04" type="MeshInstance3D" parent="." unique_id=1842225527]
+position = Vector3(0.227, 1.584, 1.176)
+scale = Vector3(0.072, 0.088, 0.04)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("EyeGloss")
+
+[node name="RightEyeSpark" type="MeshInstance3D" parent="."]
+position = Vector3(0.205, 1.629, 1.214)
+scale = Vector3(0.027, 0.026, 0.012)
+mesh = SubResource("SphereTiny")
+material_override = SubResource("EyeLight")
+
+[node name="RightEyebrow" type="MeshInstance3D" parent="."]
+position = Vector3(0.24, 1.735, 1.08)
+rotation = Vector3(0, 0, -0.16)
+scale = Vector3(0.14, 0.04, 0.063)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("GoldenHighlights")
+
+[node name="LeftFrontShoulder" type="MeshInstance3D" parent="."]
+position = Vector3(-0.397, 0.888, 0.49)
+rotation = Vector3(0.14, 0, -0.08)
+scale = Vector3(0.266, 0.342, 0.293)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("GoldenCoat")
+
+[node name="Part07" type="MeshInstance3D" parent="." unique_id=1809046714]
+position = Vector3(-0.397, 0.485, 0.548)
+rotation = Vector3(-0.045, 0, 0)
+scale = Vector3(0.193, 0.43, 0.211)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("GoldenCoat")
+
+[node name="LeftFrontAnkle" type="MeshInstance3D" parent="."]
+position = Vector3(-0.397, 0.284, 0.61)
+scale = Vector3(0.177, 0.215, 0.184)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("GoldenHighlights")
+
+[node name="LeftFrontPaw" type="MeshInstance3D" parent="."]
+position = Vector3(-0.397, 0.135, 0.714)
+scale = Vector3(0.249, 0.151, 0.312)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("GoldenCoat")
+
+[node name="LeftFrontToe1" type="MeshInstance3D" parent="."]
+position = Vector3(-0.529, 0.108, 0.948)
+scale = Vector3(0.091, 0.099, 0.137)
+mesh = SubResource("SphereTiny")
+material_override = SubResource("GoldenHighlights")
+
+[node name="LeftFrontNail1" type="MeshInstance3D" parent="."]
+position = Vector3(-0.529, 0.095, 1.061)
+scale = Vector3(0.034, 0.029, 0.06)
+mesh = SubResource("SphereTiny")
+material_override = SubResource("PawNails")
+
+[node name="LeftFrontToe2" type="MeshInstance3D" parent="."]
+position = Vector3(-0.397, 0.108, 0.948)
+scale = Vector3(0.091, 0.099, 0.137)
+mesh = SubResource("SphereTiny")
+material_override = SubResource("GoldenHighlights")
+
+[node name="LeftFrontNail2" type="MeshInstance3D" parent="."]
+position = Vector3(-0.397, 0.095, 1.061)
+scale = Vector3(0.034, 0.029, 0.06)
+mesh = SubResource("SphereTiny")
+material_override = SubResource("PawNails")
+
+[node name="LeftFrontToe3" type="MeshInstance3D" parent="."]
+position = Vector3(-0.265, 0.108, 0.948)
+scale = Vector3(0.091, 0.099, 0.137)
+mesh = SubResource("SphereTiny")
+material_override = SubResource("GoldenHighlights")
+
+[node name="LeftFrontNail3" type="MeshInstance3D" parent="."]
+position = Vector3(-0.265, 0.095, 1.061)
+scale = Vector3(0.034, 0.029, 0.06)
+mesh = SubResource("SphereTiny")
+material_override = SubResource("PawNails")
+
+[node name="LeftRearHaunch" type="MeshInstance3D" parent="."]
+position = Vector3(-0.414, 0.801, -0.58)
+rotation = Vector3(0.13, 0, 0)
+scale = Vector3(0.313, 0.363, 0.382)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("GoldenCoat")
+
+[node name="Part06" type="MeshInstance3D" parent="." unique_id=890283547]
+position = Vector3(-0.405, 0.467, -0.624)
+rotation = Vector3(-0.14, 0, 0)
+scale = Vector3(0.216, 0.387, 0.22)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("GoldenCoat")
+
+[node name="LeftRearHock" type="MeshInstance3D" parent="."]
+position = Vector3(-0.414, 0.261, -0.71)
+scale = Vector3(0.182, 0.197, 0.2)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("GoldenHighlights")
+
+[node name="LeftRearPaw" type="MeshInstance3D" parent="."]
+position = Vector3(-0.413, 0.131, -0.62)
+scale = Vector3(0.252, 0.14, 0.299)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("GoldenCoat")
+
+[node name="LeftRearToe1" type="MeshInstance3D" parent="."]
+position = Vector3(-0.543, 0.106, -0.4)
+scale = Vector3(0.091, 0.091, 0.123)
+mesh = SubResource("SphereTiny")
+material_override = SubResource("GoldenHighlights")
+
+[node name="LeftRearToe2" type="MeshInstance3D" parent="."]
+position = Vector3(-0.413, 0.106, -0.4)
+scale = Vector3(0.091, 0.091, 0.123)
+mesh = SubResource("SphereTiny")
+material_override = SubResource("GoldenHighlights")
+
+[node name="LeftRearToe3" type="MeshInstance3D" parent="."]
+position = Vector3(-0.283, 0.106, -0.4)
+scale = Vector3(0.091, 0.091, 0.123)
+mesh = SubResource("SphereTiny")
+material_override = SubResource("GoldenHighlights")
+
+[node name="RightFrontShoulder" type="MeshInstance3D" parent="."]
+position = Vector3(0.397, 0.888, 0.49)
+rotation = Vector3(0.14, 0, 0.08)
+scale = Vector3(0.266, 0.342, 0.293)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("GoldenCoat")
+
+[node name="Part09" type="MeshInstance3D" parent="." unique_id=1558819541]
+position = Vector3(0.397, 0.485, 0.548)
+rotation = Vector3(-0.045, 0, 0)
+scale = Vector3(0.193, 0.43, 0.211)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("GoldenCoat")
+
+[node name="RightFrontAnkle" type="MeshInstance3D" parent="."]
+position = Vector3(0.397, 0.284, 0.61)
+scale = Vector3(0.177, 0.215, 0.184)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("GoldenHighlights")
+
+[node name="RightFrontPaw" type="MeshInstance3D" parent="."]
+position = Vector3(0.397, 0.135, 0.714)
+scale = Vector3(0.249, 0.151, 0.312)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("GoldenCoat")
+
+[node name="RightFrontToe1" type="MeshInstance3D" parent="."]
+position = Vector3(0.265, 0.108, 0.948)
+scale = Vector3(0.091, 0.099, 0.137)
+mesh = SubResource("SphereTiny")
+material_override = SubResource("GoldenHighlights")
+
+[node name="RightFrontNail1" type="MeshInstance3D" parent="."]
+position = Vector3(0.265, 0.095, 1.061)
+scale = Vector3(0.034, 0.029, 0.06)
+mesh = SubResource("SphereTiny")
+material_override = SubResource("PawNails")
+
+[node name="RightFrontToe2" type="MeshInstance3D" parent="."]
+position = Vector3(0.397, 0.108, 0.948)
+scale = Vector3(0.091, 0.099, 0.137)
+mesh = SubResource("SphereTiny")
+material_override = SubResource("GoldenHighlights")
+
+[node name="RightFrontNail2" type="MeshInstance3D" parent="."]
+position = Vector3(0.397, 0.095, 1.061)
+scale = Vector3(0.034, 0.029, 0.06)
+mesh = SubResource("SphereTiny")
+material_override = SubResource("PawNails")
+
+[node name="RightFrontToe3" type="MeshInstance3D" parent="."]
+position = Vector3(0.529, 0.108, 0.948)
+scale = Vector3(0.091, 0.099, 0.137)
+mesh = SubResource("SphereTiny")
+material_override = SubResource("GoldenHighlights")
+
+[node name="RightFrontNail3" type="MeshInstance3D" parent="."]
+position = Vector3(0.529, 0.095, 1.061)
+scale = Vector3(0.034, 0.029, 0.06)
+mesh = SubResource("SphereTiny")
+material_override = SubResource("PawNails")
+
+[node name="RightRearHaunch" type="MeshInstance3D" parent="."]
+position = Vector3(0.414, 0.801, -0.58)
+rotation = Vector3(0.13, 0, 0)
+scale = Vector3(0.313, 0.363, 0.382)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("GoldenCoat")
+
+[node name="Part08" type="MeshInstance3D" parent="." unique_id=1812349495]
+position = Vector3(0.405, 0.467, -0.624)
+rotation = Vector3(-0.14, 0, 0)
+scale = Vector3(0.216, 0.387, 0.22)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("GoldenCoat")
+
+[node name="RightRearHock" type="MeshInstance3D" parent="."]
+position = Vector3(0.414, 0.261, -0.71)
+scale = Vector3(0.182, 0.197, 0.2)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("GoldenHighlights")
+
+[node name="RightRearPaw" type="MeshInstance3D" parent="."]
+position = Vector3(0.413, 0.131, -0.62)
+scale = Vector3(0.252, 0.14, 0.299)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("GoldenCoat")
+
+[node name="RightRearToe1" type="MeshInstance3D" parent="."]
+position = Vector3(0.283, 0.106, -0.4)
+scale = Vector3(0.091, 0.091, 0.123)
+mesh = SubResource("SphereTiny")
+material_override = SubResource("GoldenHighlights")
+
+[node name="RightRearToe2" type="MeshInstance3D" parent="."]
+position = Vector3(0.413, 0.106, -0.4)
+scale = Vector3(0.091, 0.091, 0.123)
+mesh = SubResource("SphereTiny")
+material_override = SubResource("GoldenHighlights")
+
+[node name="RightRearToe3" type="MeshInstance3D" parent="."]
+position = Vector3(0.543, 0.106, -0.4)
+scale = Vector3(0.091, 0.091, 0.123)
+mesh = SubResource("SphereTiny")
+material_override = SubResource("GoldenHighlights")
+
+[node name="ChestTuftCenter" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.794, 0.837)
+rotation = Vector3(0.23, 0, 0)
+scale = Vector3(0.126, 0.211, 0.102)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("CreamFur")
+
+[node name="ChestTuftLeft" type="MeshInstance3D" parent="."]
+position = Vector3(-0.17, 0.865, 0.834)
+rotation = Vector3(0.24, 0, -0.16)
+scale = Vector3(0.125, 0.224, 0.098)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("CreamFur")
+
+[node name="ChestTuftRight" type="MeshInstance3D" parent="."]
+position = Vector3(0.17, 0.865, 0.834)
+rotation = Vector3(0.24, 0, 0.16)
+scale = Vector3(0.125, 0.224, 0.098)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("CreamFur")
+
+[node name="LeftCheekFur" type="MeshInstance3D" parent="."]
+position = Vector3(-0.34, 1.316, 0.946)
+rotation = Vector3(0, 0, -0.4)
+scale = Vector3(0.128, 0.168, 0.148)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("GoldenHighlights")
+
+[node name="RightCheekFur" type="MeshInstance3D" parent="."]
+position = Vector3(0.34, 1.316, 0.946)
+rotation = Vector3(0, 0, 0.4)
+scale = Vector3(0.128, 0.168, 0.148)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("GoldenHighlights")
+
+[node name="TailRoot" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.985, -0.902)
+rotation = Vector3(0.43, 0, 0)
+scale = Vector3(0.181, 0.195, 0.26)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("GoldenCoat")
+
+[node name="Part11" type="MeshInstance3D" parent="." unique_id=1746792359]
+position = Vector3(0.013, 1.094, -1.12)
+rotation = Vector3(0.58, 0, -0.07)
+scale = Vector3(0.157, 0.17, 0.328)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("GoldenCoat")
+
+[node name="TailUpper" type="MeshInstance3D" parent="."]
+position = Vector3(0.035, 1.28, -1.371)
+rotation = Vector3(0.78, 0, -0.12)
+scale = Vector3(0.162, 0.165, 0.235)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("GoldenHighlights")
+
+[node name="TailFeatherTip" type="MeshInstance3D" parent="."]
+position = Vector3(0.055, 1.397, -1.498)
+rotation = Vector3(0.76, 0, -0.19)
+scale = Vector3(0.183, 0.18, 0.212)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("CreamFur")
+
+[node name="TailFeatherLeft" type="MeshInstance3D" parent="."]
+position = Vector3(-0.077, 1.35, -1.42)
+rotation = Vector3(0.7, 0, 0.24)
+scale = Vector3(0.081, 0.15, 0.181)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("GoldenHighlights")
+
+[node name="TailFeatherRight" type="MeshInstance3D" parent="."]
+position = Vector3(0.171, 1.359, -1.436)
+rotation = Vector3(0.71, 0, -0.24)
+scale = Vector3(0.075, 0.15, 0.173)
+mesh = SubResource("SphereSmooth")
+material_override = SubResource("GoldenHighlights")
+
+[node name="CollarBand" type="MeshInstance3D" parent="."]
+position = Vector3(0, 1.228, 0.53)
+rotation = Vector3(-0.18, 0, 0)
+mesh = SubResource("CollarBand")
+material_override = SubResource("CollarBlue")
+
+[node name="CollarUpperRim" type="MeshInstance3D" parent="."]
+position = Vector3(0, 1.309, 0.514)
+rotation = Vector3(-0.18, 0, 0)
+mesh = SubResource("CollarRim")
+material_override = SubResource("CollarTrim")
+
+[node name="CollarLowerRim" type="MeshInstance3D" parent="."]
+position = Vector3(0, 1.149, 0.547)
+rotation = Vector3(-0.18, 0, 0)
+mesh = SubResource("CollarRim")
+material_override = SubResource("CollarTrim")
+
+[node name="CollarFrontKeeper" type="MeshInstance3D" parent="."]
+position = Vector3(0, 1.166, 0.947)
+scale = Vector3(0.096, 0.069, 0.027)
+mesh = SubResource("SphereTiny")
+material_override = SubResource("BrassTag")
+
+[node name="CollarTagLoop" type="MeshInstance3D" parent="."]
+position = Vector3(0, 1.093, 0.969)
+scale = Vector3(0.055, 0.073, 0.025)
+mesh = SubResource("SphereTiny")
+material_override = SubResource("BrassTag")
+
+[node name="RoundNameTag" type="MeshInstance3D" parent="."]
+position = Vector3(0, 1.005, 0.978)
+rotation = Vector3(1.5708, 0, 0)
+mesh = SubResource("TagDisc")
+material_override = SubResource("BrassTag")
+
+[node name="TagFaceStamp" type="MeshInstance3D" parent="."]
+position = Vector3(0, 1.005, 1.011)
+scale = Vector3(0.065, 0.061, 0.012)
+mesh = SubResource("SphereTiny")
+material_override = SubResource("CollarTrim")
+
+[node name="VocabularyArea" type="Area3D" parent="." unique_id=2115706270]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VocabularyArea" unique_id=248838577]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, 0)
+shape = SubResource("BoxShape3D_of8ck")

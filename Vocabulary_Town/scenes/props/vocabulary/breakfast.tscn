@@ -1,0 +1,107 @@
+[gd_scene load_steps=11 format=3]
+
+[sub_resource type="CylinderMesh" id="s1"]
+top_radius = 0.5
+bottom_radius = 0.5
+height = 1.0
+radial_segments = 18
+
+[sub_resource type="StandardMaterial3D" id="m1"]
+albedo_color = Color(0.960784314, 0.945098039, 0.905882353, 1)
+roughness = 0.82
+
+[sub_resource type="CylinderMesh" id="s2"]
+top_radius = 0.5
+bottom_radius = 0.5
+height = 1.0
+radial_segments = 18
+
+[sub_resource type="StandardMaterial3D" id="m2"]
+albedo_color = Color(0.984313725, 0.960784314, 0.91372549, 1)
+roughness = 0.82
+
+[sub_resource type="CylinderMesh" id="s3"]
+top_radius = 0.5
+bottom_radius = 0.5
+height = 1.0
+radial_segments = 18
+
+[sub_resource type="SphereMesh" id="s4"]
+radius = 0.5
+height = 1.0
+radial_segments = 14
+rings = 7
+
+[sub_resource type="StandardMaterial3D" id="m3"]
+albedo_color = Color(0.898039216, 0.643137255, 0.184313725, 1)
+roughness = 0.82
+
+[sub_resource type="BoxMesh" id="s5"]
+size = Vector3(0.28, 0.1, 0.21)
+
+[sub_resource type="StandardMaterial3D" id="m4"]
+albedo_color = Color(0.823529412, 0.62745098, 0.411764706, 1)
+roughness = 0.82
+
+[sub_resource type="BoxShape3D" id="hit"]
+size = Vector3(1.1, 0.94, 1.1)
+
+[node name="Breakfast" type="Node3D"]
+metadata/word_key = "breakfast"
+metadata/learning_object = true
+
+[node name="Ceramic_plate_00" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.075, 0)
+rotation_degrees = Vector3(0, 0, 0)
+mesh = SubResource("s1")
+material_override = SubResource("m1")
+scale = Vector3(0.91, 0.1, 0.91)
+
+[node name="Plate_inner_base_01" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.133, 0)
+rotation_degrees = Vector3(0, 0, 0)
+mesh = SubResource("s2")
+material_override = SubResource("m2")
+scale = Vector3(0.72, 0.012, 0.72)
+
+[node name="Egg_white_02" type="MeshInstance3D" parent="."]
+position = Vector3(-0.2, 0.178, -0.11)
+rotation_degrees = Vector3(0, 0, 0)
+mesh = SubResource("s3")
+material_override = SubResource("m2")
+scale = Vector3(0.31, 0.033, 0.27)
+
+[node name="Egg_yolk_03" type="MeshInstance3D" parent="."]
+position = Vector3(-0.2, 0.208, -0.11)
+rotation_degrees = Vector3(0, 0, 0)
+mesh = SubResource("s4")
+material_override = SubResource("m3")
+scale = Vector3(0.13, 0.06, 0.13)
+
+[node name="Egg_white_04" type="MeshInstance3D" parent="."]
+position = Vector3(0.17, 0.178, 0.05)
+rotation_degrees = Vector3(0, 0, 0)
+mesh = SubResource("s3")
+material_override = SubResource("m2")
+scale = Vector3(0.31, 0.033, 0.27)
+
+[node name="Egg_yolk_05" type="MeshInstance3D" parent="."]
+position = Vector3(0.17, 0.208, 0.05)
+rotation_degrees = Vector3(0, 0, 0)
+mesh = SubResource("s4")
+material_override = SubResource("m3")
+scale = Vector3(0.13, 0.06, 0.13)
+
+[node name="Breakfast_toast_06" type="MeshInstance3D" parent="."]
+position = Vector3(0.1, 0.19, 0.28)
+rotation_degrees = Vector3(0, 0, 0)
+mesh = SubResource("s5")
+material_override = SubResource("m4")
+
+[node name="Interaction" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Interaction"]
+position = Vector3(0, 0.45, 0)
+shape = SubResource("hit")

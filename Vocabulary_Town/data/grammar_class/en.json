@@ -1,0 +1,356 @@
+{
+  "about": "Grammar Classroom questions taught in English (Lana's class in the school; scripts/learning/grammar_questions.gd reads them, scripts/learning/grammar_session.gd plays them; guide: docs/guides/GRAMMAR_CLASS.md). One file per taught language, named by its code in data/languages.json; a language without a file has no class. Each question: 'id' (unique, never reused), 'topic' (a key of 'topics'), 'level' (1 = beginner), 'text' (the sentence in this language with exactly one ___ blank), 'choices' (four different answers in this language; the order here does not matter, desks are shuffled), 'answer' (one of the choices: the answer is the word itself, so shuffling can never change it), 'explain' (one short reason per OTHER language: the player's native language), 'meaning' (optional: the sentence in each other language) and, for Chinese, 'noun' (the words.json key of the noun, so the class uses the game's own word). Every wrong choice must be impossible in that sentence, not just less usual; sentences where two answers work are left out (user decisions 6 Nov 2026: Chinese uses only measure words that are the same in Mandarin and Hong Kong writing; no Simplified Chinese; no made-up answers at runtime). Checked by tools/language_check.gd. Chinese and the Chinese explanations are Claude's draft, awaiting review by a speaker.",
+  "language": "en",
+  "topics": {
+    "agreement": {
+      "name": {
+        "es": "Concordancia del verbo",
+        "zh": "主謂一致"
+      }
+    },
+    "prepositions": {
+      "name": {
+        "es": "Preposiciones",
+        "zh": "介詞"
+      }
+    }
+  },
+  "questions": [
+    {
+      "id": "en-001",
+      "topic": "agreement",
+      "level": 1,
+      "text": "She ___ basketball every day.",
+      "choices": [
+        "plays",
+        "play",
+        "playing",
+        "to play"
+      ],
+      "answer": "plays",
+      "explain": {
+        "es": "Con he, she o it, el verbo lleva -s en presente.",
+        "zh": "主語是 he、she 或 it 時，現在式動詞要加 -s。"
+      },
+      "meaning": {
+        "es": "Ella juega al baloncesto todos los días.",
+        "zh": "她每天打籃球。"
+      }
+    },
+    {
+      "id": "en-002",
+      "topic": "agreement",
+      "level": 1,
+      "text": "They ___ happy.",
+      "choices": [
+        "are",
+        "is",
+        "am",
+        "be"
+      ],
+      "answer": "are",
+      "explain": {
+        "es": "They va con are.",
+        "zh": "they 要配 are。"
+      },
+      "meaning": {
+        "es": "Ellos están contentos.",
+        "zh": "他們很開心。"
+      }
+    },
+    {
+      "id": "en-003",
+      "topic": "agreement",
+      "level": 1,
+      "text": "He ___ a red bike.",
+      "choices": [
+        "has",
+        "have",
+        "having",
+        "to have"
+      ],
+      "answer": "has",
+      "explain": {
+        "es": "He, she e it van con has.",
+        "zh": "he、she 和 it 要配 has。"
+      },
+      "meaning": {
+        "es": "Él tiene una bicicleta roja.",
+        "zh": "他有一輛紅色的單車。"
+      }
+    },
+    {
+      "id": "en-004",
+      "topic": "agreement",
+      "level": 1,
+      "text": "My brother ___ not like fish.",
+      "choices": [
+        "does",
+        "do",
+        "doing",
+        "to do"
+      ],
+      "answer": "does",
+      "explain": {
+        "es": "He, she e it van con does.",
+        "zh": "he、she 和 it 要配 does。"
+      },
+      "meaning": {
+        "es": "A mi hermano no le gusta el pescado.",
+        "zh": "我哥哥不喜歡吃魚。"
+      }
+    },
+    {
+      "id": "en-005",
+      "topic": "agreement",
+      "level": 1,
+      "text": "I ___ hungry.",
+      "choices": [
+        "am",
+        "is",
+        "are",
+        "be"
+      ],
+      "answer": "am",
+      "explain": {
+        "es": "I va con am.",
+        "zh": "I 要配 am。"
+      },
+      "meaning": {
+        "es": "Tengo hambre.",
+        "zh": "我餓了。"
+      }
+    },
+    {
+      "id": "en-006",
+      "topic": "agreement",
+      "level": 1,
+      "text": "The dogs ___ loud.",
+      "choices": [
+        "are",
+        "is",
+        "am",
+        "be"
+      ],
+      "answer": "are",
+      "explain": {
+        "es": "Un sujeto en plural va con are.",
+        "zh": "複數主語要配 are。"
+      },
+      "meaning": {
+        "es": "Los perros son ruidosos.",
+        "zh": "那些狗很吵。"
+      }
+    },
+    {
+      "id": "en-007",
+      "topic": "agreement",
+      "level": 1,
+      "text": "Tom and Ana ___ friends.",
+      "choices": [
+        "are",
+        "is",
+        "am",
+        "be"
+      ],
+      "answer": "are",
+      "explain": {
+        "es": "Dos personas juntas son plural: are.",
+        "zh": "兩個人加起來是複數，要配 are。"
+      },
+      "meaning": {
+        "es": "Tom y Ana son amigos.",
+        "zh": "Tom 和 Ana 是朋友。"
+      }
+    },
+    {
+      "id": "en-008",
+      "topic": "agreement",
+      "level": 1,
+      "text": "It ___ very cold today.",
+      "choices": [
+        "is",
+        "are",
+        "am",
+        "be"
+      ],
+      "answer": "is",
+      "explain": {
+        "es": "It va con is.",
+        "zh": "it 要配 is。"
+      },
+      "meaning": {
+        "es": "Hoy hace mucho frío.",
+        "zh": "今天很冷。"
+      }
+    },
+    {
+      "id": "en-009",
+      "topic": "prepositions",
+      "level": 1,
+      "text": "The class starts ___ 8 AM.",
+      "choices": [
+        "at",
+        "in",
+        "on",
+        "under"
+      ],
+      "answer": "at",
+      "explain": {
+        "es": "At se usa con una hora del reloj.",
+        "zh": "鐘點時間用 at。"
+      },
+      "meaning": {
+        "es": "La clase empieza a las ocho de la mañana.",
+        "zh": "課堂早上八點開始。"
+      }
+    },
+    {
+      "id": "en-010",
+      "topic": "prepositions",
+      "level": 1,
+      "text": "My birthday is ___ May.",
+      "choices": [
+        "in",
+        "on",
+        "at",
+        "under"
+      ],
+      "answer": "in",
+      "explain": {
+        "es": "In se usa con los meses.",
+        "zh": "月份用 in。"
+      },
+      "meaning": {
+        "es": "Mi cumpleaños es en mayo.",
+        "zh": "我的生日在五月。"
+      }
+    },
+    {
+      "id": "en-011",
+      "topic": "prepositions",
+      "level": 1,
+      "text": "We have music ___ Monday.",
+      "choices": [
+        "on",
+        "in",
+        "at",
+        "under"
+      ],
+      "answer": "on",
+      "explain": {
+        "es": "On se usa con los días de la semana.",
+        "zh": "星期幾用 on。"
+      },
+      "meaning": {
+        "es": "Tenemos música el lunes.",
+        "zh": "我們星期一有音樂課。"
+      }
+    },
+    {
+      "id": "en-012",
+      "topic": "prepositions",
+      "level": 1,
+      "text": "I live ___ Spain.",
+      "choices": [
+        "in",
+        "on",
+        "at",
+        "under"
+      ],
+      "answer": "in",
+      "explain": {
+        "es": "In se usa con países y ciudades.",
+        "zh": "國家和城市用 in。"
+      },
+      "meaning": {
+        "es": "Vivo en España.",
+        "zh": "我住在西班牙。"
+      }
+    },
+    {
+      "id": "en-013",
+      "topic": "prepositions",
+      "level": 1,
+      "text": "The letter B is ___ A and C.",
+      "choices": [
+        "between",
+        "behind",
+        "under",
+        "on"
+      ],
+      "answer": "between",
+      "explain": {
+        "es": "Between: en medio de dos cosas.",
+        "zh": "between：在兩樣東西中間。"
+      },
+      "meaning": {
+        "es": "La letra B está entre la A y la C.",
+        "zh": "字母 B 在 A 和 C 中間。"
+      }
+    },
+    {
+      "id": "en-014",
+      "topic": "prepositions",
+      "level": 1,
+      "text": "The picture hangs ___ the wall.",
+      "choices": [
+        "on",
+        "in",
+        "under",
+        "between"
+      ],
+      "answer": "on",
+      "explain": {
+        "es": "On se usa con una superficie.",
+        "zh": "在表面上用 on。"
+      },
+      "meaning": {
+        "es": "El cuadro cuelga en la pared.",
+        "zh": "畫掛在牆上。"
+      }
+    },
+    {
+      "id": "en-015",
+      "topic": "prepositions",
+      "level": 1,
+      "text": "It is raining, so we stand ___ the umbrella.",
+      "choices": [
+        "under",
+        "on",
+        "between",
+        "at"
+      ],
+      "answer": "under",
+      "explain": {
+        "es": "Under: debajo de algo.",
+        "zh": "under：在某物下面。"
+      },
+      "meaning": {
+        "es": "Está lloviendo, así que estamos debajo del paraguas.",
+        "zh": "下雨了，所以我們站在雨傘下面。"
+      }
+    },
+    {
+      "id": "en-016",
+      "topic": "prepositions",
+      "level": 1,
+      "text": "I hide ___ the door so nobody can see me.",
+      "choices": [
+        "behind",
+        "between",
+        "on",
+        "in"
+      ],
+      "answer": "behind",
+      "explain": {
+        "es": "Behind: detrás de algo.",
+        "zh": "behind：在某物後面。"
+      },
+      "meaning": {
+        "es": "Me escondo detrás de la puerta para que nadie me vea.",
+        "zh": "我躲在門後面，這樣就沒有人看到我。"
+      }
+    }
+  ]
+}

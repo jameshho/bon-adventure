@@ -1,0 +1,24 @@
+{
+  "_comment": "Modular town registry (docs/guides/MODULAR_TOWN.md). One unit per building: its focus name is the key, `parts` are the node paths (under the town root) that the unit scene holds and puts back at load. Everything not listed stays in the base world.",
+  "units": {
+    "home": {"label": "Home", "parts": ["RelocatedSites/Home", "Buildings/HouseStructure", "Map facades/HOME"]},
+    "supermarket": {"label": "Supermarket", "parts": ["RelocatedSites/Supermarket", "Buildings/MarketDisplays", "Map facades/SUPERMARKET"]},
+    "library": {"label": "Library", "parts": ["RelocatedSites/Library", "Map facades/LIBRARY"]},
+    "restaurants": {"label": "Restaurants (Alta Cocina, Pizza and Burger, Taquería)", "parts": ["Restaurants", "Map facades/FINE DINING", "Map facades/PIZZA AND BURGER", "Map facades/TAQUERÍA"]},
+    "sports": {"label": "Sports store", "parts": ["RelocatedSites/Sports", "Buildings/SportsStore", "Map facades/SPORTS"]},
+    "clothing": {"label": "Clothing store", "parts": ["RelocatedSites/Clothing", "Buildings/ClothingStore", "Map facades/CLOTHING"]},
+    "electronics": {"label": "Electronics store", "parts": ["RelocatedSites/Electronics", "Buildings/ElectronicsStore", "Map facades/ELECTRONICS"]},
+    "furniture": {"label": "Furniture store", "parts": ["RelocatedSites/Furniture", "Buildings/FurnitureStore", "Map facades/FURNITURE"]},
+    "bank": {"label": "Bank", "parts": ["RelocatedSites/Bank", "Map facades/BANK"]},
+    "police": {"label": "Police station", "parts": ["RelocatedSites/Police", "Map facades/POLICE STATION", "People/CrocodilePoliceOfficer", "People/CatEvidenceOfficer"]},
+    "airport": {"label": "Airport and control tower", "aliases": ["tower"], "parts": ["Airport", "RelocatedSites/Travel", "Map facades/AIRPORT", "People/LionDriver"]},
+    "bakery": {"label": "Bakery / Café", "parts": ["RelocatedSites/Bakery", "Buildings/BakeryCafe", "Map facades/BAKERY _ CAFE", "People/SamoyedCook"]},
+    "playground": {"label": "Playground", "parts": ["RelocatedSites/Playground"]},
+    "barn": {"label": "Farm barn", "parts": ["Barn", "Map facades/FARM BARN"]},
+    "school": {"label": "School", "parts": ["RelocatedSites/School", "Buildings/School", "Map facades/SCHOOL"]},
+    "hospital": {"label": "Hospital", "parts": ["RelocatedSites/Hospital", "Buildings/Hospital", "Map facades/HOSPITAL"]},
+    "chapel": {"label": "Chapel", "parts": ["RelocatedSites/Chapel", "Map facades/CHAPEL"]},
+    "warehouse": {"label": "Warehouse", "parts": ["Warehouse"]},
+    "mystery": {"label": "Mystery House (Casa de las Estrellas)", "parts": ["MysteryHouse"]}
+  }
+}

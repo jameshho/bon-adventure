@@ -1,0 +1,73 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/world/park_animals.gd" id="1_orfmc"]
+[ext_resource type="Material" path="res://scenes/animals/shared/color_e9d4adff.tres" id="2_6jjas"]
+[ext_resource type="SphereMesh" path="res://scenes/animals/shared/toy_sphere.tres" id="3_yykfr"]
+[ext_resource type="Material" path="res://scenes/animals/shared/color_252c31ff.tres" id="4_tmsnc"]
+[ext_resource type="Material" path="res://scenes/animals/shared/color_d99844ff.tres" id="5_5avaq"]
+[ext_resource type="Material" path="res://scenes/animals/shared/color_e3a442ff.tres" id="6_vj5hp"]
+[ext_resource type="Material" path="res://scenes/animals/shared/color_c35444ff.tres" id="7_xc1vb"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ekc05"]
+size = Vector3(1.2, 1.9, 2.2)
+
+[node name="Hen" type="Node3D" unique_id=149915057]
+scale = Vector3(0.21729683, 0.21729683, 0.21729683)
+script = ExtResource("1_orfmc")
+metadata/word_key = "hen"
+
+[node name="Part00" type="MeshInstance3D" parent="." unique_id=78157895]
+transform = Transform3D(0.7, 0, 0, 0, 0.75, 0, 0, 0, 0.9, 0, 0.85, 0)
+material_override = ExtResource("2_6jjas")
+mesh = ExtResource("3_yykfr")
+
+[node name="Part01" type="MeshInstance3D" parent="." unique_id=1962527827]
+transform = Transform3D(0.7, 0, 0, 0, 0.65, 0, 0, 0, 0.7, 0, 1.3, 0.65)
+material_override = ExtResource("2_6jjas")
+mesh = ExtResource("3_yykfr")
+
+[node name="Part02" type="MeshInstance3D" parent="." unique_id=243683759]
+transform = Transform3D(0.12, 0, 0, 0, 0.15, 0, 0, 0, 0.1, -0.22, 1.42, 0.94)
+material_override = ExtResource("4_tmsnc")
+mesh = ExtResource("3_yykfr")
+
+[node name="Part03" type="MeshInstance3D" parent="." unique_id=866351730]
+transform = Transform3D(0.12, 0, 0, 0, 0.15, 0, 0, 0, 0.1, 0.22, 1.42, 0.94)
+material_override = ExtResource("4_tmsnc")
+mesh = ExtResource("3_yykfr")
+
+[node name="Part04" type="MeshInstance3D" parent="." unique_id=1184442959]
+transform = Transform3D(0.22, 0, 0, 0, 0.65, 0, 0, 0, 0.23, -0.27, 0.36, 0)
+material_override = ExtResource("5_5avaq")
+mesh = ExtResource("3_yykfr")
+
+[node name="Part05" type="MeshInstance3D" parent="." unique_id=706706290]
+transform = Transform3D(0.22, 0, 0, 0, 0.65, 0, 0, 0, 0.23, 0.27, 0.36, 0)
+material_override = ExtResource("5_5avaq")
+mesh = ExtResource("3_yykfr")
+
+[node name="Part06" type="MeshInstance3D" parent="." unique_id=1264320125]
+transform = Transform3D(0.32, 0, 0, 0, 0.18, 0, 0, 0, 0.4, 0, 1.3, 0.99)
+material_override = ExtResource("6_vj5hp")
+mesh = ExtResource("3_yykfr")
+
+[node name="Part07" type="MeshInstance3D" parent="." unique_id=1700171361]
+transform = Transform3D(0.23, 0, 0, 0, 0.5, 0, 0, 0, 0.7, -0.38, 0.9, 0)
+material_override = ExtResource("2_6jjas")
+mesh = ExtResource("3_yykfr")
+
+[node name="Part08" type="MeshInstance3D" parent="." unique_id=1025428391]
+transform = Transform3D(0.23, 0, 0, 0, 0.5, 0, 0, 0, 0.7, 0.38, 0.9, 0)
+material_override = ExtResource("2_6jjas")
+mesh = ExtResource("3_yykfr")
+
+[node name="Part09" type="MeshInstance3D" parent="." unique_id=1349761584]
+transform = Transform3D(0.15, 0, 0, 0, 0.25, 0, 0, 0, 0.35, 0, 1.68, 0.65)
+material_override = ExtResource("7_xc1vb")
+mesh = ExtResource("3_yykfr")
+
+[node name="VocabularyArea" type="Area3D" parent="." unique_id=605815261]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VocabularyArea" unique_id=1055451752]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, 0)
+shape = SubResource("BoxShape3D_ekc05")

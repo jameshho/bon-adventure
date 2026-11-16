@@ -1,0 +1,87 @@
+[gd_scene format=3]
+
+[sub_resource type="BoxMesh" id="r1"]
+size = Vector3(0.450000, 0.340000, 0.400000)
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.92549, 0.90980, 0.87451, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r3"]
+size = Vector3(0.300000, 0.160000, 0.020000)
+
+[sub_resource type="StandardMaterial3D" id="r4"]
+albedo_color = Color(0.63529, 0.72549, 0.66275, 1)
+roughness = 0.78
+
+[sub_resource type="CylinderMesh" id="r5"]
+top_radius = 0.045
+bottom_radius = 0.045
+height = 0.025
+radial_segments = 16
+
+[sub_resource type="StandardMaterial3D" id="r6"]
+albedo_color = Color(0.27451, 0.47843, 0.60784, 1)
+roughness = 0.78
+
+[sub_resource type="TorusMesh" id="r7"]
+inner_radius = 0.10999999999999999
+outer_radius = 0.25
+rings = 24
+ring_segments = 8
+
+[sub_resource type="CylinderMesh" id="r8"]
+top_radius = 0.015
+bottom_radius = 0.015
+height = 0.28
+radial_segments = 16
+
+[sub_resource type="StandardMaterial3D" id="r9"]
+albedo_color = Color(0.15686, 0.20392, 0.24314, 1)
+roughness = 0.78
+
+[sub_resource type="BoxShape3D" id="r10"]
+size = Vector3(0.950000, 0.550000, 0.500000)
+
+[node name="Blood_Pressure_Monitor" type="Node3D"]
+metadata/word_key = "blood pressure monitor"
+metadata/learning_object = true
+
+[node name="Base_2" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.170000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r1")
+material_override = SubResource("r2")
+
+[node name="LCD_4" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.270000, -0.210000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r3")
+material_override = SubResource("r4")
+
+[node name="Start_6" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.110000, -0.220000)
+rotation_degrees = Vector3(90.000000, 0.000000, 0.000000)
+mesh = SubResource("r5")
+material_override = SubResource("r6")
+
+[node name="Cuff_7" type="MeshInstance3D" parent="."]
+position = Vector3(0.450000, 0.250000, 0.000000)
+rotation_degrees = Vector3(90.000000, 0.000000, 0.000000)
+mesh = SubResource("r7")
+material_override = SubResource("r6")
+scale = Vector3(1.000000, 1.000000, 1.000000)
+
+[node name="Hose_9" type="MeshInstance3D" parent="."]
+position = Vector3(0.290000, 0.080000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, -90.000000)
+mesh = SubResource("r8")
+material_override = SubResource("r9")
+
+[node name="Interaction" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Interaction"]
+position = Vector3(0.000000, 0.275000, 0.000000)
+shape = SubResource("r10")

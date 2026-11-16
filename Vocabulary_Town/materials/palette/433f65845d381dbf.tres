@@ -1,0 +1,6 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[resource]
+resource_name = "Tire near-black rubber"
+albedo_color = Color(0.086275, 0.105882, 0.133333, 1)
+roughness = 0.93

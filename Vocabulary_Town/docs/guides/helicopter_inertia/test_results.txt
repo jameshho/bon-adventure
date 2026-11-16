@@ -1,0 +1,15 @@
+PASS Hands-off hover develops gentle bounded wind drift
+PASS Wind does not cause uncontrolled altitude loss
+PASS Held hover assist arrests drift
+PASS Releasing hover assist restores natural drift
+PASS Released cyclic retains decaying momentum
+PASS Aircraft coasts instead of stopping abruptly
+PASS Opposite cyclic can brake and reverse
+PASS Yaw starts gradually
+PASS Yaw retains brief momentum after release
+PASS Yaw settles without indefinite spinning
+PASS Wind/coasting remains consistent at 30 and 120 Hz
+FAIL Wind-driven drift respects the full rotor collision envelope
+PASS Wheels stay planted despite wind and cyclic while parked
+PASS Stable grounded exit remains available
+PASS Collective releases ground brake for takeoff

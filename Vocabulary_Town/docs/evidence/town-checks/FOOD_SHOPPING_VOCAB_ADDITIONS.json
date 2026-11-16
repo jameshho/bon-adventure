@@ -1,0 +1,167 @@
+{
+  "added": {
+    "coffee": {
+      "spanish": "el café",
+      "category": "Food"
+    },
+    "chicken": {
+      "spanish": "el pollo",
+      "category": "Food"
+    },
+    "meat": {
+      "spanish": "la carne",
+      "category": "Food"
+    },
+    "salad": {
+      "spanish": "la ensalada",
+      "category": "Food"
+    },
+    "breakfast": {
+      "spanish": "el desayuno",
+      "category": "Food"
+    },
+    "lunch": {
+      "spanish": "el almuerzo / la comida (del mediodía)",
+      "category": "Food"
+    },
+    "dinner": {
+      "spanish": "la cena",
+      "category": "Food"
+    },
+    "food": {
+      "spanish": "la comida / los alimentos",
+      "category": "Food"
+    },
+    "menu": {
+      "spanish": "el menú / la carta",
+      "category": "Food"
+    },
+    "bill": {
+      "spanish": "la cuenta",
+      "category": "Shopping"
+    },
+    "price": {
+      "spanish": "el precio",
+      "category": "Shopping"
+    },
+    "money": {
+      "spanish": "el dinero",
+      "category": "Shopping"
+    },
+    "credit card": {
+      "spanish": "la tarjeta de crédito",
+      "category": "Shopping"
+    }
+  },
+  "scenes": {
+    "bakery_cafe": [
+      {
+        "word_key": "coffee",
+        "position": [
+          -5.35,
+          2.46,
+          -8.1
+        ]
+      },
+      {
+        "word_key": "breakfast",
+        "position": [
+          -5.35,
+          2.46,
+          -3.4
+        ]
+      },
+      {
+        "word_key": "lunch",
+        "position": [
+          -5.35,
+          2.46,
+          1.0
+        ]
+      },
+      {
+        "word_key": "dinner",
+        "position": [
+          -5.35,
+          2.46,
+          5.8
+        ]
+      },
+      {
+        "word_key": "menu",
+        "position": [
+          5.35,
+          2.46,
+          -6.0
+        ]
+      },
+      {
+        "word_key": "bill",
+        "position": [
+          5.35,
+          2.46,
+          0.0
+        ]
+      },
+      {
+        "word_key": "food",
+        "position": [
+          5.35,
+          2.46,
+          6.0
+        ]
+      }
+    ],
+    "market_displays": [
+      {
+        "word_key": "chicken",
+        "position": [
+          -5.35,
+          2.46,
+          -4.2
+        ]
+      },
+      {
+        "word_key": "meat",
+        "position": [
+          -5.35,
+          2.46,
+          0.0
+        ]
+      },
+      {
+        "word_key": "salad",
+        "position": [
+          -5.35,
+          2.46,
+          4.2
+        ]
+      },
+      {
+        "word_key": "price",
+        "position": [
+          5.35,
+          2.46,
+          -4.2
+        ]
+      },
+      {
+        "word_key": "money",
+        "position": [
+          5.35,
+          2.46,
+          0.0
+        ]
+      },
+      {
+        "word_key": "credit card",
+        "position": [
+          5.35,
+          2.46,
+          4.2
+        ]
+      }
+    ]
+  },
+  "note": "All 13 requested words were absent as standalone entries. Preserved steak, coffee maker, cash, receipt, and price tag as separate concepts."
+}

@@ -1,0 +1,67 @@
+[gd_scene format=3]
+
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/giraffe/body.res" id="1_yy6b5"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/giraffe/mane.res" id="2_dosuj"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/giraffe/tail_tuft.res" id="3_34pqm"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/giraffe/ears.res" id="4_n6i43"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/giraffe/eyes.res" id="5_qw3w1"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/giraffe/face_details.res" id="6_6t667"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wekb7"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.86
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_otmwt"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+metallic_specular = 0.2
+roughness = 0.95
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_75uoy"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.22
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ta4c4"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.7
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wgnvy"]
+size = Vector3(1.1617162, 4.4, 3.4851484)
+
+[node name="GiraffeClayDisplay" type="Node3D" unique_id=1734354581]
+metadata/source = "User's Giraffe Character Blueprint, relax walk pose (11 Nov 2026)"
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=473470413]
+material_override = SubResource("StandardMaterial3D_wekb7")
+mesh = ExtResource("1_yy6b5")
+
+[node name="Mane" type="MeshInstance3D" parent="." unique_id=1885100435]
+material_override = SubResource("StandardMaterial3D_otmwt")
+mesh = ExtResource("2_dosuj")
+
+[node name="Tail tuft" type="MeshInstance3D" parent="." unique_id=1744905466]
+material_override = SubResource("StandardMaterial3D_otmwt")
+mesh = ExtResource("3_34pqm")
+
+[node name="Ears" type="MeshInstance3D" parent="." unique_id=1268424008]
+material_override = SubResource("StandardMaterial3D_wekb7")
+mesh = ExtResource("4_n6i43")
+
+[node name="Eyes" type="MeshInstance3D" parent="." unique_id=335205167]
+material_override = SubResource("StandardMaterial3D_75uoy")
+cast_shadow = 0
+mesh = ExtResource("5_qw3w1")
+
+[node name="Face details" type="MeshInstance3D" parent="." unique_id=390094106]
+material_override = SubResource("StandardMaterial3D_ta4c4")
+cast_shadow = 0
+mesh = ExtResource("6_6t667")
+
+[node name="Footprint" type="StaticBody3D" parent="." unique_id=1134789401]
+
+[node name="@CollisionShape3D@2" type="CollisionShape3D" parent="Footprint" unique_id=42753956]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2, -0.2033003)
+shape = SubResource("BoxShape3D_wgnvy")

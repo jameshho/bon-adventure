@@ -1,0 +1,6 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[resource]
+resource_name = "Rubber and body trim"
+albedo_color = Color(0.025, 0.035, 0.044, 1)
+roughness = 0.88

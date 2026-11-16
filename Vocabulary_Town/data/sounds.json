@@ -1,0 +1,27 @@
+{
+  "_comment": "Sound cue catalogue (9 Nov 2026), read by scripts/core/sound.gd. cues: id -> file, bus (default_bus_layout.tres), volume_db, loop (the file's .import loop_mode must match), distance (unit_size / max_distance in metres), source, licence. bindings: scripts whose signals play cues; objects stay silent themselves. Record: docs/guides/TOWN_DESIGN_BRIEF.md 'Bathroom fixtures'.",
+  "cues": {
+    "toilet.flush": {
+      "file": "res://audio/sfx/bathroom/toilet_flush.wav",
+      "bus": "SFX",
+      "volume_db": -2.0,
+      "loop": false,
+      "distance": {"unit_size": 3.0, "max_distance": 18.0},
+      "source": "https://freesound.org/people/Huminaatio/sounds/331897/",
+      "licence": "CC0 (Freesound); trimmed to 2.8 s with a fade-out, 16-bit mono"
+    },
+    "faucet.run": {
+      "file": "res://audio/sfx/bathroom/faucet_run.wav",
+      "bus": "SFX",
+      "volume_db": -4.0,
+      "loop": true,
+      "distance": {"unit_size": 2.0, "max_distance": 12.0},
+      "source": "https://freesound.org/people/giddster/sounds/336518/",
+      "licence": "CC0 (Freesound); steady 3.2-10.2 s made a 6.5 s crossfaded loop, 16-bit mono"
+    }
+  },
+  "bindings": [
+    {"script": "res://scripts/world/toilet.gd", "play": {"flush_started": "toilet.flush"}},
+    {"script": "res://scripts/world/faucet.gd", "start": {"turned_on": "faucet.run"}, "stop": {"turned_off": "faucet.run"}}
+  ]
+}

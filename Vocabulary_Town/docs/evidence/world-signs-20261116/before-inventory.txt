@@ -1,0 +1,36 @@
+# Supermarket Label3D signs, before, window height 720 px, eye at the entrance (1.6 m)
+node | text | font_size | pixel_size | outline | em (m) | billboard | cap px at entrance
+SUPERMARKET sign lettering | SUPERMERCADO | 56 | 0.0070 | 8 | 0.510 | 0 | 31.7 px at 5.8 m
+MARKET upgrade sign | MERCADO | 32 | 0.0045 | 3 | 0.187 | 0 | 15.5 px at 4.3 m
+MarketInterior/1 label | 1 | 48 | 0.0058 | 0 | 0.364 | 0 | 15.8 px at 8.3 m
+MarketInterior/OPEN label | ABIERTO | 41 | 0.0019 | 0 | 0.100 | 0 | 4.4 px at 8.2 m
+MarketInterior/@Label3D@3143 | 1 | 48 | 0.0058 | 0 | 0.364 | 0 | 15.2 px at 8.6 m
+MarketInterior/@Label3D@3144 | ABIERTO | 41 | 0.0019 | 0 | 0.100 | 0 | 4.2 px at 8.5 m
+MarketInterior/2 label | 2 | 48 | 0.0058 | 0 | 0.364 | 0 | 13.1 px at 10.0 m
+MarketInterior/@Label3D@3242 | ABIERTO | 41 | 0.0019 | 0 | 0.100 | 0 | 3.6 px at 10.0 m
+MarketInterior/@Label3D@3243 | 2 | 48 | 0.0058 | 0 | 0.364 | 0 | 12.8 px at 10.2 m
+MarketInterior/@Label3D@3244 | ABIERTO | 41 | 0.0019 | 0 | 0.100 | 0 | 3.5 px at 10.2 m
+MarketInterior/CHECKOUT label | CAJA | 48 | 0.0083 | 0 | 0.520 | 0 | 22.7 px at 8.2 m
+MarketInterior/@Label3D@3333 | CAJA | 48 | 0.0083 | 0 | 0.520 | 0 | 22.5 px at 8.3 m
+MarketInterior/DRINKS & HOME label | BEBIDAS Y HOGAR | 48 | 0.0083 | 0 | 0.520 | 0 | 14.0 px at 13.4 m
+MarketInterior/@Label3D@5138 | BEBIDAS Y HOGAR | 48 | 0.0083 | 0 | 0.520 | 0 | 14.0 px at 13.4 m
+MarketInterior/$1_50 label | $1.50 | 48 | 0.0042 | 0 | 0.260 | 0 | 6.6 px at 14.2 m
+MarketInterior/@Label3D@6026 | $1.50 | 48 | 0.0042 | 0 | 0.260 | 0 | 6.6 px at 14.2 m
+MarketInterior/FRUIT label | FRUTAS | 48 | 0.0083 | 0 | 0.520 | 0 | 9.5 px at 19.7 m
+MarketInterior/@Label3D@6058 | FRUTAS | 48 | 0.0083 | 0 | 0.520 | 0 | 9.4 px at 19.8 m
+MarketInterior/PRODUCE label | FRUTAS Y VERDURAS | 25 | 0.0046 | 0 | 0.149 | 0 | 4.7 px at 11.4 m
+MarketInterior/@Label3D@6575 | FRUTAS Y VERDURAS | 25 | 0.0046 | 0 | 0.149 | 0 | 4.7 px at 11.5 m
+MarketInterior/VEGETABLES label | VERDURAS | 48 | 0.0083 | 0 | 0.520 | 0 | 19.7 px at 9.5 m
+MarketInterior/@Label3D@6579 | VERDURAS | 48 | 0.0083 | 0 | 0.520 | 0 | 19.3 px at 9.7 m
+MarketInterior/PANTRY label | DESPENSA | 48 | 0.0083 | 0 | 0.520 | 0 | 13.0 px at 14.4 m
+MarketInterior/@Label3D@8335 | DESPENSA | 48 | 0.0083 | 0 | 0.520 | 0 | 12.9 px at 14.5 m
+MarketInterior/REFRIGERATED label | REFRIGERADOS | 48 | 0.0083 | 0 | 0.520 | 0 | 10.7 px at 17.5 m
+MarketInterior/@Label3D@8861 | REFRIGERADOS | 48 | 0.0083 | 0 | 0.520 | 0 | 10.6 px at 17.7 m
+MarketInterior/SEAFOOD label | MARISCOS | 48 | 0.0083 | 0 | 0.520 | 0 | 5.7 px at 32.8 m
+MarketInterior/@Label3D@8882 | MARISCOS | 48 | 0.0083 | 0 | 0.520 | 0 | 5.7 px at 33.0 m
+MarketInterior/MEAT label | CARNE | 48 | 0.0083 | 0 | 0.520 | 0 | 6.1 px at 30.4 m
+MarketInterior/@Label3D@8903 | CARNE | 48 | 0.0083 | 0 | 0.520 | 0 | 6.1 px at 30.6 m
+MarketInterior/BAKERY label | PANADERÍA | 43 | 0.0083 | 0 | 0.466 | 0 | 5.1 px at 32.8 m
+MarketInterior/@Label3D@8924 | PANADERÍA | 43 | 0.0083 | 0 | 0.466 | 0 | 5.1 px at 33.0 m
+
+Town Label3D em bands (m): {"0.10-0.20":12,"0.20-0.40":19,"<0.10":11,">=0.40":28}

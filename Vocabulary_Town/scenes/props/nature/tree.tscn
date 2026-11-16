@@ -1,0 +1,78 @@
+[gd_scene load_steps=10 format=3]
+
+
+[sub_resource type="CylinderMesh" id="r1"]
+top_radius = 0.19
+bottom_radius = 0.19
+height = 2.06
+
+[sub_resource type="CylinderShape3D" id="r2"]
+radius = 0.19
+height = 2.06
+
+[sub_resource type="StandardMaterial3D" id="r3"]
+albedo_color = Color(0.51373, 0.40392, 0.3098, 1)
+roughness = 0.9
+
+[sub_resource type="SphereMesh" id="r4"]
+radius = 0.94
+height = 1.88
+
+[sub_resource type="SphereShape3D" id="r5"]
+radius = 0.94
+
+[sub_resource type="StandardMaterial3D" id="r6"]
+albedo_color = Color(0.52157, 0.70588, 0.47843, 1)
+roughness = 0.9
+
+[sub_resource type="SphereMesh" id="r7"]
+radius = 0.63
+height = 1.26
+
+[sub_resource type="SphereShape3D" id="r8"]
+radius = 0.63
+
+[sub_resource type="StandardMaterial3D" id="r9"]
+albedo_color = Color(0.62745, 0.78431, 0.5451, 1)
+roughness = 0.9
+
+[node name="Tree" type="Node3D"]
+
+[node name="Trunk" type="Node3D" parent="."]
+position = Vector3(0.0, 1.03, 0.0)
+metadata/word_key = "tree"
+
+[node name="Visual" type="MeshInstance3D" parent="Trunk"]
+mesh = SubResource("r1")
+material_override = SubResource("r3")
+
+[node name="Body" type="Area3D" parent="Trunk"]
+collision_layer = 1
+collision_mask = 0
+metadata/word = "tree"
+
+[node name="Collision" type="CollisionShape3D" parent="Trunk/Body"]
+shape = SubResource("r2")
+
+[node name="Canopy" type="Node3D" parent="."]
+position = Vector3(0.0, 2.51, 0.0)
+metadata/word_key = "tree"
+
+[node name="Visual" type="MeshInstance3D" parent="Canopy"]
+mesh = SubResource("r4")
+material_override = SubResource("r6")
+
+[node name="Body" type="Area3D" parent="Canopy"]
+collision_layer = 1
+collision_mask = 0
+metadata/word = "tree"
+
+[node name="Collision" type="CollisionShape3D" parent="Canopy/Body"]
+shape = SubResource("r5")
+
+[node name="CanopyAccent" type="Node3D" parent="."]
+position = Vector3(-0.42, 2.16, 0.13)
+
+[node name="Visual" type="MeshInstance3D" parent="CanopyAccent"]
+mesh = SubResource("r7")
+material_override = SubResource("r9")

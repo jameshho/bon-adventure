@@ -1,0 +1,65 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/characters/golden_sculpt.gd" id="Sculpt"]
+
+[sub_resource type="BoxShape3D" id="StudyBox"]
+size = Vector3(2.0, 2.4, 1.8)
+
+[node name="GoldenPlush" type="Node3D"]
+script = ExtResource("Sculpt")
+metadata/word_key = "dog"
+
+[node name="Torso" type="Node3D" parent="."]
+
+[node name="Visual" type="MeshInstance3D" parent="Torso"]
+
+[node name="Head" type="Node3D" parent="."]
+
+[node name="LeftEar" type="MeshInstance3D" parent="Head"]
+
+[node name="RightEar" type="MeshInstance3D" parent="Head"]
+
+[node name="LeftCheek" type="MeshInstance3D" parent="Head"]
+
+[node name="RightCheek" type="MeshInstance3D" parent="Head"]
+
+[node name="LeftEye" type="MeshInstance3D" parent="Head"]
+
+[node name="RightEye" type="MeshInstance3D" parent="Head"]
+
+[node name="Muzzle" type="MeshInstance3D" parent="Head"]
+
+[node name="Nose" type="MeshInstance3D" parent="Head/Muzzle"]
+
+[node name="Mouth" type="MeshInstance3D" parent="Head/Muzzle"]
+
+[node name="Arm" type="Node3D" parent="."]
+
+[node name="Visual" type="MeshInstance3D" parent="Arm"]
+
+[node name="Arm_2" type="Node3D" parent="."]
+
+[node name="Visual" type="MeshInstance3D" parent="Arm_2"]
+
+[node name="Foot" type="Node3D" parent="."]
+
+[node name="Visual" type="MeshInstance3D" parent="Foot"]
+
+[node name="Claws" type="MeshInstance3D" parent="Foot"]
+
+[node name="Foot_2" type="Node3D" parent="."]
+
+[node name="Visual" type="MeshInstance3D" parent="Foot_2"]
+
+[node name="Claws" type="MeshInstance3D" parent="Foot_2"]
+
+[node name="Tail" type="MeshInstance3D" parent="."]
+
+[node name="StudyArea" type="Area3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+metadata/word = "dog"
+
+[node name="StudyShape" type="CollisionShape3D" parent="StudyArea"]
+position = Vector3(0, 1.15, 0)
+shape = SubResource("StudyBox")

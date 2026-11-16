@@ -1,0 +1,602 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/world/park_animals.gd" id="1_01ew6"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_Skin"]
+albedo_color = Color(0.909804, 0.654902, 0.666667, 1)
+roughness = 0.69
+metallic = 0.0
+
+[sub_resource type="StandardMaterial3D" id="Mat_SkinLight"]
+albedo_color = Color(0.945098, 0.721569, 0.729412, 1)
+roughness = 0.73
+metallic = 0.0
+
+[sub_resource type="StandardMaterial3D" id="Mat_SkinShade"]
+albedo_color = Color(0.843137, 0.568627, 0.600000, 1)
+roughness = 0.76
+metallic = 0.0
+
+[sub_resource type="StandardMaterial3D" id="Mat_Belly"]
+albedo_color = Color(0.929412, 0.686275, 0.694118, 1)
+roughness = 0.78
+metallic = 0.0
+
+[sub_resource type="StandardMaterial3D" id="Mat_Snout"]
+albedo_color = Color(0.929412, 0.627451, 0.658824, 1)
+roughness = 0.57
+metallic = 0.0
+
+[sub_resource type="StandardMaterial3D" id="Mat_SnoutFront"]
+albedo_color = Color(0.956863, 0.690196, 0.705882, 1)
+roughness = 0.64
+metallic = 0.0
+
+[sub_resource type="StandardMaterial3D" id="Mat_SnoutBorder"]
+albedo_color = Color(0.792157, 0.478431, 0.525490, 1)
+roughness = 0.75
+metallic = 0.0
+
+[sub_resource type="StandardMaterial3D" id="Mat_Nostril"]
+albedo_color = Color(0.560784, 0.282353, 0.345098, 1)
+roughness = 0.86
+metallic = 0.0
+
+[sub_resource type="StandardMaterial3D" id="Mat_EarInside"]
+albedo_color = Color(0.788235, 0.458824, 0.517647, 1)
+roughness = 0.78
+metallic = 0.0
+
+[sub_resource type="StandardMaterial3D" id="Mat_EarHighlight"]
+albedo_color = Color(0.921569, 0.615686, 0.647059, 1)
+roughness = 0.75
+metallic = 0.0
+
+[sub_resource type="StandardMaterial3D" id="Mat_Hoof"]
+albedo_color = Color(0.400000, 0.329412, 0.352941, 1)
+roughness = 0.81
+metallic = 0.0
+
+[sub_resource type="StandardMaterial3D" id="Mat_HoofRidge"]
+albedo_color = Color(0.580392, 0.427451, 0.458824, 1)
+roughness = 0.78
+metallic = 0.0
+
+[sub_resource type="StandardMaterial3D" id="Mat_EyeWhite"]
+albedo_color = Color(1.000000, 0.964706, 0.925490, 1)
+roughness = 0.32
+metallic = 0.0
+
+[sub_resource type="StandardMaterial3D" id="Mat_EyeBlack"]
+albedo_color = Color(0.152941, 0.149020, 0.168627, 1)
+roughness = 0.26
+metallic = 0.0
+
+[sub_resource type="StandardMaterial3D" id="Mat_EyeSpark"]
+albedo_color = Color(1.000000, 1.000000, 1.000000, 1)
+roughness = 0.12
+metallic = 0.0
+
+[sub_resource type="StandardMaterial3D" id="Mat_Mouth"]
+albedo_color = Color(0.619608, 0.349020, 0.400000, 1)
+roughness = 0.85
+metallic = 0.0
+
+[sub_resource type="SphereMesh" id="SmoothSphere"]
+radius = 1.0
+height = 2.0
+radial_segments = 32
+rings = 16
+
+[sub_resource type="SphereMesh" id="SmallSphere"]
+radius = 1.0
+height = 2.0
+radial_segments = 20
+rings = 10
+
+[sub_resource type="PrismMesh" id="EarPrism"]
+size = Vector3(0.56, 0.74, 0.16)
+left_to_right = 0.5
+
+[sub_resource type="PrismMesh" id="EarInnerPrism"]
+size = Vector3(0.33, 0.50, 0.025)
+left_to_right = 0.5
+
+[sub_resource type="CylinderMesh" id="LegCylinder"]
+top_radius = 0.24
+bottom_radius = 0.18
+height = 0.64
+radial_segments = 24
+
+[sub_resource type="CylinderMesh" id="StemCylinder"]
+top_radius = 0.5
+bottom_radius = 0.5
+height = 1.0
+radial_segments = 12
+
+[sub_resource type="TorusMesh" id="CurlTorus"]
+inner_radius = 0.136
+outer_radius = 0.244
+rings = 44
+ring_segments = 12
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0nxyp"]
+size = Vector3(2.05, 2.54, 3.44)
+
+[node name="Pig" type="Node3D" unique_id=1704436895]
+scale = Vector3(0.35827186, 0.35827186, 0.35827186)
+script = ExtResource("1_01ew6")
+metadata/word_key = "pig"
+
+; Original Part00: flowing barrel-shaped torso
+[node name="Part00" type="MeshInstance3D" parent="." unique_id=262945115]
+position = Vector3(0, 1.02, -0.14)
+scale = Vector3(0.92, 0.74, 1.17)
+material_override = SubResource("Mat_Skin")
+mesh = SubResource("SmoothSphere")
+
+; Original Part01: recognizable large tapered head
+[node name="Part01" type="MeshInstance3D" parent="." unique_id=2120864020]
+position = Vector3(0, 1.35, 0.79)
+scale = Vector3(0.69, 0.66, 0.68)
+material_override = SubResource("Mat_Skin")
+mesh = SubResource("SmoothSphere")
+
+; Original Part02: left eye
+[node name="Part02" type="MeshInstance3D" parent="." unique_id=375437786]
+position = Vector3(-0.33, 1.56, 1.44)
+scale = Vector3(0.092, 0.108, 0.039)
+material_override = SubResource("Mat_EyeBlack")
+mesh = SubResource("SmallSphere")
+
+; Original Part03: upright pointed left ear
+[node name="Part03" type="MeshInstance3D" parent="." unique_id=390200136]
+position = Vector3(-0.47, 1.961, 0.85)
+rotation = Vector3(0.15708, 0, 0.34907)
+material_override = SubResource("Mat_Skin")
+mesh = SubResource("EarPrism")
+
+; Original Part04: right eye
+[node name="Part04" type="MeshInstance3D" parent="." unique_id=1819164469]
+position = Vector3(0.33, 1.56, 1.44)
+scale = Vector3(0.092, 0.108, 0.039)
+material_override = SubResource("Mat_EyeBlack")
+mesh = SubResource("SmallSphere")
+
+; Original Part05: upright pointed right ear
+[node name="Part05" type="MeshInstance3D" parent="." unique_id=344718446]
+position = Vector3(0.47, 1.961, 0.85)
+rotation = Vector3(0.15708, 0, -0.34907)
+material_override = SubResource("Mat_Skin")
+mesh = SubResource("EarPrism")
+
+; Original Part06: smoothly tapered functional leg
+[node name="Part06" type="MeshInstance3D" parent="." unique_id=709393234]
+position = Vector3(-0.64, 0.405, -0.78)
+rotation = Vector3(0.08727, 0, 0.08727)
+material_override = SubResource("Mat_SkinShade")
+mesh = SubResource("LegCylinder")
+
+; Original Part07: smoothly tapered functional leg
+[node name="Part07" type="MeshInstance3D" parent="." unique_id=1298506811]
+position = Vector3(-0.64, 0.405, 0.66)
+rotation = Vector3(-0.05236, 0, 0.08727)
+material_override = SubResource("Mat_SkinShade")
+mesh = SubResource("LegCylinder")
+
+; Original Part08: smoothly tapered functional leg
+[node name="Part08" type="MeshInstance3D" parent="." unique_id=813923418]
+position = Vector3(0.64, 0.405, -0.78)
+rotation = Vector3(0.08727, 0, -0.08727)
+material_override = SubResource("Mat_SkinShade")
+mesh = SubResource("LegCylinder")
+
+; Original Part09: smoothly tapered functional leg
+[node name="Part09" type="MeshInstance3D" parent="." unique_id=1359691943]
+position = Vector3(0.64, 0.405, 0.66)
+rotation = Vector3(-0.05236, 0, -0.08727)
+material_override = SubResource("Mat_SkinShade")
+mesh = SubResource("LegCylinder")
+
+; Original Part10: 3D projecting pig snout
+[node name="Part10" type="MeshInstance3D" parent="." unique_id=1770995471]
+position = Vector3(0, 1.17, 1.33)
+scale = Vector3(0.412, 0.306, 0.31)
+material_override = SubResource("Mat_Snout")
+mesh = SubResource("SmoothSphere")
+
+; Original Part11: signature curled tail
+[node name="Part11" type="MeshInstance3D" parent="." unique_id=1353793121]
+position = Vector3(0.25, 1.345, -1.503)
+rotation = Vector3(1.5708, 0, 0.12217)
+material_override = SubResource("Mat_SkinShade")
+mesh = SubResource("CurlTorus")
+
+[node name="BodyDetails" type="Node3D" parent="."]
+
+[node name="ShoulderBlend" type="MeshInstance3D" parent="BodyDetails"]
+position = Vector3(0, 1.02, 0.46)
+scale = Vector3(0.84, 0.655, 0.65)
+material_override = SubResource("Mat_Skin")
+mesh = SubResource("SmoothSphere")
+
+[node name="RoundHindquarters" type="MeshInstance3D" parent="BodyDetails"]
+position = Vector3(0, 1.03, -0.72)
+scale = Vector3(0.855, 0.685, 0.665)
+material_override = SubResource("Mat_Skin")
+mesh = SubResource("SmoothSphere")
+
+[node name="SoftUnderside" type="MeshInstance3D" parent="BodyDetails"]
+position = Vector3(0, 0.575, -0.11)
+scale = Vector3(0.755, 0.34, 0.975)
+material_override = SubResource("Mat_Belly")
+mesh = SubResource("SmoothSphere")
+
+[node name="RoundedLowerJaw" type="MeshInstance3D" parent="BodyDetails"]
+position = Vector3(0, 1.014, 1.082)
+scale = Vector3(0.534, 0.337, 0.515)
+material_override = SubResource("Mat_SkinLight")
+mesh = SubResource("SmoothSphere")
+
+[node name="LeftJowl" type="MeshInstance3D" parent="BodyDetails"]
+position = Vector3(-0.512, 1.156, 0.965)
+scale = Vector3(0.255, 0.326, 0.314)
+material_override = SubResource("Mat_Skin")
+mesh = SubResource("SmoothSphere")
+
+[node name="RightJowl" type="MeshInstance3D" parent="BodyDetails"]
+position = Vector3(0.512, 1.156, 0.965)
+scale = Vector3(0.255, 0.326, 0.314)
+material_override = SubResource("Mat_Skin")
+mesh = SubResource("SmoothSphere")
+
+[node name="FaceDetails" type="Node3D" parent="."]
+
+[node name="ScleraLeft" type="MeshInstance3D" parent="FaceDetails"]
+position = Vector3(-0.33, 1.56, 1.369)
+scale = Vector3(0.145, 0.158, 0.076)
+material_override = SubResource("Mat_EyeWhite")
+mesh = SubResource("SmallSphere")
+
+[node name="UpperLidLeft" type="MeshInstance3D" parent="FaceDetails"]
+position = Vector3(-0.33, 1.708, 1.377)
+scale = Vector3(0.176, 0.058, 0.074)
+material_override = SubResource("Mat_SkinLight")
+mesh = SubResource("SmallSphere")
+
+[node name="CatchlightLeft" type="MeshInstance3D" parent="FaceDetails"]
+position = Vector3(-0.303, 1.61, 1.483)
+scale = Vector3(0.029, 0.034, 0.017)
+material_override = SubResource("Mat_EyeSpark")
+mesh = SubResource("SmallSphere")
+
+[node name="CheekBlushLeft" type="MeshInstance3D" parent="FaceDetails"]
+position = Vector3(-0.488, 1.128, 1.332)
+rotation = Vector3(0, -0.38397, 0.17453)
+scale = Vector3(0.165, 0.102, 0.075)
+material_override = SubResource("Mat_SkinLight")
+mesh = SubResource("SmallSphere")
+
+[node name="ScleraRight" type="MeshInstance3D" parent="FaceDetails"]
+position = Vector3(0.33, 1.56, 1.369)
+scale = Vector3(0.145, 0.158, 0.076)
+material_override = SubResource("Mat_EyeWhite")
+mesh = SubResource("SmallSphere")
+
+[node name="UpperLidRight" type="MeshInstance3D" parent="FaceDetails"]
+position = Vector3(0.33, 1.708, 1.377)
+scale = Vector3(0.176, 0.058, 0.074)
+material_override = SubResource("Mat_SkinLight")
+mesh = SubResource("SmallSphere")
+
+[node name="CatchlightRight" type="MeshInstance3D" parent="FaceDetails"]
+position = Vector3(0.303, 1.61, 1.483)
+scale = Vector3(0.029, 0.034, 0.017)
+material_override = SubResource("Mat_EyeSpark")
+mesh = SubResource("SmallSphere")
+
+[node name="CheekBlushRight" type="MeshInstance3D" parent="FaceDetails"]
+position = Vector3(0.488, 1.128, 1.332)
+rotation = Vector3(0, 0.38397, -0.17453)
+scale = Vector3(0.165, 0.102, 0.075)
+material_override = SubResource("Mat_SkinLight")
+mesh = SubResource("SmallSphere")
+
+[node name="SnoutFace" type="MeshInstance3D" parent="FaceDetails"]
+position = Vector3(0, 1.169, 1.61)
+scale = Vector3(0.453, 0.296, 0.13)
+material_override = SubResource("Mat_SnoutFront")
+mesh = SubResource("SmoothSphere")
+
+[node name="NostrilRimLeft" type="MeshInstance3D" parent="FaceDetails"]
+position = Vector3(-0.182, 1.176, 1.715)
+rotation = Vector3(0, 0, 0.15708)
+scale = Vector3(0.113, 0.143, 0.032)
+material_override = SubResource("Mat_SnoutBorder")
+mesh = SubResource("SmallSphere")
+
+[node name="NostrilDarkLeft" type="MeshInstance3D" parent="FaceDetails"]
+position = Vector3(-0.182, 1.176, 1.741)
+rotation = Vector3(0, 0, 0.15708)
+scale = Vector3(0.075, 0.106, 0.027)
+material_override = SubResource("Mat_Nostril")
+mesh = SubResource("SmallSphere")
+
+[node name="NostrilLightLeft" type="MeshInstance3D" parent="FaceDetails"]
+position = Vector3(-0.171, 1.211, 1.765)
+scale = Vector3(0.018, 0.028, 0.009)
+material_override = SubResource("Mat_SkinShade")
+mesh = SubResource("SmallSphere")
+
+[node name="NostrilRimRight" type="MeshInstance3D" parent="FaceDetails"]
+position = Vector3(0.182, 1.176, 1.715)
+rotation = Vector3(0, 0, -0.15708)
+scale = Vector3(0.113, 0.143, 0.032)
+material_override = SubResource("Mat_SnoutBorder")
+mesh = SubResource("SmallSphere")
+
+[node name="NostrilDarkRight" type="MeshInstance3D" parent="FaceDetails"]
+position = Vector3(0.182, 1.176, 1.741)
+rotation = Vector3(0, 0, -0.15708)
+scale = Vector3(0.075, 0.106, 0.027)
+material_override = SubResource("Mat_Nostril")
+mesh = SubResource("SmallSphere")
+
+[node name="NostrilLightRight" type="MeshInstance3D" parent="FaceDetails"]
+position = Vector3(0.171, 1.211, 1.765)
+scale = Vector3(0.018, 0.028, 0.009)
+material_override = SubResource("Mat_SkinShade")
+mesh = SubResource("SmallSphere")
+
+[node name="MouthArcLeft" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(-0.013891, -0.031033, 0, 0.105, -0.047, 0.041, -0.010418, 0.004663, 0.032027, -0.1625, 0.8685, 1.5395)
+material_override = SubResource("Mat_Mouth")
+mesh = SubResource("StemCylinder")
+
+[node name="MouthArcCenterLeft" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(-0.003383, -0.033831, 0, 0.11, -0.011, 0.013, -0.003951, 0.000395, 0.033767, -0.055, 0.8395, 1.5665)
+material_override = SubResource("Mat_Mouth")
+mesh = SubResource("StemCylinder")
+
+[node name="MouthArcCenterRight" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.003383, -0.033831, 0, 0.11, 0.011, -0.013, 0.003951, 0.000395, 0.033767, 0.055, 0.8395, 1.5665)
+material_override = SubResource("Mat_Mouth")
+mesh = SubResource("StemCylinder")
+
+[node name="MouthArcRight" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.013891, -0.031033, 0, 0.105, 0.047, -0.041, 0.010418, 0.004663, 0.032027, 0.1625, 0.8685, 1.5395)
+material_override = SubResource("Mat_Mouth")
+mesh = SubResource("StemCylinder")
+
+[node name="MouthLeftCorner" type="MeshInstance3D" parent="FaceDetails"]
+position = Vector3(-0.214, 0.895, 1.527)
+scale = Vector3(0.023, 0.023, 0.024)
+material_override = SubResource("Mat_Mouth")
+mesh = SubResource("SmallSphere")
+
+[node name="MouthRightCorner" type="MeshInstance3D" parent="FaceDetails"]
+position = Vector3(0.214, 0.895, 1.527)
+scale = Vector3(0.023, 0.023, 0.024)
+material_override = SubResource("Mat_Mouth")
+mesh = SubResource("SmallSphere")
+
+[node name="EarDetails" type="Node3D" parent="."]
+
+[node name="EarBaseLeft" type="MeshInstance3D" parent="EarDetails"]
+position = Vector3(-0.47, 1.77, 0.86)
+rotation = Vector3(0, 0, 0.29671)
+scale = Vector3(0.296, 0.253, 0.19)
+material_override = SubResource("Mat_Skin")
+mesh = SubResource("SmallSphere")
+
+[node name="EarInnerLeft" type="MeshInstance3D" parent="EarDetails"]
+position = Vector3(-0.47, 1.966, 0.96)
+rotation = Vector3(0.15708, 0, 0.34907)
+material_override = SubResource("Mat_EarInside")
+mesh = SubResource("EarInnerPrism")
+
+[node name="EarInnerFoldLeft" type="MeshInstance3D" parent="EarDetails"]
+position = Vector3(-0.47, 1.808, 0.973)
+rotation = Vector3(0, 0, 0.24435)
+scale = Vector3(0.189, 0.19, 0.046)
+material_override = SubResource("Mat_EarHighlight")
+mesh = SubResource("SmallSphere")
+
+[node name="EarBaseRight" type="MeshInstance3D" parent="EarDetails"]
+position = Vector3(0.47, 1.77, 0.86)
+rotation = Vector3(0, 0, -0.29671)
+scale = Vector3(0.296, 0.253, 0.19)
+material_override = SubResource("Mat_Skin")
+mesh = SubResource("SmallSphere")
+
+[node name="EarInnerRight" type="MeshInstance3D" parent="EarDetails"]
+position = Vector3(0.47, 1.966, 0.96)
+rotation = Vector3(0.15708, 0, -0.34907)
+material_override = SubResource("Mat_EarInside")
+mesh = SubResource("EarInnerPrism")
+
+[node name="EarInnerFoldRight" type="MeshInstance3D" parent="EarDetails"]
+position = Vector3(0.47, 1.808, 0.973)
+rotation = Vector3(0, 0, -0.24435)
+scale = Vector3(0.189, 0.19, 0.046)
+material_override = SubResource("Mat_EarHighlight")
+mesh = SubResource("SmallSphere")
+
+[node name="HoofDetails" type="Node3D" parent="."]
+
+[node name="RearLeftKnee" type="MeshInstance3D" parent="HoofDetails"]
+position = Vector3(-0.64, 0.543, -0.78)
+scale = Vector3(0.251, 0.29, 0.261)
+material_override = SubResource("Mat_Skin")
+mesh = SubResource("SmoothSphere")
+
+[node name="RearLeftHoofBand" type="MeshInstance3D" parent="HoofDetails"]
+position = Vector3(-0.64, 0.173, -0.7)
+scale = Vector3(0.223, 0.101, 0.238)
+material_override = SubResource("Mat_HoofRidge")
+mesh = SubResource("SmallSphere")
+
+[node name="RearLeftLeftClovenToe" type="MeshInstance3D" parent="HoofDetails"]
+position = Vector3(-0.764, 0.111, -0.641)
+rotation = Vector3(0, 0, 0.05236)
+scale = Vector3(0.119, 0.112, 0.232)
+material_override = SubResource("Mat_Hoof")
+mesh = SubResource("SmallSphere")
+
+[node name="RearLeftLeftToeSheen" type="MeshInstance3D" parent="HoofDetails"]
+position = Vector3(-0.764, 0.149, -0.476)
+scale = Vector3(0.064, 0.023, 0.032)
+material_override = SubResource("Mat_HoofRidge")
+mesh = SubResource("SmallSphere")
+
+[node name="RearLeftRightClovenToe" type="MeshInstance3D" parent="HoofDetails"]
+position = Vector3(-0.516, 0.111, -0.641)
+rotation = Vector3(0, 0, 0.05236)
+scale = Vector3(0.119, 0.112, 0.232)
+material_override = SubResource("Mat_Hoof")
+mesh = SubResource("SmallSphere")
+
+[node name="RearLeftRightToeSheen" type="MeshInstance3D" parent="HoofDetails"]
+position = Vector3(-0.516, 0.149, -0.476)
+scale = Vector3(0.064, 0.023, 0.032)
+material_override = SubResource("Mat_HoofRidge")
+mesh = SubResource("SmallSphere")
+
+[node name="FrontLeftKnee" type="MeshInstance3D" parent="HoofDetails"]
+position = Vector3(-0.64, 0.543, 0.66)
+scale = Vector3(0.251, 0.29, 0.261)
+material_override = SubResource("Mat_Skin")
+mesh = SubResource("SmoothSphere")
+
+[node name="FrontLeftHoofBand" type="MeshInstance3D" parent="HoofDetails"]
+position = Vector3(-0.64, 0.173, 0.74)
+scale = Vector3(0.223, 0.101, 0.238)
+material_override = SubResource("Mat_HoofRidge")
+mesh = SubResource("SmallSphere")
+
+[node name="FrontLeftLeftClovenToe" type="MeshInstance3D" parent="HoofDetails"]
+position = Vector3(-0.764, 0.111, 0.799)
+rotation = Vector3(0, 0, 0.05236)
+scale = Vector3(0.119, 0.112, 0.232)
+material_override = SubResource("Mat_Hoof")
+mesh = SubResource("SmallSphere")
+
+[node name="FrontLeftLeftToeSheen" type="MeshInstance3D" parent="HoofDetails"]
+position = Vector3(-0.764, 0.149, 0.964)
+scale = Vector3(0.064, 0.023, 0.032)
+material_override = SubResource("Mat_HoofRidge")
+mesh = SubResource("SmallSphere")
+
+[node name="FrontLeftRightClovenToe" type="MeshInstance3D" parent="HoofDetails"]
+position = Vector3(-0.516, 0.111, 0.799)
+rotation = Vector3(0, 0, 0.05236)
+scale = Vector3(0.119, 0.112, 0.232)
+material_override = SubResource("Mat_Hoof")
+mesh = SubResource("SmallSphere")
+
+[node name="FrontLeftRightToeSheen" type="MeshInstance3D" parent="HoofDetails"]
+position = Vector3(-0.516, 0.149, 0.964)
+scale = Vector3(0.064, 0.023, 0.032)
+material_override = SubResource("Mat_HoofRidge")
+mesh = SubResource("SmallSphere")
+
+[node name="RearRightKnee" type="MeshInstance3D" parent="HoofDetails"]
+position = Vector3(0.64, 0.543, -0.78)
+scale = Vector3(0.251, 0.29, 0.261)
+material_override = SubResource("Mat_Skin")
+mesh = SubResource("SmoothSphere")
+
+[node name="RearRightHoofBand" type="MeshInstance3D" parent="HoofDetails"]
+position = Vector3(0.64, 0.173, -0.7)
+scale = Vector3(0.223, 0.101, 0.238)
+material_override = SubResource("Mat_HoofRidge")
+mesh = SubResource("SmallSphere")
+
+[node name="RearRightLeftClovenToe" type="MeshInstance3D" parent="HoofDetails"]
+position = Vector3(0.516, 0.111, -0.641)
+rotation = Vector3(0, 0, -0.05236)
+scale = Vector3(0.119, 0.112, 0.232)
+material_override = SubResource("Mat_Hoof")
+mesh = SubResource("SmallSphere")
+
+[node name="RearRightLeftToeSheen" type="MeshInstance3D" parent="HoofDetails"]
+position = Vector3(0.516, 0.149, -0.476)
+scale = Vector3(0.064, 0.023, 0.032)
+material_override = SubResource("Mat_HoofRidge")
+mesh = SubResource("SmallSphere")
+
+[node name="RearRightRightClovenToe" type="MeshInstance3D" parent="HoofDetails"]
+position = Vector3(0.764, 0.111, -0.641)
+rotation = Vector3(0, 0, -0.05236)
+scale = Vector3(0.119, 0.112, 0.232)
+material_override = SubResource("Mat_Hoof")
+mesh = SubResource("SmallSphere")
+
+[node name="RearRightRightToeSheen" type="MeshInstance3D" parent="HoofDetails"]
+position = Vector3(0.764, 0.149, -0.476)
+scale = Vector3(0.064, 0.023, 0.032)
+material_override = SubResource("Mat_HoofRidge")
+mesh = SubResource("SmallSphere")
+
+[node name="FrontRightKnee" type="MeshInstance3D" parent="HoofDetails"]
+position = Vector3(0.64, 0.543, 0.66)
+scale = Vector3(0.251, 0.29, 0.261)
+material_override = SubResource("Mat_Skin")
+mesh = SubResource("SmoothSphere")
+
+[node name="FrontRightHoofBand" type="MeshInstance3D" parent="HoofDetails"]
+position = Vector3(0.64, 0.173, 0.74)
+scale = Vector3(0.223, 0.101, 0.238)
+material_override = SubResource("Mat_HoofRidge")
+mesh = SubResource("SmallSphere")
+
+[node name="FrontRightLeftClovenToe" type="MeshInstance3D" parent="HoofDetails"]
+position = Vector3(0.516, 0.111, 0.799)
+rotation = Vector3(0, 0, -0.05236)
+scale = Vector3(0.119, 0.112, 0.232)
+material_override = SubResource("Mat_Hoof")
+mesh = SubResource("SmallSphere")
+
+[node name="FrontRightLeftToeSheen" type="MeshInstance3D" parent="HoofDetails"]
+position = Vector3(0.516, 0.149, 0.964)
+scale = Vector3(0.064, 0.023, 0.032)
+material_override = SubResource("Mat_HoofRidge")
+mesh = SubResource("SmallSphere")
+
+[node name="FrontRightRightClovenToe" type="MeshInstance3D" parent="HoofDetails"]
+position = Vector3(0.764, 0.111, 0.799)
+rotation = Vector3(0, 0, -0.05236)
+scale = Vector3(0.119, 0.112, 0.232)
+material_override = SubResource("Mat_Hoof")
+mesh = SubResource("SmallSphere")
+
+[node name="FrontRightRightToeSheen" type="MeshInstance3D" parent="HoofDetails"]
+position = Vector3(0.764, 0.149, 0.964)
+scale = Vector3(0.064, 0.023, 0.032)
+material_override = SubResource("Mat_HoofRidge")
+mesh = SubResource("SmallSphere")
+
+[node name="TailDetails" type="Node3D" parent="."]
+
+[node name="TailDock" type="MeshInstance3D" parent="TailDetails"]
+position = Vector3(0, 1.17, -1.273)
+scale = Vector3(0.143, 0.148, 0.168)
+material_override = SubResource("Mat_Skin")
+mesh = SubResource("SmoothSphere")
+
+[node name="TailTaperStem" type="MeshInstance3D" parent="TailDetails"]
+transform = Transform3D(0.077571, -0.099291, 0, 0.224, 0.175, -0.171, 0.051183, 0.039987, 0.107969, 0.132, 1.2635, -1.4155)
+material_override = SubResource("Mat_SkinShade")
+mesh = SubResource("StemCylinder")
+
+[node name="TailCurlTip" type="MeshInstance3D" parent="TailDetails"]
+position = Vector3(0.25, 1.584, -1.508)
+scale = Vector3(0.066, 0.072, 0.07)
+material_override = SubResource("Mat_SkinShade")
+mesh = SubResource("SmallSphere")
+
+[node name="VocabularyArea" type="Area3D" parent="." unique_id=645710975]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VocabularyArea" unique_id=1694450051]
+position = Vector3(0, 1.19, 0.12)
+shape = SubResource("BoxShape3D_0nxyp")

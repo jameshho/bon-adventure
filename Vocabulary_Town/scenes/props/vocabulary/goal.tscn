@@ -1,0 +1,211 @@
+[gd_scene format=3]
+
+[sub_resource type="CylinderMesh" id="r1"]
+top_radius = 0.05
+bottom_radius = 0.05
+height = 1.2
+radial_segments = 16
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.92549, 0.90980, 0.87451, 1)
+roughness = 0.78
+
+[sub_resource type="CylinderMesh" id="r3"]
+top_radius = 0.035
+bottom_radius = 0.035
+height = 1.3647344063956182
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="r4"]
+top_radius = 0.05
+bottom_radius = 0.05
+height = 1.2
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="r5"]
+top_radius = 0.035
+bottom_radius = 0.035
+height = 1.3647344063956182
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="r6"]
+top_radius = 0.05
+bottom_radius = 0.05
+height = 1.8
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="r7"]
+top_radius = 0.012
+bottom_radius = 0.012
+height = 1.3461426373159717
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="r8"]
+top_radius = 0.012
+bottom_radius = 0.012
+height = 1.3461426373159717
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="r9"]
+top_radius = 0.012
+bottom_radius = 0.012
+height = 1.3461426373159717
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="r10"]
+top_radius = 0.012
+bottom_radius = 0.012
+height = 1.3461426373159717
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="r11"]
+top_radius = 0.012
+bottom_radius = 0.012
+height = 1.3461426373159717
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="r12"]
+top_radius = 0.012
+bottom_radius = 0.012
+height = 1.3461426373159717
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="r13"]
+top_radius = 0.012
+bottom_radius = 0.012
+height = 1.3461426373159717
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="r14"]
+top_radius = 0.012
+bottom_radius = 0.012
+height = 1.8
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="r15"]
+top_radius = 0.012
+bottom_radius = 0.012
+height = 1.8
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="r16"]
+top_radius = 0.012
+bottom_radius = 0.012
+height = 1.8
+radial_segments = 16
+
+[sub_resource type="BoxShape3D" id="r17"]
+size = Vector3(2.000000, 1.300000, 0.800000)
+
+[sub_resource type="BoxShape3D" id="r18"]
+size = Vector3(1.840000, 0.800000, 0.736000)
+
+[node name="Goal" type="Node3D"]
+metadata/word_key = "goal"
+metadata/learning_object = true
+
+[node name="Post_2" type="MeshInstance3D" parent="."]
+position = Vector3(-0.900000, 0.600000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, -0.000000)
+mesh = SubResource("r1")
+material_override = SubResource("r2")
+
+[node name="RearBrace_3" type="MeshInstance3D" parent="."]
+position = Vector3(-0.900000, 0.600000, 0.325000)
+rotation_degrees = Vector3(28.442929, 0.000000, -180.000000)
+mesh = SubResource("r3")
+material_override = SubResource("r2")
+
+[node name="Post_4" type="MeshInstance3D" parent="."]
+position = Vector3(0.900000, 0.600000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, -0.000000)
+mesh = SubResource("r4")
+material_override = SubResource("r2")
+
+[node name="RearBrace_5" type="MeshInstance3D" parent="."]
+position = Vector3(0.900000, 0.600000, 0.325000)
+rotation_degrees = Vector3(28.442929, 0.000000, -180.000000)
+mesh = SubResource("r5")
+material_override = SubResource("r2")
+
+[node name="Crossbar_6" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 1.200000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, -90.000000)
+mesh = SubResource("r6")
+material_override = SubResource("r2")
+
+[node name="Net_7" type="MeshInstance3D" parent="."]
+position = Vector3(-0.900000, 0.600000, 0.345000)
+rotation_degrees = Vector3(26.945748, 0.000000, -180.000000)
+mesh = SubResource("r7")
+material_override = SubResource("r2")
+
+[node name="Net_8" type="MeshInstance3D" parent="."]
+position = Vector3(-0.600000, 0.600000, 0.345000)
+rotation_degrees = Vector3(26.945748, 0.000000, -180.000000)
+mesh = SubResource("r8")
+material_override = SubResource("r2")
+
+[node name="Net_9" type="MeshInstance3D" parent="."]
+position = Vector3(-0.300000, 0.600000, 0.345000)
+rotation_degrees = Vector3(26.945748, 0.000000, -180.000000)
+mesh = SubResource("r9")
+material_override = SubResource("r2")
+
+[node name="Net_10" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.600000, 0.345000)
+rotation_degrees = Vector3(26.945748, 0.000000, -180.000000)
+mesh = SubResource("r10")
+material_override = SubResource("r2")
+
+[node name="Net_11" type="MeshInstance3D" parent="."]
+position = Vector3(0.300000, 0.600000, 0.345000)
+rotation_degrees = Vector3(26.945748, 0.000000, -180.000000)
+mesh = SubResource("r11")
+material_override = SubResource("r2")
+
+[node name="Net_12" type="MeshInstance3D" parent="."]
+position = Vector3(0.600000, 0.600000, 0.345000)
+rotation_degrees = Vector3(26.945748, 0.000000, -180.000000)
+mesh = SubResource("r12")
+material_override = SubResource("r2")
+
+[node name="Net_13" type="MeshInstance3D" parent="."]
+position = Vector3(0.900000, 0.600000, 0.345000)
+rotation_degrees = Vector3(26.945748, 0.000000, -180.000000)
+mesh = SubResource("r13")
+material_override = SubResource("r2")
+
+[node name="NetRow_14" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.300000, 0.486000)
+rotation_degrees = Vector3(0.000000, 0.000000, -90.000000)
+mesh = SubResource("r14")
+material_override = SubResource("r2")
+
+[node name="NetRow_15" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.600000, 0.324000)
+rotation_degrees = Vector3(0.000000, 0.000000, -90.000000)
+mesh = SubResource("r15")
+material_override = SubResource("r2")
+
+[node name="NetRow_16" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.900000, 0.162000)
+rotation_degrees = Vector3(0.000000, 0.000000, -90.000000)
+mesh = SubResource("r16")
+material_override = SubResource("r2")
+
+[node name="Interaction" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Interaction"]
+position = Vector3(0.000000, 0.650000, 0.000000)
+shape = SubResource("r17")
+
+[node name="Footprint" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Footprint"]
+position = Vector3(0.000000, 0.400000, 0.000000)
+shape = SubResource("r18")

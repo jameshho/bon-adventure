@@ -1,0 +1,18 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: Condition "ret != noErr" is true. Returning: ""
+   at: get_system_ca_certificates (platform/macos/os_macos.mm:1035)
+Garden rendering: 1986 meshes in 196 spatial batches
+FAIL: street ray picks new facade HOSPITAL
+FAIL: street ray picks new facade SCHOOL
+FAIL: street ray picks new facade SPORTS
+FAIL: street ray picks new facade FURNITURE
+FAIL: street ray picks new facade BAKERY _ CAFE
+FAIL: street ray picks new facade ELECTRONICS
+FAIL: street ray picks new facade CLOTHING
+FAIL: street ray picks new facade BANK
+FAIL: street ray picks new facade LIBRARY
+FAIL: street ray picks new facade POLICE STATION
+FAIL: street ray picks new facade SUPERMARKET
+FAIL: street ray picks new facade CHAPEL
+MAP FACADES: 12 failures; 20 building fronts; 12 vocabulary facade rays

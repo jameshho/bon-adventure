@@ -1,0 +1,277 @@
+[gd_scene format=3]
+
+[sub_resource type="BoxMesh" id="r1"]
+size = Vector3(3.800000, 0.480000, 1.350000)
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.43529411764705883, 0.5686274509803921, 0.6392156862745098, 1)
+roughness = 0.82
+
+[sub_resource type="BoxShape3D" id="r3"]
+size = Vector3(3.800000, 0.480000, 1.350000)
+
+[sub_resource type="BoxMesh" id="r4"]
+size = Vector3(3.800000, 1.040000, 0.300000)
+
+[sub_resource type="BoxShape3D" id="r5"]
+size = Vector3(3.800000, 1.040000, 0.300000)
+
+[sub_resource type="BoxMesh" id="r6"]
+size = Vector3(0.300000, 0.900000, 1.350000)
+
+[sub_resource type="StandardMaterial3D" id="r7"]
+albedo_color = Color(0.40784313725490196, 0.5372549019607843, 0.6078431372549019, 1)
+roughness = 0.82
+
+[sub_resource type="BoxShape3D" id="r8"]
+size = Vector3(0.300000, 0.900000, 1.350000)
+
+[sub_resource type="BoxMesh" id="r9"]
+size = Vector3(1.030000, 0.220000, 0.960000)
+
+[sub_resource type="StandardMaterial3D" id="r10"]
+albedo_color = Color(0.6078431372549019, 0.7215686274509804, 0.7764705882352941, 1)
+roughness = 0.82
+
+[sub_resource type="BoxShape3D" id="r11"]
+size = Vector3(1.030000, 0.220000, 0.960000)
+
+[sub_resource type="BoxMesh" id="r12"]
+size = Vector3(0.500000, 0.480000, 0.200000)
+
+[sub_resource type="StandardMaterial3D" id="r13"]
+albedo_color = Color(0.8509803921568627, 0.6666666666666666, 0.5764705882352941, 1)
+roughness = 0.82
+
+[sub_resource type="BoxShape3D" id="r14"]
+size = Vector3(0.500000, 0.480000, 0.200000)
+
+[sub_resource type="BoxMesh" id="r15"]
+size = Vector3(0.420000, 0.400000, 0.012000)
+
+[sub_resource type="StandardMaterial3D" id="r16"]
+albedo_color = Color(0.9176470588235294, 0.8627450980392157, 0.7647058823529411, 1)
+roughness = 0.82
+
+[sub_resource type="StandardMaterial3D" id="r17"]
+albedo_color = Color(0.8313725490196079, 0.7803921568627451, 0.5647058823529412, 1)
+roughness = 0.82
+
+[sub_resource type="BoxMesh" id="r18"]
+size = Vector3(0.120000, 0.200000, 0.120000)
+
+[sub_resource type="StandardMaterial3D" id="r19"]
+albedo_color = Color(0.4588235294117647, 0.3333333333333333, 0.24313725490196078, 1)
+roughness = 0.82
+
+[sub_resource type="BoxShape3D" id="r20"]
+size = Vector3(0.120000, 0.200000, 0.120000)
+
+[node name="Sofa" type="Node3D"]
+metadata/word_key = "sofa"
+
+[node name="Frame" type="Node3D" parent="."]
+position = Vector3(0.000000, 0.380000, 0.000000)
+
+[node name="Visual" type="MeshInstance3D" parent="Frame"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r1")
+material_override = SubResource("r2")
+
+[node name="Body" type="StaticBody3D" parent="Frame"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Frame/Body"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+shape = SubResource("r3")
+
+[node name="Backrest" type="Node3D" parent="."]
+position = Vector3(0.000000, 0.980000, 0.490000)
+
+
+[node name="Visual" type="MeshInstance3D" parent="Backrest"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r4")
+material_override = SubResource("r2")
+
+[node name="Body" type="StaticBody3D" parent="Backrest"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Backrest/Body"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+shape = SubResource("r5")
+
+[node name="Armrest" type="Node3D" parent="."]
+position = Vector3(-1.770000, 0.750000, 0.000000)
+
+
+[node name="Visual" type="MeshInstance3D" parent="Armrest"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r6")
+material_override = SubResource("r7")
+
+[node name="Body" type="StaticBody3D" parent="Armrest"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Armrest/Body"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+shape = SubResource("r8")
+
+[node name="Armrest2" type="Node3D" parent="."]
+position = Vector3(1.770000, 0.750000, 0.000000)
+
+
+[node name="Visual" type="MeshInstance3D" parent="Armrest2"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r6")
+material_override = SubResource("r7")
+
+[node name="Body" type="StaticBody3D" parent="Armrest2"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Armrest2/Body"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+shape = SubResource("r8")
+
+[node name="SeatCushion" type="Node3D" parent="."]
+position = Vector3(-1.080000, 0.700000, -0.120000)
+metadata/word_key = "cushion"
+
+[node name="Visual" type="MeshInstance3D" parent="SeatCushion"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r9")
+material_override = SubResource("r10")
+
+[node name="StudyArea" type="Area3D" parent="SeatCushion"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="SeatCushion/StudyArea"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+shape = SubResource("r11")
+
+[node name="SeatCushion2" type="Node3D" parent="."]
+position = Vector3(0.000000, 0.700000, -0.120000)
+metadata/word_key = "cushion"
+
+[node name="Visual" type="MeshInstance3D" parent="SeatCushion2"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r9")
+material_override = SubResource("r10")
+
+[node name="StudyArea" type="Area3D" parent="SeatCushion2"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="SeatCushion2/StudyArea"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+shape = SubResource("r11")
+
+[node name="SeatCushion3" type="Node3D" parent="."]
+position = Vector3(1.080000, 0.700000, -0.120000)
+metadata/word_key = "cushion"
+
+[node name="Visual" type="MeshInstance3D" parent="SeatCushion3"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r9")
+material_override = SubResource("r10")
+
+[node name="StudyArea" type="Area3D" parent="SeatCushion3"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="SeatCushion3/StudyArea"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+shape = SubResource("r11")
+
+[node name="ThrowPillow" type="Node3D" parent="."]
+position = Vector3(-1.220000, 1.020000, 0.230000)
+metadata/word_key = "pillow"
+
+[node name="Visual" type="MeshInstance3D" parent="ThrowPillow"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r12")
+material_override = SubResource("r13")
+
+[node name="StudyArea" type="Area3D" parent="ThrowPillow"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="ThrowPillow/StudyArea"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+shape = SubResource("r14")
+
+[node name="Seam" type="MeshInstance3D" parent="ThrowPillow"]
+position = Vector3(0.000000, 0.000000, -0.108000)
+mesh = SubResource("r15")
+material_override = SubResource("r16")
+
+[node name="ThrowPillow2" type="Node3D" parent="."]
+position = Vector3(1.220000, 1.020000, 0.230000)
+metadata/word_key = "pillow"
+
+[node name="Visual" type="MeshInstance3D" parent="ThrowPillow2"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r12")
+material_override = SubResource("r17")
+
+[node name="StudyArea" type="Area3D" parent="ThrowPillow2"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="ThrowPillow2/StudyArea"]
+position = Vector3(0.000000, 0.000000, 0.000000)
+shape = SubResource("r14")
+
+[node name="Seam" type="MeshInstance3D" parent="ThrowPillow2"]
+position = Vector3(0.000000, 0.000000, -0.108000)
+mesh = SubResource("r15")
+material_override = SubResource("r16")
+
+[node name="Foot" type="MeshInstance3D" parent="."]
+position = Vector3(-1.500000, 0.100000, -0.450000)
+mesh = SubResource("r18")
+material_override = SubResource("r19")
+
+[node name="Body" type="StaticBody3D" parent="Foot"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="Foot/Body"]
+shape = SubResource("r20")
+
+[node name="Foot2" type="MeshInstance3D" parent="."]
+position = Vector3(-1.500000, 0.100000, 0.450000)
+mesh = SubResource("r18")
+material_override = SubResource("r19")
+
+[node name="Body" type="StaticBody3D" parent="Foot2"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="Foot2/Body"]
+shape = SubResource("r20")
+
+[node name="Foot3" type="MeshInstance3D" parent="."]
+position = Vector3(1.500000, 0.100000, -0.450000)
+mesh = SubResource("r18")
+material_override = SubResource("r19")
+
+[node name="Body" type="StaticBody3D" parent="Foot3"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="Foot3/Body"]
+shape = SubResource("r20")
+
+[node name="Foot4" type="MeshInstance3D" parent="."]
+position = Vector3(1.500000, 0.100000, 0.450000)
+mesh = SubResource("r18")
+material_override = SubResource("r19")
+
+[node name="Body" type="StaticBody3D" parent="Foot4"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="Foot4/Body"]
+shape = SubResource("r20")

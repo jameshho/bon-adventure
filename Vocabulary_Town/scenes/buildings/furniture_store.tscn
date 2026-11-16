@@ -1,0 +1,366 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/sofa.tscn" id="e1"]
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/armchair.tscn" id="e2"]
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/chair.tscn" id="e3"]
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/bench.tscn" id="e4"]
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/stool.tscn" id="e5"]
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/dining_table.tscn" id="e6"]
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/desk.tscn" id="e7"]
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/coffee_table.tscn" id="e8"]
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/bed.tscn" id="e9"]
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/wardrobe.tscn" id="e10"]
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/bookshelf.tscn" id="e11"]
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/dresser.tscn" id="e12"]
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/nightstand.tscn" id="e13"]
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/lamp.tscn" id="e14"]
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/mirror.tscn" id="e15"]
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/pillow.tscn" id="e16"]
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.89412, 0.87451, 0.82353, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r1"]
+size = Vector3(17, 0.1, 29)
+
+[sub_resource type="BoxShape3D" id="r3"]
+size = Vector3(17, 0.1, 29)
+
+[sub_resource type="StandardMaterial3D" id="r5"]
+albedo_color = Color(0.89412, 0.90588, 0.8902, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r4"]
+size = Vector3(17, 4.6, 0.18)
+
+[sub_resource type="BoxShape3D" id="r6"]
+size = Vector3(17, 4.6, 0.18)
+
+[sub_resource type="BoxMesh" id="r7"]
+size = Vector3(0.18, 4.6, 29)
+
+[sub_resource type="BoxShape3D" id="r8"]
+size = Vector3(0.18, 4.6, 29)
+
+[sub_resource type="BoxMesh" id="r9"]
+size = Vector3(0.18, 4.6, 29)
+
+[sub_resource type="BoxShape3D" id="r10"]
+size = Vector3(0.18, 4.6, 29)
+
+[sub_resource type="BoxMesh" id="r11"]
+size = Vector3(6.7, 4.6, 0.18)
+
+[sub_resource type="BoxShape3D" id="r12"]
+size = Vector3(6.7, 4.6, 0.18)
+
+[sub_resource type="BoxMesh" id="r13"]
+size = Vector3(6.7, 4.6, 0.18)
+
+[sub_resource type="BoxShape3D" id="r14"]
+size = Vector3(6.7, 4.6, 0.18)
+
+[sub_resource type="BoxMesh" id="r15"]
+size = Vector3(3.6, 1.2, 0.18)
+
+[sub_resource type="BoxShape3D" id="r16"]
+size = Vector3(3.6, 1.2, 0.18)
+
+[sub_resource type="StandardMaterial3D" id="r18"]
+albedo_color = Color(0.56078, 0.6549, 0.6902, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r17"]
+size = Vector3(17.3, 0.18, 29.3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ubcbs"]
+size = Vector3(17.3, 0.18, 29.3)
+
+[sub_resource type="BoxMesh" id="r19"]
+size = Vector3(16.5, 0.75, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="r21"]
+albedo_color = Color(0.84706, 0.83529, 0.79608, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r20"]
+size = Vector3(3.5, 0.04, 3)
+
+[sub_resource type="StandardMaterial3D" id="r23"]
+albedo_color = Color(0.78039, 0.7098, 0.58824, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r22"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxShape3D" id="r24"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="StandardMaterial3D" id="r26"]
+albedo_color = Color(0.67843, 0.48235, 0.31373, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r25"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r27"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[node name="FURNITURE" type="Node3D" unique_id=1787091474]
+
+[node name="Floor_2" type="MeshInstance3D" parent="." unique_id=790181136]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.02, 0)
+material_override = SubResource("r2")
+mesh = SubResource("r1")
+
+[node name="FloorBody" type="StaticBody3D" parent="." unique_id=2085806963]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="FloorBody" unique_id=1314324667]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.02, 0)
+shape = SubResource("r3")
+
+[node name="Rear_5" type="MeshInstance3D" parent="." unique_id=1582650308]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, 14.5)
+material_override = SubResource("r5")
+mesh = SubResource("r4")
+metadata/exterior_word = "furniture store"
+
+[node name="RearBody" type="StaticBody3D" parent="." unique_id=1081527892]
+collision_mask = 0
+metadata/exterior_word = "furniture store"
+
+[node name="Shape" type="CollisionShape3D" parent="RearBody" unique_id=1268001118]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, 14.5)
+shape = SubResource("r6")
+
+[node name="Left_7" type="MeshInstance3D" parent="." unique_id=642843116]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.5, 2.3, 0)
+material_override = SubResource("r5")
+mesh = SubResource("r7")
+metadata/exterior_word = "furniture store"
+
+[node name="LeftBody" type="StaticBody3D" parent="." unique_id=805276379]
+collision_mask = 0
+metadata/exterior_word = "furniture store"
+
+[node name="Shape" type="CollisionShape3D" parent="LeftBody" unique_id=237793337]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.5, 2.3, 0)
+shape = SubResource("r8")
+
+[node name="Right_9" type="MeshInstance3D" parent="." unique_id=1393354111]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 2.3, 0)
+material_override = SubResource("r5")
+mesh = SubResource("r9")
+metadata/exterior_word = "furniture store"
+
+[node name="RightBody" type="StaticBody3D" parent="." unique_id=361793663]
+collision_mask = 0
+metadata/exterior_word = "furniture store"
+
+[node name="Shape" type="CollisionShape3D" parent="RightBody" unique_id=336578605]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 2.3, 0)
+shape = SubResource("r10")
+
+[node name="FrontLeft_11" type="MeshInstance3D" parent="." unique_id=1003458743]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.15, 2.3, -14.5)
+material_override = SubResource("r5")
+mesh = SubResource("r11")
+metadata/exterior_word = "furniture store"
+
+[node name="FrontLeftBody" type="StaticBody3D" parent="." unique_id=1384428730]
+collision_mask = 0
+metadata/exterior_word = "furniture store"
+
+[node name="Shape" type="CollisionShape3D" parent="FrontLeftBody" unique_id=1831353240]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.15, 2.3, -14.5)
+shape = SubResource("r12")
+
+[node name="FrontRight_13" type="MeshInstance3D" parent="." unique_id=2142910765]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.15, 2.3, -14.5)
+material_override = SubResource("r5")
+mesh = SubResource("r13")
+metadata/exterior_word = "furniture store"
+
+[node name="FrontRightBody" type="StaticBody3D" parent="." unique_id=1359837319]
+collision_mask = 0
+metadata/exterior_word = "furniture store"
+
+[node name="Shape" type="CollisionShape3D" parent="FrontRightBody" unique_id=149393466]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.15, 2.3, -14.5)
+shape = SubResource("r14")
+
+[node name="Lintel_15" type="MeshInstance3D" parent="." unique_id=1212890437]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, -14.5)
+material_override = SubResource("r5")
+mesh = SubResource("r15")
+metadata/exterior_word = "furniture store"
+
+[node name="LintelBody" type="StaticBody3D" parent="." unique_id=826221929]
+collision_mask = 0
+metadata/exterior_word = "furniture store"
+
+[node name="Shape" type="CollisionShape3D" parent="LintelBody" unique_id=1653608502]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, -14.5)
+shape = SubResource("r16")
+
+[node name="Roof_18" type="MeshInstance3D" parent="." unique_id=1290616515]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.7, 0)
+material_override = SubResource("r18")
+mesh = SubResource("r17")
+metadata/exterior_word = "furniture store"
+
+[node name="RoofSolid" type="StaticBody3D" parent="Roof_18" unique_id=1421591691]
+
+[node name="Collision" type="CollisionShape3D" parent="Roof_18/RoofSolid" unique_id=518038839]
+shape = SubResource("BoxShape3D_ubcbs")
+
+[node name="SignBoard_19" type="MeshInstance3D" parent="." unique_id=334124749]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.75, -14.64)
+material_override = SubResource("r18")
+mesh = SubResource("r19")
+metadata/exterior_word = "furniture store"
+
+[node name="Section88" type="Label3D" parent="." unique_id=299084161]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 3.75, -14.71)
+pixel_size = 0.007
+modulate = Color(0.18, 0.24, 0.27, 1)
+text = "FURNITURE"
+font_size = 52
+outline_size = 0
+
+[node name="InteriorLight96" type="OmniLight3D" parent="." unique_id=135671707]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.8, -8.12)
+light_energy = 0.65
+omni_range = 11.0
+omni_attenuation = 0.6
+
+[node name="InteriorLight102" type="OmniLight3D" parent="." unique_id=388724473]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.8, 8.12)
+light_energy = 0.65
+omni_range = 11.0
+omni_attenuation = 0.6
+
+[node name="EntrancePath_21" type="MeshInstance3D" parent="." unique_id=956961153]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.025, -16)
+material_override = SubResource("r21")
+mesh = SubResource("r20")
+
+[node name="Sofa" type="Node3D" parent="." unique_id=750615934 instance=ExtResource("e1")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -6.85, 0.1, -12.5)
+metadata/word_key = "sofa"
+metadata/learning_object = true
+
+[node name="Armchair" type="Node3D" parent="." unique_id=1399394745 instance=ExtResource("e2")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -6.85, 0.1, -8.928571)
+metadata/word_key = "armchair"
+metadata/learning_object = true
+
+[node name="Chair" type="Node3D" parent="." unique_id=1594470909 instance=ExtResource("e3")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -6.85, 0.1, -5.357143)
+metadata/word_key = "chair"
+metadata/learning_object = true
+
+[node name="Bench" type="Node3D" parent="." unique_id=75960278 instance=ExtResource("e4")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -6.85, 0.1, -1.785714)
+metadata/word_key = "bench"
+metadata/learning_object = true
+
+[node name="Stool" type="Node3D" parent="." unique_id=1943627218 instance=ExtResource("e5")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -6.85, 0.1, 1.785714)
+metadata/word_key = "stool"
+metadata/learning_object = true
+
+[node name="Dining_Table" type="Node3D" parent="." unique_id=479853323 instance=ExtResource("e6")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -6.85, 0.1, 5.357143)
+metadata/word_key = "dining table"
+metadata/learning_object = true
+
+[node name="Desk" type="Node3D" parent="." unique_id=79611431 instance=ExtResource("e7")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -6.85, 0.1, 8.928571)
+metadata/word_key = "desk"
+metadata/learning_object = true
+
+[node name="Coffee_Table" type="Node3D" parent="." unique_id=898586748 instance=ExtResource("e8")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -6.85, 0.1, 12.5)
+metadata/word_key = "coffee table"
+metadata/learning_object = true
+
+[node name="Bed" type="Node3D" parent="." unique_id=641296386 instance=ExtResource("e9")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 6.85, 0.1, -12.5)
+metadata/word_key = "bed"
+metadata/learning_object = true
+
+[node name="Wardrobe" type="Node3D" parent="." unique_id=240829527 instance=ExtResource("e10")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 6.85, 0.1, -8.928571)
+metadata/word_key = "wardrobe"
+metadata/learning_object = true
+
+[node name="Bookshelf" type="Node3D" parent="." unique_id=1889822561 instance=ExtResource("e11")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 6.85, 0.1, -5.357143)
+metadata/word_key = "bookshelf"
+metadata/learning_object = true
+
+[node name="Chest_Of_Drawers" type="Node3D" parent="." unique_id=711087134 instance=ExtResource("e12")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 6.85, 0.1, -1.785714)
+metadata/word_key = "dresser"
+metadata/learning_object = true
+
+[node name="Nightstand" type="Node3D" parent="." unique_id=1897460234 instance=ExtResource("e13")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 6.85, 0.1, 1.785714)
+metadata/word_key = "nightstand"
+metadata/learning_object = true
+
+[node name="Lamp" type="Node3D" parent="." unique_id=540467534 instance=ExtResource("e14")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 6.85, 0.1, 5.357143)
+metadata/word_key = "lamp"
+metadata/learning_object = true
+
+[node name="Mirror" type="Node3D" parent="." unique_id=188945542 instance=ExtResource("e15")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 6.85, 0.1, 8.928571)
+metadata/word_key = "mirror"
+metadata/learning_object = true
+
+[node name="DisplayToppillow_23" type="MeshInstance3D" parent="." unique_id=1580508156]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.85, 0.96, 12.5)
+material_override = SubResource("r23")
+mesh = SubResource("r22")
+
+[node name="DisplayBodypillow" type="StaticBody3D" parent="." unique_id=821509237]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodypillow" unique_id=1033580281]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.85, 0.96, 12.5)
+shape = SubResource("r24")
+
+[node name="DisplayLeg_26" type="MeshInstance3D" parent="." unique_id=738447602]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.3, 0.47, 12.5)
+material_override = SubResource("r26")
+mesh = SubResource("r25")
+
+[node name="DisplayLeg_27" type="MeshInstance3D" parent="." unique_id=555506459]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.4, 0.47, 12.5)
+material_override = SubResource("r26")
+mesh = SubResource("r27")
+
+[node name="Pillow" type="Node3D" parent="." unique_id=1339004844 instance=ExtResource("e16")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 6.85, 1.02, 12.5)
+metadata/word_key = "pillow"
+metadata/learning_object = true
+
+[node name="Section182" type="Label3D" parent="." unique_id=1323375236]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -6.7, 2.85, -13.5)
+pixel_size = 0.0045
+modulate = Color(0.18, 0.24, 0.27, 1)
+text = "LIVING & DINING"
+font_size = 52
+outline_size = 0
+
+[node name="Section190" type="Label3D" parent="." unique_id=272859577]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 6.7, 2.85, -13.5)
+pixel_size = 0.0045
+modulate = Color(0.18, 0.24, 0.27, 1)
+text = "BEDROOM & STORAGE"
+font_size = 52
+outline_size = 0

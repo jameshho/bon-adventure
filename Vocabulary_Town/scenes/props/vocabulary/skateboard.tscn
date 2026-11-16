@@ -1,0 +1,127 @@
+[gd_scene format=3]
+
+[sub_resource type="BoxMesh" id="r1"]
+size = Vector3(1.350000, 0.090000, 0.380000)
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.72549, 0.48627, 0.27059, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r3"]
+size = Vector3(0.220000, 0.080000, 0.380000)
+
+[sub_resource type="BoxMesh" id="r4"]
+size = Vector3(0.220000, 0.080000, 0.380000)
+
+[sub_resource type="CylinderMesh" id="r5"]
+top_radius = 0.035
+bottom_radius = 0.035
+height = 0.5
+radial_segments = 16
+
+[sub_resource type="StandardMaterial3D" id="r6"]
+albedo_color = Color(0.52941, 0.58039, 0.61176, 1)
+roughness = 0.78
+
+[sub_resource type="CylinderMesh" id="r7"]
+top_radius = 0.12
+bottom_radius = 0.12
+height = 0.1
+radial_segments = 16
+
+[sub_resource type="StandardMaterial3D" id="r8"]
+albedo_color = Color(0.92549, 0.90980, 0.87451, 1)
+roughness = 0.78
+
+[sub_resource type="CylinderMesh" id="r9"]
+top_radius = 0.12
+bottom_radius = 0.12
+height = 0.1
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="r10"]
+top_radius = 0.035
+bottom_radius = 0.035
+height = 0.5
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="r11"]
+top_radius = 0.12
+bottom_radius = 0.12
+height = 0.1
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="r12"]
+top_radius = 0.12
+bottom_radius = 0.12
+height = 0.1
+radial_segments = 16
+
+[sub_resource type="BoxShape3D" id="r13"]
+size = Vector3(1.600000, 0.400000, 0.600000)
+
+[node name="Skateboard" type="Node3D"]
+metadata/word_key = "skateboard"
+metadata/learning_object = true
+
+[node name="Deck_2" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.250000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r1")
+material_override = SubResource("r2")
+
+[node name="RaisedNose_3" type="MeshInstance3D" parent="."]
+position = Vector3(-0.660000, 0.300000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, -20.000000)
+mesh = SubResource("r3")
+material_override = SubResource("r2")
+
+[node name="RaisedNose_4" type="MeshInstance3D" parent="."]
+position = Vector3(0.660000, 0.300000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 20.000000)
+mesh = SubResource("r4")
+material_override = SubResource("r2")
+
+[node name="Axle_6" type="MeshInstance3D" parent="."]
+position = Vector3(-0.420000, 0.140000, 0.000000)
+rotation_degrees = Vector3(90.000000, 0.000000, -0.000000)
+mesh = SubResource("r5")
+material_override = SubResource("r6")
+
+[node name="Wheel_8" type="MeshInstance3D" parent="."]
+position = Vector3(-0.420000, 0.130000, -0.230000)
+rotation_degrees = Vector3(90.000000, 0.000000, 0.000000)
+mesh = SubResource("r7")
+material_override = SubResource("r8")
+
+[node name="Wheel_9" type="MeshInstance3D" parent="."]
+position = Vector3(-0.420000, 0.130000, 0.230000)
+rotation_degrees = Vector3(90.000000, 0.000000, 0.000000)
+mesh = SubResource("r9")
+material_override = SubResource("r8")
+
+[node name="Axle_10" type="MeshInstance3D" parent="."]
+position = Vector3(0.420000, 0.140000, 0.000000)
+rotation_degrees = Vector3(90.000000, 0.000000, -0.000000)
+mesh = SubResource("r10")
+material_override = SubResource("r6")
+
+[node name="Wheel_11" type="MeshInstance3D" parent="."]
+position = Vector3(0.420000, 0.130000, -0.230000)
+rotation_degrees = Vector3(90.000000, 0.000000, 0.000000)
+mesh = SubResource("r11")
+material_override = SubResource("r8")
+
+[node name="Wheel_12" type="MeshInstance3D" parent="."]
+position = Vector3(0.420000, 0.130000, 0.230000)
+rotation_degrees = Vector3(90.000000, 0.000000, 0.000000)
+mesh = SubResource("r12")
+material_override = SubResource("r8")
+
+[node name="Interaction" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Interaction"]
+position = Vector3(0.000000, 0.200000, 0.000000)
+shape = SubResource("r13")

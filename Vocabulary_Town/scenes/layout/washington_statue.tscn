@@ -1,0 +1,134 @@
+[gd_scene format=3]
+
+[sub_resource type="BoxMesh" id="r1"]
+size = Vector3(4.000000, 3.000000, 4.000000)
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.7176470588235294, 0.7725490196078432, 0.7411764705882353, 1)
+roughness = 0.82
+
+[sub_resource type="BoxShape3D" id="r3"]
+size = Vector3(4.000000, 3.000000, 4.000000)
+
+[sub_resource type="BoxMesh" id="r4"]
+size = Vector3(3.000000, 0.500000, 3.000000)
+
+[sub_resource type="StandardMaterial3D" id="r5"]
+albedo_color = Color(0.8313725490196079, 0.8431372549019608, 0.7803921568627451, 1)
+roughness = 0.82
+
+[sub_resource type="BoxShape3D" id="r6"]
+size = Vector3(3.000000, 0.500000, 3.000000)
+
+[sub_resource type="BoxMesh" id="r7"]
+size = Vector3(0.900000, 1.800000, 0.550000)
+
+[sub_resource type="StandardMaterial3D" id="r8"]
+albedo_color = Color(0.45098039215686275, 0.5843137254901961, 0.5254901960784314, 1)
+roughness = 0.82
+
+[sub_resource type="BoxShape3D" id="r9"]
+size = Vector3(0.900000, 1.800000, 0.550000)
+
+[sub_resource type="SphereMesh" id="r10"]
+radius = 0.5
+height = 1.0
+radial_segments = 12
+rings = 6
+
+[sub_resource type="BoxMesh" id="r11"]
+size = Vector3(0.280000, 1.100000, 0.320000)
+
+[sub_resource type="BoxShape3D" id="r12"]
+size = Vector3(0.280000, 1.100000, 0.320000)
+
+[sub_resource type="BoxMesh" id="r13"]
+size = Vector3(0.800000, 0.250000, 0.300000)
+
+[sub_resource type="BoxShape3D" id="r14"]
+size = Vector3(0.800000, 0.250000, 0.300000)
+
+[node name="WashingtonStatue" type="Node3D"]
+metadata/layout_shell = true
+
+[node name="Pedestal" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 1.500000, 0.000000)
+mesh = SubResource("r1")
+material_override = SubResource("r2")
+
+[node name="Body" type="StaticBody3D" parent="Pedestal"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="Pedestal/Body"]
+shape = SubResource("r3")
+
+[node name="UpperPlinth" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 3.250000, 0.000000)
+mesh = SubResource("r4")
+material_override = SubResource("r5")
+
+[node name="Body" type="StaticBody3D" parent="UpperPlinth"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="UpperPlinth/Body"]
+shape = SubResource("r6")
+
+[node name="FigureTorso" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 5.300000, 0.000000)
+mesh = SubResource("r7")
+material_override = SubResource("r8")
+
+[node name="Body" type="StaticBody3D" parent="FigureTorso"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="FigureTorso/Body"]
+shape = SubResource("r9")
+
+[node name="FigureHead" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 6.550000, 0.000000)
+scale = Vector3(0.700000, 0.800000, 0.700000)
+mesh = SubResource("r10")
+material_override = SubResource("r8")
+
+[node name="FigureLeg" type="MeshInstance3D" parent="."]
+position = Vector3(-0.250000, 4.000000, 0.000000)
+mesh = SubResource("r11")
+material_override = SubResource("r8")
+
+[node name="Body" type="StaticBody3D" parent="FigureLeg"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="FigureLeg/Body"]
+shape = SubResource("r12")
+
+[node name="FigureLeg2" type="MeshInstance3D" parent="."]
+position = Vector3(0.250000, 4.000000, 0.000000)
+mesh = SubResource("r11")
+material_override = SubResource("r8")
+
+[node name="Body" type="StaticBody3D" parent="FigureLeg2"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="FigureLeg2/Body"]
+shape = SubResource("r12")
+
+[node name="FigureArm" type="MeshInstance3D" parent="."]
+position = Vector3(0.700000, 5.600000, 0.000000)
+mesh = SubResource("r13")
+material_override = SubResource("r8")
+rotation = Vector3(0.000000, 0.000000, 0.400000)
+
+[node name="Body" type="StaticBody3D" parent="FigureArm"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="FigureArm/Body"]
+shape = SubResource("r14")
+
+[node name="Plaque" type="Label3D" parent="."]
+position = Vector3(0.000000, 1.800000, -2.060000)
+rotation = Vector3(0, 3.141592653589793, 0)
+text = "WASHINGTON"
+font_size = 26
+pixel_size = 0.008
+outline_size = 4
+no_depth_test = false

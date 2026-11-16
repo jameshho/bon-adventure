@@ -1,0 +1,52 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/world/park_animals.gd" id="1_4ar3u"]
+[ext_resource type="Material" path="res://scenes/animals/shared/color_edaa53ff.tres" id="2_n2lv3"]
+[ext_resource type="SphereMesh" path="res://scenes/animals/shared/toy_sphere.tres" id="3_ct16t"]
+[ext_resource type="Material" path="res://scenes/animals/shared/color_252c31ff.tres" id="4_d7dxp"]
+[ext_resource type="Material" path="res://scenes/animals/shared/color_df7040ff.tres" id="5_01o3h"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4aysv"]
+size = Vector3(1.2, 1.9, 2.2)
+
+[node name="Fish" type="Node3D" unique_id=106226910]
+scale = Vector3(0.12618004, 0.12618004, 0.12618004)
+script = ExtResource("1_4ar3u")
+radius = 1.8
+metadata/word_key = "fish"
+
+[node name="Part00" type="MeshInstance3D" parent="." unique_id=252473447]
+transform = Transform3D(0.85, 0, 0, 0, 0.8, 0, 0, 0, 1.5, 0, 0.3, 0)
+material_override = ExtResource("2_n2lv3")
+mesh = ExtResource("3_ct16t")
+
+[node name="Part01" type="MeshInstance3D" parent="." unique_id=1708937116]
+transform = Transform3D(0.7, 0, 0, 0, 0.65, 0, 0, 0, 0.7, 0, 0.4, 0.65)
+material_override = ExtResource("2_n2lv3")
+mesh = ExtResource("3_ct16t")
+
+[node name="Part02" type="MeshInstance3D" parent="." unique_id=1811720488]
+transform = Transform3D(0.12, 0, 0, 0, 0.15, 0, 0, 0, 0.1, -0.22, 0.52, 0.94)
+material_override = ExtResource("4_d7dxp")
+mesh = ExtResource("3_ct16t")
+
+[node name="Part03" type="MeshInstance3D" parent="." unique_id=1671303999]
+transform = Transform3D(0.12, 0, 0, 0, 0.15, 0, 0, 0, 0.1, 0.22, 0.52, 0.94)
+material_override = ExtResource("4_d7dxp")
+mesh = ExtResource("3_ct16t")
+
+[node name="Part04" type="MeshInstance3D" parent="." unique_id=910280471]
+transform = Transform3D(0.15, 0, 0, 0, 0.7, 0, 0, 0, 0.6, 0, 0.35, -0.85)
+material_override = ExtResource("2_n2lv3")
+mesh = ExtResource("3_ct16t")
+
+[node name="Part05" type="MeshInstance3D" parent="." unique_id=226991338]
+transform = Transform3D(0.12, 0, 0, 0, 0.5, 0, 0, 0, 0.6, 0, 0.65, 0)
+material_override = ExtResource("5_01o3h")
+mesh = ExtResource("3_ct16t")
+
+[node name="VocabularyArea" type="Area3D" parent="." unique_id=1240190655]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VocabularyArea" unique_id=274636285]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, 0)
+shape = SubResource("BoxShape3D_4aysv")

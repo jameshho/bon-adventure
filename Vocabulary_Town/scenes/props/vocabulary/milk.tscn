@@ -1,0 +1,60 @@
+[gd_scene format=3]
+
+[sub_resource type="BoxMesh" id="r1"]
+size = Vector3(0.500000, 0.800000, 0.500000)
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.92549, 0.90980, 0.87451, 1)
+roughness = 0.78
+
+[sub_resource type="PrismMesh" id="r3"]
+size = Vector3(0.5, 0.22, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="r4"]
+albedo_color = Color(0.27451, 0.47843, 0.60784, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r5"]
+size = Vector3(0.500000, 0.045000, 0.045000)
+
+[sub_resource type="BoxMesh" id="r6"]
+size = Vector3(0.450000, 0.220000, 0.020000)
+
+[sub_resource type="BoxShape3D" id="r7"]
+size = Vector3(0.550000, 1.080000, 0.550000)
+
+[node name="Milk" type="Node3D"]
+metadata/word_key = "milk"
+metadata/learning_object = true
+
+[node name="Carton_2" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.400000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r1")
+material_override = SubResource("r2")
+
+[node name="FoldedTop_4" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.890000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r3")
+material_override = SubResource("r4")
+
+[node name="Seam_5" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 1.020000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r5")
+material_override = SubResource("r2")
+
+[node name="Band_6" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.450000, -0.260000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r6")
+material_override = SubResource("r4")
+
+[node name="Interaction" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Interaction"]
+position = Vector3(0.000000, 0.540000, 0.000000)
+shape = SubResource("r7")

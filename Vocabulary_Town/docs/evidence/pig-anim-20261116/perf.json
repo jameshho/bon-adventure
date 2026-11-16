@@ -1,0 +1,73 @@
+{
+  "perf": {
+    "adapter": "Apple M5",
+    "empty": {
+      "frame_ms_mean": 0.44,
+      "frame_ms_p95": 0.62,
+      "render_cpu_ms": 0.04,
+      "render_gpu_ms": 0.0,
+      "triangles_drawn": 2.0,
+      "walking_at_end": 0
+    },
+    "renderer": "gl_compatibility",
+    "rigged x1": {
+      "frame_ms_mean": 0.76,
+      "frame_ms_p95": 0.74,
+      "render_cpu_ms": 0.09,
+      "render_gpu_ms": 0.0,
+      "triangles_drawn": 42557.0,
+      "walking_at_end": 0
+    },
+    "rigged x10": {
+      "frame_ms_mean": 2.79,
+      "frame_ms_p95": 5.44,
+      "render_cpu_ms": 1.54,
+      "render_gpu_ms": 0.0,
+      "triangles_drawn": 425552.0,
+      "walking_at_end": 0
+    },
+    "rigged x10, animator off": {
+      "frame_ms_mean": 1.01,
+      "frame_ms_p95": 3.6,
+      "render_cpu_ms": 0.09,
+      "render_gpu_ms": 0.0,
+      "triangles_drawn": 425552.0,
+      "walking_at_end": 0
+    },
+    "rigged x10, camera turned away": {
+      "frame_ms_mean": 0.36,
+      "frame_ms_p95": 0.41,
+      "render_cpu_ms": 0.03,
+      "render_gpu_ms": 0.0,
+      "triangles_drawn": 0.0,
+      "walking_at_end": 0
+    },
+    "static x10": {
+      "frame_ms_mean": 2.12,
+      "frame_ms_p95": 4.55,
+      "render_cpu_ms": 0.14,
+      "render_gpu_ms": 0.0,
+      "triangles_drawn": 1486072.0,
+      "walking_at_end": 0
+    },
+    "window": "(1000, 700)"
+  },
+  "rest_difference": [
+    [
+      0.714812383219316,
+      0.00147790296692993
+    ],
+    [
+      0.703103101344891,
+      0.00184270656740621
+    ],
+    [
+      0.66350003123855,
+      0.00104230259533346
+    ],
+    [
+      0.739748577079269,
+      0.0017576071434176
+    ]
+  ]
+}

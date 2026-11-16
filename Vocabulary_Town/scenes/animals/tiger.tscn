@@ -1,0 +1,1090 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/world/park_animals.gd" id="1_i44u8"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_CoatOrange"]
+albedo_color = Color(0.84, 0.385, 0.105, 1)
+roughness = 0.84
+
+[sub_resource type="StandardMaterial3D" id="Mat_SunlitOrange"]
+albedo_color = Color(0.935, 0.535, 0.2, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="Mat_ShadowOrange"]
+albedo_color = Color(0.66, 0.275, 0.075, 1)
+roughness = 0.89
+
+[sub_resource type="StandardMaterial3D" id="Mat_BlackStripe"]
+albedo_color = Color(0.098, 0.073, 0.064, 1)
+roughness = 0.94
+
+[sub_resource type="StandardMaterial3D" id="Mat_IvoryFur"]
+albedo_color = Color(0.96, 0.876, 0.718, 1)
+roughness = 0.95
+
+[sub_resource type="StandardMaterial3D" id="Mat_WarmWhite"]
+albedo_color = Color(0.985, 0.956, 0.873, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="Mat_EarPink"]
+albedo_color = Color(0.36, 0.208, 0.193, 1)
+roughness = 0.95
+
+[sub_resource type="StandardMaterial3D" id="Mat_AmberEye"]
+albedo_color = Color(0.74, 0.48, 0.155, 1)
+roughness = 0.35
+
+[sub_resource type="StandardMaterial3D" id="Mat_DeepBlack"]
+albedo_color = Color(0.036, 0.035, 0.036, 1)
+roughness = 0.37
+
+[sub_resource type="StandardMaterial3D" id="Mat_NoseLeather"]
+albedo_color = Color(0.145, 0.103, 0.1, 1)
+roughness = 0.62
+
+[sub_resource type="StandardMaterial3D" id="Mat_WhiskerCream"]
+albedo_color = Color(0.97, 0.93, 0.81, 1)
+roughness = 0.74
+
+[sub_resource type="StandardMaterial3D" id="Mat_ClawIvory"]
+albedo_color = Color(0.9, 0.845, 0.7, 1)
+roughness = 0.8
+
+[sub_resource type="SphereMesh" id="Mesh_BigSphere"]
+radius = 1
+height = 2
+radial_segments = 32
+rings = 16
+
+[sub_resource type="SphereMesh" id="Mesh_Sphere"]
+radius = 1
+height = 2
+radial_segments = 20
+rings = 10
+
+[sub_resource type="SphereMesh" id="Mesh_DetailSphere"]
+radius = 1
+height = 2
+radial_segments = 12
+rings = 6
+
+[sub_resource type="CylinderMesh" id="Mesh_LegTaper"]
+top_radius = 0.2
+bottom_radius = 0.24
+height = 1
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="Mesh_BackLegTaper"]
+top_radius = 0.24
+bottom_radius = 0.175
+height = 1
+radial_segments = 14
+
+[sub_resource type="CylinderMesh" id="Mesh_StripeA"]
+top_radius = 0.062
+bottom_radius = 0.105
+height = 1
+radial_segments = 8
+
+[sub_resource type="CylinderMesh" id="Mesh_StripeB"]
+top_radius = 0.105
+bottom_radius = 0.095
+height = 1
+radial_segments = 8
+
+[sub_resource type="CylinderMesh" id="Mesh_StripeC"]
+top_radius = 0.004
+bottom_radius = 0.095
+height = 1
+radial_segments = 8
+
+[sub_resource type="CylinderMesh" id="Mesh_FaceStripeA"]
+top_radius = 0.029
+bottom_radius = 0.055
+height = 1
+radial_segments = 7
+
+[sub_resource type="CylinderMesh" id="Mesh_FaceStripeB"]
+top_radius = 0.003
+bottom_radius = 0.055
+height = 1
+radial_segments = 7
+
+[sub_resource type="CylinderMesh" id="Mesh_CheekStripe"]
+top_radius = 0.003
+bottom_radius = 0.085
+height = 1
+radial_segments = 7
+
+[sub_resource type="CylinderMesh" id="Mesh_TailSegment"]
+top_radius = 0.115
+bottom_radius = 0.115
+height = 1
+radial_segments = 14
+
+[sub_resource type="CylinderMesh" id="Mesh_TailBand"]
+top_radius = 0.118
+bottom_radius = 0.118
+height = 1
+radial_segments = 14
+
+[sub_resource type="CylinderMesh" id="Mesh_NoseTriangle"]
+top_radius = 0.125
+bottom_radius = 0.008
+height = 0.14
+radial_segments = 3
+
+[sub_resource type="CylinderMesh" id="Mesh_FineTube"]
+top_radius = 0.006
+bottom_radius = 0.01
+height = 1
+radial_segments = 6
+
+[sub_resource type="CylinderMesh" id="Mesh_MouthTube"]
+top_radius = 0.012
+bottom_radius = 0.012
+height = 1
+radial_segments = 8
+
+[sub_resource type="CylinderMesh" id="Mesh_Claw"]
+top_radius = 0.004
+bottom_radius = 0.045
+height = 1
+radial_segments = 7
+
+[sub_resource type="CylinderMesh" id="Mesh_ToeLine"]
+top_radius = 0.014
+bottom_radius = 0.013
+height = 1
+radial_segments = 6
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_h182f"]
+size = Vector3(1.2, 1.9, 2.2)
+
+[node name="Tiger" type="Node3D" unique_id=180999407]
+scale = Vector3(0.41337967, 0.41337967, 0.41337967)
+script = ExtResource("1_i44u8")
+metadata/word_key = "tiger"
+
+[node name="Part00" type="MeshInstance3D" parent="." unique_id=1231959534]
+transform = Transform3D(0.74, 0, 0, 0, 0.575, 0, 0, 0, 1.135, 0, 1.055, -0.17)
+material_override = SubResource("Mat_CoatOrange")
+mesh = SubResource("Mesh_BigSphere")
+
+[node name="Part01" type="MeshInstance3D" parent="." unique_id=1515392346]
+transform = Transform3D(0.56, 0, 0, 0, 0.47, 0, 0, 0, 0.49, 0, 1.575, 1.083)
+material_override = SubResource("Mat_SunlitOrange")
+mesh = SubResource("Mesh_BigSphere")
+
+[node name="Part02" type="MeshInstance3D" parent="." unique_id=984523205]
+transform = Transform3D(0.043, 0, 0, 0, 0.065, 0, 0, 0, 0.042, -0.253, 1.679, 1.59)
+material_override = SubResource("Mat_DeepBlack")
+mesh = SubResource("Mesh_DetailSphere")
+
+[node name="Part03" type="MeshInstance3D" parent="." unique_id=473540491]
+transform = Transform3D(0.223, 0, 0, 0, 0.25, 0, 0, 0, 0.134, -0.415, 1.965, 0.933)
+material_override = SubResource("Mat_CoatOrange")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="Part04" type="MeshInstance3D" parent="." unique_id=689052738]
+transform = Transform3D(0.043, 0, 0, 0, 0.065, 0, 0, 0, 0.042, 0.253, 1.679, 1.59)
+material_override = SubResource("Mat_DeepBlack")
+mesh = SubResource("Mesh_DetailSphere")
+
+[node name="Part05" type="MeshInstance3D" parent="." unique_id=963806657]
+transform = Transform3D(0.223, 0, 0, 0, 0.25, 0, 0, 0, 0.134, 0.415, 1.965, 0.933)
+material_override = SubResource("Mat_CoatOrange")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="Part06" type="MeshInstance3D" parent="." unique_id=1954569437]
+transform = Transform3D(0.265, 0, 0, 0, 0.415, 0, 0, 0, 0.27, -0.458, 0.665, 0.635)
+material_override = SubResource("Mat_CoatOrange")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="Part07" type="MeshInstance3D" parent="." unique_id=351206674]
+transform = Transform3D(0.32, 0, 0, 0, 0.465, 0, 0, 0, 0.345, -0.48, 0.72, -0.85)
+material_override = SubResource("Mat_CoatOrange")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="Part08" type="MeshInstance3D" parent="." unique_id=960366739]
+transform = Transform3D(0.265, 0, 0, 0, 0.415, 0, 0, 0, 0.27, 0.458, 0.665, 0.635)
+material_override = SubResource("Mat_CoatOrange")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="Part09" type="MeshInstance3D" parent="." unique_id=513991589]
+transform = Transform3D(0.32, 0, 0, 0, 0.465, 0, 0, 0, 0.345, 0.48, 0.72, -0.85)
+material_override = SubResource("Mat_CoatOrange")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="Part10" type="MeshInstance3D" parent="." unique_id=2052466618]
+transform = Transform3D(0.315, 0, 0, 0, 0.302, 0, 0, 0, 0.232, 0, 1.43, 1.456)
+material_override = SubResource("Mat_SunlitOrange")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="Part11" type="MeshInstance3D" parent="." unique_id=593691657]
+transform = Transform3D(0.16, 0, 0, 0, 0.14, 0, 0, 0, 0.32, 0, 1.044, -1.234)
+material_override = SubResource("Mat_CoatOrange")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="Part12" type="MeshInstance3D" parent="." unique_id=907864413]
+transform = Transform3D(-0.26161, 0.14525, -0.02152, -0.15319, -0.27, 0.04, 0, 0.11284, 0.76169, -0.59173, 1.225, -0.76)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_StripeA")
+
+[node name="Part13" type="MeshInstance3D" parent="." unique_id=1079409264]
+transform = Transform3D(0.26161, 0.14525, -0.02152, 0.15319, -0.27, 0.04, 0, -0.11284, -0.76169, 0.59173, 1.225, -0.76)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_StripeA")
+
+[node name="Part14" type="MeshInstance3D" parent="." unique_id=628308397]
+transform = Transform3D(-0.27718, 0.11353, -0.01682, -0.11302, -0.27, 0.04, 0, 0.11284, 0.76169, -0.71166, 1.225, -0.23)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_StripeA")
+
+[node name="Part15" type="MeshInstance3D" parent="." unique_id=774913632]
+transform = Transform3D(0.27718, 0.11353, -0.01682, 0.11302, -0.27, 0.04, 0, -0.11284, -0.76169, 0.71166, 1.225, -0.23)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_StripeA")
+
+[node name="Part16" type="MeshInstance3D" parent="." unique_id=1914474168]
+transform = Transform3D(-0.27844, 0.11048, -0.01637, -0.10948, -0.27, 0.04, 0, 0.11284, 0.76169, -0.66382, 1.225, 0.22)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_StripeA")
+
+[node name="Part17" type="MeshInstance3D" parent="." unique_id=97765325]
+transform = Transform3D(0.27844, 0.11048, -0.01637, 0.10948, -0.27, 0.04, 0, -0.11284, -0.76169, 0.66382, 1.225, 0.22)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_StripeA")
+
+[node name="Anatomy" type="Node3D" parent="."]
+
+[node name="Shoulders" type="MeshInstance3D" parent="Anatomy"]
+transform = Transform3D(0.665, 0, 0, 0, 0.59, 0, 0, 0, 0.57, 0, 1.075, 0.48)
+material_override = SubResource("Mat_CoatOrange")
+mesh = SubResource("Mesh_BigSphere")
+
+[node name="Throat" type="MeshInstance3D" parent="Anatomy"]
+transform = Transform3D(0.37, 0, 0, 0, 0.415, 0, 0, 0, 0.325, 0, 1.22, 0.91)
+material_override = SubResource("Mat_IvoryFur")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="LowerChest" type="MeshInstance3D" parent="Anatomy"]
+transform = Transform3D(0.37, 0, 0, 0, 0.345, 0, 0, 0, 0.245, 0, 0.855, 0.86)
+material_override = SubResource("Mat_WarmWhite")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="Belly" type="MeshInstance3D" parent="Anatomy"]
+transform = Transform3D(0.51, 0, 0, 0, 0.203, 0, 0, 0, 0.82, 0, 0.673, -0.14)
+material_override = SubResource("Mat_IvoryFur")
+mesh = SubResource("Mesh_BigSphere")
+
+[node name="LeftHaunch" type="MeshInstance3D" parent="Anatomy"]
+transform = Transform3D(0.35, 0, 0, 0, 0.49, 0, 0, 0, 0.42, -0.427, 0.79, -0.84)
+material_override = SubResource("Mat_CoatOrange")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="RightHaunch" type="MeshInstance3D" parent="Anatomy"]
+transform = Transform3D(0.35, 0, 0, 0, 0.49, 0, 0, 0, 0.42, 0.427, 0.79, -0.84)
+material_override = SubResource("Mat_CoatOrange")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="LeftShoulderHighlight" type="MeshInstance3D" parent="Anatomy"]
+transform = Transform3D(0.204, 0, 0, 0, 0.48, 0, 0, 0, 0.39, -0.473, 1.07, 0.5)
+material_override = SubResource("Mat_SunlitOrange")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="RightShoulderHighlight" type="MeshInstance3D" parent="Anatomy"]
+transform = Transform3D(0.204, 0, 0, 0, 0.48, 0, 0, 0, 0.39, 0.473, 1.07, 0.5)
+material_override = SubResource("Mat_SunlitOrange")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="NeckNape" type="MeshInstance3D" parent="Anatomy"]
+transform = Transform3D(0.435, 0, 0, 0, 0.4, 0, 0, 0, 0.37, 0, 1.36, 0.736)
+material_override = SubResource("Mat_CoatOrange")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="PawsAndLegs" type="Node3D" parent="."]
+
+[node name="LFrontLowerLeg" type="MeshInstance3D" parent="PawsAndLegs"]
+transform = Transform3D(0.99928, -0.03663, 0.00949, -0.016, -0.409, 0.106, 0, -0.25088, -0.96802, -0.463, 0.4555, 0.691)
+material_override = SubResource("Mat_CoatOrange")
+mesh = SubResource("Mesh_LegTaper")
+
+[node name="LFrontPaw" type="MeshInstance3D" parent="PawsAndLegs"]
+transform = Transform3D(0.284, 0, 0, 0, 0.169, 0, 0, 0, 0.324, -0.465, 0.155, 0.819)
+material_override = SubResource("Mat_CoatOrange")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="LFrontPawTop" type="MeshInstance3D" parent="PawsAndLegs"]
+transform = Transform3D(0.235, 0, 0, 0, 0.08, 0, 0, 0, 0.173, -0.465, 0.218, 0.935)
+material_override = SubResource("Mat_SunlitOrange")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="LFrontToe1" type="MeshInstance3D" parent="PawsAndLegs"]
+transform = Transform3D(0.103, 0, 0, 0, 0.108, 0, 0, 0, 0.15, -0.618, 0.125, 1.051)
+material_override = SubResource("Mat_SunlitOrange")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="LFrontClaw1" type="MeshInstance3D" parent="PawsAndLegs"]
+transform = Transform3D(0.69, 0, 0, 0, -0.015, 0.086, 0, -0.98513, -0.17182, -0.618, 0.1125, 1.198)
+material_override = SubResource("Mat_ClawIvory")
+mesh = SubResource("Mesh_Claw")
+
+[node name="LFrontToe2" type="MeshInstance3D" parent="PawsAndLegs"]
+transform = Transform3D(0.103, 0, 0, 0, 0.108, 0, 0, 0, 0.15, -0.465, 0.125, 1.051)
+material_override = SubResource("Mat_SunlitOrange")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="LFrontClaw2" type="MeshInstance3D" parent="PawsAndLegs"]
+transform = Transform3D(0.69, 0, 0, 0, -0.015, 0.086, 0, -0.98513, -0.17182, -0.465, 0.1125, 1.198)
+material_override = SubResource("Mat_ClawIvory")
+mesh = SubResource("Mesh_Claw")
+
+[node name="LFrontToe3" type="MeshInstance3D" parent="PawsAndLegs"]
+transform = Transform3D(0.103, 0, 0, 0, 0.108, 0, 0, 0, 0.15, -0.312, 0.125, 1.051)
+material_override = SubResource("Mat_SunlitOrange")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="LFrontClaw3" type="MeshInstance3D" parent="PawsAndLegs"]
+transform = Transform3D(0.69, 0, 0, 0, -0.015, 0.086, 0, -0.98513, -0.17182, -0.312, 0.1125, 1.198)
+material_override = SubResource("Mat_ClawIvory")
+mesh = SubResource("Mesh_Claw")
+
+[node name="LBackLowerLeg" type="MeshInstance3D" parent="PawsAndLegs"]
+transform = Transform3D(0.99887, -0.04305, 0.02008, -0.018, -0.343, 0.16, 0, -0.42274, -0.90625, -0.494, 0.4185, -0.78)
+material_override = SubResource("Mat_CoatOrange")
+mesh = SubResource("Mesh_BackLegTaper")
+
+[node name="LBackHock" type="MeshInstance3D" parent="PawsAndLegs"]
+transform = Transform3D(0.228, 0, 0, 0, 0.25, 0, 0, 0, 0.241, -0.485, 0.424, -0.84)
+material_override = SubResource("Mat_SunlitOrange")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="LBackPaw" type="MeshInstance3D" parent="PawsAndLegs"]
+transform = Transform3D(0.284, 0, 0, 0, 0.169, 0, 0, 0, 0.324, -0.507, 0.151, -0.651)
+material_override = SubResource("Mat_CoatOrange")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="LBackPawTop" type="MeshInstance3D" parent="PawsAndLegs"]
+transform = Transform3D(0.235, 0, 0, 0, 0.08, 0, 0, 0, 0.173, -0.507, 0.218, -0.535)
+material_override = SubResource("Mat_SunlitOrange")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="LBackToe1" type="MeshInstance3D" parent="PawsAndLegs"]
+transform = Transform3D(0.103, 0, 0, 0, 0.108, 0, 0, 0, 0.15, -0.66, 0.125, -0.419)
+material_override = SubResource("Mat_SunlitOrange")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="LBackClaw1" type="MeshInstance3D" parent="PawsAndLegs"]
+transform = Transform3D(0.69, 0, 0, 0, -0.015, 0.086, 0, -0.98513, -0.17182, -0.66, 0.1125, -0.272)
+material_override = SubResource("Mat_ClawIvory")
+mesh = SubResource("Mesh_Claw")
+
+[node name="LBackToe2" type="MeshInstance3D" parent="PawsAndLegs"]
+transform = Transform3D(0.103, 0, 0, 0, 0.108, 0, 0, 0, 0.15, -0.507, 0.125, -0.419)
+material_override = SubResource("Mat_SunlitOrange")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="LBackClaw2" type="MeshInstance3D" parent="PawsAndLegs"]
+transform = Transform3D(0.69, 0, 0, 0, -0.015, 0.086, 0, -0.98513, -0.17182, -0.507, 0.1125, -0.272)
+material_override = SubResource("Mat_ClawIvory")
+mesh = SubResource("Mesh_Claw")
+
+[node name="LBackToe3" type="MeshInstance3D" parent="PawsAndLegs"]
+transform = Transform3D(0.103, 0, 0, 0, 0.108, 0, 0, 0, 0.15, -0.354, 0.125, -0.419)
+material_override = SubResource("Mat_SunlitOrange")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="LBackClaw3" type="MeshInstance3D" parent="PawsAndLegs"]
+transform = Transform3D(0.69, 0, 0, 0, -0.015, 0.086, 0, -0.98513, -0.17182, -0.354, 0.1125, -0.272)
+material_override = SubResource("Mat_ClawIvory")
+mesh = SubResource("Mesh_Claw")
+
+[node name="RFrontLowerLeg" type="MeshInstance3D" parent="PawsAndLegs"]
+transform = Transform3D(0.99928, 0.03663, -0.00949, 0.016, -0.409, 0.106, 0, -0.25088, -0.96802, 0.463, 0.4555, 0.691)
+material_override = SubResource("Mat_CoatOrange")
+mesh = SubResource("Mesh_LegTaper")
+
+[node name="RFrontPaw" type="MeshInstance3D" parent="PawsAndLegs"]
+transform = Transform3D(0.284, 0, 0, 0, 0.169, 0, 0, 0, 0.324, 0.465, 0.155, 0.819)
+material_override = SubResource("Mat_CoatOrange")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="RFrontPawTop" type="MeshInstance3D" parent="PawsAndLegs"]
+transform = Transform3D(0.235, 0, 0, 0, 0.08, 0, 0, 0, 0.173, 0.465, 0.218, 0.935)
+material_override = SubResource("Mat_SunlitOrange")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="RFrontToe1" type="MeshInstance3D" parent="PawsAndLegs"]
+transform = Transform3D(0.103, 0, 0, 0, 0.108, 0, 0, 0, 0.15, 0.312, 0.125, 1.051)
+material_override = SubResource("Mat_SunlitOrange")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="RFrontClaw1" type="MeshInstance3D" parent="PawsAndLegs"]
+transform = Transform3D(0.69, 0, 0, 0, -0.015, 0.086, 0, -0.98513, -0.17182, 0.312, 0.1125, 1.198)
+material_override = SubResource("Mat_ClawIvory")
+mesh = SubResource("Mesh_Claw")
+
+[node name="RFrontToe2" type="MeshInstance3D" parent="PawsAndLegs"]
+transform = Transform3D(0.103, 0, 0, 0, 0.108, 0, 0, 0, 0.15, 0.465, 0.125, 1.051)
+material_override = SubResource("Mat_SunlitOrange")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="RFrontClaw2" type="MeshInstance3D" parent="PawsAndLegs"]
+transform = Transform3D(0.69, 0, 0, 0, -0.015, 0.086, 0, -0.98513, -0.17182, 0.465, 0.1125, 1.198)
+material_override = SubResource("Mat_ClawIvory")
+mesh = SubResource("Mesh_Claw")
+
+[node name="RFrontToe3" type="MeshInstance3D" parent="PawsAndLegs"]
+transform = Transform3D(0.103, 0, 0, 0, 0.108, 0, 0, 0, 0.15, 0.618, 0.125, 1.051)
+material_override = SubResource("Mat_SunlitOrange")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="RFrontClaw3" type="MeshInstance3D" parent="PawsAndLegs"]
+transform = Transform3D(0.69, 0, 0, 0, -0.015, 0.086, 0, -0.98513, -0.17182, 0.618, 0.1125, 1.198)
+material_override = SubResource("Mat_ClawIvory")
+mesh = SubResource("Mesh_Claw")
+
+[node name="RBackLowerLeg" type="MeshInstance3D" parent="PawsAndLegs"]
+transform = Transform3D(0.99887, 0.04305, -0.02008, 0.018, -0.343, 0.16, 0, -0.42274, -0.90625, 0.494, 0.4185, -0.78)
+material_override = SubResource("Mat_CoatOrange")
+mesh = SubResource("Mesh_BackLegTaper")
+
+[node name="RBackHock" type="MeshInstance3D" parent="PawsAndLegs"]
+transform = Transform3D(0.228, 0, 0, 0, 0.25, 0, 0, 0, 0.241, 0.485, 0.424, -0.84)
+material_override = SubResource("Mat_SunlitOrange")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="RBackPaw" type="MeshInstance3D" parent="PawsAndLegs"]
+transform = Transform3D(0.284, 0, 0, 0, 0.169, 0, 0, 0, 0.324, 0.507, 0.151, -0.651)
+material_override = SubResource("Mat_CoatOrange")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="RBackPawTop" type="MeshInstance3D" parent="PawsAndLegs"]
+transform = Transform3D(0.235, 0, 0, 0, 0.08, 0, 0, 0, 0.173, 0.507, 0.218, -0.535)
+material_override = SubResource("Mat_SunlitOrange")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="RBackToe1" type="MeshInstance3D" parent="PawsAndLegs"]
+transform = Transform3D(0.103, 0, 0, 0, 0.108, 0, 0, 0, 0.15, 0.354, 0.125, -0.419)
+material_override = SubResource("Mat_SunlitOrange")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="RBackClaw1" type="MeshInstance3D" parent="PawsAndLegs"]
+transform = Transform3D(0.69, 0, 0, 0, -0.015, 0.086, 0, -0.98513, -0.17182, 0.354, 0.1125, -0.272)
+material_override = SubResource("Mat_ClawIvory")
+mesh = SubResource("Mesh_Claw")
+
+[node name="RBackToe2" type="MeshInstance3D" parent="PawsAndLegs"]
+transform = Transform3D(0.103, 0, 0, 0, 0.108, 0, 0, 0, 0.15, 0.507, 0.125, -0.419)
+material_override = SubResource("Mat_SunlitOrange")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="RBackClaw2" type="MeshInstance3D" parent="PawsAndLegs"]
+transform = Transform3D(0.69, 0, 0, 0, -0.015, 0.086, 0, -0.98513, -0.17182, 0.507, 0.1125, -0.272)
+material_override = SubResource("Mat_ClawIvory")
+mesh = SubResource("Mesh_Claw")
+
+[node name="RBackToe3" type="MeshInstance3D" parent="PawsAndLegs"]
+transform = Transform3D(0.103, 0, 0, 0, 0.108, 0, 0, 0, 0.15, 0.66, 0.125, -0.419)
+material_override = SubResource("Mat_SunlitOrange")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="RBackClaw3" type="MeshInstance3D" parent="PawsAndLegs"]
+transform = Transform3D(0.69, 0, 0, 0, -0.015, 0.086, 0, -0.98513, -0.17182, 0.66, 0.1125, -0.272)
+material_override = SubResource("Mat_ClawIvory")
+mesh = SubResource("Mesh_Claw")
+
+[node name="FaceDetails" type="Node3D" parent="."]
+
+[node name="LeftEarShadow" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.168, 0, 0, 0, 0.177, 0, 0, 0, 0.057, -0.418, 1.982, 1.034)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="LeftEarInner" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.117, 0, 0, 0, 0.132, 0, 0, 0, 0.036, -0.418, 1.952, 1.08)
+material_override = SubResource("Mat_EarPink")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="LeftEarInnerTuft" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.075, 0, 0, 0, 0.065, 0, 0, 0, 0.041, -0.408, 1.858, 1.1)
+material_override = SubResource("Mat_IvoryFur")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="LeftEyeWhite" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.145, 0, 0, 0, 0.091, 0, 0, 0, 0.086, -0.259, 1.683, 1.498)
+material_override = SubResource("Mat_IvoryFur")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="LeftEyeIris" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.088, 0, 0, 0, 0.075, 0, 0, 0, 0.058, -0.252, 1.676, 1.539)
+material_override = SubResource("Mat_AmberEye")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="LeftEyeGlint" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.022, 0, 0, 0, 0.025, 0, 0, 0, 0.015, -0.23, 1.707, 1.624)
+material_override = SubResource("Mat_WarmWhite")
+mesh = SubResource("Mesh_DetailSphere")
+
+[node name="LeftBrow" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.209, 0, 0, 0, 0.105, 0, 0, 0, 0.133, -0.263, 1.784, 1.475)
+material_override = SubResource("Mat_CoatOrange")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="LeftCheekFur" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.194, 0, 0, 0, 0.228, 0, 0, 0, 0.213, -0.468, 1.358, 1.31)
+material_override = SubResource("Mat_IvoryFur")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="LeftWhiskerPad" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.225, 0, 0, 0, 0.161, 0, 0, 0, 0.144, -0.184, 1.336, 1.611)
+material_override = SubResource("Mat_WarmWhite")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="LeftLowerCheek" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.16, 0, 0, 0, 0.24, 0, 0, 0, 0.19, -0.485, 1.5, 1.208)
+material_override = SubResource("Mat_SunlitOrange")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="LeftWhiskerSpot1" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.018, 0, 0, 0, 0.014, 0, 0, 0, 0.01, -0.13, 1.385, 1.741)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_DetailSphere")
+
+[node name="LeftWhiskerSpot2" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.018, 0, 0, 0, 0.014, 0, 0, 0, 0.01, -0.225, 1.325, 1.73)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_DetailSphere")
+
+[node name="LeftWhiskerSpot3" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.018, 0, 0, 0, 0.014, 0, 0, 0, 0.01, -0.135, 1.294, 1.746)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_DetailSphere")
+
+[node name="RightEarShadow" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.168, 0, 0, 0, 0.177, 0, 0, 0, 0.057, 0.418, 1.982, 1.034)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="RightEarInner" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.117, 0, 0, 0, 0.132, 0, 0, 0, 0.036, 0.418, 1.952, 1.08)
+material_override = SubResource("Mat_EarPink")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="RightEarInnerTuft" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.075, 0, 0, 0, 0.065, 0, 0, 0, 0.041, 0.408, 1.858, 1.1)
+material_override = SubResource("Mat_IvoryFur")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="RightEyeWhite" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.145, 0, 0, 0, 0.091, 0, 0, 0, 0.086, 0.259, 1.683, 1.498)
+material_override = SubResource("Mat_IvoryFur")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="RightEyeIris" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.088, 0, 0, 0, 0.075, 0, 0, 0, 0.058, 0.252, 1.676, 1.539)
+material_override = SubResource("Mat_AmberEye")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="RightEyeGlint" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.022, 0, 0, 0, 0.025, 0, 0, 0, 0.015, 0.23, 1.707, 1.624)
+material_override = SubResource("Mat_WarmWhite")
+mesh = SubResource("Mesh_DetailSphere")
+
+[node name="RightBrow" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.209, 0, 0, 0, 0.105, 0, 0, 0, 0.133, 0.263, 1.784, 1.475)
+material_override = SubResource("Mat_CoatOrange")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="RightCheekFur" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.194, 0, 0, 0, 0.228, 0, 0, 0, 0.213, 0.468, 1.358, 1.31)
+material_override = SubResource("Mat_IvoryFur")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="RightWhiskerPad" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.225, 0, 0, 0, 0.161, 0, 0, 0, 0.144, 0.184, 1.336, 1.611)
+material_override = SubResource("Mat_WarmWhite")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="RightLowerCheek" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.16, 0, 0, 0, 0.24, 0, 0, 0, 0.19, 0.485, 1.5, 1.208)
+material_override = SubResource("Mat_SunlitOrange")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="RightWhiskerSpot1" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.018, 0, 0, 0, 0.014, 0, 0, 0, 0.01, 0.13, 1.385, 1.741)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_DetailSphere")
+
+[node name="RightWhiskerSpot2" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.018, 0, 0, 0, 0.014, 0, 0, 0, 0.01, 0.225, 1.325, 1.73)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_DetailSphere")
+
+[node name="RightWhiskerSpot3" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.018, 0, 0, 0, 0.014, 0, 0, 0, 0.01, 0.135, 1.294, 1.746)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_DetailSphere")
+
+[node name="WhiteChin" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.273, 0, 0, 0, 0.136, 0, 0, 0, 0.215, 0, 1.198, 1.543)
+material_override = SubResource("Mat_WarmWhite")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="NoseLeather" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.398, 1.769)
+material_override = SubResource("Mat_NoseLeather")
+mesh = SubResource("Mesh_NoseTriangle")
+
+[node name="NoseBridgeHighlight" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.167, 0, 0, 0, 0.19, 0, 0, 0, 0.079, 0, 1.555, 1.6)
+material_override = SubResource("Mat_SunlitOrange")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="MouthPhiltrum" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(1, 0, 0, 0, -0.092, -0.011, 0, 0.11872, -0.99293, 0, 1.293, 1.7465)
+material_override = SubResource("Mat_NoseLeather")
+mesh = SubResource("Mesh_MouthTube")
+
+[node name="MouthLeft" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.2783, -0.81033, -0.51567, -0.09, -0.022, -0.014, 0, 0.53688, -0.84366, -0.045, 1.238, 1.736)
+material_override = SubResource("Mat_NoseLeather")
+mesh = SubResource("Mesh_MouthTube")
+
+[node name="MouthRight" type="MeshInstance3D" parent="FaceDetails"]
+transform = Transform3D(0.2783, 0.81033, 0.51567, 0.09, -0.022, -0.014, 0, 0.53688, -0.84366, 0.045, 1.238, 1.736)
+material_override = SubResource("Mat_NoseLeather")
+mesh = SubResource("Mesh_MouthTube")
+
+[node name="Whiskers" type="Node3D" parent="."]
+
+[node name="LWhisker1Root" type="MeshInstance3D" parent="Whiskers"]
+transform = Transform3D(0.13258, -0.03516, 0.99055, -0.2862, 0.0759, 0.041, -0.25634, -0.96659, 0, -0.3971, 1.35495, 1.7515)
+material_override = SubResource("Mat_WhiskerCream")
+mesh = SubResource("Mesh_FineTube")
+
+[node name="LWhisker1Tip" type="MeshInstance3D" parent="Whiskers"]
+transform = Transform3D(0.06139, -0.01908, 0.74724, -0.1998, 0.0621, 0.018, -0.29681, -0.95494, 0, -0.6401, 1.42395, 1.781)
+material_override = SubResource("Mat_WhiskerCream")
+mesh = SubResource("Mesh_FineTube")
+
+[node name="LWhisker2Root" type="MeshInstance3D" parent="Whiskers"]
+transform = Transform3D(0.22865, 0.0062, 0.97349, -0.3446, -0.00935, 0.081, 0.02712, -0.99963, 0, -0.4263, 1.34733, 1.7715)
+material_override = SubResource("Mat_WhiskerCream")
+mesh = SubResource("Mesh_FineTube")
+
+[node name="LWhisker2Tip" type="MeshInstance3D" parent="Whiskers"]
+transform = Transform3D(0.0607, 0.0021, 0.74754, -0.2214, -0.00765, 0.018, 0.03453, -0.9994, 0, -0.7093, 1.33882, 1.821)
+material_override = SubResource("Mat_WhiskerCream")
+mesh = SubResource("Mesh_FineTube")
+
+[node name="LWhisker3Root" type="MeshInstance3D" parent="Whiskers"]
+transform = Transform3D(0.09234, 0.03073, 0.99525, -0.3008, -0.1001, 0.031, 0.31575, -0.94884, 0, -0.4044, 1.33695, 1.7465)
+material_override = SubResource("Mat_WhiskerCream")
+mesh = SubResource("Mesh_FineTube")
+
+[node name="LWhisker3Tip" type="MeshInstance3D" parent="Whiskers"]
+transform = Transform3D(0.05656, 0.02258, 0.74752, -0.2052, -0.0819, 0.018, 0.37069, -0.92876, 0, -0.6574, 1.24595, 1.771)
+material_override = SubResource("Mat_WhiskerCream")
+mesh = SubResource("Mesh_FineTube")
+
+[node name="RWhisker1Root" type="MeshInstance3D" parent="Whiskers"]
+transform = Transform3D(-0.13258, -0.03516, 0.99055, 0.2862, 0.0759, 0.041, -0.25634, 0.96659, 0, 0.3971, 1.35495, 1.7515)
+material_override = SubResource("Mat_WhiskerCream")
+mesh = SubResource("Mesh_FineTube")
+
+[node name="RWhisker1Tip" type="MeshInstance3D" parent="Whiskers"]
+transform = Transform3D(-0.06139, -0.01908, 0.74724, 0.1998, 0.0621, 0.018, -0.29681, 0.95494, 0, 0.6401, 1.42395, 1.781)
+material_override = SubResource("Mat_WhiskerCream")
+mesh = SubResource("Mesh_FineTube")
+
+[node name="RWhisker2Root" type="MeshInstance3D" parent="Whiskers"]
+transform = Transform3D(-0.22865, 0.0062, 0.97349, 0.3446, -0.00935, 0.081, 0.02712, 0.99963, 0, 0.4263, 1.34733, 1.7715)
+material_override = SubResource("Mat_WhiskerCream")
+mesh = SubResource("Mesh_FineTube")
+
+[node name="RWhisker2Tip" type="MeshInstance3D" parent="Whiskers"]
+transform = Transform3D(-0.0607, 0.0021, 0.74754, 0.2214, -0.00765, 0.018, 0.03453, 0.9994, 0, 0.7093, 1.33882, 1.821)
+material_override = SubResource("Mat_WhiskerCream")
+mesh = SubResource("Mesh_FineTube")
+
+[node name="RWhisker3Root" type="MeshInstance3D" parent="Whiskers"]
+transform = Transform3D(-0.09234, 0.03073, 0.99525, 0.3008, -0.1001, 0.031, 0.31575, 0.94884, 0, 0.4044, 1.33695, 1.7465)
+material_override = SubResource("Mat_WhiskerCream")
+mesh = SubResource("Mesh_FineTube")
+
+[node name="RWhisker3Tip" type="MeshInstance3D" parent="Whiskers"]
+transform = Transform3D(-0.05656, 0.02258, 0.74752, 0.2052, -0.0819, 0.018, 0.37069, 0.92876, 0, 0.6574, 1.24595, 1.771)
+material_override = SubResource("Mat_WhiskerCream")
+mesh = SubResource("Mesh_FineTube")
+
+[node name="Tail" type="Node3D" parent="."]
+
+[node name="TailCurvedSection1" type="MeshInstance3D" parent="Tail"]
+transform = Transform3D(1.11133, -0.03298, 0.28526, 0.045, 0.02, -0.173, 0, 1.14023, 0.13182, 0.0225, 1.055, -1.2735)
+material_override = SubResource("Mat_CoatOrange")
+mesh = SubResource("Mesh_TailSegment")
+
+[node name="TailJoint1" type="MeshInstance3D" parent="Tail"]
+transform = Transform3D(0.12276, 0, 0, 0, 0.12276, 0, 0, 0, 0.12276, 0.045, 1.065, -1.36)
+material_override = SubResource("Mat_CoatOrange")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="TailCurvedSection2" type="MeshInstance3D" parent="Tail"]
+transform = Transform3D(1.01383, -0.09529, 0.35457, 0.06, 0.043, -0.16, 0, 1.04131, 0.27985, 0.075, 1.0865, -1.44)
+material_override = SubResource("Mat_CoatOrange")
+mesh = SubResource("Mesh_TailSegment")
+
+[node name="TailBlackRing1" type="MeshInstance3D" parent="Tail"]
+transform = Transform3D(1.04383, -0.09811, 0.36507, 0.0222, 0.01591, -0.0592, 0, 1.07213, 0.28813, 0.0903, 1.09747, -1.4808)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_TailBand")
+
+[node name="TailJoint2" type="MeshInstance3D" parent="Tail"]
+transform = Transform3D(0.11532, 0, 0, 0, 0.11532, 0, 0, 0, 0.11532, 0.105, 1.108, -1.52)
+material_override = SubResource("Mat_CoatOrange")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="TailCurvedSection3" type="MeshInstance3D" parent="Tail"]
+transform = Transform3D(0.913, -0.24423, 0.3525, 0.08, 0.097, -0.14, 0, 0.82913, 0.57447, 0.145, 1.1565, -1.59)
+material_override = SubResource("Mat_CoatOrange")
+mesh = SubResource("Mesh_TailSegment")
+
+[node name="TailJoint3" type="MeshInstance3D" parent="Tail"]
+transform = Transform3D(0.10788, 0, 0, 0, 0.10788, 0, 0, 0, 0.10788, 0.185, 1.205, -1.66)
+material_override = SubResource("Mat_CoatOrange")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="TailCurvedSection4" type="MeshInstance3D" parent="Tail"]
+transform = Transform3D(0.8368, -0.32311, 0.27808, 0.082, 0.122, -0.105, 0, 0.61262, 0.7118, 0.226, 1.266, -1.7125)
+material_override = SubResource("Mat_CoatOrange")
+mesh = SubResource("Mesh_TailSegment")
+
+[node name="TailBlackRing3" type="MeshInstance3D" parent="Tail"]
+transform = Transform3D(0.86839, -0.3353, 0.28858, 0.03034, 0.04514, -0.03885, 0, 0.63574, 0.73867, 0.24691, 1.29711, -1.73927)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_TailBand")
+
+[node name="TailJoint4" type="MeshInstance3D" parent="Tail"]
+transform = Transform3D(0.10044, 0, 0, 0, 0.10044, 0, 0, 0, 0.10044, 0.267, 1.327, -1.765)
+material_override = SubResource("Mat_CoatOrange")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="TailCurvedSection5" type="MeshInstance3D" parent="Tail"]
+transform = Transform3D(0.80939, -0.31572, 0.03671, 0.051, 0.129, -0.015, 0, 0.10044, 0.86375, 0.2925, 1.3915, -1.7725)
+material_override = SubResource("Mat_CoatOrange")
+mesh = SubResource("Mesh_TailSegment")
+
+[node name="TailJoint5" type="MeshInstance3D" parent="Tail"]
+transform = Transform3D(0.093, 0, 0, 0, 0.093, 0, 0, 0, 0.093, 0.318, 1.456, -1.78)
+material_override = SubResource("Mat_CoatOrange")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="TailCurvedSection6" type="MeshInstance3D" parent="Tail"]
+transform = Transform3D(0.79498, -0.07987, -0.04025, 0.016, 0.127, 0.064, 0, -0.36002, 0.71441, 0.326, 1.5195, -1.748)
+material_override = SubResource("Mat_CoatOrange")
+mesh = SubResource("Mesh_TailSegment")
+
+[node name="TailBlackRing5" type="MeshInstance3D" parent="Tail"]
+transform = Transform3D(0.83372, -0.08376, -0.04221, 0.00592, 0.04699, 0.02368, 0, -0.37756, 0.74923, 0.33008, 1.55188, -1.73168)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_TailBand")
+
+[node name="TailJoint6" type="MeshInstance3D" parent="Tail"]
+transform = Transform3D(0.08556, 0, 0, 0, 0.08556, 0, 0, 0, 0.08556, 0.334, 1.583, -1.716)
+material_override = SubResource("Mat_CoatOrange")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="TailCurvedSection7" type="MeshInstance3D" parent="Tail"]
+transform = Transform3D(0.72635, 0.04699, 0.0612, -0.015, 0.086, 0.112, 0, -0.57934, 0.44485, 0.3265, 1.626, -1.66)
+material_override = SubResource("Mat_CoatOrange")
+mesh = SubResource("Mesh_TailSegment")
+
+[node name="TailJoint7" type="MeshInstance3D" parent="Tail"]
+transform = Transform3D(0.07812, 0, 0, 0, 0.07812, 0, 0, 0, 0.07812, 0.319, 1.669, -1.604)
+material_override = SubResource("Mat_CoatOrange")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="TailBlackTip" type="MeshInstance3D" parent="Tail"]
+transform = Transform3D(0.075, 0, 0, 0, 0.083, 0, 0, 0, 0.086, 0.319, 1.669, -1.604)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_Sphere")
+
+[node name="StripedFur" type="Node3D" parent="."]
+
+[node name="LeftFlankStripe1_1" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(-0.22538, 0.13692, -0.16297, -0.08409, -0.11177, 0.02239, -0.26219, 0.32454, 0.63524, -0.48945, 1.23925, -0.98278)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_StripeA")
+
+[node name="LeftFlankStripe1_2" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(-0.26104, 0.04219, -0.1618, -0.04201, -0.14602, 0.0297, -0.35428, 0.23041, 0.63166, -0.5525, 1.11035, -0.95674)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_StripeB")
+
+[node name="LeftFlankStripe1_3" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(-0.26347, -0.05656, -0.15326, 0.01087, -0.11584, 0.02406, -0.39441, 0.09641, 0.64245, -0.56807, 0.97942, -0.92986)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_StripeC")
+
+[node name="LeftFlankStripe2_1" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(-0.2262, 0.20399, -0.05763, -0.17927, -0.19169, 0.02511, -0.0551, 0.14887, 0.74324, -0.58535, 1.38066, -0.51228)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_StripeA")
+
+[node name="LeftFlankStripe2_2" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(-0.29647, 0.07035, -0.05707, -0.06616, -0.25201, 0.03307, -0.11254, 0.12676, 0.74086, -0.70807, 1.15882, -0.48319)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_StripeB")
+
+[node name="LeftFlankStripe2_3" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(-0.29479, -0.08152, -0.05051, 0.05078, -0.20016, 0.02664, -0.14462, 0.06227, 0.74351, -0.71576, 0.93273, -0.45334)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_StripeC")
+
+[node name="LeftFlankStripe3_1" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(-0.2297, 0.20669, 0.02479, -0.16394, -0.17948, -0.02263, -0.00229, -0.09302, 0.75428, -0.61046, 1.39369, -0.01915)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_StripeA")
+
+[node name="LeftFlankStripe3_2" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(-0.29685, 0.08651, 0.02223, -0.07096, -0.23589, -0.0296, 0.02652, -0.10241, 0.7526, -0.72791, 1.18601, -0.04527)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_StripeB")
+
+[node name="LeftFlankStripe3_3" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(-0.30488, -0.05337, 0.01729, 0.03153, -0.18779, -0.02365, 0.0576, -0.08515, 0.75302, -0.74763, 0.97417, -0.07189)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_StripeC")
+
+[node name="LeftFlankStripe4_1" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(-0.23473, 0.17293, 0.10535, -0.10284, -0.12969, -0.01625, 0.16, -0.21593, 0.7109, -0.56736, 1.3133, 0.41581)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_StripeA")
+
+[node name="LeftFlankStripe4_2" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(-0.28074, 0.07623, 0.10713, -0.05435, -0.16992, -0.02153, 0.22597, -0.16188, 0.70734, -0.64595, 1.1635, 0.39692)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_StripeB")
+
+[node name="LeftFlankStripe4_3" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(-0.29065, -0.03096, 0.10328, 0.00819, -0.13524, -0.01748, 0.26038, -0.07598, 0.70995, -0.66903, 1.01092, 0.37742)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_StripeC")
+
+[node name="RightFlankStripe1_1" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(0.22538, 0.13692, -0.16297, 0.08409, -0.11177, 0.02239, -0.26219, -0.32454, -0.63524, 0.48945, 1.23925, -0.98278)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_StripeA")
+
+[node name="RightFlankStripe1_2" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(0.26104, 0.04219, -0.1618, 0.04201, -0.14602, 0.0297, -0.35428, -0.23041, -0.63166, 0.5525, 1.11035, -0.95674)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_StripeB")
+
+[node name="RightFlankStripe1_3" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(0.26347, -0.05656, -0.15326, -0.01087, -0.11584, 0.02406, -0.39441, -0.09641, -0.64245, 0.56807, 0.97942, -0.92986)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_StripeC")
+
+[node name="RightFlankStripe2_1" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(0.2262, 0.20399, -0.05763, 0.17927, -0.19169, 0.02511, -0.0551, -0.14887, -0.74324, 0.58535, 1.38066, -0.51228)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_StripeA")
+
+[node name="RightFlankStripe2_2" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(0.29647, 0.07035, -0.05707, 0.06616, -0.25201, 0.03307, -0.11254, -0.12676, -0.74086, 0.70807, 1.15882, -0.48319)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_StripeB")
+
+[node name="RightFlankStripe2_3" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(0.29479, -0.08152, -0.05051, -0.05078, -0.20016, 0.02664, -0.14462, -0.06227, -0.74351, 0.71576, 0.93273, -0.45334)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_StripeC")
+
+[node name="RightFlankStripe3_1" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(0.2297, 0.20669, 0.02479, 0.16394, -0.17948, -0.02263, -0.00229, 0.09302, -0.75428, 0.61046, 1.39369, -0.01915)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_StripeA")
+
+[node name="RightFlankStripe3_2" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(0.29685, 0.08651, 0.02223, 0.07096, -0.23589, -0.0296, 0.02652, 0.10241, -0.7526, 0.72791, 1.18601, -0.04527)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_StripeB")
+
+[node name="RightFlankStripe3_3" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(0.30488, -0.05337, 0.01729, -0.03153, -0.18779, -0.02365, 0.0576, 0.08515, -0.75302, 0.74763, 0.97417, -0.07189)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_StripeC")
+
+[node name="RightFlankStripe4_1" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(0.23473, 0.17293, 0.10535, 0.10284, -0.12969, -0.01625, 0.16, 0.21593, -0.7109, 0.56736, 1.3133, 0.41581)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_StripeA")
+
+[node name="RightFlankStripe4_2" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(0.28074, 0.07623, 0.10713, 0.05435, -0.16992, -0.02153, 0.22597, 0.16188, -0.70734, 0.64595, 1.1635, 0.39692)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_StripeB")
+
+[node name="RightFlankStripe4_3" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(0.29065, -0.03096, 0.10328, -0.00819, -0.13524, -0.01748, 0.26038, 0.07598, -0.70995, 0.66903, 1.01092, 0.37742)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_StripeC")
+
+[node name="LeftShoulderMark1_1" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(-0.25243, 0.16794, 0.06463, -0.16663, -0.24885, -0.00421, 0.1275, -0.09812, 0.753, -0.57089, 1.37732, 0.58893)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_StripeA")
+
+[node name="LeftShoulderMark1_2" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(-0.30138, 0.03542, 0.06335, -0.02798, -0.23074, -0.00411, 0.15462, -0.03217, 0.75363, -0.6682, 1.13752, 0.58477)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_StripeC")
+
+[node name="LeftShoulderMark2_1" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(-0.2188, 0.08275, 0.20342, -0.08071, -0.20525, -0.00331, 0.46707, -0.19303, 0.58093, -0.51612, 1.23033, 0.8376)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_StripeA")
+
+[node name="LeftShoulderMark2_2" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(-0.23375, -0.02256, 0.20236, 0.01527, -0.18969, -0.0035, 0.50196, 0.02965, 0.58314, -0.54883, 1.03285, 0.83419)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_StripeC")
+
+[node name="RightShoulderMark1_1" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(0.25163, 0.1678, 0.068, 0.16397, -0.24886, 0.00732, 0.15123, 0.07755, -0.75101, 0.56956, 1.37731, 0.5947)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_StripeA")
+
+[node name="RightShoulderMark1_2" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(0.2991, 0.03535, 0.07341, 0.02566, -0.23072, 0.00655, 0.18362, -0.0008, -0.74779, 0.66437, 1.13752, 0.60163)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_StripeC")
+
+[node name="RightShoulderMark2_1" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(0.21667, 0.08261, 0.20574, 0.07245, -0.20526, 0.00612, 0.48746, 0.15491, -0.57557, 0.51199, 1.23032, 0.84232)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_StripeA")
+
+[node name="RightShoulderMark2_2" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(0.22752, -0.02245, 0.20936, -0.0235, -0.18964, 0.0052, 0.51436, -0.07929, -0.56749, 0.53646, 1.03287, 0.84797)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_StripeC")
+
+[node name="ForeheadMark1_1" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(-0.24015, 0.26814, 0.30221, 0.0077, -0.08673, 0.08307, 0.85723, 0.39384, 0.33174, -0.32791, 1.83676, 1.40238)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_FaceStripeA")
+
+[node name="ForeheadMark1_2" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(-0.23515, 0.17975, 0.36509, 0.00773, -0.08681, 0.04772, 0.86233, 0.30075, 0.40735, -0.32019, 1.74999, 1.46778)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_FaceStripeB")
+
+[node name="ForeheadMark2_1" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(-0.09996, 0.35443, 0.29204, 0.02479, -0.11165, 0.144, 0.96777, 0.25032, 0.02746, -0.14081, 1.93179, 1.40131)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_FaceStripeA")
+
+[node name="ForeheadMark2_2" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(-0.08253, 0.24396, 0.39316, 0.02483, -0.11181, 0.07459, 0.96756, 0.24777, 0.04936, -0.116, 1.82006, 1.5106)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_FaceStripeB")
+
+[node name="ForeheadMark3_1" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(0, 0.36565, 0.29529, 0, -0.11103, 0.13748, 1, 0, 0, 0, 1.9466, 1.40795)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_FaceStripeA")
+
+[node name="ForeheadMark3_2" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(0, 0.25771, 0.39305, 0, -0.11121, 0.07292, 1, 0, 0, 0, 1.83548, 1.51315)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_FaceStripeB")
+
+[node name="ForeheadMark4_1" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(0.09996, 0.35443, 0.29204, -0.02479, -0.11165, 0.144, 0.96777, -0.25032, -0.02746, 0.14081, 1.93179, 1.40131)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_FaceStripeA")
+
+[node name="ForeheadMark4_2" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(0.08253, 0.24396, 0.39316, -0.02483, -0.11181, 0.07459, 0.96756, -0.24777, -0.04936, 0.116, 1.82006, 1.5106)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_FaceStripeB")
+
+[node name="ForeheadMark5_1" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(0.24015, 0.26814, 0.30221, -0.0077, -0.08673, 0.08307, 0.85723, -0.39384, -0.33174, 0.32791, 1.83676, 1.40238)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_FaceStripeA")
+
+[node name="ForeheadMark5_2" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(0.23515, 0.17975, 0.36509, -0.00773, -0.08681, 0.04772, 0.86233, -0.30075, -0.40735, 0.32019, 1.74999, 1.46778)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_FaceStripeB")
+
+[node name="LCheekSlash1" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(-0.3362, -0.00512, 0.25168, 0.03664, -0.14778, 0.04593, 0.55333, 0.36925, 0.74665, -0.48062, 1.56975, 1.36162)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_CheekStripe")
+
+[node name="LCheekSlash2" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(-0.3325, -0.1417, 0.21393, 0.12043, -0.11041, 0.11405, 0.08913, 0.76099, 0.64261, -0.47542, 1.42996, 1.3198)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_CheekStripe")
+
+[node name="RCheekSlash1" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(0.3362, -0.00512, 0.25168, -0.03664, -0.14778, 0.04593, 0.55333, -0.36925, -0.74665, 0.48062, 1.56975, 1.36162)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_CheekStripe")
+
+[node name="RCheekSlash2" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(0.3325, -0.1417, 0.21393, -0.12043, -0.11041, 0.11405, 0.08913, -0.76099, -0.64261, 0.47542, 1.42996, 1.3198)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_CheekStripe")
+
+[node name="LFrontLegBar1" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(-0.42968, 0.00953, -0.0135, -0.008, -0.12, 0.17, 0, 0.81697, 0.57668, -0.694, 0.75, 0.615)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_CheekStripe")
+
+[node name="LFrontLegBar2" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(-0.42968, 0.00953, -0.0135, -0.008, -0.12, 0.17, 0, 0.81697, 0.57668, -0.694, 0.56, 0.615)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_CheekStripe")
+
+[node name="LBackLegBar1" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(-0.42968, 0.00953, -0.0135, -0.008, -0.12, 0.17, 0, 0.81697, 0.57668, -0.754, 0.75, -0.885)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_CheekStripe")
+
+[node name="LBackLegBar2" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(-0.42968, 0.00953, -0.0135, -0.008, -0.12, 0.17, 0, 0.81697, 0.57668, -0.754, 0.56, -0.885)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_CheekStripe")
+
+[node name="RFrontLegBar1" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(0.42968, 0.00953, -0.0135, 0.008, -0.12, 0.17, 0, -0.81697, -0.57668, 0.694, 0.75, 0.615)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_CheekStripe")
+
+[node name="RFrontLegBar2" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(0.42968, 0.00953, -0.0135, 0.008, -0.12, 0.17, 0, -0.81697, -0.57668, 0.694, 0.56, 0.615)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_CheekStripe")
+
+[node name="RBackLegBar1" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(0.42968, 0.00953, -0.0135, 0.008, -0.12, 0.17, 0, -0.81697, -0.57668, 0.754, 0.75, -0.885)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_CheekStripe")
+
+[node name="RBackLegBar2" type="MeshInstance3D" parent="StripedFur"]
+transform = Transform3D(0.42968, 0.00953, -0.0135, 0.008, -0.12, 0.17, 0, -0.81697, -0.57668, 0.754, 0.56, -0.885)
+material_override = SubResource("Mat_BlackStripe")
+mesh = SubResource("Mesh_CheekStripe")
+
+[node name="VocabularyArea" type="Area3D" parent="." unique_id=2063449040]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VocabularyArea" unique_id=164332308]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, 0)
+shape = SubResource("BoxShape3D_h182f")

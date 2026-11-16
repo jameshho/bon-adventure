@@ -1,0 +1,72 @@
+[gd_scene format=3]
+
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/black_bear_adult/body.res" id="1_iqwgi"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/black_bear_adult/muzzle.res" id="2_1gp7q"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/black_bear_adult/nose.res" id="3_v4wu7"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/black_bear_adult/ears.res" id="4_3i5s2"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/black_bear_adult/claws.res" id="5_jj35g"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/black_bear_adult/eyes.res" id="6_c882a"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/black_bear_adult/face_details.res" id="7_2sjui"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ebyfk"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_t8ost"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0e7r5"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+metallic_specular = 0.25
+roughness = 0.35
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ac4id"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.75
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2g2xr"]
+size = Vector3(1.4462811, 2.1000001, 2.412397)
+
+[node name="BlackBearAdultClayDisplay" type="Node3D" unique_id=1979020566]
+metadata/source = "User's Black Bear Character Blueprint, relax walk pose (11 Nov 2026)"
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=330655222]
+material_override = SubResource("StandardMaterial3D_ebyfk")
+mesh = ExtResource("1_iqwgi")
+
+[node name="Muzzle" type="MeshInstance3D" parent="." unique_id=1795044662]
+material_override = SubResource("StandardMaterial3D_ebyfk")
+mesh = ExtResource("2_1gp7q")
+
+[node name="Nose" type="MeshInstance3D" parent="." unique_id=1080971843]
+material_override = SubResource("StandardMaterial3D_t8ost")
+mesh = ExtResource("3_v4wu7")
+
+[node name="Ears" type="MeshInstance3D" parent="." unique_id=263019426]
+material_override = SubResource("StandardMaterial3D_ebyfk")
+mesh = ExtResource("4_3i5s2")
+
+[node name="Claws" type="MeshInstance3D" parent="." unique_id=915551411]
+material_override = SubResource("StandardMaterial3D_ebyfk")
+mesh = ExtResource("5_jj35g")
+
+[node name="Eyes" type="MeshInstance3D" parent="." unique_id=752404526]
+material_override = SubResource("StandardMaterial3D_0e7r5")
+cast_shadow = 0
+mesh = ExtResource("6_c882a")
+
+[node name="Face details" type="MeshInstance3D" parent="." unique_id=1852726797]
+material_override = SubResource("StandardMaterial3D_ac4id")
+cast_shadow = 0
+mesh = ExtResource("7_2sjui")
+
+[node name="Footprint" type="StaticBody3D" parent="." unique_id=942196901]
+
+[node name="@CollisionShape3D@2" type="CollisionShape3D" parent="Footprint" unique_id=634528339]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0500001, -0.026033098)
+shape = SubResource("BoxShape3D_2g2xr")

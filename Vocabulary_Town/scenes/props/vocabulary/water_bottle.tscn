@@ -1,0 +1,72 @@
+[gd_scene format=3]
+
+[sub_resource type="CylinderMesh" id="r1"]
+top_radius = 0.22
+bottom_radius = 0.22
+height = 0.65
+radial_segments = 16
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.60784, 0.71765, 0.75686, 1)
+roughness = 0.78
+
+[sub_resource type="CylinderMesh" id="r3"]
+top_radius = 0.09
+bottom_radius = 0.22
+height = 0.13
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="r4"]
+top_radius = 0.09
+bottom_radius = 0.09
+height = 0.17
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="r5"]
+top_radius = 0.11
+bottom_radius = 0.11
+height = 0.07
+radial_segments = 16
+
+[sub_resource type="StandardMaterial3D" id="r6"]
+albedo_color = Color(0.27451, 0.47843, 0.60784, 1)
+roughness = 0.78
+
+[sub_resource type="BoxShape3D" id="r7"]
+size = Vector3(0.500000, 1.050000, 0.500000)
+
+[node name="Water_Bottle" type="Node3D"]
+metadata/word_key = "water bottle"
+metadata/learning_object = true
+
+[node name="Body_2" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.350000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r1")
+material_override = SubResource("r2")
+
+[node name="Shoulder_3" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.730000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r3")
+material_override = SubResource("r2")
+
+[node name="Neck_4" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.870000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r4")
+material_override = SubResource("r2")
+
+[node name="Cap_6" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.980000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r5")
+material_override = SubResource("r6")
+
+[node name="Interaction" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Interaction"]
+position = Vector3(0.000000, 0.525000, 0.000000)
+shape = SubResource("r7")

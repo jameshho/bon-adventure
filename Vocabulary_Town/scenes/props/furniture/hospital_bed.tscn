@@ -1,0 +1,1503 @@
+[gd_scene load_steps=37 format=3]
+
+[sub_resource type="BoxMesh" id="UnitBox"]
+size = Vector3(1, 1, 1)
+
+[sub_resource type="SphereMesh" id="UnitSphere"]
+radius = 0.5
+height = 1.0
+radial_segments = 20
+rings = 10
+
+[sub_resource type="CylinderMesh" id="RoundRod"]
+top_radius = 0.5
+bottom_radius = 0.5
+height = 1.0
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="SmoothRod"]
+top_radius = 0.5
+bottom_radius = 0.5
+height = 1.0
+radial_segments = 24
+
+[sub_resource type="StandardMaterial3D" id="Mat_FrameCeramic"]
+albedo_color = Color(0.917647, 0.94902, 0.945098, 1)
+metallic = 0.1
+roughness = 0.34
+
+[sub_resource type="StandardMaterial3D" id="Mat_FramePearl"]
+albedo_color = Color(0.964706, 0.976471, 0.960784, 1)
+metallic = 0.05
+roughness = 0.32
+
+[sub_resource type="StandardMaterial3D" id="Mat_BaseHousing"]
+albedo_color = Color(0.74902, 0.807843, 0.823529, 1)
+metallic = 0.18
+roughness = 0.49
+
+[sub_resource type="StandardMaterial3D" id="Mat_StructuralSteel"]
+albedo_color = Color(0.4, 0.490196, 0.537255, 1)
+metallic = 0.62
+roughness = 0.29
+
+[sub_resource type="StandardMaterial3D" id="Mat_BrushedAluminum"]
+albedo_color = Color(0.721569, 0.8, 0.819608, 1)
+metallic = 0.69
+roughness = 0.23
+
+[sub_resource type="StandardMaterial3D" id="Mat_BrightChrome"]
+albedo_color = Color(0.898039, 0.94902, 0.941176, 1)
+metallic = 0.76
+roughness = 0.18
+
+[sub_resource type="StandardMaterial3D" id="Mat_DarkTrim"]
+albedo_color = Color(0.2, 0.286275, 0.333333, 1)
+metallic = 0.21
+roughness = 0.48
+
+[sub_resource type="StandardMaterial3D" id="Mat_RecessBlack"]
+albedo_color = Color(0.129412, 0.2, 0.231373, 1)
+metallic = 0.13
+roughness = 0.52
+
+[sub_resource type="StandardMaterial3D" id="Mat_TireRubber"]
+albedo_color = Color(0.156863, 0.196078, 0.219608, 1)
+metallic = 0.02
+roughness = 0.84
+
+[sub_resource type="StandardMaterial3D" id="Mat_Mattress"]
+albedo_color = Color(0.956863, 0.972549, 0.956863, 1)
+metallic = 0.0
+roughness = 0.76
+
+[sub_resource type="StandardMaterial3D" id="Mat_MattressSeam"]
+albedo_color = Color(0.807843, 0.854902, 0.85098, 1)
+metallic = 0.0
+roughness = 0.89
+
+[sub_resource type="StandardMaterial3D" id="Mat_PillowFabric"]
+albedo_color = Color(1, 0.976471, 0.92549, 1)
+metallic = 0.0
+roughness = 0.91
+
+[sub_resource type="StandardMaterial3D" id="Mat_PillowSeam"]
+albedo_color = Color(0.886275, 0.85098, 0.772549, 1)
+metallic = 0.0
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="Mat_Blanket"]
+albedo_color = Color(0.415686, 0.670588, 0.72549, 1)
+metallic = 0.0
+roughness = 0.81
+
+[sub_resource type="StandardMaterial3D" id="Mat_BlanketHighlight"]
+albedo_color = Color(0.607843, 0.803922, 0.823529, 1)
+metallic = 0.0
+roughness = 0.84
+
+[sub_resource type="StandardMaterial3D" id="Mat_BlanketTrim"]
+albedo_color = Color(0.207843, 0.498039, 0.568627, 1)
+metallic = 0.0
+roughness = 0.83
+
+[sub_resource type="StandardMaterial3D" id="Mat_Teal"]
+albedo_color = Color(0.282353, 0.682353, 0.694118, 1)
+metallic = 0.1
+roughness = 0.38
+
+[sub_resource type="StandardMaterial3D" id="Mat_TealDark"]
+albedo_color = Color(0.168627, 0.494118, 0.541176, 1)
+metallic = 0.06
+roughness = 0.45
+
+[sub_resource type="StandardMaterial3D" id="Mat_ScreenBlue"]
+albedo_color = Color(0.513725, 0.85098, 0.847059, 1)
+metallic = 0.08
+roughness = 0.25
+
+[sub_resource type="StandardMaterial3D" id="Mat_HospitalGreen"]
+albedo_color = Color(0.337255, 0.768627, 0.607843, 1)
+metallic = 0.05
+roughness = 0.35
+
+[sub_resource type="StandardMaterial3D" id="Mat_SafetyAmber"]
+albedo_color = Color(0.964706, 0.698039, 0.352941, 1)
+metallic = 0.1
+roughness = 0.41
+
+[sub_resource type="StandardMaterial3D" id="Mat_AlarmRed"]
+albedo_color = Color(0.905882, 0.470588, 0.45098, 1)
+metallic = 0.07
+roughness = 0.43
+
+[sub_resource type="StandardMaterial3D" id="Mat_PanelBlue"]
+albedo_color = Color(0.839216, 0.905882, 0.909804, 1)
+metallic = 0.08
+roughness = 0.57
+
+[sub_resource type="BoxShape3D" id="ShapeBedFrame"]
+size = Vector3(1.4, 0.3, 2.65)
+
+[sub_resource type="BoxShape3D" id="ShapeMattress"]
+size = Vector3(1.28, 0.16, 2.49)
+
+[sub_resource type="BoxShape3D" id="ShapePillow"]
+size = Vector3(0.95, 0.13, 0.5)
+
+[sub_resource type="BoxShape3D" id="ShapeSheet"]
+size = Vector3(1.2, 0.06, 1.4)
+
+[sub_resource type="BoxShape3D" id="ShapeBedRail"]
+size = Vector3(0.055, 0.2, 2.25)
+
+[sub_resource type="SphereShape3D" id="ShapeWheel"]
+radius = 0.16
+
+[sub_resource type="BoxShape3D" id="ShapeUpperRail"]
+size = Vector3(0.18, 0.36, 2.02)
+
+[sub_resource type="BoxShape3D" id="ShapeHeadboard"]
+size = Vector3(1.44, 0.79, 0.16)
+
+[sub_resource type="BoxShape3D" id="ShapeFootboard"]
+size = Vector3(1.37, 0.57, 0.16)
+
+[node name="HospitalBed" type="Node3D"]
+
+[node name="BedFrame" type="Node3D" parent="."]
+position = Vector3(0.0, 0.66, 0.0)
+metadata/word_key = "hospital bed"
+
+[node name="Body" type="StaticBody3D" parent="BedFrame"]
+collision_layer = 1
+collision_mask = 1
+metadata/word = "hospital bed"
+
+[node name="Collision" type="CollisionShape3D" parent="BedFrame/Body"]
+shape = SubResource("ShapeBedFrame")
+
+[node name="Visual" type="MeshInstance3D" parent="BedFrame"]
+position = Vector3(0.0, -0.03, 0.0)
+scale = Vector3(1.4, 0.15, 2.64)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_BaseHousing")
+
+[node name="UpperDeck" type="MeshInstance3D" parent="BedFrame"]
+position = Vector3(0.0, 0.114, 0.0)
+scale = Vector3(1.34, 0.09, 2.55)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_FrameCeramic")
+
+[node name="InsetDeckSurface" type="MeshInstance3D" parent="BedFrame"]
+position = Vector3(0.0, 0.168, 0.0)
+scale = Vector3(1.22, 0.018, 2.43)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_DarkTrim")
+
+[node name="FrontBumper" type="MeshInstance3D" parent="BedFrame"]
+position = Vector3(0.0, -0.045, 1.282)
+scale = Vector3(1.45, 0.1, 0.12)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_FrameCeramic")
+
+[node name="RearBumper" type="MeshInstance3D" parent="BedFrame"]
+position = Vector3(0.0, -0.045, -1.282)
+scale = Vector3(1.45, 0.1, 0.12)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_FrameCeramic")
+
+[node name="LeftAluminumEdge" type="MeshInstance3D" parent="BedFrame"]
+position = Vector3(-0.704, 0.072, 0.0)
+rotation_degrees = Vector3(90, 0.0, 0.0)
+scale = Vector3(0.047, 2.5, 0.047)
+mesh = SubResource("RoundRod")
+material_override = SubResource("Mat_BrushedAluminum")
+
+[node name="LeftDarkLowerReveal" type="MeshInstance3D" parent="BedFrame"]
+position = Vector3(-0.704, -0.106, 0.0)
+rotation_degrees = Vector3(90, 0.0, 0.0)
+scale = Vector3(0.021, 2.5, 0.021)
+mesh = SubResource("RoundRod")
+material_override = SubResource("Mat_DarkTrim")
+
+[node name="LeftHeadCornerCap" type="MeshInstance3D" parent="BedFrame"]
+position = Vector3(-0.704, 0.073, -1.25)
+scale = Vector3(0.056, 0.056, 0.056)
+mesh = SubResource("UnitSphere")
+material_override = SubResource("Mat_BrightChrome")
+
+[node name="LeftFootCornerCap" type="MeshInstance3D" parent="BedFrame"]
+position = Vector3(-0.704, 0.073, 1.25)
+scale = Vector3(0.056, 0.056, 0.056)
+mesh = SubResource("UnitSphere")
+material_override = SubResource("Mat_BrightChrome")
+
+[node name="RightAluminumEdge" type="MeshInstance3D" parent="BedFrame"]
+position = Vector3(0.704, 0.072, 0.0)
+rotation_degrees = Vector3(90, 0.0, 0.0)
+scale = Vector3(0.047, 2.5, 0.047)
+mesh = SubResource("RoundRod")
+material_override = SubResource("Mat_BrushedAluminum")
+
+[node name="RightDarkLowerReveal" type="MeshInstance3D" parent="BedFrame"]
+position = Vector3(0.704, -0.106, 0.0)
+rotation_degrees = Vector3(90, 0.0, 0.0)
+scale = Vector3(0.021, 2.5, 0.021)
+mesh = SubResource("RoundRod")
+material_override = SubResource("Mat_DarkTrim")
+
+[node name="RightHeadCornerCap" type="MeshInstance3D" parent="BedFrame"]
+position = Vector3(0.704, 0.073, -1.25)
+scale = Vector3(0.056, 0.056, 0.056)
+mesh = SubResource("UnitSphere")
+material_override = SubResource("Mat_BrightChrome")
+
+[node name="RightFootCornerCap" type="MeshInstance3D" parent="BedFrame"]
+position = Vector3(0.704, 0.073, 1.25)
+scale = Vector3(0.056, 0.056, 0.056)
+mesh = SubResource("UnitSphere")
+material_override = SubResource("Mat_BrightChrome")
+
+[node name="FrontChromeEdge" type="MeshInstance3D" parent="BedFrame"]
+position = Vector3(0.0, 0.073, 1.283)
+rotation_degrees = Vector3(0.0, 0.0, 90)
+scale = Vector3(0.049, 1.36, 0.049)
+mesh = SubResource("RoundRod")
+material_override = SubResource("Mat_BrushedAluminum")
+
+[node name="RearChromeEdge" type="MeshInstance3D" parent="BedFrame"]
+position = Vector3(0.0, 0.073, -1.283)
+rotation_degrees = Vector3(0.0, 0.0, 90)
+scale = Vector3(0.049, 1.36, 0.049)
+mesh = SubResource("RoundRod")
+material_override = SubResource("Mat_BrushedAluminum")
+
+[node name="LeftRailTrack" type="MeshInstance3D" parent="BedFrame"]
+position = Vector3(-0.66, 0.105, 0.0)
+scale = Vector3(0.065, 0.052, 1.85)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_DarkTrim")
+
+[node name="LeftHeadRailSlider" type="MeshInstance3D" parent="BedFrame"]
+position = Vector3(-0.68, 0.13, -0.8)
+scale = Vector3(0.11, 0.075, 0.15)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_StructuralSteel")
+
+[node name="LeftFootRailSlider" type="MeshInstance3D" parent="BedFrame"]
+position = Vector3(-0.68, 0.13, 0.8)
+scale = Vector3(0.11, 0.075, 0.15)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_StructuralSteel")
+
+[node name="RightRailTrack" type="MeshInstance3D" parent="BedFrame"]
+position = Vector3(0.66, 0.105, 0.0)
+scale = Vector3(0.065, 0.052, 1.85)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_DarkTrim")
+
+[node name="RightHeadRailSlider" type="MeshInstance3D" parent="BedFrame"]
+position = Vector3(0.68, 0.13, -0.8)
+scale = Vector3(0.11, 0.075, 0.15)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_StructuralSteel")
+
+[node name="RightFootRailSlider" type="MeshInstance3D" parent="BedFrame"]
+position = Vector3(0.68, 0.13, 0.8)
+scale = Vector3(0.11, 0.075, 0.15)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_StructuralSteel")
+
+[node name="Mattress" type="Node3D" parent="."]
+position = Vector3(0.0, 0.88, 0.0)
+metadata/word_key = "mattress"
+
+[node name="Body" type="Area3D" parent="Mattress"]
+collision_layer = 1
+collision_mask = 0
+metadata/word = "mattress"
+
+[node name="Collision" type="CollisionShape3D" parent="Mattress/Body"]
+shape = SubResource("ShapeMattress")
+
+[node name="Visual" type="MeshInstance3D" parent="Mattress"]
+position = Vector3(0.0, 0.0, 0.0)
+scale = Vector3(1.13, 0.132, 2.33)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_Mattress")
+
+[node name="UpperQuiltedPanel" type="MeshInstance3D" parent="Mattress"]
+position = Vector3(0.0, 0.061, 0.0)
+scale = Vector3(1.13, 0.023, 2.28)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_Mattress")
+
+[node name="LeftRoundedEdge" type="MeshInstance3D" parent="Mattress"]
+position = Vector3(-0.566, 0.0, 0.0)
+rotation_degrees = Vector3(90, 0.0, 0.0)
+scale = Vector3(0.145, 2.33, 0.145)
+mesh = SubResource("SmoothRod")
+material_override = SubResource("Mat_Mattress")
+
+[node name="LeftPiping" type="MeshInstance3D" parent="Mattress"]
+position = Vector3(-0.608, -0.049, 0.0)
+rotation_degrees = Vector3(90, 0.0, 0.0)
+scale = Vector3(0.017, 2.28, 0.017)
+mesh = SubResource("RoundRod")
+material_override = SubResource("Mat_MattressSeam")
+
+[node name="RightRoundedEdge" type="MeshInstance3D" parent="Mattress"]
+position = Vector3(0.566, 0.0, 0.0)
+rotation_degrees = Vector3(90, 0.0, 0.0)
+scale = Vector3(0.145, 2.33, 0.145)
+mesh = SubResource("SmoothRod")
+material_override = SubResource("Mat_Mattress")
+
+[node name="RightPiping" type="MeshInstance3D" parent="Mattress"]
+position = Vector3(0.608, -0.049, 0.0)
+rotation_degrees = Vector3(90, 0.0, 0.0)
+scale = Vector3(0.017, 2.28, 0.017)
+mesh = SubResource("RoundRod")
+material_override = SubResource("Mat_MattressSeam")
+
+[node name="HeadRoundedEdge" type="MeshInstance3D" parent="Mattress"]
+position = Vector3(0.0, 0.0, -1.165)
+rotation_degrees = Vector3(0.0, 0.0, 90)
+scale = Vector3(0.145, 1.13, 0.145)
+mesh = SubResource("SmoothRod")
+material_override = SubResource("Mat_Mattress")
+
+[node name="HeadPiping" type="MeshInstance3D" parent="Mattress"]
+position = Vector3(0.0, -0.049, -1.216)
+rotation_degrees = Vector3(0.0, 0.0, 90)
+scale = Vector3(0.016, 1.09, 0.016)
+mesh = SubResource("RoundRod")
+material_override = SubResource("Mat_MattressSeam")
+
+[node name="FootRoundedEdge" type="MeshInstance3D" parent="Mattress"]
+position = Vector3(0.0, 0.0, 1.165)
+rotation_degrees = Vector3(0.0, 0.0, 90)
+scale = Vector3(0.145, 1.13, 0.145)
+mesh = SubResource("SmoothRod")
+material_override = SubResource("Mat_Mattress")
+
+[node name="FootPiping" type="MeshInstance3D" parent="Mattress"]
+position = Vector3(0.0, -0.049, 1.216)
+rotation_degrees = Vector3(0.0, 0.0, 90)
+scale = Vector3(0.016, 1.09, 0.016)
+mesh = SubResource("RoundRod")
+material_override = SubResource("Mat_MattressSeam")
+
+[node name="LeftHeadCushionCorner" type="MeshInstance3D" parent="Mattress"]
+position = Vector3(-0.566, 0.0, -1.165)
+scale = Vector3(0.147, 0.147, 0.147)
+mesh = SubResource("UnitSphere")
+material_override = SubResource("Mat_Mattress")
+
+[node name="LeftFootCushionCorner" type="MeshInstance3D" parent="Mattress"]
+position = Vector3(-0.566, 0.0, 1.165)
+scale = Vector3(0.147, 0.147, 0.147)
+mesh = SubResource("UnitSphere")
+material_override = SubResource("Mat_Mattress")
+
+[node name="RightHeadCushionCorner" type="MeshInstance3D" parent="Mattress"]
+position = Vector3(0.566, 0.0, -1.165)
+scale = Vector3(0.147, 0.147, 0.147)
+mesh = SubResource("UnitSphere")
+material_override = SubResource("Mat_Mattress")
+
+[node name="RightFootCushionCorner" type="MeshInstance3D" parent="Mattress"]
+position = Vector3(0.566, 0.0, 1.165)
+scale = Vector3(0.147, 0.147, 0.147)
+mesh = SubResource("UnitSphere")
+material_override = SubResource("Mat_Mattress")
+
+[node name="UpperCushionSeam" type="MeshInstance3D" parent="Mattress"]
+position = Vector3(0.0, 0.077, -0.62)
+rotation_degrees = Vector3(0.0, 0.0, 90)
+scale = Vector3(0.008, 0.89, 0.008)
+mesh = SubResource("RoundRod")
+material_override = SubResource("Mat_MattressSeam")
+
+[node name="LowerCushionSeam" type="MeshInstance3D" parent="Mattress"]
+position = Vector3(0.0, 0.077, -0.44)
+rotation_degrees = Vector3(0.0, 0.0, 90)
+scale = Vector3(0.008, 0.89, 0.008)
+mesh = SubResource("RoundRod")
+material_override = SubResource("Mat_MattressSeam")
+
+[node name="Pillow" type="Node3D" parent="."]
+position = Vector3(0.0, 1.02, -0.83)
+metadata/word_key = "pillow"
+
+[node name="Body" type="Area3D" parent="Pillow"]
+collision_layer = 1
+collision_mask = 0
+metadata/word = "pillow"
+
+[node name="Collision" type="CollisionShape3D" parent="Pillow/Body"]
+shape = SubResource("ShapePillow")
+
+[node name="Visual" type="MeshInstance3D" parent="Pillow"]
+position = Vector3(0.0, 0.0, 0.0)
+scale = Vector3(0.96, 0.16, 0.52)
+mesh = SubResource("UnitSphere")
+material_override = SubResource("Mat_PillowSeam")
+
+[node name="LoftedTop" type="MeshInstance3D" parent="Pillow"]
+position = Vector3(0.0, 0.023, -0.005)
+scale = Vector3(0.89, 0.17, 0.47)
+mesh = SubResource("UnitSphere")
+material_override = SubResource("Mat_PillowFabric")
+
+[node name="LeftPlumpEnd" type="MeshInstance3D" parent="Pillow"]
+position = Vector3(-0.39, 0.003, -0.003)
+scale = Vector3(0.17, 0.126, 0.37)
+mesh = SubResource("UnitSphere")
+material_override = SubResource("Mat_PillowFabric")
+
+[node name="RightPlumpEnd" type="MeshInstance3D" parent="Pillow"]
+position = Vector3(0.39, 0.003, -0.003)
+scale = Vector3(0.17, 0.126, 0.37)
+mesh = SubResource("UnitSphere")
+material_override = SubResource("Mat_PillowFabric")
+
+[node name="TopPiping" type="MeshInstance3D" parent="Pillow"]
+position = Vector3(0.0, -0.038, -0.225)
+rotation_degrees = Vector3(0.0, 0.0, 90)
+scale = Vector3(0.015, 0.81, 0.015)
+mesh = SubResource("RoundRod")
+material_override = SubResource("Mat_PillowSeam")
+
+[node name="BottomPiping" type="MeshInstance3D" parent="Pillow"]
+position = Vector3(0.0, -0.038, 0.225)
+rotation_degrees = Vector3(0.0, 0.0, 90)
+scale = Vector3(0.015, 0.81, 0.015)
+mesh = SubResource("RoundRod")
+material_override = SubResource("Mat_PillowSeam")
+
+[node name="Sheet" type="Node3D" parent="."]
+position = Vector3(0.0, 0.99, 0.38)
+metadata/word_key = "blanket"
+
+[node name="Body" type="Area3D" parent="Sheet"]
+collision_layer = 1
+collision_mask = 0
+metadata/word = "blanket"
+
+[node name="Collision" type="CollisionShape3D" parent="Sheet/Body"]
+shape = SubResource("ShapeSheet")
+
+[node name="Visual" type="MeshInstance3D" parent="Sheet"]
+position = Vector3(0.0, 0.0, 0.0)
+scale = Vector3(1.19, 0.054, 1.39)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_Blanket")
+
+[node name="SmoothTopFabric" type="MeshInstance3D" parent="Sheet"]
+position = Vector3(0.0, 0.031, 0.0)
+scale = Vector3(1.15, 0.012, 1.32)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_Blanket")
+
+[node name="LeftDrapedSkirt" type="MeshInstance3D" parent="Sheet"]
+position = Vector3(-0.591, -0.073, 0.0)
+scale = Vector3(0.048, 0.108, 1.33)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_Blanket")
+
+[node name="LeftNarrowHem" type="MeshInstance3D" parent="Sheet"]
+position = Vector3(-0.595, -0.127, 0.0)
+scale = Vector3(0.053, 0.024, 1.34)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_BlanketTrim")
+
+[node name="RightDrapedSkirt" type="MeshInstance3D" parent="Sheet"]
+position = Vector3(0.591, -0.073, 0.0)
+scale = Vector3(0.048, 0.108, 1.33)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_Blanket")
+
+[node name="RightNarrowHem" type="MeshInstance3D" parent="Sheet"]
+position = Vector3(0.595, -0.127, 0.0)
+scale = Vector3(0.053, 0.024, 1.34)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_BlanketTrim")
+
+[node name="FoldedTopBand" type="MeshInstance3D" parent="Sheet"]
+position = Vector3(0.0, 0.052, -0.66)
+rotation_degrees = Vector3(0.0, 0.0, 90)
+scale = Vector3(0.06, 1.18, 0.06)
+mesh = SubResource("RoundRod")
+material_override = SubResource("Mat_BlanketHighlight")
+
+[node name="FoldedCuff" type="MeshInstance3D" parent="Sheet"]
+position = Vector3(0.0, 0.053, -0.58)
+scale = Vector3(1.15, 0.026, 0.16)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_BlanketHighlight")
+
+[node name="TopCuffSeam" type="MeshInstance3D" parent="Sheet"]
+position = Vector3(0.0, 0.07, -0.505)
+rotation_degrees = Vector3(0.0, 0.0, 90)
+scale = Vector3(0.012, 1.08, 0.012)
+mesh = SubResource("RoundRod")
+material_override = SubResource("Mat_BlanketTrim")
+
+[node name="BottomDrape" type="MeshInstance3D" parent="Sheet"]
+position = Vector3(0.0, -0.055, 0.707)
+scale = Vector3(1.18, 0.11, 0.055)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_Blanket")
+
+[node name="BottomEdgePiping" type="MeshInstance3D" parent="Sheet"]
+position = Vector3(0.0, -0.105, 0.72)
+rotation_degrees = Vector3(0.0, 0.0, 90)
+scale = Vector3(0.024, 1.17, 0.024)
+mesh = SubResource("RoundRod")
+material_override = SubResource("Mat_BlanketTrim")
+
+[node name="TextileStitch_1" type="MeshInstance3D" parent="Sheet"]
+position = Vector3(0.0, 0.04, -0.42)
+rotation_degrees = Vector3(0.0, 0.0, 90)
+scale = Vector3(0.006, 1.01, 0.006)
+mesh = SubResource("RoundRod")
+material_override = SubResource("Mat_BlanketHighlight")
+
+[node name="TextileStitch_2" type="MeshInstance3D" parent="Sheet"]
+position = Vector3(0.0, 0.04, 0.34)
+rotation_degrees = Vector3(0.0, 0.0, 90)
+scale = Vector3(0.006, 1.01, 0.006)
+mesh = SubResource("RoundRod")
+material_override = SubResource("Mat_BlanketHighlight")
+
+[node name="TextileStitch_3" type="MeshInstance3D" parent="Sheet"]
+position = Vector3(0.0, 0.04, 0.51)
+rotation_degrees = Vector3(0.0, 0.0, 90)
+scale = Vector3(0.006, 1.01, 0.006)
+mesh = SubResource("RoundRod")
+material_override = SubResource("Mat_BlanketHighlight")
+
+[node name="FabricWovenDetail_1" type="MeshInstance3D" parent="Sheet"]
+position = Vector3(0.42, 0.043, 0.04)
+scale = Vector3(0.12, 0.007, 0.013)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_BlanketHighlight")
+
+[node name="FabricWovenDetail_2" type="MeshInstance3D" parent="Sheet"]
+position = Vector3(0.42, 0.043, 0.1)
+scale = Vector3(0.12, 0.007, 0.013)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_BlanketHighlight")
+
+[node name="FabricWovenDetail_3" type="MeshInstance3D" parent="Sheet"]
+position = Vector3(0.42, 0.043, 0.16)
+scale = Vector3(0.12, 0.007, 0.013)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_BlanketHighlight")
+
+[node name="BedRail" type="Node3D" parent="."]
+position = Vector3(-0.6, 1.03, 0.0)
+metadata/word_key = "bed rail"
+
+[node name="Body" type="Area3D" parent="BedRail"]
+collision_layer = 1
+collision_mask = 0
+metadata/word = "bed rail"
+
+[node name="Collision" type="CollisionShape3D" parent="BedRail/Body"]
+shape = SubResource("ShapeBedRail")
+
+[node name="CollisionUpperGrip" type="CollisionShape3D" parent="BedRail/Body"]
+position = Vector3(-0.11, 0.23, 0.0)
+shape = SubResource("ShapeUpperRail")
+
+[node name="Visual" type="MeshInstance3D" parent="BedRail"]
+position = Vector3(0.0, 0.0, 0.0)
+scale = Vector3(0.055, 0.2, 2.25)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_BrushedAluminum")
+
+[node name="MountingBar" type="MeshInstance3D" parent="BedRail"]
+position = Vector3(-0.046, -0.045, 0.0)
+scale = Vector3(0.058, 0.075, 2.11)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_StructuralSteel")
+
+[node name="RoundedTopGrip" type="MeshInstance3D" parent="BedRail"]
+position = Vector3(-0.11, 0.312, 0.0)
+rotation_degrees = Vector3(90, 0.0, 0.0)
+scale = Vector3(0.078, 1.96, 0.078)
+mesh = SubResource("SmoothRod")
+material_override = SubResource("Mat_FramePearl")
+
+[node name="MiddleSafetyRod" type="MeshInstance3D" parent="BedRail"]
+position = Vector3(-0.113, 0.172, 0.0)
+rotation_degrees = Vector3(90, 0.0, 0.0)
+scale = Vector3(0.047, 1.82, 0.047)
+mesh = SubResource("SmoothRod")
+material_override = SubResource("Mat_BrushedAluminum")
+
+[node name="HeadSupportColumn" type="MeshInstance3D" parent="BedRail"]
+position = Vector3(-0.108, 0.155, -0.9)
+scale = Vector3(0.052, 0.325, 0.052)
+mesh = SubResource("RoundRod")
+material_override = SubResource("Mat_BrushedAluminum")
+
+[node name="HeadPivotHousing" type="MeshInstance3D" parent="BedRail"]
+position = Vector3(-0.09, 0.023, -0.9)
+scale = Vector3(0.125, 0.125, 0.125)
+mesh = SubResource("UnitSphere")
+material_override = SubResource("Mat_DarkTrim")
+
+[node name="HeadPivotPin" type="MeshInstance3D" parent="BedRail"]
+position = Vector3(-0.154, 0.023, -0.9)
+scale = Vector3(0.06, 0.06, 0.06)
+mesh = SubResource("UnitSphere")
+material_override = SubResource("Mat_BrightChrome")
+
+[node name="FootSupportColumn" type="MeshInstance3D" parent="BedRail"]
+position = Vector3(-0.108, 0.155, 0.9)
+scale = Vector3(0.052, 0.325, 0.052)
+mesh = SubResource("RoundRod")
+material_override = SubResource("Mat_BrushedAluminum")
+
+[node name="FootPivotHousing" type="MeshInstance3D" parent="BedRail"]
+position = Vector3(-0.09, 0.023, 0.9)
+scale = Vector3(0.125, 0.125, 0.125)
+mesh = SubResource("UnitSphere")
+material_override = SubResource("Mat_DarkTrim")
+
+[node name="FootPivotPin" type="MeshInstance3D" parent="BedRail"]
+position = Vector3(-0.154, 0.023, 0.9)
+scale = Vector3(0.06, 0.06, 0.06)
+mesh = SubResource("UnitSphere")
+material_override = SubResource("Mat_BrightChrome")
+
+[node name="VerticalGuardOne" type="MeshInstance3D" parent="BedRail"]
+position = Vector3(-0.112, 0.2, -0.4)
+scale = Vector3(0.03, 0.24, 0.03)
+mesh = SubResource("RoundRod")
+material_override = SubResource("Mat_FrameCeramic")
+
+[node name="VerticalGuardTwo" type="MeshInstance3D" parent="BedRail"]
+position = Vector3(-0.112, 0.2, 0.4)
+scale = Vector3(0.03, 0.24, 0.03)
+mesh = SubResource("RoundRod")
+material_override = SubResource("Mat_FrameCeramic")
+
+[node name="LatchMount" type="MeshInstance3D" parent="BedRail"]
+position = Vector3(-0.114, 0.19, 0.73)
+scale = Vector3(0.115, 0.095, 0.14)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_DarkTrim")
+
+[node name="ReleaseButton" type="MeshInstance3D" parent="BedRail"]
+position = Vector3(-0.181, 0.193, 0.73)
+scale = Vector3(0.045, 0.047, 0.075)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_SafetyAmber")
+
+[node name="BedRail_2" type="Node3D" parent="."]
+position = Vector3(0.6, 1.03, 0.0)
+metadata/word_key = "bed rail"
+
+[node name="Body" type="Area3D" parent="BedRail_2"]
+collision_layer = 1
+collision_mask = 0
+metadata/word = "bed rail"
+
+[node name="Collision" type="CollisionShape3D" parent="BedRail_2/Body"]
+shape = SubResource("ShapeBedRail")
+
+[node name="CollisionUpperGrip" type="CollisionShape3D" parent="BedRail_2/Body"]
+position = Vector3(0.11, 0.23, 0.0)
+shape = SubResource("ShapeUpperRail")
+
+[node name="Visual" type="MeshInstance3D" parent="BedRail_2"]
+position = Vector3(0.0, 0.0, 0.0)
+scale = Vector3(0.055, 0.2, 2.25)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_BrushedAluminum")
+
+[node name="MountingBar" type="MeshInstance3D" parent="BedRail_2"]
+position = Vector3(0.046, -0.045, 0.0)
+scale = Vector3(0.058, 0.075, 2.11)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_StructuralSteel")
+
+[node name="RoundedTopGrip" type="MeshInstance3D" parent="BedRail_2"]
+position = Vector3(0.11, 0.312, 0.0)
+rotation_degrees = Vector3(90, 0.0, 0.0)
+scale = Vector3(0.078, 1.96, 0.078)
+mesh = SubResource("SmoothRod")
+material_override = SubResource("Mat_FramePearl")
+
+[node name="MiddleSafetyRod" type="MeshInstance3D" parent="BedRail_2"]
+position = Vector3(0.113, 0.172, 0.0)
+rotation_degrees = Vector3(90, 0.0, 0.0)
+scale = Vector3(0.047, 1.82, 0.047)
+mesh = SubResource("SmoothRod")
+material_override = SubResource("Mat_BrushedAluminum")
+
+[node name="HeadSupportColumn" type="MeshInstance3D" parent="BedRail_2"]
+position = Vector3(0.108, 0.155, -0.9)
+scale = Vector3(0.052, 0.325, 0.052)
+mesh = SubResource("RoundRod")
+material_override = SubResource("Mat_BrushedAluminum")
+
+[node name="HeadPivotHousing" type="MeshInstance3D" parent="BedRail_2"]
+position = Vector3(0.09, 0.023, -0.9)
+scale = Vector3(0.125, 0.125, 0.125)
+mesh = SubResource("UnitSphere")
+material_override = SubResource("Mat_DarkTrim")
+
+[node name="HeadPivotPin" type="MeshInstance3D" parent="BedRail_2"]
+position = Vector3(0.154, 0.023, -0.9)
+scale = Vector3(0.06, 0.06, 0.06)
+mesh = SubResource("UnitSphere")
+material_override = SubResource("Mat_BrightChrome")
+
+[node name="FootSupportColumn" type="MeshInstance3D" parent="BedRail_2"]
+position = Vector3(0.108, 0.155, 0.9)
+scale = Vector3(0.052, 0.325, 0.052)
+mesh = SubResource("RoundRod")
+material_override = SubResource("Mat_BrushedAluminum")
+
+[node name="FootPivotHousing" type="MeshInstance3D" parent="BedRail_2"]
+position = Vector3(0.09, 0.023, 0.9)
+scale = Vector3(0.125, 0.125, 0.125)
+mesh = SubResource("UnitSphere")
+material_override = SubResource("Mat_DarkTrim")
+
+[node name="FootPivotPin" type="MeshInstance3D" parent="BedRail_2"]
+position = Vector3(0.154, 0.023, 0.9)
+scale = Vector3(0.06, 0.06, 0.06)
+mesh = SubResource("UnitSphere")
+material_override = SubResource("Mat_BrightChrome")
+
+[node name="VerticalGuardOne" type="MeshInstance3D" parent="BedRail_2"]
+position = Vector3(0.112, 0.2, -0.4)
+scale = Vector3(0.03, 0.24, 0.03)
+mesh = SubResource("RoundRod")
+material_override = SubResource("Mat_FrameCeramic")
+
+[node name="VerticalGuardTwo" type="MeshInstance3D" parent="BedRail_2"]
+position = Vector3(0.112, 0.2, 0.4)
+scale = Vector3(0.03, 0.24, 0.03)
+mesh = SubResource("RoundRod")
+material_override = SubResource("Mat_FrameCeramic")
+
+[node name="LatchMount" type="MeshInstance3D" parent="BedRail_2"]
+position = Vector3(0.114, 0.19, 0.73)
+scale = Vector3(0.115, 0.095, 0.14)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_DarkTrim")
+
+[node name="ReleaseButton" type="MeshInstance3D" parent="BedRail_2"]
+position = Vector3(0.181, 0.193, 0.73)
+scale = Vector3(0.045, 0.047, 0.075)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_SafetyAmber")
+
+[node name="Headboard" type="Node3D" parent="."]
+position = Vector3(0.0, 1.204, -1.378)
+
+[node name="SafetyBody" type="StaticBody3D" parent="Headboard"]
+collision_layer = 1
+collision_mask = 1
+metadata/word = "hospital bed"
+
+[node name="Collision" type="CollisionShape3D" parent="Headboard/SafetyBody"]
+position = Vector3(0.0, -0.13, 0.0)
+shape = SubResource("ShapeHeadboard")
+
+[node name="MoldedFrame" type="MeshInstance3D" parent="Headboard"]
+position = Vector3(0.0, 0.0, 0.0)
+scale = Vector3(1.33, 0.51, 0.116)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_FrameCeramic")
+
+[node name="DeepInlayBezel" type="MeshInstance3D" parent="Headboard"]
+position = Vector3(0.0, 0.018, 0.067)
+scale = Vector3(1.075, 0.341, 0.012)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_RecessBlack")
+
+[node name="FrontInlay" type="MeshInstance3D" parent="Headboard"]
+position = Vector3(0.0, 0.018, 0.079)
+scale = Vector3(1.02, 0.305, 0.022)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_Teal")
+
+[node name="LowerInsert" type="MeshInstance3D" parent="Headboard"]
+position = Vector3(0.0, -0.19, 0.072)
+scale = Vector3(1.08, 0.075, 0.028)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_PanelBlue")
+
+[node name="ContouredTopHandle" type="MeshInstance3D" parent="Headboard"]
+position = Vector3(0.0, 0.265, 0.0)
+rotation_degrees = Vector3(0.0, 0.0, 90)
+scale = Vector3(0.11, 1.17, 0.11)
+mesh = SubResource("SmoothRod")
+material_override = SubResource("Mat_FramePearl")
+
+[node name="SoftLowerBumper" type="MeshInstance3D" parent="Headboard"]
+position = Vector3(0.0, -0.258, 0.018)
+rotation_degrees = Vector3(0.0, 0.0, 90)
+scale = Vector3(0.06, 1.21, 0.06)
+mesh = SubResource("RoundRod")
+material_override = SubResource("Mat_BrushedAluminum")
+
+[node name="LeftRoundedPost" type="MeshInstance3D" parent="Headboard"]
+position = Vector3(-0.643, 0.005, 0.0)
+scale = Vector3(0.115, 0.51, 0.115)
+mesh = SubResource("SmoothRod")
+material_override = SubResource("Mat_FramePearl")
+
+[node name="LeftTopCorner" type="MeshInstance3D" parent="Headboard"]
+position = Vector3(-0.59, 0.255, 0.0)
+scale = Vector3(0.122, 0.122, 0.122)
+mesh = SubResource("UnitSphere")
+material_override = SubResource("Mat_FramePearl")
+
+[node name="LeftHandleStem" type="MeshInstance3D" parent="Headboard"]
+position = Vector3(-0.735, 0.045, -0.005)
+scale = Vector3(0.037, 0.235, 0.037)
+mesh = SubResource("RoundRod")
+material_override = SubResource("Mat_BrushedAluminum")
+
+[node name="LeftHandleTop" type="MeshInstance3D" parent="Headboard"]
+position = Vector3(-0.735, 0.16, 0.0)
+rotation_degrees = Vector3(90, 0.0, 0.0)
+scale = Vector3(0.043, 0.16, 0.043)
+mesh = SubResource("RoundRod")
+material_override = SubResource("Mat_BrushedAluminum")
+
+[node name="RightRoundedPost" type="MeshInstance3D" parent="Headboard"]
+position = Vector3(0.643, 0.005, 0.0)
+scale = Vector3(0.115, 0.51, 0.115)
+mesh = SubResource("SmoothRod")
+material_override = SubResource("Mat_FramePearl")
+
+[node name="RightTopCorner" type="MeshInstance3D" parent="Headboard"]
+position = Vector3(0.59, 0.255, 0.0)
+scale = Vector3(0.122, 0.122, 0.122)
+mesh = SubResource("UnitSphere")
+material_override = SubResource("Mat_FramePearl")
+
+[node name="RightHandleStem" type="MeshInstance3D" parent="Headboard"]
+position = Vector3(0.735, 0.045, -0.005)
+scale = Vector3(0.037, 0.235, 0.037)
+mesh = SubResource("RoundRod")
+material_override = SubResource("Mat_BrushedAluminum")
+
+[node name="RightHandleTop" type="MeshInstance3D" parent="Headboard"]
+position = Vector3(0.735, 0.16, 0.0)
+rotation_degrees = Vector3(90, 0.0, 0.0)
+scale = Vector3(0.043, 0.16, 0.043)
+mesh = SubResource("RoundRod")
+material_override = SubResource("Mat_BrushedAluminum")
+
+[node name="EmblemVertical" type="MeshInstance3D" parent="Headboard"]
+position = Vector3(0.0, 0.018, 0.09)
+scale = Vector3(0.023, 0.139, 0.023)
+mesh = SubResource("RoundRod")
+material_override = SubResource("Mat_FramePearl")
+
+[node name="EmblemHorizontal" type="MeshInstance3D" parent="Headboard"]
+position = Vector3(0.0, 0.018, 0.093)
+rotation_degrees = Vector3(0.0, 0.0, 90)
+scale = Vector3(0.023, 0.139, 0.023)
+mesh = SubResource("RoundRod")
+material_override = SubResource("Mat_FramePearl")
+
+[node name="LeftMountPost" type="MeshInstance3D" parent="Headboard"]
+position = Vector3(-0.51, -0.38, -0.018)
+scale = Vector3(0.07, 0.32, 0.09)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_StructuralSteel")
+
+[node name="RightMountPost" type="MeshInstance3D" parent="Headboard"]
+position = Vector3(0.51, -0.38, -0.018)
+scale = Vector3(0.07, 0.32, 0.09)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_StructuralSteel")
+
+[node name="Footboard" type="Node3D" parent="."]
+position = Vector3(0.0, 1.057, 1.372)
+
+[node name="SafetyBody" type="StaticBody3D" parent="Footboard"]
+collision_layer = 1
+collision_mask = 1
+metadata/word = "hospital bed"
+
+[node name="Collision" type="CollisionShape3D" parent="Footboard/SafetyBody"]
+position = Vector3(0.0, -0.105, 0.0)
+shape = SubResource("ShapeFootboard")
+
+[node name="MoldedShell" type="MeshInstance3D" parent="Footboard"]
+position = Vector3(0.0, 0.0, 0.0)
+scale = Vector3(1.35, 0.305, 0.115)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_FrameCeramic")
+
+[node name="TealInset" type="MeshInstance3D" parent="Footboard"]
+position = Vector3(0.0, 0.016, -0.072)
+scale = Vector3(1.06, 0.154, 0.021)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_TealDark")
+
+[node name="ExteriorBlueInset" type="MeshInstance3D" parent="Footboard"]
+position = Vector3(0.0, 0.016, 0.072)
+scale = Vector3(1.06, 0.154, 0.021)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_TealDark")
+
+[node name="RoundedUpperRim" type="MeshInstance3D" parent="Footboard"]
+position = Vector3(0.0, 0.158, 0.0)
+rotation_degrees = Vector3(0.0, 0.0, 90)
+scale = Vector3(0.083, 1.23, 0.083)
+mesh = SubResource("SmoothRod")
+material_override = SubResource("Mat_FramePearl")
+
+[node name="ChromeBottomRim" type="MeshInstance3D" parent="Footboard"]
+position = Vector3(0.0, -0.157, 0.0)
+rotation_degrees = Vector3(0.0, 0.0, 90)
+scale = Vector3(0.05, 1.23, 0.05)
+mesh = SubResource("RoundRod")
+material_override = SubResource("Mat_BrushedAluminum")
+
+[node name="LeftRoundedUpperCap" type="MeshInstance3D" parent="Footboard"]
+position = Vector3(-0.615, 0.158, 0.0)
+scale = Vector3(0.083, 0.083, 0.083)
+mesh = SubResource("UnitSphere")
+material_override = SubResource("Mat_FramePearl")
+
+[node name="LeftSupport" type="MeshInstance3D" parent="Footboard"]
+position = Vector3(-0.5, -0.24, 0.006)
+scale = Vector3(0.07, 0.34, 0.075)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_StructuralSteel")
+
+[node name="RightRoundedUpperCap" type="MeshInstance3D" parent="Footboard"]
+position = Vector3(0.615, 0.158, 0.0)
+scale = Vector3(0.083, 0.083, 0.083)
+mesh = SubResource("UnitSphere")
+material_override = SubResource("Mat_FramePearl")
+
+[node name="RightSupport" type="MeshInstance3D" parent="Footboard"]
+position = Vector3(0.5, -0.24, 0.006)
+scale = Vector3(0.07, 0.34, 0.075)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_StructuralSteel")
+
+[node name="FrontCrossVertical" type="MeshInstance3D" parent="Footboard"]
+position = Vector3(0.0, 0.011, -0.087)
+scale = Vector3(0.031, 0.103, 0.014)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_FramePearl")
+
+[node name="FrontCrossHorizontal" type="MeshInstance3D" parent="Footboard"]
+position = Vector3(0.0, 0.011, -0.09)
+scale = Vector3(0.099, 0.03, 0.014)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_FramePearl")
+
+[node name="OuterCrossVertical" type="MeshInstance3D" parent="Footboard"]
+position = Vector3(0.0, 0.011, 0.09)
+scale = Vector3(0.031, 0.103, 0.015)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_FramePearl")
+
+[node name="OuterCrossHorizontal" type="MeshInstance3D" parent="Footboard"]
+position = Vector3(0.0, 0.011, 0.094)
+scale = Vector3(0.099, 0.03, 0.015)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_FramePearl")
+
+[node name="Underframe" type="Node3D" parent="."]
+position = Vector3(0.0, 0.32, 0.0)
+
+[node name="RecessedEquipmentPan" type="MeshInstance3D" parent="Underframe"]
+position = Vector3(0.0, 0.09, 0.0)
+scale = Vector3(1.05, 0.11, 1.45)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_StructuralSteel")
+
+[node name="RaisedMotorCover" type="MeshInstance3D" parent="Underframe"]
+position = Vector3(0.0, 0.2, -0.15)
+scale = Vector3(0.74, 0.21, 0.88)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_BaseHousing")
+
+[node name="MotorVentSlot_1" type="MeshInstance3D" parent="Underframe"]
+position = Vector3(0.0, 0.316, -0.33)
+scale = Vector3(0.36, 0.018, 0.035)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_DarkTrim")
+
+[node name="MotorVentSlot_2" type="MeshInstance3D" parent="Underframe"]
+position = Vector3(0.0, 0.316, -0.26)
+scale = Vector3(0.36, 0.018, 0.035)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_DarkTrim")
+
+[node name="MotorVentSlot_3" type="MeshInstance3D" parent="Underframe"]
+position = Vector3(0.0, 0.316, -0.19)
+scale = Vector3(0.36, 0.018, 0.035)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_DarkTrim")
+
+[node name="CentralLiftHousing" type="MeshInstance3D" parent="Underframe"]
+position = Vector3(0.0, -0.018, 0.0)
+scale = Vector3(0.39, 0.29, 0.46)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_DarkTrim")
+
+[node name="LiftPiston" type="MeshInstance3D" parent="Underframe"]
+position = Vector3(0.0, 0.218, 0.24)
+scale = Vector3(0.17, 0.29, 0.17)
+mesh = SubResource("SmoothRod")
+material_override = SubResource("Mat_BrightChrome")
+
+[node name="PowerModule" type="MeshInstance3D" parent="Underframe"]
+position = Vector3(0.25, 0.14, 0.36)
+scale = Vector3(0.34, 0.15, 0.37)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_FrameCeramic")
+
+[node name="PowerIndicator" type="MeshInstance3D" parent="Underframe"]
+position = Vector3(0.25, 0.23, 0.4)
+scale = Vector3(0.045, 0.045, 0.045)
+mesh = SubResource("UnitSphere")
+material_override = SubResource("Mat_HospitalGreen")
+
+[node name="HeadAxleCrossbar" type="MeshInstance3D" parent="Underframe"]
+position = Vector3(0.0, -0.09, -0.99)
+scale = Vector3(1.13, 0.11, 0.1)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_StructuralSteel")
+
+[node name="HeadLeftLeg" type="MeshInstance3D" parent="Underframe"]
+position = Vector3(-0.5, 0.045, -0.99)
+scale = Vector3(0.1, 0.31, 0.1)
+mesh = SubResource("RoundRod")
+material_override = SubResource("Mat_BrushedAluminum")
+
+[node name="HeadLeftFootMount" type="MeshInstance3D" parent="Underframe"]
+position = Vector3(-0.5, -0.17, -0.99)
+scale = Vector3(0.15, 0.075, 0.17)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_DarkTrim")
+
+[node name="HeadRightLeg" type="MeshInstance3D" parent="Underframe"]
+position = Vector3(0.5, 0.045, -0.99)
+scale = Vector3(0.1, 0.31, 0.1)
+mesh = SubResource("RoundRod")
+material_override = SubResource("Mat_BrushedAluminum")
+
+[node name="HeadRightFootMount" type="MeshInstance3D" parent="Underframe"]
+position = Vector3(0.5, -0.17, -0.99)
+scale = Vector3(0.15, 0.075, 0.17)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_DarkTrim")
+
+[node name="FootAxleCrossbar" type="MeshInstance3D" parent="Underframe"]
+position = Vector3(0.0, -0.09, 0.99)
+scale = Vector3(1.13, 0.11, 0.1)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_StructuralSteel")
+
+[node name="FootLeftLeg" type="MeshInstance3D" parent="Underframe"]
+position = Vector3(-0.5, 0.045, 0.99)
+scale = Vector3(0.1, 0.31, 0.1)
+mesh = SubResource("RoundRod")
+material_override = SubResource("Mat_BrushedAluminum")
+
+[node name="FootLeftFootMount" type="MeshInstance3D" parent="Underframe"]
+position = Vector3(-0.5, -0.17, 0.99)
+scale = Vector3(0.15, 0.075, 0.17)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_DarkTrim")
+
+[node name="FootRightLeg" type="MeshInstance3D" parent="Underframe"]
+position = Vector3(0.5, 0.045, 0.99)
+scale = Vector3(0.1, 0.31, 0.1)
+mesh = SubResource("RoundRod")
+material_override = SubResource("Mat_BrushedAluminum")
+
+[node name="FootRightFootMount" type="MeshInstance3D" parent="Underframe"]
+position = Vector3(0.5, -0.17, 0.99)
+scale = Vector3(0.15, 0.075, 0.17)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_DarkTrim")
+
+[node name="CableTrunk" type="MeshInstance3D" parent="Underframe"]
+position = Vector3(-0.38, 0.142, 0.0)
+scale = Vector3(0.105, 0.074, 1.1)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_DarkTrim")
+
+[node name="CableEndPlug" type="MeshInstance3D" parent="Underframe"]
+position = Vector3(-0.38, 0.135, 0.56)
+scale = Vector3(0.16, 0.095, 0.095)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_SafetyAmber")
+
+[node name="NurseControlPanel" type="Node3D" parent="."]
+position = Vector3(0.806, 1.246, -0.34)
+
+[node name="ControlHousing" type="MeshInstance3D" parent="NurseControlPanel"]
+position = Vector3(0.0, 0.0, 0.0)
+scale = Vector3(0.102, 0.189, 0.31)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_DarkTrim")
+
+[node name="GlassScreen" type="MeshInstance3D" parent="NurseControlPanel"]
+position = Vector3(0.061, 0.026, -0.035)
+scale = Vector3(0.015, 0.092, 0.169)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_ScreenBlue")
+
+[node name="Button_1" type="MeshInstance3D" parent="NurseControlPanel"]
+position = Vector3(0.065, -0.054, -0.088)
+scale = Vector3(0.04, 0.04, 0.04)
+mesh = SubResource("UnitSphere")
+material_override = SubResource("Mat_HospitalGreen")
+
+[node name="Button_2" type="MeshInstance3D" parent="NurseControlPanel"]
+position = Vector3(0.065, -0.054, 0.015)
+scale = Vector3(0.04, 0.04, 0.04)
+mesh = SubResource("UnitSphere")
+material_override = SubResource("Mat_FramePearl")
+
+[node name="Button_3" type="MeshInstance3D" parent="NurseControlPanel"]
+position = Vector3(0.065, -0.054, 0.111)
+scale = Vector3(0.04, 0.04, 0.04)
+mesh = SubResource("UnitSphere")
+material_override = SubResource("Mat_SafetyAmber")
+
+[node name="PanelMount" type="MeshInstance3D" parent="NurseControlPanel"]
+position = Vector3(-0.054, -0.1, 0.0)
+scale = Vector3(0.1, 0.07, 0.2)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_StructuralSteel")
+
+[node name="EmergencyStopButton" type="MeshInstance3D" parent="NurseControlPanel"]
+position = Vector3(0.064, 0.055, 0.126)
+scale = Vector3(0.052, 0.052, 0.052)
+mesh = SubResource("UnitSphere")
+material_override = SubResource("Mat_AlarmRed")
+
+[node name="BrakePedal" type="Node3D" parent="."]
+position = Vector3(0.57, 0.26, 0.94)
+
+[node name="RubberLever" type="MeshInstance3D" parent="BrakePedal"]
+position = Vector3(0.13, -0.019, 0.07)
+scale = Vector3(0.19, 0.042, 0.1)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_SafetyAmber")
+
+[node name="PedalHinge" type="MeshInstance3D" parent="BrakePedal"]
+position = Vector3(0.04, 0.024, 0.02)
+rotation_degrees = Vector3(0.0, 0.0, 90)
+scale = Vector3(0.06, 0.15, 0.06)
+mesh = SubResource("RoundRod")
+material_override = SubResource("Mat_DarkTrim")
+
+[node name="PedalStem" type="MeshInstance3D" parent="BrakePedal"]
+position = Vector3(0.08, 0.04, 0.05)
+scale = Vector3(0.045, 0.11, 0.045)
+mesh = SubResource("RoundRod")
+material_override = SubResource("Mat_StructuralSteel")
+
+[node name="Wheel" type="Node3D" parent="."]
+position = Vector3(-0.5, 0.3, -1)
+metadata/word_key = "wheel"
+
+[node name="Body" type="Area3D" parent="Wheel"]
+collision_layer = 1
+collision_mask = 0
+metadata/word = "wheel"
+
+[node name="Collision" type="CollisionShape3D" parent="Wheel/Body"]
+shape = SubResource("ShapeWheel")
+
+[node name="Visual" type="MeshInstance3D" parent="Wheel"]
+position = Vector3(0.0, -0.107, 0.0)
+rotation_degrees = Vector3(0.0, 0.0, 90)
+scale = Vector3(0.372, 0.135, 0.372)
+mesh = SubResource("SmoothRod")
+material_override = SubResource("Mat_TireRubber")
+
+[node name="LeftHubDisk" type="MeshInstance3D" parent="Wheel"]
+position = Vector3(-0.074, -0.107, 0.0)
+rotation_degrees = Vector3(0.0, 0.0, 90)
+scale = Vector3(0.185, 0.015, 0.185)
+mesh = SubResource("SmoothRod")
+material_override = SubResource("Mat_BrushedAluminum")
+
+[node name="LeftAxleBolt" type="MeshInstance3D" parent="Wheel"]
+position = Vector3(-0.086, -0.107, 0.0)
+scale = Vector3(0.046, 0.046, 0.046)
+mesh = SubResource("UnitSphere")
+material_override = SubResource("Mat_DarkTrim")
+
+[node name="RightHubDisk" type="MeshInstance3D" parent="Wheel"]
+position = Vector3(0.074, -0.107, 0.0)
+rotation_degrees = Vector3(0.0, 0.0, 90)
+scale = Vector3(0.185, 0.015, 0.185)
+mesh = SubResource("SmoothRod")
+material_override = SubResource("Mat_BrushedAluminum")
+
+[node name="RightAxleBolt" type="MeshInstance3D" parent="Wheel"]
+position = Vector3(0.086, -0.107, 0.0)
+scale = Vector3(0.046, 0.046, 0.046)
+mesh = SubResource("UnitSphere")
+material_override = SubResource("Mat_DarkTrim")
+
+[node name="CasterVerticalStem" type="MeshInstance3D" parent="Wheel"]
+position = Vector3(0.0, 0.092, 0.0)
+scale = Vector3(0.066, 0.19, 0.064)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_StructuralSteel")
+
+[node name="CasterFork" type="MeshInstance3D" parent="Wheel"]
+position = Vector3(0.0, -0.015, 0.0)
+scale = Vector3(0.18, 0.115, 0.065)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_DarkTrim")
+
+[node name="CasterShoulder" type="MeshInstance3D" parent="Wheel"]
+position = Vector3(0.0, 0.194, 0.0)
+scale = Vector3(0.19, 0.045, 0.17)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_BrushedAluminum")
+
+[node name="WheelSideFender" type="MeshInstance3D" parent="Wheel"]
+position = Vector3(0.0, 0.105, 0.0)
+scale = Vector3(0.16, 0.035, 0.23)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_DarkTrim")
+
+[node name="Wheel_2" type="Node3D" parent="."]
+position = Vector3(-0.5, 0.3, 1)
+metadata/word_key = "wheel"
+
+[node name="Body" type="Area3D" parent="Wheel_2"]
+collision_layer = 1
+collision_mask = 0
+metadata/word = "wheel"
+
+[node name="Collision" type="CollisionShape3D" parent="Wheel_2/Body"]
+shape = SubResource("ShapeWheel")
+
+[node name="Visual" type="MeshInstance3D" parent="Wheel_2"]
+position = Vector3(0.0, -0.107, 0.0)
+rotation_degrees = Vector3(0.0, 0.0, 90)
+scale = Vector3(0.372, 0.135, 0.372)
+mesh = SubResource("SmoothRod")
+material_override = SubResource("Mat_TireRubber")
+
+[node name="LeftHubDisk" type="MeshInstance3D" parent="Wheel_2"]
+position = Vector3(-0.074, -0.107, 0.0)
+rotation_degrees = Vector3(0.0, 0.0, 90)
+scale = Vector3(0.185, 0.015, 0.185)
+mesh = SubResource("SmoothRod")
+material_override = SubResource("Mat_BrushedAluminum")
+
+[node name="LeftAxleBolt" type="MeshInstance3D" parent="Wheel_2"]
+position = Vector3(-0.086, -0.107, 0.0)
+scale = Vector3(0.046, 0.046, 0.046)
+mesh = SubResource("UnitSphere")
+material_override = SubResource("Mat_DarkTrim")
+
+[node name="RightHubDisk" type="MeshInstance3D" parent="Wheel_2"]
+position = Vector3(0.074, -0.107, 0.0)
+rotation_degrees = Vector3(0.0, 0.0, 90)
+scale = Vector3(0.185, 0.015, 0.185)
+mesh = SubResource("SmoothRod")
+material_override = SubResource("Mat_BrushedAluminum")
+
+[node name="RightAxleBolt" type="MeshInstance3D" parent="Wheel_2"]
+position = Vector3(0.086, -0.107, 0.0)
+scale = Vector3(0.046, 0.046, 0.046)
+mesh = SubResource("UnitSphere")
+material_override = SubResource("Mat_DarkTrim")
+
+[node name="CasterVerticalStem" type="MeshInstance3D" parent="Wheel_2"]
+position = Vector3(0.0, 0.092, 0.0)
+scale = Vector3(0.066, 0.19, 0.064)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_StructuralSteel")
+
+[node name="CasterFork" type="MeshInstance3D" parent="Wheel_2"]
+position = Vector3(0.0, -0.015, 0.0)
+scale = Vector3(0.18, 0.115, 0.065)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_DarkTrim")
+
+[node name="CasterShoulder" type="MeshInstance3D" parent="Wheel_2"]
+position = Vector3(0.0, 0.194, 0.0)
+scale = Vector3(0.19, 0.045, 0.17)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_BrushedAluminum")
+
+[node name="WheelSideFender" type="MeshInstance3D" parent="Wheel_2"]
+position = Vector3(0.0, 0.105, 0.0)
+scale = Vector3(0.16, 0.035, 0.23)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_DarkTrim")
+
+[node name="BrakeLatch" type="MeshInstance3D" parent="Wheel_2"]
+position = Vector3(0.06, 0.068, 0.135)
+scale = Vector3(0.08, 0.033, 0.105)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_SafetyAmber")
+
+[node name="Wheel_3" type="Node3D" parent="."]
+position = Vector3(0.5, 0.3, -1)
+metadata/word_key = "wheel"
+
+[node name="Body" type="Area3D" parent="Wheel_3"]
+collision_layer = 1
+collision_mask = 0
+metadata/word = "wheel"
+
+[node name="Collision" type="CollisionShape3D" parent="Wheel_3/Body"]
+shape = SubResource("ShapeWheel")
+
+[node name="Visual" type="MeshInstance3D" parent="Wheel_3"]
+position = Vector3(0.0, -0.107, 0.0)
+rotation_degrees = Vector3(0.0, 0.0, 90)
+scale = Vector3(0.372, 0.135, 0.372)
+mesh = SubResource("SmoothRod")
+material_override = SubResource("Mat_TireRubber")
+
+[node name="LeftHubDisk" type="MeshInstance3D" parent="Wheel_3"]
+position = Vector3(-0.074, -0.107, 0.0)
+rotation_degrees = Vector3(0.0, 0.0, 90)
+scale = Vector3(0.185, 0.015, 0.185)
+mesh = SubResource("SmoothRod")
+material_override = SubResource("Mat_BrushedAluminum")
+
+[node name="LeftAxleBolt" type="MeshInstance3D" parent="Wheel_3"]
+position = Vector3(-0.086, -0.107, 0.0)
+scale = Vector3(0.046, 0.046, 0.046)
+mesh = SubResource("UnitSphere")
+material_override = SubResource("Mat_DarkTrim")
+
+[node name="RightHubDisk" type="MeshInstance3D" parent="Wheel_3"]
+position = Vector3(0.074, -0.107, 0.0)
+rotation_degrees = Vector3(0.0, 0.0, 90)
+scale = Vector3(0.185, 0.015, 0.185)
+mesh = SubResource("SmoothRod")
+material_override = SubResource("Mat_BrushedAluminum")
+
+[node name="RightAxleBolt" type="MeshInstance3D" parent="Wheel_3"]
+position = Vector3(0.086, -0.107, 0.0)
+scale = Vector3(0.046, 0.046, 0.046)
+mesh = SubResource("UnitSphere")
+material_override = SubResource("Mat_DarkTrim")
+
+[node name="CasterVerticalStem" type="MeshInstance3D" parent="Wheel_3"]
+position = Vector3(0.0, 0.092, 0.0)
+scale = Vector3(0.066, 0.19, 0.064)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_StructuralSteel")
+
+[node name="CasterFork" type="MeshInstance3D" parent="Wheel_3"]
+position = Vector3(0.0, -0.015, 0.0)
+scale = Vector3(0.18, 0.115, 0.065)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_DarkTrim")
+
+[node name="CasterShoulder" type="MeshInstance3D" parent="Wheel_3"]
+position = Vector3(0.0, 0.194, 0.0)
+scale = Vector3(0.19, 0.045, 0.17)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_BrushedAluminum")
+
+[node name="WheelSideFender" type="MeshInstance3D" parent="Wheel_3"]
+position = Vector3(0.0, 0.105, 0.0)
+scale = Vector3(0.16, 0.035, 0.23)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_DarkTrim")
+
+[node name="Wheel_4" type="Node3D" parent="."]
+position = Vector3(0.5, 0.3, 1)
+metadata/word_key = "wheel"
+
+[node name="Body" type="Area3D" parent="Wheel_4"]
+collision_layer = 1
+collision_mask = 0
+metadata/word = "wheel"
+
+[node name="Collision" type="CollisionShape3D" parent="Wheel_4/Body"]
+shape = SubResource("ShapeWheel")
+
+[node name="Visual" type="MeshInstance3D" parent="Wheel_4"]
+position = Vector3(0.0, -0.107, 0.0)
+rotation_degrees = Vector3(0.0, 0.0, 90)
+scale = Vector3(0.372, 0.135, 0.372)
+mesh = SubResource("SmoothRod")
+material_override = SubResource("Mat_TireRubber")
+
+[node name="LeftHubDisk" type="MeshInstance3D" parent="Wheel_4"]
+position = Vector3(-0.074, -0.107, 0.0)
+rotation_degrees = Vector3(0.0, 0.0, 90)
+scale = Vector3(0.185, 0.015, 0.185)
+mesh = SubResource("SmoothRod")
+material_override = SubResource("Mat_BrushedAluminum")
+
+[node name="LeftAxleBolt" type="MeshInstance3D" parent="Wheel_4"]
+position = Vector3(-0.086, -0.107, 0.0)
+scale = Vector3(0.046, 0.046, 0.046)
+mesh = SubResource("UnitSphere")
+material_override = SubResource("Mat_DarkTrim")
+
+[node name="RightHubDisk" type="MeshInstance3D" parent="Wheel_4"]
+position = Vector3(0.074, -0.107, 0.0)
+rotation_degrees = Vector3(0.0, 0.0, 90)
+scale = Vector3(0.185, 0.015, 0.185)
+mesh = SubResource("SmoothRod")
+material_override = SubResource("Mat_BrushedAluminum")
+
+[node name="RightAxleBolt" type="MeshInstance3D" parent="Wheel_4"]
+position = Vector3(0.086, -0.107, 0.0)
+scale = Vector3(0.046, 0.046, 0.046)
+mesh = SubResource("UnitSphere")
+material_override = SubResource("Mat_DarkTrim")
+
+[node name="CasterVerticalStem" type="MeshInstance3D" parent="Wheel_4"]
+position = Vector3(0.0, 0.092, 0.0)
+scale = Vector3(0.066, 0.19, 0.064)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_StructuralSteel")
+
+[node name="CasterFork" type="MeshInstance3D" parent="Wheel_4"]
+position = Vector3(0.0, -0.015, 0.0)
+scale = Vector3(0.18, 0.115, 0.065)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_DarkTrim")
+
+[node name="CasterShoulder" type="MeshInstance3D" parent="Wheel_4"]
+position = Vector3(0.0, 0.194, 0.0)
+scale = Vector3(0.19, 0.045, 0.17)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_BrushedAluminum")
+
+[node name="WheelSideFender" type="MeshInstance3D" parent="Wheel_4"]
+position = Vector3(0.0, 0.105, 0.0)
+scale = Vector3(0.16, 0.035, 0.23)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_DarkTrim")
+
+[node name="BrakeLatch" type="MeshInstance3D" parent="Wheel_4"]
+position = Vector3(0.06, 0.068, 0.135)
+scale = Vector3(0.08, 0.033, 0.105)
+mesh = SubResource("UnitBox")
+material_override = SubResource("Mat_SafetyAmber")

@@ -1,0 +1,115 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/magnet.tscn" id="e4"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/magnifying_glass.tscn" id="e5"]
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.76863, 0.68627, 0.56863, 1)
+roughness = 0.78
+
+[sub_resource type="StandardMaterial3D" id="r5"]
+albedo_color = Color(0.67843, 0.48235, 0.31373, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r15"]
+size = Vector3(1.250000, 0.080000, 1.250000)
+
+[sub_resource type="BoxShape3D" id="r16"]
+size = Vector3(1.250000, 0.080000, 1.250000)
+
+[sub_resource type="BoxMesh" id="r17"]
+size = Vector3(0.080000, 0.920000, 0.900000)
+
+[sub_resource type="BoxMesh" id="r18"]
+size = Vector3(0.080000, 0.920000, 0.900000)
+
+[sub_resource type="BoxMesh" id="r19"]
+size = Vector3(1.250000, 0.080000, 1.250000)
+
+[sub_resource type="BoxShape3D" id="r20"]
+size = Vector3(1.250000, 0.080000, 1.250000)
+
+[sub_resource type="BoxMesh" id="r21"]
+size = Vector3(0.080000, 0.920000, 0.900000)
+
+[sub_resource type="BoxMesh" id="r22"]
+size = Vector3(0.080000, 0.920000, 0.900000)
+
+[node name="ScienceLab" type="Node3D"]
+metadata/theme = "SCIENCE CLASSROOM"
+
+[node name="DisplayTopmagnet_15" type="MeshInstance3D" parent="."]
+position = Vector3(-2.600000, 0.940000, 3.550000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r15")
+material_override = SubResource("r2")
+
+[node name="TableBodymagnet" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="TableBodymagnet"]
+position = Vector3(-2.600000, 0.940000, 3.550000)
+shape = SubResource("r16")
+
+[node name="DisplayLeg_17" type="MeshInstance3D" parent="."]
+position = Vector3(-3.040000, 0.460000, 3.550000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r17")
+material_override = SubResource("r5")
+
+[node name="DisplayLeg_18" type="MeshInstance3D" parent="."]
+position = Vector3(-2.160000, 0.460000, 3.550000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r18")
+material_override = SubResource("r5")
+
+[node name="Magnet" parent="." instance=ExtResource("e4")]
+position = Vector3(-2.600000, 0.990000, 3.550000)
+rotation_degrees = Vector3(0, 0, 0)
+
+[node name="DisplayTopmagnifying_glass_19" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.940000, 3.550000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r19")
+material_override = SubResource("r2")
+
+[node name="TableBodymagnifying_glass" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="TableBodymagnifying_glass"]
+position = Vector3(0.000000, 0.940000, 3.550000)
+shape = SubResource("r20")
+
+[node name="DisplayLeg_21" type="MeshInstance3D" parent="."]
+position = Vector3(-0.440000, 0.460000, 3.550000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r21")
+material_override = SubResource("r5")
+
+[node name="DisplayLeg_22" type="MeshInstance3D" parent="."]
+position = Vector3(0.440000, 0.460000, 3.550000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r22")
+material_override = SubResource("r5")
+
+[node name="Magnifying_Glass" parent="." instance=ExtResource("e5")]
+position = Vector3(0.000000, 0.990000, 3.550000)
+rotation_degrees = Vector3(0, 0, 0)
+
+[node name="Section146" type="Label3D" parent="."]
+position = Vector3(0.000000, 3.100000, -4.900000)
+text = "SCIENCE CLASSROOM"
+font_size = 52
+pixel_size = 0.007
+rotation_degrees = Vector3(0, 180, 0)
+modulate = Color(0.18, 0.24, 0.27, 1)
+outline_size = 0
+
+[node name="RoomLight" type="OmniLight3D" parent="."]
+position = Vector3(0,4,0)
+omni_range = 9.0
+light_energy = 0.9
+shadow_enabled = false

@@ -1,0 +1,29 @@
+{
+  "about": "Rules for the shop minigames (customer order, cashier money counting); their text lives in data/phrases.json ('shop', 'cashier', 'money' groups). 'stores': each shop's clerk node, zone and order rules (how often the clerk needs help is data/activities.json 'shop_<store>'); a word may be ordered only when its words.json entry lists the store id in 'sold_in'. 'cashiers': each cashier counter's NPC node and zone. 'order_words' (optional) limits what the clerk orders (and what counts as a pick) to those words, each also sold there (14 Nov 2026, user: basic fruit and vegetables; orders of exactly 2 items, 1-2 each, at most 3 of one in the cart). 'basket': true hands the player a shopping basket to carry while shopping (shopping_basket.gd, user 14 Nov 2026). clerk_gender / npc_gender ('m' or 'f') is the NPC's gender, used for its role word ('el vendedor' or 'la vendedora'). See docs/guides/TOWN_DESIGN_BRIEF.md, Customer order minigame.",
+  "stores": {
+    "supermarket": {
+      "zone": "supermarket",
+      "clerk": "BeagleClerk",
+      "unique_items": [
+        2,
+        2
+      ],
+      "quantity_each": [
+        1,
+        2
+      ],
+      "cart_max_each": 3,
+      "order_words": ["apple", "banana", "orange", "grapes", "strawberry", "watermelon", "pear", "lemon", "tomato", "carrot", "potato", "onion", "lettuce", "broccoli", "cucumber", "corn"],
+      "retries": 2,
+      "clerk_gender": "m",
+      "basket": true
+    }
+  },
+  "cashiers": {
+    "supermarket": {
+      "zone": "supermarket",
+      "npc": "SamoyedCashier",
+      "npc_gender": "m"
+    }
+  }
+}

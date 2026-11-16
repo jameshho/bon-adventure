@@ -1,0 +1,363 @@
+[gd_scene format=3]
+
+[sub_resource type="BoxMesh" id="r1"]
+size = Vector3(13.000000, 0.100000, 16.000000)
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.8470588235294118, 0.8274509803921568, 0.7803921568627451, 1)
+roughness = 0.82
+
+[sub_resource type="BoxShape3D" id="r3"]
+size = Vector3(13.000000, 0.100000, 16.000000)
+
+[sub_resource type="BoxMesh" id="r4"]
+size = Vector3(0.250000, 5.000000, 16.000000)
+
+[sub_resource type="StandardMaterial3D" id="r5"]
+albedo_color = Color(0.8, 0.611764705882353, 0.4627450980392157, 1)
+roughness = 0.82
+
+[sub_resource type="BoxShape3D" id="r6"]
+size = Vector3(0.250000, 5.000000, 16.000000)
+
+[sub_resource type="BoxMesh" id="r7"]
+size = Vector3(13.000000, 5.000000, 0.250000)
+
+[sub_resource type="BoxShape3D" id="r8"]
+size = Vector3(13.000000, 5.000000, 0.250000)
+
+[sub_resource type="BoxMesh" id="r9"]
+size = Vector3(4.800000, 5.000000, 0.250000)
+
+[sub_resource type="BoxShape3D" id="r10"]
+size = Vector3(4.800000, 5.000000, 0.250000)
+
+[sub_resource type="BoxMesh" id="r11"]
+size = Vector3(3.400000, 1.400000, 0.250000)
+
+[sub_resource type="BoxShape3D" id="r12"]
+size = Vector3(3.400000, 1.400000, 0.250000)
+
+[sub_resource type="BoxMesh" id="r13"]
+size = Vector3(13.600000, 0.240000, 16.600000)
+
+[sub_resource type="StandardMaterial3D" id="r14"]
+albedo_color = Color(0.5568627450980392, 0.6078431372549019, 0.6078431372549019, 1)
+roughness = 0.82
+
+[sub_resource type="BoxShape3D" id="r15"]
+size = Vector3(13.600000, 0.240000, 16.600000)
+
+[sub_resource type="StandardMaterial3D" id="r16"]
+albedo_color = Color(0.7764705882352941, 0.7176470588235294, 0.42745098039215684, 1)
+roughness = 0.82
+
+[sub_resource type="StandardMaterial3D" id="r17"]
+albedo_color = Color(0.6392156862745098, 0.7254901960784313, 0.6470588235294118, 1)
+roughness = 0.82
+
+[node name="Restaurants" type="Node3D"]
+metadata/layout_shell = true
+
+[node name="Pizza" type="Node3D" parent="."]
+position = Vector3(-16.000000, 0.000000, 0.000000)
+metadata/layout_shell = true
+
+[node name="Foundation" type="MeshInstance3D" parent="Pizza"]
+position = Vector3(0.000000, 0.030000, 0.000000)
+mesh = SubResource("r1")
+material_override = SubResource("r2")
+
+[node name="Body" type="StaticBody3D" parent="Pizza/Foundation"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="Pizza/Foundation/Body"]
+shape = SubResource("r3")
+
+[node name="WestWall" type="MeshInstance3D" parent="Pizza"]
+position = Vector3(-6.500000, 2.500000, 0.000000)
+mesh = SubResource("r4")
+material_override = SubResource("r5")
+
+[node name="Body" type="StaticBody3D" parent="Pizza/WestWall"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="Pizza/WestWall/Body"]
+shape = SubResource("r6")
+
+[node name="EastWall" type="MeshInstance3D" parent="Pizza"]
+position = Vector3(6.500000, 2.500000, 0.000000)
+mesh = SubResource("r4")
+material_override = SubResource("r5")
+
+[node name="Body" type="StaticBody3D" parent="Pizza/EastWall"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="Pizza/EastWall/Body"]
+shape = SubResource("r6")
+
+[node name="RearWall" type="MeshInstance3D" parent="Pizza"]
+position = Vector3(0.000000, 2.500000, 8.000000)
+mesh = SubResource("r7")
+material_override = SubResource("r5")
+
+[node name="Body" type="StaticBody3D" parent="Pizza/RearWall"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="Pizza/RearWall/Body"]
+shape = SubResource("r8")
+
+[node name="FrontPier" type="MeshInstance3D" parent="Pizza"]
+position = Vector3(-4.100000, 2.500000, -8.000000)
+mesh = SubResource("r9")
+material_override = SubResource("r5")
+
+[node name="Body" type="StaticBody3D" parent="Pizza/FrontPier"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="Pizza/FrontPier/Body"]
+shape = SubResource("r10")
+
+[node name="FrontPier2" type="MeshInstance3D" parent="Pizza"]
+position = Vector3(4.100000, 2.500000, -8.000000)
+mesh = SubResource("r9")
+material_override = SubResource("r5")
+
+[node name="Body" type="StaticBody3D" parent="Pizza/FrontPier2"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="Pizza/FrontPier2/Body"]
+shape = SubResource("r10")
+
+[node name="DoorHeader" type="MeshInstance3D" parent="Pizza"]
+position = Vector3(0.000000, 4.300000, -8.000000)
+mesh = SubResource("r11")
+material_override = SubResource("r5")
+
+[node name="Body" type="StaticBody3D" parent="Pizza/DoorHeader"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="Pizza/DoorHeader/Body"]
+shape = SubResource("r12")
+
+[node name="Roof" type="MeshInstance3D" parent="Pizza"]
+position = Vector3(0.000000, 5.120000, 0.000000)
+mesh = SubResource("r13")
+material_override = SubResource("r14")
+
+[node name="Body" type="StaticBody3D" parent="Pizza/Roof"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="Pizza/Roof/Body"]
+shape = SubResource("r15")
+
+[node name="PizzaSign" type="Label3D" parent="."]
+position = Vector3(-16.000000, 3.600000, -8.200000)
+rotation = Vector3(0, 3.141592653589793, 0)
+text = "PIZZA"
+font_size = 40
+pixel_size = 0.008
+outline_size = 4
+no_depth_test = false
+
+[node name="Burger" type="Node3D" parent="."]
+position = Vector3(0.000000, 0.000000, 0.000000)
+metadata/layout_shell = true
+
+[node name="Foundation" type="MeshInstance3D" parent="Burger"]
+position = Vector3(0.000000, 0.030000, 0.000000)
+mesh = SubResource("r1")
+material_override = SubResource("r2")
+
+[node name="Body" type="StaticBody3D" parent="Burger/Foundation"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="Burger/Foundation/Body"]
+shape = SubResource("r3")
+
+[node name="WestWall" type="MeshInstance3D" parent="Burger"]
+position = Vector3(-6.500000, 2.500000, 0.000000)
+mesh = SubResource("r4")
+material_override = SubResource("r16")
+
+[node name="Body" type="StaticBody3D" parent="Burger/WestWall"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="Burger/WestWall/Body"]
+shape = SubResource("r6")
+
+[node name="EastWall" type="MeshInstance3D" parent="Burger"]
+position = Vector3(6.500000, 2.500000, 0.000000)
+mesh = SubResource("r4")
+material_override = SubResource("r16")
+
+[node name="Body" type="StaticBody3D" parent="Burger/EastWall"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="Burger/EastWall/Body"]
+shape = SubResource("r6")
+
+[node name="RearWall" type="MeshInstance3D" parent="Burger"]
+position = Vector3(0.000000, 2.500000, 8.000000)
+mesh = SubResource("r7")
+material_override = SubResource("r16")
+
+[node name="Body" type="StaticBody3D" parent="Burger/RearWall"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="Burger/RearWall/Body"]
+shape = SubResource("r8")
+
+[node name="FrontPier" type="MeshInstance3D" parent="Burger"]
+position = Vector3(-4.100000, 2.500000, -8.000000)
+mesh = SubResource("r9")
+material_override = SubResource("r16")
+
+[node name="Body" type="StaticBody3D" parent="Burger/FrontPier"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="Burger/FrontPier/Body"]
+shape = SubResource("r10")
+
+[node name="FrontPier2" type="MeshInstance3D" parent="Burger"]
+position = Vector3(4.100000, 2.500000, -8.000000)
+mesh = SubResource("r9")
+material_override = SubResource("r16")
+
+[node name="Body" type="StaticBody3D" parent="Burger/FrontPier2"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="Burger/FrontPier2/Body"]
+shape = SubResource("r10")
+
+[node name="DoorHeader" type="MeshInstance3D" parent="Burger"]
+position = Vector3(0.000000, 4.300000, -8.000000)
+mesh = SubResource("r11")
+material_override = SubResource("r16")
+
+[node name="Body" type="StaticBody3D" parent="Burger/DoorHeader"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="Burger/DoorHeader/Body"]
+shape = SubResource("r12")
+
+[node name="Roof" type="MeshInstance3D" parent="Burger"]
+position = Vector3(0.000000, 5.120000, 0.000000)
+mesh = SubResource("r13")
+material_override = SubResource("r14")
+
+[node name="Body" type="StaticBody3D" parent="Burger/Roof"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="Burger/Roof/Body"]
+shape = SubResource("r15")
+
+[node name="BurgerSign" type="Label3D" parent="."]
+position = Vector3(0.000000, 3.600000, -8.200000)
+rotation = Vector3(0, 3.141592653589793, 0)
+text = "BURGER"
+font_size = 40
+pixel_size = 0.008
+outline_size = 4
+no_depth_test = false
+
+[node name="Cafe" type="Node3D" parent="."]
+position = Vector3(16.000000, 0.000000, 0.000000)
+metadata/layout_shell = true
+
+[node name="Foundation" type="MeshInstance3D" parent="Cafe"]
+position = Vector3(0.000000, 0.030000, 0.000000)
+mesh = SubResource("r1")
+material_override = SubResource("r2")
+
+[node name="Body" type="StaticBody3D" parent="Cafe/Foundation"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="Cafe/Foundation/Body"]
+shape = SubResource("r3")
+
+[node name="WestWall" type="MeshInstance3D" parent="Cafe"]
+position = Vector3(-6.500000, 2.500000, 0.000000)
+mesh = SubResource("r4")
+material_override = SubResource("r17")
+
+[node name="Body" type="StaticBody3D" parent="Cafe/WestWall"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="Cafe/WestWall/Body"]
+shape = SubResource("r6")
+
+[node name="EastWall" type="MeshInstance3D" parent="Cafe"]
+position = Vector3(6.500000, 2.500000, 0.000000)
+mesh = SubResource("r4")
+material_override = SubResource("r17")
+
+[node name="Body" type="StaticBody3D" parent="Cafe/EastWall"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="Cafe/EastWall/Body"]
+shape = SubResource("r6")
+
+[node name="RearWall" type="MeshInstance3D" parent="Cafe"]
+position = Vector3(0.000000, 2.500000, 8.000000)
+mesh = SubResource("r7")
+material_override = SubResource("r17")
+
+[node name="Body" type="StaticBody3D" parent="Cafe/RearWall"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="Cafe/RearWall/Body"]
+shape = SubResource("r8")
+
+[node name="FrontPier" type="MeshInstance3D" parent="Cafe"]
+position = Vector3(-4.100000, 2.500000, -8.000000)
+mesh = SubResource("r9")
+material_override = SubResource("r17")
+
+[node name="Body" type="StaticBody3D" parent="Cafe/FrontPier"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="Cafe/FrontPier/Body"]
+shape = SubResource("r10")
+
+[node name="FrontPier2" type="MeshInstance3D" parent="Cafe"]
+position = Vector3(4.100000, 2.500000, -8.000000)
+mesh = SubResource("r9")
+material_override = SubResource("r17")
+
+[node name="Body" type="StaticBody3D" parent="Cafe/FrontPier2"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="Cafe/FrontPier2/Body"]
+shape = SubResource("r10")
+
+[node name="DoorHeader" type="MeshInstance3D" parent="Cafe"]
+position = Vector3(0.000000, 4.300000, -8.000000)
+mesh = SubResource("r11")
+material_override = SubResource("r17")
+
+[node name="Body" type="StaticBody3D" parent="Cafe/DoorHeader"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="Cafe/DoorHeader/Body"]
+shape = SubResource("r12")
+
+[node name="Roof" type="MeshInstance3D" parent="Cafe"]
+position = Vector3(0.000000, 5.120000, 0.000000)
+mesh = SubResource("r13")
+material_override = SubResource("r14")
+
+[node name="Body" type="StaticBody3D" parent="Cafe/Roof"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="Cafe/Roof/Body"]
+shape = SubResource("r15")
+
+[node name="CafeSign" type="Label3D" parent="."]
+position = Vector3(16.000000, 3.600000, -8.200000)
+rotation = Vector3(0, 3.141592653589793, 0)
+text = "CAFE"
+font_size = 40
+pixel_size = 0.008
+outline_size = 4
+no_depth_test = false

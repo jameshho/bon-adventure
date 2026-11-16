@@ -1,0 +1,67 @@
+[gd_scene format=3]
+
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/golden_retriever/body.res" id="1_5lf15"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/golden_retriever/ears.res" id="2_o8rcl"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/golden_retriever/nose.res" id="3_32ues"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/golden_retriever/tail.res" id="4_0752v"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/golden_retriever/eyes.res" id="5_u21ld"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/golden_retriever/face_details.res" id="6_s4cga"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nmdcv"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+metallic_specular = 0.2
+roughness = 0.95
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wkpbf"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.6
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xbv46"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.42
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d1dar"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.75
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_byo2x"]
+size = Vector3(0.33994335, 0.8000001, 0.97450423)
+
+[node name="GoldenRetrieverClayDisplay" type="Node3D" unique_id=236787012]
+metadata/source = "User's Golden Retriever Character Blueprint, relax walk pose (11 Nov 2026)"
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=2070376979]
+material_override = SubResource("StandardMaterial3D_nmdcv")
+mesh = ExtResource("1_5lf15")
+
+[node name="Ears" type="MeshInstance3D" parent="." unique_id=18524205]
+material_override = SubResource("StandardMaterial3D_nmdcv")
+mesh = ExtResource("2_o8rcl")
+
+[node name="Nose" type="MeshInstance3D" parent="." unique_id=808019350]
+material_override = SubResource("StandardMaterial3D_wkpbf")
+mesh = ExtResource("3_32ues")
+
+[node name="Tail" type="MeshInstance3D" parent="." unique_id=2062197149]
+material_override = SubResource("StandardMaterial3D_nmdcv")
+mesh = ExtResource("4_0752v")
+
+[node name="Eyes" type="MeshInstance3D" parent="." unique_id=996100405]
+material_override = SubResource("StandardMaterial3D_xbv46")
+cast_shadow = 0
+mesh = ExtResource("5_u21ld")
+
+[node name="Face details" type="MeshInstance3D" parent="." unique_id=1547969011]
+material_override = SubResource("StandardMaterial3D_d1dar")
+cast_shadow = 0
+mesh = ExtResource("6_s4cga")
+
+[node name="Footprint" type="StaticBody3D" parent="." unique_id=1995028975]
+
+[node name="@CollisionShape3D@2" type="CollisionShape3D" parent="Footprint" unique_id=1458658174]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.40000004, 0.0453258)
+shape = SubResource("BoxShape3D_byo2x")

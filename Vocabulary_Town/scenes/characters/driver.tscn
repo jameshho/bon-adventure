@@ -1,0 +1,885 @@
+[gd_scene load_steps=37 format=3]
+
+; Stylized native-mesh taxi driver for Godot 4. Front faces -Z.
+; All details are individual editable MeshInstance3D nodes.
+
+[sub_resource type="SphereMesh" id="soft_sphere"]
+radius = 0.5
+height = 1
+radial_segments = 24
+rings = 12
+
+[sub_resource type="SphereMesh" id="small_sphere"]
+radius = 0.5
+height = 1
+radial_segments = 12
+rings = 7
+
+[sub_resource type="CapsuleMesh" id="capsule"]
+radius = 0.5
+height = 2
+radial_segments = 16
+rings = 6
+
+[sub_resource type="CylinderMesh" id="cylinder"]
+top_radius = 0.5
+bottom_radius = 0.5
+height = 1
+radial_segments = 24
+
+[sub_resource type="CylinderMesh" id="small_cylinder"]
+top_radius = 0.5
+bottom_radius = 0.5
+height = 1
+radial_segments = 12
+
+[sub_resource type="BoxMesh" id="box"]
+size = Vector3(1, 1, 1)
+
+[sub_resource type="TorusMesh" id="wheel_torus"]
+inner_radius = 0.185
+outer_radius = 0.235
+rings = 32
+ring_segments = 10
+
+[sub_resource type="StandardMaterial3D" id="skin"]
+albedo_color = Color(0.74, 0.535, 0.405, 1)
+roughness = 0.78
+
+[sub_resource type="StandardMaterial3D" id="skin_light"]
+albedo_color = Color(0.85, 0.655, 0.515, 1)
+roughness = 0.78
+
+[sub_resource type="StandardMaterial3D" id="skin_shade"]
+albedo_color = Color(0.63, 0.42, 0.33, 1)
+roughness = 0.88
+
+[sub_resource type="StandardMaterial3D" id="blush"]
+albedo_color = Color(0.88, 0.49, 0.43, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="hair"]
+albedo_color = Color(0.16, 0.115, 0.105, 1)
+roughness = 0.87
+
+[sub_resource type="StandardMaterial3D" id="hair_shine"]
+albedo_color = Color(0.24, 0.17, 0.135, 1)
+roughness = 0.8
+
+[sub_resource type="StandardMaterial3D" id="eyes"]
+albedo_color = Color(0.1, 0.075, 0.067, 1)
+roughness = 0.35
+
+[sub_resource type="StandardMaterial3D" id="eyes_glint"]
+albedo_color = Color(0.98, 0.97, 0.9, 1)
+roughness = 0.25
+
+[sub_resource type="StandardMaterial3D" id="smile"]
+albedo_color = Color(0.34, 0.19, 0.15, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="shirt"]
+albedo_color = Color(0.54, 0.76, 0.83, 1)
+roughness = 0.7
+
+[sub_resource type="StandardMaterial3D" id="shirt_light"]
+albedo_color = Color(0.8, 0.9, 0.92, 1)
+roughness = 0.69
+
+[sub_resource type="StandardMaterial3D" id="shirt_shade"]
+albedo_color = Color(0.34, 0.6, 0.71, 1)
+roughness = 0.73
+
+[sub_resource type="StandardMaterial3D" id="jacket"]
+albedo_color = Color(0.085, 0.245, 0.34, 1)
+roughness = 0.65
+
+[sub_resource type="StandardMaterial3D" id="jacket_light"]
+albedo_color = Color(0.14, 0.355, 0.465, 1)
+roughness = 0.61
+
+[sub_resource type="StandardMaterial3D" id="trim"]
+albedo_color = Color(0.28, 0.7, 0.71, 1)
+roughness = 0.55
+metallic = 0.05
+
+[sub_resource type="StandardMaterial3D" id="pants"]
+albedo_color = Color(0.135, 0.195, 0.265, 1)
+roughness = 0.76
+
+[sub_resource type="StandardMaterial3D" id="pants_shade"]
+albedo_color = Color(0.095, 0.145, 0.205, 1)
+roughness = 0.76
+
+[sub_resource type="StandardMaterial3D" id="gold"]
+albedo_color = Color(0.96, 0.7, 0.23, 1)
+roughness = 0.31
+metallic = 0.48
+
+[sub_resource type="StandardMaterial3D" id="gold_light"]
+albedo_color = Color(1, 0.87, 0.48, 1)
+roughness = 0.33
+metallic = 0.27
+
+[sub_resource type="StandardMaterial3D" id="badge_back"]
+albedo_color = Color(0.055, 0.14, 0.21, 1)
+roughness = 0.42
+metallic = 0.15
+
+[sub_resource type="StandardMaterial3D" id="cap"]
+albedo_color = Color(0.11, 0.3, 0.435, 1)
+roughness = 0.62
+metallic = 0.02
+
+[sub_resource type="StandardMaterial3D" id="cap_top"]
+albedo_color = Color(0.2, 0.43, 0.565, 1)
+roughness = 0.64
+
+[sub_resource type="StandardMaterial3D" id="cap_brim"]
+albedo_color = Color(0.055, 0.155, 0.235, 1)
+roughness = 0.49
+metallic = 0.03
+
+[sub_resource type="StandardMaterial3D" id="shoe"]
+albedo_color = Color(0.13, 0.17, 0.205, 1)
+roughness = 0.56
+
+[sub_resource type="StandardMaterial3D" id="shoe_sole"]
+albedo_color = Color(0.055, 0.073, 0.095, 1)
+roughness = 0.73
+
+[sub_resource type="StandardMaterial3D" id="shoe_highlight"]
+albedo_color = Color(0.25, 0.32, 0.37, 1)
+roughness = 0.5
+
+[sub_resource type="StandardMaterial3D" id="wheel"]
+albedo_color = Color(0.12, 0.16, 0.18, 1)
+roughness = 0.49
+metallic = 0.07
+
+[sub_resource type="StandardMaterial3D" id="wheel_hub"]
+albedo_color = Color(0.43, 0.51, 0.57, 1)
+roughness = 0.43
+metallic = 0.28
+
+[sub_resource type="BoxShape3D" id="study_shape"]
+size = Vector3(0.98, 2.4, 0.8)
+
+[node name="Driver" type="Node3D"]
+metadata/word_key = "driver"
+
+[node name="Head" type="Node3D" parent="."]
+position = Vector3(0.0, 1.92, 0.0)
+
+[node name="Visual" type="MeshInstance3D" parent="Head"]
+scale = Vector3(0.58, 0.61, 0.555)
+mesh = SubResource("soft_sphere")
+material_override = SubResource("skin_light")
+
+[node name="Jaw" type="MeshInstance3D" parent="Head"]
+position = Vector3(0.0, -0.14, -0.027)
+scale = Vector3(0.49, 0.32, 0.49)
+mesh = SubResource("soft_sphere")
+material_override = SubResource("skin_light")
+
+[node name="LeftEar" type="MeshInstance3D" parent="Head"]
+position = Vector3(-0.295, -0.07, 0.025)
+scale = Vector3(0.13, 0.19, 0.11)
+mesh = SubResource("small_sphere")
+material_override = SubResource("skin")
+
+[node name="LeftEarInner" type="MeshInstance3D" parent="Head"]
+position = Vector3(-0.332, -0.068, -0.022)
+scale = Vector3(0.046, 0.102, 0.022)
+mesh = SubResource("small_sphere")
+material_override = SubResource("skin_shade")
+cast_shadow = 0
+
+[node name="LeftEye" type="MeshInstance3D" parent="Head"]
+position = Vector3(-0.112, 0.028, -0.268)
+scale = Vector3(0.072, 0.094, 0.027)
+mesh = SubResource("small_sphere")
+material_override = SubResource("eyes")
+cast_shadow = 0
+
+[node name="LeftEyeGlint" type="MeshInstance3D" parent="Head"]
+position = Vector3(-0.097, 0.052, -0.291)
+scale = Vector3(0.023, 0.029, 0.009)
+mesh = SubResource("small_sphere")
+material_override = SubResource("eyes_glint")
+cast_shadow = 0
+
+[node name="LeftBrow" type="MeshInstance3D" parent="Head"]
+position = Vector3(-0.113, 0.142, -0.249)
+rotation = Vector3(0.0, 0.0, 0.1)
+scale = Vector3(0.117, 0.03, 0.026)
+mesh = SubResource("soft_sphere")
+material_override = SubResource("hair")
+cast_shadow = 0
+
+[node name="LeftCheek" type="MeshInstance3D" parent="Head"]
+position = Vector3(-0.194, -0.089, -0.197)
+scale = Vector3(0.092, 0.042, 0.013)
+mesh = SubResource("small_sphere")
+material_override = SubResource("blush")
+cast_shadow = 0
+
+[node name="RightEar" type="MeshInstance3D" parent="Head"]
+position = Vector3(0.295, -0.07, 0.025)
+scale = Vector3(0.13, 0.19, 0.11)
+mesh = SubResource("small_sphere")
+material_override = SubResource("skin")
+
+[node name="RightEarInner" type="MeshInstance3D" parent="Head"]
+position = Vector3(0.332, -0.068, -0.022)
+scale = Vector3(0.046, 0.102, 0.022)
+mesh = SubResource("small_sphere")
+material_override = SubResource("skin_shade")
+cast_shadow = 0
+
+[node name="RightEye" type="MeshInstance3D" parent="Head"]
+position = Vector3(0.112, 0.028, -0.268)
+scale = Vector3(0.072, 0.094, 0.027)
+mesh = SubResource("small_sphere")
+material_override = SubResource("eyes")
+cast_shadow = 0
+
+[node name="RightEyeGlint" type="MeshInstance3D" parent="Head"]
+position = Vector3(0.097, 0.052, -0.291)
+scale = Vector3(0.023, 0.029, 0.009)
+mesh = SubResource("small_sphere")
+material_override = SubResource("eyes_glint")
+cast_shadow = 0
+
+[node name="RightBrow" type="MeshInstance3D" parent="Head"]
+position = Vector3(0.113, 0.142, -0.249)
+rotation = Vector3(0.0, 0.0, -0.1)
+scale = Vector3(0.117, 0.03, 0.026)
+mesh = SubResource("soft_sphere")
+material_override = SubResource("hair")
+cast_shadow = 0
+
+[node name="RightCheek" type="MeshInstance3D" parent="Head"]
+position = Vector3(0.194, -0.089, -0.197)
+scale = Vector3(0.092, 0.042, 0.013)
+mesh = SubResource("small_sphere")
+material_override = SubResource("blush")
+cast_shadow = 0
+
+[node name="Nose" type="MeshInstance3D" parent="Head"]
+position = Vector3(0.0, -0.067, -0.301)
+scale = Vector3(0.079, 0.09, 0.063)
+mesh = SubResource("small_sphere")
+material_override = SubResource("skin")
+
+[node name="SmileCenter" type="MeshInstance3D" parent="Head"]
+position = Vector3(0.0, -0.169, -0.276)
+scale = Vector3(0.165, 0.021, 0.014)
+mesh = SubResource("small_sphere")
+material_override = SubResource("smile")
+cast_shadow = 0
+
+[node name="SmileLeft" type="MeshInstance3D" parent="Head"]
+position = Vector3(-0.09, -0.146, -0.26)
+rotation = Vector3(0.0, 0.0, -0.48)
+scale = Vector3(0.076, 0.02, 0.014)
+mesh = SubResource("small_sphere")
+material_override = SubResource("smile")
+cast_shadow = 0
+
+[node name="SmileRight" type="MeshInstance3D" parent="Head"]
+position = Vector3(0.09, -0.146, -0.26)
+rotation = Vector3(0.0, 0.0, 0.48)
+scale = Vector3(0.076, 0.02, 0.014)
+mesh = SubResource("small_sphere")
+material_override = SubResource("smile")
+cast_shadow = 0
+
+[node name="Neck" type="Node3D" parent="."]
+position = Vector3(0.0, 1.66, 0.0)
+
+[node name="Visual" type="MeshInstance3D" parent="Neck"]
+scale = Vector3(0.2, 0.24, 0.19)
+mesh = SubResource("soft_sphere")
+material_override = SubResource("skin")
+
+[node name="Hair" type="Node3D" parent="."]
+position = Vector3(0.0, 2.13, 0.06)
+
+[node name="Visual" type="MeshInstance3D" parent="Hair"]
+position = Vector3(0.0, -0.018, 0.013)
+scale = Vector3(0.565, 0.265, 0.538)
+mesh = SubResource("soft_sphere")
+material_override = SubResource("hair")
+
+[node name="LeftSideburn" type="MeshInstance3D" parent="Hair"]
+position = Vector3(-0.245, -0.127, -0.078)
+rotation = Vector3(0.0, 0.0, -0.1)
+scale = Vector3(0.103, 0.24, 0.16)
+mesh = SubResource("soft_sphere")
+material_override = SubResource("hair")
+
+[node name="LeftHairHighlight" type="MeshInstance3D" parent="Hair"]
+position = Vector3(-0.239, -0.125, -0.178)
+scale = Vector3(0.07, 0.11, 0.025)
+mesh = SubResource("small_sphere")
+material_override = SubResource("hair_shine")
+cast_shadow = 0
+
+[node name="RightSideburn" type="MeshInstance3D" parent="Hair"]
+position = Vector3(0.245, -0.127, -0.078)
+rotation = Vector3(0.0, 0.0, 0.1)
+scale = Vector3(0.103, 0.24, 0.16)
+mesh = SubResource("soft_sphere")
+material_override = SubResource("hair")
+
+[node name="RightHairHighlight" type="MeshInstance3D" parent="Hair"]
+position = Vector3(0.239, -0.125, -0.178)
+scale = Vector3(0.07, 0.11, 0.025)
+mesh = SubResource("small_sphere")
+material_override = SubResource("hair_shine")
+cast_shadow = 0
+
+[node name="HairFringeLeft" type="MeshInstance3D" parent="Hair"]
+position = Vector3(-0.119, -0.086, -0.206)
+rotation = Vector3(0.0, 0.0, -0.3)
+scale = Vector3(0.2, 0.105, 0.115)
+mesh = SubResource("soft_sphere")
+material_override = SubResource("hair")
+
+[node name="HairFringeRight" type="MeshInstance3D" parent="Hair"]
+position = Vector3(0.104, -0.079, -0.216)
+rotation = Vector3(0.0, 0.0, 0.24)
+scale = Vector3(0.195, 0.1, 0.1)
+mesh = SubResource("soft_sphere")
+material_override = SubResource("hair")
+
+[node name="Cap" type="Node3D" parent="."]
+position = Vector3(0.0, 2.15, 0.0)
+
+[node name="Visual" type="MeshInstance3D" parent="Cap"]
+position = Vector3(0.0, 0.108, 0.021)
+scale = Vector3(0.564, 0.17, 0.533)
+mesh = SubResource("cylinder")
+material_override = SubResource("cap")
+
+[node name="CapDome" type="MeshInstance3D" parent="Cap"]
+position = Vector3(0.0, 0.163, 0.021)
+scale = Vector3(0.562, 0.153, 0.53)
+mesh = SubResource("soft_sphere")
+material_override = SubResource("cap_top")
+
+[node name="CapBand" type="MeshInstance3D" parent="Cap"]
+position = Vector3(0.0, 0.034, 0.019)
+scale = Vector3(0.578, 0.048, 0.544)
+mesh = SubResource("cylinder")
+material_override = SubResource("cap_brim")
+
+[node name="Brim" type="MeshInstance3D" parent="Cap"]
+position = Vector3(0.0, -0.005, -0.208)
+scale = Vector3(0.695, 0.067, 0.39)
+mesh = SubResource("soft_sphere")
+material_override = SubResource("cap_brim")
+
+[node name="BrimPiping" type="MeshInstance3D" parent="Cap"]
+position = Vector3(0.0, -0.007, -0.32)
+scale = Vector3(0.54, 0.023, 0.038)
+mesh = SubResource("soft_sphere")
+material_override = SubResource("trim")
+cast_shadow = 0
+
+[node name="CrownBadge" type="MeshInstance3D" parent="Cap"]
+position = Vector3(0.0, 0.112, -0.26)
+rotation = Vector3(1.570796, 0.0, 0.0)
+scale = Vector3(0.134, 0.022, 0.134)
+mesh = SubResource("small_cylinder")
+material_override = SubResource("gold")
+cast_shadow = 0
+
+[node name="CrownBadgeCenter" type="MeshInstance3D" parent="Cap"]
+position = Vector3(0.0, 0.112, -0.279)
+rotation = Vector3(1.570796, 0.0, 0.0)
+scale = Vector3(0.089, 0.017, 0.089)
+mesh = SubResource("small_cylinder")
+material_override = SubResource("badge_back")
+cast_shadow = 0
+
+[node name="CrownBadgeHub" type="MeshInstance3D" parent="Cap"]
+position = Vector3(0.0, 0.11, -0.292)
+scale = Vector3(0.027, 0.027, 0.014)
+mesh = SubResource("small_sphere")
+material_override = SubResource("gold_light")
+cast_shadow = 0
+
+[node name="BadgeRay1" type="MeshInstance3D" parent="Cap"]
+position = Vector3(0.0, 0.149, -0.295)
+scale = Vector3(0.016, 0.049, 0.012)
+mesh = SubResource("box")
+material_override = SubResource("gold_light")
+cast_shadow = 0
+
+[node name="BadgeRay2" type="MeshInstance3D" parent="Cap"]
+position = Vector3(-0.035, 0.099, -0.295)
+rotation = Vector3(0.0, 0.0, -0.8)
+scale = Vector3(0.016, 0.049, 0.012)
+mesh = SubResource("box")
+material_override = SubResource("gold_light")
+cast_shadow = 0
+
+[node name="BadgeRay3" type="MeshInstance3D" parent="Cap"]
+position = Vector3(0.035, 0.099, -0.295)
+rotation = Vector3(0.0, 0.0, 0.8)
+scale = Vector3(0.016, 0.049, 0.012)
+mesh = SubResource("box")
+material_override = SubResource("gold_light")
+cast_shadow = 0
+
+[node name="Torso" type="Node3D" parent="."]
+position = Vector3(0.0, 1.25, 0.0)
+
+[node name="Visual" type="MeshInstance3D" parent="Torso"]
+scale = Vector3(0.72, 0.9, 0.49)
+mesh = SubResource("soft_sphere")
+material_override = SubResource("shirt")
+
+[node name="ShoulderYoke" type="MeshInstance3D" parent="Torso"]
+position = Vector3(0.0, 0.32, 0.0)
+scale = Vector3(0.72, 0.16, 0.47)
+mesh = SubResource("soft_sphere")
+material_override = SubResource("shirt_shade")
+
+[node name="LeftVestPanel" type="MeshInstance3D" parent="Torso"]
+position = Vector3(-0.205, -0.048, -0.185)
+rotation = Vector3(0.0, 0.0, 0.04)
+scale = Vector3(0.31, 0.68, 0.187)
+mesh = SubResource("soft_sphere")
+material_override = SubResource("jacket")
+
+[node name="LeftVestEdge" type="MeshInstance3D" parent="Torso"]
+position = Vector3(-0.067, -0.06, -0.267)
+rotation = Vector3(0.0, 0.0, 0.09)
+scale = Vector3(0.026, 0.56, 0.018)
+mesh = SubResource("soft_sphere")
+material_override = SubResource("jacket_light")
+cast_shadow = 0
+
+[node name="LeftCollar" type="MeshInstance3D" parent="Torso"]
+position = Vector3(-0.105, 0.355, -0.197)
+rotation = Vector3(0.0, 0.0, 0.48)
+scale = Vector3(0.153, 0.113, 0.055)
+mesh = SubResource("soft_sphere")
+material_override = SubResource("shirt_light")
+
+[node name="LeftPocket" type="MeshInstance3D" parent="Torso"]
+position = Vector3(-0.218, -0.222, -0.296)
+scale = Vector3(0.169, 0.11, 0.018)
+mesh = SubResource("soft_sphere")
+material_override = SubResource("jacket_light")
+cast_shadow = 0
+
+[node name="LeftPocketTrim" type="MeshInstance3D" parent="Torso"]
+position = Vector3(-0.218, -0.165, -0.31)
+scale = Vector3(0.168, 0.019, 0.024)
+mesh = SubResource("box")
+material_override = SubResource("trim")
+cast_shadow = 0
+
+[node name="LeftEpaulette" type="MeshInstance3D" parent="Torso"]
+position = Vector3(-0.285, 0.357, -0.017)
+rotation = Vector3(0.0, 0.0, -0.28)
+scale = Vector3(0.178, 0.036, 0.22)
+mesh = SubResource("soft_sphere")
+material_override = SubResource("jacket")
+
+[node name="RightVestPanel" type="MeshInstance3D" parent="Torso"]
+position = Vector3(0.205, -0.048, -0.185)
+rotation = Vector3(0.0, 0.0, -0.04)
+scale = Vector3(0.31, 0.68, 0.187)
+mesh = SubResource("soft_sphere")
+material_override = SubResource("jacket")
+
+[node name="RightVestEdge" type="MeshInstance3D" parent="Torso"]
+position = Vector3(0.067, -0.06, -0.267)
+rotation = Vector3(0.0, 0.0, -0.09)
+scale = Vector3(0.026, 0.56, 0.018)
+mesh = SubResource("soft_sphere")
+material_override = SubResource("jacket_light")
+cast_shadow = 0
+
+[node name="RightCollar" type="MeshInstance3D" parent="Torso"]
+position = Vector3(0.105, 0.355, -0.197)
+rotation = Vector3(0.0, 0.0, -0.48)
+scale = Vector3(0.153, 0.113, 0.055)
+mesh = SubResource("soft_sphere")
+material_override = SubResource("shirt_light")
+
+[node name="RightPocket" type="MeshInstance3D" parent="Torso"]
+position = Vector3(0.218, -0.222, -0.296)
+scale = Vector3(0.169, 0.11, 0.018)
+mesh = SubResource("soft_sphere")
+material_override = SubResource("jacket_light")
+cast_shadow = 0
+
+[node name="RightPocketTrim" type="MeshInstance3D" parent="Torso"]
+position = Vector3(0.218, -0.165, -0.31)
+scale = Vector3(0.168, 0.019, 0.024)
+mesh = SubResource("box")
+material_override = SubResource("trim")
+cast_shadow = 0
+
+[node name="RightEpaulette" type="MeshInstance3D" parent="Torso"]
+position = Vector3(0.285, 0.357, -0.017)
+rotation = Vector3(0.0, 0.0, 0.28)
+scale = Vector3(0.178, 0.036, 0.22)
+mesh = SubResource("soft_sphere")
+material_override = SubResource("jacket")
+
+[node name="TieKnot" type="MeshInstance3D" parent="Torso"]
+position = Vector3(0.0, 0.26, -0.26)
+scale = Vector3(0.084, 0.077, 0.04)
+mesh = SubResource("soft_sphere")
+material_override = SubResource("gold")
+
+[node name="Tie" type="MeshInstance3D" parent="Torso"]
+position = Vector3(0.0, 0.109, -0.271)
+scale = Vector3(0.064, 0.26, 0.029)
+mesh = SubResource("soft_sphere")
+material_override = SubResource("jacket_light")
+
+[node name="VestSeam" type="MeshInstance3D" parent="Torso"]
+position = Vector3(0.0, -0.15, -0.301)
+scale = Vector3(0.021, 0.32, 0.024)
+mesh = SubResource("soft_sphere")
+material_override = SubResource("trim")
+cast_shadow = 0
+
+[node name="Button1" type="MeshInstance3D" parent="Torso"]
+position = Vector3(0.044, 0.08, -0.312)
+scale = Vector3(0.037, 0.037, 0.016)
+mesh = SubResource("small_sphere")
+material_override = SubResource("gold")
+cast_shadow = 0
+
+[node name="Button2" type="MeshInstance3D" parent="Torso"]
+position = Vector3(0.044, -0.052, -0.312)
+scale = Vector3(0.037, 0.037, 0.016)
+mesh = SubResource("small_sphere")
+material_override = SubResource("gold")
+cast_shadow = 0
+
+[node name="Button3" type="MeshInstance3D" parent="Torso"]
+position = Vector3(0.044, -0.18, -0.312)
+scale = Vector3(0.037, 0.037, 0.016)
+mesh = SubResource("small_sphere")
+material_override = SubResource("gold")
+cast_shadow = 0
+
+[node name="NameplateFrame" type="MeshInstance3D" parent="Torso"]
+position = Vector3(-0.204, 0.145, -0.305)
+scale = Vector3(0.183, 0.078, 0.02)
+mesh = SubResource("box")
+material_override = SubResource("gold")
+cast_shadow = 0
+
+[node name="NameplateInner" type="MeshInstance3D" parent="Torso"]
+position = Vector3(-0.204, 0.145, -0.319)
+scale = Vector3(0.161, 0.054, 0.014)
+mesh = SubResource("box")
+material_override = SubResource("badge_back")
+cast_shadow = 0
+
+[node name="NameplateMark1" type="MeshInstance3D" parent="Torso"]
+position = Vector3(-0.249, 0.143, -0.328)
+scale = Vector3(0.027, 0.009, 0.006)
+mesh = SubResource("box")
+material_override = SubResource("gold_light")
+cast_shadow = 0
+
+[node name="NameplateMark2" type="MeshInstance3D" parent="Torso"]
+position = Vector3(-0.204, 0.143, -0.328)
+scale = Vector3(0.027, 0.009, 0.006)
+mesh = SubResource("box")
+material_override = SubResource("gold_light")
+cast_shadow = 0
+
+[node name="NameplateMark3" type="MeshInstance3D" parent="Torso"]
+position = Vector3(-0.159, 0.143, -0.328)
+scale = Vector3(0.027, 0.009, 0.006)
+mesh = SubResource("box")
+material_override = SubResource("gold_light")
+cast_shadow = 0
+
+[node name="Belt" type="MeshInstance3D" parent="Torso"]
+position = Vector3(0.0, -0.394, 0.0)
+scale = Vector3(0.57, 0.11, 0.43)
+mesh = SubResource("cylinder")
+material_override = SubResource("pants_shade")
+
+[node name="BeltBuckle" type="MeshInstance3D" parent="Torso"]
+position = Vector3(0.0, -0.395, -0.218)
+scale = Vector3(0.115, 0.081, 0.021)
+mesh = SubResource("box")
+material_override = SubResource("gold")
+cast_shadow = 0
+
+[node name="BeltBuckleInset" type="MeshInstance3D" parent="Torso"]
+position = Vector3(0.0, -0.395, -0.234)
+scale = Vector3(0.065, 0.044, 0.014)
+mesh = SubResource("box")
+material_override = SubResource("badge_back")
+cast_shadow = 0
+
+[node name="TrouserLeg" type="Node3D" parent="."]
+position = Vector3(-0.198, 0.44, 0.0)
+
+[node name="Visual" type="MeshInstance3D" parent="TrouserLeg"]
+position = Vector3(0.0, 0.055, 0.0)
+scale = Vector3(0.245, 0.368, 0.276)
+mesh = SubResource("capsule")
+material_override = SubResource("pants")
+
+[node name="FrontCrease" type="MeshInstance3D" parent="TrouserLeg"]
+position = Vector3(0.0, -0.005, -0.137)
+scale = Vector3(0.028, 0.51, 0.015)
+mesh = SubResource("soft_sphere")
+material_override = SubResource("pants_shade")
+cast_shadow = 0
+
+[node name="Cuff" type="MeshInstance3D" parent="TrouserLeg"]
+position = Vector3(0.0, -0.27, 0.0)
+scale = Vector3(0.246, 0.09, 0.264)
+mesh = SubResource("cylinder")
+material_override = SubResource("pants_shade")
+
+[node name="TrouserLeg_2" type="Node3D" parent="."]
+position = Vector3(0.198, 0.44, 0.0)
+
+[node name="Visual" type="MeshInstance3D" parent="TrouserLeg_2"]
+position = Vector3(0.0, 0.055, 0.0)
+scale = Vector3(0.245, 0.368, 0.276)
+mesh = SubResource("capsule")
+material_override = SubResource("pants")
+
+[node name="FrontCrease" type="MeshInstance3D" parent="TrouserLeg_2"]
+position = Vector3(0.0, -0.005, -0.137)
+scale = Vector3(0.028, 0.51, 0.015)
+mesh = SubResource("soft_sphere")
+material_override = SubResource("pants_shade")
+cast_shadow = 0
+
+[node name="Cuff" type="MeshInstance3D" parent="TrouserLeg_2"]
+position = Vector3(0.0, -0.27, 0.0)
+scale = Vector3(0.246, 0.09, 0.264)
+mesh = SubResource("cylinder")
+material_override = SubResource("pants_shade")
+
+[node name="Shoe" type="Node3D" parent="."]
+position = Vector3(-0.198, 0.085, -0.067)
+
+[node name="Visual" type="MeshInstance3D" parent="Shoe"]
+position = Vector3(0.0, 0.0, -0.057)
+scale = Vector3(0.308, 0.195, 0.47)
+mesh = SubResource("soft_sphere")
+material_override = SubResource("shoe")
+
+[node name="ToeCap" type="MeshInstance3D" parent="Shoe"]
+position = Vector3(0.0, 0.002, -0.224)
+scale = Vector3(0.28, 0.13, 0.192)
+mesh = SubResource("soft_sphere")
+material_override = SubResource("shoe_highlight")
+
+[node name="Sole" type="MeshInstance3D" parent="Shoe"]
+position = Vector3(0.0, -0.055, -0.067)
+scale = Vector3(0.328, 0.072, 0.494)
+mesh = SubResource("soft_sphere")
+material_override = SubResource("shoe_sole")
+
+[node name="Tongue" type="MeshInstance3D" parent="Shoe"]
+position = Vector3(0.0, 0.084, -0.012)
+scale = Vector3(0.148, 0.042, 0.185)
+mesh = SubResource("soft_sphere")
+material_override = SubResource("shoe_sole")
+
+[node name="Lace1" type="MeshInstance3D" parent="Shoe"]
+position = Vector3(0.0, 0.108, -0.028)
+scale = Vector3(0.135, 0.011, 0.02)
+mesh = SubResource("box")
+material_override = SubResource("shirt_light")
+cast_shadow = 0
+
+[node name="Lace2" type="MeshInstance3D" parent="Shoe"]
+position = Vector3(0.0, 0.108, -0.086)
+scale = Vector3(0.135, 0.011, 0.02)
+mesh = SubResource("box")
+material_override = SubResource("shirt_light")
+cast_shadow = 0
+
+[node name="Shoe_2" type="Node3D" parent="."]
+position = Vector3(0.198, 0.085, -0.067)
+
+[node name="Visual" type="MeshInstance3D" parent="Shoe_2"]
+position = Vector3(0.0, 0.0, -0.057)
+scale = Vector3(0.308, 0.195, 0.47)
+mesh = SubResource("soft_sphere")
+material_override = SubResource("shoe")
+
+[node name="ToeCap" type="MeshInstance3D" parent="Shoe_2"]
+position = Vector3(0.0, 0.002, -0.224)
+scale = Vector3(0.28, 0.13, 0.192)
+mesh = SubResource("soft_sphere")
+material_override = SubResource("shoe_highlight")
+
+[node name="Sole" type="MeshInstance3D" parent="Shoe_2"]
+position = Vector3(0.0, -0.055, -0.067)
+scale = Vector3(0.328, 0.072, 0.494)
+mesh = SubResource("soft_sphere")
+material_override = SubResource("shoe_sole")
+
+[node name="Tongue" type="MeshInstance3D" parent="Shoe_2"]
+position = Vector3(0.0, 0.084, -0.012)
+scale = Vector3(0.148, 0.042, 0.185)
+mesh = SubResource("soft_sphere")
+material_override = SubResource("shoe_sole")
+
+[node name="Lace1" type="MeshInstance3D" parent="Shoe_2"]
+position = Vector3(0.0, 0.108, -0.028)
+scale = Vector3(0.135, 0.011, 0.02)
+mesh = SubResource("box")
+material_override = SubResource("shirt_light")
+cast_shadow = 0
+
+[node name="Lace2" type="MeshInstance3D" parent="Shoe_2"]
+position = Vector3(0.0, 0.108, -0.086)
+scale = Vector3(0.135, 0.011, 0.02)
+mesh = SubResource("box")
+material_override = SubResource("shirt_light")
+cast_shadow = 0
+
+[node name="Arm" type="Node3D" parent="."]
+position = Vector3(-0.41, 1.26, 0.0)
+
+[node name="Visual" type="MeshInstance3D" parent="Arm"]
+transform = Transform3D(-0.189629, 0.077883, 0.0, -0.0575, -0.14, -0.035, -0.017633, -0.042934, 0.200703, -0.0225, 0.13, -0.035)
+mesh = SubResource("capsule")
+material_override = SubResource("shirt")
+
+[node name="ElbowSeam" type="MeshInstance3D" parent="Arm"]
+position = Vector3(-0.08, -0.01, -0.07)
+scale = Vector3(0.194, 0.19, 0.19)
+mesh = SubResource("small_sphere")
+material_override = SubResource("shirt_shade")
+
+[node name="Forearm" type="MeshInstance3D" parent="Arm"]
+transform = Transform3D(-0.051891, -0.15452, 0.0, 0.134, -0.045, -0.1685, 0.123465, -0.041462, 0.109258, 0.054, -0.055, -0.2385)
+mesh = SubResource("capsule")
+material_override = SubResource("shirt")
+
+[node name="Cuff" type="MeshInstance3D" parent="Arm"]
+position = Vector3(0.1478, -0.0865, -0.35645)
+scale = Vector3(0.176, 0.135, 0.16)
+mesh = SubResource("soft_sphere")
+material_override = SubResource("jacket")
+
+[node name="Hand" type="MeshInstance3D" parent="Arm"]
+position = Vector3(0.188, -0.1, -0.413)
+scale = Vector3(0.158, 0.165, 0.15)
+mesh = SubResource("soft_sphere")
+material_override = SubResource("skin_light")
+
+[node name="Arm_2" type="Node3D" parent="."]
+position = Vector3(0.41, 1.26, 0.0)
+
+[node name="Visual" type="MeshInstance3D" parent="Arm_2"]
+transform = Transform3D(-0.189629, -0.077883, 0.0, 0.0575, -0.14, -0.035, 0.017633, -0.042934, 0.200703, 0.0225, 0.13, -0.035)
+mesh = SubResource("capsule")
+material_override = SubResource("shirt")
+
+[node name="ElbowSeam" type="MeshInstance3D" parent="Arm_2"]
+position = Vector3(0.08, -0.01, -0.07)
+scale = Vector3(0.194, 0.19, 0.19)
+mesh = SubResource("small_sphere")
+material_override = SubResource("shirt_shade")
+
+[node name="Forearm" type="MeshInstance3D" parent="Arm_2"]
+transform = Transform3D(-0.051891, 0.15452, 0.0, -0.134, -0.045, -0.1685, -0.123465, -0.041462, 0.109258, -0.054, -0.055, -0.2385)
+mesh = SubResource("capsule")
+material_override = SubResource("shirt")
+
+[node name="Cuff" type="MeshInstance3D" parent="Arm_2"]
+position = Vector3(-0.1478, -0.0865, -0.35645)
+scale = Vector3(0.176, 0.135, 0.16)
+mesh = SubResource("soft_sphere")
+material_override = SubResource("jacket")
+
+[node name="Hand" type="MeshInstance3D" parent="Arm_2"]
+position = Vector3(-0.188, -0.1, -0.413)
+scale = Vector3(0.158, 0.165, 0.15)
+mesh = SubResource("soft_sphere")
+material_override = SubResource("skin_light")
+
+[node name="SteeringWheel" type="Node3D" parent="."]
+position = Vector3(0.0, 1.165, -0.398)
+
+[node name="Visual" type="MeshInstance3D" parent="SteeringWheel"]
+rotation = Vector3(1.570796, 0.0, 0.0)
+mesh = SubResource("wheel_torus")
+material_override = SubResource("wheel")
+
+[node name="GripAccentLeft" type="MeshInstance3D" parent="SteeringWheel"]
+position = Vector3(-0.218, 0.0, -0.006)
+scale = Vector3(0.057, 0.1, 0.027)
+mesh = SubResource("small_sphere")
+material_override = SubResource("wheel_hub")
+cast_shadow = 0
+
+[node name="GripAccentRight" type="MeshInstance3D" parent="SteeringWheel"]
+position = Vector3(0.218, 0.0, -0.006)
+scale = Vector3(0.057, 0.1, 0.027)
+mesh = SubResource("small_sphere")
+material_override = SubResource("wheel_hub")
+cast_shadow = 0
+
+[node name="SpokeLeft" type="MeshInstance3D" parent="SteeringWheel"]
+transform = Transform3D(0.0, -0.05, 0.0, 0.0675, 0.0, 0.0, 0.0, 0.0, 0.031, -0.0995, 0.005, -0.01)
+mesh = SubResource("capsule")
+material_override = SubResource("wheel_hub")
+
+[node name="SpokeRight" type="MeshInstance3D" parent="SteeringWheel"]
+transform = Transform3D(0.0, -0.05, 0.0, 0.0675, 0.0, 0.0, 0.0, 0.0, 0.031, 0.0995, 0.005, -0.01)
+mesh = SubResource("capsule")
+material_override = SubResource("wheel_hub")
+
+[node name="SpokeBottom" type="MeshInstance3D" parent="SteeringWheel"]
+transform = Transform3D(0.049, 0.0, 0.0, 0.0, 0.068, 0.0, 0.0, 0.0, 0.031, 0.0, -0.102, -0.01)
+mesh = SubResource("capsule")
+material_override = SubResource("wheel_hub")
+
+[node name="Hub" type="MeshInstance3D" parent="SteeringWheel"]
+position = Vector3(0.0, 0.0, -0.03)
+rotation = Vector3(1.570796, 0.0, 0.0)
+scale = Vector3(0.133, 0.046, 0.133)
+mesh = SubResource("small_cylinder")
+material_override = SubResource("wheel_hub")
+
+[node name="HubCenter" type="MeshInstance3D" parent="SteeringWheel"]
+position = Vector3(0.0, 0.0, -0.068)
+scale = Vector3(0.067, 0.067, 0.013)
+mesh = SubResource("small_sphere")
+material_override = SubResource("badge_back")
+cast_shadow = 0
+
+[node name="HubDot" type="MeshInstance3D" parent="SteeringWheel"]
+position = Vector3(0.0, 0.0, -0.079)
+scale = Vector3(0.032, 0.032, 0.012)
+mesh = SubResource("small_sphere")
+material_override = SubResource("gold")
+cast_shadow = 0
+
+[node name="StudyArea" type="Area3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+metadata/word = "driver"
+
+[node name="StudyShape" type="CollisionShape3D" parent="StudyArea"]
+position = Vector3(0.0, 1.18, 0.0)
+shape = SubResource("study_shape")

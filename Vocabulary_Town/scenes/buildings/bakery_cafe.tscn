@@ -1,0 +1,944 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/bread.tscn" id="e1"]
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/baguette.tscn" id="e2"]
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/croissant.tscn" id="e3"]
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/cake.tscn" id="e4"]
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/donut.tscn" id="e5"]
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/cookie.tscn" id="e6"]
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/coffee_maker.tscn" id="e7"]
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/teapot.tscn" id="e8"]
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/cup.tscn" id="e9"]
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/bowl.tscn" id="e10"]
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/plate.tscn" id="e11"]
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/spoon.tscn" id="e12"]
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/knife.tscn" id="e13"]
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/rolling_pin.tscn" id="e14"]
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/whisk.tscn" id="e15"]
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/apron.tscn" id="e16"]
+
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/coffee.tscn" id="fv_coffee"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/breakfast.tscn" id="fv_breakfast"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/lunch.tscn" id="fv_lunch"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/dinner.tscn" id="fv_dinner"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/menu.tscn" id="fv_menu"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/bill.tscn" id="fv_bill"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/food.tscn" id="fv_food"]
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.89412, 0.87451, 0.82353, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r1"]
+size = Vector3(14, 0.1, 22)
+
+[sub_resource type="BoxShape3D" id="r3"]
+size = Vector3(14, 0.1, 22)
+
+[sub_resource type="StandardMaterial3D" id="r5"]
+albedo_color = Color(0.89412, 0.90588, 0.8902, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r4"]
+size = Vector3(14, 4.6, 0.18)
+
+[sub_resource type="BoxShape3D" id="r6"]
+size = Vector3(14, 4.6, 0.18)
+
+[sub_resource type="BoxMesh" id="r7"]
+size = Vector3(0.18, 4.6, 22)
+
+[sub_resource type="BoxShape3D" id="r8"]
+size = Vector3(0.18, 4.6, 22)
+
+[sub_resource type="BoxMesh" id="r9"]
+size = Vector3(0.18, 4.6, 22)
+
+[sub_resource type="BoxShape3D" id="r10"]
+size = Vector3(0.18, 4.6, 22)
+
+[sub_resource type="BoxMesh" id="r11"]
+size = Vector3(5.2, 4.6, 0.18)
+
+[sub_resource type="BoxShape3D" id="r12"]
+size = Vector3(5.2, 4.6, 0.18)
+
+[sub_resource type="BoxMesh" id="r13"]
+size = Vector3(5.2, 4.6, 0.18)
+
+[sub_resource type="BoxShape3D" id="r14"]
+size = Vector3(5.2, 4.6, 0.18)
+
+[sub_resource type="BoxMesh" id="r15"]
+size = Vector3(3.6, 1.2, 0.18)
+
+[sub_resource type="BoxShape3D" id="r16"]
+size = Vector3(3.6, 1.2, 0.18)
+
+[sub_resource type="StandardMaterial3D" id="r18"]
+albedo_color = Color(0.78431, 0.6, 0.47451, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r17"]
+size = Vector3(14.3, 0.18, 22.3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wvn3m"]
+size = Vector3(14.3, 0.18, 22.3)
+
+[sub_resource type="BoxMesh" id="r19"]
+size = Vector3(13.5, 0.75, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="r21"]
+albedo_color = Color(0.84706, 0.83529, 0.79608, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r20"]
+size = Vector3(3.5, 0.04, 3)
+
+[sub_resource type="StandardMaterial3D" id="r23"]
+albedo_color = Color(0.78039, 0.7098, 0.58824, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r22"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxShape3D" id="r24"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="StandardMaterial3D" id="r26"]
+albedo_color = Color(0.67843, 0.48235, 0.31373, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r25"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r27"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r28"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxShape3D" id="r29"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxMesh" id="r30"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r31"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r32"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxShape3D" id="r33"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxMesh" id="r34"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r35"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r36"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxShape3D" id="r37"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxMesh" id="r38"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r39"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r40"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxShape3D" id="r41"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxMesh" id="r42"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r43"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r44"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxShape3D" id="r45"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxMesh" id="r46"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r47"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r48"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxShape3D" id="r49"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxMesh" id="r50"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r51"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r52"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxShape3D" id="r53"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxMesh" id="r54"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r55"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r56"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxShape3D" id="r57"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxMesh" id="r58"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r59"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r60"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxShape3D" id="r61"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxMesh" id="r62"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r63"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r64"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxShape3D" id="r65"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxMesh" id="r66"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r67"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r68"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxShape3D" id="r69"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxMesh" id="r70"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r71"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r72"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxShape3D" id="r73"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxMesh" id="r74"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r75"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r76"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxShape3D" id="r77"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxMesh" id="r78"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r79"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r80"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxShape3D" id="r81"]
+size = Vector3(1.55, 0.1, 1.4)
+
+[sub_resource type="BoxMesh" id="r82"]
+size = Vector3(0.09, 0.94, 1.2)
+
+[sub_resource type="BoxMesh" id="r83"]
+size = Vector3(0.09, 0.94, 1.2)
+
+
+[sub_resource type="BoxMesh" id="food_shelf_mesh"]
+size = Vector3(1.30, 0.12, 19.7)
+
+[sub_resource type="StandardMaterial3D" id="food_shelf_mat"]
+albedo_color = Color(0.66, 0.47, 0.32, 1)
+roughness = 0.79
+
+[sub_resource type="BoxMesh" id="food_shelf_bracket_mesh"]
+size = Vector3(0.20, 0.43, 0.22)
+
+[sub_resource type="StandardMaterial3D" id="food_shelf_bracket_mat"]
+albedo_color = Color(0.32, 0.40, 0.37, 1)
+roughness = 0.76
+
+[node name="BAKERYAndCAFE" type="Node3D" unique_id=1918039772]
+
+[node name="Floor_2" type="MeshInstance3D" parent="." unique_id=645417292]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.02, 0)
+material_override = SubResource("r2")
+mesh = SubResource("r1")
+
+[node name="FloorBody" type="StaticBody3D" parent="." unique_id=521350031]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="FloorBody" unique_id=1068593383]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.02, 0)
+shape = SubResource("r3")
+
+[node name="Rear_5" type="MeshInstance3D" parent="." unique_id=1389874473]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, 11)
+material_override = SubResource("r5")
+mesh = SubResource("r4")
+metadata/exterior_word = "bakery"
+
+[node name="RearBody" type="StaticBody3D" parent="." unique_id=396701114]
+collision_mask = 0
+metadata/exterior_word = "bakery"
+
+[node name="Shape" type="CollisionShape3D" parent="RearBody" unique_id=1533285787]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, 11)
+shape = SubResource("r6")
+
+[node name="Left_7" type="MeshInstance3D" parent="." unique_id=1336275279]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 2.3, 0)
+material_override = SubResource("r5")
+mesh = SubResource("r7")
+metadata/exterior_word = "bakery"
+
+[node name="LeftBody" type="StaticBody3D" parent="." unique_id=1442353694]
+collision_mask = 0
+metadata/exterior_word = "bakery"
+
+[node name="Shape" type="CollisionShape3D" parent="LeftBody" unique_id=189816978]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 2.3, 0)
+shape = SubResource("r8")
+
+[node name="Right_9" type="MeshInstance3D" parent="." unique_id=4429918]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 2.3, 0)
+material_override = SubResource("r5")
+mesh = SubResource("r9")
+metadata/exterior_word = "bakery"
+
+[node name="RightBody" type="StaticBody3D" parent="." unique_id=227269285]
+collision_mask = 0
+metadata/exterior_word = "bakery"
+
+[node name="Shape" type="CollisionShape3D" parent="RightBody" unique_id=1938170626]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 2.3, 0)
+shape = SubResource("r10")
+
+[node name="FrontLeft_11" type="MeshInstance3D" parent="." unique_id=2135991650]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.4, 2.3, -11)
+material_override = SubResource("r5")
+mesh = SubResource("r11")
+metadata/exterior_word = "bakery"
+
+[node name="FrontLeftBody" type="StaticBody3D" parent="." unique_id=421621977]
+collision_mask = 0
+metadata/exterior_word = "bakery"
+
+[node name="Shape" type="CollisionShape3D" parent="FrontLeftBody" unique_id=145311797]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.4, 2.3, -11)
+shape = SubResource("r12")
+
+[node name="FrontRight_13" type="MeshInstance3D" parent="." unique_id=1671099293]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.4, 2.3, -11)
+material_override = SubResource("r5")
+mesh = SubResource("r13")
+metadata/exterior_word = "bakery"
+
+[node name="FrontRightBody" type="StaticBody3D" parent="." unique_id=1603721288]
+collision_mask = 0
+metadata/exterior_word = "bakery"
+
+[node name="Shape" type="CollisionShape3D" parent="FrontRightBody" unique_id=1248362371]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.4, 2.3, -11)
+shape = SubResource("r14")
+
+[node name="Lintel_15" type="MeshInstance3D" parent="." unique_id=917139001]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, -11)
+material_override = SubResource("r5")
+mesh = SubResource("r15")
+metadata/exterior_word = "bakery"
+
+[node name="LintelBody" type="StaticBody3D" parent="." unique_id=474764814]
+collision_mask = 0
+metadata/exterior_word = "bakery"
+
+[node name="Shape" type="CollisionShape3D" parent="LintelBody" unique_id=1704650622]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, -11)
+shape = SubResource("r16")
+
+[node name="Roof_18" type="MeshInstance3D" parent="." unique_id=636281372]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.7, 0)
+material_override = SubResource("r18")
+mesh = SubResource("r17")
+metadata/exterior_word = "bakery"
+
+[node name="RoofSolid" type="StaticBody3D" parent="Roof_18" unique_id=2082660560]
+
+[node name="Collision" type="CollisionShape3D" parent="Roof_18/RoofSolid" unique_id=1359659457]
+shape = SubResource("BoxShape3D_wvn3m")
+
+[node name="SignBoard_19" type="MeshInstance3D" parent="." unique_id=893022833]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.75, -11.14)
+material_override = SubResource("r18")
+mesh = SubResource("r19")
+metadata/exterior_word = "bakery"
+
+[node name="Section88" type="Label3D" parent="." unique_id=84246201]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 3.75, -11.21)
+pixel_size = 0.007
+modulate = Color(0.18, 0.24, 0.27, 1)
+text = "BAKERY & CAFE"
+font_size = 52
+outline_size = 0
+
+[node name="InteriorLight96" type="OmniLight3D" parent="." unique_id=1017684300]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.8, -6.16)
+light_energy = 0.65
+omni_range = 11.0
+omni_attenuation = 0.6
+
+[node name="InteriorLight102" type="OmniLight3D" parent="." unique_id=630726540]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.8, 6.16)
+light_energy = 0.65
+omni_range = 11.0
+omni_attenuation = 0.6
+
+[node name="EntrancePath_21" type="MeshInstance3D" parent="." unique_id=1636611732]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.025, -12.5)
+material_override = SubResource("r21")
+mesh = SubResource("r20")
+
+[node name="DisplayTopbread_23" type="MeshInstance3D" parent="." unique_id=1132886278]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.35, 0.96, -9)
+material_override = SubResource("r23")
+mesh = SubResource("r22")
+
+[node name="DisplayBodybread" type="StaticBody3D" parent="." unique_id=252211726]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodybread" unique_id=1639921207]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.35, 0.96, -9)
+shape = SubResource("r24")
+
+[node name="DisplayLeg_26" type="MeshInstance3D" parent="." unique_id=1376533821]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.9, 0.47, -9)
+material_override = SubResource("r26")
+mesh = SubResource("r25")
+
+[node name="DisplayLeg_27" type="MeshInstance3D" parent="." unique_id=1585529328]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.8, 0.47, -9)
+material_override = SubResource("r26")
+mesh = SubResource("r27")
+
+[node name="Bread" type="Node3D" parent="." unique_id=1651179733 instance=ExtResource("e1")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -5.35, 1.02, -9)
+metadata/word_key = "bread"
+metadata/learning_object = true
+
+[node name="DisplayTopbaguette_28" type="MeshInstance3D" parent="." unique_id=624424547]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.35, 0.96, -6.428571)
+material_override = SubResource("r23")
+mesh = SubResource("r28")
+
+[node name="DisplayBodybaguette" type="StaticBody3D" parent="." unique_id=1605963105]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodybaguette" unique_id=1871091604]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.35, 0.96, -6.428571)
+shape = SubResource("r29")
+
+[node name="DisplayLeg_30" type="MeshInstance3D" parent="." unique_id=1199234712]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.9, 0.47, -6.428571)
+material_override = SubResource("r26")
+mesh = SubResource("r30")
+
+[node name="DisplayLeg_31" type="MeshInstance3D" parent="." unique_id=854532290]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.8, 0.47, -6.428571)
+material_override = SubResource("r26")
+mesh = SubResource("r31")
+
+[node name="Baguette" type="Node3D" parent="." unique_id=1730268562 instance=ExtResource("e2")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -5.35, 1.02, -6.428571)
+metadata/word_key = "baguette"
+metadata/learning_object = true
+
+[node name="DisplayTopcroissant_32" type="MeshInstance3D" parent="." unique_id=2005567220]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.35, 0.96, -3.857143)
+material_override = SubResource("r23")
+mesh = SubResource("r32")
+
+[node name="DisplayBodycroissant" type="StaticBody3D" parent="." unique_id=1859158864]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodycroissant" unique_id=1540238329]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.35, 0.96, -3.857143)
+shape = SubResource("r33")
+
+[node name="DisplayLeg_34" type="MeshInstance3D" parent="." unique_id=1137031082]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.9, 0.47, -3.857143)
+material_override = SubResource("r26")
+mesh = SubResource("r34")
+
+[node name="DisplayLeg_35" type="MeshInstance3D" parent="." unique_id=1092455010]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.8, 0.47, -3.857143)
+material_override = SubResource("r26")
+mesh = SubResource("r35")
+
+[node name="Croissant" type="Node3D" parent="." unique_id=148222540 instance=ExtResource("e3")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -5.35, 1.02, -3.857143)
+metadata/word_key = "croissant"
+metadata/learning_object = true
+
+[node name="DisplayTopcake_36" type="MeshInstance3D" parent="." unique_id=249794753]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.35, 0.96, -1.285714)
+material_override = SubResource("r23")
+mesh = SubResource("r36")
+
+[node name="DisplayBodycake" type="StaticBody3D" parent="." unique_id=1708068102]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodycake" unique_id=1618380993]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.35, 0.96, -1.285714)
+shape = SubResource("r37")
+
+[node name="DisplayLeg_38" type="MeshInstance3D" parent="." unique_id=851934736]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.9, 0.47, -1.285714)
+material_override = SubResource("r26")
+mesh = SubResource("r38")
+
+[node name="DisplayLeg_39" type="MeshInstance3D" parent="." unique_id=908779197]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.8, 0.47, -1.285714)
+material_override = SubResource("r26")
+mesh = SubResource("r39")
+
+[node name="Cake" type="Node3D" parent="." unique_id=474957884 instance=ExtResource("e4")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -5.35, 1.02, -1.285714)
+metadata/word_key = "cake"
+metadata/learning_object = true
+
+[node name="DisplayTopdonut_40" type="MeshInstance3D" parent="." unique_id=2032126308]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.35, 0.96, 1.285714)
+material_override = SubResource("r23")
+mesh = SubResource("r40")
+
+[node name="DisplayBodydonut" type="StaticBody3D" parent="." unique_id=671451043]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodydonut" unique_id=1752657926]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.35, 0.96, 1.285714)
+shape = SubResource("r41")
+
+[node name="DisplayLeg_42" type="MeshInstance3D" parent="." unique_id=1156681008]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.9, 0.47, 1.285714)
+material_override = SubResource("r26")
+mesh = SubResource("r42")
+
+[node name="DisplayLeg_43" type="MeshInstance3D" parent="." unique_id=1109988714]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.8, 0.47, 1.285714)
+material_override = SubResource("r26")
+mesh = SubResource("r43")
+
+[node name="Donut" type="Node3D" parent="." unique_id=312829556 instance=ExtResource("e5")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -5.35, 1.02, 1.285714)
+metadata/word_key = "donut"
+metadata/learning_object = true
+
+[node name="DisplayTopcookie_44" type="MeshInstance3D" parent="." unique_id=1514407375]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.35, 0.96, 3.857143)
+material_override = SubResource("r23")
+mesh = SubResource("r44")
+
+[node name="DisplayBodycookie" type="StaticBody3D" parent="." unique_id=317039888]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodycookie" unique_id=2056436240]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.35, 0.96, 3.857143)
+shape = SubResource("r45")
+
+[node name="DisplayLeg_46" type="MeshInstance3D" parent="." unique_id=1089858229]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.9, 0.47, 3.857143)
+material_override = SubResource("r26")
+mesh = SubResource("r46")
+
+[node name="DisplayLeg_47" type="MeshInstance3D" parent="." unique_id=1204364874]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.8, 0.47, 3.857143)
+material_override = SubResource("r26")
+mesh = SubResource("r47")
+
+[node name="Cookie" type="Node3D" parent="." unique_id=1135028341 instance=ExtResource("e6")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -5.35, 1.02, 3.857143)
+metadata/word_key = "cookie"
+metadata/learning_object = true
+
+[node name="DisplayTopcoffee_machine_48" type="MeshInstance3D" parent="." unique_id=2009494830]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.35, 0.96, 6.428571)
+material_override = SubResource("r23")
+mesh = SubResource("r48")
+
+[node name="DisplayBodycoffee_machine" type="StaticBody3D" parent="." unique_id=49976326]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodycoffee_machine" unique_id=1572277343]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.35, 0.96, 6.428571)
+shape = SubResource("r49")
+
+[node name="DisplayLeg_50" type="MeshInstance3D" parent="." unique_id=598358828]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.9, 0.47, 6.428571)
+material_override = SubResource("r26")
+mesh = SubResource("r50")
+
+[node name="DisplayLeg_51" type="MeshInstance3D" parent="." unique_id=989162259]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.8, 0.47, 6.428571)
+material_override = SubResource("r26")
+mesh = SubResource("r51")
+
+[node name="Coffee_Machine" type="Node3D" parent="." unique_id=1917098289 instance=ExtResource("e7")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -5.35, 1.02, 6.428571)
+metadata/word_key = "coffee maker"
+metadata/learning_object = true
+
+[node name="DisplayTopteapot_52" type="MeshInstance3D" parent="." unique_id=1087768055]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.35, 0.96, 9)
+material_override = SubResource("r23")
+mesh = SubResource("r52")
+
+[node name="DisplayBodyteapot" type="StaticBody3D" parent="." unique_id=1776737760]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodyteapot" unique_id=501173341]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.35, 0.96, 9)
+shape = SubResource("r53")
+
+[node name="DisplayLeg_54" type="MeshInstance3D" parent="." unique_id=2078757901]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.9, 0.47, 9)
+material_override = SubResource("r26")
+mesh = SubResource("r54")
+
+[node name="DisplayLeg_55" type="MeshInstance3D" parent="." unique_id=954739021]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.8, 0.47, 9)
+material_override = SubResource("r26")
+mesh = SubResource("r55")
+
+[node name="Teapot" type="Node3D" parent="." unique_id=1374093072 instance=ExtResource("e8")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -5.35, 1.02, 9)
+metadata/word_key = "teapot"
+metadata/learning_object = true
+
+[node name="DisplayTopcup_56" type="MeshInstance3D" parent="." unique_id=885149340]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.35, 0.96, -9)
+material_override = SubResource("r23")
+mesh = SubResource("r56")
+
+[node name="DisplayBodycup" type="StaticBody3D" parent="." unique_id=208400372]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodycup" unique_id=424402347]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.35, 0.96, -9)
+shape = SubResource("r57")
+
+[node name="DisplayLeg_58" type="MeshInstance3D" parent="." unique_id=193299848]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.8, 0.47, -9)
+material_override = SubResource("r26")
+mesh = SubResource("r58")
+
+[node name="DisplayLeg_59" type="MeshInstance3D" parent="." unique_id=1001990118]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.9, 0.47, -9)
+material_override = SubResource("r26")
+mesh = SubResource("r59")
+
+[node name="Cup" type="Node3D" parent="." unique_id=593051794 instance=ExtResource("e9")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 5.35, 1.02, -9)
+metadata/word_key = "cup"
+metadata/learning_object = true
+
+[node name="DisplayTopbowl_60" type="MeshInstance3D" parent="." unique_id=1889660998]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.35, 0.96, -6.428571)
+material_override = SubResource("r23")
+mesh = SubResource("r60")
+
+[node name="DisplayBodybowl" type="StaticBody3D" parent="." unique_id=1877140404]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodybowl" unique_id=1338748311]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.35, 0.96, -6.428571)
+shape = SubResource("r61")
+
+[node name="DisplayLeg_62" type="MeshInstance3D" parent="." unique_id=545851119]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.8, 0.47, -6.428571)
+material_override = SubResource("r26")
+mesh = SubResource("r62")
+
+[node name="DisplayLeg_63" type="MeshInstance3D" parent="." unique_id=1359570476]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.9, 0.47, -6.428571)
+material_override = SubResource("r26")
+mesh = SubResource("r63")
+
+[node name="Bowl" type="Node3D" parent="." unique_id=22711026 instance=ExtResource("e10")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 5.35, 1.02, -6.428571)
+metadata/word_key = "bowl"
+metadata/learning_object = true
+
+[node name="DisplayTopplate_64" type="MeshInstance3D" parent="." unique_id=355851891]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.35, 0.96, -3.857143)
+material_override = SubResource("r23")
+mesh = SubResource("r64")
+
+[node name="DisplayBodyplate" type="StaticBody3D" parent="." unique_id=2061748233]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodyplate" unique_id=636339806]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.35, 0.96, -3.857143)
+shape = SubResource("r65")
+
+[node name="DisplayLeg_66" type="MeshInstance3D" parent="." unique_id=1412853050]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.8, 0.47, -3.857143)
+material_override = SubResource("r26")
+mesh = SubResource("r66")
+
+[node name="DisplayLeg_67" type="MeshInstance3D" parent="." unique_id=2011669875]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.9, 0.47, -3.857143)
+material_override = SubResource("r26")
+mesh = SubResource("r67")
+
+[node name="Plate" type="Node3D" parent="." unique_id=1843560716 instance=ExtResource("e11")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 5.35, 1.02, -3.857143)
+metadata/word_key = "plate"
+metadata/learning_object = true
+
+[node name="DisplayTopspoon_68" type="MeshInstance3D" parent="." unique_id=235178367]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.35, 0.96, -1.285714)
+material_override = SubResource("r23")
+mesh = SubResource("r68")
+
+[node name="DisplayBodyspoon" type="StaticBody3D" parent="." unique_id=102893740]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodyspoon" unique_id=1038753571]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.35, 0.96, -1.285714)
+shape = SubResource("r69")
+
+[node name="DisplayLeg_70" type="MeshInstance3D" parent="." unique_id=81284688]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.8, 0.47, -1.285714)
+material_override = SubResource("r26")
+mesh = SubResource("r70")
+
+[node name="DisplayLeg_71" type="MeshInstance3D" parent="." unique_id=608667359]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.9, 0.47, -1.285714)
+material_override = SubResource("r26")
+mesh = SubResource("r71")
+
+[node name="Spoon" type="Node3D" parent="." unique_id=1277799368 instance=ExtResource("e12")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 5.35, 1.02, -1.285714)
+metadata/word_key = "spoon"
+metadata/learning_object = true
+
+[node name="DisplayTopknife_72" type="MeshInstance3D" parent="." unique_id=1062549097]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.35, 0.96, 1.285714)
+material_override = SubResource("r23")
+mesh = SubResource("r72")
+
+[node name="DisplayBodyknife" type="StaticBody3D" parent="." unique_id=1006507199]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodyknife" unique_id=1764172433]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.35, 0.96, 1.285714)
+shape = SubResource("r73")
+
+[node name="DisplayLeg_74" type="MeshInstance3D" parent="." unique_id=758622056]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.8, 0.47, 1.285714)
+material_override = SubResource("r26")
+mesh = SubResource("r74")
+
+[node name="DisplayLeg_75" type="MeshInstance3D" parent="." unique_id=1865165417]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.9, 0.47, 1.285714)
+material_override = SubResource("r26")
+mesh = SubResource("r75")
+
+[node name="Knife" type="Node3D" parent="." unique_id=565101779 instance=ExtResource("e13")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 5.35, 1.02, 1.285714)
+metadata/word_key = "knife"
+metadata/learning_object = true
+
+[node name="DisplayToprolling_pin_76" type="MeshInstance3D" parent="." unique_id=1546618317]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.35, 0.96, 3.857143)
+material_override = SubResource("r23")
+mesh = SubResource("r76")
+
+[node name="DisplayBodyrolling_pin" type="StaticBody3D" parent="." unique_id=1590747379]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodyrolling_pin" unique_id=2089569230]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.35, 0.96, 3.857143)
+shape = SubResource("r77")
+
+[node name="DisplayLeg_78" type="MeshInstance3D" parent="." unique_id=332017681]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.8, 0.47, 3.857143)
+material_override = SubResource("r26")
+mesh = SubResource("r78")
+
+[node name="DisplayLeg_79" type="MeshInstance3D" parent="." unique_id=2007855274]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.9, 0.47, 3.857143)
+material_override = SubResource("r26")
+mesh = SubResource("r79")
+
+[node name="Rolling_Pin" type="Node3D" parent="." unique_id=2138805200 instance=ExtResource("e14")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 5.35, 1.02, 3.857143)
+metadata/word_key = "rolling pin"
+metadata/learning_object = true
+
+[node name="DisplayTopwhisk_80" type="MeshInstance3D" parent="." unique_id=367338584]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.35, 0.96, 6.428571)
+material_override = SubResource("r23")
+mesh = SubResource("r80")
+
+[node name="DisplayBodywhisk" type="StaticBody3D" parent="." unique_id=50027677]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodywhisk" unique_id=1749170299]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.35, 0.96, 6.428571)
+shape = SubResource("r81")
+
+[node name="DisplayLeg_82" type="MeshInstance3D" parent="." unique_id=459508208]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.8, 0.47, 6.428571)
+material_override = SubResource("r26")
+mesh = SubResource("r82")
+
+[node name="DisplayLeg_83" type="MeshInstance3D" parent="." unique_id=1572839672]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.9, 0.47, 6.428571)
+material_override = SubResource("r26")
+mesh = SubResource("r83")
+
+[node name="Whisk" type="Node3D" parent="." unique_id=2009864319 instance=ExtResource("e15")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 5.35, 1.02, 6.428571)
+metadata/word_key = "whisk"
+metadata/learning_object = true
+
+[node name="Apron" type="Node3D" parent="." unique_id=1718968232 instance=ExtResource("e16")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 5.35, 0.1, 9)
+metadata/word_key = "apron"
+metadata/learning_object = true
+
+[node name="Section476" type="Label3D" parent="." unique_id=1616712055]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -5.2, 2.85, -10)
+pixel_size = 0.0045
+modulate = Color(0.18, 0.24, 0.27, 1)
+text = "BAKED GOODS & COFFEE"
+font_size = 52
+outline_size = 0
+
+[node name="Section484" type="Label3D" parent="." unique_id=795091288]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 5.2, 2.85, -10)
+pixel_size = 0.0045
+modulate = Color(0.18, 0.24, 0.27, 1)
+text = "TABLEWARE & BAKING"
+font_size = 52
+outline_size = 0
+
+[node name="EverydayVocabularyLeftShelf" type="MeshInstance3D" parent="."]
+position = Vector3(-5.35, 2.38, 0)
+mesh = SubResource("food_shelf_mesh")
+material_override = SubResource("food_shelf_mat")
+
+[node name="EverydayShelfSupportLeftFront" type="MeshInstance3D" parent="."]
+position = Vector3(-5.35, 2.11, -6.0)
+mesh = SubResource("food_shelf_bracket_mesh")
+material_override = SubResource("food_shelf_bracket_mat")
+
+[node name="EverydayShelfSupportLeftRear" type="MeshInstance3D" parent="."]
+position = Vector3(-5.35, 2.11, 6.0)
+mesh = SubResource("food_shelf_bracket_mesh")
+material_override = SubResource("food_shelf_bracket_mat")
+
+[node name="EverydayVocabularyRightShelf" type="MeshInstance3D" parent="."]
+position = Vector3(5.35, 2.38, 0)
+mesh = SubResource("food_shelf_mesh")
+material_override = SubResource("food_shelf_mat")
+
+[node name="EverydayShelfSupportRightFront" type="MeshInstance3D" parent="."]
+position = Vector3(5.35, 2.11, -6.0)
+mesh = SubResource("food_shelf_bracket_mesh")
+material_override = SubResource("food_shelf_bracket_mat")
+
+[node name="EverydayShelfSupportRightRear" type="MeshInstance3D" parent="."]
+position = Vector3(5.35, 2.11, 6.0)
+mesh = SubResource("food_shelf_bracket_mesh")
+material_override = SubResource("food_shelf_bracket_mat")
+
+[node name="Everyday_Coffee" parent="." instance=ExtResource("fv_coffee")]
+position = Vector3(-5.35, 2.46, -8.1)
+rotation_degrees = Vector3(0, -90, 0)
+metadata/word_key = "coffee"
+metadata/learning_object = true
+
+[node name="Everyday_Breakfast" parent="." instance=ExtResource("fv_breakfast")]
+position = Vector3(-5.35, 2.46, -3.4)
+rotation_degrees = Vector3(0, -90, 0)
+metadata/word_key = "breakfast"
+metadata/learning_object = true
+
+[node name="Everyday_Lunch" parent="." instance=ExtResource("fv_lunch")]
+position = Vector3(-5.35, 2.46, 1.0)
+rotation_degrees = Vector3(0, -90, 0)
+metadata/word_key = "lunch"
+metadata/learning_object = true
+
+[node name="Everyday_Dinner" parent="." instance=ExtResource("fv_dinner")]
+position = Vector3(-5.35, 2.46, 5.8)
+rotation_degrees = Vector3(0, -90, 0)
+metadata/word_key = "dinner"
+metadata/learning_object = true
+
+[node name="Everyday_Menu" parent="." instance=ExtResource("fv_menu")]
+position = Vector3(5.35, 2.46, -6.0)
+rotation_degrees = Vector3(0, 90, 0)
+metadata/word_key = "menu"
+metadata/learning_object = true
+
+[node name="Everyday_Bill" parent="." instance=ExtResource("fv_bill")]
+position = Vector3(5.35, 2.46, 0.0)
+rotation_degrees = Vector3(0, 90, 0)
+metadata/word_key = "bill"
+metadata/learning_object = true
+
+[node name="Everyday_Food" parent="." instance=ExtResource("fv_food")]
+position = Vector3(5.35, 2.46, 6.0)
+rotation_degrees = Vector3(0, 90, 0)
+metadata/word_key = "food"
+metadata/learning_object = true

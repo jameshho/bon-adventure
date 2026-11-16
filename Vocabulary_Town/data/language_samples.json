@@ -1,0 +1,191 @@
+{
+  "about": "Human-checked expected output of each language's rules module and of every phrase that uses a {slot:form}. tools/language_check.gd fails when an output differs, when a language lacks a section, or when a {slot:form} phrase has no sample in a language. Add samples (checked by a speaker of the language) whenever a language, form or grammar phrase is added. Sections: numbers [n, words], numbers_before_noun [n, words], money [cents, words], forms [word key, form, gender, text], phrases [phrase id, values, text]; readings (languages with reading data, pinyin) [text, reading].",
+  "en": {
+    "numbers": [
+      [0, "zero"],
+      [1, "one"],
+      [13, "thirteen"],
+      [21, "twenty-one"],
+      [40, "forty"],
+      [100, "one hundred"],
+      [101, "one hundred one"],
+      [147, "one hundred forty-seven"],
+      [1000, "one thousand"],
+      [21001, "twenty-one thousand one"],
+      [999999, "nine hundred ninety-nine thousand nine hundred ninety-nine"]
+    ],
+    "numbers_before_noun": [
+      [1, "one"],
+      [21, "twenty-one"]
+    ],
+    "money": [
+      [0, "zero dollars"],
+      [1, "one cent"],
+      [25, "twenty-five cents"],
+      [100, "one dollar"],
+      [101, "one dollar and one cent"],
+      [10101, "one hundred one dollars and one cent"],
+      [14738, "one hundred forty-seven dollars and thirty-eight cents"],
+      [300000, "three thousand dollars"]
+    ],
+    "forms": [
+      ["salesperson", "definite", "m", "the salesperson"],
+      ["cashier", "definite", "f", "the cashier"],
+      ["person", "definite", "", "the person"],
+      ["cousin", "label", "f", "cousin"],
+      ["older", "label", "", "older"]
+    ],
+    "phrases": [
+      ["shop.return_to_clerk", {"clerk": {"word": "salesperson", "gender": "m"}}, "Great. Please return to the salesperson."],
+      ["posters.person", {"person": {"word": "uncle", "gender": "m"}}, "uncle"],
+      ["family.q_relation", {"relation": {"word": "cousin", "gender": "f"}, "name": "Ana"}, "Who is Ana's cousin?"],
+      ["family.q_relation", {"relation": {"word": "grandfather", "gender": "m"}, "name": "Luis"}, "Who is Luis's grandfather?"],
+      ["warehouse.task_put", {"item": {"phrase": "warehouse.thing_box", "values": {"color": {"phrase": "warehouse.color_f_red"}, "size": {"phrase": "warehouse.box_size_small"}}}, "place": {"phrase": "warehouse.place_left", "values": {"ref": {"phrase": "warehouse.thing_barrel", "values": {"color": {"phrase": "warehouse.color_m_blue"}}}}}}, "Put the small red box to the left of the blue barrel."]
+    ]
+  },
+  "es": {
+    "numbers": [
+      [0, "cero"],
+      [1, "uno"],
+      [16, "dieciséis"],
+      [21, "veintiuno"],
+      [22, "veintidós"],
+      [31, "treinta y uno"],
+      [100, "cien"],
+      [101, "ciento uno"],
+      [500, "quinientos"],
+      [1000, "mil"],
+      [1997, "mil novecientos noventa y siete"],
+      [21000, "veintiún mil"],
+      [2001, "dos mil uno"]
+    ],
+    "numbers_before_noun": [
+      [1, "un"],
+      [21, "veintiún"],
+      [101, "ciento un"],
+      [31, "treinta y un"]
+    ],
+    "money": [
+      [25, "veinticinco centavos"],
+      [1, "un centavo"],
+      [100, "un dólar"],
+      [101, "un dólar con un centavo"],
+      [200, "dos dólares"],
+      [2100, "veintiún dólares"],
+      [2101, "veintiún dólares con un centavo"],
+      [3100, "treinta y un dólares"],
+      [10000, "cien dólares"],
+      [10001, "cien dólares con un centavo"],
+      [10100, "ciento un dólares"],
+      [10138, "ciento un dólares con treinta y ocho centavos"],
+      [14738, "ciento cuarenta y siete dólares con treinta y ocho centavos"],
+      [20000, "doscientos dólares"],
+      [30000, "trescientos dólares"],
+      [29999, "doscientos noventa y nueve dólares con noventa y nueve centavos"],
+      [50000, "quinientos dólares"],
+      [100000, "mil dólares"],
+      [100100, "mil un dólares"],
+      [200000, "dos mil dólares"],
+      [2100100, "veintiún mil un dólares"],
+      [12345, "ciento veintitrés dólares con cuarenta y cinco centavos"],
+      [1000, "diez dólares"],
+      [1500, "quince dólares"],
+      [1599, "quince dólares con noventa y nueve centavos"],
+      [2999, "veintinueve dólares con noventa y nueve centavos"],
+      [7005, "setenta dólares con cinco centavos"],
+      [300000, "tres mil dólares"],
+      [0, "cero dólares"]
+    ],
+    "forms": [
+      ["salesperson", "definite", "m", "el vendedor"],
+      ["salesperson", "definite", "f", "la vendedora"],
+      ["cashier", "definite", "m", "el cajero"],
+      ["person", "definite", "", "la persona"],
+      ["cousin", "label", "f", "la prima"],
+      ["older", "label", "", "mayor"]
+    ],
+    "phrases": [
+      ["shop.return_to_clerk", {"clerk": {"word": "salesperson", "gender": "m"}}, "Muy bien. Por favor, vuelve con el vendedor."],
+      ["shop.return_to_clerk", {"clerk": {"word": "cashier", "gender": "f"}}, "Muy bien. Por favor, vuelve con la cajera."],
+      ["posters.person", {"person": {"word": "uncle", "gender": "m"}}, "el tío"],
+      ["family.q_relation", {"relation": {"word": "cousin", "gender": "f"}, "name": "Ana"}, "¿Quién es la prima de Ana?"],
+      ["family.q_relation", {"relation": {"word": "grandfather", "gender": "m"}, "name": "Luis"}, "¿Quién es el abuelo de Luis?"],
+      ["warehouse.task_take_out", {"item": {"phrase": "warehouse.thing_barrel", "values": {"color": {"phrase": "warehouse.color_m_red"}}}, "ref": {"phrase": "warehouse.thing_container_blue"}}, "Saca el barril rojo del contenedor azul."],
+      ["warehouse.task_go", {"ref": {"phrase": "warehouse.thing_rack_B"}}, "Ve al estante B."],
+      ["warehouse.task_put", {"item": {"phrase": "warehouse.thing_box", "values": {"color": {"phrase": "warehouse.color_f_red"}, "size": {"phrase": "warehouse.box_size_small"}}}, "place": {"phrase": "warehouse.place_left", "values": {"ref": {"phrase": "warehouse.thing_barrel", "values": {"color": {"phrase": "warehouse.color_m_blue"}}}}}}, "Pon la caja roja pequeña a la izquierda del barril azul."]
+    ]
+  },
+  "zh": {
+    "numbers": [
+      [0, "零"],
+      [1, "一"],
+      [2, "二"],
+      [10, "十"],
+      [11, "十一"],
+      [20, "二十"],
+      [21, "二十一"],
+      [100, "一百"],
+      [101, "一百零一"],
+      [110, "一百一十"],
+      [1000, "一千"],
+      [1001, "一千零一"],
+      [1010, "一千零一十"],
+      [1997, "一千九百九十七"],
+      [2001, "二千零一"],
+      [10000, "一萬"],
+      [10010, "一萬零一十"],
+      [21000, "二萬一千"],
+      [100000, "十萬"],
+      [999999, "九十九萬九千九百九十九"]
+    ],
+    "numbers_before_noun": [
+      [2, "兩"],
+      [1, "一"],
+      [12, "十二"]
+    ],
+    "money": [
+      [0, "零美元"],
+      [1, "一美仙"],
+      [2, "兩美仙"],
+      [25, "二十五美仙"],
+      [100, "一美元"],
+      [200, "兩美元"],
+      [101, "一美元一美仙"],
+      [1000, "十美元"],
+      [14738, "一百四十七美元三十八美仙"],
+      [100000, "一千美元"]
+    ],
+    "forms": [
+      ["grandfather", "label", "m", "爺爺 / 公公"],
+      ["father", "definite", "", "爸爸"],
+      ["older", "label", "", "年長"]
+    ],
+    "phrases": [
+      ["shop.return_to_clerk", {"clerk": {"word": "salesperson", "gender": "m"}}, "很好。請回到售貨員那裏。"],
+      ["shop.return_to_clerk", {"clerk": {"word": "cashier", "gender": "f"}}, "很好。請回到收銀員那裏。"],
+      ["posters.person", {"person": {"word": "uncle", "gender": "m"}}, "伯父 / 叔叔 / 舅父 / 姑丈 / 姨丈"],
+      ["family.q_relation", {"relation": {"word": "grandfather", "gender": "m", "kin": {"side": "maternal"}}, "name": "嘉欣"}, "嘉欣的公公是誰？"],
+      ["family.q_relation", {"relation": {"word": "cousin", "gender": "f", "kin": {"side": "paternal", "link": "m", "elder": false}}, "name": "家明"}, "家明的堂妹是誰？"],
+      ["family.q_relation", {"relation": {"word": "cousin", "gender": "m", "kin": {"side": "maternal", "link": "m", "elder": true}}, "name": "家明"}, "家明的表哥是誰？"],
+      ["family.q_relation", {"relation": {"word": "aunt", "gender": "f", "kin": {"side": "paternal", "by_marriage": true, "elder": false, "link": "m"}}, "name": "曉彤"}, "曉彤的嬸嬸是誰？"],
+      ["family.q_relation", {"relation": {"word": "nephew", "gender": "m", "kin": {"by_marriage": true, "side": "maternal", "link": "m"}}, "name": "志偉"}, "志偉的內姪是誰？"],
+      ["warehouse.task_put", {"item": {"phrase": "warehouse.thing_box", "values": {"color": {"phrase": "warehouse.color_f_red"}, "size": {"phrase": "warehouse.box_size_small"}}}, "place": {"phrase": "warehouse.place_left", "values": {"ref": {"phrase": "warehouse.thing_barrel", "values": {"color": {"phrase": "warehouse.color_m_blue"}}}}}}, "把紅色的小紙箱放在藍色的木桶左邊。"]
+    ],
+    "readings": [
+      ["嘉欣的公公是誰？", "Jiāxīn de gōnggong shì shéi?"],
+      ["在量度枱上量小包裹。", "Zài liángdù tái shàng liáng xiǎo bāoguǒ."],
+      ["一百四十七美元三十八美仙", "yībǎi sìshíqī měiyuán sānshíbā měixiān"],
+      ["好的，當然", "Hǎo de, dāngrán"],
+      ["李醫生的家庭遊戲", "Lǐ yīshēng de jiātíng yóuxì"],
+      ["做得好！謝謝你的幫忙。", "Zuò de hǎo! Xièxie nǐ de bāngmáng."],
+      ["孫兒", "sūn'ér"],
+      ["一千九百九十七", "yīqiān jiǔbǎi jiǔshíqī"],
+      ["二萬一千", "èrwàn yīqiān"],
+      ["嘉怡和國強，誰比較年長？", "Jiāyí hé Guóqiáng, shéi bǐjiào niánzhǎng?"],
+      ["誰在三月出生？", "Shéi zài sānyuè chūshēng?"],
+      ["阿姨，你好！", "Āyí, nǐ hǎo!"],
+      ["爺爺 / 公公", "yéye / gōnggong"],
+      ["45歲", "45 suì"]
+    ]
+  }
+}

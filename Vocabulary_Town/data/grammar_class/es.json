@@ -1,0 +1,350 @@
+{
+  "about": "Grammar Classroom questions taught in Spanish (Lana's class in the school; scripts/learning/grammar_questions.gd reads them, scripts/learning/grammar_session.gd plays them; guide: docs/guides/GRAMMAR_CLASS.md). One file per taught language, named by its code in data/languages.json; a language without a file has no class. Each question: 'id' (unique, never reused), 'topic' (a key of 'topics'), 'level' (1 = beginner), 'text' (the sentence in this language with exactly one ___ blank), 'choices' (four different answers in this language; the order here does not matter, desks are shuffled), 'answer' (one of the choices: the answer is the word itself, so shuffling can never change it), 'explain' (one short reason per OTHER language: the player's native language), 'meaning' (optional: the sentence in each other language) and, for Chinese, 'noun' (the words.json key of the noun, so the class uses the game's own word). Every wrong choice must be impossible in that sentence, not just less usual; sentences where two answers work are left out (user decisions 6 Nov 2026: Chinese uses only measure words that are the same in Mandarin and Hong Kong writing; no Simplified Chinese; no made-up answers at runtime). Checked by tools/language_check.gd. Chinese and the Chinese explanations are Claude's draft, awaiting review by a speaker.",
+  "language": "es",
+  "topics": {
+    "ser_estar": {
+      "name": {
+        "en": "Ser or estar",
+        "zh": "ser 還是 estar"
+      }
+    }
+  },
+  "questions": [
+    {
+      "id": "es-001",
+      "topic": "ser_estar",
+      "level": 1,
+      "text": "Yo ___ cansado ahora.",
+      "choices": [
+        "estoy",
+        "soy",
+        "estás",
+        "estamos"
+      ],
+      "answer": "estoy",
+      "explain": {
+        "en": "Estar describes a condition; estoy goes with yo.",
+        "zh": "estar 用來描述狀態；yo 要配 estoy。"
+      },
+      "meaning": {
+        "en": "I am tired now.",
+        "zh": "我現在很累。"
+      }
+    },
+    {
+      "id": "es-002",
+      "topic": "ser_estar",
+      "level": 1,
+      "text": "Ella ___ médica.",
+      "choices": [
+        "es",
+        "está",
+        "eres",
+        "estoy"
+      ],
+      "answer": "es",
+      "explain": {
+        "en": "Ser is used for jobs; es goes with ella.",
+        "zh": "職業用 ser；ella 要配 es。"
+      },
+      "meaning": {
+        "en": "She is a doctor.",
+        "zh": "她是醫生。"
+      }
+    },
+    {
+      "id": "es-003",
+      "topic": "ser_estar",
+      "level": 1,
+      "text": "Nosotros ___ en casa.",
+      "choices": [
+        "estamos",
+        "somos",
+        "están",
+        "estoy"
+      ],
+      "answer": "estamos",
+      "explain": {
+        "en": "Estar tells where someone is; estamos goes with nosotros.",
+        "zh": "位置用 estar；nosotros 要配 estamos。"
+      },
+      "meaning": {
+        "en": "We are at home.",
+        "zh": "我們在家。"
+      }
+    },
+    {
+      "id": "es-004",
+      "topic": "ser_estar",
+      "level": 1,
+      "text": "Mi madre ___ en la cocina.",
+      "choices": [
+        "está",
+        "es",
+        "estás",
+        "son"
+      ],
+      "answer": "está",
+      "explain": {
+        "en": "Estar tells where a person is.",
+        "zh": "人在哪裡用 estar。"
+      },
+      "meaning": {
+        "en": "My mother is in the kitchen.",
+        "zh": "我媽媽在廚房。"
+      }
+    },
+    {
+      "id": "es-005",
+      "topic": "ser_estar",
+      "level": 1,
+      "text": "Tú ___ de México.",
+      "choices": [
+        "eres",
+        "estás",
+        "es",
+        "somos"
+      ],
+      "answer": "eres",
+      "explain": {
+        "en": "Ser tells where someone is from; eres goes with tú.",
+        "zh": "來自哪裡用 ser；tú 要配 eres。"
+      },
+      "meaning": {
+        "en": "You are from Mexico.",
+        "zh": "你來自墨西哥。"
+      }
+    },
+    {
+      "id": "es-006",
+      "topic": "ser_estar",
+      "level": 1,
+      "text": "Ellos ___ estudiantes.",
+      "choices": [
+        "son",
+        "están",
+        "somos",
+        "es"
+      ],
+      "answer": "son",
+      "explain": {
+        "en": "Ser tells who someone is; son goes with ellos.",
+        "zh": "身分用 ser；ellos 要配 son。"
+      },
+      "meaning": {
+        "en": "They are students.",
+        "zh": "他們是學生。"
+      }
+    },
+    {
+      "id": "es-007",
+      "topic": "ser_estar",
+      "level": 1,
+      "text": "Hoy ___ lunes.",
+      "choices": [
+        "es",
+        "está",
+        "son",
+        "estoy"
+      ],
+      "answer": "es",
+      "explain": {
+        "en": "Ser is used for days and dates.",
+        "zh": "星期和日期用 ser。"
+      },
+      "meaning": {
+        "en": "Today is Monday.",
+        "zh": "今天是星期一。"
+      }
+    },
+    {
+      "id": "es-008",
+      "topic": "ser_estar",
+      "level": 1,
+      "text": "¿Dónde ___ el baño?",
+      "choices": [
+        "está",
+        "es",
+        "están",
+        "estás"
+      ],
+      "answer": "está",
+      "explain": {
+        "en": "Estar tells where a thing is.",
+        "zh": "東西在哪裡用 estar。"
+      },
+      "meaning": {
+        "en": "Where is the bathroom?",
+        "zh": "洗手間在哪裡？"
+      }
+    },
+    {
+      "id": "es-009",
+      "topic": "ser_estar",
+      "level": 1,
+      "text": "Yo ___ triste hoy.",
+      "choices": [
+        "estoy",
+        "soy",
+        "está",
+        "son"
+      ],
+      "answer": "estoy",
+      "explain": {
+        "en": "Estar describes a feeling right now.",
+        "zh": "此刻的感受用 estar。"
+      },
+      "meaning": {
+        "en": "I am sad today.",
+        "zh": "我今天很傷心。"
+      }
+    },
+    {
+      "id": "es-010",
+      "topic": "ser_estar",
+      "level": 1,
+      "text": "Ana ___ española.",
+      "choices": [
+        "es",
+        "está",
+        "eres",
+        "son"
+      ],
+      "answer": "es",
+      "explain": {
+        "en": "Ser is used for nationality.",
+        "zh": "國籍用 ser。"
+      },
+      "meaning": {
+        "en": "Ana is Spanish.",
+        "zh": "安娜是西班牙人。"
+      }
+    },
+    {
+      "id": "es-011",
+      "topic": "ser_estar",
+      "level": 1,
+      "text": "Ustedes ___ contentos.",
+      "choices": [
+        "están",
+        "son",
+        "estamos",
+        "está"
+      ],
+      "answer": "están",
+      "explain": {
+        "en": "Estar describes a feeling; están goes with ustedes.",
+        "zh": "感受用 estar；ustedes 要配 están。"
+      },
+      "meaning": {
+        "en": "You are all happy.",
+        "zh": "你們很開心。"
+      }
+    },
+    {
+      "id": "es-012",
+      "topic": "ser_estar",
+      "level": 1,
+      "text": "Mi padre ___ profesor.",
+      "choices": [
+        "es",
+        "está",
+        "soy",
+        "son"
+      ],
+      "answer": "es",
+      "explain": {
+        "en": "Ser is used for jobs.",
+        "zh": "職業用 ser。"
+      },
+      "meaning": {
+        "en": "My father is a teacher.",
+        "zh": "我爸爸是老師。"
+      }
+    },
+    {
+      "id": "es-013",
+      "topic": "ser_estar",
+      "level": 1,
+      "text": "Los libros ___ en la mesa.",
+      "choices": [
+        "están",
+        "son",
+        "está",
+        "estamos"
+      ],
+      "answer": "están",
+      "explain": {
+        "en": "Estar tells where things are; están goes with the plural libros.",
+        "zh": "位置用 estar；複數的 libros 要配 están。"
+      },
+      "meaning": {
+        "en": "The books are on the table.",
+        "zh": "書在桌子上。"
+      }
+    },
+    {
+      "id": "es-014",
+      "topic": "ser_estar",
+      "level": 1,
+      "text": "Yo ___ BonBon.",
+      "choices": [
+        "soy",
+        "estoy",
+        "es",
+        "eres"
+      ],
+      "answer": "soy",
+      "explain": {
+        "en": "Ser tells who you are.",
+        "zh": "說自己是誰用 ser。"
+      },
+      "meaning": {
+        "en": "I am BonBon.",
+        "zh": "我是邦邦。"
+      }
+    },
+    {
+      "id": "es-015",
+      "topic": "ser_estar",
+      "level": 1,
+      "text": "El perro ___ debajo de la mesa.",
+      "choices": [
+        "está",
+        "es",
+        "están",
+        "estoy"
+      ],
+      "answer": "está",
+      "explain": {
+        "en": "Estar tells where something is.",
+        "zh": "位置用 estar。"
+      },
+      "meaning": {
+        "en": "The dog is under the table.",
+        "zh": "狗在桌子下面。"
+      }
+    },
+    {
+      "id": "es-016",
+      "topic": "ser_estar",
+      "level": 1,
+      "text": "Nosotros ___ amigos.",
+      "choices": [
+        "somos",
+        "estamos",
+        "son",
+        "es"
+      ],
+      "answer": "somos",
+      "explain": {
+        "en": "Ser is used for relationships; somos goes with nosotros.",
+        "zh": "關係用 ser；nosotros 要配 somos。"
+      },
+      "meaning": {
+        "en": "We are friends.",
+        "zh": "我們是朋友。"
+      }
+    }
+  ]
+}

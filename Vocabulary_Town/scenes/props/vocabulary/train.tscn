@@ -1,0 +1,143 @@
+[gd_scene load_steps=14 format=3]
+
+[sub_resource type="BoxMesh" id="body"]
+size = Vector3(1.66, 0.68, 0.92)
+
+[sub_resource type="BoxMesh" id="roof"]
+size = Vector3(0.75, 0.12, 1.0)
+
+[sub_resource type="BoxMesh" id="cab"]
+size = Vector3(0.7, 0.75, 0.82)
+
+[sub_resource type="BoxMesh" id="window"]
+size = Vector3(0.025, 0.29, 0.45)
+
+[sub_resource type="BoxMesh" id="rail"]
+size = Vector3(2.06, 0.065, 0.12)
+
+[sub_resource type="CylinderMesh" id="wheel"]
+top_radius = 0.23
+bottom_radius = 0.23
+height = 0.115
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="chimney"]
+top_radius = 0.11
+bottom_radius = 0.11
+height = 0.42
+radial_segments = 16
+
+[sub_resource type="StandardMaterial3D" id="paint"]
+albedo_color = Color(0.196078431, 0.474509804, 0.564705882, 1)
+roughness = 0.75
+
+[sub_resource type="StandardMaterial3D" id="dark"]
+albedo_color = Color(0.156862745, 0.22745098, 0.28627451, 1)
+roughness = 0.75
+
+[sub_resource type="StandardMaterial3D" id="windowmat"]
+albedo_color = Color(0.662745098, 0.882352941, 0.909803922, 1)
+roughness = 0.75
+
+[sub_resource type="StandardMaterial3D" id="wheelmat"]
+albedo_color = Color(0.0941176471, 0.184313725, 0.211764706, 1)
+roughness = 0.75
+
+[sub_resource type="StandardMaterial3D" id="trackmat"]
+albedo_color = Color(0.690196078, 0.62745098, 0.501960784, 1)
+roughness = 0.75
+
+[sub_resource type="BoxShape3D" id="hit"]
+size = Vector3(2.12, 1.65, 1.38)
+
+[node name="Train" type="Node3D"]
+metadata/word_key = "train"
+metadata/learning_object = true
+
+[node name="EngineCarBody" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.62, 0)
+rotation_degrees = Vector3(0, 0, 0)
+mesh = SubResource("body")
+material_override = SubResource("paint")
+
+[node name="DriverCab" type="MeshInstance3D" parent="."]
+position = Vector3(-0.45, 1.1, 0)
+rotation_degrees = Vector3(0, 0, 0)
+mesh = SubResource("cab")
+material_override = SubResource("dark")
+
+[node name="Roof" type="MeshInstance3D" parent="."]
+position = Vector3(-0.45, 1.53, 0)
+rotation_degrees = Vector3(0, 0, 0)
+mesh = SubResource("roof")
+material_override = SubResource("paint")
+
+[node name="Window_0" type="MeshInstance3D" parent="."]
+position = Vector3(-0.43, 1.13, -0.5)
+rotation_degrees = Vector3(0, 0, 0)
+mesh = SubResource("window")
+material_override = SubResource("windowmat")
+
+[node name="Window_1" type="MeshInstance3D" parent="."]
+position = Vector3(-0.43, 1.13, 0.5)
+rotation_degrees = Vector3(0, 0, 0)
+mesh = SubResource("window")
+material_override = SubResource("windowmat")
+
+[node name="Wheel_0" type="MeshInstance3D" parent="."]
+position = Vector3(-0.56, 0.29, -0.51)
+rotation_degrees = Vector3(90, 0, 0)
+mesh = SubResource("wheel")
+material_override = SubResource("wheelmat")
+
+[node name="Wheel_1" type="MeshInstance3D" parent="."]
+position = Vector3(0.56, 0.29, -0.51)
+rotation_degrees = Vector3(90, 0, 0)
+mesh = SubResource("wheel")
+material_override = SubResource("wheelmat")
+
+[node name="Wheel_2" type="MeshInstance3D" parent="."]
+position = Vector3(-0.56, 0.29, 0.51)
+rotation_degrees = Vector3(90, 0, 0)
+mesh = SubResource("wheel")
+material_override = SubResource("wheelmat")
+
+[node name="Wheel_3" type="MeshInstance3D" parent="."]
+position = Vector3(0.56, 0.29, 0.51)
+rotation_degrees = Vector3(90, 0, 0)
+mesh = SubResource("wheel")
+material_override = SubResource("wheelmat")
+
+[node name="Smokestack" type="MeshInstance3D" parent="."]
+position = Vector3(0.48, 1.19, 0)
+rotation_degrees = Vector3(0, 0, 0)
+mesh = SubResource("chimney")
+material_override = SubResource("dark")
+
+[node name="LeftTrack" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.05, -0.52)
+rotation_degrees = Vector3(0, 0, 0)
+mesh = SubResource("rail")
+material_override = SubResource("trackmat")
+
+[node name="RightTrack" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.05, 0.52)
+rotation_degrees = Vector3(0, 0, 0)
+mesh = SubResource("rail")
+material_override = SubResource("trackmat")
+
+[node name="EngineNumber" type="Label3D" parent="."]
+position = Vector3(0, 0.69, -0.475)
+text = "TREN"
+font_size = 55
+pixel_size = 0.0032
+modulate = Color(1, 0.949019608, 0.760784314, 1)
+outline_size = 4
+
+[node name="Interaction" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Interaction"]
+position = Vector3(0, 0.82, 0)
+shape = SubResource("hit")

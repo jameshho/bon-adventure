@@ -1,0 +1,111 @@
+[gd_scene format=3]
+
+[sub_resource type="TorusMesh" id="r1"]
+inner_radius = 0.193
+outer_radius = 0.247
+rings = 24
+ring_segments = 8
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.15686, 0.20392, 0.24314, 1)
+roughness = 0.78
+
+[sub_resource type="CylinderMesh" id="r3"]
+top_radius = 0.018
+bottom_radius = 0.018
+height = 0.27380695754490975
+radial_segments = 16
+
+[sub_resource type="StandardMaterial3D" id="r4"]
+albedo_color = Color(0.52941, 0.58039, 0.61176, 1)
+roughness = 0.78
+
+[sub_resource type="SphereMesh" id="r5"]
+radius = 0.5
+height = 1.0
+radial_segments = 16
+rings = 8
+
+[sub_resource type="CylinderMesh" id="r6"]
+top_radius = 0.018
+bottom_radius = 0.018
+height = 0.27380695754490975
+radial_segments = 16
+
+[sub_resource type="SphereMesh" id="r7"]
+radius = 0.5
+height = 1.0
+radial_segments = 16
+rings = 8
+
+[sub_resource type="CylinderMesh" id="r8"]
+top_radius = 0.022
+bottom_radius = 0.022
+height = 0.21470910553583888
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="r9"]
+top_radius = 0.09
+bottom_radius = 0.09
+height = 0.045
+radial_segments = 16
+
+[sub_resource type="BoxShape3D" id="r10"]
+size = Vector3(0.700000, 0.870000, 0.150000)
+
+[node name="Stethoscope" type="Node3D"]
+metadata/word_key = "stethoscope"
+metadata/learning_object = true
+
+[node name="Tubing_2" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.340000, 0.000000)
+rotation_degrees = Vector3(90.000000, 0.000000, 0.000000)
+mesh = SubResource("r1")
+material_override = SubResource("r2")
+scale = Vector3(1.000000, 1.000000, 1.150000)
+
+[node name="EarTube_4" type="MeshInstance3D" parent="."]
+position = Vector3(-0.152750, 0.655000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 9.565527)
+mesh = SubResource("r3")
+material_override = SubResource("r4")
+
+[node name="EarTip_5" type="MeshInstance3D" parent="."]
+position = Vector3(-0.175500, 0.810000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r5")
+material_override = SubResource("r2")
+scale = Vector3(0.065000, 0.080000, 0.065000)
+
+[node name="EarTube_6" type="MeshInstance3D" parent="."]
+position = Vector3(0.152750, 0.655000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, -9.565527)
+mesh = SubResource("r6")
+material_override = SubResource("r4")
+
+[node name="EarTip_7" type="MeshInstance3D" parent="."]
+position = Vector3(0.175500, 0.810000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r7")
+material_override = SubResource("r2")
+scale = Vector3(0.065000, 0.080000, 0.065000)
+
+[node name="Tail_8" type="MeshInstance3D" parent="."]
+position = Vector3(0.250000, 0.175000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, -152.241459)
+mesh = SubResource("r8")
+material_override = SubResource("r2")
+
+[node name="Chestpiece_9" type="MeshInstance3D" parent="."]
+position = Vector3(0.300000, 0.060000, 0.000000)
+rotation_degrees = Vector3(90.000000, 0.000000, 0.000000)
+mesh = SubResource("r9")
+material_override = SubResource("r4")
+
+[node name="Interaction" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Interaction"]
+position = Vector3(0.000000, 0.435000, 0.000000)
+shape = SubResource("r10")

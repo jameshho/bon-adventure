@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://docs/evidence/pig-anim-20261116/pig_anim_test.gd" id="1"]
+
+[node name="PigAnimTest" type="Node3D"]
+script = ExtResource("1")

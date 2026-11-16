@@ -1,0 +1,22 @@
+ok:   the user folder is named after config/name 'Bon Adventure' (Bon Adventure)
+Save migration: copied 4 save files from <scratch>/savehome/Library/Application Support/Godot/app_userdata/Vocabulary Town
+ok:   the migration copies the 4 save files of the old folder (4)
+ok:   profile p1's saves are in the new folder
+ok:   device.json is in the new folder
+ok:   Godot's logs stay behind
+ok:   the old folder stays as a backup
+ok:   a second start copies nothing
+ok:   an unknown saved avatar ('old_pig') loads as 'bonbon'
+ok:   other avatars are unchanged
+ok:   the profile list is saved with 'bonbon'
+ok:   the unknown id is not left in the saved profile list
+ok:   the avatar list has 'bonbon'
+ok:   update() refuses an unknown avatar
+ok:   create() refuses an unknown avatar
+ok:   a new profile is BonBon by default
+ok:   the default avatar is BonBon
+ok:   an old note moves to bon-resume and vt-resume is removed ({ "bon-resume": "{\"profile\":\"p1\",\"x\":1}" })
+ok:   a newer bon-resume note is kept and the old key removed ({ "bon-resume": "{\"profile\":\"p1\",\"x\":1}" })
+ok:   a bon-resume note alone is left as it is ({ "bon-resume": "{\"profile\":\"p1\",\"x\":1}" })
+ok:   no note: nothing is written ({  })
+BONBON SAVES: 20 checks, 0 failures

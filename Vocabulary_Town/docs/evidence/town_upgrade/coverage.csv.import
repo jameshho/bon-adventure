@@ -1,0 +1,19 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://cyxhunsus2fv5"
+
+[deps]
+
+files=["res://docs/evidence/town_upgrade/coverage.Spanish.translation", "res://docs/evidence/town_upgrade/coverage.Category.translation", "res://docs/evidence/town_upgrade/coverage.Location.translation", "res://docs/evidence/town_upgrade/coverage.Object path.translation", "res://docs/evidence/town_upgrade/coverage.Town position (x,y,z).translation", "res://docs/evidence/town_upgrade/coverage.Clear standing position.translation", "res://docs/evidence/town_upgrade/coverage.Picking + card verified.translation", "res://docs/evidence/town_upgrade/coverage.Remaining issues.translation"]
+
+source_file="res://docs/evidence/town_upgrade/coverage.csv"
+dest_files=["res://docs/evidence/town_upgrade/coverage.Spanish.translation", "res://docs/evidence/town_upgrade/coverage.Category.translation", "res://docs/evidence/town_upgrade/coverage.Location.translation", "res://docs/evidence/town_upgrade/coverage.Object path.translation", "res://docs/evidence/town_upgrade/coverage.Town position (x,y,z).translation", "res://docs/evidence/town_upgrade/coverage.Clear standing position.translation", "res://docs/evidence/town_upgrade/coverage.Picking + card verified.translation", "res://docs/evidence/town_upgrade/coverage.Remaining issues.translation"]
+
+[params]
+
+compress=1
+delimiter=0
+unescape_keys=false
+unescape_translations=true

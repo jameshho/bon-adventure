@@ -1,0 +1,502 @@
+Word,Spanish,Category,Location,Object path,"Town position (x,y,z)",Clear standing position,Picking + card verified,Remaining issues
+MRI scanner,el equipo de resonancia magnética,Health,Hospital,Buildings/Hospital/LearningWing/ImagingRoom/Mri_Scanner,"(-37.4, 0.09, 149.8)","(-37.4, 0.828461, 148.6077)",True,None in automated checks
+afternoon,la tarde,Time,Travel learning area,TravelLearningHub/Afternoon,"(-15.2, 1.12, 88.35)","(-15.2, 0.003462, 86.65769)",True,None in automated checks
+altar,el altar,Places,Park chapel,Altar,"(46.5, 0.8, 79.5)","(46.5, 0.003462, 77.80769)",True,None in automated checks
+ambulance,la ambulancia,Transportation,Town / outdoors,Vehicles/Ambulance,"(-33.0, 0.0, 96.0)","(-33.0, 0.003462, 93.30769)",True,None in automated checks
+apple,la manzana,Food,Supermarket,Buildings/MarketDisplays/Apple,"(-40.49, 1.02, 36.4)","(-41.67461, 0.003462, 35.21539)",True,None in automated checks
+appliances,los electrodomésticos,Home,Home / front yard,Appliances plaque,"(-6.0, 2.8, 13.0)","(-6.0, 0.038462, 11.30769)",True,None in automated checks
+apron,el delantal,Food,Bakery & café,Buildings/BakeryCafe/Apron,"(-55.65, 0.1, 84.99999)","(-57.3423, 0.068461, 84.99999)",True,None in automated checks
+arm,el brazo,Health,School / forecourt,People/Teacher/Arm,"(-8.51, 1.26, 112.5)","(-10.20231, 0.038462, 112.5)",True,None in automated checks
+armchair,el sillón,Home,Furniture store,Buildings/FurnitureStore/Armchair,"(-58.85, 0.1, 109.0714)","(-58.54, 0.068462, 110.4287)",True,None in automated checks
+atlas,el atlas,School,Town / outdoors,Atlas,"(-15.0, 1.1, 43.0)","(-15.0, 0.003462, 41.30769)",True,None in automated checks
+atm,el cajero automático,Shopping,Bank,ATM,"(29.65, 1.17, 40.6)","(29.65, 0.003462, 38.90769)",True,None in automated checks
+backpack,la mochila,School,School,Buildings/School/LearningWing/GeographyRoom/Backpack,"(1.9, 0.99, 150.45)","(1.9, 0.118462, 148.7577)",True,None in automated checks
+badge,la insignia,People,Police station,Police badge,"(43.1, 3.1, 52.21)","(43.1, 0.003461, 50.51769)",True,None in automated checks
+baguette,la baguette,Food,Bakery & café,Buildings/BakeryCafe/Baguette,"(-66.35, 1.02, 69.57143)","(-64.65769, 0.068462, 69.57143)",True,None in automated checks
+bakery,la panadería,Places,Bakery & café,Buildings/BakeryCafe/RearBody,"(-61.0, 0.0, 76.0)","(-61.0, 0.068461, 85.30769)",True,None in automated checks
+ball,la pelota,Sports,Town / outdoors,Playground ball,"(30.0, 0.35, 62.0)","(30.0, 0.003462, 60.30769)",True,None in automated checks
+banana,la banana / el plátano,Food,Supermarket,Buildings/MarketDisplays/Banana,"(-40.49, 1.02, 39.33333)","(-41.67461, 0.003462, 37.74088)",True,None in automated checks
+bandage,la venda,Health,Hospital,Buildings/Hospital/LearningWing/RehabilitationRoom/Bandage,"(-26.6, 0.99, 150.45)","(-26.6, 0.118462, 148.7577)",True,None in automated checks
+bank,el banco,Places,Town / outdoors,Bank left wall,"(19.0, 2.9, 45.0)","(17.30769, 0.003461, 45.0)",True,None in automated checks
+base,la base,Home,Hospital / forecourt,Anatomy teaching base,"(-23.0, 0.1, 101.0)","(-23.0, 0.003462, 99.30769)",True,None in automated checks
+basket,la canasta / la cesta,Shopping,Home / front yard,Storage basket,"(-4.49, 0.27, 0.31)","(-4.49, 0.038462, 4.156154)",True,None in automated checks
+basketball,el balón de baloncesto,Sports,Sports store,Buildings/SportsStore/Basketball,"(20.65, 1.02, 106.0)","(22.34231, 0.068462, 106.0)",True,None in automated checks
+basketball hoop,la canasta de baloncesto,Sports,Sports store,Buildings/SportsStore/Basketball_Hoop,"(31.35, 0.1, 123.1429)","(29.65769, 0.068462, 123.1429)",True,None in automated checks
+bath mat,la alfombra de baño / la alfombrilla de baño,Home,Home / front yard,Bath mat,"(-1.35, 0.063, 0.24)","(-1.35, 0.038462, 1.932307)",True,None in automated checks
+bathroom,el baño,Home,Home / front yard,Bathroom plaque,"(0.0, 2.4, 5.8)","(0.0, 0.038462, 4.107693)",True,None in automated checks
+bathtub,la bañera,Home,Home / front yard,Bathtub,"(-1.33, 0.5, -1.5)","(-1.33, 0.038462, 0.192308)",True,None in automated checks
+bear,el oso,Animals,Park zoo,ParkZoo/Bear,"(-31.0, 0.172434, 74.0)","(-31.0, 0.003462, 72.20735)",True,None in automated checks
+bed,la cama,Home,Furniture store,Buildings/FurnitureStore/Bed,"(-45.15, 0.1, 105.5)","(-46.36, 0.068462, 107.9523)",True,None in automated checks
+bed rail,la barandilla de cama,Health,Hospital,Buildings/Hospital/LearningWing/ExaminationRoom/HospitalBed/BedRail_2,"(-28.69, 0.9655, 130.35)","(-28.01769, 0.118461, 130.35)",True,None in automated checks
+bedroom,el dormitorio / la habitación,Home,Home / front yard,Bedroom plaque,"(-6.0, 2.4, 5.8)","(-6.0, 0.038462, 4.107693)",True,None in automated checks
+bell,el timbre,Home,Bank,Teller desk bell,"(20.95, 1.67, 44.64)","(20.95, 0.538462, 42.94769)",True,None in automated checks
+belt,el cinturón,Clothing,Clothing store,Buildings/ClothingStore/LearningDisplays/Belt,"(54.25, 1.02, 112.0)","(52.55769, 0.118462, 112.0)",True,None in automated checks
+bench,el banco,Home,Furniture store,Buildings/FurnitureStore/Bench,"(-58.85, 0.1, 116.2143)","(-58.615, 0.068462, 113.812)",True,None in automated checks
+bicycle,la bicicleta,Transportation,Sports store,Buildings/SportsStore/Bicycle,"(31.35, 0.1, 106.0)","(31.35, 0.938461, 105.0577)",True,None in automated checks
+bill,la cuenta,Shopping,Bakery & café,Buildings/BakeryCafe/Everyday_Bill,"(-55.65, 2.46, 76.0)","(-55.65, 1.048461, 74.30769)",True,None in automated checks
+biology,la biología,School,School / forecourt,Biology plaque,"(-9.9, 2.6, 132.0)","(-9.9, 0.118461, 130.3077)",True,None in automated checks
+bird,el pájaro,Animals,Park zoo,ParkZoo/Bird,"(-10.0, 2.3, 67.0)","(-10.0, 0.003462, 65.30769)",True,None in automated checks
+blanket,la manta,Home,Hospital,Buildings/Hospital/Floor1/DepartmentRoom1/HospitalBed/Sheet,"(-26.0, 0.99, 110.58)","(-24.11538, 1.138461, 109.2792)",True,None in automated checks
+blood pressure monitor,el tensiómetro,Health,Hospital,Buildings/Hospital/LearningWing/ExaminationRoom/Blood_Pressure_Monitor,"(-29.2, 0.99, 137.45)","(-29.2, 0.118462, 135.7577)",True,None in automated checks
+book,el libro,School,School,Buildings/School/LearningWing/GeographyRoom/Book,"(-0.7, 0.99, 150.45)","(-0.98, 0.118462, 148.7577)",True,None in automated checks
+book bin,la caja de libros,School,Town / outdoors,Book Bin4,"(-18.0, 1.1, 42.72)","(-18.0, 0.003462, 41.30769)",True,None in automated checks
+bookcase,el librero,Home,School,Buildings/School/Floor2/DepartmentRoom0/Bookshelf,"(-10.0, 5.6, 113.2)","(-12.25231, 5.638462, 113.2)",True,None in automated checks
+bookshelf,el librero / la estantería,Home,School,Buildings/School/Floor2/DepartmentRoom1/Bookshelf,"(2.0, 5.6, 113.2)","(-0.252308, 5.638462, 113.2)",True,None in automated checks
+boots,las botas,Clothing,Clothing store,Buildings/ClothingStore/LearningDisplays/Boots,"(54.25, 1.02, 109.2)","(52.4777, 0.118462, 109.43)",True,None in automated checks
+bottle,la botella,Home,Home / front yard,Water_Bottle,"(-6.5, 1.1, 12.8)","(-6.5, 0.038462, 11.10769)",True,None in automated checks
+bowl,el tazón / el bol,Food,Bakery & café,Buildings/BakeryCafe/Bowl,"(-55.65, 1.02, 69.57143)","(-57.3423, 0.068462, 69.57143)",True,None in automated checks
+brain,el cerebro,Health,Hospital / forecourt,brain,"(-21.9, 1.25, 101.0)","(-21.9, 0.003462, 99.30769)",True,None in automated checks
+bread,el pan,Food,Bakery & café,Buildings/BakeryCafe/Bread,"(-66.35, 1.02, 67.0)","(-64.65769, 0.068462, 67.0)",True,None in automated checks
+breakfast,el desayuno,Food,Bakery & café,Buildings/BakeryCafe/Everyday_Breakfast,"(-66.35, 2.46, 72.6)","(-64.65769, 0.068461, 72.59999)",True,None in automated checks
+bridge,el puente,Places,Town / outdoors,Pond bridge plank,"(6.0, 0.16, 68.0)","(6.0, 0.003462, 66.30769)",True,None in automated checks
+broccoli,el brócoli,Food,Supermarket,Buildings/MarketDisplays/Broccoli,"(-40.49, 1.02, 46.66666)","(-41.67461, 0.003462, 45.48205)",True,None in automated checks
+brochure,el folleto,School,Bank,Bank brochure,"(21.2, 0.52, 43.0)","(21.2, 0.003462, 41.30769)",True,None in automated checks
+building,el edificio,Places,Bank,Building,"(25.0, 2.7, 36.8)","(25.0, 0.003462, 35.10769)",True,None in automated checks
+bulletin board,el tablón de anuncios,Home,Home / front yard,Corkboard,"(4.5, 2.27, -2.75)","(5.1174, 0.038462, 1.096154)",True,None in automated checks
+burner,el quemador,Home,Home / front yard,Burner,"(-7.84, 1.499, 13.9)","(-7.840001, 0.038462, 12.20769)",True,None in automated checks
+bus,el autobús / el bus,Transportation,Town / outdoors,Vehicles/Bus,"(-15.0, 0.0, 95.69999)","(-15.0, 0.003462, 98.3923)",True,None in automated checks
+bus stop,la parada de autobús,Transportation,Town / outdoors,Bus stop post,"(-18.0, 1.15, 93.4)","(-18.0, 0.003472, 91.7077)",True,None in automated checks
+cabinet,el gabinete de cocina / el armario,Home,Home / front yard,Cabinet door2,"(-6.05, 0.54, 13.503)","(-4.357692, 0.038462, 13.503)",True,None in automated checks
+cafe,la cafetería,Places,Town / outdoors,Cafe plaque,"(-61.0, 3.0, 64.0)","(-61.0, 0.003462, 62.30769)",True,None in automated checks
+cake,el pastel / la torta,Food,Bakery & café,Buildings/BakeryCafe/Cake,"(-66.35, 1.02, 74.71429)","(-64.65769, 0.068462, 74.71429)",True,None in automated checks
+calendar,el calendario,Home,Home / front yard,Wall calendar,"(9.33, 2.34, -0.01)","(5.483846, 0.038462, -0.01)",True,None in automated checks
+camera,la cámara,Electronics,Electronics store,Buildings/ElectronicsStore/LearningDisplays/Camera,"(-55.5, 1.02, 49.0)","(-57.19231, 0.118462, 49.0)",True,None in automated checks
+can,la lata,Food,Supermarket,Buildings/MarketDisplays/Can,"(-25.51, 1.02, 48.13333)","(-25.51, 0.003462, 46.44102)",True,None in automated checks
+candle,la vela,Home,Home / front yard,Dining candle,"(-0.85, 1.04, 12.88)","(-3.542308, 0.038462, 12.88)",True,None in automated checks
+car,el auto / el carro / el coche,Transportation,Home / front yard,Vehicles/Car,"(12.1, 0.0, 20.0)","(10.40769, 0.003462, 20.06)",True,None in automated checks
+card reader,el lector de tarjetas,Shopping,Bank,ATM card slot,"(29.1, 1.24, 40.6)","(29.1, 0.003462, 38.90769)",True,None in automated checks
+carpet,la alfombra,Home,Park chapel,Carpet,"(46.5, 0.14, 75.0)","(46.5, 0.003462, 73.30769)",True,None in automated checks
+carrot,la zanahoria,Food,Supermarket,Buildings/MarketDisplays/Carrot,"(-40.49, 1.02, 45.2)","(-41.67461, 0.003462, 44.01538)",True,None in automated checks
+cash,el dinero en efectivo,Shopping,Bank,ATM cash slot,"(29.1, 0.96, 40.6)","(29.1, 0.003462, 38.90769)",True,None in automated checks
+cash register,la caja registradora,Shopping,Supermarket,Cash register,"(-38.0, 1.55, 35.8)","(-36.30769, 0.003461, 35.8)",True,None in automated checks
+cashier,el cajero / la cajera,People,Town / outdoors,People/Cashier,"(52.2, 0.0, 107.8)","(52.2, 0.118462, 106.1077)",True,None in automated checks
+cashier counter,el mostrador de caja,Shopping,Supermarket,Cashier Counter,"(-36.0, 1.1, 40.8)","(-36.0, 0.003462, 39.10769)",True,None in automated checks
+cat,el gato,Animals,Park zoo,ParkZoo/Cat,"(-7.0, 0.134837, 63.0)","(-7.0, 0.003462, 61.30769)",True,None in automated checks
+ceiling,el techo interior / el cielo raso,Home,Home / front yard,Buildings/HouseStructure/GreatRoomCeiling,"(0.5, 3.87, 10.5)","(0.5, 0.038462, 8.807693)",True,None in automated checks
+ceiling light,la lámpara de techo,Home,Clothing store,Buildings/ClothingStore/InteriorDetails/Ceiling light diffuser,"(50.5, 4.69, 107.68)","(50.5, 0.118462, 109.3723)",True,None in automated checks
+cereal,el cereal / los cereales,Food,Supermarket,Buildings/MarketDisplays/Cereal,"(-25.51, 1.02, 46.66666)","(-25.51, 0.003462, 44.97436)",True,None in automated checks
+chair,la silla,Home,School,Buildings/School/Floor1/DepartmentRoom0/Chair,"(-11.4, 0.0, 106.2)","(-9.958942, 0.038462, 105.9675)",True,None in automated checks
+checkout counter,el mostrador de pago / la caja,Shopping,Supermarket,Checkout counter,"(-38.8, 0.65, 35.8)","(-38.8, 1.048461, 37.49231)",True,None in automated checks
+cheese,el queso,Food,Supermarket,Buildings/MarketDisplays/Cheese,"(-25.51, 1.02, 39.33333)","(-25.51, 0.003459, 37.64103)",True,None in automated checks
+chicken,el pollo,Food,Supermarket,Buildings/MarketDisplays/Everyday_Chicken,"(-40.49, 2.46, 37.96)","(-38.79769, 1.048461, 37.96)",True,None in automated checks
+child,el niño / la niña,People,School / forecourt,People/@Node3D@5496,"(3.0, 0.0, 107.6)","(3.0, 0.038462, 105.9077)",True,None in automated checks
+church,la iglesia,Places,Park chapel,Church plaque,"(46.5, 3.4, 69.0)","(46.5, 0.003461, 67.30769)",True,None in automated checks
+classroom,el aula,School,School / forecourt,Classroom plaque,"(-10.0, 2.8, 105.0)","(-10.0, 0.038462, 106.6923)",True,None in automated checks
+clinic,la clínica,Places,Hospital / forecourt,Clinic plaque,"(-32.0, 2.8, 104.0)","(-32.0, 0.003462, 102.3077)",True,None in automated checks
+clipboard,el portapapeles,Health,Hospital,Buildings/Hospital/LearningWing/ImagingRoom/Clipboard,"(-40.0, 0.99, 148.05)","(-40.0, 0.118462, 146.3577)",True,None in automated checks
+clock,el reloj,Home,Home / front yard,Kitchen clock,"(-5.85, 2.78, 14.8)","(-5.849999, 0.038462, 12.10769)",True,None in automated checks
+cloth,la tela,Home,Home / front yard,Dish towel,"(-6.15, 0.75, 13.45)","(-6.15, 0.038462, 11.75769)",True,None in automated checks
+clothes rack,el perchero,Shopping,Town / outdoors,Clothes Rack,"(51.2, 1.2, 102.0)","(51.2, 0.003462, 100.3077)",True,None in automated checks
+clothing store,la tienda de ropa,Places,Clothing store,Buildings/ClothingStore/FrontWallLeft,"(46.8, 2.6, 104.4)","(46.8, 0.003461, 102.7077)",True,None in automated checks
+cloud,la nube,Nature,Town / outdoors,Cloud puff8,"(6.449999, 35.9, -28.09)","(9.142307, 35.95646, -28.09)",True,None in automated checks
+coat,el abrigo,Clothing,Clothing store,Buildings/ClothingStore/LearningDisplays/Coat,"(46.75, 1.02, 110.6)","(48.4423, 0.118462, 110.6)",True,None in automated checks
+coat rack,el perchero,Home,Home / front yard,Coat rack,"(3.7, 0.0, 16.1)","(3.7, 0.038462, 14.40769)",True,None in automated checks
+coffee,el café,Food,Bakery & café,Buildings/BakeryCafe/Everyday_Coffee,"(-66.35, 2.46, 67.9)","(-66.35, 1.048461, 69.5923)",True,None in automated checks
+coffee maker,la cafetera,Home,Bakery & café,Buildings/BakeryCafe/Coffee_Machine,"(-66.35, 1.02, 82.42857)","(-64.65769, 0.068462, 82.42857)",True,None in automated checks
+coffee pot,la jarra de café,Home,Home / front yard,Coffee carafe,"(-5.65, 1.63, 14.3)","(-4.356184, 0.038462, 13.11538)",True,None in automated checks
+coffee table,la mesa de centro,Home,Furniture store,Buildings/FurnitureStore/Coffee_Table,"(-58.85, 0.1, 130.5)","(-58.565, 0.068462, 131.6323)",True,None in automated checks
+compass,la brújula,School,School,Buildings/School/LearningWing/GeographyRoom/Compass,"(4.5, 0.99, 143.35)","(4.5, 0.118462, 145.0423)",True,None in automated checks
+computer,la computadora / el computador,Electronics,School,Buildings/School/Floor1/DepartmentRoom1/Computer,"(2.0, 1.3, 110.9)","(2.0, 0.038462, 109.2077)",True,None in automated checks
+continent,el continente,School,School / forecourt,Continent_9,"(1.0, 1.5, 145.0)","(1.0, 0.118462, 146.6923)",True,None in automated checks
+conveyor belt,la cinta transportadora,Shopping,Supermarket,Conveyor belt,"(-39.35, 1.33, 35.8)","(-37.65769, 1.338461, 35.8)",True,None in automated checks
+cook,el cocinero / la cocinera,People,Town / outdoors,People/Cook,"(-61.09999, 0.0, 66.0)","(-61.09999, 0.003462, 64.30769)",True,None in automated checks
+cookie,la galleta,Food,Bakery & café,Buildings/BakeryCafe/Cookie,"(-66.35, 1.02, 79.85714)","(-64.65769, 0.068462, 79.85714)",True,None in automated checks
+counter,la cubierta de cocina / la encimera,Home,Home / front yard,Countertop,"(-9.4, 1.43, 14.17)","(-7.515385, 0.038462, 12.28538)",True,None in automated checks
+cow,la vaca,Animals,Park zoo,ParkZoo/Cow,"(-37.0, 0.115659, 56.2)","(-37.0, 0.688462, 57.8923)",True,None in automated checks
+crate,la caja de madera,Shopping,Supermarket,Crate4,"(-36.0, 1.1, 38.72)","(-36.0, 0.003462, 37.30769)",True,None in automated checks
+credit card,la tarjeta de crédito,Shopping,Supermarket,Buildings/MarketDisplays/Everyday_Credit_Card,"(-25.51, 2.46, 48.04)","(-25.51, 0.003462, 46.34769)",True,None in automated checks
+croissant,el croissant / el cruasán,Food,Bakery & café,Buildings/BakeryCafe/Croissant,"(-66.35, 1.02, 72.14286)","(-64.6186, 0.068462, 72.48689)",True,None in automated checks
+cross,la cruz,Places,Police station,First aid cross,"(48.1, 0.66, 45.34)","(48.1, 0.003462, 43.64769)",True,None in automated checks
+crosswalk,el cruce peatonal / el paso de peatones,Transportation,Town / outdoors,Crosswalk,"(4.5, 0.14, 25.0)","(4.5, 0.003462, 23.30769)",True,None in automated checks
+crutches,las muletas,Health,Hospital,Buildings/Hospital/LearningWing/RehabilitationRoom/Crutches,"(-26.6, 0.09, 143.35)","(-26.375, 0.118462, 145.0423)",True,None in automated checks
+cubby,el casillero,School,School / forecourt,Cubby4,"(-9.5, 1.1, 113.72)","(-9.5, 0.003462, 112.3077)",True,None in automated checks
+cup,la taza,Home,Bakery & café,Buildings/BakeryCafe/Cup,"(-55.65, 1.02, 67.0)","(-57.3423, 0.068462, 67.0)",True,None in automated checks
+cupcake,el cupcake / el pastelito,Food,Town / outdoors,Cupcake paper,"(-62.5, 1.1, 72.0)","(-62.5, 0.068462, 70.30769)",True,None in automated checks
+curb,el borde de la acera / el bordillo,Transportation,Town / outdoors,Curb,"(5.0, 0.09, 24.0)","(5.0, 0.003462, 22.30769)",True,None in automated checks
+curtain,la cortina,Home,Hospital / forecourt,Curtain,"(-25.0, 1.5, 103.0)","(-25.0, 0.003462, 101.3077)",True,None in automated checks
+cushion,el cojín,Home,Home / front yard,Throw cushion,"(-6.699999, 1.23, -1.16)","(-6.699999, 1.193461, 0.532308)",True,None in automated checks
+cutting board,la tabla de cortar,Home,Home / front yard,Cutting board,"(-8.639999, 1.529, 14.17)","(-5.947691, 0.038462, 11.47769)",True,None in automated checks
+defibrillator,el desfibrilador,Health,Hospital,Buildings/Hospital/LearningWing/EmergencyRoom/Defibrillator,"(-37.4, 0.99, 130.35)","(-37.4, 0.118462, 132.0423)",True,None in automated checks
+deli counter,el mostrador de embutidos / el mostrador de fiambres,Shopping,Supermarket,Deli Counter,"(-39.0, 1.1, 40.8)","(-39.0, 1.048461, 42.49231)",True,None in automated checks
+desk,el escritorio,Home,School,Buildings/School/Floor1/DepartmentRoom0/Desk,"(-11.4, 0.0, 107.2)","(-12.0035, 0.038462, 105.2229)",True,None in automated checks
+dictionary,el diccionario,School,Town / outdoors,Dictionary,"(-16.5, 1.1, 43.0)","(-16.5, 0.003462, 41.30769)",True,None in automated checks
+dining table,la mesa de comedor,Home,Furniture store,Buildings/FurnitureStore/Dining_Table,"(-58.85, 0.1, 123.3571)","(-58.34, 0.068462, 120.8548)",True,None in automated checks
+dinner,la cena,Food,Bakery & café,Buildings/BakeryCafe/Everyday_Dinner,"(-66.35, 2.46, 81.8)","(-66.35, 1.048461, 80.1077)",True,None in automated checks
+dish rack,el escurridor de platos / el escurridor,Home,Home / front yard,Dish Rack,"(-5.5, 1.4, 9.0)","(-5.5, 0.038462, 7.307693)",True,None in automated checks
+display,el exhibidor,Shopping,Supermarket,Display,"(-39.0, 1.1, 42.6)","(-39.0, 1.488461, 40.90769)",True,None in automated checks
+divider,el divisor,Home,Home / front yard,Drawer cabinet/Divider,"(-9.75, 0.77, 14.08)","(-9.7248, 0.038462, 10.23385)",True,None in automated checks
+doctor,el médico / la médica,People,Hospital / forecourt,People/Doctor,"(-25.1, 0.0, 111.4)","(-25.1, 0.038462, 113.0923)",True,None in automated checks
+dog,el perro,Animals,Park zoo,ParkZoo/Dog,"(-20.0, 0.144372, 65.0)","(-20.0, 0.003462, 63.28037)",True,None in automated checks
+donation box,la caja de donaciones,Places,Park chapel,Donation Box,"(42.5, 0.7, 69.8)","(42.5, 0.003462, 68.1077)",True,None in automated checks
+donut,la dona / el dónut,Food,Bakery & café,Buildings/BakeryCafe/Donut,"(-66.35, 1.02, 77.28571)","(-64.65769, 0.068462, 77.28571)",True,None in automated checks
+door,la puerta,Home,Home / front yard,Front door,"(3.59, 1.39, 17.2)","(4.5, 0.003462, 18.89231)",True,None in automated checks
+drawer,el cajón,Home,Home / front yard,Nightstand drawer,"(-8.35, 0.61, -0.63)","(-8.349999, 0.038462, 2.062308)",True,None in automated checks
+dress,el vestido,Clothing,Clothing store,Buildings/ClothingStore/LearningDisplays/Dress,"(46.75, 1.02, 116.2)","(48.4423, 0.118462, 116.2)",True,None in automated checks
+dresser,la cómoda,Home,Furniture store,Buildings/FurnitureStore/Chest_Of_Drawers,"(-45.15, 0.1, 116.2143)","(-45.15, 0.068461, 114.522)",True,None in automated checks
+driver,el conductor / la conductora,People,Home / front yard,People/Driver,"(10.35, 0.0, 20.0)","(10.35, 0.003462, 21.69231)",True,None in automated checks
+driveway,la entrada para autos / la entrada de vehículos,Transportation,Home / front yard,Driveway,"(12.1, 0.037, 20.1)","(13.99, 0.003462, 21.79231)",True,None in automated checks
+drum,el tambor,School,School,Buildings/School/LearningWing/MusicRoom/Drum,"(-9.9, 0.99, 150.45)","(-9.9, 0.118462, 148.7577)",True,None in automated checks
+dryer,la secadora,Home,Electronics store,Buildings/ElectronicsStore/LearningDisplays/Dryer,"(-55.5, 0.1, 41.0)","(-55.5, 0.938461, 39.30769)",True,None in automated checks
+duck,el pato,Animals,Park zoo,ParkZoo/Duck,"(-37.0, 0.13238, 61.6)","(-37.0, 0.003462, 63.2923)",True,None in automated checks
+dumbbell,la mancuerna,Sports,Sports store,Buildings/SportsStore/Dumbbell,"(31.35, 1.02, 114.5714)","(29.65769, 0.068462, 114.5714)",True,None in automated checks
+ear,la oreja,Health,Hospital / forecourt,Ear,"(-22.65, 2.65, 101.0)","(-22.65, 0.003462, 99.30769)",True,None in automated checks
+easel,el caballete,School,School,Buildings/School/LearningWing/ArtStudio/Easel,"(-0.7, 0.09, 130.35)","(-0.316, 0.118462, 131.9673)",True,None in automated checks
+eggs,los huevos,Food,Supermarket,Buildings/MarketDisplays/Eggs,"(-25.51, 1.02, 40.8)","(-25.51, 0.003462, 39.10769)",True,None in automated checks
+electronics,los aparatos electrónicos / la electrónica,Electronics,Town / outdoors,Electronics plaque,"(-61.0, 2.5, 39.0)","(-61.0, 0.118461, 40.69231)",True,None in automated checks
+electronics store,la tienda de artículos electrónicos / la tienda de electrónica,Places,Electronics store,Buildings/ElectronicsStore/FrontWallLeft,"(-63.275, 2.625, 37.3)","(-63.275, 0.003461, 35.60769)",True,None in automated checks
+elephant,el elefante,Animals,Park zoo,ParkZoo/Elephant,"(-37.0, 0.201919, 74.0)","(-38.69231, 0.003462, 73.8111)",True,None in automated checks
+entrance,la entrada,Places,Clothing store,Buildings/ClothingStore/DoorStep,"(50.5, 0.1, 103.5)","(50.5, 0.118462, 105.1923)",True,None in automated checks
+eraser,el borrador,School,School / forecourt,Eraser,"(-9.5, 1.1, 115.8)","(-9.5, 0.038462, 117.4923)",True,None in automated checks
+examination bed,la camilla de examen / la camilla de exploración,Health,Hospital,Buildings/Hospital/Floor1/DepartmentRoom1/HospitalBed/BedFrame,"(-26.0, 0.66, 110.2)","(-28.69231, 0.038462, 110.2)",True,None in automated checks
+eye,el ojo,Health,Hospital / forecourt,Eye,"(-23.14, 2.75, 100.74)","(-23.14, 0.003461, 99.04769)",True,None in automated checks
+fan,el ventilador,Home,Electronics store,Buildings/ElectronicsStore/LearningDisplays/Fan,"(-55.5, 0.1, 50.6)","(-57.19231, 0.118462, 50.6)",True,None in automated checks
+far,lejos,Directions,Travel learning area,TravelLearningHub/Far,"(-21.8, 1.6, 88.35)","(-21.8, 0.003462, 86.65769)",True,None in automated checks
+faucet,la llave de agua / el grifo,Home,Home / front yard,Faucet,"(-9.66, 1.78, 14.58)","(-7.775385, 0.038462, 12.69538)",True,None in automated checks
+fence,la cerca / la valla,Home,Police station,Cell bars,"(45.0, 1.5, 47.0)","(45.0, 0.003462, 45.30769)",True,None in automated checks
+field mouse,el ratón,Animals,Park zoo,ParkZoo/Field Mouse,"(-20.0, 0.138894, 73.0)","(-20.0, 0.003462, 71.30769)",True,None in automated checks
+files,los archivos,School,Bank,Office files,"(20.75, 1.6, 50.85)","(20.75, 0.003462, 49.15769)",True,None in automated checks
+filing cabinet,el archivador,School,Bank,Office cabinet,"(20.3, 1.0, 51.0)","(20.3, 0.003462, 49.30769)",True,None in automated checks
+fire truck,el camión de bomberos,Transportation,Town / outdoors,Vehicles/Fire_Truck,"(11.0, 0.0, 96.3)","(11.0, 0.003462, 93.6077)",True,None in automated checks
+firefighter,el bombero / la bombera,People,School / forecourt,People/Firefighter,"(11.3, 0.0, 101.2)","(11.3, 0.003462, 99.5077)",True,None in automated checks
+first aid kit,el botiquín de primeros auxilios,Health,Hospital,Buildings/Hospital/LearningWing/EmergencyRoom/First_Aid_Kit,"(-34.8, 0.99, 130.35)","(-34.8, 0.118462, 132.0423)",True,None in automated checks
+fish,el pez (animal) / el pescado (comida),Animals,Supermarket,Buildings/MarketDisplays/Fish,"(-25.51, 1.02, 42.26667)","(-25.51, 0.003462, 40.57436)",True,None in automated checks
+fitting room,el probador,Shopping,Town / outdoors,Fitting Room plaque,"(54.0, 2.5, 119.0)","(52.81538, 0.118461, 117.8154)",True,None in automated checks
+flag,la bandera,Places,Town / outdoors,Flag,"(50.0, 4.0, 68.0)","(50.0, 0.003462, 66.30769)",True,None in automated checks
+flame,la llama,Home,Park chapel,Candle flame,"(46.5, 2.05, 79.5)","(46.5, 0.003462, 77.80769)",True,None in automated checks
+floor,el piso / el suelo,Home,Home / front yard,Buildings/HouseStructure/GreatRoomFloor,"(0.5, -0.15, 10.5)","(0.5, 0.038462, 7.807692)",True,None in automated checks
+flower,la flor,Nature,Home / front yard,Flower blossom5,"(-5.199999, 0.2, 14.42)","(-5.199999, 0.038462, 12.72769)",True,None in automated checks
+flowerpot,la maceta,Home,Town / outdoors,Terracotta planter,"(-20.0, 0.27, 39.3)","(-20.0, 0.003462, 40.99231)",True,None in automated checks
+folder,la carpeta,School,Police station,Case folder,"(39.55, 0.83, 43.15)","(37.85769, 0.003462, 43.15)",True,None in automated checks
+food,la comida / los alimentos,Food,Bakery & café,Buildings/BakeryCafe/Everyday_Food,"(-55.65, 2.46, 82.0)","(-55.65, 1.048461, 80.30769)",True,None in automated checks
+foot,el pie,Health,Hospital / forecourt,Foot,"(-23.24, 0.22, 100.88)","(-23.24, 0.003462, 99.18769)",True,None in automated checks
+fork,el tenedor,Home,Home / front yard,Fork,"(-1.58, 0.921, 12.32)","(-3.272308, 0.003462, 12.32)",True,None in automated checks
+fountain,la fuente,Places,Town / outdoors,Fountain,"(18.0, 0.3, 62.0)","(21.20431, 0.003462, 62.0)",True,None in automated checks
+freezer,el congelador,Home,Supermarket,Refrigerated display,"(-39.5, 1.5, 51.0)","(-38.31538, 0.003462, 49.81538)",True,None in automated checks
+frozen food,la comida congelada,Food,Supermarket,Frozen Food,"(-31.5, 1.4, 50.15)","(-31.5, 0.003462, 48.45769)",True,None in automated checks
+frozen section,la sección de congelados,Food,Supermarket,Frozen Section plaque,"(-33.0, 2.6, 49.0)","(-34.69231, 0.003461, 49.0)",True,None in automated checks
+frying pan,la sartén,Home,Home / front yard,Frying pan,"(-7.84, 1.57, 13.9)","(-7.840001, 0.038462, 12.20769)",True,None in automated checks
+furniture store,la tienda de muebles,Shopping,Furniture store,Buildings/FurnitureStore/RearBody,"(-52.0, 0.0, 118.0)","(-52.0, 0.068461, 130.8077)",True,None in automated checks
+game console,la consola de videojuegos,Electronics,Town / outdoors,Game Console,"(-62.5, 1.1, 45.0)","(-60.8077, 0.118462, 45.0)",True,None in automated checks
+game controller,el control de videojuegos / el mando de videojuegos,Electronics,Electronics store,Buildings/ElectronicsStore/LearningDisplays/Game_Controller,"(-63.5, 1.02, 50.6)","(-61.80769, 0.118462, 50.6)",True,None in automated checks
+gaming,los videojuegos,Electronics,Town / outdoors,Gaming plaque,"(-59.0, 2.5, 39.0)","(-59.0, 0.118461, 40.69231)",True,None in automated checks
+garage,el garaje,Home,Home / front yard,Garage,"(11.2, 1.6, 16.3)","(7.353846, 0.003461, 16.3)",True,None in automated checks
+garage door,la puerta de garaje,Home,Home / front yard,Garage opening,"(11.2, 1.3, 17.9)","(7.353846, 0.00346, 17.9)",True,None in automated checks
+garden,el jardín,Home,Home / front yard,Garden,"(14.0, 0.14, 18.0)","(15.26, 0.003462, 16.30769)",True,None in automated checks
+gate,el portón / la puerta de la cerca,Places,Park zoo,ParkZoo/ZooEntranceGate,"(-34.0, 0.0, 69.0)","(-35.05, 0.003462, 67.30769)",True,None in automated checks
+geography,la geografía,School,School / forecourt,Geography plaque,"(1.9, 2.6, 142.0)","(1.899999, 0.118461, 144.6923)",True,None in automated checks
+giraffe,la jirafa,Animals,Park zoo,ParkZoo/Giraffe,"(-37.0, 0.157316, 80.0)","(-38.69231, 0.003462, 79.90833)",True,None in automated checks
+glass,el vidrio,Home,Bank,Bank teller glass,"(21.55, 2.06, 45.52)","(21.55, 0.003462, 47.21231)",True,None in automated checks
+globe,el globo terráqueo,School,School,Buildings/School/LearningWing/GeographyRoom/Globe,"(-0.7, 0.99, 143.35)","(-0.7, 0.118462, 145.0423)",True,None in automated checks
+goal,el arco / la portería,Sports,Sports store,Buildings/SportsStore/Goal,"(31.35, 1.02, 126.0)","(29.65769, 0.068462, 126.9)",True,None in automated checks
+grapes,las uvas,Food,Supermarket,Buildings/MarketDisplays/Grapes,"(-40.49, 1.02, 48.13333)","(-41.67461, 0.003471, 46.69371)",True,None in automated checks
+grass,el pasto / el césped,Nature,Home / front yard,Compact front lawn,"(3.0, 0.008, 20.1)","(3.0, 0.038462, 18.40769)",True,None in automated checks
+guitar,la guitarra,School,School,Buildings/School/LearningWing/MusicRoom/Guitar,"(-9.9, 0.09, 143.35)","(-9.9, 0.118462, 145.0423)",True,None in automated checks
+hallway,el pasillo,Home,Home / front yard,Hallway plaque,"(3.3, 2.4, 8.0)","(3.3, 0.038462, 9.692307)",True,None in automated checks
+hand,la mano,Health,Home / front yard,People/Driver/Arm_2/Hand,"(10.763, 1.16, 20.222)","(10.763, 0.003462, 22.47031)",True,None in automated checks
+handbag,el bolso,Clothing,Clothing store,Buildings/ClothingStore/LearningDisplays/Handbag,"(54.25, 1.02, 114.8)","(52.55769, 0.118462, 114.8)",True,None in automated checks
+handle,el tirador,Home,Home / front yard,Wardrobe handle,"(-4.09, 1.32, 2.44)","(-4.09, 0.038462, 4.132308)",True,None in automated checks
+hanger,el gancho para ropa / la percha,Clothing,Town / outdoors,Hanger,"(48.85, 1.1, 117.8)","(48.85, 0.118462, 116.1077)",True,None in automated checks
+hat,el sombrero,Clothing,Clothing store,Buildings/ClothingStore/LearningDisplays/Hat,"(54.25, 1.02, 110.6)","(52.55769, 0.118462, 110.6)",True,None in automated checks
+head,la cabeza,Health,Supermarket,Animals/PigSupermarket/Head,"(-33.0, 0.04, 47.9)","(-32.07228, 0.003462, 47.5905)",True,None in automated checks
+headphones,los audífonos / los auriculares,Electronics,Hospital,Buildings/Hospital/LearningWing/ImagingRoom/Headphones,"(-34.8, 0.99, 148.05)","(-34.8, 0.118462, 146.3577)",True,None in automated checks
+heart,el corazón,Health,Hospital / forecourt,Heart,"(-23.14, 1.85, 100.69)","(-23.14, 0.003462, 98.9977)",True,None in automated checks
+hedge,el cerco vivo / el seto,Nature,Supermarket,Trimmed hedge,"(-39.72, 0.1, 32.2)","(-39.72, 0.003461, 30.50769)",True,None in automated checks
+helicopter,el helicóptero,Transportation,Hospital,Buildings/Hospital/HospitalHelipad/Helicopter,"(-33.0, 17.205, 115.45)","(-34.6923, 17.24346, 115.45)",True,None in automated checks
+helmet,el casco,Sports,Sports store,Buildings/SportsStore/Helmet,"(31.35, 1.02, 111.7143)","(29.65769, 0.068462, 111.7143)",True,None in automated checks
+hen,la gallina,Animals,Park zoo,ParkZoo/Hen,"(-31.0, 0.132395, 58.9)","(-31.0, 0.003462, 57.2077)",True,None in automated checks
+hook,el gancho,Home,Home / front yard,HookTip,"(4.0, 1.7, 17.5)","(4.0, 0.003462, 18.79231)",True,None in automated checks
+horse,el caballo,Animals,Park zoo,ParkZoo/Horse,"(-37.0, 0.13333, 58.9)","(-37.0, 0.003461, 60.49529)",True,None in automated checks
+hospital,el hospital,Places,Hospital,Buildings/Hospital,"(-32.0, 0.0, 116.2)","(-32.0, 0.118462, 138.7077)",True,None in automated checks
+hospital bed,la cama de hospital,Health,Hospital,Buildings/Hospital/Floor1/DepartmentRoom3/HospitalBed/BedFrame,"(-26.0, 0.66, 124.2)","(-28.69231, 0.038462, 124.2)",True,None in automated checks
+house,la casa,Home,Home / front yard,Buildings/HouseStructure/BedroomNorthWall,"(-0.25, 1.9, -3.0)","(-0.25, 0.003462, -4.692307)",True,None in automated checks
+house number,el número de casa,Home,Home / front yard,House number plaque,"(4.46, 3.3, 17.34)","(4.46, 0.003448, 20.03231)",True,None in automated checks
+imaging,la imagenología,Health,Hospital / forecourt,Imaging plaque,"(-26.1, 2.5, 142.0)","(-26.1, 0.118461, 143.6923)",True,None in automated checks
+iv stand,el soporte para suero,Health,Hospital,Buildings/Hospital/Floor1/DepartmentRoom1/IvStand,"(-24.4, 0.0, 111.7)","(-24.4, 0.038462, 113.3923)",True,None in automated checks
+jacket,la chaqueta,Clothing,Clothing store,Buildings/ClothingStore/LearningDisplays/Jacket,"(46.75, 1.02, 107.8)","(48.4423, 0.118462, 107.8)",True,None in automated checks
+jar,el frasco / el tarro,Home,Home / front yard,Spice jar,"(-6.89, 2.55, 14.7)","(-6.89, 0.038462, 12.00769)",True,None in automated checks
+jeans,los jeans / los pantalones de mezclilla,Clothing,Clothing store,Buildings/ClothingStore/LearningDisplays/Jeans,"(46.75, 1.02, 113.4)","(48.4423, 0.118461, 113.4)",True,None in automated checks
+jewelry box,el joyero,Home,Home / front yard,Jewelry box,"(-8.57, 1.57, -2.34)","(-8.57, 0.833461, 0.352308)",True,None in automated checks
+juice,el jugo,Food,Home / front yard,Juice glass,"(-5.35, 1.65, 14.5)","(-5.35, 0.038462, 12.80769)",True,None in automated checks
+jump rope,la cuerda de saltar,Sports,Sports store,Buildings/SportsStore/Jump_Rope,"(31.35, 1.02, 120.2857)","(29.65769, 0.068462, 120.2857)",True,None in automated checks
+keyboard,el teclado,Electronics,Electronics store,Buildings/ElectronicsStore/LearningDisplays/Keyboard,"(-63.5, 1.02, 47.4)","(-61.80769, 0.118462, 47.4)",True,None in automated checks
+keys,las llaves,Home,Home / front yard,Key bow,"(5.88, 1.1, 14.8)","(4.187693, 0.038462, 14.8)",True,None in automated checks
+kitchen,la cocina,Home,Home / front yard,Kitchen plaque,"(-7.0, 2.4, 7.0)","(-8.692307, 0.038462, 6.999999)",True,None in automated checks
+kitchen cart,el carrito de cocina,Home,Home / front yard,Kitchen Cart,"(-8.0, 0.25, 11.0)","(-8.0, 0.038462, 12.69231)",True,None in automated checks
+kitchen table,la mesa de cocina,Home,Home / front yard,Kitchen table,"(-0.84, 0.82, 12.37)","(-0.84, 0.038462, 9.677692)",True,None in automated checks
+knife,el cuchillo,Food,Bakery & café,Buildings/BakeryCafe/Knife,"(-55.65, 1.02, 77.28571)","(-57.0923, 0.068462, 77.28571)",True,None in automated checks
+knob,la perilla,Home,Home / front yard,Stove knob,"(-7.96, 1.27, 13.52)","(-7.96, 0.038462, 11.82769)",True,None in automated checks
+label,la etiqueta,Shopping,Police station,Locker label,"(45.4, 2.15, 51.59999)","(45.4, 0.003462, 49.90769)",True,None in automated checks
+ladle,el cucharón,Home,Home / front yard,Ladle,"(-8.030001, 1.87, 14.62)","(-8.030001, 0.038462, 11.92769)",True,None in automated checks
+lamp,la lámpara,Home,Furniture store,Buildings/FurnitureStore/Lamp,"(-45.15, 0.1, 123.3571)","(-45.15, 0.068462, 121.6648)",True,None in automated checks
+laptop,la computadora portátil / la laptop,Electronics,Electronics store,Buildings/ElectronicsStore/LearningDisplays/Laptop,"(-63.5, 1.02, 42.6)","(-61.80769, 0.118462, 42.6)",True,None in automated checks
+later,más tarde / luego,Time,Travel learning area,TravelLearningHub/Later,"(-18.3, 1.12, 88.35)","(-18.3, 0.003462, 86.65769)",True,None in automated checks
+laundry basket,la canasta de ropa / el cesto de ropa,Home,Home / front yard,Laundry basket,"(-8.719999, 0.4, 0.25)","(-8.719999, 0.038462, 1.942308)",True,None in automated checks
+leaf,la hoja,Nature,Supermarket,Leaf_6,"(-40.0, 1.6, 41.0)","(-41.69231, 0.003461, 41.0)",True,None in automated checks
+lectern,el atril,School,Park chapel,Lectern,"(43.3, 1.0, 79.0)","(43.3, 0.003462, 77.30769)",True,None in automated checks
+left,a la izquierda,Directions,Travel learning area,TravelLearningHub/Left,"(-28.0, 1.6, 88.35)","(-28.0, 0.003462, 86.65769)",True,None in automated checks
+leg,la pierna,Health,Hospital / forecourt,Leg,"(-23.24, 0.65, 101.0)","(-23.24, 0.003462, 99.30769)",True,None in automated checks
+lemon,el limón,Food,Supermarket,Buildings/MarketDisplays/Lemon,"(-40.49, 1.02, 40.8)","(-41.67461, 0.003462, 39.61538)",True,None in automated checks
+lettuce,la lechuga,Food,Supermarket,Lettuce,"(-27.5, 1.4, 50.15)","(-29.19231, 0.003462, 50.15)",True,None in automated checks
+library,la biblioteca,Places,Town / outdoors,Library left wall,"(-21.0, 2.9, 45.0)","(-22.18462, 0.003461, 43.81538)",True,None in automated checks
+lid,la tapa,Home,Home / front yard,Pot lid,"(-7.28, 1.77, 14.42)","(-7.1288, 0.038462, 12.72769)",True,None in automated checks
+light,la luz,Home,Home / front yard,Pendant shade,"(-0.84, 2.59, 12.37)","(-0.84, 0.618462, 10.67769)",True,None in automated checks
+lion,el león,Animals,Park zoo,ParkZoo/Lion,"(-37.0, 0.14596, 71.0)","(-37.0, 0.003461, 72.86724)",True,None in automated checks
+living room,la sala / la sala de estar,Home,Home / front yard,Living Room plaque,"(8.0, 2.4, 7.0)","(6.307692, 0.038462, 6.999999)",True,None in automated checks
+locker,el casillero,Home,Police station,Evidence locker,"(45.4, 1.4, 52.0)","(45.4, 0.003462, 50.30769)",True,None in automated checks
+lunch,el almuerzo / la comida (del mediodía),Food,Bakery & café,Buildings/BakeryCafe/Everyday_Lunch,"(-66.35, 2.46, 77.0)","(-64.65769, 0.068461, 77.0)",True,None in automated checks
+lung,el pulmón,Health,Hospital / forecourt,Lung,"(-22.75, 1.9, 100.7)","(-22.75, 0.003461, 99.00769)",True,None in automated checks
+magazine,la revista,School,Home / front yard,Magazine,"(7.15, 0.675, 11.52)","(7.15, 0.658462, 13.21231)",True,None in automated checks
+magnet,el imán,School,School,Buildings/School/LearningWing/ScienceLab/Magnet,"(-12.5, 0.99, 137.45)","(-12.72, 0.118462, 135.7577)",True,None in automated checks
+magnifying glass,la lupa,School,School,Buildings/School/LearningWing/ScienceLab/Magnifying_Glass,"(-9.9, 0.99, 137.45)","(-9.9, 0.118462, 135.7577)",True,None in automated checks
+mailbox,el buzón,Places,Home / front yard,Mailbox pole,"(1.2, 0.63, 20.0)","(1.2, 0.003462, 18.30769)",True,None in automated checks
+main hall,el vestíbulo principal / el salón principal,Places,School / forecourt,Main Hall plaque,"(-4.0, 2.8, 105.0)","(-4.0, 0.003462, 103.3077)",True,None in automated checks
+man,el hombre,People,Home / front yard,People/@Node3D@5497,"(12.85, 0.0, 20.0)","(14.54231, 0.003462, 20.0)",True,None in automated checks
+mannequin,el maniquí,Shopping,Town / outdoors,Mannequin,"(50.5, 1.1, 116.0)","(50.5, 0.118462, 114.3077)",True,None in automated checks
+map,el mapa,School,Town / outdoors,World_Map,"(-18.0, 1.1, 44.8)","(-18.0, 0.573462, 43.10769)",True,None in automated checks
+market,el mercado,Places,Supermarket,Market plaque,"(-35.0, 2.4, 33.0)","(-35.0, 0.003462, 31.30769)",True,None in automated checks
+mattress,el colchón,Health,Hospital,Buildings/Hospital/LearningWing/ExaminationRoom/HospitalBed/Mattress,"(-29.2, 0.838, 130.35)","(-27.53428, 0.118461, 129.1654)",True,None in automated checks
+meat,la carne,Food,Supermarket,Buildings/MarketDisplays/Everyday_Meat,"(-40.49, 2.46, 43.0)","(-41.67461, 0.003462, 41.81538)",True,None in automated checks
+medical monitor,el monitor médico,Health,Hospital,Buildings/Hospital/Floor1/DepartmentRoom1/MedicalMonitor,"(-27.9, 1.0, 111.9)","(-27.9, 0.038462, 110.2077)",True,None in automated checks
+medicine,el medicamento,Health,Hospital,Buildings/Hospital/LearningWing/ExaminationRoom/Medicine,"(-24.0, 0.99, 137.45)","(-24.0, 0.118462, 135.7577)",True,None in automated checks
+medicine cabinet,el botiquín,Health,Home / front yard,Medicine cabinet,"(2.8, 2.2, -1.04)","(-1.046154, 1.038461, -1.04)",True,None in automated checks
+medicine shelf,el estante de medicamentos,Health,Hospital / forecourt,Medicine Shelf,"(-36.5, 0.2, 114.0)","(-38.38461, 0.038462, 112.1154)",True,None in automated checks
+menu,el menú / la carta,Food,Bakery & café,Buildings/BakeryCafe/Everyday_Menu,"(-55.65, 2.46, 69.99999)","(-55.65, 1.048461, 71.69229)",True,None in automated checks
+microphone,el micrófono,School,School,Buildings/School/LearningWing/MusicRoom/Microphone,"(-7.3, 0.09, 150.45)","(-7.3, 0.118462, 148.7577)",True,None in automated checks
+microwave,el microondas,Home,Electronics store,Buildings/ElectronicsStore/LearningDisplays/Microwave,"(-55.5, 1.02, 44.2)","(-57.19231, 0.118462, 44.2)",True,None in automated checks
+milk,la leche,Food,Supermarket,Buildings/MarketDisplays/Milk,"(-25.51, 1.02, 37.86666)","(-25.51, 0.003462, 39.55898)",True,None in automated checks
+mirror,el espejo,Home,Furniture store,Buildings/FurnitureStore/Mirror,"(-45.15, 0.1, 126.9286)","(-45.15, 0.068462, 125.2363)",True,None in automated checks
+mixing bowl,el tazón para mezclar / el bol para mezclar,Home,Home / front yard,Bowl,"(-6.5, 1.1, 11.0)","(-6.5, 0.038462, 12.69231)",True,None in automated checks
+money,el dinero,Shopping,Supermarket,Buildings/MarketDisplays/Everyday_Money,"(-25.51, 2.46, 43.0)","(-25.51, 0.003462, 41.30769)",True,None in automated checks
+monitor,el monitor,Health,Hospital,Buildings/Hospital/LearningWing/ImagingRoom/Medical_Monitor,"(-37.4, 0.99, 143.35)","(-37.4, 0.118462, 145.0423)",True,None in automated checks
+monkey,el mono,Animals,Park zoo,ParkZoo/Monkey,"(-37.0, 0.130411, 77.0)","(-37.0, 0.003462, 75.30769)",True,None in automated checks
+morning,la mañana,Time,Travel learning area,TravelLearningHub/Morning,"(-16.75, 1.12, 88.35)","(-16.75, 0.003462, 86.65769)",True,None in automated checks
+motorcycle,la motocicleta / la moto,Transportation,Town / outdoors,Vehicles/Motorcycle,"(22.4, 0.0, 24.0)","(21.65, 0.003462, 25.69231)",True,None in automated checks
+mountain,la montaña,Nature,School / forecourt,PaintedMountain_11,"(-8.0, 1.5, 132.0)","(-8.0, 0.118462, 130.3077)",True,None in automated checks
+mouse,el mouse / el ratón,Electronics,Electronics store,Buildings/ElectronicsStore/LearningDisplays/Mouse,"(-63.5, 1.02, 49.0)","(-61.80769, 0.118462, 49.0)",True,None in automated checks
+mouth,la boca,Health,Hospital / forecourt,Mouth,"(-23.0, 2.45, 100.74)","(-23.0, 0.003462, 99.04769)",True,None in automated checks
+mug,la taza,Home,Home / front yard,Coffee mug,"(-6.099999, 1.62, 13.9)","(-6.099999, 0.038462, 12.20769)",True,None in automated checks
+napkin,la servilleta,Home,Home / front yard,Napkin,"(-1.32, 0.936, 12.49)","(-2.504615, 0.038462, 11.30538)",True,None in automated checks
+near,cerca,Directions,Travel learning area,TravelLearningHub/Near,"(-23.35, 1.6, 88.35)","(-23.35, 0.003462, 86.65769)",True,None in automated checks
+night,la noche,Time,Travel learning area,TravelLearningHub/Night,"(-13.65, 1.12, 88.35)","(-13.65, 0.003462, 86.65769)",True,None in automated checks
+nightstand,la mesita de noche / la mesa de noche,Home,Furniture store,Buildings/FurnitureStore/Nightstand,"(-45.15, 0.1, 119.7857)","(-45.15, 0.068462, 118.0934)",True,None in automated checks
+nose,la nariz,Health,Hospital / forecourt,Nose,"(-23.0, 2.62, 100.7)","(-23.0, 0.003462, 99.00769)",True,None in automated checks
+note,la nota,School,Home / front yard,Fridge note,"(-9.685, 1.42, 11.41)","(-9.685, 0.038462, 9.717692)",True,None in automated checks
+notebook,el cuaderno,School,School,Buildings/School/Floor1/DepartmentRoom0/Notebook,"(-11.4, 0.89, 107.2)","(-10.21538, 0.003462, 106.0154)",True,None in automated checks
+notice,el aviso,School,School / forecourt,Notice,"(-8.0, 1.1, 114.0)","(-9.184614, 0.038462, 112.8154)",True,None in automated checks
+now,ahora,Time,Travel learning area,TravelLearningHub/Now,"(-13.65, 2.1, 88.35)","(-13.65, 0.003462, 86.65769)",True,None in automated checks
+nurse,el enfermero / la enfermera,People,Hospital / forecourt,People/Nurse,"(-36.2, 0.0, 109.2)","(-36.2, 0.038462, 107.5077)",True,None in automated checks
+olive oil,el aceite de oliva,Food,Home / front yard,Olive oil,"(-8.4, 1.69, 14.59)","(-8.4, 0.888462, 10.74385)",True,None in automated checks
+orange,la naranja,Food,Supermarket,Buildings/MarketDisplays/Orange,"(-40.49, 1.02, 37.86666)","(-41.67461, 0.003462, 36.68205)",True,None in automated checks
+organ,el órgano,Health,Hospital / forecourt,Organ model,"(-21.9, 2.0, 101.0)","(-21.9, 0.003462, 99.30769)",True,None in automated checks
+oven,el horno,Home,Home / front yard,Oven glass,"(-7.57, 0.64, 13.525)","(-6.385385, 0.038462, 12.34038)",True,None in automated checks
+oven mitt,el guante de cocina,Home,Home / front yard,Oven mitt,"(-7.17, 1.82, 14.59)","(-7.0944, 0.038462, 11.89769)",True,None in automated checks
+oxygen tank,el tanque de oxígeno / el cilindro de oxígeno,Health,Hospital,Buildings/Hospital/LearningWing/EmergencyRoom/Oxygen_Tank,"(-40.0, 0.09, 137.45)","(-40.0, 0.118461, 135.7577)",True,None in automated checks
+paint tube,el tubo de pintura,School,School,Buildings/School/LearningWing/ArtStudio/Paint_Tube,"(4.5, 0.99, 137.45)","(4.5, 0.118462, 135.7577)",True,None in automated checks
+paintbrush,el pincel,School,School,Buildings/School/LearningWing/ArtStudio/Paintbrush,"(4.5, 0.99, 130.35)","(4.5, 0.118462, 132.0423)",True,None in automated checks
+painting,el cuadro,Home,Home / front yard,Painting,"(6.0, 1.1, 13.0)","(4.307692, 0.038462, 13.0)",True,None in automated checks
+palette,la paleta,School,School,Buildings/School/LearningWing/ArtStudio/Palette,"(1.9, 0.99, 130.35)","(1.9, 0.118462, 132.0423)",True,None in automated checks
+panel,el panel,Home,Home / front yard,Curtains/Panel,"(7.76, 2.44, 14.72)","(7.624, 0.658462, 13.02769)",True,None in automated checks
+pantry,la despensa,Home,Home / front yard,Pantry,"(-4.39, 1.15, 14.8)","(-3.205385, 0.038462, 13.61538)",True,None in automated checks
+pants,los pantalones,Clothing,Clothing store,Buildings/ClothingStore/LearningDisplays/Pants,"(46.75, 1.02, 112.0)","(48.4423, 0.118461, 112.0)",True,None in automated checks
+park,el parque,Places,Town / outdoors,Park plaque,"(11.0, 1.3, 55.0)","(11.0, 0.003462, 53.3077)",True,None in automated checks
+parking,el estacionamiento,Transportation,Town / outdoors,Parking,"(-20.0, 0.14, 32.0)","(-20.0, 0.003462, 30.30769)",True,None in automated checks
+parking stall,el espacio de estacionamiento / la plaza de aparcamiento,Transportation,Town / outdoors,Parking Stall,"(-22.0, 0.14, 32.0)","(-22.0, 0.003462, 30.30769)",True,None in automated checks
+pasta,la pasta,Food,Home / front yard,Pasta,"(-4.39, 0.425, 14.4)","(-3.079384, 0.038462, 13.21539)",True,None in automated checks
+path,el sendero,Places,Home / front yard,Front path,"(4.5, 0.045, 20.4)","(4.5, 0.038462, 18.70769)",True,None in automated checks
+patient bed,la cama del paciente,Health,Hospital,Buildings/Hospital/LearningWing/ExaminationRoom/HospitalBed/BedFrame,"(-29.2, 0.651, 130.35)","(-27.00789, 1.018462, 130.35)",True,None in automated checks
+patient chart,el expediente médico / la historia clínica,Health,Hospital / forecourt,Clipboard,"(-35.0, 1.1, 115.8)","(-35.0, 0.038462, 117.4923)",True,None in automated checks
+patient room,la habitación del paciente,Health,Hospital / forecourt,Patient Room plaque,"(-38.0, 13.2, 105.0)","(-38.0, 11.23846, 106.6923)",True,None in automated checks
+pear,la pera,Food,Supermarket,Buildings/MarketDisplays/Pear,"(-40.49, 1.02, 42.26667)","(-41.67461, 0.003462, 41.08205)",True,None in automated checks
+pencil,el lápiz,School,Home / front yard,Pencil,"(3.89, 1.17, -1.29)","(3.890001, 0.038462, 1.402308)",True,None in automated checks
+pencil holder,el portalápices,Home,Home / front yard,Pencil cup,"(3.95, 1.01, -1.29)","(3.95, 0.038462, 1.402308)",True,None in automated checks
+pepper,la pimienta,Food,Home / front yard,Pepper shaker,"(-5.7, 1.61, 13.7)","(-5.7, 0.038462, 12.00769)",True,None in automated checks
+perfume,el perfume,Clothing,Home / front yard,Perfume bottle,"(-9.04, 1.59, -2.34)","(-9.04, 0.833461, 0.352308)",True,None in automated checks
+person,la persona,People,Town / outdoors,People/@Node3D@5495,"(54.7, 0.0, 107.8)","(54.7, 0.118462, 105.1077)",True,None in automated checks
+pew,el banco de iglesia,Places,Park chapel,Pew,"(43.5, 0.5, 72.0)","(43.5, 0.003462, 70.30769)",True,None in automated checks
+pharmacy,la farmacia,Health,Hospital / forecourt,Pharmacy plaque,"(-38.0, 7.7, 105.0)","(-39.69231, 5.638462, 105.0)",True,None in automated checks
+phone,el teléfono / el celular,Electronics,Police station,Desk phone,"(40.7, 1.51, 40.9)","(40.7, 0.003462, 39.20769)",True,None in automated checks
+photo,la foto / la fotografía,Home,Home / front yard,Picture frame,"(11.11, 2.64, 12.55)","(9.925384, 0.038462, 11.36538)",True,None in automated checks
+piano,el piano,School,School,Buildings/School/LearningWing/MusicRoom/Piano,"(-12.5, 0.09, 143.35)","(-12.5, 0.118461, 144.9223)",True,None in automated checks
+picture frame,el marco de fotos,Home,Home / front yard,Picture Frame,"(7.5, 1.1, 13.0)","(8.684615, 0.683462, 11.81538)",True,None in automated checks
+pig,el cerdo,Animals,Supermarket,Animals/PigSupermarket,"(-33.0, 0.04, 47.9)","(-33.0, 0.003462, 46.20769)",True,None in automated checks
+pillow,la almohada,Home,Hospital,Buildings/Hospital/LearningWing/ExaminationRoom/HospitalBed/Pillow,"(-29.2, 0.957, 129.6445)","(-29.2, 0.118461, 132.3368)",True,None in automated checks
+pitcher,la jarra,Home,Home / front yard,Water pitcher,"(-0.82, 1.08, 12.75)","(-3.512307, 0.038462, 12.75)",True,None in automated checks
+plant,la planta,Nature,Town / outdoors,Planter foliage,"(-20.13, 0.69, 39.3)","(-20.13, 0.003462, 40.99231)",True,None in automated checks
+planter,la jardinera,Home,School,Buildings/School/Floor1/DepartmentRoom0/Planter,"(-7.900001, 0.3, 113.2)","(-9.592307, 0.038462, 113.2)",True,None in automated checks
+plate,el plato,Food,Bakery & café,Buildings/BakeryCafe/Plate,"(-55.65, 1.02, 72.14286)","(-57.3423, 0.068462, 72.14286)",True,None in automated checks
+play tent,la carpa de juegos / la tienda de campaña para jugar,Sports,Town / outdoors,Play Tent,"(32.0, 1.0, 65.0)","(32.0, 0.003462, 63.3077)",True,None in automated checks
+playground,la zona de juegos,Places,Town / outdoors,Play tower,"(13.0, 0.65, 79.0)","(13.0, 0.003462, 80.69231)",True,None in automated checks
+police car,la patrulla / el auto de policía,Transportation,Town / outdoors,Vehicles/Police_Car,"(42.0, 0.0, 95.9)","(42.0, 0.003462, 94.2077)",True,None in automated checks
+police officer,el policía / la policía,People,Police station,People/Police_Officer,"(43.0, 0.0, 34.9)","(43.0, 0.003462, 33.20769)",True,None in automated checks
+police station,la estación de policía / la comisaría,Places,Town / outdoors,Police Station left wall,"(37.0, 2.9, 45.0)","(35.30769, 0.003461, 45.0)",True,None in automated checks
+poster,el cartel,School,Bank,Bank informational poster,"(20.1, 2.76, 45.4)","(20.1, 0.003462, 47.09231)",True,None in automated checks
+pot,la olla,Home,Home / front yard,Pot,"(-7.28, 1.64, 14.42)","(-7.28, 0.038462, 12.72769)",True,None in automated checks
+potato,la papa / la patata,Food,Supermarket,Buildings/MarketDisplays/Potato,"(-25.51, 1.02, 36.4)","(-25.51, 0.003462, 38.09231)",True,None in automated checks
+price,el precio,Shopping,Supermarket,Buildings/MarketDisplays/Everyday_Price,"(-25.51, 2.46, 37.96)","(-25.51, 1.858461, 36.26769)",True,None in automated checks
+price tag,la etiqueta de precio,Shopping,Supermarket,Price Tag,"(-37.5, 1.1, 39.0)","(-36.31538, 0.003462, 37.81538)",True,None in automated checks
+produce,las frutas y verduras,Food,Supermarket,Produce plaque,"(-40.0, 3.0, 40.0)","(-41.69231, 0.003461, 40.0)",True,None in automated checks
+produce stand,el puesto de frutas y verduras,Shopping,Supermarket,Produce Stand,"(-39.0, 1.1, 39.0)","(-39.0, 1.048461, 37.30769)",True,None in automated checks
+prosthetic leg,la prótesis de pierna,Health,Hospital,Buildings/Hospital/LearningWing/RehabilitationRoom/Prosthetic_Leg,"(-29.2, 0.99, 150.45)","(-29.2, 0.118461, 148.7577)",True,None in automated checks
+queue,la fila,Shopping,Bank,Queue rope,"(23.5, 1.0, 44.55)","(23.5, 0.003462, 42.85769)",True,None in automated checks
+rabbit,el conejo,Animals,Park zoo,ParkZoo/Rabbit,"(-9.0, 0.134847, 77.0)","(-9.0, 0.003462, 75.30769)",True,None in automated checks
+rack,el perchero,Home,Town / outdoors,Rack,"(47.2, 1.2, 102.0)","(47.2, 0.003462, 100.3077)",True,None in automated checks
+radio,la radio,Electronics,Police station,Radio,"(40.65, 0.88, 43.1)","(42.34231, 0.003462, 43.1)",True,None in automated checks
+range hood,la campana extractora,Home,Home / front yard,Range hood,"(-7.57, 2.23, 14.39)","(-7.57, 0.038462, 12.69769)",True,None in automated checks
+reading table,la mesa de lectura,Home,Town / outdoors,Oak reading table surface,"(-18.0, 0.75, 44.5)","(-16.11538, 0.003462, 42.61538)",True,None in automated checks
+receipt,el recibo,Shopping,Supermarket,Receipt,"(-38.35, 1.39, 35.3)","(-36.65768, 0.003462, 35.3)",True,None in automated checks
+reception desk,el mostrador de recepción,Health,Town / outdoors,Library help desk,"(-15.0, 0.58, 50.9)","(-15.0, 0.003461, 49.20769)",True,None in automated checks
+recipe,la receta,Home,Home / front yard,Recipe card,"(-9.690001, 0.66, 11.54)","(-9.690001, 0.038462, 9.847693)",True,None in automated checks
+reflex hammer,el martillo de reflejos,Health,Hospital,Buildings/Hospital/LearningWing/ExaminationRoom/Reflex_Hammer,"(-26.6, 0.99, 137.45)","(-26.6, 0.118462, 135.7577)",True,None in automated checks
+refrigerator,el refrigerador / la nevera / la heladera,Home,Electronics store,Buildings/ElectronicsStore/LearningDisplays/Refrigerator,"(-55.5, 0.1, 42.6)","(-57.19231, 0.118462, 42.6)",True,None in automated checks
+remote control,el control remoto,Home,Home / front yard,Remote control,"(8.42, 0.665, 11.47)","(8.42, 0.658462, 13.30511)",True,None in automated checks
+report,el informe,School,Police station,Case report,"(40.27, 0.87, 43.1)","(40.27, 0.003462, 45.7923)",True,None in automated checks
+rice,el arroz,Food,Home / front yard,Rice,"(-4.39, 1.015, 14.4)","(-3.079384, 0.038462, 13.21539)",True,None in automated checks
+right,a la derecha,Directions,Travel learning area,TravelLearningHub/Right,"(-26.45, 1.6, 88.35)","(-26.45, 0.003462, 86.65769)",True,None in automated checks
+road,la carretera,Transportation,Home / front yard,Curving neighborhood road,"(0.0, 0.0, 0.0)","(6.0, 0.003462, 58.80769)",True,None in automated checks
+rock,la roca,Nature,Town / outdoors,Pond shoreline stone,"(27.90043, 0.2, 70.70196)","(27.90043, 0.003462, 72.39426)",True,None in automated checks
+rolling pin,el rodillo,Food,Bakery & café,Buildings/BakeryCafe/Rolling_Pin,"(-55.65, 1.02, 79.85714)","(-57.3423, 0.068462, 79.85714)",True,None in automated checks
+roof,el techo,Home,Town / outdoors,Pitched roof left,"(-18.0, 6.429999, 45.0)","(-18.0, 6.580477, 43.30769)",True,None in automated checks
+rug,la alfombra,Home,Home / front yard,Kitchen rug,"(-7.74, 0.024, 12.25)","(-6.047692, 0.038462, 12.25)",True,None in automated checks
+ruler,la regla,School,School,Buildings/School/LearningWing/ArtStudio/Ruler,"(1.9, 0.99, 137.45)","(1.9, 0.118462, 135.7577)",True,None in automated checks
+salad,la ensalada,Food,Supermarket,Buildings/MarketDisplays/Everyday_Salad,"(-40.49, 2.46, 48.04)","(-38.79769, 1.048461, 48.03999)",True,None in automated checks
+salt,la sal,Food,Home / front yard,Salt shaker,"(-5.95, 1.61, 13.7)","(-5.949999, 0.038462, 12.00769)",True,None in automated checks
+sand,la arena,Nature,Town / outdoors,Sand,"(27.0, 0.41, 65.0)","(25.30769, 0.438462, 65.0)",True,None in automated checks
+sandbox,el arenero / la caja de arena,Sports,Town / outdoors,Sandbox,"(27.0, 0.2, 65.0)","(30.37231, 0.003462, 65.0)",True,None in automated checks
+scale,la báscula,Health,Hospital / forecourt,Scale,"(-36.5, 1.1, 115.8)","(-36.5, 0.038462, 117.4923)",True,None in automated checks
+scanner,el escáner,Shopping,Supermarket,Barcode scanner,"(-38.6, 1.42, 35.4)","(-38.6, 1.048461, 37.09231)",True,None in automated checks
+scarf,la bufanda,Clothing,Clothing store,Buildings/ClothingStore/LearningDisplays/Scarf,"(54.25, 1.02, 113.4)","(52.55769, 0.118462, 113.52)",True,None in automated checks
+school,la escuela,Places,School,Buildings/School,"(-4.0, 0.0, 116.2)","(-4.0, 0.118462, 138.7077)",True,None in automated checks
+school bus,el autobús escolar / el bus escolar,Transportation,Town / outdoors,SchoolBus,"(16.0, 0.0, 101.0)","(16.0, 0.003462, 98.30769)",True,None in automated checks
+scissors,las tijeras,School,School,Buildings/School/LearningWing/ArtStudio/Scissors,"(-0.7, 0.99, 137.45)","(-0.829999, 0.118462, 135.7577)",True,None in automated checks
+screen,la pantalla,Electronics,Town / outdoors,Computer screen2,"(-18.5, 1.35, 49.00999)","(-20.19231, 0.003462, 49.00999)",True,None in automated checks
+seat,el asiento,Home,Town / outdoors,Story corner cushioned seat,"(-12.0, 0.28, 40.0)","(-14.69231, 0.003462, 40.0)",True,None in automated checks
+service window,la ventanilla,Shopping,Bank,Service hatch,"(21.55, 1.58, 45.46)","(20.23569, 1.478462, 45.46)",True,None in automated checks
+shampoo,el champú,Home,Home / front yard,Shampoo bottle,"(-2.42, 1.24, -2.1)","(-0.727692, 1.038461, -2.1)",True,None in automated checks
+sheep,la oveja,Animals,Park zoo,ParkZoo/Sheep,"(-31.0, 0.125248, 61.6)","(-31.0, 0.003462, 59.90769)",True,None in automated checks
+sheet,la sábana,Home,Hospital,Buildings/Hospital/LearningWing/ExaminationRoom/HospitalBed/Sheet,"(-29.2, 0.9315, 130.673)","(-29.2, 0.118461, 132.3653)",True,None in automated checks
+sheet music,la partitura,School,School / forecourt,Sheet Music,"(-8.0, 1.1, 115.8)","(-8.0, 0.038462, 117.4923)",True,None in automated checks
+shelf,el estante,Home,Home / front yard,Open shelf,"(-6.47, 2.43, 14.72)","(-4.585384, 0.038462, 12.83538)",True,None in automated checks
+shelter,el refugio,Places,Park zoo,ParkZoo/Shelter roof,"(-38.0, 2.7, 59.0)","(-38.0, 0.003462, 60.6923)",True,None in automated checks
+shirt,la camisa,Clothing,Clothing store,Buildings/ClothingStore/LearningDisplays/Shirt,"(46.75, 1.02, 106.4)","(48.4423, 0.118462, 106.4)",True,None in automated checks
+shoe,el zapato,Clothing,Town / outdoors,Shoes2,"(50.0, 0.2, 102.0)","(49.77, 0.003462, 100.2277)",True,None in automated checks
+shoes,los zapatos,Clothing,Clothing store,Buildings/ClothingStore/LearningDisplays/Shoes,"(54.25, 1.02, 106.4)","(52.4777, 0.118462, 106.63)",True,None in automated checks
+shopping bag,la bolsa de compras,Shopping,Supermarket,Shopping Bag4,"(-37.5, 1.1, 40.52)","(-36.31538, 0.003462, 39.61538)",True,None in automated checks
+shopping cart,el carrito de compras / el carrito del supermercado,Shopping,Supermarket,Shopping cart basket,"(-40.5, 0.85, 32.0)","(-40.5, 0.003462, 30.30769)",True,None in automated checks
+shopping list,la lista de compras,Shopping,Home / front yard,Shopping list,"(-6.06, 2.81, 14.75)","(-6.06, 0.038462, 12.05769)",True,None in automated checks
+shorts,los pantalones cortos / los shorts,Clothing,Clothing store,Buildings/ClothingStore/LearningDisplays/Shorts,"(46.75, 1.02, 114.8)","(48.4423, 0.118462, 114.8)",True,None in automated checks
+shower curtain,la cortina de baño / la cortina de ducha,Home,Home / front yard,Shower curtain,"(-2.16, 1.93, -0.49)","(-2.16, 1.038461, -2.182308)",True,None in automated checks
+shower head,el cabezal de ducha,Home,Home / front yard,Shower head arm,"(-2.18, 2.93, -2.55)","(-2.18, 1.038461, -0.857692)",True,None in automated checks
+shrub,el arbusto,Nature,Home / front yard,Shrub,"(14.0, 0.5, 18.0)","(14.0, 0.003462, 19.69231)",True,None in automated checks
+side table,la mesa auxiliar,Home,Home / front yard,Side table,"(5.56, 0.59, 13.76)","(3.867692, 0.038462, 13.76)",True,None in automated checks
+sidewalk,la acera / la banqueta / la vereda,Transportation,Supermarket,Market promenade connection,"(-33.0, 0.14, 32.0)","(-33.0, 0.003462, 30.30769)",True,None in automated checks
+sign,el letrero,Places,Clothing store,Buildings/ClothingStore/RoomPlaque,"(50.5, 3.1, 106.8)","(50.5, 0.118462, 105.1077)",True,None in automated checks
+sink,el fregadero / la pileta de cocina,Home,Home / front yard,Sink,"(-9.66, 1.509, 14.14)","(-9.66, 0.038462, 9.966245)",True,None in automated checks
+skateboard,la patineta / el monopatín,Sports,Sports store,Buildings/SportsStore/Skateboard,"(31.35, 1.02, 108.8571)","(29.65769, 0.068462, 108.8571)",True,None in automated checks
+skirt,la falda,Clothing,Clothing store,Buildings/ClothingStore/LearningDisplays/Skirt,"(46.75, 1.02, 117.6)","(48.4423, 0.118462, 117.6)",True,None in automated checks
+skull,el cráneo,Health,Hospital / forecourt,skull,"(-24.1, 1.25, 101.0)","(-24.1, 0.003462, 99.30769)",True,None in automated checks
+sleeve,la manga,Clothing,Town / outdoors,Sleeve_3,"(50.0, 1.5, 108.0)","(50.0, 0.118462, 106.3077)",True,None in automated checks
+slide,el tobogán / la resbaladilla,Sports,Town / outdoors,Playground slide,"(13.0, 0.69, 77.5)","(13.0, 0.003462, 75.80769)",True,None in automated checks
+slipper,la pantufla,Home,Home / front yard,Slippers,"(-5.7, 0.07, 1.18)","(-5.7, 0.038462, 2.872308)",True,None in automated checks
+slot,la ranura,Shopping,Park chapel,Slot,"(42.5, 1.42, 69.8)","(42.5, 0.003462, 68.1077)",True,None in automated checks
+smartphone,el teléfono inteligente / el celular inteligente,Electronics,Electronics store,Buildings/ElectronicsStore/LearningDisplays/Smartphone,"(-63.5, 1.02, 44.2)","(-61.80769, 0.118462, 44.2)",True,None in automated checks
+smartwatch,el reloj inteligente,Electronics,Town / outdoors,Smartwatch,"(-64.0, 1.1, 45.0)","(-61.30769, 0.118462, 45.0)",True,None in automated checks
+snack,el refrigerio / la botana,Food,Town / outdoors,Cookie,"(-61.0, 1.1, 72.0)","(-61.0, 0.068462, 70.30769)",True,None in automated checks
+snake,la serpiente,Animals,Park zoo,ParkZoo/Snake,"(-31.0, 0.130503, 77.0)","(-31.11897, 0.003462, 78.07248)",True,None in automated checks
+sneakers,los tenis / las zapatillas deportivas,Clothing,Clothing store,Buildings/ClothingStore/LearningDisplays/Sneakers,"(54.25, 1.02, 107.8)","(52.4777, 0.118462, 108.03)",True,None in automated checks
+soap,el jabón,Home,Home / front yard,Dish soap,"(-10.39, 1.67, 14.17)","(-8.505384, 0.038462, 12.28538)",True,None in automated checks
+soccer ball,el balón de fútbol,Sports,Sports store,Buildings/SportsStore/Soccer_Ball,"(20.65, 1.02, 108.8571)","(22.34231, 0.068462, 108.8571)",True,None in automated checks
+sofa,el sofá,Home,Furniture store,Buildings/FurnitureStore/Sofa,"(-58.85, 0.1, 105.5)","(-56.77269, 0.068462, 104.34)",True,None in automated checks
+soil,la tierra,Nature,Town / outdoors,Planter soil,"(-20.0, 0.507, 39.3)","(-18.30769, 0.003462, 39.3)",True,None in automated checks
+soup,la sopa,Food,Town / outdoors,Soup,"(-64.0, 1.62, 72.0)","(-64.0, 0.068462, 70.30769)",True,None in automated checks
+spatula,la espátula,Home,Home / front yard,Spatula,"(-5.0, 1.1, 11.0)","(-5.0, 0.038462, 9.307692)",True,None in automated checks
+speaker,el parlante / la bocina / el altavoz,Electronics,Electronics store,Buildings/ElectronicsStore/LearningDisplays/Speaker,"(-55.5, 1.02, 47.4)","(-57.19231, 0.118462, 47.4)",True,None in automated checks
+sponge,la esponja,Home,Home / front yard,Sponge,"(-8.88, 1.55, 13.67)","(-8.88, 0.038462, 11.97769)",True,None in automated checks
+spoon,la cuchara,Food,Bakery & café,Buildings/BakeryCafe/Spoon,"(-55.65, 1.02, 74.71429)","(-57.2423, 0.068462, 74.71429)",True,None in automated checks
+sports store,la tienda de deportes,Places,Sports store,Buildings/SportsStore/RearBody,"(26.0, 0.0, 116.0)","(26.0, 0.068461, 126.3077)",True,None in automated checks
+stand,el soporte,Home,Hospital,Buildings/Hospital/Floor1/DepartmentRoom1/MonitorStand,"(-27.9, 0.5, 111.9)","(-27.9, 0.038462, 110.2077)",True,None in automated checks
+station,la estación de tren,Transportation,Travel learning area,TravelLearningHub/Station,"(-26.6, 1.42, 92.0)","(-26.6, 0.003461, 90.30769)",True,None in automated checks
+steak,el bistec / el filete de res,Food,Supermarket,Buildings/MarketDisplays/Steak,"(-25.51, 1.02, 43.73333)","(-25.51, 0.003462, 42.04103)",True,None in automated checks
+steering wheel,el volante,Transportation,Home / front yard,People/@Node3D@5497/SteeringWheel,"(13.248, 1.165, 20.0)","(14.59415, 0.003462, 20.0)",True,None in automated checks
+step,el escalón,Home,Park chapel,Step,"(46.5, 0.1, 68.5)","(46.5, 0.003462, 66.80769)",True,None in automated checks
+stethoscope,el estetoscopio,Health,Hospital,Buildings/Hospital/LearningWing/ExaminationRoom/Stethoscope,"(-26.6, 0.99, 130.35)","(-26.6, 0.118462, 132.0423)",True,None in automated checks
+sticky note,la nota adhesiva,School,Home / front yard,Sticky note,"(4.82, 0.915, -1.45)","(4.8788, 0.003462, 1.242307)",True,None in automated checks
+stomach,el estómago,Health,Hospital / forecourt,Stomach,"(-22.87, 1.48, 100.7)","(-22.87, 0.003462, 99.00769)",True,None in automated checks
+stool,el taburete,Home,Furniture store,Buildings/FurnitureStore/Stool,"(-58.85, 0.1, 119.7857)","(-58.615, 0.068462, 117.8584)",True,None in automated checks
+storage box,la caja de almacenamiento,Home,Home / front yard,Storage box,"(8.93, 2.67, 1.61)","(5.083847, 0.038462, 1.61)",True,None in automated checks
+stove,la estufa / la cocina,Home,Home / front yard,Stove,"(-7.57, 0.72, 14.17)","(-7.57, 0.038462, 12.47769)",True,None in automated checks
+straight ahead,todo recto / de frente,Directions,Travel learning area,TravelLearningHub/StraightAhead,"(-24.9, 1.6, 88.35)","(-24.9, 0.003462, 86.65769)",True,None in automated checks
+street,la calle,Transportation,Town / outdoors,Street,"(5.0, 0.14, 26.5)","(2.9, 0.003462, 24.80769)",True,None in automated checks
+street sign,el letrero de la calle,Transportation,Town / outdoors,Street Sign,"(8.0, 2.5, 30.0)","(8.0, 0.003462, 28.30769)",True,None in automated checks
+streetlight,el poste de alumbrado / la farola,Transportation,Supermarket,Streetlight pole,"(-39.0, 2.9, 32.2)","(-39.0, 0.003461, 30.50769)",True,None in automated checks
+stretcher,la camilla,Health,Hospital,Buildings/Hospital/LearningWing/EmergencyRoom/Stretcher,"(-40.0, 0.09, 130.35)","(-40.0, 0.118461, 132.0423)",True,None in automated checks
+student,el estudiante / la estudiante,People,School / forecourt,People/Student,"(0.5, 0.0, 107.6)","(0.5, 0.038462, 105.9077)",True,None in automated checks
+sunglasses,los lentes de sol / las gafas de sol,Clothing,Clothing store,Buildings/ClothingStore/LearningDisplays/Sunglasses,"(54.25, 1.02, 116.2)","(54.25, 0.118462, 118.1223)",True,None in automated checks
+supermarket,el supermercado,Places,Supermarket,Supermarket left wall,"(-42.8, 2.9, 43.0)","(-44.49231, 0.003461, 43.0)",True,None in automated checks
+supply,el suministro,School,School / forecourt,Supply,"(-11.0, 1.1, 117.6)","(-11.0, 0.038462, 115.9077)",True,None in automated checks
+surgical mask,la mascarilla quirúrgica,Health,Hospital,Buildings/Hospital/LearningWing/EmergencyRoom/Surgical_Mask,"(-34.8, 0.99, 137.45)","(-34.8, 0.118462, 135.7577)",True,None in automated checks
+sweater,el suéter / el jersey,Clothing,Clothing store,Buildings/ClothingStore/LearningDisplays/Sweater,"(46.75, 1.02, 109.2)","(48.4423, 0.118462, 109.2)",True,None in automated checks
+syringe,la jeringa,Health,Hospital,Buildings/Hospital/LearningWing/EmergencyRoom/Syringe,"(-37.4, 0.99, 137.45)","(-37.4, 0.118462, 135.7577)",True,None in automated checks
+table,la mesa,Home,Town / outdoors,Oak reading table surface2,"(-12.0, 0.75, 44.5)","(-12.0, 0.003462, 41.80769)",True,None in automated checks
+tablet,la tableta,Electronics,Electronics store,Buildings/ElectronicsStore/LearningDisplays/Tablet,"(-63.5, 1.02, 45.8)","(-61.80769, 0.118462, 45.8)",True,None in automated checks
+taxi,el taxi,Transportation,Town / outdoors,Vehicles/Taxi,"(6.5, 0.0, 26.0)","(6.5, 0.003462, 24.30769)",True,None in automated checks
+tea,el té,Food,Home / front yard,Tea box,"(-4.39, 2.34, 14.45)","(-1.697693, 0.928461, 11.75769)",True,None in automated checks
+teacher,el profesor / la profesora,People,School / forecourt,People/Teacher,"(-8.1, 0.0, 112.5)","(-8.1, 0.718462, 110.8077)",True,None in automated checks
+teapot,la tetera,Food,Bakery & café,Buildings/BakeryCafe/Teapot,"(-66.35, 1.02, 84.99999)","(-64.65769, 0.068462, 84.99999)",True,None in automated checks
+tech,la tecnología,Electronics,Town / outdoors,Tech plaque,"(-63.0, 2.5, 39.0)","(-61.30769, 0.118461, 39.0)",True,None in automated checks
+television,el televisor,Electronics,Electronics store,Buildings/ElectronicsStore/LearningDisplays/Television,"(-63.5, 0.1, 39.4)","(-61.80769, 0.118462, 39.4)",True,None in automated checks
+teller counter,el mostrador bancario,Shopping,Bank,Bank teller counter,"(21.55, 0.72, 44.95)","(21.55, 0.538462, 43.25769)",True,None in automated checks
+tennis racket,la raqueta de tenis,Sports,Sports store,Buildings/SportsStore/Tennis_Racket,"(20.65, 0.1, 126.0)","(22.34231, 0.068462, 126.0)",True,None in automated checks
+thermometer,el termómetro,Health,Hospital,Buildings/Hospital/LearningWing/ExaminationRoom/Thermometer,"(-24.0, 0.99, 130.35)","(-24.0, 0.118462, 132.0423)",True,None in automated checks
+ticket,el boleto / el tiquete,Transportation,Travel learning area,TravelLearningHub/Ticket,"(-24.65, 1.42, 92.0)","(-24.65, 0.003461, 90.30769)",True,None in automated checks
+tiger,el tigre,Animals,Park zoo,ParkZoo/Tiger,"(-31.0, 0.147441, 71.0)","(-31.0, 0.003462, 72.62203)",True,None in automated checks
+tile,la baldosa / el azulejo,Home,Home / front yard,Kitchen floor tile,"(-10.22, 0.014, 13.76)","(-9.035385, 0.038462, 12.15119)",True,None in automated checks
+tire,la llanta / el neumático,Transportation,Town / outdoors,MeshInstance3D,"(22.0, 1.0, 98.0)","(22.0, 0.003462, 96.30769)",True,None in automated checks
+toaster,la tostadora,Home,Home / front yard,Toaster,"(-5.6, 1.63, 13.96)","(-5.599999, 0.038462, 12.26769)",True,None in automated checks
+today,hoy,Time,Travel learning area,TravelLearningHub/Today,"(-18.3, 2.1, 88.35)","(-18.3, 0.003462, 86.65769)",True,None in automated checks
+toilet,el inodoro,Home,Home / front yard,Toilet,"(1.58, 0.47, -1.58)","(1.58, 0.038462, 0.112308)",True,None in automated checks
+toilet paper,el papel higiénico,Home,Home / front yard,Toilet paper,"(2.43, 0.97, -0.85)","(1.245385, 1.308461, -2.034616)",True,None in automated checks
+tomato,el tomate,Food,Supermarket,Buildings/MarketDisplays/Tomato,"(-40.49, 1.02, 43.73333)","(-41.67461, 0.003462, 42.54872)",True,None in automated checks
+tomorrow,mañana,Time,Travel learning area,TravelLearningHub/Tomorrow,"(-16.75, 2.1, 88.35)","(-16.75, 0.003462, 86.65769)",True,None in automated checks
+toothbrush,el cepillo de dientes,Home,Home / front yard,Toothbrush,"(2.29, 1.7, 1.05)","(0.597692, 0.038462, 1.05)",True,None in automated checks
+torso,el torso,Health,Town / outdoors,People/Cashier/Torso,"(52.2, 1.25, 107.8)","(51.7557, 0.118462, 107.8)",True,None in automated checks
+towel,la toalla,Home,Home / front yard,Hand towel,"(2.74, 1.33, 2.72)","(1.047692, 0.038462, 2.72)",True,None in automated checks
+towel rack,el toallero,Home,Home / front yard,Towel rack,"(2.8, 1.54, 0.68)","(1.107692, 0.038462, 0.68)",True,None in automated checks
+traffic light,el semáforo,Transportation,Town / outdoors,Traffic Light,"(9.5, 2.6, 30.0)","(9.5, 0.003461, 28.30769)",True,None in automated checks
+train,el tren,Transportation,Travel learning area,TravelLearningHub/Train,"(-29.5, 0.05, 92.0)","(-29.5, 0.003462, 90.30769)",True,None in automated checks
+trash can,el basurero / el bote de basura,Home,Home / front yard,Bathroom trash bin,"(2.5, 0.33, 3.16)","(0.807692, 0.038462, 3.16)",True,None in automated checks
+tray,la bandeja,Home,Home / front yard,Plate3,"(-8.0, 1.1, 12.8)","(-6.815384, 0.038462, 11.61538)",True,None in automated checks
+treatment,el tratamiento,Health,Hospital / forecourt,First_Aid_Kit,"(-35.0, 1.1, 114.0)","(-35.0, 0.038462, 112.3077)",True,None in automated checks
+treatment table,la mesa de tratamiento,Health,Hospital,Buildings/Hospital/Floor1/DepartmentRoom2/HospitalBed/BedFrame,"(-38.0, 0.66, 124.2)","(-34.15385, 0.038462, 124.2)",True,None in automated checks
+tree,el árbol,Nature,Town / outdoors,Trees/Tree_5,"(-23.0, 0.0, 54.0)","(-23.0, 0.003462, 55.6923)",True,None in automated checks
+trolley,el carrito,Health,Hospital / forecourt,Trolley,"(-38.0, 0.25, 114.0)","(-38.0, 0.038462, 112.3077)",True,None in automated checks
+truck,el camión,Transportation,Town / outdoors,Vehicles/Truck,"(31.0, 0.0, 27.6)","(31.0, 0.003462, 25.90769)",True,None in automated checks
+trumpet,la trompeta,School,School,Buildings/School/LearningWing/MusicRoom/Trumpet,"(-12.5, 0.99, 150.45)","(-12.5, 0.118462, 148.7577)",True,None in automated checks
+turtle,la tortuga,Animals,Park zoo,ParkZoo/Turtle,"(5.0, 0.280563, 72.0)","(5.0, 0.003462, 70.29478)",True,None in automated checks
+tv stand,el mueble de televisión,Home,Home / front yard,TV console,"(7.72, 0.46, 9.379999)","(11.00831, 0.038462, 9.379999)",True,None in automated checks
+umbrella,el paraguas,Home,Home / front yard,Umbrella stand/Umbrella,"(5.4, 0.0, 16.8)","(5.459936, 0.038462, 18.49231)",True,None in automated checks
+utensil,el utensilio,Home,Home / front yard,Hanging utensil4,"(-7.599999, 1.4, 9.2)","(-7.599999, 0.038462, 7.507692)",True,None in automated checks
+vase,el jarrón,Home,Home / front yard,Vase body,"(9.0, 1.1, 13.0)","(10.18461, 0.038462, 11.81538)",True,None in automated checks
+vault,la bóveda,Shopping,Bank,Deposit safe3,"(30.2, 0.8, 51.8)","(29.8, 0.003462, 50.6377)",True,None in automated checks
+violin,el violín,School,School,Buildings/School/LearningWing/MusicRoom/Violin,"(-7.3, 0.09, 143.35)","(-7.3, 0.118462, 145.0423)",True,None in automated checks
+volleyball,el balón de voleibol,Sports,Sports store,Buildings/SportsStore/Volleyball,"(20.65, 1.02, 111.7143)","(22.34231, 0.068462, 111.7143)",True,None in automated checks
+walker,el andador,Health,Hospital,Buildings/Hospital/LearningWing/RehabilitationRoom/Walker,"(-24.0, 0.09, 143.35)","(-25.29231, 0.118462, 143.65)",True,None in automated checks
+wall,la pared,Home,Home / front yard,Buildings/HouseStructure/WestWingConnection,"(-10.5, 1.9, 6.0)","(-11.68462, 0.003462, 4.815384)",True,None in automated checks
+wardrobe,el ropero / el armario,Home,Furniture store,Buildings/FurnitureStore/Wardrobe,"(-45.15, 0.1, 109.0714)","(-45.15, 0.068462, 107.3791)",True,None in automated checks
+washcloth,la toallita,Home,Home / front yard,Folded washcloth,"(2.5, 2.54, 3.16)","(-1.497354, 0.038462, 3.16)",True,None in automated checks
+washing machine,la lavadora,Home,Electronics store,Buildings/ElectronicsStore/LearningDisplays/Washing_Machine,"(-55.5, 0.1, 39.4)","(-55.5, 0.938461, 41.09231)",True,None in automated checks
+water,el agua,Food,Town / outdoors,Fountain water,"(18.0, 0.62, 62.0)","(18.0, 0.638462, 60.30769)",True,None in automated checks
+water bottle,la botella de agua,Food,Supermarket,Buildings/MarketDisplays/Water_Bottle,"(-25.51, 1.02, 45.2)","(-25.51, 0.003462, 43.50769)",True,None in automated checks
+watermelon,la sandía,Food,Supermarket,Buildings/MarketDisplays/Watermelon,"(-40.49, 1.02, 49.6)","(-41.67461, 0.003462, 48.41538)",True,None in automated checks
+welcome sign,el letrero de bienvenida,Places,Home / front yard,Welcome Sign plaque,"(4.5, 2.4, 18.0)","(4.5, 0.00346, 19.69231)",True,None in automated checks
+wheel,la rueda,Transportation,Hospital,Buildings/Hospital/LearningWing/ExaminationRoom/HospitalBed/Wheel_2,"(-29.625, 0.345, 131.2)","(-29.625, 0.118462, 132.8923)",True,None in automated checks
+wheelchair,la silla de ruedas,Health,Hospital,Buildings/Hospital/LearningWing/RehabilitationRoom/Wheelchair,"(-29.2, 0.09, 143.35)","(-28.77, 0.118462, 144.8923)",True,None in automated checks
+whisk,el batidor de globo / el batidor manual,Food,Bakery & café,Buildings/BakeryCafe/Whisk,"(-55.65, 1.02, 82.42857)","(-57.3423, 0.068462, 82.42857)",True,None in automated checks
+whiteboard,el pizarrón blanco / la pizarra blanca,School,School / forecourt,Whiteboard,"(-11.0, 1.1, 114.0)","(-11.0, 0.038462, 112.3077)",True,None in automated checks
+window,la ventana,Home,Home / front yard,Living room window,"(8.65, 2.77, 14.84)","(4.803845, 0.038462, 14.84)",True,None in automated checks
+woman,la mujer,People,School / forecourt,People/@Node3D@5498,"(-5.6, 0.0, 112.5)","(-5.6, 0.038462, 110.8077)",True,None in automated checks
+worksheet,la hoja de ejercicios,School,School / forecourt,Notebook6,"(-11.0, 1.1, 115.8)","(-11.0, 0.038462, 117.4923)",True,None in automated checks
+world map,el mapamundi,School,School,Buildings/School/LearningWing/GeographyRoom/World_Map,"(1.9, 0.09, 143.35)","(1.9, 0.118461, 145.0423)",True,None in automated checks
+x ray,la radiografía,Health,Hospital / forecourt,X_Ray_Machine,"(-38.0, 1.1, 115.8)","(-38.0, 0.038462, 117.4923)",True,None in automated checks
+x ray machine,la máquina de rayos X,Health,Hospital,Buildings/Hospital/LearningWing/ImagingRoom/X_Ray_Machine,"(-40.0, 0.09, 143.35)","(-40.0, 0.118462, 145.0423)",True,None in automated checks
+yard,el patio delantero,Home,Home / front yard,Yard,"(11.0, 0.08, 18.0)","(7.153846, 0.003461, 18.0)",True,None in automated checks
+yesterday,ayer,Time,Travel learning area,TravelLearningHub/Yesterday,"(-15.2, 2.1, 88.35)","(-15.2, 0.003462, 86.65769)",True,None in automated checks

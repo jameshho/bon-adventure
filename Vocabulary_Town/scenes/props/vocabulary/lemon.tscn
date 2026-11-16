@@ -1,0 +1,103 @@
+[gd_scene format=3]
+
+[sub_resource type="SphereMesh" id="r1"]
+radius = 0.5
+height = 1.0
+radial_segments = 16
+rings = 8
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.87451, 0.81176, 0.23529, 1)
+roughness = 0.78
+
+[sub_resource type="SphereMesh" id="r3"]
+radius = 0.5
+height = 1.0
+radial_segments = 16
+rings = 8
+
+[sub_resource type="SphereMesh" id="r4"]
+radius = 0.5
+height = 1.0
+radial_segments = 16
+rings = 8
+
+[sub_resource type="CylinderMesh" id="r5"]
+top_radius = 0.025
+bottom_radius = 0.025
+height = 0.17117242768623694
+radial_segments = 16
+
+[sub_resource type="StandardMaterial3D" id="r6"]
+albedo_color = Color(0.67843, 0.48235, 0.31373, 1)
+roughness = 0.78
+
+[sub_resource type="SphereMesh" id="r7"]
+radius = 0.5
+height = 1.0
+radial_segments = 16
+rings = 8
+
+[sub_resource type="StandardMaterial3D" id="r8"]
+albedo_color = Color(0.32157, 0.49020, 0.24314, 1)
+roughness = 0.78
+
+[sub_resource type="BoxShape3D" id="r9"]
+size = Vector3(0.850000, 0.900000, 0.800000)
+
+[sub_resource type="BoxShape3D" id="r10"]
+size = Vector3(0.782000, 0.800000, 0.736000)
+
+[node name="Lemon" type="Node3D"]
+metadata/word_key = "lemon"
+metadata/learning_object = true
+
+[node name="Fruit_2" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.320000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r1")
+material_override = SubResource("r2")
+scale = Vector3(0.650000, 0.620000, 0.620000)
+
+[node name="Tip_3" type="MeshInstance3D" parent="."]
+position = Vector3(-0.340000, 0.320000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r3")
+material_override = SubResource("r2")
+scale = Vector3(0.150000, 0.180000, 0.200000)
+
+[node name="Tip_4" type="MeshInstance3D" parent="."]
+position = Vector3(0.340000, 0.320000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r4")
+material_override = SubResource("r2")
+scale = Vector3(0.150000, 0.180000, 0.200000)
+
+[node name="Stem_6" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.685000, 0.010000)
+rotation_degrees = Vector3(6.709837, 0.000000, -0.000000)
+mesh = SubResource("r5")
+material_override = SubResource("r6")
+
+[node name="Leaf_8" type="MeshInstance3D" parent="."]
+position = Vector3(0.120000, 0.680000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r7")
+material_override = SubResource("r8")
+scale = Vector3(0.250000, 0.050000, 0.120000)
+
+[node name="Interaction" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Interaction"]
+position = Vector3(0.000000, 0.450000, 0.000000)
+shape = SubResource("r9")
+
+[node name="Footprint" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Footprint"]
+position = Vector3(0.000000, 0.400000, 0.000000)
+shape = SubResource("r10")

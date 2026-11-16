@@ -1,0 +1,70 @@
+[gd_scene format=3]
+
+[sub_resource type="TorusMesh" id="r1"]
+inner_radius = 0.345
+outer_radius = 0.41500000000000004
+rings = 24
+ring_segments = 8
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.67843, 0.48235, 0.31373, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r3"]
+size = Vector3(0.190000, 0.150000, 0.045000)
+
+[sub_resource type="StandardMaterial3D" id="r4"]
+albedo_color = Color(0.52941, 0.58039, 0.61176, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r5"]
+size = Vector3(0.100000, 0.070000, 0.020000)
+
+[sub_resource type="StandardMaterial3D" id="r6"]
+albedo_color = Color(0.15686, 0.20392, 0.24314, 1)
+roughness = 0.78
+
+[sub_resource type="BoxShape3D" id="r7"]
+size = Vector3(0.950000, 1.250000, 0.800000)
+
+[sub_resource type="BoxShape3D" id="r8"]
+size = Vector3(0.874000, 0.800000, 0.736000)
+
+[node name="Belt" type="Node3D"]
+metadata/word_key = "belt"
+metadata/learning_object = true
+
+[node name="Strap_2" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.100000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r1")
+material_override = SubResource("r2")
+scale = Vector3(1.000000, 1.000000, 0.700000)
+
+[node name="Buckle_4" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.100000, -0.280000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r3")
+material_override = SubResource("r4")
+
+[node name="BuckleHole_6" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.100000, -0.310000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r5")
+material_override = SubResource("r6")
+
+[node name="Interaction" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Interaction"]
+position = Vector3(0.000000, 0.625000, 0.000000)
+shape = SubResource("r7")
+
+[node name="Footprint" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Footprint"]
+position = Vector3(0.000000, 0.400000, 0.000000)
+shape = SubResource("r8")

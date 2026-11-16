@@ -1,0 +1,18 @@
+{
+  "about": "Personal names for generated characters (the hospital family game), per language and gender, used when that language is the foreign one. Names are not vocabulary: they have no word key, object or journal entry. Each language needs at least 'min_per_gender' unique names for both 'f' and 'm' (tools/language_check.gd). Read through scripts/language/lexicon.gd::names().",
+  "min_per_gender": 20,
+  "names": {
+    "en": {
+      "f": ["Mary", "Anna", "Emma", "Olivia", "Sophia", "Grace", "Lily", "Emily", "Hannah", "Chloe", "Ella", "Lucy", "Ruby", "Alice", "Rose", "Claire", "Megan", "Sarah", "Kate", "Julia", "Linda", "Susan", "Helen", "Nancy"],
+      "m": ["John", "David", "James", "Michael", "Daniel", "Thomas", "William", "Henry", "Jack", "Ryan", "Peter", "Paul", "Mark", "Adam", "Ben", "Sam", "Luke", "Owen", "Noah", "Leo", "Robert", "George", "Frank", "Walter"]
+    },
+    "es": {
+      "f": ["María", "Ana", "Sofía", "Lucía", "Valeria", "Camila", "Isabel", "Carmen", "Elena", "Paula", "Daniela", "Gabriela", "Rosa", "Teresa", "Laura", "Mariana", "Fernanda", "Regina", "Ximena", "Andrea", "Patricia", "Guadalupe", "Beatriz", "Silvia"],
+      "m": ["José", "Juan", "Luis", "Carlos", "Miguel", "Diego", "Javier", "Pedro", "Jorge", "Ricardo", "Antonio", "Manuel", "Santiago", "Mateo", "Emiliano", "Alejandro", "Fernando", "Raúl", "Andrés", "Tomás", "Roberto", "Francisco", "Héctor", "Arturo"]
+    },
+    "zh": {
+      "f": ["美玲", "嘉欣", "嘉敏", "曉彤", "淑芬", "曉晴", "思琪", "婷婷", "詩詩", "宣儀", "雨琦", "靜怡", "佳琪", "小芳", "夢妍", "祖兒", "子怡", "嘉怡", "菲菲", "麗娜", "綺雯"],
+      "m": ["家明", "志偉", "子軒", "志明", "天佑", "志豪", "俊熙", "俊凱", "柏然", "曉明", "子韜", "志強", "子健", "敬亭", "一山", "浩軒", "文斌", "之謙", "昊然", "偉霆", "國強"]
+    }
+  }
+}

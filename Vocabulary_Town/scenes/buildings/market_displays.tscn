@@ -1,0 +1,1016 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/apple.tscn" id="e1"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/orange.tscn" id="e2"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/banana.tscn" id="e3"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/lemon.tscn" id="e4"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/pear.tscn" id="e5"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/tomato.tscn" id="e6"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/carrot.tscn" id="e7"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/broccoli.tscn" id="e8"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/grapes.tscn" id="e9"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/watermelon.tscn" id="e10"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/potato.tscn" id="e11"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/milk.tscn" id="e12"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/cheese.tscn" id="e13"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/eggs.tscn" id="e14"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/fish.tscn" id="e15"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/steak.tscn" id="e16"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/water_bottle.tscn" id="e17"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/cereal.tscn" id="e18"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/can.tscn" id="e19"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/bread.tscn" id="e20"]
+
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/chicken.tscn" id="fv_chicken"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/meat.tscn" id="fv_meat"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/salad.tscn" id="fv_salad"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/price.tscn" id="fv_price"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/money.tscn" id="fv_money"]
+
+[ext_resource type="PackedScene" path="res://scenes/props/vocabulary/credit_card.tscn" id="fv_credit_card"]
+
+[sub_resource type="BoxMesh" id="r1"]
+size = Vector3(13.700000, 0.040000, 14.700000)
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.88627, 0.86667, 0.79608, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r3"]
+size = Vector3(1.550000, 0.100000, 1.072222)
+
+[sub_resource type="StandardMaterial3D" id="r4"]
+albedo_color = Color(0.78039, 0.70980, 0.58824, 1)
+roughness = 0.78
+
+[sub_resource type="BoxShape3D" id="r5"]
+size = Vector3(1.550000, 0.100000, 1.072222)
+
+[sub_resource type="BoxMesh" id="r6"]
+size = Vector3(0.090000, 0.940000, 0.872222)
+
+[sub_resource type="StandardMaterial3D" id="r7"]
+albedo_color = Color(0.67843, 0.48235, 0.31373, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r8"]
+size = Vector3(0.090000, 0.940000, 0.872222)
+
+[sub_resource type="BoxMesh" id="r9"]
+size = Vector3(1.550000, 0.100000, 1.072222)
+
+[sub_resource type="BoxShape3D" id="r10"]
+size = Vector3(1.550000, 0.100000, 1.072222)
+
+[sub_resource type="BoxMesh" id="r11"]
+size = Vector3(0.090000, 0.940000, 0.872222)
+
+[sub_resource type="BoxMesh" id="r12"]
+size = Vector3(0.090000, 0.940000, 0.872222)
+
+[sub_resource type="BoxMesh" id="r13"]
+size = Vector3(1.550000, 0.100000, 1.072222)
+
+[sub_resource type="BoxShape3D" id="r14"]
+size = Vector3(1.550000, 0.100000, 1.072222)
+
+[sub_resource type="BoxMesh" id="r15"]
+size = Vector3(0.090000, 0.940000, 0.872222)
+
+[sub_resource type="BoxMesh" id="r16"]
+size = Vector3(0.090000, 0.940000, 0.872222)
+
+[sub_resource type="BoxMesh" id="r17"]
+size = Vector3(1.550000, 0.100000, 1.072222)
+
+[sub_resource type="BoxShape3D" id="r18"]
+size = Vector3(1.550000, 0.100000, 1.072222)
+
+[sub_resource type="BoxMesh" id="r19"]
+size = Vector3(0.090000, 0.940000, 0.872222)
+
+[sub_resource type="BoxMesh" id="r20"]
+size = Vector3(0.090000, 0.940000, 0.872222)
+
+[sub_resource type="BoxMesh" id="r21"]
+size = Vector3(1.550000, 0.100000, 1.072222)
+
+[sub_resource type="BoxShape3D" id="r22"]
+size = Vector3(1.550000, 0.100000, 1.072222)
+
+[sub_resource type="BoxMesh" id="r23"]
+size = Vector3(0.090000, 0.940000, 0.872222)
+
+[sub_resource type="BoxMesh" id="r24"]
+size = Vector3(0.090000, 0.940000, 0.872222)
+
+[sub_resource type="BoxMesh" id="r25"]
+size = Vector3(1.550000, 0.100000, 1.072222)
+
+[sub_resource type="BoxShape3D" id="r26"]
+size = Vector3(1.550000, 0.100000, 1.072222)
+
+[sub_resource type="BoxMesh" id="r27"]
+size = Vector3(0.090000, 0.940000, 0.872222)
+
+[sub_resource type="BoxMesh" id="r28"]
+size = Vector3(0.090000, 0.940000, 0.872222)
+
+[sub_resource type="BoxMesh" id="r29"]
+size = Vector3(1.550000, 0.100000, 1.072222)
+
+[sub_resource type="BoxShape3D" id="r30"]
+size = Vector3(1.550000, 0.100000, 1.072222)
+
+[sub_resource type="BoxMesh" id="r31"]
+size = Vector3(0.090000, 0.940000, 0.872222)
+
+[sub_resource type="BoxMesh" id="r32"]
+size = Vector3(0.090000, 0.940000, 0.872222)
+
+[sub_resource type="BoxMesh" id="r33"]
+size = Vector3(1.550000, 0.100000, 1.072222)
+
+[sub_resource type="BoxShape3D" id="r34"]
+size = Vector3(1.550000, 0.100000, 1.072222)
+
+[sub_resource type="BoxMesh" id="r35"]
+size = Vector3(0.090000, 0.940000, 0.872222)
+
+[sub_resource type="BoxMesh" id="r36"]
+size = Vector3(0.090000, 0.940000, 0.872222)
+
+[sub_resource type="BoxMesh" id="r37"]
+size = Vector3(1.550000, 0.100000, 1.072222)
+
+[sub_resource type="BoxShape3D" id="r38"]
+size = Vector3(1.550000, 0.100000, 1.072222)
+
+[sub_resource type="BoxMesh" id="r39"]
+size = Vector3(0.090000, 0.940000, 0.872222)
+
+[sub_resource type="BoxMesh" id="r40"]
+size = Vector3(0.090000, 0.940000, 0.872222)
+
+[sub_resource type="BoxMesh" id="r41"]
+size = Vector3(1.550000, 0.100000, 1.072222)
+
+[sub_resource type="BoxShape3D" id="r42"]
+size = Vector3(1.550000, 0.100000, 1.072222)
+
+[sub_resource type="BoxMesh" id="r43"]
+size = Vector3(0.090000, 0.940000, 0.872222)
+
+[sub_resource type="BoxMesh" id="r44"]
+size = Vector3(0.090000, 0.940000, 0.872222)
+
+[sub_resource type="BoxMesh" id="r45"]
+size = Vector3(1.550000, 0.100000, 1.072222)
+
+[sub_resource type="BoxShape3D" id="r46"]
+size = Vector3(1.550000, 0.100000, 1.072222)
+
+[sub_resource type="BoxMesh" id="r47"]
+size = Vector3(0.090000, 0.940000, 0.872222)
+
+[sub_resource type="BoxMesh" id="r48"]
+size = Vector3(0.090000, 0.940000, 0.872222)
+
+[sub_resource type="BoxMesh" id="r49"]
+size = Vector3(1.550000, 0.100000, 1.072222)
+
+[sub_resource type="BoxShape3D" id="r50"]
+size = Vector3(1.550000, 0.100000, 1.072222)
+
+[sub_resource type="BoxMesh" id="r51"]
+size = Vector3(0.090000, 0.940000, 0.872222)
+
+[sub_resource type="BoxMesh" id="r52"]
+size = Vector3(0.090000, 0.940000, 0.872222)
+
+[sub_resource type="BoxMesh" id="r53"]
+size = Vector3(1.550000, 0.100000, 1.072222)
+
+[sub_resource type="BoxShape3D" id="r54"]
+size = Vector3(1.550000, 0.100000, 1.072222)
+
+[sub_resource type="BoxMesh" id="r55"]
+size = Vector3(0.090000, 0.940000, 0.872222)
+
+[sub_resource type="BoxMesh" id="r56"]
+size = Vector3(0.090000, 0.940000, 0.872222)
+
+[sub_resource type="BoxMesh" id="r57"]
+size = Vector3(1.550000, 0.100000, 1.072222)
+
+[sub_resource type="BoxShape3D" id="r58"]
+size = Vector3(1.550000, 0.100000, 1.072222)
+
+[sub_resource type="BoxMesh" id="r59"]
+size = Vector3(0.090000, 0.940000, 0.872222)
+
+[sub_resource type="BoxMesh" id="r60"]
+size = Vector3(0.090000, 0.940000, 0.872222)
+
+[sub_resource type="BoxMesh" id="r61"]
+size = Vector3(1.550000, 0.100000, 1.072222)
+
+[sub_resource type="BoxShape3D" id="r62"]
+size = Vector3(1.550000, 0.100000, 1.072222)
+
+[sub_resource type="BoxMesh" id="r63"]
+size = Vector3(0.090000, 0.940000, 0.872222)
+
+[sub_resource type="BoxMesh" id="r64"]
+size = Vector3(0.090000, 0.940000, 0.872222)
+
+[sub_resource type="BoxMesh" id="r65"]
+size = Vector3(1.550000, 0.100000, 1.072222)
+
+[sub_resource type="BoxShape3D" id="r66"]
+size = Vector3(1.550000, 0.100000, 1.072222)
+
+[sub_resource type="BoxMesh" id="r67"]
+size = Vector3(0.090000, 0.940000, 0.872222)
+
+[sub_resource type="BoxMesh" id="r68"]
+size = Vector3(0.090000, 0.940000, 0.872222)
+
+[sub_resource type="BoxMesh" id="r69"]
+size = Vector3(1.550000, 0.100000, 1.072222)
+
+[sub_resource type="BoxShape3D" id="r70"]
+size = Vector3(1.550000, 0.100000, 1.072222)
+
+[sub_resource type="BoxMesh" id="r71"]
+size = Vector3(0.090000, 0.940000, 0.872222)
+
+[sub_resource type="BoxMesh" id="r72"]
+size = Vector3(0.090000, 0.940000, 0.872222)
+
+[sub_resource type="BoxMesh" id="r73"]
+size = Vector3(1.550000, 0.100000, 1.072222)
+
+[sub_resource type="BoxShape3D" id="r74"]
+size = Vector3(1.550000, 0.100000, 1.072222)
+
+[sub_resource type="BoxMesh" id="r75"]
+size = Vector3(0.090000, 0.940000, 0.872222)
+
+[sub_resource type="BoxMesh" id="r76"]
+size = Vector3(0.090000, 0.940000, 0.872222)
+
+[sub_resource type="BoxMesh" id="r77"]
+size = Vector3(1.550000, 0.100000, 1.072222)
+
+[sub_resource type="BoxShape3D" id="r78"]
+size = Vector3(1.550000, 0.100000, 1.072222)
+
+[sub_resource type="BoxMesh" id="r79"]
+size = Vector3(0.090000, 0.940000, 0.872222)
+
+[sub_resource type="BoxMesh" id="r80"]
+size = Vector3(0.090000, 0.940000, 0.872222)
+
+[sub_resource type="BoxMesh" id="r81"]
+size = Vector3(1.550000, 0.100000, 1.072222)
+
+[sub_resource type="BoxShape3D" id="r82"]
+size = Vector3(1.550000, 0.100000, 1.072222)
+
+[sub_resource type="BoxMesh" id="r83"]
+size = Vector3(0.090000, 0.940000, 0.872222)
+
+[sub_resource type="BoxMesh" id="r84"]
+size = Vector3(0.090000, 0.940000, 0.872222)
+
+
+[sub_resource type="BoxMesh" id="food_shelf_mesh"]
+size = Vector3(1.30, 0.12, 12.3)
+
+[sub_resource type="StandardMaterial3D" id="food_shelf_mat"]
+albedo_color = Color(0.66, 0.47, 0.32, 1)
+roughness = 0.79
+
+[sub_resource type="BoxMesh" id="food_shelf_bracket_mesh"]
+size = Vector3(0.20, 0.43, 0.22)
+
+[sub_resource type="StandardMaterial3D" id="food_shelf_bracket_mat"]
+albedo_color = Color(0.32, 0.40, 0.37, 1)
+roughness = 0.76
+
+[node name="FRESHMARKET" type="Node3D"]
+
+[node name="MarketTileFloor_2" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.060000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r1")
+material_override = SubResource("r2")
+
+[node name="DisplayTopapple_4" type="MeshInstance3D" parent="."]
+position = Vector3(-5.350000, 0.960000, -5.500000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r3")
+material_override = SubResource("r4")
+
+[node name="DisplayBodyapple" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodyapple"]
+position = Vector3(-5.350000, 0.960000, -5.500000)
+shape = SubResource("r5")
+
+[node name="DisplayLeg_7" type="MeshInstance3D" parent="."]
+position = Vector3(-5.900000, 0.470000, -5.500000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r6")
+material_override = SubResource("r7")
+
+[node name="DisplayLeg_8" type="MeshInstance3D" parent="."]
+position = Vector3(-4.800000, 0.470000, -5.500000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r8")
+material_override = SubResource("r7")
+
+[node name="Apple" parent="." instance=ExtResource("e1")]
+position = Vector3(-5.350000, 1.020000, -5.500000)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="DisplayToporange_9" type="MeshInstance3D" parent="."]
+position = Vector3(-5.350000, 0.960000, -4.277778)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r9")
+material_override = SubResource("r4")
+
+[node name="DisplayBodyorange" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodyorange"]
+position = Vector3(-5.350000, 0.960000, -4.277778)
+shape = SubResource("r10")
+
+[node name="DisplayLeg_11" type="MeshInstance3D" parent="."]
+position = Vector3(-5.900000, 0.470000, -4.277778)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r11")
+material_override = SubResource("r7")
+
+[node name="DisplayLeg_12" type="MeshInstance3D" parent="."]
+position = Vector3(-4.800000, 0.470000, -4.277778)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r12")
+material_override = SubResource("r7")
+
+[node name="Orange" parent="." instance=ExtResource("e2")]
+position = Vector3(-5.350000, 1.020000, -4.277778)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="DisplayTopbanana_13" type="MeshInstance3D" parent="."]
+position = Vector3(-5.350000, 0.960000, -3.055556)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r13")
+material_override = SubResource("r4")
+
+[node name="DisplayBodybanana" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodybanana"]
+position = Vector3(-5.350000, 0.960000, -3.055556)
+shape = SubResource("r14")
+
+[node name="DisplayLeg_15" type="MeshInstance3D" parent="."]
+position = Vector3(-5.900000, 0.470000, -3.055556)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r15")
+material_override = SubResource("r7")
+
+[node name="DisplayLeg_16" type="MeshInstance3D" parent="."]
+position = Vector3(-4.800000, 0.470000, -3.055556)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r16")
+material_override = SubResource("r7")
+
+[node name="Banana" parent="." instance=ExtResource("e3")]
+position = Vector3(-5.350000, 1.020000, -3.055556)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="DisplayToplemon_17" type="MeshInstance3D" parent="."]
+position = Vector3(-5.350000, 0.960000, -1.833333)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r17")
+material_override = SubResource("r4")
+
+[node name="DisplayBodylemon" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodylemon"]
+position = Vector3(-5.350000, 0.960000, -1.833333)
+shape = SubResource("r18")
+
+[node name="DisplayLeg_19" type="MeshInstance3D" parent="."]
+position = Vector3(-5.900000, 0.470000, -1.833333)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r19")
+material_override = SubResource("r7")
+
+[node name="DisplayLeg_20" type="MeshInstance3D" parent="."]
+position = Vector3(-4.800000, 0.470000, -1.833333)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r20")
+material_override = SubResource("r7")
+
+[node name="Lemon" parent="." instance=ExtResource("e4")]
+position = Vector3(-5.350000, 1.020000, -1.833333)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="DisplayToppear_21" type="MeshInstance3D" parent="."]
+position = Vector3(-5.350000, 0.960000, -0.611111)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r21")
+material_override = SubResource("r4")
+
+[node name="DisplayBodypear" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodypear"]
+position = Vector3(-5.350000, 0.960000, -0.611111)
+shape = SubResource("r22")
+
+[node name="DisplayLeg_23" type="MeshInstance3D" parent="."]
+position = Vector3(-5.900000, 0.470000, -0.611111)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r23")
+material_override = SubResource("r7")
+
+[node name="DisplayLeg_24" type="MeshInstance3D" parent="."]
+position = Vector3(-4.800000, 0.470000, -0.611111)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r24")
+material_override = SubResource("r7")
+
+[node name="Pear" parent="." instance=ExtResource("e5")]
+position = Vector3(-5.350000, 1.020000, -0.611111)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="DisplayToptomato_25" type="MeshInstance3D" parent="."]
+position = Vector3(-5.350000, 0.960000, 0.611111)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r25")
+material_override = SubResource("r4")
+
+[node name="DisplayBodytomato" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodytomato"]
+position = Vector3(-5.350000, 0.960000, 0.611111)
+shape = SubResource("r26")
+
+[node name="DisplayLeg_27" type="MeshInstance3D" parent="."]
+position = Vector3(-5.900000, 0.470000, 0.611111)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r27")
+material_override = SubResource("r7")
+
+[node name="DisplayLeg_28" type="MeshInstance3D" parent="."]
+position = Vector3(-4.800000, 0.470000, 0.611111)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r28")
+material_override = SubResource("r7")
+
+[node name="Tomato" parent="." instance=ExtResource("e6")]
+position = Vector3(-5.350000, 1.020000, 0.611111)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="DisplayTopcarrot_29" type="MeshInstance3D" parent="."]
+position = Vector3(-5.350000, 0.960000, 1.833333)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r29")
+material_override = SubResource("r4")
+
+[node name="DisplayBodycarrot" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodycarrot"]
+position = Vector3(-5.350000, 0.960000, 1.833333)
+shape = SubResource("r30")
+
+[node name="DisplayLeg_31" type="MeshInstance3D" parent="."]
+position = Vector3(-5.900000, 0.470000, 1.833333)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r31")
+material_override = SubResource("r7")
+
+[node name="DisplayLeg_32" type="MeshInstance3D" parent="."]
+position = Vector3(-4.800000, 0.470000, 1.833333)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r32")
+material_override = SubResource("r7")
+
+[node name="Carrot" parent="." instance=ExtResource("e7")]
+position = Vector3(-5.350000, 1.020000, 1.833333)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="DisplayTopbroccoli_33" type="MeshInstance3D" parent="."]
+position = Vector3(-5.350000, 0.960000, 3.055556)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r33")
+material_override = SubResource("r4")
+
+[node name="DisplayBodybroccoli" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodybroccoli"]
+position = Vector3(-5.350000, 0.960000, 3.055556)
+shape = SubResource("r34")
+
+[node name="DisplayLeg_35" type="MeshInstance3D" parent="."]
+position = Vector3(-5.900000, 0.470000, 3.055556)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r35")
+material_override = SubResource("r7")
+
+[node name="DisplayLeg_36" type="MeshInstance3D" parent="."]
+position = Vector3(-4.800000, 0.470000, 3.055556)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r36")
+material_override = SubResource("r7")
+
+[node name="Broccoli" parent="." instance=ExtResource("e8")]
+position = Vector3(-5.350000, 1.020000, 3.055556)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="DisplayTopgrapes_37" type="MeshInstance3D" parent="."]
+position = Vector3(-5.350000, 0.960000, 4.277778)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r37")
+material_override = SubResource("r4")
+
+[node name="DisplayBodygrapes" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodygrapes"]
+position = Vector3(-5.350000, 0.960000, 4.277778)
+shape = SubResource("r38")
+
+[node name="DisplayLeg_39" type="MeshInstance3D" parent="."]
+position = Vector3(-5.900000, 0.470000, 4.277778)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r39")
+material_override = SubResource("r7")
+
+[node name="DisplayLeg_40" type="MeshInstance3D" parent="."]
+position = Vector3(-4.800000, 0.470000, 4.277778)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r40")
+material_override = SubResource("r7")
+
+[node name="Grapes" parent="." instance=ExtResource("e9")]
+position = Vector3(-5.350000, 1.020000, 4.277778)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="DisplayTopwatermelon_41" type="MeshInstance3D" parent="."]
+position = Vector3(-5.350000, 0.960000, 5.500000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r41")
+material_override = SubResource("r4")
+
+[node name="DisplayBodywatermelon" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodywatermelon"]
+position = Vector3(-5.350000, 0.960000, 5.500000)
+shape = SubResource("r42")
+
+[node name="DisplayLeg_43" type="MeshInstance3D" parent="."]
+position = Vector3(-5.900000, 0.470000, 5.500000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r43")
+material_override = SubResource("r7")
+
+[node name="DisplayLeg_44" type="MeshInstance3D" parent="."]
+position = Vector3(-4.800000, 0.470000, 5.500000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r44")
+material_override = SubResource("r7")
+
+[node name="Watermelon" parent="." instance=ExtResource("e10")]
+position = Vector3(-5.350000, 1.020000, 5.500000)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="DisplayToppotato_45" type="MeshInstance3D" parent="."]
+position = Vector3(5.350000, 0.960000, -5.500000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r45")
+material_override = SubResource("r4")
+
+[node name="DisplayBodypotato" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodypotato"]
+position = Vector3(5.350000, 0.960000, -5.500000)
+shape = SubResource("r46")
+
+[node name="DisplayLeg_47" type="MeshInstance3D" parent="."]
+position = Vector3(4.800000, 0.470000, -5.500000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r47")
+material_override = SubResource("r7")
+
+[node name="DisplayLeg_48" type="MeshInstance3D" parent="."]
+position = Vector3(5.900000, 0.470000, -5.500000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r48")
+material_override = SubResource("r7")
+
+[node name="Potato" parent="." instance=ExtResource("e11")]
+position = Vector3(5.350000, 1.020000, -5.500000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="DisplayTopmilk_49" type="MeshInstance3D" parent="."]
+position = Vector3(5.350000, 0.960000, -4.277778)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r49")
+material_override = SubResource("r4")
+
+[node name="DisplayBodymilk" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodymilk"]
+position = Vector3(5.350000, 0.960000, -4.277778)
+shape = SubResource("r50")
+
+[node name="DisplayLeg_51" type="MeshInstance3D" parent="."]
+position = Vector3(4.800000, 0.470000, -4.277778)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r51")
+material_override = SubResource("r7")
+
+[node name="DisplayLeg_52" type="MeshInstance3D" parent="."]
+position = Vector3(5.900000, 0.470000, -4.277778)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r52")
+material_override = SubResource("r7")
+
+[node name="Milk" parent="." instance=ExtResource("e12")]
+position = Vector3(5.350000, 1.020000, -4.277778)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="DisplayTopcheese_53" type="MeshInstance3D" parent="."]
+position = Vector3(5.350000, 0.960000, -3.055556)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r53")
+material_override = SubResource("r4")
+
+[node name="DisplayBodycheese" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodycheese"]
+position = Vector3(5.350000, 0.960000, -3.055556)
+shape = SubResource("r54")
+
+[node name="DisplayLeg_55" type="MeshInstance3D" parent="."]
+position = Vector3(4.800000, 0.470000, -3.055556)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r55")
+material_override = SubResource("r7")
+
+[node name="DisplayLeg_56" type="MeshInstance3D" parent="."]
+position = Vector3(5.900000, 0.470000, -3.055556)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r56")
+material_override = SubResource("r7")
+
+[node name="Cheese" parent="." instance=ExtResource("e13")]
+position = Vector3(5.350000, 1.020000, -3.055556)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="DisplayTopeggs_57" type="MeshInstance3D" parent="."]
+position = Vector3(5.350000, 0.960000, -1.833333)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r57")
+material_override = SubResource("r4")
+
+[node name="DisplayBodyeggs" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodyeggs"]
+position = Vector3(5.350000, 0.960000, -1.833333)
+shape = SubResource("r58")
+
+[node name="DisplayLeg_59" type="MeshInstance3D" parent="."]
+position = Vector3(4.800000, 0.470000, -1.833333)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r59")
+material_override = SubResource("r7")
+
+[node name="DisplayLeg_60" type="MeshInstance3D" parent="."]
+position = Vector3(5.900000, 0.470000, -1.833333)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r60")
+material_override = SubResource("r7")
+
+[node name="Eggs" parent="." instance=ExtResource("e14")]
+position = Vector3(5.350000, 1.020000, -1.833333)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="DisplayTopfish_61" type="MeshInstance3D" parent="."]
+position = Vector3(5.350000, 0.960000, -0.611111)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r61")
+material_override = SubResource("r4")
+
+[node name="DisplayBodyfish" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodyfish"]
+position = Vector3(5.350000, 0.960000, -0.611111)
+shape = SubResource("r62")
+
+[node name="DisplayLeg_63" type="MeshInstance3D" parent="."]
+position = Vector3(4.800000, 0.470000, -0.611111)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r63")
+material_override = SubResource("r7")
+
+[node name="DisplayLeg_64" type="MeshInstance3D" parent="."]
+position = Vector3(5.900000, 0.470000, -0.611111)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r64")
+material_override = SubResource("r7")
+
+[node name="Fish" parent="." instance=ExtResource("e15")]
+position = Vector3(5.350000, 1.020000, -0.611111)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="DisplayTopsteak_65" type="MeshInstance3D" parent="."]
+position = Vector3(5.350000, 0.960000, 0.611111)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r65")
+material_override = SubResource("r4")
+
+[node name="DisplayBodysteak" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodysteak"]
+position = Vector3(5.350000, 0.960000, 0.611111)
+shape = SubResource("r66")
+
+[node name="DisplayLeg_67" type="MeshInstance3D" parent="."]
+position = Vector3(4.800000, 0.470000, 0.611111)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r67")
+material_override = SubResource("r7")
+
+[node name="DisplayLeg_68" type="MeshInstance3D" parent="."]
+position = Vector3(5.900000, 0.470000, 0.611111)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r68")
+material_override = SubResource("r7")
+
+[node name="Steak" parent="." instance=ExtResource("e16")]
+position = Vector3(5.350000, 1.020000, 0.611111)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="DisplayTopwater_bottle_69" type="MeshInstance3D" parent="."]
+position = Vector3(5.350000, 0.960000, 1.833333)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r69")
+material_override = SubResource("r4")
+
+[node name="DisplayBodywater_bottle" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodywater_bottle"]
+position = Vector3(5.350000, 0.960000, 1.833333)
+shape = SubResource("r70")
+
+[node name="DisplayLeg_71" type="MeshInstance3D" parent="."]
+position = Vector3(4.800000, 0.470000, 1.833333)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r71")
+material_override = SubResource("r7")
+
+[node name="DisplayLeg_72" type="MeshInstance3D" parent="."]
+position = Vector3(5.900000, 0.470000, 1.833333)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r72")
+material_override = SubResource("r7")
+
+[node name="Water_Bottle" parent="." instance=ExtResource("e17")]
+position = Vector3(5.350000, 1.020000, 1.833333)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="DisplayTopcereal_73" type="MeshInstance3D" parent="."]
+position = Vector3(5.350000, 0.960000, 3.055556)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r73")
+material_override = SubResource("r4")
+
+[node name="DisplayBodycereal" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodycereal"]
+position = Vector3(5.350000, 0.960000, 3.055556)
+shape = SubResource("r74")
+
+[node name="DisplayLeg_75" type="MeshInstance3D" parent="."]
+position = Vector3(4.800000, 0.470000, 3.055556)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r75")
+material_override = SubResource("r7")
+
+[node name="DisplayLeg_76" type="MeshInstance3D" parent="."]
+position = Vector3(5.900000, 0.470000, 3.055556)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r76")
+material_override = SubResource("r7")
+
+[node name="Cereal" parent="." instance=ExtResource("e18")]
+position = Vector3(5.350000, 1.020000, 3.055556)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="DisplayTopcan_77" type="MeshInstance3D" parent="."]
+position = Vector3(5.350000, 0.960000, 4.277778)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r77")
+material_override = SubResource("r4")
+
+[node name="DisplayBodycan" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodycan"]
+position = Vector3(5.350000, 0.960000, 4.277778)
+shape = SubResource("r78")
+
+[node name="DisplayLeg_79" type="MeshInstance3D" parent="."]
+position = Vector3(4.800000, 0.470000, 4.277778)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r79")
+material_override = SubResource("r7")
+
+[node name="DisplayLeg_80" type="MeshInstance3D" parent="."]
+position = Vector3(5.900000, 0.470000, 4.277778)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r80")
+material_override = SubResource("r7")
+
+[node name="Can" parent="." instance=ExtResource("e19")]
+position = Vector3(5.350000, 1.020000, 4.277778)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="DisplayTopbread_81" type="MeshInstance3D" parent="."]
+position = Vector3(5.350000, 0.960000, 5.500000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r81")
+material_override = SubResource("r4")
+
+[node name="DisplayBodybread" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="DisplayBodybread"]
+position = Vector3(5.350000, 0.960000, 5.500000)
+shape = SubResource("r82")
+
+[node name="DisplayLeg_83" type="MeshInstance3D" parent="."]
+position = Vector3(4.800000, 0.470000, 5.500000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r83")
+material_override = SubResource("r7")
+
+[node name="DisplayLeg_84" type="MeshInstance3D" parent="."]
+position = Vector3(5.900000, 0.470000, 5.500000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r84")
+material_override = SubResource("r7")
+
+[node name="Bread" parent="." instance=ExtResource("e20")]
+position = Vector3(5.350000, 1.020000, 5.500000)
+rotation_degrees = Vector3(0, 90, 0)
+
+[node name="Section486" type="Label3D" parent="."]
+position = Vector3(-5.200000, 2.850000, -6.500000)
+text = "FRUIT & VEGETABLES"
+font_size = 52
+pixel_size = 0.0045
+rotation_degrees = Vector3(0, 180, 0)
+modulate = Color(0.18, 0.24, 0.27, 1)
+outline_size = 0
+
+[node name="Section494" type="Label3D" parent="."]
+position = Vector3(5.200000, 2.850000, -6.500000)
+text = "DAIRY & GROCERIES"
+font_size = 52
+pixel_size = 0.0045
+rotation_degrees = Vector3(0, 180, 0)
+modulate = Color(0.18, 0.24, 0.27, 1)
+outline_size = 0
+
+[node name="EverydayVocabularyLeftShelf" type="MeshInstance3D" parent="."]
+position = Vector3(-5.35, 2.38, 0)
+mesh = SubResource("food_shelf_mesh")
+material_override = SubResource("food_shelf_mat")
+
+[node name="EverydayShelfSupportLeftFront" type="MeshInstance3D" parent="."]
+position = Vector3(-5.35, 2.11, -6.0)
+mesh = SubResource("food_shelf_bracket_mesh")
+material_override = SubResource("food_shelf_bracket_mat")
+
+[node name="EverydayShelfSupportLeftRear" type="MeshInstance3D" parent="."]
+position = Vector3(-5.35, 2.11, 6.0)
+mesh = SubResource("food_shelf_bracket_mesh")
+material_override = SubResource("food_shelf_bracket_mat")
+
+[node name="EverydayVocabularyRightShelf" type="MeshInstance3D" parent="."]
+position = Vector3(5.35, 2.38, 0)
+mesh = SubResource("food_shelf_mesh")
+material_override = SubResource("food_shelf_mat")
+
+[node name="EverydayShelfSupportRightFront" type="MeshInstance3D" parent="."]
+position = Vector3(5.35, 2.11, -6.0)
+mesh = SubResource("food_shelf_bracket_mesh")
+material_override = SubResource("food_shelf_bracket_mat")
+
+[node name="EverydayShelfSupportRightRear" type="MeshInstance3D" parent="."]
+position = Vector3(5.35, 2.11, 6.0)
+mesh = SubResource("food_shelf_bracket_mesh")
+material_override = SubResource("food_shelf_bracket_mat")
+
+[node name="Everyday_Chicken" parent="." instance=ExtResource("fv_chicken")]
+position = Vector3(-5.35, 2.46, -4.2)
+rotation_degrees = Vector3(0, -90, 0)
+metadata/word_key = "chicken"
+metadata/learning_object = true
+
+[node name="Everyday_Meat" parent="." instance=ExtResource("fv_meat")]
+position = Vector3(-5.35, 2.46, 0.0)
+rotation_degrees = Vector3(0, -90, 0)
+metadata/word_key = "meat"
+metadata/learning_object = true
+
+[node name="Everyday_Salad" parent="." instance=ExtResource("fv_salad")]
+position = Vector3(-5.35, 2.46, 4.2)
+rotation_degrees = Vector3(0, -90, 0)
+metadata/word_key = "salad"
+metadata/learning_object = true
+
+[node name="Everyday_Price" parent="." instance=ExtResource("fv_price")]
+position = Vector3(5.35, 2.46, -4.2)
+rotation_degrees = Vector3(0, 90, 0)
+metadata/word_key = "price"
+metadata/learning_object = true
+
+[node name="Everyday_Money" parent="." instance=ExtResource("fv_money")]
+position = Vector3(5.35, 2.46, 0.0)
+rotation_degrees = Vector3(0, 90, 0)
+metadata/word_key = "money"
+metadata/learning_object = true
+
+[node name="Everyday_Credit_Card" parent="." instance=ExtResource("fv_credit_card")]
+position = Vector3(5.35, 2.46, 4.2)
+rotation_degrees = Vector3(0, 90, 0)
+metadata/word_key = "credit card"
+metadata/learning_object = true

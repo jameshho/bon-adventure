@@ -1,0 +1,7 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[resource]
+resource_name = "Blue metallic paint"
+albedo_color = Color(0.45882, 0.61961, 0.76078, 1)
+metallic = 0.22
+roughness = 0.32

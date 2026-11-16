@@ -1,0 +1,6 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[resource]
+resource_name = "Grille shadow"
+albedo_color = Color(0.054902, 0.090196, 0.12549, 1)
+roughness = 0.54

@@ -1,0 +1,893 @@
+{
+  "doors": 12,
+  "missions": [
+    [
+      "home",
+      [
+        "refrigerator",
+        "stove",
+        "table"
+      ]
+    ],
+    [
+      "groceries",
+      [
+        "apple",
+        "bread",
+        "milk"
+      ]
+    ],
+    [
+      "library",
+      [
+        "book",
+        "computer",
+        "chair"
+      ]
+    ],
+    [
+      "hospital",
+      [
+        "hospital bed",
+        "medicine",
+        "monitor"
+      ]
+    ],
+    [
+      "school",
+      [
+        "notebook",
+        "pencil",
+        "whiteboard"
+      ]
+    ],
+    [
+      "bank",
+      [
+        "atm",
+        "vault",
+        "computer"
+      ]
+    ],
+    [
+      "sports",
+      [
+        "basketball",
+        "tennis racket",
+        "bicycle"
+      ]
+    ],
+    [
+      "fashion",
+      [
+        "shirt",
+        "hat",
+        "shoes"
+      ]
+    ],
+    [
+      "furniture",
+      [
+        "sofa",
+        "bed",
+        "wardrobe"
+      ]
+    ],
+    [
+      "bakery",
+      [
+        "croissant",
+        "cup",
+        "coffee maker"
+      ]
+    ],
+    [
+      "technology",
+      [
+        "laptop",
+        "headphones",
+        "washing machine"
+      ]
+    ],
+    [
+      "science_lab",
+      [
+        "magnet",
+        "magnifying glass"
+      ]
+    ],
+    [
+      "art_studio",
+      [
+        "easel",
+        "palette",
+        "paintbrush"
+      ]
+    ],
+    [
+      "music_room",
+      [
+        "piano",
+        "guitar",
+        "trumpet"
+      ]
+    ],
+    [
+      "geography_room",
+      [
+        "globe",
+        "compass",
+        "world map"
+      ]
+    ],
+    [
+      "emergency_room",
+      [
+        "stretcher",
+        "defibrillator",
+        "oxygen tank"
+      ]
+    ],
+    [
+      "examination_room",
+      [
+        "stethoscope",
+        "thermometer",
+        "blood pressure monitor"
+      ]
+    ],
+    [
+      "imaging_room",
+      [
+        "x ray machine",
+        "MRI scanner",
+        "medical monitor"
+      ]
+    ],
+    [
+      "rehabilitation_room",
+      [
+        "wheelchair",
+        "crutches",
+        "walker"
+      ]
+    ]
+  ],
+  "protected": {
+    "Airport/AirportSign": "fa39fbd84ec058b12db42731024bab3bec0a539a3393b668e10018264607549b",
+    "Airport/ControlTower": "13234c354730f40ac4d71dc497034552e171ce92079e14b2043ce9680a19aa4b",
+    "Airport/Terminal": "0f8f17db7ea6b9e783b034ea3dfa8901b682d8337c8c6223cd3c37e132f2cde3",
+    "Airport/TowerCabin": "04b8a1b8c2615197a41b0133c3477f66eefab287fd27727d4da81b60e50caf8f",
+    "Animals/PigBank": "88a16f6aa3bf9a5a1baa12e698c63e64c1893c7130d29dddb5ce284a0af9f929",
+    "Animals/PigHospital": "ab3afcbb05a4da033d4a9dbe38c224a3eeb57465f3dd6ec6af2a942aa58fb3d4",
+    "Animals/PigLibrary": "e208baf19fc2d9acad6351d9eb8afb907517eba878deff2c445eae8e5f40ce56",
+    "Animals/PigPoliceStation": "61f3946fa0ed4eade0c13a33623748cc642589725dcc6f745a06e3633e005d39",
+    "Animals/PigSchool": "c02f2740e0a9ed7e0512f11c9925b2b595d374ab54816e8079d27a9649041319",
+    "Barn/Barn": "659644c8d521b07e1d91da145a0f22bbaa0690a62bf75340bb40207a5dee3c70",
+    "Barn/FarmSign": "b9bc47fb5a676905bd1920cf831661e5deee8b7203055d02a53dc5b5aa259048",
+    "Barn/GableLeft": "2ca7195f22531693972c032d686d46a27f0e3f5ac7d18e62068473354bf5e466",
+    "Barn/GableRight": "10f3a2be1ed60acd0469b563edf03a3212a95a68f852347b3ae406ee39a91f68",
+    "Buildings/BakeryCafe": "3c0b635f39512173d55cd22c63fcc0fa1c3fd17958dd74bfe1cc50c567ecc8e8",
+    "Buildings/ClothingStore": "928845e496053db860bf07c5ce21e4e64037c73cf94a785fa66baad474ea73d1",
+    "Buildings/ElectronicsStore": "f9945de5d85d15a8a30f2925c1cd0d02e210c60e69b965ff812912bb386eecef",
+    "Buildings/FurnitureStore": "e49ec4e66f740821a20e03d468885ac1cd3027c38e81dbbe3adcb2c208e1e3aa",
+    "Buildings/Hospital": "a93352e29f2452d46dc4c1e2c4e7a2849daa2313676bc85a988c008ac6eea417",
+    "Buildings/HouseStructure": "2040786ca5a0bdee3fd7de3204b3aa4fbc9174ec82c6395b93dd7febab0bbe56",
+    "Buildings/School": "fbf1073395462fd63df9851324d2739e340706f56e9cdfd9403c4eccb4cf317c",
+    "Buildings/SportsStore": "a0afbaef9347d57c1a18bb50254fb61c6e18bda822660afceb2caf997d8a895d",
+    "Map facades/AIRPORT": "900064ee18565825c3adb5a981db2781d096cd525fefaf1648a3ed59107b72c5",
+    "Map facades/BAKERY _ CAFE": "8d38c3a88e6d1f6d8092bb7c2edefeeb9c976a1590d69b86c83b2e47883793de",
+    "Map facades/BANK": "578ae59e3e017b9c7b646143d5342af87bd3db3c2522d3086ed315f346cfead5",
+    "Map facades/CAFE": "8e1238c422c2f5835d3fee115fb25fe546bce58ea8119273e88da56187a334be",
+    "Map facades/CHAPEL": "f93af0b4f25d6de8869863eae7110ad0a978f1fc05647457b0a8623ce5c0e3bd",
+    "Map facades/CLOTHING": "506915a6bdf1bc4a93759cc44b7198f1db4b6681202d7eae740d07d7b67b4d27",
+    "Map facades/CONTROL TOWER": "dff1802712ea5825498141170a2aec4cab8cb3e4af08e48563b4bc67d33c4015",
+    "Map facades/ELECTRONICS": "1abf8f13773fe6393cbc2085954fd84afc648e314d16bd7e6a7ab2a9bc9382ab",
+    "Map facades/FARM BARN": "f6bc569803da27c1e216908023a005bc24463c556c625f94f0ecb902fdad6b6a",
+    "Map facades/FURNITURE": "688ffa9ac105b7f0f5176425e1cb823c6641a53ee1d93dc810ba362fc3b62dd2",
+    "Map facades/GAZEBO": "f8080987b89b94bdd5cfc08ad460893fffdea42e5166ef7bd0183af61e864f76",
+    "Map facades/HOME": "139a5ae390721b619c175e0790af81bafbe19446a691f83cc80d1f2860c59314",
+    "Map facades/HOSPITAL": "e2fd9edba34a2aaf373acf5fd2fd244961ffc2b57b2299460bde5cff9c55680d",
+    "Map facades/LIBRARY": "5f8f967443b0daab169afad8dc63a899816b47d413d5c6767d71de06de2772e4",
+    "Map facades/PIZZERIA": "f8948d4ba44ae81eec94b2ca91932708510b5eb8305346ba548475a36ef36a34",
+    "Map facades/POLICE STATION": "863980f2cf809df08df01eabfa810a42fb47761306e0a91765d13cd73e86f963",
+    "Map facades/RESTAURANT": "c6d6afa312282c21675689900fdd7f351ca35a14a4bd0499ab5bd50ed0e58fdb",
+    "Map facades/SCHOOL": "3b2a1530de796912fc7ea5243239fe506a6f435ca9aa8d97bd340da3ceeaf7f2",
+    "Map facades/SPORTS": "1ba4f220878a45f3b0360e0f3b1e48a80871d45a4b4c19a0357a8b096b01278c",
+    "Map facades/SUPERMARKET": "495cc8e5f3c32b828746daaa49d773409af7490cf82776a6a6f9117c3381ac29",
+    "ParkZoo/@Label3D@39": "578ca0bbf4fe4a003289455df44123d4d2ecb5f532bea3b7146f32048c1fd85d",
+    "ParkZoo/@Label3D@48": "e5873607321a4b61ae99025188d59ea2ea46f9c43954319de194c895fab2c417",
+    "ParkZoo/@Label3D@49": "20be7ebf33e279a8f509799678e25dea7424ad750e5b244d5c8dbfe9e46f32db",
+    "ParkZoo/ANIMALES SALVAJES lawn": "c0b0e493d1aac3ab76abdaeecab6a96d9a5eca84e9248153d0887dd26b11010b",
+    "ParkZoo/Bear": "946dd19d0bfea6f52105e5e4c2d6038c33356ed3bdab48f8fbd4879d52c45f4f",
+    "ParkZoo/Bird": "09d3beefb9b3d486ce0e90fa8188cc3dcc483ab6af752258136ae713d43211ff",
+    "ParkZoo/Cat": "98d8b27abdf265ff5f8e960487d72ba67583bdad029bd66b3fa52e200abf8fa4",
+    "ParkZoo/Cow": "c90327f3c490c3c0ad89f2cfa4b13eaf39060a514406df8291e60e412d538972",
+    "ParkZoo/Dog": "822d7aa888f36b5f31ee7fa643bc1566ccb91a34455dcdbf2ecd20dc5f535c8a",
+    "ParkZoo/Duck": "0d91ede589669cd068b8a3183fd425f86263b511f2bd48f389cce60d847e0243",
+    "ParkZoo/Elephant": "7d9c160ce28d3d8acccec1baa49d6d6626ba58e6f2dc72d0efeac277d7b072d1",
+    "ParkZoo/FarmEntranceGate": "a54237c3ad518d58c1556f0da1720c6abf6d9585605aedbf226d4316f8908ca1",
+    "ParkZoo/Fence boundary": "b8d88e6702e7a0da3e5ee5d45ab53587d62415375ffb304afde393befaf67655",
+    "ParkZoo/Fence boundary right": "5091becd446028e9d268ba070fbeff31b59cf9289612a8250927b080ba7ba260",
+    "ParkZoo/Fence boundary2": "b4a234a04f9d3370fc2bbf91294c2cabb8e8be45d68e868cea144b641033d8b6",
+    "ParkZoo/Fence boundary3": "f449369dde0c3f5932f129a3fc7c5de0fe58aaa3a27e96b4b218e22627146c91",
+    "ParkZoo/Fence boundary4": "7bd30ab0bcb7b9e8724016ecca05145ba35f58cc2a9882e98d9e9440405c8727",
+    "ParkZoo/Fence boundary5": "e731cf4936a97b4097404ed69ca1566c82b2654b8a32cd937a802ac3e0af4392",
+    "ParkZoo/Fence boundary6": "97da86487e156cd5493c80dce5a426fad736cde2cd547585e09bf6424e1840b5",
+    "ParkZoo/Fence boundary6 farm entry right": "8852fafaa34e582349715d80fa5dbc2ed2d22a4534fd75d939a61f84dcdba904",
+    "ParkZoo/Fence boundary7": "84e313fb52686780ee14a87fa8f347c6d9cf39a9f2b94795b9a1c634642402d8",
+    "ParkZoo/Fence boundary8": "14c98e404e147e4850e743c843638d904c47a6a3a39b9286b2abb6782ef49c61",
+    "ParkZoo/Fence post": "3305f47bca197fd873fd2c865f6184014aace8deccafe51a30a4168781642908",
+    "ParkZoo/Fence post10": "394b2e0d6db340c64e134b08822828d1f1d7c7c5d897c29531bc804e78d5d46f",
+    "ParkZoo/Fence post11": "928ae0cc1c26a56fc5bc9e85ddeecdea490a9d9e70dc95e27bb2d006f7e83378",
+    "ParkZoo/Fence post13": "841018b4585c92d06cac74c25f93df22b5945178c6a7310e0581145180add497",
+    "ParkZoo/Fence post14": "ce027469d66f48a34aad20c7ea6e5c6d521bbbc5559e0d59633b9a2788fcd2f1",
+    "ParkZoo/Fence post15": "90f844acac1c2097198d9a2fae4976ce8ba38d3c495e35f6aa60d247967d8190",
+    "ParkZoo/Fence post16": "90f844acac1c2097198d9a2fae4976ce8ba38d3c495e35f6aa60d247967d8190",
+    "ParkZoo/Fence post17": "fcfc221f4ddd98eedeb106e1fe2948356c79b280811a0c86c2e0823b4c8c25ed",
+    "ParkZoo/Fence post18": "ba1b31e3ee13df7d6f3e970562dec447134070761e89c7a528f30f4477e16146",
+    "ParkZoo/Fence post19": "0805cc95b8f64c54a356e3c886af02ba24343c79124aa8d27bded174b90af74c",
+    "ParkZoo/Fence post2": "afc32c1a6941a8a3bfdc121d655e71d90b6fd85d94b297701a9eeb4ab2201da2",
+    "ParkZoo/Fence post20": "62601de9ce80abc938c6171f7b290861186f77c4d7904137ed9b12c8f2dc5ea3",
+    "ParkZoo/Fence post21": "6820f8d83202f0af5bab78a4fdb8aef0561ec400fc8b76aba341b7499c933b22",
+    "ParkZoo/Fence post22": "7efd45aa459a8e8ddba68633461efa81df2259bf821c448af697ce14a754eead",
+    "ParkZoo/Fence post23": "e786cab6a44fa4cec6cddc5b2f81009eafd70ced8ccdce55c49df6376a163961",
+    "ParkZoo/Fence post24": "ecab801879dd52ae434641bcf9df3110d95a1b4ffd1da38509f5bc14a6b6a5e6",
+    "ParkZoo/Fence post25": "02fc7ccdf2524c92b2348c62cd4252ae5b6d8eaaff6128fa6ede1c73d97d3c50",
+    "ParkZoo/Fence post26": "9fd229a620ec548209a0699554b0f10913f58bfcb910462980141998482eec36",
+    "ParkZoo/Fence post27": "26947ab0badde773caebf050ba38baeb4c53ca45db8384527eba8edddeca137e",
+    "ParkZoo/Fence post28": "1c72c332c625a0a1384ff88413c03445ba3239360ea4d18950e090e270e1b159",
+    "ParkZoo/Fence post29": "279a3e70b4babb5926f0c8e2c164279612a311a12ec0efded74815bc2d2fbfef",
+    "ParkZoo/Fence post3": "2d3c6715c7d16bf1db0f9dd82a102c8b69a0c0e5c6a51df62dc2f93d2345e95e",
+    "ParkZoo/Fence post30": "e786cab6a44fa4cec6cddc5b2f81009eafd70ced8ccdce55c49df6376a163961",
+    "ParkZoo/Fence post31": "b5d052dd6e8488debf27574816fd76c2f76fa3543a3dabf648e85477f98845b0",
+    "ParkZoo/Fence post32": "f2976f72e4122d0923a5601e68f0e6da1b34e560f3b9d0f88521d17177acc166",
+    "ParkZoo/Fence post33": "cda2724fb05848ced2c97b6b2f39c81313b648cedafcac7d213032fe5c265020",
+    "ParkZoo/Fence post34": "7d8b8de36ffcd34fa0ac339d60d8f63ca5d49953f06b4e9c4edc8c770daa76e2",
+    "ParkZoo/Fence post35": "49b6379fbf4481cfee47b3e95893496f7e1387c4011e8bc2b6e0b1c8a63ea97d",
+    "ParkZoo/Fence post36": "1a0187b759bc461c8b563596ca9bb685d2ae0b0102b4cd31992d973143943108",
+    "ParkZoo/Fence post37": "b5d052dd6e8488debf27574816fd76c2f76fa3543a3dabf648e85477f98845b0",
+    "ParkZoo/Fence post38": "6b4f351978e452ee75c331aed31bac03e7e56cacf92d030aed4bb4d9fe733a97",
+    "ParkZoo/Fence post39": "06092e795689cca564c90412440baeaacdd1812bb918ff7fc82946e3f43a5e7c",
+    "ParkZoo/Fence post4": "1bdf748d7066888d490eee347c5acc92e0343fa0facfb191d68d3b66b38e3f76",
+    "ParkZoo/Fence post40": "c5f7f79f21ef0aff932eaf0653c158877b6bd8dffd1e331c1bee1e4107bd5922",
+    "ParkZoo/Fence post41": "e730df1e514d5fc07aee0d6dd0ddd50b37687741b68172f4b0040825ce1a3a93",
+    "ParkZoo/Fence post42": "5beaa48e1d7f76671cac38d39345c94a62a68569c608116c7afaddea3d20e41a",
+    "ParkZoo/Fence post43": "2c96a520567930898be8d90e3ffe83caaf9b870449096b03b00fd7a6b2a61807",
+    "ParkZoo/Fence post44": "2c96a520567930898be8d90e3ffe83caaf9b870449096b03b00fd7a6b2a61807",
+    "ParkZoo/Fence post45": "9c186ba868151f201d19c9304a497694aceb7fcd3ea888eb548ec54c3030e6a4",
+    "ParkZoo/Fence post46": "499b49d85a9bfe089bfcba9463abe526fad833a939dade3cd695db32e32e9f0f",
+    "ParkZoo/Fence post47": "1fc39f6219b14fcfe33ff15f63f536dca8253eb9185cfe6ed6c6e865b06071e4",
+    "ParkZoo/Fence post48": "f9913bb4ca36db19ff14261b12ae77ebfd86763075006b049d580837170c9359",
+    "ParkZoo/Fence post49": "e7eb8450fb561dc160165fd49784aac306e5d6d7f891e94c3c6f8772ce7ba8f6",
+    "ParkZoo/Fence post5": "cda101f2ba9dbf5fe7314938b0b7899240599bac5f4f576c85a4fecf274583da",
+    "ParkZoo/Fence post50": "1a0187b759bc461c8b563596ca9bb685d2ae0b0102b4cd31992d973143943108",
+    "ParkZoo/Fence post51": "5a5a858c07082ec445f2b2f0857f2b1282f19d384a1fb4bc8df1712d48f401c0",
+    "ParkZoo/Fence post52": "c84981ba1f62220b6c54e7d13cd0bff6b365813b1aaa623f0f3a1490be99370c",
+    "ParkZoo/Fence post53": "55af7e93ba855261bf1c6f598d9338281e6290d5c196b31bc81e51852229a23b",
+    "ParkZoo/Fence post54": "c684e4c49214b9e100b82b7cad42996327af69f695e9a694613ab3a47ca3df49",
+    "ParkZoo/Fence post55": "31da6dc44377de781ed65e1aaa78396e000d306f4a464bc2ead830c3de448667",
+    "ParkZoo/Fence post56": "e7eb8450fb561dc160165fd49784aac306e5d6d7f891e94c3c6f8772ce7ba8f6",
+    "ParkZoo/Fence post6": "7a7cf781d0983465baa493afef2972e87844cce94d88530a6fc1ced6c89bf12f",
+    "ParkZoo/Fence post7": "c8203d07e0301850660f305b86c819cd34d4561eeffb4f6e8334b5c7cf4f2e05",
+    "ParkZoo/Fence post8": "ecab801879dd52ae434641bcf9df3110d95a1b4ffd1da38509f5bc14a6b6a5e6",
+    "ParkZoo/Fence post9": "3305f47bca197fd873fd2c865f6184014aace8deccafe51a30a4168781642908",
+    "ParkZoo/Fence rail": "69f91da4d321203b565632612b0b361bdbaf4ba798872e36196a81576a7f3b52",
+    "ParkZoo/Fence rail right high": "df8c0213970bfcab9b36edf1b2043126e35cdf9d1072ee18ffb6f7f456898bb8",
+    "ParkZoo/Fence rail right low": "224fb635080b882275de28483398a3f73dc67bcce5478b69748d4186c617e132",
+    "ParkZoo/Fence rail10": "61980772772051278ac91635ce47127f8ef36f27354e42ea2ce6063afedcd985",
+    "ParkZoo/Fence rail11": "7fefed6f4568f51ec8a3732ea7b4b8fdde1238736ae9f81cd195e63f8b5a5478",
+    "ParkZoo/Fence rail11 farm entry right": "92f8fc7e483ba9bdfa16ff2256326c16c13b1394be94b359f6593aec1cca3ac8",
+    "ParkZoo/Fence rail12": "b2661ddacbcbb86b2b18d235b8089b0659779ae9af5eaa08e0c962a2700bb681",
+    "ParkZoo/Fence rail13": "91c00772d88ae5e16e2d6f7e9eca458ee06608678e03f1830eb2a5caec551bf9",
+    "ParkZoo/Fence rail14": "cd28338d820f70a1dc425853d43036782f0854e97c1ce265a154a36b07d42cdb",
+    "ParkZoo/Fence rail15": "3cac49bb41003aca8643dedf8a71298dbfa1552446b5e2df0f44b78f20caf77b",
+    "ParkZoo/Fence rail16": "9aebe0637ee0af84e35387ff43006b639c37f7771924b296715ee6107bbd35c7",
+    "ParkZoo/Fence rail2": "31bf397a44270aab7b6f331ef7c8f3d27edaa9fe40bcca33c6b8a9414c6ab86f",
+    "ParkZoo/Fence rail3": "ae64d126c231fd7917486d8ce77e5d60ec3529be385d50e0d8014ac69e108789",
+    "ParkZoo/Fence rail4": "6bca6ccf788e6b72d8cad61af8bd4e699a343f21b689e67403519d58cc2035ab",
+    "ParkZoo/Fence rail5": "4e421e991d8e0428fac6dba49ff100dc611507c739e0f844e966088d68ff5290",
+    "ParkZoo/Fence rail6": "387752ef89d4e1dbb7b9d9db36553c2b97da3de2214d00978ddb994699cf9edb",
+    "ParkZoo/Fence rail7": "a2f33874df40e14a7268b6c16bb21ee4cb5f2d0583c1242a02e719aef5dc2c90",
+    "ParkZoo/Fence rail8": "f04f6a739b54f508373415f597460ec18f5f2de3aa4224e666da9d66a93c1969",
+    "ParkZoo/Fence rail9": "6d8923874f095d6fda48a4a345b290c6c2181aeeba86d01381787fc34f09a8c2",
+    "ParkZoo/Fence rail9 farm entry right": "3e83aa752a53de61e839c05b8d8c2a2a5edea84475ecec5705136e55bdd22347",
+    "ParkZoo/Field Mouse": "969c48eb0e8d994e49b811ffd88f021d0c5a1d6362fce43e74e24df8e78227a7",
+    "ParkZoo/Fish": "e8e473d61ea79d1f2c373f3d2504ee42f39d3f9bab04478c07e1cb64b2972f0c",
+    "ParkZoo/Giraffe": "510872030fb3f02c0301f6a38e3f07b5f510393f46d52f8e0c8161d43e3d6e77",
+    "ParkZoo/Habitat sign": "c8e2bb8c68c10997070629b9d5db873d692a0ed91b23a002382c8879a997e9c2",
+    "ParkZoo/Habitat sign2": "11c010c020cd01526d502c028278f21ffe669a43b34014e65eab36848e28feb1",
+    "ParkZoo/Hay bale": "cedd06361a906a671a09368c56ae9d6a4d4e1b6cf79b3a9d6b3a9d3666afbe57",
+    "ParkZoo/Hen": "6031c8df71c1cb823bdaafc443c313aae997339a86d41f678a942f72ee2acc6c",
+    "ParkZoo/Horse": "0d15cea0948cb39cd9ac1ab034726cd279874bad6cd19387130b58a79cdb56e2",
+    "ParkZoo/LA GRANJA lawn": "07cd34c1df213b575d55ad8d9c6f223bb5b5cb2411705ee33bfe86fc5da14701",
+    "ParkZoo/Lion": "1dc27dfa5f0d91ddcdd4457b5d1a8992d21ea995939d4ec8804ea04fe4bd2316",
+    "ParkZoo/Monkey": "3d93ef3ae5ff20379cbdae9261cc6406749faa0ecb10ac26705767750893a27d",
+    "ParkZoo/Pig": "f9454118f675ef1e24836b3b79b597bcad0f80e4e7b58c009b81f5957757e2fc",
+    "ParkZoo/Rabbit": "ba68d85bc68ee17bd740c84abe00accdf8622d9aba485f053253611408a6eb09",
+    "ParkZoo/Sheep": "b8b863e6790ab1b11cd7f2285fd5aac2406a83df0093446ea93f882fe20181b8",
+    "ParkZoo/Shelter post": "e257ee8ad2731f8755077a56c2e92fd0a3b6d848cc17cea92e57398fc99294e8",
+    "ParkZoo/Shelter post2": "018bde2f4bfe67bd04289e599c4968e97985b42a0192d7b15b175049d3688a0b",
+    "ParkZoo/Shelter roof": "dc8ca838266773d351c32d944bd3b3291b5359f207ea225d9efb2787c6f83524",
+    "ParkZoo/Snake": "7bfc455020cf1cce36db7f2915f6e59779fbebcc4495eb6858e0dbdc76f4141f",
+    "ParkZoo/Tiger": "9c80ce7d69092c0775ec2435e058a97075d56981e8800cf8e0b7cb669a2cb297",
+    "ParkZoo/Turtle": "630b885464bcbd2423955d77b7e4a00fbbd51f4b5900b4f0ad4b4489e6d42910",
+    "ParkZoo/Visitor walk": "8de957fae05e8a6f1d47182018058f55f9a30edabbd97c0bc4e0aa0143b6a4f5",
+    "ParkZoo/Water surface": "2312a43e4aa892e35b641676b372aa2234cbecabd0857bd9cd5139b237492b46",
+    "ParkZoo/Water surface2": "3eeec58dfc678790cf524011c1bf6bb1a7595caf6c6d57ef1024473f7ad4b296",
+    "ParkZoo/Water trough": "97ffa42969e2b59c786b0c57803780a887cdf125806cb8ce19930c3cd840971e",
+    "ParkZoo/Water trough2": "5b2e965e6c72da5f129eb47a535242c21bac3ee68e779e1dc1dfd6d0cbe76f50",
+    "ParkZoo/Welcome post": "e0bef53e242f2708d48b2dd7ec1629475cb545218e7662dbaade670d87b7d69c",
+    "ParkZoo/Welcome post2": "47f65dd47d835db6e703ff9cb77c8861d8d08d829756142545d84ee509cf31d8",
+    "ParkZoo/Zoo welcome": "8112f1c5db065315da2f925e9912e34e44a5a12fb8cb1117aee06b3e7aebaaaa",
+    "ParkZoo/ZooEntranceGate": "797f9b4d0c137184926f9d26c171655303178c16bf7cb1a62bdd003f7ef0ab78",
+    "People/@Node3D@5516": "92d53e16dcc5bf85e84b084eb458f95f113c883309b012da65a18c41d2c8152d",
+    "People/@Node3D@5517": "80556b22d3de8f3fde494286319789601eaa559ec79a3e362553cedc74b52929",
+    "People/@Node3D@5519": "a62e559e1757808066287dd9a75b357c7be030ebf5f5cc72fa82c7ebb77c15f9",
+    "People/Cashier": "526a3c45b98f0d541a791415e14e81599ba1f087fb0808d9c3e4b8cb4d213d5d",
+    "People/Cook": "ac1d4ea0fa7a552fc015b0063206fead0e400bfeac69686ed0882312fc1ca743",
+    "People/Doctor": "669609e2feca107fa1920967366737e5266e6502dab23d74ad7339e03ad71620",
+    "People/Driver": "0cdf933f5547a1e285c6f3ad68535f3d41b602dcf062fadffa442c780c7b8cf8",
+    "People/Firefighter": "a3e7f03300759c5863fdabd4624c6faaee3f2c10e4e2fe69dd887650cab393f1",
+    "People/Nurse": "2e33dfe3ff37e51f11202fe30d6062aa87ac5481f1319b81d2f2ad3c898bcdc8",
+    "People/Police_Officer": "cfdcc5c29a2fc236ca3270fe99242c5101c55b39b17b91a3ba8221164765071e",
+    "People/Student": "785454878014f33fe720093fda32039a991cd29927ab50bd6979255955f0bc26",
+    "People/Teacher": "7a9bb84a9735a93e4eeeb4dba7438e4c0f9d1f6813bc61b6ec2c6a217429c5f8",
+    "RelocatedSites/Bakery": "00f40f07044719db45296bcd70aec6ef9fb92994faf4f71748703338c4e9dd04",
+    "RelocatedSites/Bank": "c20ac47dc5f22c1dd994310bd25ac7ccdc6eea0a478bcb8b594b0e1e31e9a1e1",
+    "RelocatedSites/Chapel": "e6132f9415c8ec6deadb40c5d751bbbae4247799963f15369c5dfc8d4e7d2e92",
+    "RelocatedSites/Clothing": "86fea6df9d6a634ecf005d8f45d62ce902bfd9b84c4bfd8343fffe8176d9a86b",
+    "RelocatedSites/Electronics": "95cd076a5cdfe0d2d5307d4a0ddc4bc34d428cf6ff5f5c398da8168098340725",
+    "RelocatedSites/Furniture": "57acf9ef8bd6b5965748ee5195b993a7fae9a8c186c95d0d80846f6bed53a257",
+    "RelocatedSites/Gazebo": "9090670256e045c0bb225d8e99e54ca1c5f58832d0396b1abeb02e71b64bc5bf",
+    "RelocatedSites/Home": "e2f24b874b5b48664866b7e3c8b707d0d5cf5085ccf8f9771936934a7c355317",
+    "RelocatedSites/Hospital": "41e171631e011dead45ac59ca478ed8cda34624ae33e264c49bc1a65bb404131",
+    "RelocatedSites/Library": "8c8ad24fe644499d8a1dcb985b64356cfa501057a1e8b3b353a12e0e58b07df8",
+    "RelocatedSites/Playground": "fb1bf97defbd5e1fbbce675b00e8d9a3a08c656c04107d81ddb2ee0650406289",
+    "RelocatedSites/Police": "c85f3ac20c0dd2c60db00b874e180cac71898d8ec58e3ec65a9c59155f83e04a",
+    "RelocatedSites/Pond": "e2c4f014017d1af06dbbe1730d021187504c036f39fb249b52cc61b4e065dd60",
+    "RelocatedSites/School": "802777e1e01b10694c2240c5e8cad63f28e9dfc7917cc42a11e94b20cb47572f",
+    "RelocatedSites/Sports": "1b687e29cd8086beb4295508fd881ff2b51b2d1c9fb53852030e75c07d733a2f",
+    "RelocatedSites/Travel": "14ca92f0284e9dfbf6f077d8caea8f038e03dd68b75c080ac15d0c4e4edb7e20",
+    "Restaurants/Burger": "fabb2001c7d5263bc501bd18dd2109340f86aab335c13a50f25d09e2e72dc661",
+    "Restaurants/BurgerSign": "b035abd2b05c19f686d24c32866f1a71320f24e3573eb6ac5d5191f01209923d",
+    "Restaurants/Cafe": "480c29e2c17818fea49c6ca0178fb21c302dc18584d2234f6761d545ecdd4c27",
+    "Restaurants/CafeSign": "1b7ebd6a655302ba37c680f1c9544d968d6723732abd3f9dc15677a6df1b2a64",
+    "Restaurants/Pizza": "2ea773acb73f6fb8b432a35ff3ac8bb629cc49d64d73f330415c46c3e073c4b1",
+    "Restaurants/PizzaSign": "9492fe00d80f56b9efaded0caec8597a4fadc8b65b7e4b6c40b1b0b8a17e51ae",
+    "Vehicles/Ambulance": "289006787c80fdbfb3a7472314933014338ec2cefcf3ad04ec04785701f275d3",
+    "Vehicles/Bus": "17e191e0d2061be0222d04edbe3fa26e8dbd7fd94e51088cdbcb5dc7b182c0ca",
+    "Vehicles/Car": "801bc9c6bbbc8abcdd07b00cdac2f5695abb58f87b1421651e59f124126c10aa",
+    "Vehicles/Fire_Truck": "6e5560f4c0b662f3b75696d0343dfe43eb2976956fdc717f136012dd8d5a10e6",
+    "Vehicles/Motorcycle": "c8c7413c535126808b6d0e72b1e50a19ef8bd3ae3557c9a33f76190ddaeef104",
+    "Vehicles/Police_Car": "f51a9f201de978d4d53fb8caf0878c9b0233042e388d3ab7258061a521851204",
+    "Vehicles/Taxi": "853093e3b7a4e6091189ec7cd4d928e470fa6dd6426d1fbcc81302944963ffa3",
+    "Vehicles/Truck": "831a1c663ed38bc91e8caeddafe8388c97e03693b33833c0bb27b8abc69b1f65",
+    "Vehicles/Turboprop": "1900f0435acd0511e331d64fa1a8c75c3aa487736f6511dce6080796a768e1ee",
+    "WashingtonStatue/FigureArm": "8609b5298321fe92de74eaae136bb85afa6c94c46f8a9f70fd9eb255579c89b8",
+    "WashingtonStatue/FigureHead": "a4d34a86dfecf7b84e14999f38f16dfc846715c558e2b45a74b850184a696bd9",
+    "WashingtonStatue/FigureLeg": "e86d364eadfad6b869fa6cf837a324296c56333d883e122cd7e9ffd73d4baa5f",
+    "WashingtonStatue/FigureLeg2": "2c4002cc2728387b886c01a4f97ee579617088d04826dd5cae1994888315d991",
+    "WashingtonStatue/FigureTorso": "6e3088879c41bccc3e6917a6d4e5fae986b107c1b90df3d27dd68709ca3ed0fa",
+    "WashingtonStatue/Pedestal": "4c7e9aa9b7c1b80867a8d8b024dba47ffa0dec016b6a703a94f327f2abeee29c",
+    "WashingtonStatue/Plaque": "d37d4a357f06171f6894020c2decf6f2d95ce00b6754e6daef563ecc731b2395",
+    "WashingtonStatue/SculptureDetails": "b4f3b18010723725104d9b04ffdfa4530205253ed98ed2367ecafbbf4579e05a",
+    "WashingtonStatue/UpperPlinth": "82c8601e8cb617353da81014bde1b1af0669b717f056a6c2e0414b52fb419226",
+    "WashingtonStatue/Washington bronze horse body": "5b95384f06e821fc69784a7b508b315b1dbd654a5d0b08803c3a56f66b09b942",
+    "WashingtonStatue/Washington face profile": "a2dda20b66e190e7506d0ab60134caa18e50cc7a87df48b596617ea348b1a0ed",
+    "WashingtonStatue/Washington horse chest": "0f8730edfb9385d12e8fa0c19787e68349a8219b9a668bc53cbdf99f1ee34dc3",
+    "WashingtonStatue/Washington horse ear": "2bec56bfd6f0457c102cfcd34ca2046f2f6ada2075d1d332cb7cbcc6a3b5e294",
+    "WashingtonStatue/Washington horse ear2": "adb214b3c981c32aaa6ccaedc1620532e40488b25b2d56841331c2cb1315a58f",
+    "WashingtonStatue/Washington horse head": "4a5dfdb9585ae4e0fbced50542475a094a7601cb3c56c18ca6587dca1f861b21",
+    "WashingtonStatue/Washington horse leg": "5995e77343d39fe8a17c13c730d2fa964c26d303bbaedd1865bea5e5bf574132",
+    "WashingtonStatue/Washington horse leg2": "ef85951f5df00c820af2d0757b0e0c79105e1c58d52690fb712e052e6bad9eb4",
+    "WashingtonStatue/Washington horse leg3": "db47b96ccb0fdd4999622365ae83d943f127befa59b5f928e2c8c5533d3a1b8f",
+    "WashingtonStatue/Washington horse leg4": "27f3a661f75a919a7ef264249a4b040fbd1b541e251b4abb52d27ac04ed31245",
+    "WashingtonStatue/Washington horse neck": "53c2509c9e29f2646dd5b2201e06454d7c34a8ed2b562a175f036e4831ab1615",
+    "WashingtonStatue/Washington horse tail": "329c54ee3325d5acee62f253d38291e7050b586011392e3d9cd920a4b555acba",
+    "WashingtonStatue/Washington lower granite step": "df56e9ec52af4c5e80ddb811d09fcb25d98988db61b18b147b933529579e3bfd",
+    "WashingtonStatue/Washington saddle": "d25b2a3f229640eb40c41358ebbe62eb700ae8932046f443cc21b0d4fa1fc8b4",
+    "WashingtonStatue/Washington tricorn brim": "27cb9aca85e8a246873ba38558c8fa1439c7d97c474d693c23bbe66a2a20ae25",
+    "WashingtonStatue/Washington tricorn crown": "3ed12633e1f89ad040f122df9dfa5bbf76c1f440c58884871c72196bd8f84c50",
+    "WashingtonStatue/Washington upper granite step": "d2e0e2e805344db31f5cda882bdf56559ccfe8eca9daa480b4b526d11cdf4b8c"
+  },
+  "shell": {
+    "Expanded foundation": "41ab1c2a5a70a580ea7d73650fa4598000529012f9b9389af0367369706f2805",
+    "Supermarket back wall": "61e3df165f26a03f8a32d5d075e4759d1fcd2acacfa7032e88d29a0a53c84f32",
+    "Supermarket front pier": "b50616ef0ef6d5355ddb474a5691ed2da869fb134ad9506be05fd76ae92a2ab6",
+    "Supermarket front pier2": "2b8c2a4a9c76a7a114c85291b935bc44997572d99881066924863e59ae51cd68",
+    "Supermarket left wall": "dafcb7a5bb57b236a821cdcc3926f4e0c065be65ec889693c03f089203035d8e",
+    "Supermarket right wall": "b04d0bcba8d47c18923481859bd351eec25ea899c31d55a29a538344a2de98e3",
+    "Supermarket roof": "83fa4a81d99ac3d623eccdd9b2ecbfa69763029b6b341b848d6af6c2d88cc4b2"
+  },
+  "words": {
+    "Buildings/MarketDisplays/Apple": [
+      "apple",
+      "d79bb460b4666ccc1473c34c5ab92cca7feb5232482eeefb28d00afb9e787fea"
+    ],
+    "Buildings/MarketDisplays/Apple/Leaf_6": [
+      "leaf",
+      "fb39030a7da5d7808fa6ffc96fd9f669a0e79806fd37064263a0ced7851b5eef"
+    ],
+    "Buildings/MarketDisplays/Banana": [
+      "banana",
+      "974447ed8034eb1b3de437c3416d44d7a4c3d35991894a92ffcade9b06916369"
+    ],
+    "Buildings/MarketDisplays/Bread": [
+      "bread",
+      "64e356eeb442bb084a59999bab0bbb0811b148dffb6a64946e0da5dda2bbe806"
+    ],
+    "Buildings/MarketDisplays/Broccoli": [
+      "broccoli",
+      "fb6481c1b2dc20e088927f658b1393ed11eb0b2450de5e10f9d14deb6d497690"
+    ],
+    "Buildings/MarketDisplays/Can": [
+      "can",
+      "1b066685c7d2a11d590ad7f2fda3f677c504c46bacdd48b08b6bec96894a8acc"
+    ],
+    "Buildings/MarketDisplays/Carrot": [
+      "carrot",
+      "cee88737e5e58315d273b3f2b3ec421e3a513f55cae7218f7fe43f6e8c297b47"
+    ],
+    "Buildings/MarketDisplays/Cereal": [
+      "cereal",
+      "5fba216f035eeddb391bc9a8671b321508329590bd3f2eb4c84c6adad8d71d8d"
+    ],
+    "Buildings/MarketDisplays/Cheese": [
+      "cheese",
+      "eac8937aa34f4d2dd947c33efe126d622e2b8185770d61fc0da6c3e82e114822"
+    ],
+    "Buildings/MarketDisplays/Eggs": [
+      "eggs",
+      "5dffd1f0871874e94a66cf273529a69a80c176830126af92aad451bce96178b8"
+    ],
+    "Buildings/MarketDisplays/Everyday_Chicken": [
+      "chicken",
+      "dd5535a9d8409f50352e5e0d9792b226c7d27a24bdf0b5534312f450ae9938a3"
+    ],
+    "Buildings/MarketDisplays/Everyday_Credit_Card": [
+      "credit card",
+      "20d848439509687bc05ac63acb884fcd62286b92fdd15dd9636f760a657e5685"
+    ],
+    "Buildings/MarketDisplays/Everyday_Meat": [
+      "meat",
+      "7288d131b225589758e6cb3fa2cc93a634447b9727ef7548113e0f6ff9c7c7fe"
+    ],
+    "Buildings/MarketDisplays/Everyday_Money": [
+      "money",
+      "3054b30e29baaf8e093add713e913c3872a8048a1544e146d09aeb973085f836"
+    ],
+    "Buildings/MarketDisplays/Everyday_Price": [
+      "price",
+      "55fcce3850872a184a801ee8928f26a1e1ec8d0e5b0ec608d2c9f0d3fe35f4f4"
+    ],
+    "Buildings/MarketDisplays/Everyday_Salad": [
+      "salad",
+      "de91d9f539ed049a8638c76e951897204785387968bab1a464059725d3af1788"
+    ],
+    "Buildings/MarketDisplays/Fish": [
+      "fish",
+      "88c8f1a9338b0e83d86e56640fa19443619ab3b2ceafc7d1d066365fb7645161"
+    ],
+    "Buildings/MarketDisplays/Grapes": [
+      "grapes",
+      "3fa17a73b1a1d27d0a03753dabba020c050d690939ea3ec53e7bb0418984ddc4"
+    ],
+    "Buildings/MarketDisplays/Lemon": [
+      "lemon",
+      "c10441cb1cac3b3f7fdc793cbc4cce169fae89b0b7b40cdec4dd890847602952"
+    ],
+    "Buildings/MarketDisplays/Milk": [
+      "milk",
+      "b13cf80c22e3d5d90465dd42d914f9c5223079be5f5ba5e00693bf552fb2c3ac"
+    ],
+    "Buildings/MarketDisplays/Orange": [
+      "orange",
+      "a295859e4e0c38280de75be45cc9c8e1c81cfb58a6bd6af2fbd422cdb0472ea3"
+    ],
+    "Buildings/MarketDisplays/Pear": [
+      "pear",
+      "30347cdcafaef182cbe5768ffa5fd84385f960c8d15054793088171806fcb019"
+    ],
+    "Buildings/MarketDisplays/Potato": [
+      "potato",
+      "c4beec1a4bc4e4213a55767ab018f6117a28cbb7a9f1364945fb6ef08de919a3"
+    ],
+    "Buildings/MarketDisplays/Steak": [
+      "steak",
+      "2a4d649f4977a40e831256e0bfb032404e1bb032001d0de4a9904f993147ca42"
+    ],
+    "Buildings/MarketDisplays/Tomato": [
+      "tomato",
+      "ae7d784c8b8bfe034f0b83db62ce70629b2949cb4d6c2eb458ee41e9681fe226"
+    ],
+    "Buildings/MarketDisplays/Water_Bottle": [
+      "water bottle",
+      "5014ccda44a0ced94acae34caddd8ac59b1db6373f3f5e5764c091fa379f6172"
+    ],
+    "Buildings/MarketDisplays/Watermelon": [
+      "watermelon",
+      "9fe9bbc30233c5b0f4817c3bd8fa3a9469dbd97cd309c6daef1a9a6fab3faba7"
+    ],
+    "RelocatedSites/Supermarket/Apple2": [
+      "apple",
+      "866ff29b8e4cc0dd08717170170b1733006da88d97b35a6797ed11b16e642add"
+    ],
+    "RelocatedSites/Supermarket/Barcode scanner": [
+      "scanner",
+      "55575f2cfc97576f7dddc2b3be2276b3e996611740b7c792692db1b8598feca6"
+    ],
+    "RelocatedSites/Supermarket/Barcode scanner2": [
+      "scanner",
+      "50b782ca6fbfcdd99d3a31886dff3c9db4d21ed6d083b4434b5688b026f375d3"
+    ],
+    "RelocatedSites/Supermarket/Bread": [
+      "bread",
+      "64e356eeb442bb084a59999bab0bbb0811b148dffb6a64946e0da5dda2bbe806"
+    ],
+    "RelocatedSites/Supermarket/Bread2": [
+      "bread",
+      "64e356eeb442bb084a59999bab0bbb0811b148dffb6a64946e0da5dda2bbe806"
+    ],
+    "RelocatedSites/Supermarket/Cart wheel": [
+      "wheel",
+      "1ef6f995fb4544bfcae66148e9061f12f038264116b2ebd47a6e4705b837799e"
+    ],
+    "RelocatedSites/Supermarket/Cart wheel2": [
+      "wheel",
+      "b2f2f6407f7e297b1e410821ff3ed1deb7ad733a5f1f5f87dd7801753c2affab"
+    ],
+    "RelocatedSites/Supermarket/Cart wheel3": [
+      "wheel",
+      "fdbbb7283c99212b2675740755107ef84d7a84f795eb054d0532d8e681b444b3"
+    ],
+    "RelocatedSites/Supermarket/Cart wheel4": [
+      "wheel",
+      "1a8a0c22a2833747ef39e00c19e74317406c02208cf458280447d0a36e69d20b"
+    ],
+    "RelocatedSites/Supermarket/Cart wheel5": [
+      "wheel",
+      "c0c2e90ca98647d0ec8995d640d3b7e44d62144ed6ed73f3be3382279b10c030"
+    ],
+    "RelocatedSites/Supermarket/Cart wheel6": [
+      "wheel",
+      "3396375074adeb751378860fddd18416185f365005444dc32c322a885cbce608"
+    ],
+    "RelocatedSites/Supermarket/Cart wheel7": [
+      "wheel",
+      "0ee845e9e5d7b300e7726a9bccb02d7acc747474dbd90aab54121a26ba07a1d6"
+    ],
+    "RelocatedSites/Supermarket/Cart wheel8": [
+      "wheel",
+      "ce1e15e9449f0e943ae82a2c97723308cc043a0c9e7be6bba7ba1a3a14249c03"
+    ],
+    "RelocatedSites/Supermarket/Cash register": [
+      "cash register",
+      "576e775dd624de8f01b9620a6acf0e902136ca113672850ca81a1e81bbe15ad4"
+    ],
+    "RelocatedSites/Supermarket/Cash register2": [
+      "cash register",
+      "685cd79da8d478300fff41b58af6a0d5b1bf7980deb5533a415322f310e959ec"
+    ],
+    "RelocatedSites/Supermarket/Cashier Counter": [
+      "cashier counter",
+      "e7c4183c818e38b3f16636f7b16276bd1222ab0f2571190b36eeac066a2ffa6c"
+    ],
+    "RelocatedSites/Supermarket/Cereal2": [
+      "cereal",
+      "5fba216f035eeddb391bc9a8671b321508329590bd3f2eb4c84c6adad8d71d8d"
+    ],
+    "RelocatedSites/Supermarket/Cereal3": [
+      "cereal",
+      "5fba216f035eeddb391bc9a8671b321508329590bd3f2eb4c84c6adad8d71d8d"
+    ],
+    "RelocatedSites/Supermarket/Checkout counter": [
+      "checkout counter",
+      "bd66f799e955fb5b2d3e52c40d069c7da5c02d6a3e655ca120e8e68e4b934d26"
+    ],
+    "RelocatedSites/Supermarket/Checkout counter2": [
+      "checkout counter",
+      "541ee40b201cc53c53b601863c6ca3f3fdc25b64028b457fd3c165c209a78147"
+    ],
+    "RelocatedSites/Supermarket/Cheese": [
+      "cheese",
+      "eac8937aa34f4d2dd947c33efe126d622e2b8185770d61fc0da6c3e82e114822"
+    ],
+    "RelocatedSites/Supermarket/Cold shelf": [
+      "shelf",
+      "46c650e319ae40b41c9cbbe6f32bb9b0cc313ffe5008e886ea502be6cc1aaeea"
+    ],
+    "RelocatedSites/Supermarket/Cold shelf10": [
+      "shelf",
+      "534c4cc3ccfd9503a797ae41e00560fdb100aec0541459dfd4c5d9aefd31c53d"
+    ],
+    "RelocatedSites/Supermarket/Cold shelf11": [
+      "shelf",
+      "e8371861b5d3ad43eb0e3c5dbef5c5c993e34491c2a8e61f2da15223897a282b"
+    ],
+    "RelocatedSites/Supermarket/Cold shelf12": [
+      "shelf",
+      "7d5a177f2fa9ed86c013c3a8be6cae7557ce869679ff0518b8785ccb6150c91d"
+    ],
+    "RelocatedSites/Supermarket/Cold shelf2": [
+      "shelf",
+      "1123dabc2c7175b3e65d0ce4edc7d527dbf364137e1592f4e0eed06896d6e4f9"
+    ],
+    "RelocatedSites/Supermarket/Cold shelf3": [
+      "shelf",
+      "a2c8a4e0544fc8b7834cee474f5f83df0bc674ea14b2e958444441bd309263dc"
+    ],
+    "RelocatedSites/Supermarket/Cold shelf4": [
+      "shelf",
+      "37ac32459a9b3e4540826d569d62415c1dee8d30a97a93cdfe64a56fe2df5cf6"
+    ],
+    "RelocatedSites/Supermarket/Cold shelf5": [
+      "shelf",
+      "95196443150f7bebc7dfdbf494d68ebd264cadd7b1f25771e23546c5e7dbd488"
+    ],
+    "RelocatedSites/Supermarket/Cold shelf6": [
+      "shelf",
+      "0265f34eeb7beba5b30038febd852d8815cef2623f508f73672b4d139be61688"
+    ],
+    "RelocatedSites/Supermarket/Cold shelf7": [
+      "shelf",
+      "381a0a22927aa083321b824080e806484232859397cd95b2903929ad9a493258"
+    ],
+    "RelocatedSites/Supermarket/Cold shelf8": [
+      "shelf",
+      "cc7a65be675b726dabbdf2a487d0bc3ed87e461beb68042a0955bf3f1a7fad7a"
+    ],
+    "RelocatedSites/Supermarket/Cold shelf9": [
+      "shelf",
+      "f663be6cb5b0183d841d9f9d6df7a2f0f0a082fb700ff7da1c3dbaee83274d21"
+    ],
+    "RelocatedSites/Supermarket/Conveyor belt": [
+      "conveyor belt",
+      "207f8e92e065080789b773094b6391b839fcd9dda1c5ce6e220e56b12a3bd62a"
+    ],
+    "RelocatedSites/Supermarket/Conveyor belt2": [
+      "conveyor belt",
+      "6df1141395f14bb3b58965b2a89af15f6987f9ec4b67fe9f08e9f98835788935"
+    ],
+    "RelocatedSites/Supermarket/Crate": [
+      "crate",
+      "8b115de93b6feb24b81fc0a47fd9d247d59968530b38e26b3ad761b57b5bbd38"
+    ],
+    "RelocatedSites/Supermarket/Crate2": [
+      "crate",
+      "ba585078fb8044ee607f3f2598c21003c56ee444fd67bf2675489eac00af8a04"
+    ],
+    "RelocatedSites/Supermarket/Crate3": [
+      "crate",
+      "91437a0a0a8209cb8f6cf4008ab9e1a4a555ad35c5260deec6acdfa76f8cbe96"
+    ],
+    "RelocatedSites/Supermarket/Crate4": [
+      "crate",
+      "d85f45f96268098c7f20c9ff0a988bff031a815ad2ed33663cbae7ccf563d920"
+    ],
+    "RelocatedSites/Supermarket/Crate5": [
+      "crate",
+      "5ac6fe8428bbc553781990c2ee81eead7cc0a628f39de43b02246069b9264c49"
+    ],
+    "RelocatedSites/Supermarket/Deli Counter": [
+      "deli counter",
+      "84b6a1366bf1649176a2c4f05635fe32b317de6a81d8dec4b7d8c8160016a087"
+    ],
+    "RelocatedSites/Supermarket/Display": [
+      "display",
+      "88d5463e9c65ca5ac343d83caf3ce17d8712176f8ce5f3e4fa12b136699a1cf3"
+    ],
+    "RelocatedSites/Supermarket/Entrance foliage": [
+      "plant",
+      "95821ed082ff1d5db04fbeb848d0fab43dfc5b6edd64def6b23096937e12d14f"
+    ],
+    "RelocatedSites/Supermarket/Entrance foliage2": [
+      "plant",
+      "bba8fd287300212ffe2103884a4e08b22ca3729e04dce87822d0b78e77aae129"
+    ],
+    "RelocatedSites/Supermarket/Entrance foliage3": [
+      "plant",
+      "edfdfb6ec8e3d198c018770b329409aa5d8c5b9b0e27dd3dd6ab30b924055485"
+    ],
+    "RelocatedSites/Supermarket/Entrance foliage4": [
+      "plant",
+      "38bd40eb8822652cf3b4249663bd279dbdbb0d1510f38e69888a106adb706010"
+    ],
+    "RelocatedSites/Supermarket/Entrance foliage5": [
+      "plant",
+      "1b11aa037232da2cd4116ed6d1a7ff32e825c0602dbfdae1df0bb651b781c7e8"
+    ],
+    "RelocatedSites/Supermarket/Entrance foliage6": [
+      "plant",
+      "e4b7a640a80d7a5c3c66dcc926180bab7c23a2aa395c94d1e244c7ab46c17821"
+    ],
+    "RelocatedSites/Supermarket/Entrance pot": [
+      "flowerpot",
+      "cd90abe4504677d2f65a392238cb6ef0fc617ea40715d8de1e59fa730eb855a0"
+    ],
+    "RelocatedSites/Supermarket/Entrance pot2": [
+      "flowerpot",
+      "6416489f5ec5ff0fd7e6380b6f5c622b62fd4029455296c1eb0bd8e7c1ea6091"
+    ],
+    "RelocatedSites/Supermarket/Expanded foundation": [
+      "floor",
+      "af036eb3709b087e2f859c20577abac5bf3181037f21caa0d852ccab1f8d8241"
+    ],
+    "RelocatedSites/Supermarket/Frozen Food": [
+      "frozen food",
+      "7f7a4c614bc4a7d4a3554198260c3e6d8a7c288d754ace83c3ba332f8be1f5f3"
+    ],
+    "RelocatedSites/Supermarket/Frozen Section plaque": [
+      "frozen section",
+      "b7c26444c7c501306d27856667e078a481dbd38bdaee1022e636bcb497e4b3ce"
+    ],
+    "RelocatedSites/Supermarket/Leaf_6": [
+      "leaf",
+      "3cfc152b89f3b2b65a25e7aae459084056d31c93d618192ddda1c634e9607bf9"
+    ],
+    "RelocatedSites/Supermarket/Lettuce": [
+      "lettuce",
+      "dfdc2c3cc2b4bfe378ade4a243a5fc8307b0224ab9f25614ce4330dcb4200091"
+    ],
+    "RelocatedSites/Supermarket/Market plaque": [
+      "market",
+      "23cd5f4f1b2f8d9c354d65da4f8d454fc7baaf5304d8fbf90cef377defbd05d0"
+    ],
+    "RelocatedSites/Supermarket/Market promenade connection": [
+      "sidewalk",
+      "3b404ed6715ff90a684e0a99b0222907ffe3e7177f51e65f99bab4c54212a3a4"
+    ],
+    "RelocatedSites/Supermarket/Market walkway": [
+      "path",
+      "e0d4592945b70b0ecf3a6f069de8b0544a8aee026c8d70bec9d9e1bd898abc45"
+    ],
+    "RelocatedSites/Supermarket/Market west approach": [
+      "path",
+      "e01c2e8e41ffeb7ee5a39ed6ccb389164178026e2b768efbddf851c2bc24dd06"
+    ],
+    "RelocatedSites/Supermarket/Milk": [
+      "milk",
+      "b13cf80c22e3d5d90465dd42d914f9c5223079be5f5ba5e00693bf552fb2c3ac"
+    ],
+    "RelocatedSites/Supermarket/Pantry gondola shelf": [
+      "shelf",
+      "5a0048fa2503903fd21efbd894328a40489ee804569a8fd324bd054797244efd"
+    ],
+    "RelocatedSites/Supermarket/Pantry gondola shelf2": [
+      "shelf",
+      "1eaa6095de5c0a8758ba1b12328f02bf69f3f54a6590fa8982934c0e19ab548c"
+    ],
+    "RelocatedSites/Supermarket/Pantry gondola shelf3": [
+      "shelf",
+      "65a5193918217fadc744b94e36b9c8d7a7184ab7fbd25ffa31714b731079a377"
+    ],
+    "RelocatedSites/Supermarket/Pantry gondola shelf4": [
+      "shelf",
+      "016fadc6fa249b267b73f7ed6b9df43a12fef6932a8611c7ba441b44335db03b"
+    ],
+    "RelocatedSites/Supermarket/Pasta2": [
+      "pasta",
+      "4489b48d4186742fe9bdc8c7a7bfe16b38c901ff178efbfdc8c1a27202474938"
+    ],
+    "RelocatedSites/Supermarket/Pasta3": [
+      "pasta",
+      "8d809a39ea20879112e3fb7f17c9f73f5f58dacef469fdef568f37ea421952d1"
+    ],
+    "RelocatedSites/Supermarket/Price Tag": [
+      "price tag",
+      "64e3df480d43b56f69162d681d335c9e7702ad519ed59373dbd366466ab821d0"
+    ],
+    "RelocatedSites/Supermarket/Produce Stand": [
+      "produce stand",
+      "996c4cac43f21177a2e164b577dde78c8c3671e502b816559b38f6af262200f1"
+    ],
+    "RelocatedSites/Supermarket/Produce plaque": [
+      "produce",
+      "a2b9314c6092bf8dd7dbe6759bac4c85297f573243e9e33fcef5d7bef9641773"
+    ],
+    "RelocatedSites/Supermarket/Receipt": [
+      "receipt",
+      "72d15da9d4998a8e4e74fae51fb77d30e93bd56d83ebb7fbbe252f7208fbe9de"
+    ],
+    "RelocatedSites/Supermarket/Receipt2": [
+      "receipt",
+      "865e5bec36e54fe8f2ad3f9e71c43a5a420727a4b40f466ca3055650eee1ebf5"
+    ],
+    "RelocatedSites/Supermarket/Refrigerated display": [
+      "freezer",
+      "7547b8fcd528f0d53dc8c05295033fa662fbbffaf4a2e6e6acb93d214a98d996"
+    ],
+    "RelocatedSites/Supermarket/Refrigerated display2": [
+      "freezer",
+      "72e77f0f9fcff828892a75662ab761235805f0c43949dd41ac1df7dcf572ab36"
+    ],
+    "RelocatedSites/Supermarket/Refrigerated display3": [
+      "freezer",
+      "48c25b4c224f74ea5668c685bb5e36a7b397dd38bface8e22fb9f7ed8eea06d4"
+    ],
+    "RelocatedSites/Supermarket/Refrigerated display4": [
+      "freezer",
+      "e8b65c62b8ac201c1572c1bbde7ebcbfc45c033b5c8bfb824a8ff32c7ef7f7af"
+    ],
+    "RelocatedSites/Supermarket/Register screen": [
+      "screen",
+      "6651b6ef048f533523f965b6dad10c6e16c224a967452188a3890bf90d4338c0"
+    ],
+    "RelocatedSites/Supermarket/Register screen2": [
+      "screen",
+      "b913fa8efa5902ebd5aff261d242a10ab6a3e6e1977dbcd65c3d8b47cfccfd8b"
+    ],
+    "RelocatedSites/Supermarket/Shopping Bag": [
+      "shopping bag",
+      "eb6b32bfe01fe4da0600318af2eeebfa8294c8fffdbea7f64b89968a106cd780"
+    ],
+    "RelocatedSites/Supermarket/Shopping Bag2": [
+      "shopping bag",
+      "7cd209070d123a7e7d9170c3e9216e78f3890851848fac17da914b664166afe6"
+    ],
+    "RelocatedSites/Supermarket/Shopping Bag3": [
+      "shopping bag",
+      "c448fa27067c185e36fece22e1810ba766a5396c212040306c6a93c571be844d"
+    ],
+    "RelocatedSites/Supermarket/Shopping Bag4": [
+      "shopping bag",
+      "702d4859f7819ce10bea45496d81b2371cda56c63a3cd30c38dc4ae5fd76ada1"
+    ],
+    "RelocatedSites/Supermarket/Shopping Bag5": [
+      "shopping bag",
+      "adc99e55f76f13650e0fa74631186e6e28cf0ff13ec0657b8eef5a216e4bb56c"
+    ],
+    "RelocatedSites/Supermarket/Shopping cart basket": [
+      "shopping cart",
+      "337dddb66bd59b57cb1c6b86e25863af3018ce3f03be015ee79c909b4a9ae917"
+    ],
+    "RelocatedSites/Supermarket/Shopping cart basket2": [
+      "shopping cart",
+      "6ecad76fda1e8009ed1912c1be93eb2e4971c79f9c8cb93d0b982acdd3fac693"
+    ],
+    "RelocatedSites/Supermarket/Streetlight lantern": [
+      "light",
+      "9ee957a21330c8660a429a06af0efb141601ffd82cbb233210cba733e3f92107"
+    ],
+    "RelocatedSites/Supermarket/Streetlight pole": [
+      "streetlight",
+      "e7b78322990798e9e65979de698725d56ef1ab657d00b6672f54e4cf826986d2"
+    ],
+    "RelocatedSites/Supermarket/Supermarket entrance mat": [
+      "entrance",
+      "56787b4eb4f3f8e1f183c5bdbcd642e9e5bf88c59395f621655f80bc90162f88"
+    ],
+    "RelocatedSites/Supermarket/Supermarket roof": [
+      "roof",
+      "7e08f4360650d7187e9f8c66d0619a97853fca7b05f8b082e99fb94584bfd49e"
+    ],
+    "RelocatedSites/Supermarket/Supermarket sign panel": [
+      "supermarket",
+      "5f5d17e88a704fb80fb10894174f4ff1bd4ead8a4968a7bb4dc852e1d577fe6e"
+    ],
+    "RelocatedSites/Supermarket/Supermarket window": [
+      "window",
+      "48e20a6056e7367bc51c272e3b97fb952b54d9067ceff779b250c7c176de25bb"
+    ],
+    "RelocatedSites/Supermarket/Supermarket window2": [
+      "window",
+      "9cc117118b5d48921ce471155cb9f52d78ef4738da394e21f698a752f7566467"
+    ],
+    "RelocatedSites/Supermarket/Trimmed hedge": [
+      "hedge",
+      "7a16efce867a723e764d83888b407c788fe80f05da3eaebd63e4fae5f7347160"
+    ],
+    "RelocatedSites/Supermarket/Trimmed hedge2": [
+      "hedge",
+      "cce75b84d1740f07f1535cdccacdfd1a8b437cd53d2ff49bbb38a1faa9380fc9"
+    ],
+    "RelocatedSites/Supermarket/Window pane": [
+      "window",
+      "3d07293177a98af4622064dc3811af76aa6c259255390ff27951b78a55daad20"
+    ],
+    "RelocatedSites/Supermarket/Window pane2": [
+      "window",
+      "ddda0d9fc524396f490c01a8753993530ed67e5fe6cad8cc7dad455a74611ad1"
+    ]
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "description": "Exact Apartment-relative node paths. Nearest ancestor override wins; otherwise use the actual collider envelope center and approved zones. Vehicle ownership is fixed after construction.",
+  "overrides": {
+    "Vehicles/Car": {
+      "zone": "home",
+      "reason": "Home car retains its home area while driving."
+    },
+    "Vehicles/Truck": {
+      "zone": "supermarket",
+      "reason": "Delivery truck home area."
+    },
+    "Vehicles/Bus": {
+      "zone": "school",
+      "reason": "School bus home area; parked on street frontage."
+    },
+    "Vehicles/Fire_Truck": {
+      "zone": "school",
+      "reason": "Existing school frontage placement; no fire station exists."
+    },
+    "Vehicles/Taxi": {
+      "zone": "airport",
+      "reason": "Airport taxi home area."
+    },
+    "Vehicles/Police_Car": {
+      "zone": "police",
+      "reason": "Police car home area."
+    },
+    "Vehicles/Ambulance": {
+      "zone": "hospital",
+      "reason": "Hospital ambulance; parked on street frontage."
+    },
+    "Vehicles/Motorcycle": {
+      "zone": "fine_dining",
+      "reason": "Parked in a car stall of the shared restaurant lot in front of Alta Cocina."
+    },
+    "Vehicles/Turboprop": {
+      "zone": "airport",
+      "reason": "Aircraft remains assigned to airport in flight."
+    },
+    "Curving neighborhood road": {
+      "zone": "town_road",
+      "reason": "Ring mesh centroid is in park; the learnable surface is the road."
+    },
+    "Loop road sidewalks": {
+      "zone": "town_road",
+      "reason": "Ring geometry has an off-surface centroid."
+    },
+    "Loop road curbs": {
+      "zone": "town_road",
+      "reason": "Ring geometry has an off-surface centroid."
+    },
+    "Buildings/Hospital/HospitalHelipad/Helicopter": {
+      "zone": "hospital",
+      "reason": "Rooftop helicopter retains Hospital as home area during flight."
+    }
+  }
+}

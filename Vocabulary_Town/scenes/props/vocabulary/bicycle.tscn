@@ -1,0 +1,349 @@
+[gd_scene format=3]
+
+[sub_resource type="TorusMesh" id="r1"]
+inner_radius = 0.395
+outer_radius = 0.505
+rings = 24
+ring_segments = 8
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.15686, 0.20392, 0.24314, 1)
+roughness = 0.78
+
+[sub_resource type="TorusMesh" id="r3"]
+inner_radius = 0.37
+outer_radius = 0.41000000000000003
+rings = 24
+ring_segments = 8
+
+[sub_resource type="StandardMaterial3D" id="r4"]
+albedo_color = Color(0.52941, 0.58039, 0.61176, 1)
+roughness = 0.78
+
+[sub_resource type="CylinderMesh" id="r5"]
+top_radius = 0.009
+bottom_radius = 0.009
+height = 0.7800000000000001
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="r6"]
+top_radius = 0.009
+bottom_radius = 0.009
+height = 0.7800000000000001
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="r7"]
+top_radius = 0.009
+bottom_radius = 0.009
+height = 0.7800000000000001
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="r8"]
+top_radius = 0.009
+bottom_radius = 0.009
+height = 0.78
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="r9"]
+top_radius = 0.009
+bottom_radius = 0.009
+height = 0.7800000000000001
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="r10"]
+top_radius = 0.009
+bottom_radius = 0.009
+height = 0.7800000000000001
+radial_segments = 16
+
+[sub_resource type="TorusMesh" id="r11"]
+inner_radius = 0.395
+outer_radius = 0.505
+rings = 24
+ring_segments = 8
+
+[sub_resource type="TorusMesh" id="r12"]
+inner_radius = 0.37
+outer_radius = 0.41000000000000003
+rings = 24
+ring_segments = 8
+
+[sub_resource type="CylinderMesh" id="r13"]
+top_radius = 0.009
+bottom_radius = 0.009
+height = 0.7800000000000001
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="r14"]
+top_radius = 0.009
+bottom_radius = 0.009
+height = 0.7800000000000001
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="r15"]
+top_radius = 0.009
+bottom_radius = 0.009
+height = 0.7800000000000001
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="r16"]
+top_radius = 0.009
+bottom_radius = 0.009
+height = 0.78
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="r17"]
+top_radius = 0.009
+bottom_radius = 0.009
+height = 0.7800000000000001
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="r18"]
+top_radius = 0.009
+bottom_radius = 0.009
+height = 0.7800000000000001
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="r19"]
+top_radius = 0.045
+bottom_radius = 0.045
+height = 0.8121576201698782
+radial_segments = 16
+
+[sub_resource type="StandardMaterial3D" id="r20"]
+albedo_color = Color(0.71765, 0.28627, 0.23529, 1)
+roughness = 0.78
+
+[sub_resource type="CylinderMesh" id="r21"]
+top_radius = 0.045
+bottom_radius = 0.045
+height = 0.7294518489934755
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="r22"]
+top_radius = 0.045
+bottom_radius = 0.045
+height = 0.85
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="r23"]
+top_radius = 0.045
+bottom_radius = 0.045
+height = 0.7702596964660685
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="r24"]
+top_radius = 0.045
+bottom_radius = 0.045
+height = 0.7488658090739623
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="r25"]
+top_radius = 0.045
+bottom_radius = 0.045
+height = 0.6612866246946176
+radial_segments = 16
+
+[sub_resource type="BoxMesh" id="r26"]
+size = Vector3(0.400000, 0.100000, 0.240000)
+
+[sub_resource type="CylinderMesh" id="r27"]
+top_radius = 0.035
+bottom_radius = 0.035
+height = 0.3522782990761706
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="r28"]
+top_radius = 0.04
+bottom_radius = 0.04
+height = 0.6
+radial_segments = 16
+
+[sub_resource type="BoxMesh" id="r29"]
+size = Vector3(0.280000, 0.060000, 0.170000)
+
+[sub_resource type="BoxShape3D" id="r30"]
+size = Vector3(2.500000, 1.550000, 0.700000)
+
+[sub_resource type="BoxShape3D" id="r31"]
+size = Vector3(2.300000, 0.800000, 0.644000)
+
+[node name="Bicycle" type="Node3D"]
+metadata/word_key = "bicycle"
+metadata/learning_object = true
+
+[node name="Tire_2" type="MeshInstance3D" parent="."]
+position = Vector3(-0.750000, 0.480000, 0.000000)
+rotation_degrees = Vector3(90.000000, 0.000000, 0.000000)
+mesh = SubResource("r1")
+material_override = SubResource("r2")
+scale = Vector3(1.000000, 1.000000, 1.000000)
+
+[node name="Rim_4" type="MeshInstance3D" parent="."]
+position = Vector3(-0.750000, 0.480000, 0.000000)
+rotation_degrees = Vector3(90.000000, 0.000000, 0.000000)
+mesh = SubResource("r3")
+material_override = SubResource("r4")
+scale = Vector3(1.000000, 1.000000, 1.000000)
+
+[node name="Spoke_5" type="MeshInstance3D" parent="."]
+position = Vector3(-0.750000, 0.480000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, -90.000000)
+mesh = SubResource("r5")
+material_override = SubResource("r4")
+
+[node name="Spoke_6" type="MeshInstance3D" parent="."]
+position = Vector3(-0.750000, 0.480000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, -60.000000)
+mesh = SubResource("r6")
+material_override = SubResource("r4")
+
+[node name="Spoke_7" type="MeshInstance3D" parent="."]
+position = Vector3(-0.750000, 0.480000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, -30.000000)
+mesh = SubResource("r7")
+material_override = SubResource("r4")
+
+[node name="Spoke_8" type="MeshInstance3D" parent="."]
+position = Vector3(-0.750000, 0.480000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, -0.000000)
+mesh = SubResource("r8")
+material_override = SubResource("r4")
+
+[node name="Spoke_9" type="MeshInstance3D" parent="."]
+position = Vector3(-0.750000, 0.480000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 30.000000)
+mesh = SubResource("r9")
+material_override = SubResource("r4")
+
+[node name="Spoke_10" type="MeshInstance3D" parent="."]
+position = Vector3(-0.750000, 0.480000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 60.000000)
+mesh = SubResource("r10")
+material_override = SubResource("r4")
+
+[node name="Tire_11" type="MeshInstance3D" parent="."]
+position = Vector3(0.750000, 0.480000, 0.000000)
+rotation_degrees = Vector3(90.000000, 0.000000, 0.000000)
+mesh = SubResource("r11")
+material_override = SubResource("r2")
+scale = Vector3(1.000000, 1.000000, 1.000000)
+
+[node name="Rim_12" type="MeshInstance3D" parent="."]
+position = Vector3(0.750000, 0.480000, 0.000000)
+rotation_degrees = Vector3(90.000000, 0.000000, 0.000000)
+mesh = SubResource("r12")
+material_override = SubResource("r4")
+scale = Vector3(1.000000, 1.000000, 1.000000)
+
+[node name="Spoke_13" type="MeshInstance3D" parent="."]
+position = Vector3(0.750000, 0.480000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, -90.000000)
+mesh = SubResource("r13")
+material_override = SubResource("r4")
+
+[node name="Spoke_14" type="MeshInstance3D" parent="."]
+position = Vector3(0.750000, 0.480000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, -60.000000)
+mesh = SubResource("r14")
+material_override = SubResource("r4")
+
+[node name="Spoke_15" type="MeshInstance3D" parent="."]
+position = Vector3(0.750000, 0.480000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, -30.000000)
+mesh = SubResource("r15")
+material_override = SubResource("r4")
+
+[node name="Spoke_16" type="MeshInstance3D" parent="."]
+position = Vector3(0.750000, 0.480000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, -0.000000)
+mesh = SubResource("r16")
+material_override = SubResource("r4")
+
+[node name="Spoke_17" type="MeshInstance3D" parent="."]
+position = Vector3(0.750000, 0.480000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 30.000000)
+mesh = SubResource("r17")
+material_override = SubResource("r4")
+
+[node name="Spoke_18" type="MeshInstance3D" parent="."]
+position = Vector3(0.750000, 0.480000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 60.000000)
+mesh = SubResource("r18")
+material_override = SubResource("r4")
+
+[node name="FrameTube_20" type="MeshInstance3D" parent="."]
+position = Vector3(-0.500000, 0.800000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, -37.998732)
+mesh = SubResource("r19")
+material_override = SubResource("r20")
+
+[node name="FrameTube_21" type="MeshInstance3D" parent="."]
+position = Vector3(-0.075000, 0.800000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, -151.326854)
+mesh = SubResource("r21")
+material_override = SubResource("r20")
+
+[node name="FrameTube_22" type="MeshInstance3D" parent="."]
+position = Vector3(-0.325000, 0.480000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 90.000000)
+mesh = SubResource("r22")
+material_override = SubResource("r20")
+
+[node name="FrameTube_23" type="MeshInstance3D" parent="."]
+position = Vector3(0.135000, 1.110000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, -91.487868)
+mesh = SubResource("r23")
+material_override = SubResource("r20")
+
+[node name="FrameTube_24" type="MeshInstance3D" parent="."]
+position = Vector3(0.310000, 0.790000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 145.885527)
+mesh = SubResource("r24")
+material_override = SubResource("r20")
+
+[node name="FrameTube_25" type="MeshInstance3D" parent="."]
+position = Vector3(0.635000, 0.790000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, -159.646771)
+mesh = SubResource("r25")
+material_override = SubResource("r20")
+
+[node name="Saddle_26" type="MeshInstance3D" parent="."]
+position = Vector3(-0.250000, 1.220000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r26")
+material_override = SubResource("r2")
+
+[node name="HandleStem_27" type="MeshInstance3D" parent="."]
+position = Vector3(0.500000, 1.275000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 6.519802)
+mesh = SubResource("r27")
+material_override = SubResource("r4")
+
+[node name="Handlebar_28" type="MeshInstance3D" parent="."]
+position = Vector3(0.480000, 1.450000, 0.000000)
+rotation_degrees = Vector3(90.000000, 0.000000, -0.000000)
+mesh = SubResource("r28")
+material_override = SubResource("r2")
+
+[node name="Pedal_29" type="MeshInstance3D" parent="."]
+position = Vector3(0.100000, 0.390000, -0.170000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r29")
+material_override = SubResource("r2")
+
+[node name="Interaction" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Interaction"]
+position = Vector3(0.000000, 0.775000, 0.000000)
+shape = SubResource("r30")
+
+[node name="Footprint" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Footprint"]
+position = Vector3(0.000000, 0.400000, 0.000000)
+shape = SubResource("r31")

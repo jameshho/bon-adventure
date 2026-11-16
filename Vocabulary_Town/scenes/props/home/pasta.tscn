@@ -1,0 +1,112 @@
+[gd_scene format=3]
+
+[sub_resource type="BoxMesh" id="r1"]
+size = Vector3(0.300000, 0.420000, 0.180000)
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.47058823529411764, 0.6078431372549019, 0.4666666666666667, 1)
+roughness = 0.82
+
+[sub_resource type="BoxMesh" id="r3"]
+size = Vector3(0.260000, 0.150000, 0.012000)
+
+[sub_resource type="StandardMaterial3D" id="r4"]
+albedo_color = Color(0.9725490196078431, 0.9294117647058824, 0.8352941176470589, 1)
+roughness = 0.82
+
+[sub_resource type="BoxMesh" id="r5"]
+size = Vector3(0.250000, 0.130000, 0.012000)
+
+[sub_resource type="StandardMaterial3D" id="r6"]
+albedo_color = Color(0.40784313725490196, 0.3607843137254902, 0.2823529411764706, 1)
+roughness = 0.82
+
+[sub_resource type="BoxMesh" id="r7"]
+size = Vector3(0.013000, 0.110000, 0.014000)
+
+[sub_resource type="StandardMaterial3D" id="r8"]
+albedo_color = Color(0.9058823529411765, 0.792156862745098, 0.4549019607843137, 1)
+roughness = 0.82
+
+[sub_resource type="BoxShape3D" id="r9"]
+size = Vector3(0.300000, 0.420000, 0.200000)
+
+[node name="Pasta" type="Node3D"]
+metadata/word_key = "pasta"
+
+[node name="Package" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.210000, 0.000000)
+mesh = SubResource("r1")
+material_override = SubResource("r2")
+
+[node name="Label" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.290000, -0.096000)
+mesh = SubResource("r3")
+material_override = SubResource("r4")
+
+[node name="Name" type="Label3D" parent="."]
+position = Vector3(0.000000, 0.290000, -0.105000)
+rotation = Vector3(0, 3.141592653589793, 0)
+text = "PASTA"
+font_size = 12
+pixel_size = 0.008
+outline_size = 4
+no_depth_test = false
+
+[node name="DisplayWindow" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.120000, -0.098000)
+mesh = SubResource("r5")
+material_override = SubResource("r6")
+
+[node name="Spaghetti" type="MeshInstance3D" parent="."]
+position = Vector3(-0.104000, 0.120000, -0.113000)
+mesh = SubResource("r7")
+material_override = SubResource("r8")
+
+[node name="Spaghetti2" type="MeshInstance3D" parent="."]
+position = Vector3(-0.078000, 0.120000, -0.113000)
+mesh = SubResource("r7")
+material_override = SubResource("r8")
+
+[node name="Spaghetti3" type="MeshInstance3D" parent="."]
+position = Vector3(-0.052000, 0.120000, -0.113000)
+mesh = SubResource("r7")
+material_override = SubResource("r8")
+
+[node name="Spaghetti4" type="MeshInstance3D" parent="."]
+position = Vector3(-0.026000, 0.120000, -0.113000)
+mesh = SubResource("r7")
+material_override = SubResource("r8")
+
+[node name="Spaghetti5" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.120000, -0.113000)
+mesh = SubResource("r7")
+material_override = SubResource("r8")
+
+[node name="Spaghetti6" type="MeshInstance3D" parent="."]
+position = Vector3(0.026000, 0.120000, -0.113000)
+mesh = SubResource("r7")
+material_override = SubResource("r8")
+
+[node name="Spaghetti7" type="MeshInstance3D" parent="."]
+position = Vector3(0.052000, 0.120000, -0.113000)
+mesh = SubResource("r7")
+material_override = SubResource("r8")
+
+[node name="Spaghetti8" type="MeshInstance3D" parent="."]
+position = Vector3(0.078000, 0.120000, -0.113000)
+mesh = SubResource("r7")
+material_override = SubResource("r8")
+
+[node name="Spaghetti9" type="MeshInstance3D" parent="."]
+position = Vector3(0.104000, 0.120000, -0.113000)
+mesh = SubResource("r7")
+material_override = SubResource("r8")
+
+[node name="StudyArea" type="Area3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="StudyArea"]
+position = Vector3(0.000000, 0.210000, 0.000000)
+shape = SubResource("r9")

@@ -1,0 +1,144 @@
+[gd_scene format=3]
+
+[sub_resource type="CylinderMesh" id="r1"]
+top_radius = 0.32
+bottom_radius = 0.32
+height = 0.11
+radial_segments = 12
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.4745098039215686, 0.34901960784313724, 0.25098039215686274, 1)
+roughness = 0.82
+
+[sub_resource type="CylinderMesh" id="r3"]
+top_radius = 0.045
+bottom_radius = 0.045
+height = 1.95
+radial_segments = 12
+
+[sub_resource type="StandardMaterial3D" id="r4"]
+albedo_color = Color(0.6941176470588235, 0.5450980392156862, 0.3843137254901961, 1)
+roughness = 0.82
+
+[sub_resource type="BoxMesh" id="r5"]
+size = Vector3(0.340000, 0.050000, 0.055000)
+
+[sub_resource type="CylinderMesh" id="r6"]
+top_radius = 0.035
+bottom_radius = 0.035
+height = 0.14
+radial_segments = 12
+
+[sub_resource type="SphereMesh" id="r7"]
+radius = 0.5
+height = 1.0
+radial_segments = 12
+rings = 6
+
+[sub_resource type="StandardMaterial3D" id="r8"]
+albedo_color = Color(0.7686274509803922, 0.6470588235294118, 0.49019607843137253, 1)
+roughness = 0.82
+
+[sub_resource type="BoxShape3D" id="r9"]
+size = Vector3(0.650000, 2.000000, 0.650000)
+
+[node name="CoatRack" type="Node3D"]
+metadata/word_key = "coat rack"
+
+[node name="Base" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.055000, 0.000000)
+mesh = SubResource("r1")
+material_override = SubResource("r2")
+
+[node name="Post" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 1.030000, 0.000000)
+mesh = SubResource("r3")
+material_override = SubResource("r4")
+
+[node name="Branch" type="Node3D" parent="."]
+rotation = Vector3(0,0.0,0)
+
+[node name="HookArm" type="MeshInstance3D" parent="Branch"]
+position = Vector3(0.160000, 1.680000, 0.000000)
+mesh = SubResource("r5")
+material_override = SubResource("r4")
+rotation = Vector3(0.000000, 0.000000, 0.400000)
+
+[node name="HookTip" type="MeshInstance3D" parent="Branch"]
+position = Vector3(0.300000, 1.770000, 0.000000)
+mesh = SubResource("r6")
+material_override = SubResource("r4")
+
+[node name="Cap" type="MeshInstance3D" parent="Branch"]
+position = Vector3(0.300000, 1.850000, 0.000000)
+scale = Vector3(0.090000, 0.090000, 0.090000)
+mesh = SubResource("r7")
+material_override = SubResource("r8")
+
+[node name="Branch2" type="Node3D" parent="."]
+rotation = Vector3(0,1.5707963267948966,0)
+
+[node name="HookArm" type="MeshInstance3D" parent="Branch2"]
+position = Vector3(0.160000, 1.680000, 0.000000)
+mesh = SubResource("r5")
+material_override = SubResource("r4")
+rotation = Vector3(0.000000, 0.000000, 0.400000)
+
+[node name="HookTip" type="MeshInstance3D" parent="Branch2"]
+position = Vector3(0.300000, 1.770000, 0.000000)
+mesh = SubResource("r6")
+material_override = SubResource("r4")
+
+[node name="Cap" type="MeshInstance3D" parent="Branch2"]
+position = Vector3(0.300000, 1.850000, 0.000000)
+scale = Vector3(0.090000, 0.090000, 0.090000)
+mesh = SubResource("r7")
+material_override = SubResource("r8")
+
+[node name="Branch3" type="Node3D" parent="."]
+rotation = Vector3(0,3.141592653589793,0)
+
+[node name="HookArm" type="MeshInstance3D" parent="Branch3"]
+position = Vector3(0.160000, 1.680000, 0.000000)
+mesh = SubResource("r5")
+material_override = SubResource("r4")
+rotation = Vector3(0.000000, 0.000000, 0.400000)
+
+[node name="HookTip" type="MeshInstance3D" parent="Branch3"]
+position = Vector3(0.300000, 1.770000, 0.000000)
+mesh = SubResource("r6")
+material_override = SubResource("r4")
+
+[node name="Cap" type="MeshInstance3D" parent="Branch3"]
+position = Vector3(0.300000, 1.850000, 0.000000)
+scale = Vector3(0.090000, 0.090000, 0.090000)
+mesh = SubResource("r7")
+material_override = SubResource("r8")
+
+[node name="Branch4" type="Node3D" parent="."]
+rotation = Vector3(0,4.71238898038469,0)
+
+[node name="HookArm" type="MeshInstance3D" parent="Branch4"]
+position = Vector3(0.160000, 1.680000, 0.000000)
+mesh = SubResource("r5")
+material_override = SubResource("r4")
+rotation = Vector3(0.000000, 0.000000, 0.400000)
+
+[node name="HookTip" type="MeshInstance3D" parent="Branch4"]
+position = Vector3(0.300000, 1.770000, 0.000000)
+mesh = SubResource("r6")
+material_override = SubResource("r4")
+
+[node name="Cap" type="MeshInstance3D" parent="Branch4"]
+position = Vector3(0.300000, 1.850000, 0.000000)
+scale = Vector3(0.090000, 0.090000, 0.090000)
+mesh = SubResource("r7")
+material_override = SubResource("r8")
+
+[node name="Body" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Body"]
+position = Vector3(0.000000, 1.000000, 0.000000)
+shape = SubResource("r9")

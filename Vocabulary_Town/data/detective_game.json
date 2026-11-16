@@ -1,0 +1,81 @@
+{
+  "about": "Police station detective games (lineup 6 Nov 2026; evidence game redesigned 8 Nov 2026; design: docs/evidence/police-detective-20261106/PROMPT.md, guide: docs/guides/MINIGAMES.md). Read by scripts/learning/detective_clues.gd (generation and validation), suspect_builder.gd (lineup looks) and evidence_props.gd (evidence looks). Rounds per session are data/activities.json 'progress'. LINEUP: 'clue_count' is fixed at 2 (user decision: no difficulty levels yet); a clue matches a suspect when its 'attr' equals 'value', or, with 'not', differs from it; 'phrase' is the clue fragment in data/phrases.json (group police, joined by police.lineup_two); 'words' are the word keys it practises. Every clue's wording is masculine (user decision: el sospechoso), even for a suspect who looks female. Women never get a beard or moustache. EVIDENCE (8 Nov 2026): ONE property word decides each round, so each round practises and tracks exactly one word. 'rounds' cycles the round types: 'find' (four objects, exactly one has the clue's value, the other three the 'opposite'; police.find) and 'report' (one object; is it this or the opposite? police.report). 'dims' are the three property pairs and the tool that reveals each (squeeze: hard/soft, touch: rough/smooth, lift: heavy/light); every property is a real, fixed property of the object kind, never a random state. Objects (chosen 8 Nov 2026 for being common, distinct in outline and unambiguous on all three pairs): stone, coconut, frying pan, dumbbell (hard, heavy), key, pencil (hard, smooth, light), ball, pillow (soft, smooth, light), sponge, towel (soft, rough, light). Colour is only a look (variants per kind), never a clue; each kind has one size. A clue's 'phrase' (is hard) and 'adjective' (hard) have feminine variants with the suffix _f, used when the object's noun is feminine in the language shown (words.json forms gender).",
+  "lineup": {
+    "suspects": 5,
+    "clue_count": 2,
+    "female_share": 0.45,
+    "attributes": {
+      "height": ["tall", "medium", "short"],
+      "hair": ["long", "short", "bald"],
+      "hair_color": ["black", "brown", "blond", "red"],
+      "facial_hair": ["beard", "moustache", "none"],
+      "nose": ["big", "medium", "small"],
+      "shirt": ["red", "orange", "yellow", "green", "blue", "purple", "pink"]
+    },
+    "looks": {
+      "fur": "f6f0e2",
+      "muzzle": "fbf4e6",
+      "ear_inner": "f6c9c4",
+      "height": {"tall": 1.08, "medium": 1.0, "short": 0.92},
+      "width": {"tall": 1.03, "medium": 1.0, "short": 0.97},
+      "nose": {"big": 1.9, "medium": 1.35, "small": 0.95},
+      "hair_color": {"black": "463d42", "brown": "9c6b48", "blond": "e6b85c", "red": "e68456"},
+      "shirt": {"red": "e86a64", "orange": "f4a259", "yellow": "f6d66b", "green": "7fc48f", "blue": "74a7e3", "purple": "ad8fd9", "pink": "f5a9c9"}
+    },
+    "clues": [
+      {"id": "tall", "attr": "height", "value": "tall", "phrase": "police.s_tall", "words": ["tall"]},
+      {"id": "short", "attr": "height", "value": "short", "phrase": "police.s_short", "words": ["short (height)"]},
+      {"id": "long_hair", "attr": "hair", "value": "long", "phrase": "police.s_long_hair", "words": ["hair", "long"]},
+      {"id": "short_hair", "attr": "hair", "value": "short", "phrase": "police.s_short_hair", "words": ["hair", "short (length)"]},
+      {"id": "bald", "attr": "hair", "value": "bald", "phrase": "police.s_bald", "words": ["bald"]},
+      {"id": "black_hair", "attr": "hair_color", "value": "black", "phrase": "police.s_black_hair", "words": ["hair", "black"]},
+      {"id": "brown_hair", "attr": "hair_color", "value": "brown", "phrase": "police.s_brown_hair", "words": ["hair", "brown (hair)"]},
+      {"id": "blond", "attr": "hair_color", "value": "blond", "phrase": "police.s_blond", "words": ["blond"]},
+      {"id": "red_hair", "attr": "hair_color", "value": "red", "phrase": "police.s_red_hair", "words": ["red-haired"]},
+      {"id": "beard", "attr": "facial_hair", "value": "beard", "phrase": "police.s_beard", "words": ["beard"]},
+      {"id": "moustache", "attr": "facial_hair", "value": "moustache", "phrase": "police.s_moustache", "words": ["moustache"]},
+      {"id": "no_beard", "attr": "facial_hair", "not": "beard", "phrase": "police.s_no_beard", "words": ["beard"]},
+      {"id": "no_moustache", "attr": "facial_hair", "not": "moustache", "phrase": "police.s_no_moustache", "words": ["moustache"]},
+      {"id": "big_nose", "attr": "nose", "value": "big", "phrase": "police.s_big_nose", "words": ["nose", "big"]},
+      {"id": "small_nose", "attr": "nose", "value": "small", "phrase": "police.s_small_nose", "words": ["nose", "small"]},
+      {"id": "shirt_red", "attr": "shirt", "value": "red", "phrase": "police.s_shirt_red", "words": ["shirt", "red"]},
+      {"id": "shirt_orange", "attr": "shirt", "value": "orange", "phrase": "police.s_shirt_orange", "words": ["shirt", "orange (color)"]},
+      {"id": "shirt_yellow", "attr": "shirt", "value": "yellow", "phrase": "police.s_shirt_yellow", "words": ["shirt", "yellow"]},
+      {"id": "shirt_green", "attr": "shirt", "value": "green", "phrase": "police.s_shirt_green", "words": ["shirt", "green"]},
+      {"id": "shirt_blue", "attr": "shirt", "value": "blue", "phrase": "police.s_shirt_blue", "words": ["shirt", "blue"]},
+      {"id": "shirt_purple", "attr": "shirt", "value": "purple", "phrase": "police.s_shirt_purple", "words": ["shirt", "purple"]},
+      {"id": "shirt_pink", "attr": "shirt", "value": "pink", "phrase": "police.s_shirt_pink", "words": ["shirt", "pink"]}
+    ]
+  },
+  "evidence": {
+    "objects_on_table": 4,
+    "rounds": ["find", "report", "find", "report"],
+    "colors": {"red": "e0533d", "orange": "f2913a", "yellow": "f6c945", "green": "4caf6a", "blue": "3f86d6", "purple": "8e62c9", "pink": "f08fb6", "gray": "848b93", "brown": "8a5a36", "white": "f4efe6", "black": "353a40"},
+    "dims": {
+      "hardness": {"tool": "squeeze", "values": ["hard", "soft"]},
+      "texture": {"tool": "touch", "values": ["rough", "smooth"]},
+      "weight": {"tool": "lift", "values": ["heavy", "light"]}
+    },
+    "objects": {
+      "stone": {"word": "stone", "color": ["gray"], "hardness": ["hard"], "texture": ["rough"], "weight": ["heavy"]},
+      "coconut": {"word": "coconut", "color": ["brown"], "hardness": ["hard"], "texture": ["rough"], "weight": ["heavy"]},
+      "pan": {"word": "frying pan", "color": ["black", "red", "blue"], "hardness": ["hard"], "texture": ["smooth"], "weight": ["heavy"]},
+      "dumbbell": {"word": "dumbbell", "color": ["blue", "red", "purple", "green"], "hardness": ["hard"], "texture": ["smooth"], "weight": ["heavy"]},
+      "key": {"word": "key", "color": ["yellow", "gray"], "hardness": ["hard"], "texture": ["smooth"], "weight": ["light"]},
+      "pencil": {"word": "pencil", "color": ["yellow", "red", "green", "blue"], "hardness": ["hard"], "texture": ["smooth"], "weight": ["light"]},
+      "ball": {"word": "ball", "color": ["red", "blue", "yellow", "purple", "orange"], "hardness": ["soft"], "texture": ["smooth"], "weight": ["light"]},
+      "pillow": {"word": "pillow", "color": ["white", "blue", "pink", "yellow"], "hardness": ["soft"], "texture": ["smooth"], "weight": ["light"]},
+      "sponge": {"word": "sponge", "color": ["yellow", "pink", "blue"], "hardness": ["soft"], "texture": ["rough"], "weight": ["light"]},
+      "towel": {"word": "towel", "color": ["blue", "green", "pink", "orange"], "hardness": ["soft"], "texture": ["rough"], "weight": ["light"]}
+    },
+    "shelf": {"stone": {"color": "gray"}, "coconut": {"color": "brown"}, "pan": {"color": "black"}, "dumbbell": {"color": "blue"}, "key": {"color": "yellow"}, "pencil": {"color": "yellow"}, "ball": {"color": "red"}, "pillow": {"color": "blue"}, "sponge": {"color": "yellow"}, "towel": {"color": "blue"}},
+    "clues": [
+      {"id": "hard", "dim": "hardness", "value": "hard", "opposite": "soft", "tool": "squeeze", "phrase": "police.e_hard", "adjective": "police.a_hard", "words": ["hard"]},
+      {"id": "soft", "dim": "hardness", "value": "soft", "opposite": "hard", "tool": "squeeze", "phrase": "police.e_soft", "adjective": "police.a_soft", "words": ["soft"]},
+      {"id": "rough", "dim": "texture", "value": "rough", "opposite": "smooth", "tool": "touch", "phrase": "police.e_rough", "adjective": "police.a_rough", "words": ["rough"]},
+      {"id": "smooth", "dim": "texture", "value": "smooth", "opposite": "rough", "tool": "touch", "phrase": "police.e_smooth", "adjective": "police.a_smooth", "words": ["smooth"]},
+      {"id": "heavy", "dim": "weight", "value": "heavy", "opposite": "light", "tool": "lift", "phrase": "police.e_heavy", "adjective": "police.a_heavy", "words": ["heavy"]},
+      {"id": "light", "dim": "weight", "value": "light", "opposite": "heavy", "tool": "lift", "phrase": "police.e_light", "adjective": "police.a_light", "words": ["light (weight)"]}
+    ]
+  }
+}

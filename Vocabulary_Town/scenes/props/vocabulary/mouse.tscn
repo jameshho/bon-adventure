@@ -1,0 +1,58 @@
+[gd_scene format=3]
+
+[sub_resource type="SphereMesh" id="r1"]
+radius = 0.5
+height = 1.0
+radial_segments = 16
+rings = 8
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.92549, 0.90980, 0.87451, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r3"]
+size = Vector3(0.012000, 0.030000, 0.200000)
+
+[sub_resource type="StandardMaterial3D" id="r4"]
+albedo_color = Color(0.15686, 0.20392, 0.24314, 1)
+roughness = 0.78
+
+[sub_resource type="CylinderMesh" id="r5"]
+top_radius = 0.035
+bottom_radius = 0.035
+height = 0.05
+radial_segments = 16
+
+[sub_resource type="BoxShape3D" id="r6"]
+size = Vector3(0.350000, 0.280000, 0.500000)
+
+[node name="Mouse" type="Node3D"]
+metadata/word_key = "mouse"
+metadata/learning_object = true
+
+[node name="Shell_2" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.120000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r1")
+material_override = SubResource("r2")
+scale = Vector3(0.300000, 0.220000, 0.480000)
+
+[node name="ButtonSeam_4" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.200000, -0.100000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r3")
+material_override = SubResource("r4")
+
+[node name="Wheel_5" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.240000, -0.100000)
+rotation_degrees = Vector3(90.000000, 0.000000, 0.000000)
+mesh = SubResource("r5")
+material_override = SubResource("r4")
+
+[node name="Interaction" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Interaction"]
+position = Vector3(0.000000, 0.140000, 0.000000)
+shape = SubResource("r6")

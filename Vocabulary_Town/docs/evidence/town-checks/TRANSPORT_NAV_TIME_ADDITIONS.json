@@ -1,0 +1,188 @@
+{
+  "added": {
+    "train": {
+      "spanish": "el tren",
+      "category": "Transportation",
+      "position": [
+        -29.5,
+        0.05,
+        92.0
+      ],
+      "prefab": "scenes/props/vocabulary/train.tscn"
+    },
+    "station": {
+      "spanish": "la estación de tren",
+      "category": "Transportation",
+      "position": [
+        -26.6,
+        1.42,
+        92.0
+      ],
+      "prefab": "scenes/props/vocabulary/station.tscn"
+    },
+    "ticket": {
+      "spanish": "el boleto / el tiquete",
+      "category": "Transportation",
+      "position": [
+        -24.65,
+        1.42,
+        92.0
+      ],
+      "prefab": "scenes/props/vocabulary/ticket.tscn"
+    },
+    "left": {
+      "spanish": "a la izquierda",
+      "category": "Directions",
+      "position": [
+        -28.0,
+        1.6,
+        88.35
+      ],
+      "prefab": "scenes/props/vocabulary/left.tscn"
+    },
+    "right": {
+      "spanish": "a la derecha",
+      "category": "Directions",
+      "position": [
+        -26.45,
+        1.6,
+        88.35
+      ],
+      "prefab": "scenes/props/vocabulary/right.tscn"
+    },
+    "straight ahead": {
+      "spanish": "todo recto / de frente",
+      "category": "Directions",
+      "position": [
+        -24.9,
+        1.6,
+        88.35
+      ],
+      "prefab": "scenes/props/vocabulary/straight_ahead.tscn"
+    },
+    "near": {
+      "spanish": "cerca",
+      "category": "Directions",
+      "position": [
+        -23.35,
+        1.6,
+        88.35
+      ],
+      "prefab": "scenes/props/vocabulary/near.tscn"
+    },
+    "far": {
+      "spanish": "lejos",
+      "category": "Directions",
+      "position": [
+        -21.8,
+        1.6,
+        88.35
+      ],
+      "prefab": "scenes/props/vocabulary/far.tscn"
+    },
+    "today": {
+      "spanish": "hoy",
+      "category": "Time",
+      "position": [
+        -18.3,
+        2.1,
+        88.35
+      ],
+      "prefab": "scenes/props/vocabulary/today.tscn"
+    },
+    "tomorrow": {
+      "spanish": "mañana",
+      "category": "Time",
+      "position": [
+        -16.75,
+        2.1,
+        88.35
+      ],
+      "prefab": "scenes/props/vocabulary/tomorrow.tscn"
+    },
+    "yesterday": {
+      "spanish": "ayer",
+      "category": "Time",
+      "position": [
+        -15.200000000000001,
+        2.1,
+        88.35
+      ],
+      "prefab": "scenes/props/vocabulary/yesterday.tscn"
+    },
+    "now": {
+      "spanish": "ahora",
+      "category": "Time",
+      "position": [
+        -13.65,
+        2.1,
+        88.35
+      ],
+      "prefab": "scenes/props/vocabulary/now.tscn"
+    },
+    "later": {
+      "spanish": "más tarde / luego",
+      "category": "Time",
+      "position": [
+        -18.3,
+        1.12,
+        88.35
+      ],
+      "prefab": "scenes/props/vocabulary/later.tscn"
+    },
+    "morning": {
+      "spanish": "la mañana",
+      "category": "Time",
+      "position": [
+        -16.75,
+        1.12,
+        88.35
+      ],
+      "prefab": "scenes/props/vocabulary/morning.tscn"
+    },
+    "afternoon": {
+      "spanish": "la tarde",
+      "category": "Time",
+      "position": [
+        -15.200000000000001,
+        1.12,
+        88.35
+      ],
+      "prefab": "scenes/props/vocabulary/afternoon.tscn"
+    },
+    "night": {
+      "spanish": "la noche",
+      "category": "Time",
+      "position": [
+        -13.65,
+        1.12,
+        88.35
+      ],
+      "prefab": "scenes/props/vocabulary/night.tscn"
+    }
+  },
+  "preserved": "bus stop",
+  "world_scene": "scenes/world/town_complete.tscn",
+  "existing_reference_point": {
+    "x": -18,
+    "y": 2.35,
+    "z": 93.4
+  },
+  "navigation_keys": [
+    "left",
+    "right",
+    "straight ahead",
+    "near",
+    "far"
+  ],
+  "time_keys": [
+    "today",
+    "tomorrow",
+    "yesterday",
+    "now",
+    "later",
+    "morning",
+    "afternoon",
+    "night"
+  ]
+}

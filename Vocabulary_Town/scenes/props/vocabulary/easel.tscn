@@ -1,0 +1,119 @@
+[gd_scene format=3]
+
+[sub_resource type="CylinderMesh" id="r1"]
+top_radius = 0.035
+bottom_radius = 0.035
+height = 1.9155584042257756
+radial_segments = 16
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.67843, 0.48235, 0.31373, 1)
+roughness = 0.78
+
+[sub_resource type="CylinderMesh" id="r3"]
+top_radius = 0.035
+bottom_radius = 0.035
+height = 1.9155584042257756
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="r4"]
+top_radius = 0.035
+bottom_radius = 0.035
+height = 1.8821530224718712
+radial_segments = 16
+
+[sub_resource type="BoxMesh" id="r5"]
+size = Vector3(0.950000, 1.020000, 0.080000)
+
+[sub_resource type="StandardMaterial3D" id="r6"]
+albedo_color = Color(0.92549, 0.90980, 0.87451, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r7"]
+size = Vector3(1.150000, 0.060000, 0.190000)
+
+[sub_resource type="SphereMesh" id="r8"]
+radius = 0.5
+height = 1.0
+radial_segments = 16
+rings = 8
+
+[sub_resource type="StandardMaterial3D" id="r9"]
+albedo_color = Color(0.87451, 0.72157, 0.30196, 1)
+roughness = 0.78
+
+[sub_resource type="PrismMesh" id="r10"]
+size = Vector3(0.8, 0.5, 0.025)
+
+[sub_resource type="StandardMaterial3D" id="r11"]
+albedo_color = Color(0.41961, 0.58431, 0.50980, 1)
+roughness = 0.78
+
+[sub_resource type="BoxShape3D" id="r12"]
+size = Vector3(1.200000, 2.000000, 0.900000)
+
+[sub_resource type="BoxShape3D" id="r13"]
+size = Vector3(1.080000, 0.700000, 0.810000)
+
+[node name="Easel" type="Node3D"]
+metadata/word_key = "easel"
+metadata/learning_object = true
+
+[node name="FrontLeg_2" type="MeshInstance3D" parent="."]
+position = Vector3(-0.384000, 0.950000, 0.075000)
+rotation_degrees = Vector3(4.491210, 0.000000, -5.770301)
+mesh = SubResource("r1")
+material_override = SubResource("r2")
+
+[node name="FrontLeg_3" type="MeshInstance3D" parent="."]
+position = Vector3(0.384000, 0.950000, 0.075000)
+rotation_degrees = Vector3(4.491210, 0.000000, 5.770301)
+mesh = SubResource("r3")
+material_override = SubResource("r2")
+
+[node name="RearLeg_4" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.900000, 0.425000)
+rotation_degrees = Vector3(-16.990823, 0.000000, -0.000000)
+mesh = SubResource("r4")
+material_override = SubResource("r2")
+
+[node name="Canvas_6" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 1.220000, 0.070000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r5")
+material_override = SubResource("r6")
+
+[node name="Rest_7" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.680000, -0.030000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r7")
+material_override = SubResource("r2")
+
+[node name="PaintedSun_9" type="MeshInstance3D" parent="."]
+position = Vector3(0.220000, 1.500000, 0.015000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r8")
+material_override = SubResource("r9")
+scale = Vector3(0.220000, 0.220000, 0.025000)
+
+[node name="PaintedMountain_11" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 1.030000, 0.015000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r10")
+material_override = SubResource("r11")
+
+[node name="Interaction" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Interaction"]
+position = Vector3(0.000000, 1.000000, 0.000000)
+shape = SubResource("r12")
+
+[node name="Footprint" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Footprint"]
+position = Vector3(0.000000, 0.350000, 0.000000)
+shape = SubResource("r13")

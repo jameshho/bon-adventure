@@ -1,0 +1,71 @@
+[gd_scene format=3]
+
+[sub_resource type="CylinderMesh" id="r1"]
+top_radius = 0.48
+bottom_radius = 0.48
+height = 0.07
+radial_segments = 16
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.76471, 0.63529, 0.44314, 1)
+roughness = 0.78
+
+[sub_resource type="CylinderMesh" id="r3"]
+top_radius = 0.3
+bottom_radius = 0.3
+height = 0.35
+radial_segments = 16
+
+[sub_resource type="CylinderMesh" id="r4"]
+top_radius = 0.31
+bottom_radius = 0.31
+height = 0.08
+radial_segments = 16
+
+[sub_resource type="StandardMaterial3D" id="r5"]
+albedo_color = Color(0.15686, 0.20392, 0.24314, 1)
+roughness = 0.78
+
+[sub_resource type="BoxShape3D" id="r6"]
+size = Vector3(0.950000, 1.250000, 0.800000)
+
+[sub_resource type="BoxShape3D" id="r7"]
+size = Vector3(0.874000, 0.800000, 0.736000)
+
+[node name="Hat" type="Node3D"]
+metadata/word_key = "hat"
+metadata/learning_object = true
+
+[node name="Brim_2" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.040000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r1")
+material_override = SubResource("r2")
+
+[node name="Crown_3" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.230000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r3")
+material_override = SubResource("r2")
+
+[node name="Band_5" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.120000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r4")
+material_override = SubResource("r5")
+
+[node name="Interaction" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Interaction"]
+position = Vector3(0.000000, 0.625000, 0.000000)
+shape = SubResource("r6")
+
+[node name="Footprint" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Footprint"]
+position = Vector3(0.000000, 0.400000, 0.000000)
+shape = SubResource("r7")

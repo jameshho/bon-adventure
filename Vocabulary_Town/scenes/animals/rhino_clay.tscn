@@ -1,0 +1,62 @@
+[gd_scene format=3]
+
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/rhino/body.res" id="1_ojr5g"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/rhino/horns.res" id="2_40ask"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/rhino/ears.res" id="3_w3n1s"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/rhino/tail_tuft.res" id="4_32m3x"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/rhino/eyes.res" id="5_x4hsr"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/rhino/face_details.res" id="6_13nol"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cgyes"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.86
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_b430s"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+metallic_specular = 0.25
+roughness = 0.3
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_skpo2"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.75
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_17l04"]
+size = Vector3(1.2187595, 1.6987898, 2.7939487)
+
+[node name="RhinoClayDisplay" type="Node3D" unique_id=1791763826]
+metadata/source = "User's Rhino Character Blueprint, relax walk pose (11 Nov 2026)"
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=1167508118]
+material_override = SubResource("StandardMaterial3D_cgyes")
+mesh = ExtResource("1_ojr5g")
+
+[node name="Horns" type="MeshInstance3D" parent="." unique_id=1159089082]
+material_override = SubResource("StandardMaterial3D_cgyes")
+mesh = ExtResource("2_40ask")
+
+[node name="Ears" type="MeshInstance3D" parent="." unique_id=1094934191]
+material_override = SubResource("StandardMaterial3D_cgyes")
+mesh = ExtResource("3_w3n1s")
+
+[node name="Tail tuft" type="MeshInstance3D" parent="." unique_id=1999414894]
+material_override = SubResource("StandardMaterial3D_cgyes")
+mesh = ExtResource("4_32m3x")
+
+[node name="Eyes" type="MeshInstance3D" parent="." unique_id=866475150]
+material_override = SubResource("StandardMaterial3D_b430s")
+cast_shadow = 0
+mesh = ExtResource("5_x4hsr")
+
+[node name="Face details" type="MeshInstance3D" parent="." unique_id=1153743369]
+material_override = SubResource("StandardMaterial3D_skpo2")
+cast_shadow = 0
+mesh = ExtResource("6_13nol")
+
+[node name="Footprint" type="StaticBody3D" parent="." unique_id=790295137]
+
+[node name="@CollisionShape3D@2" type="CollisionShape3D" parent="Footprint" unique_id=290887643]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8493949, -0.051739752)
+shape = SubResource("BoxShape3D_17l04")

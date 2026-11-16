@@ -1,0 +1,67 @@
+{
+  "about": "Hospital family game (Dr. Li): rules and tree templates, no text. Each template has 7 people (user decision, 4 Nov 2026: 9 cards were too many choices); together they cover every relationship word. mothers_side (Stage 4) is big_family on the mother's side, so Chinese maternal terms come up. Every sentence is in data/phrases.json group 'family'; names come from data/names.json in the foreign language; relationship words are the Family words of data/words.json. Ages are computed from the game's shared 'today' (scripts/learning/game_clock.gd: a random date in 2026-2027, picked once per launch and shared with the airport flight game; user decision, 5 Nov 2026; it replaced the fixed reference_date 2026-11-04). A tree template lists people: 'gender' m/f, 'parents' (ids of people in the same template), 'partner' (id) with 'partner_kind' married/dating, given on ONE of the two partners, and a layout cell 'row' (generation, 0 = top) and 'col' (card columns, may be fractional). Put a partner who married or dated into the family on the OUTSIDE of the couple, so the line down to the children never runs over them. People without parents and without a partner who has parents are the oldest generation and get an age in 'root_age'; a child is born 'gap' years after its younger parent; a partner who married or dated into the family gets an age within 'partner_spread' years of their partner. Every age and every birth month in a round is different (so a tree has at most 12 people), and nobody is younger than 'min_age' (so Spanish never needs '1 año'). Questions: 'kinds' lists the question generators of scripts/learning/family_questions.gd with a pick weight. See docs/guides/TOWN_DESIGN_BRIEF.md#hospital-family-game--4-november-2026.",
+  "min_age": 6,
+  "gap": [24, 30],
+  "partner_spread": 4,
+  "portrait_species": ["pig", "sheep", "bear", "cat", "beagle", "golden", "samoyed", "lion"],
+  "kinds": {
+    "relation": 4,
+    "age": 2,
+    "oldest_youngest": 1,
+    "birth_month": 2,
+    "birth_year": 1,
+    "pair_older_younger": 2,
+    "older_younger_yes_no": 2,
+    "before_after_yes_no": 2
+  },
+  "trees": {
+    "big_family": {
+      "root_age": [66, 80],
+      "people": {
+        "grandfather": {"gender": "m", "row": 0, "col": 1.5, "partner": "grandmother", "partner_kind": "married"},
+        "grandmother": {"gender": "f", "row": 0, "col": 2.5},
+        "father": {"gender": "m", "row": 1, "col": 1.5, "parents": ["grandfather", "grandmother"], "partner": "mother", "partner_kind": "married"},
+        "mother": {"gender": "f", "row": 1, "col": 0.5},
+        "aunt": {"gender": "f", "row": 1, "col": 3.5, "parents": ["grandfather", "grandmother"]},
+        "son": {"gender": "m", "row": 2, "col": 0.5, "parents": ["father", "mother"]},
+        "daughter": {"gender": "f", "row": 2, "col": 1.5, "parents": ["father", "mother"]}
+      }
+    },
+    "couples": {
+      "root_age": [76, 82],
+      "people": {
+        "grandmother": {"gender": "f", "row": 0, "col": 1.5},
+        "father": {"gender": "m", "row": 1, "col": 2, "parents": ["grandmother"], "partner": "mother", "partner_kind": "married"},
+        "mother": {"gender": "f", "row": 1, "col": 1},
+        "daughter": {"gender": "f", "row": 2, "col": 1, "parents": ["father", "mother"], "partner": "boyfriend", "partner_kind": "dating"},
+        "boyfriend": {"gender": "m", "row": 2, "col": 0},
+        "son": {"gender": "m", "row": 2, "col": 2, "parents": ["father", "mother"], "partner": "girlfriend", "partner_kind": "dating"},
+        "girlfriend": {"gender": "f", "row": 2, "col": 3}
+      }
+    },
+    "cousins": {
+      "root_age": [64, 78],
+      "people": {
+        "grandmother": {"gender": "f", "row": 0, "col": 1.5},
+        "mother": {"gender": "f", "row": 1, "col": 1, "parents": ["grandmother"], "partner": "father", "partner_kind": "married"},
+        "father": {"gender": "m", "row": 1, "col": 0},
+        "uncle": {"gender": "m", "row": 1, "col": 2, "parents": ["grandmother"], "partner": "aunt_in_law", "partner_kind": "married"},
+        "aunt_in_law": {"gender": "f", "row": 1, "col": 3},
+        "daughter": {"gender": "f", "row": 2, "col": 0.5, "parents": ["mother", "father"]},
+        "cousin_m": {"gender": "m", "row": 2, "col": 2.5, "parents": ["uncle", "aunt_in_law"]}
+      }
+    },
+    "mothers_side": {
+      "root_age": [66, 80],
+      "people": {
+        "grandfather": {"gender": "m", "row": 0, "col": 1.5, "partner": "grandmother", "partner_kind": "married"},
+        "grandmother": {"gender": "f", "row": 0, "col": 2.5},
+        "mother": {"gender": "f", "row": 1, "col": 1.5, "parents": ["grandfather", "grandmother"], "partner": "father", "partner_kind": "married"},
+        "father": {"gender": "m", "row": 1, "col": 0.5},
+        "aunt": {"gender": "f", "row": 1, "col": 3.5, "parents": ["grandfather", "grandmother"]},
+        "son": {"gender": "m", "row": 2, "col": 0.5, "parents": ["mother", "father"]},
+        "daughter": {"gender": "f", "row": 2, "col": 1.5, "parents": ["mother", "father"]}
+      }
+    }
+  }
+}

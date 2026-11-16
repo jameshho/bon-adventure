@@ -1,0 +1,78 @@
+[gd_scene format=3]
+
+[sub_resource type="CylinderMesh" id="r1"]
+top_radius = 0.24
+bottom_radius = 0.24
+height = 0.55
+radial_segments = 16
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.52941, 0.58039, 0.61176, 1)
+roughness = 0.78
+
+[sub_resource type="CylinderMesh" id="r3"]
+top_radius = 0.245
+bottom_radius = 0.245
+height = 0.4
+radial_segments = 16
+
+[sub_resource type="StandardMaterial3D" id="r4"]
+albedo_color = Color(0.40784, 0.58039, 0.36863, 1)
+roughness = 0.78
+
+[sub_resource type="TorusMesh" id="r5"]
+inner_radius = 0.20500000000000002
+outer_radius = 0.235
+rings = 24
+ring_segments = 8
+
+[sub_resource type="TorusMesh" id="r6"]
+inner_radius = 0.046
+outer_radius = 0.074
+rings = 24
+ring_segments = 8
+
+[sub_resource type="StandardMaterial3D" id="r7"]
+albedo_color = Color(0.15686, 0.20392, 0.24314, 1)
+roughness = 0.78
+
+[sub_resource type="BoxShape3D" id="r8"]
+size = Vector3(0.550000, 0.650000, 0.550000)
+
+[node name="Can" type="Node3D"]
+metadata/word_key = "can"
+metadata/learning_object = true
+
+[node name="Tin_2" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.280000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r1")
+material_override = SubResource("r2")
+
+[node name="PaperBand_4" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.270000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r3")
+material_override = SubResource("r4")
+
+[node name="TopRim_5" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.560000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r5")
+material_override = SubResource("r2")
+scale = Vector3(1.000000, 1.000000, 1.000000)
+
+[node name="PullTab_7" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.580000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r6")
+material_override = SubResource("r7")
+scale = Vector3(1.000000, 1.000000, 0.650000)
+
+[node name="Interaction" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Interaction"]
+position = Vector3(0.000000, 0.325000, 0.000000)
+shape = SubResource("r8")

@@ -1,0 +1,67 @@
+[gd_scene load_steps=7 format=3]
+
+[sub_resource type="BoxMesh" id="sign"]
+size = Vector3(1.3, 0.81, 0.105)
+
+[sub_resource type="BoxMesh" id="stripe"]
+size = Vector3(1.18, 0.09, 0.02)
+
+[sub_resource type="BoxMesh" id="post"]
+size = Vector3(0.07, 1.32, 0.07)
+
+[sub_resource type="StandardMaterial3D" id="signmat"]
+albedo_color = Color(0.141176471, 0.360784314, 0.447058824, 1)
+roughness = 0.75
+
+[sub_resource type="StandardMaterial3D" id="frontmat"]
+albedo_color = Color(0.874509804, 0.905882353, 0.901960784, 1)
+roughness = 0.75
+
+[sub_resource type="BoxShape3D" id="hit"]
+size = Vector3(1.36, 0.92, 0.3)
+
+[node name="Station" type="Node3D"]
+metadata/word_key = "station"
+metadata/learning_object = true
+
+[node name="StationSign" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0, 0)
+rotation_degrees = Vector3(0, 0, 0)
+mesh = SubResource("sign")
+material_override = SubResource("signmat")
+
+[node name="Accent" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.33, -0.07)
+rotation_degrees = Vector3(0, 0, 0)
+mesh = SubResource("stripe")
+material_override = SubResource("frontmat")
+
+[node name="SupportPost" type="MeshInstance3D" parent="."]
+position = Vector3(0, -1.03, 0.06)
+rotation_degrees = Vector3(0, 0, 0)
+mesh = SubResource("post")
+material_override = SubResource("signmat")
+
+[node name="PlatformIcon" type="Label3D" parent="."]
+position = Vector3(0, 0.09, -0.075)
+text = "TREN"
+font_size = 58
+pixel_size = 0.0032
+modulate = Color(0.97254902, 0.960784314, 0.77254902, 1)
+outline_size = 4
+
+[node name="StationCaption" type="Label3D" parent="."]
+position = Vector3(0, -0.23, -0.075)
+text = "ESTACIÓN"
+font_size = 38
+pixel_size = 0.0032
+modulate = Color(0.925490196, 0.956862745, 0.952941176, 1)
+outline_size = 4
+
+[node name="Interaction" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Interaction"]
+position = Vector3(0, 0, 0)
+shape = SubResource("hit")

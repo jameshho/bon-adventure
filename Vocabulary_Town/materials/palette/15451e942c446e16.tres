@@ -1,0 +1,7 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[resource]
+resource_name = "Black metallic paint"
+albedo_color = Color(0.09, 0.1, 0.11, 1)
+metallic = 0.22
+roughness = 0.32

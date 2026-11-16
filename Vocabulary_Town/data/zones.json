@@ -1,0 +1,1480 @@
+{
+  "coordinate_space": "Final Apartment-local X/Z; +X west, +Z north. Y is ignored for resolution.",
+  "wall_base": -0.15,
+  "wall_height": 5,
+  "zones": [
+    {
+      "id": "farm",
+      "name": "Farm",
+      "priority": 100,
+      "color": "#f25555",
+      "polygons": [
+        [
+          [
+            42,
+            73
+          ],
+          [
+            90,
+            73
+          ],
+          [
+            90,
+            109
+          ],
+          [
+            42,
+            109
+          ]
+        ]
+      ],
+      "exclude": [],
+      "label": [
+        66.0,
+        91.0
+      ],
+      "note": ""
+    },
+    {
+      "id": "playground",
+      "name": "Playground",
+      "priority": 100,
+      "color": "#5583f2",
+      "polygons": [
+        [
+          [
+            40,
+            163
+          ],
+          [
+            84,
+            163
+          ],
+          [
+            84,
+            194
+          ],
+          [
+            40,
+            194
+          ]
+        ]
+      ],
+      "exclude": [],
+      "label": [
+        62.0,
+        178.5
+      ],
+      "note": ""
+    },
+    {
+      "id": "church",
+      "name": "Church",
+      "priority": 100,
+      "color": "#b1f255",
+      "polygons": [
+        [
+          [
+            -87,
+            164
+          ],
+          [
+            -69,
+            164
+          ],
+          [
+            -69,
+            185
+          ],
+          [
+            -87,
+            185
+          ]
+        ]
+      ],
+      "exclude": [],
+      "label": [
+        -78.0,
+        174.5
+      ],
+      "note": ""
+    },
+    {
+      "id": "zoo",
+      "name": "Zoo",
+      "priority": 100,
+      "color": "#f255df",
+      "polygons": [
+        [
+          [
+            -102,
+            84
+          ],
+          [
+            -54,
+            84
+          ],
+          [
+            -54,
+            126
+          ],
+          [
+            -102,
+            126
+          ]
+        ]
+      ],
+      "exclude": [],
+      "label": [
+        -78.0,
+        105.0
+      ],
+      "note": ""
+    },
+    {
+      "id": "gazebo",
+      "name": "Gazebo",
+      "priority": 100,
+      "color": "#55f2d8",
+      "polygons": [
+        [
+          [
+            -102,
+            145
+          ],
+          [
+            -88,
+            145
+          ],
+          [
+            -88,
+            158
+          ],
+          [
+            -102,
+            158
+          ]
+        ]
+      ],
+      "exclude": [],
+      "label": [
+        -95.0,
+        151.5
+      ],
+      "note": ""
+    },
+    {
+      "id": "home",
+      "name": "Home",
+      "priority": 100,
+      "color": "#f2aa55",
+      "polygons": [
+        [
+          [
+            -17,
+            12
+          ],
+          [
+            23,
+            12
+          ],
+          [
+            23,
+            59.6
+          ],
+          [
+            -17,
+            59.6
+          ]
+        ]
+      ],
+      "exclude": [],
+      "label": [
+        3.0,
+        35.8
+      ],
+      "note": ""
+    },
+    {
+      "id": "hospital",
+      "name": "Hospital",
+      "priority": 100,
+      "color": "#7c55f2",
+      "polygons": [
+        [
+          [
+            41,
+            200
+          ],
+          [
+            74,
+            200
+          ],
+          [
+            74,
+            255
+          ],
+          [
+            41,
+            255
+          ]
+        ]
+      ],
+      "exclude": [],
+      "label": [
+        57.5,
+        227.5
+      ],
+      "note": ""
+    },
+    {
+      "id": "school",
+      "name": "School",
+      "priority": 100,
+      "color": "#5bf255",
+      "polygons": [
+        [
+          [
+            -6,
+            202
+          ],
+          [
+            26,
+            202
+          ],
+          [
+            26,
+            241
+          ],
+          [
+            -6,
+            241
+          ]
+        ]
+      ],
+      "exclude": [],
+      "label": [
+        10.0,
+        221.5
+      ],
+      "note": "Moved 10 units west (toward the hospital) with the school on 5 Nov 2026 to make room for the warehouse."
+    },
+    {
+      "id": "warehouse",
+      "name": "Warehouse",
+      "priority": 100,
+      "color": "#9aa3ad",
+      "polygons": [
+        [
+          [
+            -53,
+            202
+          ],
+          [
+            -17,
+            202
+          ],
+          [
+            -17,
+            253
+          ],
+          [
+            -53,
+            253
+          ]
+        ]
+      ],
+      "exclude": [],
+      "label": [
+        -35.0,
+        228.0
+      ],
+      "note": "Warehouse (5 Nov 2026), between the school and the airport: building, front lot and loading apron. Built by scripts/world/warehouse.gd. 14 Nov 2026: the building is half as deep (z 220.8-235.3); the polygon still runs to z 253 to match the site bounds in base.scn (the free land behind is ground), and the label moved onto the building."
+    },
+    {
+      "id": "mystery_house",
+      "name": "Mystery House",
+      "priority": 100,
+      "color": "#8a4fd0",
+      "polygons": [
+        [
+          [
+            108.4,
+            64
+          ],
+          [
+            150,
+            64
+          ],
+          [
+            150,
+            96
+          ],
+          [
+            108.4,
+            96
+          ]
+        ]
+      ],
+      "exclude": [],
+      "label": [
+        131.0,
+        82.0
+      ],
+      "note": "Mystery House (Casa de las Estrellas, 9 Nov 2026), south of the bank: house, garden and front path. Built by scripts/buildings/mystery.gd."
+    },
+    {
+      "id": "furniture",
+      "name": "Furniture Store",
+      "priority": 100,
+      "color": "#f25589",
+      "polygons": [
+        [
+          [
+            113,
+            209
+          ],
+          [
+            139,
+            209
+          ],
+          [
+            139,
+            259
+          ],
+          [
+            113,
+            259
+          ]
+        ],
+        [
+          [
+            103,
+            198
+          ],
+          [
+            107,
+            194
+          ],
+          [
+            129,
+            213
+          ],
+          [
+            124,
+            220
+          ]
+        ]
+      ],
+      "exclude": [],
+      "label": [
+        126.0,
+        234.0
+      ],
+      "note": ""
+    },
+    {
+      "id": "sports",
+      "name": "Sports Store",
+      "priority": 100,
+      "color": "#55b7f2",
+      "polygons": [
+        [
+          [
+            85,
+            208
+          ],
+          [
+            107,
+            208
+          ],
+          [
+            107,
+            256
+          ],
+          [
+            85,
+            256
+          ]
+        ],
+        [
+          [
+            87,
+            205
+          ],
+          [
+            94,
+            203
+          ],
+          [
+            99,
+            217
+          ],
+          [
+            91,
+            220
+          ]
+        ]
+      ],
+      "exclude": [],
+      "label": [
+        96.0,
+        232.0
+      ],
+      "note": ""
+    },
+    {
+      "id": "bakery",
+      "name": "Bakery / Caf\u00e9",
+      "priority": 100,
+      "color": "#e5f255",
+      "polygons": [
+        [
+          [
+            108.4,
+            154
+          ],
+          [
+            151,
+            154
+          ],
+          [
+            151,
+            179
+          ],
+          [
+            108.4,
+            179
+          ]
+        ]
+      ],
+      "exclude": [],
+      "label": [
+        129.7,
+        166.5
+      ],
+      "note": ""
+    },
+    {
+      "id": "electronics",
+      "name": "Electronics Store",
+      "priority": 100,
+      "color": "#d155f2",
+      "polygons": [
+        [
+          [
+            108.4,
+            125
+          ],
+          [
+            144,
+            125
+          ],
+          [
+            144,
+            149
+          ],
+          [
+            108.4,
+            149
+          ]
+        ]
+      ],
+      "exclude": [],
+      "label": [
+        126.19999999999999,
+        137.0
+      ],
+      "note": ""
+    },
+    {
+      "id": "bank",
+      "name": "Bank",
+      "priority": 100,
+      "color": "#55f2a3",
+      "polygons": [
+        [
+          [
+            108.4,
+            96
+          ],
+          [
+            145,
+            96
+          ],
+          [
+            145,
+            121
+          ],
+          [
+            108.4,
+            121
+          ]
+        ]
+      ],
+      "exclude": [],
+      "label": [
+        126.69999999999999,
+        108.5
+      ],
+      "note": ""
+    },
+    {
+      "id": "clothing",
+      "name": "Clothing Store",
+      "priority": 100,
+      "color": "#f27555",
+      "polygons": [
+        [
+          [
+            -148,
+            152
+          ],
+          [
+            -117.4,
+            152
+          ],
+          [
+            -117.4,
+            177
+          ],
+          [
+            -148,
+            177
+          ]
+        ]
+      ],
+      "exclude": [],
+      "label": [
+        -132.7,
+        164.5
+      ],
+      "note": ""
+    },
+    {
+      "id": "supermarket",
+      "name": "Supermarket",
+      "priority": 100,
+      "color": "#5562f2",
+      "polygons": [
+        [
+          [
+            -162,
+            101
+          ],
+          [
+            -117.4,
+            101
+          ],
+          [
+            -117.4,
+            142
+          ],
+          [
+            -162,
+            142
+          ]
+        ]
+      ],
+      "exclude": [],
+      "label": [
+        -139.7,
+        121.5
+      ],
+      "note": ""
+    },
+    {
+      "id": "library",
+      "name": "Library",
+      "priority": 100,
+      "color": "#90f255",
+      "polygons": [
+        [
+          [
+            38,
+            18
+          ],
+          [
+            64,
+            18
+          ],
+          [
+            64,
+            59.6
+          ],
+          [
+            38,
+            59.6
+          ]
+        ]
+      ],
+      "exclude": [],
+      "label": [
+        51.0,
+        38.8
+      ],
+      "note": ""
+    },
+    {
+      "id": "police",
+      "name": "Police Station",
+      "priority": 100,
+      "color": "#f255be",
+      "polygons": [
+        [
+          [
+            -162,
+            61
+          ],
+          [
+            -117.4,
+            61
+          ],
+          [
+            -117.4,
+            101
+          ],
+          [
+            -162,
+            101
+          ]
+        ]
+      ],
+      "exclude": [],
+      "label": [
+        -139.7,
+        81.0
+      ],
+      "note": "Moved 28 October 2026 from the south row to the east side south of the supermarket (door and parking face the east loop road)."
+    },
+    {
+      "id": "fine_dining",
+      "name": "Fine Dining",
+      "priority": 100,
+      "color": "#55ecf2",
+      "polygons": [
+        [
+          [
+            -53,
+            17
+          ],
+          [
+            -20,
+            17
+          ],
+          [
+            -20,
+            59.6
+          ],
+          [
+            -53,
+            59.6
+          ]
+        ]
+      ],
+      "exclude": [],
+      "label": [
+        -36.5,
+        41.3
+      ],
+      "note": "Fine dining merges the old Pizza and Burger shells; it uses the shared restaurant parking.",
+      "display_label": "Fine\nDining"
+    },
+    {
+      "id": "burger",
+      "name": "Pizza and Burger",
+      "priority": 100,
+      "color": "#f2cb55",
+      "polygons": [
+        [
+          [
+            -106,
+            23
+          ],
+          [
+            -70,
+            23
+          ],
+          [
+            -70,
+            59.6
+          ],
+          [
+            -106,
+            59.6
+          ]
+        ]
+      ],
+      "exclude": [],
+      "label": [
+        -88.0,
+        41.3
+      ],
+      "note": "Pizza and Burger (L-shaped) with its own parking in the former police lot.",
+      "display_label": "Pizza and\nBurger"
+    },
+    {
+      "id": "taqueria",
+      "name": "Taquer\u00eda",
+      "priority": 100,
+      "color": "#9d55f2",
+      "polygons": [
+        [
+          [
+            -70,
+            23
+          ],
+          [
+            -53,
+            23
+          ],
+          [
+            -53,
+            59.6
+          ],
+          [
+            -70,
+            59.6
+          ]
+        ]
+      ],
+      "exclude": [],
+      "label": [
+        -61.5,
+        41.3
+      ],
+      "note": "Taquer\u00eda keeps its shell; it shares the restaurant parking with fine dining."
+    },
+    {
+      "id": "airport",
+      "name": "Airport",
+      "priority": 100,
+      "color": "#55f26f",
+      "polygons": [
+        [
+          [
+            -175,
+            182
+          ],
+          [
+            -119,
+            182
+          ],
+          [
+            -119,
+            208
+          ],
+          [
+            -99,
+            208
+          ],
+          [
+            -99,
+            201
+          ],
+          [
+            -87,
+            201
+          ],
+          [
+            -87,
+            208
+          ],
+          [
+            -82,
+            208
+          ],
+          [
+            -82,
+            200
+          ],
+          [
+            -72,
+            200
+          ],
+          [
+            -72,
+            208
+          ],
+          [
+            -59,
+            208
+          ],
+          [
+            -59,
+            279
+          ],
+          [
+            -175,
+            279
+          ]
+        ]
+      ],
+      "exclude": [
+        "control_tower"
+      ],
+      "label": [
+        -104,
+        260
+      ],
+      "note": "Airport includes terminal, apron, airfield and access. Tower has its own nested property. Airfield extent measured at runtime; the western runway reaches z=185..275."
+    },
+    {
+      "id": "control_tower",
+      "name": "Control Tower",
+      "priority": 110,
+      "color": "#f25569",
+      "polygons": [
+        [
+          [
+            -77,
+            243
+          ],
+          [
+            -65,
+            243
+          ],
+          [
+            -65,
+            255
+          ],
+          [
+            -77,
+            255
+          ]
+        ]
+      ],
+      "exclude": [],
+      "label": [
+        -71.0,
+        249.0
+      ],
+      "note": ""
+    },
+    {
+      "id": "town_road",
+      "name": "Town Road",
+      "priority": 50,
+      "color": "#5597f2",
+      "polygons": [
+        [
+          [
+            111.0,
+            184.0
+          ],
+          [
+            110.884,
+            186.352
+          ],
+          [
+            110.539,
+            188.682
+          ],
+          [
+            109.967,
+            190.967
+          ],
+          [
+            109.173,
+            193.184
+          ],
+          [
+            108.166,
+            195.314
+          ],
+          [
+            106.955,
+            197.334
+          ],
+          [
+            105.552,
+            199.225
+          ],
+          [
+            103.971,
+            200.971
+          ],
+          [
+            102.225,
+            202.552
+          ],
+          [
+            100.334,
+            203.955
+          ],
+          [
+            98.314,
+            205.166
+          ],
+          [
+            96.184,
+            206.173
+          ],
+          [
+            93.967,
+            206.967
+          ],
+          [
+            91.682,
+            207.539
+          ],
+          [
+            89.352,
+            207.884
+          ],
+          [
+            87.0,
+            208.0
+          ],
+          [
+            -96.0,
+            208.0
+          ],
+          [
+            -98.352,
+            207.884
+          ],
+          [
+            -100.682,
+            207.539
+          ],
+          [
+            -102.967,
+            206.967
+          ],
+          [
+            -105.184,
+            206.173
+          ],
+          [
+            -107.314,
+            205.166
+          ],
+          [
+            -109.334,
+            203.955
+          ],
+          [
+            -111.225,
+            202.552
+          ],
+          [
+            -112.971,
+            200.971
+          ],
+          [
+            -114.552,
+            199.225
+          ],
+          [
+            -115.955,
+            197.334
+          ],
+          [
+            -117.166,
+            195.314
+          ],
+          [
+            -118.173,
+            193.184
+          ],
+          [
+            -118.967,
+            190.967
+          ],
+          [
+            -119.539,
+            188.682
+          ],
+          [
+            -119.884,
+            186.352
+          ],
+          [
+            -120.0,
+            184.0
+          ],
+          [
+            -120.0,
+            81.0
+          ],
+          [
+            -119.884,
+            78.648
+          ],
+          [
+            -119.539,
+            76.318
+          ],
+          [
+            -118.967,
+            74.033
+          ],
+          [
+            -118.173,
+            71.816
+          ],
+          [
+            -117.166,
+            69.686
+          ],
+          [
+            -115.955,
+            67.666
+          ],
+          [
+            -114.552,
+            65.775
+          ],
+          [
+            -112.971,
+            64.029
+          ],
+          [
+            -111.225,
+            62.448
+          ],
+          [
+            -109.334,
+            61.045
+          ],
+          [
+            -107.314,
+            59.834
+          ],
+          [
+            -105.184,
+            58.827
+          ],
+          [
+            -102.967,
+            58.033
+          ],
+          [
+            -100.682,
+            57.461
+          ],
+          [
+            -98.352,
+            57.116
+          ],
+          [
+            -96.0,
+            57.0
+          ],
+          [
+            87.0,
+            57.0
+          ],
+          [
+            89.352,
+            57.116
+          ],
+          [
+            91.682,
+            57.461
+          ],
+          [
+            93.967,
+            58.033
+          ],
+          [
+            96.184,
+            58.827
+          ],
+          [
+            98.314,
+            59.834
+          ],
+          [
+            100.334,
+            61.045
+          ],
+          [
+            102.225,
+            62.448
+          ],
+          [
+            103.971,
+            64.029
+          ],
+          [
+            105.552,
+            65.775
+          ],
+          [
+            106.955,
+            67.666
+          ],
+          [
+            108.166,
+            69.686
+          ],
+          [
+            109.173,
+            71.816
+          ],
+          [
+            109.967,
+            74.033
+          ],
+          [
+            110.539,
+            76.318
+          ],
+          [
+            110.884,
+            78.648
+          ],
+          [
+            111.0,
+            81.0
+          ]
+        ]
+      ],
+      "exclude": [
+        "central_park"
+      ],
+      "label": [
+        0,
+        199
+      ],
+      "note": "Includes both sidewalks; properties take priority where existing lots extend onto the road band."
+    },
+    {
+      "id": "central_park",
+      "name": "Central Park",
+      "priority": 10,
+      "color": "#c5f255",
+      "polygons": [
+        [
+          [
+            95.0,
+            184.0
+          ],
+          [
+            94.961,
+            184.784
+          ],
+          [
+            94.846,
+            185.561
+          ],
+          [
+            94.656,
+            186.322
+          ],
+          [
+            94.391,
+            187.061
+          ],
+          [
+            94.055,
+            187.771
+          ],
+          [
+            93.652,
+            188.445
+          ],
+          [
+            93.184,
+            189.075
+          ],
+          [
+            92.657,
+            189.657
+          ],
+          [
+            92.075,
+            190.184
+          ],
+          [
+            91.445,
+            190.652
+          ],
+          [
+            90.771,
+            191.055
+          ],
+          [
+            90.061,
+            191.391
+          ],
+          [
+            89.322,
+            191.656
+          ],
+          [
+            88.561,
+            191.846
+          ],
+          [
+            87.784,
+            191.961
+          ],
+          [
+            87.0,
+            192.0
+          ],
+          [
+            -96.0,
+            192.0
+          ],
+          [
+            -96.784,
+            191.961
+          ],
+          [
+            -97.561,
+            191.846
+          ],
+          [
+            -98.322,
+            191.656
+          ],
+          [
+            -99.061,
+            191.391
+          ],
+          [
+            -99.771,
+            191.055
+          ],
+          [
+            -100.445,
+            190.652
+          ],
+          [
+            -101.075,
+            190.184
+          ],
+          [
+            -101.657,
+            189.657
+          ],
+          [
+            -102.184,
+            189.075
+          ],
+          [
+            -102.652,
+            188.445
+          ],
+          [
+            -103.055,
+            187.771
+          ],
+          [
+            -103.391,
+            187.061
+          ],
+          [
+            -103.656,
+            186.322
+          ],
+          [
+            -103.846,
+            185.561
+          ],
+          [
+            -103.961,
+            184.784
+          ],
+          [
+            -104.0,
+            184.0
+          ],
+          [
+            -104.0,
+            81.0
+          ],
+          [
+            -103.961,
+            80.216
+          ],
+          [
+            -103.846,
+            79.439
+          ],
+          [
+            -103.656,
+            78.678
+          ],
+          [
+            -103.391,
+            77.939
+          ],
+          [
+            -103.055,
+            77.229
+          ],
+          [
+            -102.652,
+            76.555
+          ],
+          [
+            -102.184,
+            75.925
+          ],
+          [
+            -101.657,
+            75.343
+          ],
+          [
+            -101.075,
+            74.816
+          ],
+          [
+            -100.445,
+            74.348
+          ],
+          [
+            -99.771,
+            73.945
+          ],
+          [
+            -99.061,
+            73.609
+          ],
+          [
+            -98.322,
+            73.344
+          ],
+          [
+            -97.561,
+            73.154
+          ],
+          [
+            -96.784,
+            73.039
+          ],
+          [
+            -96.0,
+            73.0
+          ],
+          [
+            87.0,
+            73.0
+          ],
+          [
+            87.784,
+            73.039
+          ],
+          [
+            88.561,
+            73.154
+          ],
+          [
+            89.322,
+            73.344
+          ],
+          [
+            90.061,
+            73.609
+          ],
+          [
+            90.771,
+            73.945
+          ],
+          [
+            91.445,
+            74.348
+          ],
+          [
+            92.075,
+            74.816
+          ],
+          [
+            92.657,
+            75.343
+          ],
+          [
+            93.184,
+            75.925
+          ],
+          [
+            93.652,
+            76.555
+          ],
+          [
+            94.055,
+            77.229
+          ],
+          [
+            94.391,
+            77.939
+          ],
+          [
+            94.656,
+            78.678
+          ],
+          [
+            94.846,
+            79.439
+          ],
+          [
+            94.961,
+            80.216
+          ],
+          [
+            95.0,
+            81.0
+          ]
+        ]
+      ],
+      "exclude": [
+        "farm",
+        "playground",
+        "church",
+        "zoo",
+        "gazebo"
+      ],
+      "label": [
+        15,
+        148
+      ],
+      "note": ""
+    },
+    {
+      "id": "coast",
+      "name": "Coast",
+      "priority": 0,
+      "color": "#f255f2",
+      "polygons": [],
+      "exclude": [
+        "farm",
+        "playground",
+        "church",
+        "zoo",
+        "gazebo",
+        "home",
+        "hospital",
+        "school",
+        "furniture",
+        "sports",
+        "bakery",
+        "electronics",
+        "bank",
+        "clothing",
+        "supermarket",
+        "library",
+        "police",
+        "fine_dining",
+        "burger",
+        "taqueria",
+        "warehouse",
+        "airport",
+        "control_tower",
+        "town_road",
+        "central_park",
+        "mystery_house"
+      ],
+      "label": [
+        155,
+        75
+      ],
+      "note": "Complement of the named town zones: shoreline, coastal paths and outer meadow gaps. Offshore/flying positions also resolve to Coast; there is no artificial ocean wall.",
+      "fallback": true
+    }
+  ]
+}

@@ -1,0 +1,137 @@
+[gd_scene format=3]
+
+[sub_resource type="SphereMesh" id="r1"]
+radius = 0.5
+height = 1.0
+radial_segments = 16
+rings = 8
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.84314, 0.63529, 0.32941, 1)
+roughness = 0.78
+
+[sub_resource type="SphereMesh" id="r3"]
+radius = 0.5
+height = 1.0
+radial_segments = 16
+rings = 8
+
+[sub_resource type="SphereMesh" id="r4"]
+radius = 0.5
+height = 1.0
+radial_segments = 16
+rings = 8
+
+[sub_resource type="SphereMesh" id="r5"]
+radius = 0.5
+height = 1.0
+radial_segments = 16
+rings = 8
+
+[sub_resource type="SphereMesh" id="r6"]
+radius = 0.5
+height = 1.0
+radial_segments = 16
+rings = 8
+
+[sub_resource type="SphereMesh" id="r7"]
+radius = 0.5
+height = 1.0
+radial_segments = 16
+rings = 8
+
+[sub_resource type="SphereMesh" id="r8"]
+radius = 0.5
+height = 1.0
+radial_segments = 16
+rings = 8
+
+[sub_resource type="SphereMesh" id="r9"]
+radius = 0.5
+height = 1.0
+radial_segments = 16
+rings = 8
+
+[sub_resource type="SphereMesh" id="r10"]
+radius = 0.5
+height = 1.0
+radial_segments = 16
+rings = 8
+
+[sub_resource type="BoxShape3D" id="r11"]
+size = Vector3(1.000000, 0.400000, 0.650000)
+
+[node name="Croissant" type="Node3D"]
+metadata/word_key = "croissant"
+metadata/learning_object = true
+
+[node name="Fold_2" type="MeshInstance3D" parent="."]
+position = Vector3(0.344044, 0.180000, -0.039098)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r1")
+material_override = SubResource("r2")
+scale = Vector3(0.140000, 0.300000, 0.133000)
+
+[node name="Fold_3" type="MeshInstance3D" parent="."]
+position = Vector3(0.275545, 0.180000, 0.036978)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r3")
+material_override = SubResource("r2")
+scale = Vector3(0.205056, 0.300000, 0.194803)
+
+[node name="Fold_4" type="MeshInstance3D" parent="."]
+position = Vector3(0.190676, 0.180000, 0.094223)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r4")
+material_override = SubResource("r2")
+scale = Vector3(0.260208, 0.300000, 0.247198)
+
+[node name="Fold_5" type="MeshInstance3D" parent="."]
+position = Vector3(0.094479, 0.180000, 0.129235)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r5")
+material_override = SubResource("r2")
+scale = Vector3(0.297060, 0.300000, 0.282207)
+
+[node name="Fold_6" type="MeshInstance3D" parent="."]
+position = Vector3(-0.007330, 0.180000, 0.139936)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r6")
+material_override = SubResource("r2")
+scale = Vector3(0.310000, 0.300000, 0.294500)
+
+[node name="Fold_7" type="MeshInstance3D" parent="."]
+position = Vector3(-0.108704, 0.180000, 0.125689)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r7")
+material_override = SubResource("r2")
+scale = Vector3(0.297060, 0.300000, 0.282207)
+
+[node name="Fold_8" type="MeshInstance3D" parent="."]
+position = Vector3(-0.203620, 0.180000, 0.087340)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r8")
+material_override = SubResource("r2")
+scale = Vector3(0.260208, 0.300000, 0.247198)
+
+[node name="Fold_9" type="MeshInstance3D" parent="."]
+position = Vector3(-0.286439, 0.180000, 0.027169)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r9")
+material_override = SubResource("r2")
+scale = Vector3(0.205056, 0.300000, 0.194803)
+
+[node name="Fold_10" type="MeshInstance3D" parent="."]
+position = Vector3(-0.352242, 0.180000, -0.051252)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r10")
+material_override = SubResource("r2")
+scale = Vector3(0.140000, 0.300000, 0.133000)
+
+[node name="Interaction" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Interaction"]
+position = Vector3(0.000000, 0.200000, 0.000000)
+shape = SubResource("r11")

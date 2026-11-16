@@ -1,0 +1,91 @@
+[gd_scene format=3]
+
+[sub_resource type="BoxMesh" id="r1"]
+size = Vector3(0.060000, 0.230000, 0.800000)
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.55686, 0.29804, 0.25490, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r3"]
+size = Vector3(0.530000, 0.170000, 0.750000)
+
+[sub_resource type="StandardMaterial3D" id="r4"]
+albedo_color = Color(0.92549, 0.90980, 0.87451, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r5"]
+size = Vector3(0.620000, 0.040000, 0.820000)
+
+[sub_resource type="BoxMesh" id="r6"]
+size = Vector3(0.620000, 0.040000, 0.820000)
+
+[sub_resource type="BoxMesh" id="r7"]
+size = Vector3(0.004000, 0.005000, 0.700000)
+
+[sub_resource type="StandardMaterial3D" id="r8"]
+albedo_color = Color(0.74902, 0.72549, 0.66667, 1)
+roughness = 0.78
+
+[sub_resource type="BoxMesh" id="r9"]
+size = Vector3(0.004000, 0.005000, 0.700000)
+
+[sub_resource type="BoxMesh" id="r10"]
+size = Vector3(0.004000, 0.005000, 0.700000)
+
+[sub_resource type="BoxShape3D" id="r11"]
+size = Vector3(0.700000, 0.300000, 0.900000)
+
+[node name="Book" type="Node3D"]
+metadata/word_key = "book"
+metadata/learning_object = true
+
+[node name="Spine_2" type="MeshInstance3D" parent="."]
+position = Vector3(-0.280000, 0.120000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r1")
+material_override = SubResource("r2")
+
+[node name="Pages_4" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.120000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r3")
+material_override = SubResource("r4")
+
+[node name="Cover_5" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.015000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r5")
+material_override = SubResource("r2")
+
+[node name="Cover_6" type="MeshInstance3D" parent="."]
+position = Vector3(0.000000, 0.225000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r6")
+material_override = SubResource("r2")
+
+[node name="PageEdge_8" type="MeshInstance3D" parent="."]
+position = Vector3(0.269000, 0.070000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r7")
+material_override = SubResource("r8")
+
+[node name="PageEdge_9" type="MeshInstance3D" parent="."]
+position = Vector3(0.269000, 0.120000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r9")
+material_override = SubResource("r8")
+
+[node name="PageEdge_10" type="MeshInstance3D" parent="."]
+position = Vector3(0.269000, 0.170000, 0.000000)
+rotation_degrees = Vector3(0.000000, 0.000000, 0.000000)
+mesh = SubResource("r10")
+material_override = SubResource("r8")
+
+[node name="Interaction" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Interaction"]
+position = Vector3(0.000000, 0.150000, 0.000000)
+shape = SubResource("r11")

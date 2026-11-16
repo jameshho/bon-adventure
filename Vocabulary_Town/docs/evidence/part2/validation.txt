@@ -1,0 +1,46 @@
+Godot 4.7.2, headless, fixed FPS 60
+
+check_runtime_resources exit 0
+Runtime resources: 305 checked; 0 failures
+
+check_interaction exit 0
+PASS: interaction targeting, highlights, cards, signals, doors, dismissal and range
+
+check_bonbon exit 0
+BONBON: 0 failures
+
+performance_check_rendering exit 0
+RENDERING CHECKS: 0 failures
+
+check_public_garden exit 0
+PUBLIC GARDEN: 0 failures; 2004 path samples; bridge crossed in both directions
+
+check_zoo_vehicles exit 1
+Zoo and vehicle regression: 67 checks; 20 failures
+ERROR: FAIL: helicopter gains altitude
+ERROR: FAIL: helicopter moves horizontally
+ERROR: FAIL: player is on foot again
+ERROR: FAIL: hyper effects resume after exiting
+ERROR: FAIL: drives Car
+ERROR: FAIL: D steers right: Car
+ERROR: FAIL: drives Truck
+ERROR: FAIL: D steers right: Truck
+ERROR: FAIL: drives Bus
+ERROR: FAIL: D steers right: Bus
+ERROR: FAIL: drives Taxi
+ERROR: FAIL: D steers right: Taxi
+ERROR: FAIL: drives Police_Car
+ERROR: FAIL: D steers right: Police_Car
+ERROR: FAIL: drives Ambulance
+ERROR: FAIL: D steers right: Ambulance
+ERROR: FAIL: drives Fire_Truck
+ERROR: FAIL: D steers right: Fire_Truck
+ERROR: FAIL: drives Motorcycle
+ERROR: FAIL: D steers right: Motorcycle
+
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: Condition "ret != noErr" is true. Returning: ""
+   at: get_system_ca_certificates (platform/macos/os_macos.mm:1035)
+Garden rendering: 1831 meshes in 174 spatial batches
+PART 2: 694 checks; 0 failures; 279 road samples

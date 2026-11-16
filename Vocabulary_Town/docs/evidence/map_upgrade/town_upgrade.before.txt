@@ -1,0 +1,249 @@
+extends RefCounted
+# Non-destructive upgrade of the saved town. Dictionary/save keys remain unchanged.
+var game
+var town: Node3D
+
+func build(scene) -> void:
+    game = scene
+    town = game.apartment
+    market()
+    civic_rooms()
+    clear_civic_routes()
+    clouds()
+    repair_labels()
+    preload("res://scripts/world/vocabulary_completion.gd").new().build(game,self)
+
+func box(label: String, p: Vector3, size: Vector3, color: String, key := "", solid := true) -> Node3D:
+    return game.box(label,p,size,Color(color),key,solid)
+
+func sign_text(text: String, p: Vector3) -> void:
+    var label:=Label3D.new()
+    label.name=text+" upgrade sign"
+    label.text=text
+    label.font_size=32
+    label.pixel_size=.0045
+    label.outline_size=3
+    label.modulate=Color("35566a")
+    label.position=p
+    label.rotation.y=PI
+    town.add_child(label,true)
+
+func market() -> void:
+    # Wider site: x=-42.8..-23.2, z=34..52. The loop road is x=-47.
+    # Move ALL old storefront pieces, including anonymous trim and collision children.
+    for n in town.get_children():
+        if not n is Node3D: continue
+        var p: Vector3 = n.position
+        if p.x >= -41 and p.x <= -25 and p.z >= 34 and p.z <= 53 and p.y<12:
+            n.position.x = -33+(p.x+33)*1.4
+            n.position.z = 43+(p.z-45)*1.2
+            n.scale.x *= 1.4
+            n.scale.z *= 1.2
+    var displays: Node3D = town.get_node("Buildings/MarketDisplays")
+    displays.position.z = 43
+    # Space fixtures farther apart without enlarging groceries.
+    for n in displays.get_children():
+        if n is Node3D:
+            n.position.x *= 1.4
+            n.position.z *= 1.2
+            if str(n.name).contains("Floor"):
+                n.scale.x*=1.4
+                n.scale.z*=1.2
+    for path in ["Animals/PigSupermarket", "People/Cashier"]:
+        var n := town.get_node_or_null(path) as Node3D
+        if n: n.position.z -= 2
+    box("Market promenade connection",Vector3(-33,.035,32),Vector3(5,.05,4),"d8c8a4","sidewalk",false)
+    box("Market west approach",Vector3(-44,.04,33),Vector3(5,.05,3),"d8c8a4","path",false)
+    # Open cold cases: products are in front of the backing, never behind opaque glass.
+    for x in [-39.5,-35.5,-31.5,-27.5]:
+        box("Refrigerated display",Vector3(x,1.5,51),Vector3(3,3,.55),"bed8dc","freezer")
+        for y in [.55,1.3,2.05]:
+            box("Cold shelf",Vector3(x,y,50.5),Vector3(3,.08,.9),"eef3e8","shelf",false)
+        sign_text("COLD • $2.50",Vector3(x,3.3,50.3))
+    for pair in [["milk",-39.5],["cheese",-35.5],["frozen food",-31.5],["lettuce",-27.5]]:
+        product(pair[0],Vector3(pair[1],1.4,50.15))
+    for x in [-38.8,-27.2]:
+        box("Checkout counter",Vector3(x,.65,35.8),Vector3(2.8,1.3,1.1),"9fb5a7","checkout counter")
+        box("Conveyor belt",Vector3(x-.55,1.33,35.8),Vector3(1.4,.07,.8),"4b5960","conveyor belt",false)
+        box("Cash register",Vector3(x+.8,1.55,35.8),Vector3(.6,.4,.5),"597783","cash register",false)
+        box("Register screen",Vector3(x+.8,1.85,35.95),Vector3(.5,.3,.08),"b7dfc6","screen",false)
+        box("Receipt",Vector3(x+.45,1.39,35.3),Vector3(.25,.025,.4),"fff6e3","receipt",false)
+        box("Barcode scanner",Vector3(x+.2,1.42,35.4),Vector3(.25,.12,.3),"42536a","scanner",false)
+    sign_text("CHECKOUT",Vector3(-38.8,2.7,36))
+    for x in [-40.5,-38.8]:
+        var cart := box("Shopping cart basket",Vector3(x,.85,32),Vector3(1.1,.65,1.5),"b9c9c9","shopping cart")
+        game.piece(cart,Vector3(0,.4,.75),Vector3(1.2,.1,.12),Color("537875"))
+        for dx in [-.45,.45]:
+            for dz in [-.55,.55]: game.sphere("Cart wheel",Vector3(x+dx,.26,32+dz),.17,Color("47565e"),"wheel",false)
+    # Two low gondolas define wide aisles, with a continuous central walking route.
+    for x in [-36.3,-29.7]:
+        for y in [.45,1.15]:
+            box("Pantry gondola shelf",Vector3(x,y,44),Vector3(1.1,.09,6),"e8dec9","shelf")
+        for z in [41.2,46.8]:
+            box("Gondola upright",Vector3(x,.85,z),Vector3(.12,1.7,.12),"a89679","",true)
+        for data in [["cereal",42.0],["pasta",44.0],["bread",46.0]]:
+            product(data[0],Vector3(x,1.23,data[1]))
+            sign_text("$2.50",Vector3(x,1.02,data[1]-.35))
+    for data in [["PRODUCE",-40.0],["PANTRY",-35.5],["BAKERY",-30.5],["DAIRY",-26.0]]:
+        sign_text(data[0],Vector3(data[1],3.8,42))
+    # Price tags belong to products, low and offset so rays still reach the products.
+    for n in displays.find_children("*","Node3D",true,false):
+        if n.has_meta("word_key") and n.get_parent()==displays:
+            var p: Vector3 = town.to_local(n.global_position)
+            sign_text("$2.50",p+Vector3(0,-.18,-.35))
+
+func product(key: String, p: Vector3) -> Node3D:
+    var path := "res://scenes/props/vocabulary/"+key.replace(" ","_")+".tscn"
+    if ResourceLoader.exists(path):
+        var n: Node3D = load(path).instantiate()
+        n.position = p
+        town.add_child(n,true)
+        n.set_meta("word_key",key)
+        return n
+    if key=="lettuce": return game.sphere("Lettuce",p,.3,Color("87b96c"),key,false)
+    return box(key.capitalize(),p,Vector3(.65,.35,.5),"b7c5dc",key,false)
+
+func sliding_door(label: String, p: Vector3, width: float, color: String) -> void:
+    var door := box(label,p,Vector3(width,2.7,.14),color,"door")
+    game.doors[door] = {"type":"slide","origin":p,"shift":Vector3(width+.15,0,0),"open":false,"safe_slide":true}
+    sign_text(label+" • E",p+Vector3(0,1.65,-.12))
+
+func civic_rooms() -> void:
+    # Retain existing furniture, move teller equipment together to create rear circulation.
+    for n in town.get_children():
+        if not n is Node3D: continue
+        var p: Vector3 = n.position
+        if p.x>19 and p.x<31 and p.z>48.1 and p.z<49.4 and p.y<3:
+            n.position.z -= 2.4
+        # Relocate interview furniture from central circulation into a dedicated room.
+        if p.x>41.8 and p.x<44.2 and p.z>48.7 and p.z<51.8 and p.y<2:
+            n.position.x -= 3.1
+    box("Bank reception",Vector3(21.3,.65,39.8),Vector3(2.4,1.3,.85),"9fb5a7","reception desk")
+    product("phone",Vector3(21.3,1.4,39.8))
+    sign_text("RECEPTION",Vector3(21.3,2.7,39.8))
+    # Manager office in rear west corner, door opens along wall; 2.2m passage.
+    box("Manager divider",Vector3(23.4,1.5,50.1),Vector3(.15,3,4.4),"d0dcd2","divider")
+    box("Manager front wall",Vector3(20.0,1.5,47.9),Vector3(1.7,3,.15),"d0dcd2","wall")
+    sliding_door("Manager office",Vector3(21.8,1.4,47.9),1.9,"b5c9bc")
+    product("desk",Vector3(21.5,0,51.2))
+    product("chair",Vector3(22.4,0,50.5))
+    product("computer",Vector3(21.5,1.05,51.2))
+    # Vault is a walk-in rear room instead of a painted door on the back wall.
+    var old := town.get_node_or_null("Vault door")
+    if old: old.position = Vector3(29.8,1.63,52.33)
+    box("Vault side wall",Vector3(27.2,1.5,50.5),Vector3(.15,3,3.5),"aebdc0","wall")
+    sliding_door("Vault entrance",Vector3(28.7,1.4,48.8),2.6,"899ca4")
+    for x in [28.0,29.1,30.2]:
+        box("Deposit safe",Vector3(x,.8,51.8),Vector3(.8,1.5,.7),"889ca3","vault")
+        box("Safe handle",Vector3(x,1,51.4),Vector3(.3,.07,.12),"e3d7b4","handle",false)
+    # Police has a 2.8m central corridor. Side rooms are reached through sliding doors.
+    for x in [41.5,44.5]:
+        box("Police corridor wall",Vector3(x,1.5,49.1),Vector3(.14,3,6.2),"b4c6d0","wall")
+    # Entry openings face the reception across z=45.8; floor colors distinguish uses.
+    box("Interview room floor",Vector3(39.5,.04,49.2),Vector3(3.6,.03,6),"d6c5ad","floor",false)
+    sliding_door("Interview room",Vector3(39.6,1.4,47.2),2.8,"c9b99e")
+    box("Holding cell floor",Vector3(46.6,.04,49.6),Vector3(3.7,.03,5.2),"aebdc8","floor",false)
+    sliding_door("Holding cell",Vector3(46.6,1.4,47),2.8,"728c9e")
+    for x in [45.0,45.4,47.8,48.2,48.6]:
+        box("Cell bars",Vector3(x,1.5,47),Vector3(.065,3,.08),"526e80","fence")
+    # Existing officer desks are moved to the open work area before the rooms.
+    for n in town.get_children():
+        if not n is Node3D: continue
+        var label := str(n.name)
+        if label.begins_with("Officer workstation") or label.begins_with("Police monitor") or label.begins_with("Case folder") or label.begins_with("Radio"):
+            n.position.z -= 2.5
+    box("Cell bench",Vector3(47.7,.45,50),Vector3(.65,.9,2.3),"a7b6bd","bench")
+    sign_text("EQUIPMENT / RECORDS",Vector3(38.7,3.3,51.8))
+    sign_text("OFFICERS",Vector3(46,3,44.6))
+
+func clouds() -> void:
+    var index := 0
+    for n in town.get_children():
+        if not str(n.name).begins_with("Cloud puff"): continue
+        # Bring the existing final cloud down to jump height beside the home path.
+        if index>=20: n.position += Vector3(0,-36,0)
+        index += 1
+        n.set_meta("word_key","cloud")
+        var mesh: MeshInstance3D = n.get_child(0)
+        var radius: float = mesh.mesh.radius
+        # Convex rounded platform: flat top within the puff, rounded sides underneath.
+        var points := PackedVector3Array()
+        for ring in [[-.65,.75],[.4,.92],[.85,.55]]:
+            for i in range(16):
+                var a := TAU*i/16.0
+                points.append(Vector3(cos(a)*radius*ring[1],radius*ring[0],sin(a)*radius*ring[1]))
+        var body := StaticBody3D.new()
+        body.name = "CloudPlatform"
+        var shape := CollisionShape3D.new()
+        var convex := ConvexPolygonShape3D.new()
+        convex.points = points
+        shape.shape = convex
+        body.add_child(shape)
+        n.add_child(body)
+    sign_text("CLOUD WALK • Space to jump again in the air",Vector3(18,1.2,19))
+
+# Repair metadata on actual visible meshes that lost semantic roots during baking.
+func repair_labels() -> void:
+    var words: Array = game.vocabulary.keys()
+    words.sort_custom(func(a,b): return str(a).length()>str(b).length())
+    for n in town.find_children("*","Node3D",true,false):
+        if n.has_meta("word_key") or n.has_meta("exterior_word"): continue
+        if not n is MeshInstance3D and n.find_children("*","MeshInstance3D",true,false).is_empty(): continue
+        var label := str(n.name).to_lower().replace("_"," ")
+        while label.length()>0 and label[-1].is_valid_int(): label=label.left(-1)
+        var key := ""
+        for word in words:
+            if label==word:
+                key = word
+                break
+        if key.is_empty(): continue
+        n.set_meta("word_key",key)
+        add_pick(n)
+
+func add_pick(n: Node3D) -> void:
+    var meshes: Array = [n] if n is MeshInstance3D else n.find_children("*","MeshInstance3D",true,false)
+    for mesh in meshes:
+        if mesh.mesh==null: continue
+        if not mesh.find_children("*","CollisionObject3D",true,false).is_empty(): continue
+        var area := Area3D.new()
+        area.name = "VocabularyPick"
+        area.monitoring = false
+        area.monitorable = false
+        var shape := CollisionShape3D.new()
+        shape.shape = mesh.mesh.create_convex_shape()
+        area.add_child(shape)
+        mesh.add_child(area)
+
+func clear_civic_routes() -> void:
+    for n in town.get_children():
+        if not n is Node3D: continue
+        var label:=str(n.name)
+        var p:Vector3=n.position
+        if p.x>19 and p.x<31 and p.z>45.6 and p.z<47.1 and p.y<3:
+            n.position.z-=1.3
+        if label.begins_with("Privacy partition"):
+            n.free()
+            continue
+        if label.begins_with("Officer workstation") or label.begins_with("Police monitor") or label.begins_with("Case folder") or label.begins_with("Radio"):
+            n.position.z-=1.4
+        if p.x>38 and p.x<48 and p.z>46.7 and p.z<47.4 and (label.begins_with("Keyboard") or label.begins_with("Office desk pad") or label.begins_with("Case report")):
+            n.position.z-=3.9
+
+    # Reception uses the former middle teller; the center aisle now reaches the rear.
+    var reception:=town.get_node_or_null("Bank reception")
+    if reception: reception.free()
+    for n in town.get_children():
+        if not n is Node3D: continue
+        var p:Vector3=n.position
+        if p.x>24 and p.x<26 and p.z>44 and p.z<45.7 and p.y<3:
+            n.position+=Vector3(-3.7,0,-5.15)
+        if str(n.name) in ["Chair12","Chair13"] or (str(n.name).begins_with("Chair back") and p.x>39 and p.x<47 and p.z>48 and p.z<49):
+            n.position.z-=3.9
+
+    var interview_chair:=town.get_node_or_null("Chair14") as Node3D
+    if interview_chair: interview_chair.position.x=38.7
+
+    var welcome:=town.get_node_or_null("WELCOME sign lettering") as Label3D
+    if welcome:
+        welcome.position.y=3.8
+        welcome.pixel_size=.0035

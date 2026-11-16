@@ -1,0 +1,67 @@
+[gd_scene format=3]
+
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/deer/body.res" id="1_luxen"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/deer/ears.res" id="2_yedd7"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/deer/antlers.res" id="3_35lo1"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/deer/tail.res" id="4_2say1"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/deer/eyes.res" id="5_cgyl6"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/deer/face_details.res" id="6_pfu8h"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7ciy2"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.86
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ffnjm"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+metallic_specular = 0.25
+roughness = 0.95
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_avq3e"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.16
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_imqa1"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.6
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jwn34"]
+size = Vector3(0.3887689, 1.62419, 1.5809935)
+
+[node name="DeerClayDisplay" type="Node3D" unique_id=75353536]
+metadata/source = "User's Deer Character Blueprint, relax walk pose (11 Nov 2026)"
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=1153713644]
+material_override = SubResource("StandardMaterial3D_7ciy2")
+mesh = ExtResource("1_luxen")
+
+[node name="Ears" type="MeshInstance3D" parent="." unique_id=1237735073]
+material_override = SubResource("StandardMaterial3D_7ciy2")
+mesh = ExtResource("2_yedd7")
+
+[node name="Antlers" type="MeshInstance3D" parent="." unique_id=1498906446]
+material_override = SubResource("StandardMaterial3D_ffnjm")
+mesh = ExtResource("3_35lo1")
+
+[node name="Tail" type="MeshInstance3D" parent="." unique_id=1988956595]
+material_override = SubResource("StandardMaterial3D_ffnjm")
+mesh = ExtResource("4_2say1")
+
+[node name="Eyes" type="MeshInstance3D" parent="." unique_id=171602319]
+material_override = SubResource("StandardMaterial3D_avq3e")
+cast_shadow = 0
+mesh = ExtResource("5_cgyl6")
+
+[node name="Face details" type="MeshInstance3D" parent="." unique_id=2044909706]
+material_override = SubResource("StandardMaterial3D_imqa1")
+cast_shadow = 0
+mesh = ExtResource("6_pfu8h")
+
+[node name="Footprint" type="StaticBody3D" parent="." unique_id=882705259]
+
+[node name="@CollisionShape3D@2" type="CollisionShape3D" parent="Footprint" unique_id=1824883816]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.812095, -0.08207333)
+shape = SubResource("BoxShape3D_jwn34")

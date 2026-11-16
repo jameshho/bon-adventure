@@ -1,0 +1,195 @@
+[gd_scene format=3]
+
+[sub_resource type="BoxMesh" id="r1"]
+size = Vector3(34.000000, 0.100000, 18.000000)
+
+[sub_resource type="StandardMaterial3D" id="r2"]
+albedo_color = Color(0.8470588235294118, 0.8274509803921568, 0.7803921568627451, 1)
+roughness = 0.82
+
+[sub_resource type="BoxShape3D" id="r3"]
+size = Vector3(34.000000, 0.100000, 18.000000)
+
+[sub_resource type="BoxMesh" id="r4"]
+size = Vector3(0.250000, 7.000000, 18.000000)
+
+[sub_resource type="StandardMaterial3D" id="r5"]
+albedo_color = Color(0.8784313725490196, 0.9058823529411765, 0.8745098039215686, 1)
+roughness = 0.82
+
+[sub_resource type="BoxShape3D" id="r6"]
+size = Vector3(0.250000, 7.000000, 18.000000)
+
+[sub_resource type="BoxMesh" id="r7"]
+size = Vector3(34.000000, 7.000000, 0.250000)
+
+[sub_resource type="BoxShape3D" id="r8"]
+size = Vector3(34.000000, 7.000000, 0.250000)
+
+[sub_resource type="BoxMesh" id="r9"]
+size = Vector3(15.300000, 7.000000, 0.250000)
+
+[sub_resource type="BoxShape3D" id="r10"]
+size = Vector3(15.300000, 7.000000, 0.250000)
+
+[sub_resource type="BoxMesh" id="r11"]
+size = Vector3(3.400000, 1.400000, 0.250000)
+
+[sub_resource type="BoxShape3D" id="r12"]
+size = Vector3(3.400000, 1.400000, 0.250000)
+
+[sub_resource type="BoxMesh" id="r13"]
+size = Vector3(34.600000, 0.240000, 18.600000)
+
+[sub_resource type="StandardMaterial3D" id="r14"]
+albedo_color = Color(0.5568627450980392, 0.6078431372549019, 0.6078431372549019, 1)
+roughness = 0.82
+
+[sub_resource type="BoxShape3D" id="r15"]
+size = Vector3(34.600000, 0.240000, 18.600000)
+
+[sub_resource type="BoxMesh" id="r16"]
+size = Vector3(5.000000, 18.000000, 5.000000)
+
+[sub_resource type="StandardMaterial3D" id="r17"]
+albedo_color = Color(0.7764705882352941, 0.7803921568627451, 0.7137254901960784, 1)
+roughness = 0.82
+
+[sub_resource type="BoxShape3D" id="r18"]
+size = Vector3(5.000000, 18.000000, 5.000000)
+
+[sub_resource type="BoxMesh" id="r19"]
+size = Vector3(8.000000, 3.000000, 8.000000)
+
+[sub_resource type="StandardMaterial3D" id="r20"]
+albedo_color = Color(0.5019607843137255, 0.6588235294117647, 0.7490196078431373, 1)
+roughness = 0.82
+
+[sub_resource type="BoxShape3D" id="r21"]
+size = Vector3(8.000000, 3.000000, 8.000000)
+
+[node name="Airport" type="Node3D"]
+metadata/layout_shell = true
+
+[node name="Terminal" type="Node3D" parent="."]
+position = Vector3(0.000000, 0.000000, 0.000000)
+metadata/layout_shell = true
+
+[node name="Foundation" type="MeshInstance3D" parent="Terminal"]
+position = Vector3(0.000000, 0.030000, 0.000000)
+mesh = SubResource("r1")
+material_override = SubResource("r2")
+
+[node name="Body" type="StaticBody3D" parent="Terminal/Foundation"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="Terminal/Foundation/Body"]
+shape = SubResource("r3")
+
+[node name="WestWall" type="MeshInstance3D" parent="Terminal"]
+position = Vector3(-17.000000, 3.500000, 0.000000)
+mesh = SubResource("r4")
+material_override = SubResource("r5")
+
+[node name="Body" type="StaticBody3D" parent="Terminal/WestWall"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="Terminal/WestWall/Body"]
+shape = SubResource("r6")
+
+[node name="EastWall" type="MeshInstance3D" parent="Terminal"]
+position = Vector3(17.000000, 3.500000, 0.000000)
+mesh = SubResource("r4")
+material_override = SubResource("r5")
+
+[node name="Body" type="StaticBody3D" parent="Terminal/EastWall"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="Terminal/EastWall/Body"]
+shape = SubResource("r6")
+
+[node name="RearWall" type="MeshInstance3D" parent="Terminal"]
+position = Vector3(0.000000, 3.500000, 9.000000)
+mesh = SubResource("r7")
+material_override = SubResource("r5")
+
+[node name="Body" type="StaticBody3D" parent="Terminal/RearWall"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="Terminal/RearWall/Body"]
+shape = SubResource("r8")
+
+[node name="FrontPier" type="MeshInstance3D" parent="Terminal"]
+position = Vector3(-9.350000, 3.500000, -9.000000)
+mesh = SubResource("r9")
+material_override = SubResource("r5")
+
+[node name="Body" type="StaticBody3D" parent="Terminal/FrontPier"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="Terminal/FrontPier/Body"]
+shape = SubResource("r10")
+
+[node name="FrontPier2" type="MeshInstance3D" parent="Terminal"]
+position = Vector3(9.350000, 3.500000, -9.000000)
+mesh = SubResource("r9")
+material_override = SubResource("r5")
+
+[node name="Body" type="StaticBody3D" parent="Terminal/FrontPier2"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="Terminal/FrontPier2/Body"]
+shape = SubResource("r10")
+
+[node name="DoorHeader" type="MeshInstance3D" parent="Terminal"]
+position = Vector3(0.000000, 6.300000, -9.000000)
+mesh = SubResource("r11")
+material_override = SubResource("r5")
+
+[node name="Body" type="StaticBody3D" parent="Terminal/DoorHeader"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="Terminal/DoorHeader/Body"]
+shape = SubResource("r12")
+
+[node name="Roof" type="MeshInstance3D" parent="Terminal"]
+position = Vector3(0.000000, 7.120000, 0.000000)
+mesh = SubResource("r13")
+material_override = SubResource("r14")
+
+[node name="Body" type="StaticBody3D" parent="Terminal/Roof"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="Terminal/Roof/Body"]
+shape = SubResource("r15")
+
+[node name="ControlTower" type="MeshInstance3D" parent="."]
+position = Vector3(25.000000, 9.000000, 4.000000)
+mesh = SubResource("r16")
+material_override = SubResource("r17")
+
+[node name="Body" type="StaticBody3D" parent="ControlTower"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="ControlTower/Body"]
+shape = SubResource("r18")
+
+[node name="TowerCabin" type="MeshInstance3D" parent="."]
+position = Vector3(25.000000, 19.000000, 4.000000)
+mesh = SubResource("r19")
+material_override = SubResource("r20")
+
+[node name="Body" type="StaticBody3D" parent="TowerCabin"]
+
+
+[node name="Shape" type="CollisionShape3D" parent="TowerCabin/Body"]
+shape = SubResource("r21")
+
+[node name="AirportSign" type="Label3D" parent="."]
+position = Vector3(0.000000, 5.300000, -9.200000)
+rotation = Vector3(0, 3.141592653589793, 0)
+text = "AIRPORT"
+font_size = 64
+pixel_size = 0.008
+outline_size = 4
+no_depth_test = false

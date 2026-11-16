@@ -1,0 +1,3957 @@
+[
+  {
+    "removed": "README 2.md",
+    "canonical": "README.md",
+    "identical": false
+  },
+  {
+    "removed": "assets/maps/town_map 2.png",
+    "canonical": "assets/maps/town_map.png",
+    "identical": true
+  },
+  {
+    "removed": "assets/maps/town_map 2.png.import",
+    "canonical": "assets/maps/town_map.png.import",
+    "identical": false
+  },
+  {
+    "removed": "assets/maps/town_map.png 2.import",
+    "canonical": "assets/maps/town_map.png.import",
+    "identical": true
+  },
+  {
+    "removed": "assets/raw/README 2.md",
+    "canonical": "assets/raw/README.md",
+    "identical": true
+  },
+  {
+    "removed": "data/learning_catalog 2.json",
+    "canonical": "data/learning_catalog.json",
+    "identical": false
+  },
+  {
+    "removed": "data/vocabulary 2.json",
+    "canonical": "data/vocabulary.json",
+    "identical": false
+  },
+  {
+    "removed": "data/vocabulary_aliases 2.json",
+    "canonical": "data/vocabulary_aliases.json",
+    "identical": false
+  },
+  {
+    "removed": "data/vocabulary_categories 2.json",
+    "canonical": "data/vocabulary_categories.json",
+    "identical": false
+  },
+  {
+    "removed": "docs/A1_A2_STATIC_VALIDATION 2.json",
+    "canonical": "docs/A1_A2_STATIC_VALIDATION.json",
+    "identical": true
+  },
+  {
+    "removed": "docs/A1_A2_VOCAB_CLEANUP 2.md",
+    "canonical": "docs/A1_A2_VOCAB_CLEANUP.md",
+    "identical": true
+  },
+  {
+    "removed": "docs/A1_A2_VOCAB_REMOVALS 2.json",
+    "canonical": "docs/A1_A2_VOCAB_REMOVALS.json",
+    "identical": true
+  },
+  {
+    "removed": "docs/BUILDING_EXTERIORS 2.md",
+    "canonical": "docs/archive/BUILDING_EXTERIORS.md",
+    "identical": true
+  },
+  {
+    "removed": "docs/CIVIC_EXPANSION 2.md",
+    "canonical": "docs/archive/CIVIC_EXPANSION.md",
+    "identical": true
+  },
+  {
+    "removed": "docs/HOME_AND_NAVIGATION_REFRESH 2.md",
+    "canonical": "docs/archive/HOME_AND_NAVIGATION_REFRESH.md",
+    "identical": true
+  },
+  {
+    "removed": "docs/HOSPITAL_THREE_FLOORS 2.md",
+    "canonical": "docs/guides/HOSPITAL_THREE_FLOORS.md",
+    "identical": true
+  },
+  {
+    "removed": "docs/HOUSE_INTERIOR_REVIEW 2.md",
+    "canonical": "docs/archive/HOUSE_INTERIOR_REVIEW.md",
+    "identical": true
+  },
+  {
+    "removed": "docs/ISLAND_UPDATE 2.md",
+    "canonical": "docs/archive/ISLAND_UPDATE.md",
+    "identical": true
+  },
+  {
+    "removed": "docs/LEARNING_UPDATE 2.md",
+    "canonical": "docs/archive/LEARNING_UPDATE.md",
+    "identical": true
+  },
+  {
+    "removed": "docs/BONBON_VALIDATION 2.md",
+    "canonical": "docs/guides/BONBON_VALIDATION.md",
+    "identical": true
+  },
+  {
+    "removed": "docs/MIGRATION 2.md",
+    "canonical": "docs/archive/MIGRATION.md",
+    "identical": true
+  },
+  {
+    "removed": "docs/PIG_RENAME_AND_LANDMARK 2.md",
+    "canonical": "docs/archive/PIG_RENAME_AND_LANDMARK.md",
+    "identical": true
+  },
+  {
+    "removed": "docs/QA_REPORT 2.md",
+    "canonical": "docs/QA_REPORT.md",
+    "identical": true
+  },
+  {
+    "removed": "docs/SCIENCE_B1_CLEANUP 2.md",
+    "canonical": "docs/SCIENCE_B1_CLEANUP.md",
+    "identical": true
+  },
+  {
+    "removed": "docs/VALIDATION_B1_CLEANUP 2.md",
+    "canonical": "docs/VALIDATION_B1_CLEANUP.md",
+    "identical": true
+  },
+  {
+    "removed": "docs/VOCABULARY_B1_CLEANUP 2.md",
+    "canonical": "docs/VOCABULARY_B1_CLEANUP.md",
+    "identical": true
+  },
+  {
+    "removed": "docs/VOCABULARY_CATEGORY_AUDIT_MAPPING 2.json",
+    "canonical": "docs/VOCABULARY_CATEGORY_AUDIT_MAPPING.json",
+    "identical": true
+  },
+  {
+    "removed": "docs/VOCABULARY_CATEGORY_AUDIT_REPORT 2.md",
+    "canonical": "docs/VOCABULARY_CATEGORY_AUDIT_REPORT.md",
+    "identical": true
+  },
+  {
+    "removed": "docs/VOCABULARY_CATEGORY_AUDIT_VALIDATION 2.json",
+    "canonical": "docs/VOCABULARY_CATEGORY_AUDIT_VALIDATION.json",
+    "identical": true
+  },
+  {
+    "removed": "docs/VOCABULARY_DEDUP_MAPPING 2.json",
+    "canonical": "docs/VOCABULARY_DEDUP_MAPPING.json",
+    "identical": true
+  },
+  {
+    "removed": "docs/VOCABULARY_DEDUP_REPORT 2.md",
+    "canonical": "docs/VOCABULARY_DEDUP_REPORT.md",
+    "identical": true
+  },
+  {
+    "removed": "docs/VOCABULARY_DEDUP_VALIDATION 2.json",
+    "canonical": "docs/VOCABULARY_DEDUP_VALIDATION.json",
+    "identical": true
+  },
+  {
+    "removed": "docs/ZOO_INTERIOR_UPDATE 2.md",
+    "canonical": "docs/archive/ZOO_INTERIOR_UPDATE.md",
+    "identical": true
+  },
+  {
+    "removed": "docs/building-BakeryCafe-after 2.png",
+    "canonical": "docs/evidence/town-checks/building-BakeryCafe-after.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/building-BakeryCafe-after 2.png.import",
+    "canonical": "docs/evidence/town-checks/building-BakeryCafe-after.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/town-checks/building-BakeryCafe-after.png 2.import",
+    "canonical": "docs/evidence/town-checks/building-BakeryCafe-after.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/building-ClothingStore-after 2.png",
+    "canonical": "docs/evidence/town-checks/building-ClothingStore-after.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/building-ClothingStore-after 2.png.import",
+    "canonical": "docs/evidence/town-checks/building-ClothingStore-after.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/town-checks/building-ClothingStore-after.png 2.import",
+    "canonical": "docs/evidence/town-checks/building-ClothingStore-after.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/building-ElectronicsStore-after 2.png",
+    "canonical": "docs/evidence/town-checks/building-ElectronicsStore-after.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/building-ElectronicsStore-after 2.png.import",
+    "canonical": "docs/evidence/town-checks/building-ElectronicsStore-after.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/town-checks/building-ElectronicsStore-after.png 2.import",
+    "canonical": "docs/evidence/town-checks/building-ElectronicsStore-after.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/building-FurnitureStore-after 2.png",
+    "canonical": "docs/evidence/town-checks/building-FurnitureStore-after.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/building-FurnitureStore-after 2.png.import",
+    "canonical": "docs/evidence/town-checks/building-FurnitureStore-after.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/town-checks/building-FurnitureStore-after.png 2.import",
+    "canonical": "docs/evidence/town-checks/building-FurnitureStore-after.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/building-Hospital-after 2.png",
+    "canonical": "docs/evidence/town-checks/building-Hospital-after.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/building-Hospital-after 2.png.import",
+    "canonical": "docs/evidence/town-checks/building-Hospital-after.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/town-checks/building-Hospital-after.png 2.import",
+    "canonical": "docs/evidence/town-checks/building-Hospital-after.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/building-School-after 2.png",
+    "canonical": "docs/evidence/town-checks/building-School-after.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/building-School-after 2.png.import",
+    "canonical": "docs/evidence/town-checks/building-School-after.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/town-checks/building-School-after.png 2.import",
+    "canonical": "docs/evidence/town-checks/building-School-after.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/building-SportsStore-after 2.png",
+    "canonical": "docs/evidence/town-checks/building-SportsStore-after.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/building-SportsStore-after 2.png.import",
+    "canonical": "docs/evidence/town-checks/building-SportsStore-after.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/town-checks/building-SportsStore-after.png 2.import",
+    "canonical": "docs/evidence/town-checks/building-SportsStore-after.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/building-bank-after 2.png",
+    "canonical": "docs/evidence/town-checks/building-bank-after.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/building-bank-after 2.png.import",
+    "canonical": "docs/evidence/town-checks/building-bank-after.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/town-checks/building-bank-after.png 2.import",
+    "canonical": "docs/evidence/town-checks/building-bank-after.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/building-library-after 2.png",
+    "canonical": "docs/evidence/town-checks/building-library-after.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/building-library-after 2.png.import",
+    "canonical": "docs/evidence/town-checks/building-library-after.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/town-checks/building-library-after.png 2.import",
+    "canonical": "docs/evidence/town-checks/building-library-after.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/building-market-after 2.png",
+    "canonical": "docs/evidence/town-checks/building-market-after.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/building-market-after 2.png.import",
+    "canonical": "docs/evidence/town-checks/building-market-after.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/town-checks/building-market-after.png 2.import",
+    "canonical": "docs/evidence/town-checks/building-market-after.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/building-police-after 2.png",
+    "canonical": "docs/evidence/town-checks/building-police-after.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/building-police-after 2.png.import",
+    "canonical": "docs/evidence/town-checks/building-police-after.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/town-checks/building-police-after.png 2.import",
+    "canonical": "docs/evidence/town-checks/building-police-after.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/capture_civic_expansion 2.gd",
+    "canonical": "docs/evidence/town-checks/capture_civic_expansion.gd",
+    "identical": true
+  },
+  {
+    "removed": "docs/capture_civic_expansion 2.gd.uid",
+    "canonical": "docs/evidence/town-checks/capture_civic_expansion.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/town-checks/capture_civic_expansion.gd 2.uid",
+    "canonical": "docs/evidence/town-checks/capture_civic_expansion.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "docs/capture_learning 2.gd",
+    "canonical": "docs/evidence/town-checks/capture_learning.gd",
+    "identical": true
+  },
+  {
+    "removed": "docs/capture_learning 2.gd.uid",
+    "canonical": "docs/evidence/town-checks/capture_learning.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/town-checks/capture_learning.gd 2.uid",
+    "canonical": "docs/evidence/town-checks/capture_learning.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "docs/capture_bonbon 2.gd",
+    "canonical": "docs/evidence/town-checks/capture_bonbon.gd",
+    "identical": true
+  },
+  {
+    "removed": "docs/capture_bonbon 2.gd.uid",
+    "canonical": "docs/evidence/town-checks/capture_bonbon.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/town-checks/capture_bonbon.gd 2.uid",
+    "canonical": "docs/evidence/town-checks/capture_bonbon.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "docs/capture_rooftops 2.gd",
+    "canonical": "docs/evidence/town-checks/capture_rooftops.gd",
+    "identical": true
+  },
+  {
+    "removed": "docs/capture_rooftops 2.gd.uid",
+    "canonical": "docs/evidence/town-checks/capture_rooftops.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/town-checks/capture_rooftops.gd 2.uid",
+    "canonical": "docs/evidence/town-checks/capture_rooftops.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "docs/check_building_exteriors 2.gd",
+    "canonical": "docs/check_building_exteriors.gd",
+    "identical": true
+  },
+  {
+    "removed": "docs/check_building_exteriors 2.gd.uid",
+    "canonical": "docs/check_building_exteriors.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "docs/check_building_exteriors.gd 2.uid",
+    "canonical": "docs/check_building_exteriors.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "docs/check_civic_expansion 2.gd",
+    "canonical": "docs/evidence/town-checks/check_civic_expansion.gd",
+    "identical": true
+  },
+  {
+    "removed": "docs/check_civic_expansion 2.gd.uid",
+    "canonical": "docs/evidence/town-checks/check_civic_expansion.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/town-checks/check_civic_expansion.gd 2.uid",
+    "canonical": "docs/evidence/town-checks/check_civic_expansion.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "docs/check_home_refresh 2.gd",
+    "canonical": "docs/evidence/town-checks/check_home_refresh.gd",
+    "identical": true
+  },
+  {
+    "removed": "docs/check_home_refresh 2.gd.uid",
+    "canonical": "docs/evidence/town-checks/check_home_refresh.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/town-checks/check_home_refresh.gd 2.uid",
+    "canonical": "docs/evidence/town-checks/check_home_refresh.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "docs/check_hospital_floors 2.gd",
+    "canonical": "docs/check_hospital_floors.gd",
+    "identical": true
+  },
+  {
+    "removed": "docs/check_hospital_floors 2.gd.uid",
+    "canonical": "docs/check_hospital_floors.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "docs/check_hospital_floors.gd 2.uid",
+    "canonical": "docs/check_hospital_floors.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "docs/check_house 2.gd",
+    "canonical": "docs/evidence/town-checks/check_house.gd",
+    "identical": true
+  },
+  {
+    "removed": "docs/check_house 2.gd.uid",
+    "canonical": "docs/evidence/town-checks/check_house.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/town-checks/check_house.gd 2.uid",
+    "canonical": "docs/evidence/town-checks/check_house.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "docs/check_interaction 2.gd",
+    "canonical": "docs/evidence/town-checks/check_interaction.gd",
+    "identical": true
+  },
+  {
+    "removed": "docs/check_interaction 2.gd.uid",
+    "canonical": "docs/evidence/town-checks/check_interaction.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/town-checks/check_interaction.gd 2.uid",
+    "canonical": "docs/evidence/town-checks/check_interaction.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "docs/check_island 2.gd",
+    "canonical": "docs/evidence/town-checks/check_island.gd",
+    "identical": true
+  },
+  {
+    "removed": "docs/check_island 2.gd.uid",
+    "canonical": "docs/evidence/town-checks/check_island.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/town-checks/check_island.gd 2.uid",
+    "canonical": "docs/evidence/town-checks/check_island.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "docs/check_learning_stores 2.gd",
+    "canonical": "docs/evidence/town-checks/check_learning_stores.gd",
+    "identical": false
+  },
+  {
+    "removed": "docs/check_learning_stores 2.gd.uid",
+    "canonical": "docs/evidence/town-checks/check_learning_stores.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/town-checks/check_learning_stores.gd 2.uid",
+    "canonical": "docs/evidence/town-checks/check_learning_stores.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "docs/check_bonbon 2.gd",
+    "canonical": "docs/evidence/town-checks/check_bonbon.gd",
+    "identical": true
+  },
+  {
+    "removed": "docs/check_bonbon 2.gd.uid",
+    "canonical": "docs/evidence/town-checks/check_bonbon.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/town-checks/check_bonbon.gd 2.uid",
+    "canonical": "docs/evidence/town-checks/check_bonbon.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "docs/check_bonbon_ui 2.gd",
+    "canonical": "docs/evidence/town-checks/check_bonbon_ui.gd",
+    "identical": true
+  },
+  {
+    "removed": "docs/check_bonbon_ui 2.gd.uid",
+    "canonical": "docs/evidence/town-checks/check_bonbon_ui.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/town-checks/check_bonbon_ui.gd 2.uid",
+    "canonical": "docs/evidence/town-checks/check_bonbon_ui.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "docs/check_park_bridge 2.gd",
+    "canonical": "docs/evidence/town-checks/check_park_bridge.gd",
+    "identical": true
+  },
+  {
+    "removed": "docs/check_park_bridge 2.gd.uid",
+    "canonical": "docs/evidence/town-checks/check_park_bridge.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/town-checks/check_park_bridge.gd 2.uid",
+    "canonical": "docs/evidence/town-checks/check_park_bridge.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "docs/check_project 2.py",
+    "canonical": "docs/evidence/town-checks/check_project.py",
+    "identical": true
+  },
+  {
+    "removed": "docs/check_public_interiors 2.gd",
+    "canonical": "docs/evidence/town-checks/check_public_interiors.gd",
+    "identical": true
+  },
+  {
+    "removed": "docs/check_public_interiors 2.gd.uid",
+    "canonical": "docs/evidence/town-checks/check_public_interiors.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/town-checks/check_public_interiors.gd 2.uid",
+    "canonical": "docs/evidence/town-checks/check_public_interiors.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "docs/check_rooftops 2.gd",
+    "canonical": "docs/evidence/town-checks/check_rooftops.gd",
+    "identical": true
+  },
+  {
+    "removed": "docs/check_rooftops 2.gd.uid",
+    "canonical": "docs/evidence/town-checks/check_rooftops.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/town-checks/check_rooftops.gd 2.uid",
+    "canonical": "docs/evidence/town-checks/check_rooftops.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "docs/check_town_layout 2.gd",
+    "canonical": "docs/evidence/town-checks/check_town_layout.gd",
+    "identical": true
+  },
+  {
+    "removed": "docs/check_town_layout 2.gd.uid",
+    "canonical": "docs/evidence/town-checks/check_town_layout.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/town-checks/check_town_layout.gd 2.uid",
+    "canonical": "docs/evidence/town-checks/check_town_layout.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "docs/check_vehicle_collision 2.gd",
+    "canonical": "docs/evidence/town-checks/check_vehicle_collision.gd",
+    "identical": true
+  },
+  {
+    "removed": "docs/check_vehicle_collision 2.gd.uid",
+    "canonical": "docs/evidence/town-checks/check_vehicle_collision.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/town-checks/check_vehicle_collision.gd 2.uid",
+    "canonical": "docs/evidence/town-checks/check_vehicle_collision.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "docs/check_vocabulary_aliases 2.gd",
+    "canonical": "docs/evidence/town-checks/check_vocabulary_aliases.gd",
+    "identical": true
+  },
+  {
+    "removed": "docs/check_vocabulary_aliases 2.gd.uid",
+    "canonical": "docs/evidence/town-checks/check_vocabulary_aliases.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/town-checks/check_vocabulary_aliases.gd 2.uid",
+    "canonical": "docs/evidence/town-checks/check_vocabulary_aliases.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "docs/check_vocabulary_categories 2.gd",
+    "canonical": "docs/evidence/town-checks/check_vocabulary_categories.gd",
+    "identical": true
+  },
+  {
+    "removed": "docs/check_vocabulary_categories 2.gd.uid",
+    "canonical": "docs/evidence/town-checks/check_vocabulary_categories.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "docs/check_vocabulary_categories 2.py",
+    "canonical": "docs/evidence/town-checks/check_vocabulary_categories.py",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/town-checks/check_vocabulary_categories.gd 2.uid",
+    "canonical": "docs/evidence/town-checks/check_vocabulary_categories.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "docs/check_zoo_upgrade 2.gd",
+    "canonical": "docs/evidence/town-checks/check_zoo_upgrade.gd",
+    "identical": true
+  },
+  {
+    "removed": "docs/check_zoo_upgrade 2.gd.uid",
+    "canonical": "docs/evidence/town-checks/check_zoo_upgrade.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/town-checks/check_zoo_upgrade.gd 2.uid",
+    "canonical": "docs/evidence/town-checks/check_zoo_upgrade.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/civic-review/Hospital_EmergencyRoom 2.png",
+    "canonical": "docs/evidence/civic-review/Hospital_EmergencyRoom.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/civic-review/Hospital_EmergencyRoom 2.png.import",
+    "canonical": "docs/evidence/civic-review/Hospital_EmergencyRoom.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/civic-review/Hospital_EmergencyRoom.png 2.import",
+    "canonical": "docs/evidence/civic-review/Hospital_EmergencyRoom.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/civic-review/Hospital_ExaminationRoom 2.png",
+    "canonical": "docs/evidence/civic-review/Hospital_ExaminationRoom.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/civic-review/Hospital_ExaminationRoom 2.png.import",
+    "canonical": "docs/evidence/civic-review/Hospital_ExaminationRoom.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/civic-review/Hospital_ExaminationRoom.png 2.import",
+    "canonical": "docs/evidence/civic-review/Hospital_ExaminationRoom.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/civic-review/Hospital_ImagingRoom 2.png",
+    "canonical": "docs/evidence/civic-review/Hospital_ImagingRoom.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/civic-review/Hospital_ImagingRoom 2.png.import",
+    "canonical": "docs/evidence/civic-review/Hospital_ImagingRoom.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/civic-review/Hospital_ImagingRoom.png 2.import",
+    "canonical": "docs/evidence/civic-review/Hospital_ImagingRoom.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/civic-review/Hospital_RehabilitationRoom 2.png",
+    "canonical": "docs/evidence/civic-review/Hospital_RehabilitationRoom.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/civic-review/Hospital_RehabilitationRoom 2.png.import",
+    "canonical": "docs/evidence/civic-review/Hospital_RehabilitationRoom.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/civic-review/Hospital_RehabilitationRoom.png 2.import",
+    "canonical": "docs/evidence/civic-review/Hospital_RehabilitationRoom.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/civic-review/School_ArtStudio 2.png",
+    "canonical": "docs/evidence/civic-review/School_ArtStudio.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/civic-review/School_ArtStudio 2.png.import",
+    "canonical": "docs/evidence/civic-review/School_ArtStudio.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/civic-review/School_ArtStudio.png 2.import",
+    "canonical": "docs/evidence/civic-review/School_ArtStudio.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/civic-review/School_GeographyRoom 2.png",
+    "canonical": "docs/evidence/civic-review/School_GeographyRoom.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/civic-review/School_GeographyRoom 2.png.import",
+    "canonical": "docs/evidence/civic-review/School_GeographyRoom.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/civic-review/School_GeographyRoom.png 2.import",
+    "canonical": "docs/evidence/civic-review/School_GeographyRoom.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/civic-review/School_MusicRoom 2.png",
+    "canonical": "docs/evidence/civic-review/School_MusicRoom.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/civic-review/School_MusicRoom 2.png.import",
+    "canonical": "docs/evidence/civic-review/School_MusicRoom.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/civic-review/School_MusicRoom.png 2.import",
+    "canonical": "docs/evidence/civic-review/School_MusicRoom.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/civic-review/School_ScienceLab 2.png",
+    "canonical": "docs/evidence/civic-review/School_ScienceLab.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/civic-review/School_ScienceLab 2.png.import",
+    "canonical": "docs/evidence/civic-review/School_ScienceLab.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/civic-review/School_ScienceLab.png 2.import",
+    "canonical": "docs/evidence/civic-review/School_ScienceLab.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/civic-review/clothing_road 2.png",
+    "canonical": "docs/evidence/civic-review/clothing_road.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/civic-review/clothing_road 2.png.import",
+    "canonical": "docs/evidence/civic-review/clothing_road.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/civic-review/clothing_road.png 2.import",
+    "canonical": "docs/evidence/civic-review/clothing_road.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/civic-review/police_car 2.png",
+    "canonical": "docs/evidence/civic-review/police_car.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/civic-review/police_car 2.png.import",
+    "canonical": "docs/evidence/civic-review/police_car.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/civic-review/police_car.png 2.import",
+    "canonical": "docs/evidence/civic-review/police_car.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/home-pig-fixes/README 2.md",
+    "canonical": "docs/evidence/home-pig-fixes/README.md",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/home-pig-fixes/giant_near_house 2.png",
+    "canonical": "docs/evidence/home-pig-fixes/giant_near_house.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/home-pig-fixes/giant_near_house 2.png.import",
+    "canonical": "docs/evidence/home-pig-fixes/giant_near_house.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/home-pig-fixes/giant_near_house.png 2.import",
+    "canonical": "docs/evidence/home-pig-fixes/giant_near_house.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/home-pig-fixes/house_kitchen_dimmed 2.png",
+    "canonical": "docs/evidence/home-pig-fixes/house_kitchen_dimmed.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/home-pig-fixes/house_kitchen_dimmed 2.png.import",
+    "canonical": "docs/evidence/home-pig-fixes/house_kitchen_dimmed.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/home-pig-fixes/house_kitchen_dimmed.png 2.import",
+    "canonical": "docs/evidence/home-pig-fixes/house_kitchen_dimmed.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/home-pig-fixes/house_living_dimmed 2.png",
+    "canonical": "docs/evidence/home-pig-fixes/house_living_dimmed.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/home-pig-fixes/house_living_dimmed 2.png.import",
+    "canonical": "docs/evidence/home-pig-fixes/house_living_dimmed.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/home-pig-fixes/house_living_dimmed.png 2.import",
+    "canonical": "docs/evidence/home-pig-fixes/house_living_dimmed.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/home-pig-fixes/library_pig_rear 2.png",
+    "canonical": "docs/evidence/home-pig-fixes/library_pig_rear.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/home-pig-fixes/library_pig_rear 2.png.import",
+    "canonical": "docs/evidence/home-pig-fixes/library_pig_rear.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/home-pig-fixes/library_pig_rear.png 2.import",
+    "canonical": "docs/evidence/home-pig-fixes/library_pig_rear.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/home-pig-fixes/market_pig_rear 2.png",
+    "canonical": "docs/evidence/home-pig-fixes/market_pig_rear.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/home-pig-fixes/market_pig_rear 2.png.import",
+    "canonical": "docs/evidence/home-pig-fixes/market_pig_rear.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/home-pig-fixes/market_pig_rear.png 2.import",
+    "canonical": "docs/evidence/home-pig-fixes/market_pig_rear.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/home-refresh-review/bedroom 2.png",
+    "canonical": "docs/evidence/home-refresh-review/bedroom.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/home-refresh-review/bedroom 2.png.import",
+    "canonical": "docs/evidence/home-refresh-review/bedroom.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/home-refresh-review/bedroom.png 2.import",
+    "canonical": "docs/evidence/home-refresh-review/bedroom.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/home-refresh-review/cafe 2.png",
+    "canonical": "docs/evidence/home-refresh-review/cafe.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/home-refresh-review/cafe 2.png.import",
+    "canonical": "docs/evidence/home-refresh-review/cafe.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/home-refresh-review/cafe.png 2.import",
+    "canonical": "docs/evidence/home-refresh-review/cafe.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/home-refresh-review/car_driver 2.png",
+    "canonical": "docs/evidence/home-refresh-review/car_driver.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/home-refresh-review/car_driver 2.png.import",
+    "canonical": "docs/evidence/home-refresh-review/car_driver.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/home-refresh-review/car_driver.png 2.import",
+    "canonical": "docs/evidence/home-refresh-review/car_driver.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/home-refresh-review/entry 2.png",
+    "canonical": "docs/evidence/home-refresh-review/entry.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/home-refresh-review/entry 2.png.import",
+    "canonical": "docs/evidence/home-refresh-review/entry.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/home-refresh-review/entry.png 2.import",
+    "canonical": "docs/evidence/home-refresh-review/entry.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/home-refresh-review/guitar 2.png",
+    "canonical": "docs/evidence/home-refresh-review/guitar.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/home-refresh-review/guitar 2.png.import",
+    "canonical": "docs/evidence/home-refresh-review/guitar.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/home-refresh-review/guitar.png 2.import",
+    "canonical": "docs/evidence/home-refresh-review/guitar.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/home-refresh-review/kitchen 2.png",
+    "canonical": "docs/evidence/home-refresh-review/kitchen.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/home-refresh-review/kitchen 2.png.import",
+    "canonical": "docs/evidence/home-refresh-review/kitchen.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/home-refresh-review/kitchen.png 2.import",
+    "canonical": "docs/evidence/home-refresh-review/kitchen.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/home-refresh-review/living 2.png",
+    "canonical": "docs/evidence/home-refresh-review/living.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/home-refresh-review/living 2.png.import",
+    "canonical": "docs/evidence/home-refresh-review/living.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/home-refresh-review/living.png 2.import",
+    "canonical": "docs/evidence/home-refresh-review/living.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/home-refresh-review/pantry 2.png",
+    "canonical": "docs/evidence/home-refresh-review/pantry.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/home-refresh-review/pantry 2.png.import",
+    "canonical": "docs/evidence/home-refresh-review/pantry.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/home-refresh-review/pantry.png 2.import",
+    "canonical": "docs/evidence/home-refresh-review/pantry.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/home-refresh-review/trees 2.png",
+    "canonical": "docs/evidence/home-refresh-review/trees.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/home-refresh-review/trees 2.png.import",
+    "canonical": "docs/evidence/home-refresh-review/trees.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/home-refresh-review/trees.png 2.import",
+    "canonical": "docs/evidence/home-refresh-review/trees.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/hospital-review/exterior 2.png",
+    "canonical": "docs/evidence/hospital-review/exterior.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/hospital-review/exterior 2.png.import",
+    "canonical": "docs/evidence/hospital-review/exterior.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/hospital-review/exterior.png 2.import",
+    "canonical": "docs/evidence/hospital-review/exterior.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/hospital-review/floor3 2.png",
+    "canonical": "docs/evidence/hospital-review/floor3.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/hospital-review/floor3 2.png.import",
+    "canonical": "docs/evidence/hospital-review/floor3.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/hospital-review/floor3.png 2.import",
+    "canonical": "docs/evidence/hospital-review/floor3.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/hospital-review/pediatrics 2.png",
+    "canonical": "docs/evidence/hospital-review/pediatrics.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/hospital-review/pediatrics 2.png.import",
+    "canonical": "docs/evidence/hospital-review/pediatrics.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/hospital-review/pediatrics.png 2.import",
+    "canonical": "docs/evidence/hospital-review/pediatrics.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/hospital-review/reception 2.png",
+    "canonical": "docs/evidence/hospital-review/reception.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/hospital-review/reception 2.png.import",
+    "canonical": "docs/evidence/hospital-review/reception.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/hospital-review/reception.png 2.import",
+    "canonical": "docs/evidence/hospital-review/reception.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/hospital-review/stairs 2.png",
+    "canonical": "docs/evidence/hospital-review/stairs.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/hospital-review/stairs 2.png.import",
+    "canonical": "docs/evidence/hospital-review/stairs.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/hospital-review/stairs.png 2.import",
+    "canonical": "docs/evidence/hospital-review/stairs.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/interior-review/bathroom 2.png",
+    "canonical": "docs/evidence/interior-review/bathroom.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/interior-review/bathroom 2.png.import",
+    "canonical": "docs/evidence/interior-review/bathroom.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/interior-review/bathroom.png 2.import",
+    "canonical": "docs/evidence/interior-review/bathroom.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/interior-review/bedroom_door 2.png",
+    "canonical": "docs/evidence/interior-review/bedroom_door.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/interior-review/bedroom_door 2.png.import",
+    "canonical": "docs/evidence/interior-review/bedroom_door.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/interior-review/bedroom_door.png 2.import",
+    "canonical": "docs/evidence/interior-review/bedroom_door.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/interior-review/front_inside 2.png",
+    "canonical": "docs/evidence/interior-review/front_inside.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/interior-review/front_inside 2.png.import",
+    "canonical": "docs/evidence/interior-review/front_inside.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/interior-review/front_inside.png 2.import",
+    "canonical": "docs/evidence/interior-review/front_inside.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/interior-review/front_outside 2.png",
+    "canonical": "docs/evidence/interior-review/front_outside.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/interior-review/front_outside 2.png.import",
+    "canonical": "docs/evidence/interior-review/front_outside.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/interior-review/front_outside.png 2.import",
+    "canonical": "docs/evidence/interior-review/front_outside.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/interior-review/hall 2.png",
+    "canonical": "docs/evidence/interior-review/hall.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/interior-review/hall 2.png.import",
+    "canonical": "docs/evidence/interior-review/hall.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/interior-review/hall.png 2.import",
+    "canonical": "docs/evidence/interior-review/hall.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/interior-review/hall_doors 2.png",
+    "canonical": "docs/evidence/interior-review/hall_doors.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/interior-review/hall_doors 2.png.import",
+    "canonical": "docs/evidence/interior-review/hall_doors.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/interior-review/hall_doors.png 2.import",
+    "canonical": "docs/evidence/interior-review/hall_doors.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/interior-review/kitchen 2.png",
+    "canonical": "docs/evidence/interior-review/kitchen.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/interior-review/kitchen 2.png.import",
+    "canonical": "docs/evidence/interior-review/kitchen.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/interior-review/kitchen.png 2.import",
+    "canonical": "docs/evidence/interior-review/kitchen.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/interior-review/living 2.png",
+    "canonical": "docs/evidence/interior-review/living.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/interior-review/living 2.png.import",
+    "canonical": "docs/evidence/interior-review/living.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/interior-review/living.png 2.import",
+    "canonical": "docs/evidence/interior-review/living.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/interior-review/living_tv 2.png",
+    "canonical": "docs/evidence/interior-review/living_tv.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/interior-review/living_tv 2.png.import",
+    "canonical": "docs/evidence/interior-review/living_tv.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/interior-review/living_tv.png 2.import",
+    "canonical": "docs/evidence/interior-review/living_tv.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/interior-review/primary 2.png",
+    "canonical": "docs/evidence/interior-review/primary.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/interior-review/primary 2.png.import",
+    "canonical": "docs/evidence/interior-review/primary.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/interior-review/primary.png 2.import",
+    "canonical": "docs/evidence/interior-review/primary.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/interior-review/study 2.png",
+    "canonical": "docs/evidence/interior-review/study.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/interior-review/study 2.png.import",
+    "canonical": "docs/evidence/interior-review/study.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/interior-review/study.png 2.import",
+    "canonical": "docs/evidence/interior-review/study.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/island-review/beach 2.png",
+    "canonical": "docs/evidence/island-review/beach.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/island-review/beach 2.png.import",
+    "canonical": "docs/evidence/island-review/beach.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/island-review/beach.png 2.import",
+    "canonical": "docs/evidence/island-review/beach.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/island-review/civic 2.png",
+    "canonical": "docs/evidence/island-review/civic.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/island-review/civic 2.png.import",
+    "canonical": "docs/evidence/island-review/civic.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/island-review/civic.png 2.import",
+    "canonical": "docs/evidence/island-review/civic.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/island-review/home 2.png",
+    "canonical": "docs/evidence/island-review/home.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/island-review/home 2.png.import",
+    "canonical": "docs/evidence/island-review/home.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/island-review/home.png 2.import",
+    "canonical": "docs/evidence/island-review/home.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/island-review/island 2.png",
+    "canonical": "docs/evidence/island-review/island.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/island-review/island 2.png.import",
+    "canonical": "docs/evidence/island-review/island.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/island-review/island.png 2.import",
+    "canonical": "docs/evidence/island-review/island.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/island-review/school_science 2.png",
+    "canonical": "docs/evidence/island-review/school_science.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/island-review/school_science 2.png.import",
+    "canonical": "docs/evidence/island-review/school_science.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/island-review/school_science.png 2.import",
+    "canonical": "docs/evidence/island-review/school_science.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/island-review/school_stairs 2.png",
+    "canonical": "docs/evidence/island-review/school_stairs.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/island-review/school_stairs 2.png.import",
+    "canonical": "docs/evidence/island-review/school_stairs.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/island-review/school_stairs.png 2.import",
+    "canonical": "docs/evidence/island-review/school_stairs.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/learning-review/bakery 2.png",
+    "canonical": "docs/evidence/learning-review/bakery.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/learning-review/bakery 2.png.import",
+    "canonical": "docs/evidence/learning-review/bakery.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/learning-review/bakery.png 2.import",
+    "canonical": "docs/evidence/learning-review/bakery.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/learning-review/electronics 2.png",
+    "canonical": "docs/evidence/learning-review/electronics.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/learning-review/electronics 2.png.import",
+    "canonical": "docs/evidence/learning-review/electronics.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/learning-review/electronics.png 2.import",
+    "canonical": "docs/evidence/learning-review/electronics.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/learning-review/furniture 2.png",
+    "canonical": "docs/evidence/learning-review/furniture.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/learning-review/furniture 2.png.import",
+    "canonical": "docs/evidence/learning-review/furniture.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/learning-review/furniture.png 2.import",
+    "canonical": "docs/evidence/learning-review/furniture.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/learning-review/market 2.png",
+    "canonical": "docs/evidence/learning-review/market.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/learning-review/market 2.png.import",
+    "canonical": "docs/evidence/learning-review/market.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/learning-review/market.png 2.import",
+    "canonical": "docs/evidence/learning-review/market.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/learning-review/sports 2.png",
+    "canonical": "docs/evidence/learning-review/sports.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/learning-review/sports 2.png.import",
+    "canonical": "docs/evidence/learning-review/sports.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/learning-review/sports.png 2.import",
+    "canonical": "docs/evidence/learning-review/sports.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/library-market-review/README 2.md",
+    "canonical": "docs/evidence/library-market-review/README.md",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/library-market-review/library_entry 2.png",
+    "canonical": "docs/evidence/library-market-review/library_entry.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/library-market-review/library_entry 2.png.import",
+    "canonical": "docs/evidence/library-market-review/library_entry.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/library-market-review/library_entry.png 2.import",
+    "canonical": "docs/evidence/library-market-review/library_entry.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/library-market-review/library_reading 2.png",
+    "canonical": "docs/evidence/library-market-review/library_reading.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/library-market-review/library_reading 2.png.import",
+    "canonical": "docs/evidence/library-market-review/library_reading.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/library-market-review/library_reading.png 2.import",
+    "canonical": "docs/evidence/library-market-review/library_reading.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/library-market-review/market_entry 2.png",
+    "canonical": "docs/evidence/library-market-review/market_entry.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/library-market-review/market_entry 2.png.import",
+    "canonical": "docs/evidence/library-market-review/market_entry.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/library-market-review/market_entry.png 2.import",
+    "canonical": "docs/evidence/library-market-review/market_entry.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/library-market-review/market_rear 2.png",
+    "canonical": "docs/evidence/library-market-review/market_rear.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/library-market-review/market_rear 2.png.import",
+    "canonical": "docs/evidence/library-market-review/market_rear.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/library-market-review/market_rear.png 2.import",
+    "canonical": "docs/evidence/library-market-review/market_rear.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/bonbon-review/check-results 2.txt",
+    "canonical": "docs/evidence/bonbon-review/check-results.txt",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/bonbon-review/gameplay 2.png",
+    "canonical": "docs/evidence/bonbon-review/gameplay.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/bonbon-review/gameplay 2.png.import",
+    "canonical": "docs/evidence/bonbon-review/gameplay.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/bonbon-review/gameplay.png 2.import",
+    "canonical": "docs/evidence/bonbon-review/gameplay.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/bonbon-review/hyper 2.png",
+    "canonical": "docs/evidence/bonbon-review/hyper.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/bonbon-review/hyper 2.png.import",
+    "canonical": "docs/evidence/bonbon-review/hyper.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/bonbon-review/hyper.png 2.import",
+    "canonical": "docs/evidence/bonbon-review/hyper.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/bonbon-review/bonbon 2.png",
+    "canonical": "docs/evidence/bonbon-review/bonbon.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/bonbon-review/bonbon 2.png.import",
+    "canonical": "docs/evidence/bonbon-review/bonbon.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/bonbon-review/bonbon.png 2.import",
+    "canonical": "docs/evidence/bonbon-review/bonbon.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/migrate_v27_source 2.py",
+    "canonical": "docs/migrate_v27_source.py",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/pig-locations/PigBank 2.png",
+    "canonical": "docs/evidence/pig-locations/PigBank.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/pig-locations/PigBank 2.png.import",
+    "canonical": "docs/evidence/pig-locations/PigBank.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/pig-locations/PigBank.png 2.import",
+    "canonical": "docs/evidence/pig-locations/PigBank.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/pig-locations/PigHospital 2.png",
+    "canonical": "docs/evidence/pig-locations/PigHospital.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/pig-locations/PigHospital 2.png.import",
+    "canonical": "docs/evidence/pig-locations/PigHospital.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/pig-locations/PigHospital.png 2.import",
+    "canonical": "docs/evidence/pig-locations/PigHospital.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/pig-locations/PigLibrary 2.png",
+    "canonical": "docs/evidence/pig-locations/PigLibrary.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/pig-locations/PigLibrary 2.png.import",
+    "canonical": "docs/evidence/pig-locations/PigLibrary.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/pig-locations/PigLibrary.png 2.import",
+    "canonical": "docs/evidence/pig-locations/PigLibrary.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/pig-locations/PigPoliceStation 2.png",
+    "canonical": "docs/evidence/pig-locations/PigPoliceStation.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/pig-locations/PigPoliceStation 2.png.import",
+    "canonical": "docs/evidence/pig-locations/PigPoliceStation.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/pig-locations/PigPoliceStation.png 2.import",
+    "canonical": "docs/evidence/pig-locations/PigPoliceStation.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/pig-locations/PigSchool 2.png",
+    "canonical": "docs/evidence/pig-locations/PigSchool.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/pig-locations/PigSchool 2.png.import",
+    "canonical": "docs/evidence/pig-locations/PigSchool.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/pig-locations/PigSchool.png 2.import",
+    "canonical": "docs/evidence/pig-locations/PigSchool.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/pig-locations/PigSupermarket 2.png",
+    "canonical": "docs/evidence/pig-locations/PigSupermarket.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/pig-locations/PigSupermarket 2.png.import",
+    "canonical": "docs/evidence/pig-locations/PigSupermarket.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/pig-locations/PigSupermarket.png 2.import",
+    "canonical": "docs/evidence/pig-locations/PigSupermarket.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/pig-options/README 2.md",
+    "canonical": "docs/evidence/pig-options/README.md",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/pig-options/lineup 2.png",
+    "canonical": "docs/evidence/pig-options/lineup.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/pig-options/lineup 2.png.import",
+    "canonical": "docs/evidence/pig-options/lineup.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/pig-options/lineup.png 2.import",
+    "canonical": "docs/evidence/pig-options/lineup.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/pig-options/plush 2.png",
+    "canonical": "docs/evidence/pig-options/plush.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/pig-options/plush 2.png.import",
+    "canonical": "docs/evidence/pig-options/plush.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/pig-options/plush.png 2.import",
+    "canonical": "docs/evidence/pig-options/plush.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/pig-options/plush_refined_angle 2.png",
+    "canonical": "docs/evidence/pig-options/plush_refined_angle.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/pig-options/plush_refined_angle 2.png.import",
+    "canonical": "docs/evidence/pig-options/plush_refined_angle.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/pig-options/plush_refined_angle.png 2.import",
+    "canonical": "docs/evidence/pig-options/plush_refined_angle.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/pig-options/plush_refined_front 2.png",
+    "canonical": "docs/evidence/pig-options/plush_refined_front.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/pig-options/plush_refined_front 2.png.import",
+    "canonical": "docs/evidence/pig-options/plush_refined_front.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/pig-options/plush_refined_front.png 2.import",
+    "canonical": "docs/evidence/pig-options/plush_refined_front.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/pig-options/storybook 2.png",
+    "canonical": "docs/evidence/pig-options/storybook.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/pig-options/storybook 2.png.import",
+    "canonical": "docs/evidence/pig-options/storybook.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/pig-options/storybook.png 2.import",
+    "canonical": "docs/evidence/pig-options/storybook.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/pig-review/giant_close 2.png",
+    "canonical": "docs/evidence/pig-review/giant_close.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/pig-review/giant_close 2.png.import",
+    "canonical": "docs/evidence/pig-review/giant_close.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/pig-review/giant_close.png 2.import",
+    "canonical": "docs/evidence/pig-review/giant_close.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/pig-review/giant_from_house 2.png",
+    "canonical": "docs/evidence/pig-review/giant_from_house.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/pig-review/giant_from_house 2.png.import",
+    "canonical": "docs/evidence/pig-review/giant_from_house.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/pig-review/giant_from_house.png 2.import",
+    "canonical": "docs/evidence/pig-review/giant_from_house.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/pig-review/giant_plush_eight_houses 2.png",
+    "canonical": "docs/evidence/pig-review/giant_plush_eight_houses.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/pig-review/giant_plush_eight_houses 2.png.import",
+    "canonical": "docs/evidence/pig-review/giant_plush_eight_houses.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/pig-review/giant_plush_eight_houses.png 2.import",
+    "canonical": "docs/evidence/pig-review/giant_plush_eight_houses.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/pig-review/house_scale_comparison 2.png",
+    "canonical": "docs/evidence/pig-review/house_scale_comparison.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/pig-review/house_scale_comparison 2.png.import",
+    "canonical": "docs/evidence/pig-review/house_scale_comparison.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/pig-review/house_scale_comparison.png 2.import",
+    "canonical": "docs/evidence/pig-review/house_scale_comparison.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/pig-review/park_pig 2.png",
+    "canonical": "docs/evidence/pig-review/park_pig.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/pig-review/park_pig 2.png.import",
+    "canonical": "docs/evidence/pig-review/park_pig.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/pig-review/park_pig.png 2.import",
+    "canonical": "docs/evidence/pig-review/park_pig.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/rooftop-review/README 2.md",
+    "canonical": "docs/evidence/rooftop-review/README.md",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/rooftop-review/helicopter 2.png",
+    "canonical": "docs/evidence/rooftop-review/helicopter.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/rooftop-review/helicopter 2.png.import",
+    "canonical": "docs/evidence/rooftop-review/helicopter.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/rooftop-review/helicopter.png 2.import",
+    "canonical": "docs/evidence/rooftop-review/helicopter.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/rooftop-review/home 2.png",
+    "canonical": "docs/evidence/rooftop-review/home.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/rooftop-review/home 2.png.import",
+    "canonical": "docs/evidence/rooftop-review/home.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/rooftop-review/home.png 2.import",
+    "canonical": "docs/evidence/rooftop-review/home.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/rooftop-review/hospital 2.png",
+    "canonical": "docs/evidence/rooftop-review/hospital.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/rooftop-review/hospital 2.png.import",
+    "canonical": "docs/evidence/rooftop-review/hospital.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/rooftop-review/hospital.png 2.import",
+    "canonical": "docs/evidence/rooftop-review/hospital.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/town-redesign/README 2.md",
+    "canonical": "docs/evidence/town-redesign/README.md",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/town-redesign/central_park 2.png",
+    "canonical": "docs/evidence/town-redesign/central_park.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/town-redesign/central_park 2.png.import",
+    "canonical": "docs/evidence/town-redesign/central_park.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/town-redesign/central_park.png 2.import",
+    "canonical": "docs/evidence/town-redesign/central_park.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/town-redesign/pond_bridge 2.png",
+    "canonical": "docs/evidence/town-redesign/pond_bridge.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/town-redesign/pond_bridge 2.png.import",
+    "canonical": "docs/evidence/town-redesign/pond_bridge.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/town-redesign/pond_bridge.png 2.import",
+    "canonical": "docs/evidence/town-redesign/pond_bridge.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/town-redesign/town_overview 2.png",
+    "canonical": "docs/evidence/town-redesign/town_overview.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/town-redesign/town_overview 2.png.import",
+    "canonical": "docs/evidence/town-redesign/town_overview.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/town-redesign/town_overview.png 2.import",
+    "canonical": "docs/evidence/town-redesign/town_overview.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/zoo-review/clothing 2.png",
+    "canonical": "docs/evidence/zoo-review/clothing.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/zoo-review/clothing 2.png.import",
+    "canonical": "docs/evidence/zoo-review/clothing.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/zoo-review/clothing.png 2.import",
+    "canonical": "docs/evidence/zoo-review/clothing.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/zoo-review/hospital 2.png",
+    "canonical": "docs/evidence/zoo-review/hospital.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/zoo-review/hospital 2.png.import",
+    "canonical": "docs/evidence/zoo-review/hospital.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/zoo-review/hospital.png 2.import",
+    "canonical": "docs/evidence/zoo-review/hospital.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/zoo-review/school 2.png",
+    "canonical": "docs/evidence/zoo-review/school.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/zoo-review/school 2.png.import",
+    "canonical": "docs/evidence/zoo-review/school.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/zoo-review/school.png 2.import",
+    "canonical": "docs/evidence/zoo-review/school.png.import",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/zoo-review/zoo 2.png",
+    "canonical": "docs/evidence/zoo-review/zoo.png",
+    "identical": true
+  },
+  {
+    "removed": "docs/evidence/zoo-review/zoo 2.png.import",
+    "canonical": "docs/evidence/zoo-review/zoo.png.import",
+    "identical": false
+  },
+  {
+    "removed": "docs/evidence/zoo-review/zoo.png 2.import",
+    "canonical": "docs/evidence/zoo-review/zoo.png.import",
+    "identical": true
+  },
+  {
+    "removed": "project 2.godot",
+    "canonical": "project.godot",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/bear 2.tscn",
+    "canonical": "scenes/animals/bear.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/bird 2.tscn",
+    "canonical": "scenes/animals/bird.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/cat 2.tscn",
+    "canonical": "scenes/animals/cat.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/cow 2.tscn",
+    "canonical": "scenes/animals/cow.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/dog 2.tscn",
+    "canonical": "scenes/animals/dog.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/duck 2.tscn",
+    "canonical": "scenes/animals/duck.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/elephant 2.tscn",
+    "canonical": "scenes/animals/elephant.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/field_mouse 2.tscn",
+    "canonical": "scenes/animals/field_mouse.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/fish 2.tscn",
+    "canonical": "scenes/animals/fish.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/giraffe 2.tscn",
+    "canonical": "scenes/animals/giraffe.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/hen 2.tscn",
+    "canonical": "scenes/animals/hen.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/horse 2.tscn",
+    "canonical": "scenes/animals/horse.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/lion 2.tscn",
+    "canonical": "scenes/animals/lion.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/monkey 2.tscn",
+    "canonical": "scenes/animals/monkey.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/pig 2.tscn",
+    "canonical": "scenes/animals/pig.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/rabbit 2.tscn",
+    "canonical": "scenes/animals/rabbit.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/box_000 2.tres",
+    "canonical": "scenes/animals/shared/box_000.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/box_001 2.tres",
+    "canonical": "scenes/animals/shared/box_001.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/box_002 2.tres",
+    "canonical": "scenes/animals/shared/box_002.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/box_003 2.tres",
+    "canonical": "scenes/animals/shared/box_003.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/box_004 2.tres",
+    "canonical": "scenes/animals/shared/box_004.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/box_005 2.tres",
+    "canonical": "scenes/animals/shared/box_005.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/box_006 2.tres",
+    "canonical": "scenes/animals/shared/box_006.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/box_007 2.tres",
+    "canonical": "scenes/animals/shared/box_007.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/box_008 2.tres",
+    "canonical": "scenes/animals/shared/box_008.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/box_009 2.tres",
+    "canonical": "scenes/animals/shared/box_009.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/box_010 2.tres",
+    "canonical": "scenes/animals/shared/box_010.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/box_011 2.tres",
+    "canonical": "scenes/animals/shared/box_011.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/box_012 2.tres",
+    "canonical": "scenes/animals/shared/box_012.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/box_013 2.tres",
+    "canonical": "scenes/animals/shared/box_013.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/box_014 2.tres",
+    "canonical": "scenes/animals/shared/box_014.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/box_015 2.tres",
+    "canonical": "scenes/animals/shared/box_015.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/box_016 2.tres",
+    "canonical": "scenes/animals/shared/box_016.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/box_017 2.tres",
+    "canonical": "scenes/animals/shared/box_017.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/color_252c31ff 2.tres",
+    "canonical": "scenes/animals/shared/color_252c31ff.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/color_386d60ff 2.tres",
+    "canonical": "scenes/animals/shared/color_386d60ff.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/color_4d7151ff 2.tres",
+    "canonical": "scenes/animals/shared/color_4d7151ff.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/color_4e3c32ff 2.tres",
+    "canonical": "scenes/animals/shared/color_4e3c32ff.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/color_6da8ceff 2.tres",
+    "canonical": "scenes/animals/shared/color_6da8ceff.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/color_739c56ff 2.tres",
+    "canonical": "scenes/animals/shared/color_739c56ff.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/color_77965bff 2.tres",
+    "canonical": "scenes/animals/shared/color_77965bff.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/color_7f9c9dff 2.tres",
+    "canonical": "scenes/animals/shared/color_7f9c9dff.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/color_865a40ff 2.tres",
+    "canonical": "scenes/animals/shared/color_865a40ff.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/color_86684fff 2.tres",
+    "canonical": "scenes/animals/shared/color_86684fff.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/color_8bc5d0ff 2.tres",
+    "canonical": "scenes/animals/shared/color_8bc5d0ff.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/color_8c6951ff 2.tres",
+    "canonical": "scenes/animals/shared/color_8c6951ff.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/color_93613bff 2.tres",
+    "canonical": "scenes/animals/shared/color_93613bff.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/color_9ba5afff 2.tres",
+    "canonical": "scenes/animals/shared/color_9ba5afff.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/color_9c6746ff 2.tres",
+    "canonical": "scenes/animals/shared/color_9c6746ff.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/color_a6a4a1ff 2.tres",
+    "canonical": "scenes/animals/shared/color_a6a4a1ff.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/color_a77a50ff 2.tres",
+    "canonical": "scenes/animals/shared/color_a77a50ff.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/color_a88560ff 2.tres",
+    "canonical": "scenes/animals/shared/color_a88560ff.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/color_b37d42ff 2.tres",
+    "canonical": "scenes/animals/shared/color_b37d42ff.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/color_b58c64ff 2.tres",
+    "canonical": "scenes/animals/shared/color_b58c64ff.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/color_ba8a60ff 2.tres",
+    "canonical": "scenes/animals/shared/color_ba8a60ff.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/color_bdc799ff 2.tres",
+    "canonical": "scenes/animals/shared/color_bdc799ff.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/color_c35444ff 2.tres",
+    "canonical": "scenes/animals/shared/color_c35444ff.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/color_c9a382ff 2.tres",
+    "canonical": "scenes/animals/shared/color_c9a382ff.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/color_c9bb87ff 2.tres",
+    "canonical": "scenes/animals/shared/color_c9bb87ff.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/color_d5a15aff 2.tres",
+    "canonical": "scenes/animals/shared/color_d5a15aff.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/color_d99844ff 2.tres",
+    "canonical": "scenes/animals/shared/color_d99844ff.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/color_d9ba69ff 2.tres",
+    "canonical": "scenes/animals/shared/color_d9ba69ff.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/color_ddcba7ff 2.tres",
+    "canonical": "scenes/animals/shared/color_ddcba7ff.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/color_df7040ff 2.tres",
+    "canonical": "scenes/animals/shared/color_df7040ff.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/color_e2b96bff 2.tres",
+    "canonical": "scenes/animals/shared/color_e2b96bff.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/color_e3a442ff 2.tres",
+    "canonical": "scenes/animals/shared/color_e3a442ff.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/color_e6a0a5ff 2.tres",
+    "canonical": "scenes/animals/shared/color_e6a0a5ff.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/color_e99743ff 2.tres",
+    "canonical": "scenes/animals/shared/color_e99743ff.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/color_e9d4adff 2.tres",
+    "canonical": "scenes/animals/shared/color_e9d4adff.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/color_ead9a4ff 2.tres",
+    "canonical": "scenes/animals/shared/color_ead9a4ff.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/color_edaa53ff 2.tres",
+    "canonical": "scenes/animals/shared/color_edaa53ff.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/color_eee5d9ff 2.tres",
+    "canonical": "scenes/animals/shared/color_eee5d9ff.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/color_eee7d6ff 2.tres",
+    "canonical": "scenes/animals/shared/color_eee7d6ff.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/color_eee9dcff 2.tres",
+    "canonical": "scenes/animals/shared/color_eee9dcff.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/color_efc7a7ff 2.tres",
+    "canonical": "scenes/animals/shared/color_efc7a7ff.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/color_f7f1dfff 2.tres",
+    "canonical": "scenes/animals/shared/color_f7f1dfff.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/shared/toy_sphere 2.tres",
+    "canonical": "scenes/animals/shared/toy_sphere.tres",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/sheep 2.tscn",
+    "canonical": "scenes/animals/sheep.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/snake 2.tscn",
+    "canonical": "scenes/animals/snake.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/tiger 2.tscn",
+    "canonical": "scenes/animals/tiger.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/animals/turtle 2.tscn",
+    "canonical": "scenes/animals/turtle.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/buildings/bakery_cafe 2.tscn",
+    "canonical": "scenes/buildings/bakery_cafe.tscn",
+    "identical": false
+  },
+  {
+    "removed": "scenes/buildings/clothing_displays 2.tscn",
+    "canonical": "scenes/buildings/clothing_displays.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/buildings/clothing_store 2.tscn",
+    "canonical": "scenes/buildings/clothing_store.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/buildings/electronics_displays 2.tscn",
+    "canonical": "scenes/buildings/electronics_displays.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/buildings/electronics_store 2.tscn",
+    "canonical": "scenes/buildings/electronics_store.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/buildings/furniture_store 2.tscn",
+    "canonical": "scenes/buildings/furniture_store.tscn",
+    "identical": false
+  },
+  {
+    "removed": "scenes/buildings/hospital 2.tscn",
+    "canonical": "scenes/buildings/hospital.tscn",
+    "identical": false
+  },
+  {
+    "removed": "scenes/buildings/hospital_learning_wing 2.tscn",
+    "canonical": "scenes/buildings/hospital_learning_wing.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/buildings/hospital_rear_connection 2.tscn",
+    "canonical": "scenes/buildings/hospital_rear_connection.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/buildings/house_structure 2.tscn",
+    "canonical": "scenes/buildings/house_structure.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/buildings/market_displays 2.tscn",
+    "canonical": "scenes/buildings/market_displays.tscn",
+    "identical": false
+  },
+  {
+    "removed": "scenes/buildings/rooms/hospital_emergencyroom 2.tscn",
+    "canonical": "scenes/buildings/rooms/hospital_emergencyroom.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/buildings/rooms/hospital_examinationroom 2.tscn",
+    "canonical": "scenes/buildings/rooms/hospital_examinationroom.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/buildings/rooms/hospital_imagingroom 2.tscn",
+    "canonical": "scenes/buildings/rooms/hospital_imagingroom.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/buildings/rooms/hospital_rehabilitationroom 2.tscn",
+    "canonical": "scenes/buildings/rooms/hospital_rehabilitationroom.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/buildings/rooms/school_artstudio 2.tscn",
+    "canonical": "scenes/buildings/rooms/school_artstudio.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/buildings/rooms/school_geographyroom 2.tscn",
+    "canonical": "scenes/buildings/rooms/school_geographyroom.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/buildings/rooms/school_musicroom 2.tscn",
+    "canonical": "scenes/buildings/rooms/school_musicroom.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/buildings/rooms/school_sciencelab 2.tscn",
+    "canonical": "scenes/buildings/rooms/school_sciencelab.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/buildings/school 2.tscn",
+    "canonical": "scenes/buildings/school.tscn",
+    "identical": false
+  },
+  {
+    "removed": "scenes/buildings/school_learning_wing 2.tscn",
+    "canonical": "scenes/buildings/school_learning_wing.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/buildings/school_rear_connection 2.tscn",
+    "canonical": "scenes/buildings/school_rear_connection.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/buildings/sports_store 2.tscn",
+    "canonical": "scenes/buildings/sports_store.tscn",
+    "identical": false
+  },
+  {
+    "removed": "scenes/characters/BonBon 2.tscn",
+    "canonical": "scenes/characters/BonBon.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/characters/cashier 2.tscn",
+    "canonical": "scenes/characters/cashier.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/characters/cook 2.tscn",
+    "canonical": "scenes/characters/cook.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/characters/doctor 2.tscn",
+    "canonical": "scenes/characters/doctor.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/characters/driver 2.tscn",
+    "canonical": "scenes/characters/driver.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/characters/firefighter 2.tscn",
+    "canonical": "scenes/characters/firefighter.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/characters/nurse 2.tscn",
+    "canonical": "scenes/characters/nurse.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/characters/pig 2.tscn",
+    "canonical": "scenes/characters/pig.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/characters/pig_plush 2.tscn",
+    "canonical": "scenes/characters/pig_plush.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/characters/police_officer 2.tscn",
+    "canonical": "scenes/characters/police_officer.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/characters/student 2.tscn",
+    "canonical": "scenes/characters/student.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/characters/teacher 2.tscn",
+    "canonical": "scenes/characters/teacher.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/main 2.tscn",
+    "canonical": "scenes/main.tscn",
+    "identical": false
+  },
+  {
+    "removed": "scenes/player/bonbon_player 2.tscn",
+    "canonical": "scenes/player/bonbon_player.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/furniture/chair 2.tscn",
+    "canonical": "scenes/props/furniture/chair.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/furniture/clothing_rack 2.tscn",
+    "canonical": "scenes/props/furniture/clothing_rack.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/furniture/desk 2.tscn",
+    "canonical": "scenes/props/furniture/desk.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/furniture/hospital_bed 2.tscn",
+    "canonical": "scenes/props/furniture/hospital_bed.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/furniture/laptop 2.tscn",
+    "canonical": "scenes/props/furniture/laptop.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/furniture/sofa 2.tscn",
+    "canonical": "scenes/props/furniture/sofa.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/home/bedside_lamp 2.tscn",
+    "canonical": "scenes/props/home/bedside_lamp.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/home/cereal 2.tscn",
+    "canonical": "scenes/props/home/cereal.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/home/coat_rack 2.tscn",
+    "canonical": "scenes/props/home/coat_rack.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/home/curtains 2.tscn",
+    "canonical": "scenes/props/home/curtains.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/home/drawer_cabinet 2.tscn",
+    "canonical": "scenes/props/home/drawer_cabinet.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/home/guitar 2.tscn",
+    "canonical": "scenes/props/home/guitar.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/home/pasta 2.tscn",
+    "canonical": "scenes/props/home/pasta.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/home/rice 2.tscn",
+    "canonical": "scenes/props/home/rice.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/home/sofa 2.tscn",
+    "canonical": "scenes/props/home/sofa.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/home/umbrella_stand 2.tscn",
+    "canonical": "scenes/props/home/umbrella_stand.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/nature/apple_tree 2.tscn",
+    "canonical": "scenes/props/nature/apple_tree.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/nature/maple_tree 2.tscn",
+    "canonical": "scenes/props/nature/maple_tree.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/nature/orange_tree 2.tscn",
+    "canonical": "scenes/props/nature/orange_tree.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/nature/tree 2.tscn",
+    "canonical": "scenes/props/nature/tree.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vehicles/ambulance 2.tscn",
+    "canonical": "scenes/props/vehicles/ambulance.tscn",
+    "identical": false
+  },
+  {
+    "removed": "scenes/props/vehicles/bus 2.tscn",
+    "canonical": "scenes/props/vehicles/bus.tscn",
+    "identical": false
+  },
+  {
+    "removed": "scenes/props/vehicles/car 2.tscn",
+    "canonical": "scenes/props/vehicles/car.tscn",
+    "identical": false
+  },
+  {
+    "removed": "scenes/props/vehicles/fire_truck 2.tscn",
+    "canonical": "scenes/props/vehicles/fire_truck.tscn",
+    "identical": false
+  },
+  {
+    "removed": "scenes/props/vehicles/helicopter 2.tscn",
+    "canonical": "scenes/props/vehicles/helicopter.tscn",
+    "identical": false
+  },
+  {
+    "removed": "scenes/props/vehicles/motorcycle 2.tscn",
+    "canonical": "scenes/props/vehicles/motorcycle.tscn",
+    "identical": false
+  },
+  {
+    "removed": "scenes/props/vehicles/police_car 2.tscn",
+    "canonical": "scenes/props/vehicles/police_car.tscn",
+    "identical": false
+  },
+  {
+    "removed": "scenes/props/vehicles/taxi 2.tscn",
+    "canonical": "scenes/props/vehicles/taxi.tscn",
+    "identical": false
+  },
+  {
+    "removed": "scenes/props/vehicles/truck 2.tscn",
+    "canonical": "scenes/props/vehicles/truck.tscn",
+    "identical": false
+  },
+  {
+    "removed": "scenes/props/vocabulary/MRI_scanner 2.tscn",
+    "canonical": "scenes/props/vocabulary/MRI_scanner.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/apple 2.tscn",
+    "canonical": "scenes/props/vocabulary/apple.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/apron 2.tscn",
+    "canonical": "scenes/props/vocabulary/apron.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/armchair 2.tscn",
+    "canonical": "scenes/props/vocabulary/armchair.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/backpack 2.tscn",
+    "canonical": "scenes/props/vocabulary/backpack.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/baguette 2.tscn",
+    "canonical": "scenes/props/vocabulary/baguette.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/banana 2.tscn",
+    "canonical": "scenes/props/vocabulary/banana.tscn",
+    "identical": false
+  },
+  {
+    "removed": "scenes/props/vocabulary/bandage 2.tscn",
+    "canonical": "scenes/props/vocabulary/bandage.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/barbell 2.tscn",
+    "canonical": "scenes/props/vocabulary/barbell.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/baseball 2.tscn",
+    "canonical": "scenes/props/vocabulary/baseball.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/baseball_bat 2.tscn",
+    "canonical": "scenes/props/vocabulary/baseball_bat.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/baseball_glove 2.tscn",
+    "canonical": "scenes/props/vocabulary/baseball_glove.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/basketball 2.tscn",
+    "canonical": "scenes/props/vocabulary/basketball.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/basketball_hoop 2.tscn",
+    "canonical": "scenes/props/vocabulary/basketball_hoop.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/bed 2.tscn",
+    "canonical": "scenes/props/vocabulary/bed.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/belt 2.tscn",
+    "canonical": "scenes/props/vocabulary/belt.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/bench 2.tscn",
+    "canonical": "scenes/props/vocabulary/bench.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/bicycle 2.tscn",
+    "canonical": "scenes/props/vocabulary/bicycle.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/blood_pressure_monitor 2.tscn",
+    "canonical": "scenes/props/vocabulary/blood_pressure_monitor.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/book 2.tscn",
+    "canonical": "scenes/props/vocabulary/book.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/bookshelf 2.tscn",
+    "canonical": "scenes/props/vocabulary/bookshelf.tscn",
+    "identical": false
+  },
+  {
+    "removed": "scenes/props/vocabulary/boots 2.tscn",
+    "canonical": "scenes/props/vocabulary/boots.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/bowl 2.tscn",
+    "canonical": "scenes/props/vocabulary/bowl.tscn",
+    "identical": false
+  },
+  {
+    "removed": "scenes/props/vocabulary/bread 2.tscn",
+    "canonical": "scenes/props/vocabulary/bread.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/broccoli 2.tscn",
+    "canonical": "scenes/props/vocabulary/broccoli.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/cake 2.tscn",
+    "canonical": "scenes/props/vocabulary/cake.tscn",
+    "identical": false
+  },
+  {
+    "removed": "scenes/props/vocabulary/camera 2.tscn",
+    "canonical": "scenes/props/vocabulary/camera.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/can 2.tscn",
+    "canonical": "scenes/props/vocabulary/can.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/carrot 2.tscn",
+    "canonical": "scenes/props/vocabulary/carrot.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/cereal 2.tscn",
+    "canonical": "scenes/props/vocabulary/cereal.tscn",
+    "identical": false
+  },
+  {
+    "removed": "scenes/props/vocabulary/chair 2.tscn",
+    "canonical": "scenes/props/vocabulary/chair.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/cheese 2.tscn",
+    "canonical": "scenes/props/vocabulary/cheese.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/clipboard 2.tscn",
+    "canonical": "scenes/props/vocabulary/clipboard.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/coat 2.tscn",
+    "canonical": "scenes/props/vocabulary/coat.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/coffee_maker 2.tscn",
+    "canonical": "scenes/props/vocabulary/coffee_maker.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/coffee_table 2.tscn",
+    "canonical": "scenes/props/vocabulary/coffee_table.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/compass 2.tscn",
+    "canonical": "scenes/props/vocabulary/compass.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/computer 2.tscn",
+    "canonical": "scenes/props/vocabulary/computer.tscn",
+    "identical": false
+  },
+  {
+    "removed": "scenes/props/vocabulary/cookie 2.tscn",
+    "canonical": "scenes/props/vocabulary/cookie.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/croissant 2.tscn",
+    "canonical": "scenes/props/vocabulary/croissant.tscn",
+    "identical": false
+  },
+  {
+    "removed": "scenes/props/vocabulary/crutches 2.tscn",
+    "canonical": "scenes/props/vocabulary/crutches.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/cup 2.tscn",
+    "canonical": "scenes/props/vocabulary/cup.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/defibrillator 2.tscn",
+    "canonical": "scenes/props/vocabulary/defibrillator.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/desk 2.tscn",
+    "canonical": "scenes/props/vocabulary/desk.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/dining_table 2.tscn",
+    "canonical": "scenes/props/vocabulary/dining_table.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/donut 2.tscn",
+    "canonical": "scenes/props/vocabulary/donut.tscn",
+    "identical": false
+  },
+  {
+    "removed": "scenes/props/vocabulary/dress 2.tscn",
+    "canonical": "scenes/props/vocabulary/dress.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/dresser 2.tscn",
+    "canonical": "scenes/props/vocabulary/dresser.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/drum 2.tscn",
+    "canonical": "scenes/props/vocabulary/drum.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/dryer 2.tscn",
+    "canonical": "scenes/props/vocabulary/dryer.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/dumbbell 2.tscn",
+    "canonical": "scenes/props/vocabulary/dumbbell.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/easel 2.tscn",
+    "canonical": "scenes/props/vocabulary/easel.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/eggs 2.tscn",
+    "canonical": "scenes/props/vocabulary/eggs.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/fan 2.tscn",
+    "canonical": "scenes/props/vocabulary/fan.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/first_aid_kit 2.tscn",
+    "canonical": "scenes/props/vocabulary/first_aid_kit.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/fish 2.tscn",
+    "canonical": "scenes/props/vocabulary/fish.tscn",
+    "identical": false
+  },
+  {
+    "removed": "scenes/props/vocabulary/game_controller 2.tscn",
+    "canonical": "scenes/props/vocabulary/game_controller.tscn",
+    "identical": false
+  },
+  {
+    "removed": "scenes/props/vocabulary/globe 2.tscn",
+    "canonical": "scenes/props/vocabulary/globe.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/goal 2.tscn",
+    "canonical": "scenes/props/vocabulary/goal.tscn",
+    "identical": false
+  },
+  {
+    "removed": "scenes/props/vocabulary/grapes 2.tscn",
+    "canonical": "scenes/props/vocabulary/grapes.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/guitar 2.tscn",
+    "canonical": "scenes/props/vocabulary/guitar.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/handbag 2.tscn",
+    "canonical": "scenes/props/vocabulary/handbag.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/hat 2.tscn",
+    "canonical": "scenes/props/vocabulary/hat.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/headphones 2.tscn",
+    "canonical": "scenes/props/vocabulary/headphones.tscn",
+    "identical": false
+  },
+  {
+    "removed": "scenes/props/vocabulary/helmet 2.tscn",
+    "canonical": "scenes/props/vocabulary/helmet.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/iv_stand 2.tscn",
+    "canonical": "scenes/props/vocabulary/iv_stand.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/jacket 2.tscn",
+    "canonical": "scenes/props/vocabulary/jacket.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/jeans 2.tscn",
+    "canonical": "scenes/props/vocabulary/jeans.tscn",
+    "identical": false
+  },
+  {
+    "removed": "scenes/props/vocabulary/jump_rope 2.tscn",
+    "canonical": "scenes/props/vocabulary/jump_rope.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/keyboard 2.tscn",
+    "canonical": "scenes/props/vocabulary/keyboard.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/knife 2.tscn",
+    "canonical": "scenes/props/vocabulary/knife.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/lamp 2.tscn",
+    "canonical": "scenes/props/vocabulary/lamp.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/laptop 2.tscn",
+    "canonical": "scenes/props/vocabulary/laptop.tscn",
+    "identical": false
+  },
+  {
+    "removed": "scenes/props/vocabulary/lemon 2.tscn",
+    "canonical": "scenes/props/vocabulary/lemon.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/magnet 2.tscn",
+    "canonical": "scenes/props/vocabulary/magnet.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/magnifying_glass 2.tscn",
+    "canonical": "scenes/props/vocabulary/magnifying_glass.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/medical_monitor 2.tscn",
+    "canonical": "scenes/props/vocabulary/medical_monitor.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/medicine 2.tscn",
+    "canonical": "scenes/props/vocabulary/medicine.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/microphone 2.tscn",
+    "canonical": "scenes/props/vocabulary/microphone.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/microwave 2.tscn",
+    "canonical": "scenes/props/vocabulary/microwave.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/milk 2.tscn",
+    "canonical": "scenes/props/vocabulary/milk.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/mirror 2.tscn",
+    "canonical": "scenes/props/vocabulary/mirror.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/mouse 2.tscn",
+    "canonical": "scenes/props/vocabulary/mouse.tscn",
+    "identical": false
+  },
+  {
+    "removed": "scenes/props/vocabulary/nightstand 2.tscn",
+    "canonical": "scenes/props/vocabulary/nightstand.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/notebook 2.tscn",
+    "canonical": "scenes/props/vocabulary/notebook.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/orange 2.tscn",
+    "canonical": "scenes/props/vocabulary/orange.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/oxygen_tank 2.tscn",
+    "canonical": "scenes/props/vocabulary/oxygen_tank.tscn",
+    "identical": false
+  },
+  {
+    "removed": "scenes/props/vocabulary/paint_tube 2.tscn",
+    "canonical": "scenes/props/vocabulary/paint_tube.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/paintbrush 2.tscn",
+    "canonical": "scenes/props/vocabulary/paintbrush.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/palette 2.tscn",
+    "canonical": "scenes/props/vocabulary/palette.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/pants 2.tscn",
+    "canonical": "scenes/props/vocabulary/pants.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/pear 2.tscn",
+    "canonical": "scenes/props/vocabulary/pear.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/pencil 2.tscn",
+    "canonical": "scenes/props/vocabulary/pencil.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/piano 2.tscn",
+    "canonical": "scenes/props/vocabulary/piano.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/pillow 2.tscn",
+    "canonical": "scenes/props/vocabulary/pillow.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/plate 2.tscn",
+    "canonical": "scenes/props/vocabulary/plate.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/potato 2.tscn",
+    "canonical": "scenes/props/vocabulary/potato.tscn",
+    "identical": false
+  },
+  {
+    "removed": "scenes/props/vocabulary/prosthetic_leg 2.tscn",
+    "canonical": "scenes/props/vocabulary/prosthetic_leg.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/reflex_hammer 2.tscn",
+    "canonical": "scenes/props/vocabulary/reflex_hammer.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/refrigerator 2.tscn",
+    "canonical": "scenes/props/vocabulary/refrigerator.tscn",
+    "identical": false
+  },
+  {
+    "removed": "scenes/props/vocabulary/rolling_pin 2.tscn",
+    "canonical": "scenes/props/vocabulary/rolling_pin.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/ruler 2.tscn",
+    "canonical": "scenes/props/vocabulary/ruler.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/scarf 2.tscn",
+    "canonical": "scenes/props/vocabulary/scarf.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/scissors 2.tscn",
+    "canonical": "scenes/props/vocabulary/scissors.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/shirt 2.tscn",
+    "canonical": "scenes/props/vocabulary/shirt.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/shoes 2.tscn",
+    "canonical": "scenes/props/vocabulary/shoes.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/shorts 2.tscn",
+    "canonical": "scenes/props/vocabulary/shorts.tscn",
+    "identical": false
+  },
+  {
+    "removed": "scenes/props/vocabulary/skateboard 2.tscn",
+    "canonical": "scenes/props/vocabulary/skateboard.tscn",
+    "identical": false
+  },
+  {
+    "removed": "scenes/props/vocabulary/skirt 2.tscn",
+    "canonical": "scenes/props/vocabulary/skirt.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/smartphone 2.tscn",
+    "canonical": "scenes/props/vocabulary/smartphone.tscn",
+    "identical": false
+  },
+  {
+    "removed": "scenes/props/vocabulary/sneakers 2.tscn",
+    "canonical": "scenes/props/vocabulary/sneakers.tscn",
+    "identical": false
+  },
+  {
+    "removed": "scenes/props/vocabulary/soccer_ball 2.tscn",
+    "canonical": "scenes/props/vocabulary/soccer_ball.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/sofa 2.tscn",
+    "canonical": "scenes/props/vocabulary/sofa.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/speaker 2.tscn",
+    "canonical": "scenes/props/vocabulary/speaker.tscn",
+    "identical": false
+  },
+  {
+    "removed": "scenes/props/vocabulary/spoon 2.tscn",
+    "canonical": "scenes/props/vocabulary/spoon.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/steak 2.tscn",
+    "canonical": "scenes/props/vocabulary/steak.tscn",
+    "identical": false
+  },
+  {
+    "removed": "scenes/props/vocabulary/stethoscope 2.tscn",
+    "canonical": "scenes/props/vocabulary/stethoscope.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/stool 2.tscn",
+    "canonical": "scenes/props/vocabulary/stool.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/stretcher 2.tscn",
+    "canonical": "scenes/props/vocabulary/stretcher.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/sunglasses 2.tscn",
+    "canonical": "scenes/props/vocabulary/sunglasses.tscn",
+    "identical": false
+  },
+  {
+    "removed": "scenes/props/vocabulary/surgical_mask 2.tscn",
+    "canonical": "scenes/props/vocabulary/surgical_mask.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/sweater 2.tscn",
+    "canonical": "scenes/props/vocabulary/sweater.tscn",
+    "identical": false
+  },
+  {
+    "removed": "scenes/props/vocabulary/syringe 2.tscn",
+    "canonical": "scenes/props/vocabulary/syringe.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/tablet 2.tscn",
+    "canonical": "scenes/props/vocabulary/tablet.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/teapot 2.tscn",
+    "canonical": "scenes/props/vocabulary/teapot.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/television 2.tscn",
+    "canonical": "scenes/props/vocabulary/television.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/tennis_ball 2.tscn",
+    "canonical": "scenes/props/vocabulary/tennis_ball.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/tennis_racket 2.tscn",
+    "canonical": "scenes/props/vocabulary/tennis_racket.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/thermometer 2.tscn",
+    "canonical": "scenes/props/vocabulary/thermometer.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/tomato 2.tscn",
+    "canonical": "scenes/props/vocabulary/tomato.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/trumpet 2.tscn",
+    "canonical": "scenes/props/vocabulary/trumpet.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/violin 2.tscn",
+    "canonical": "scenes/props/vocabulary/violin.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/volleyball 2.tscn",
+    "canonical": "scenes/props/vocabulary/volleyball.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/walker 2.tscn",
+    "canonical": "scenes/props/vocabulary/walker.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/wardrobe 2.tscn",
+    "canonical": "scenes/props/vocabulary/wardrobe.tscn",
+    "identical": false
+  },
+  {
+    "removed": "scenes/props/vocabulary/washing_machine 2.tscn",
+    "canonical": "scenes/props/vocabulary/washing_machine.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/water_bottle 2.tscn",
+    "canonical": "scenes/props/vocabulary/water_bottle.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/watermelon 2.tscn",
+    "canonical": "scenes/props/vocabulary/watermelon.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/wheelchair 2.tscn",
+    "canonical": "scenes/props/vocabulary/wheelchair.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/whisk 2.tscn",
+    "canonical": "scenes/props/vocabulary/whisk.tscn",
+    "identical": false
+  },
+  {
+    "removed": "scenes/props/vocabulary/world_map 2.tscn",
+    "canonical": "scenes/props/vocabulary/world_map.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/props/vocabulary/x_ray_machine 2.tscn",
+    "canonical": "scenes/props/vocabulary/x_ray_machine.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/rooftops/home_roof 2.tscn",
+    "canonical": "scenes/rooftops/home_roof.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/rooftops/hospital_helipad 2.tscn",
+    "canonical": "scenes/rooftops/hospital_helipad.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/ui/vocabulary_hud 2.tscn",
+    "canonical": "scenes/ui/vocabulary_hud.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/world/park_zoo 2.tscn",
+    "canonical": "scenes/world/park_zoo.tscn",
+    "identical": false
+  },
+  {
+    "removed": "scenes/world/rear_meadow 2.tscn",
+    "canonical": "scenes/world/rear_meadow.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scenes/world/town_complete 2.tscn",
+    "canonical": "scenes/world/town_complete.tscn",
+    "identical": false
+  },
+  {
+    "removed": "scenes/world/town_editable 2.tscn",
+    "canonical": "scenes/world/town_editable.tscn",
+    "identical": true
+  },
+  {
+    "removed": "scripts/characters/pig_art_variants 2.gd",
+    "canonical": "scripts/characters/pig_art_variants.gd",
+    "identical": true
+  },
+  {
+    "removed": "scripts/characters/pig_art_variants 2.gd.uid",
+    "canonical": "scripts/characters/pig_art_variants.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "scripts/characters/pig_art_variants.gd 2.uid",
+    "canonical": "scripts/characters/pig_art_variants.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "scripts/characters/pig_sculpt 2.gd",
+    "canonical": "scripts/characters/pig_sculpt.gd",
+    "identical": true
+  },
+  {
+    "removed": "scripts/characters/pig_sculpt 2.gd.uid",
+    "canonical": "scripts/characters/pig_sculpt.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "scripts/characters/pig_sculpt.gd 2.uid",
+    "canonical": "scripts/characters/pig_sculpt.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "scripts/core/main 2.gd",
+    "canonical": "scripts/core/main.gd",
+    "identical": false
+  },
+  {
+    "removed": "scripts/core/main 2.gd.uid",
+    "canonical": "scripts/core/main.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "scripts/core/main.gd 2.uid",
+    "canonical": "scripts/core/main.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "scripts/learning/learning_quests 2.gd",
+    "canonical": "scripts/learning/learning_quests.gd",
+    "identical": false
+  },
+  {
+    "removed": "scripts/learning/learning_quests 2.gd.uid",
+    "canonical": "scripts/learning/learning_quests.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "scripts/learning/learning_quests.gd 2.uid",
+    "canonical": "scripts/learning/learning_quests.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "scripts/learning/vocabulary_progress 2.gd",
+    "canonical": "scripts/learning/vocabulary_progress.gd",
+    "identical": true
+  },
+  {
+    "removed": "scripts/learning/vocabulary_progress 2.gd.uid",
+    "canonical": "scripts/learning/vocabulary_progress.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "scripts/learning/vocabulary_progress.gd 2.uid",
+    "canonical": "scripts/learning/vocabulary_progress.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "scripts/objects/furniture_polish 2.gd",
+    "canonical": "scripts/objects/furniture_polish.gd",
+    "identical": true
+  },
+  {
+    "removed": "scripts/objects/furniture_polish 2.gd.uid",
+    "canonical": "scripts/objects/furniture_polish.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "scripts/objects/furniture_polish.gd 2.uid",
+    "canonical": "scripts/objects/furniture_polish.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "scripts/objects/home_rework 2.gd",
+    "canonical": "scripts/objects/home_rework.gd",
+    "identical": true
+  },
+  {
+    "removed": "scripts/objects/home_rework 2.gd.uid",
+    "canonical": "scripts/objects/home_rework.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "scripts/objects/home_rework.gd 2.uid",
+    "canonical": "scripts/objects/home_rework.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "scripts/objects/house_builder 2.gd",
+    "canonical": "scripts/objects/house_builder.gd",
+    "identical": false
+  },
+  {
+    "removed": "scripts/objects/house_builder 2.gd.uid",
+    "canonical": "scripts/objects/house_builder.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "scripts/objects/house_builder.gd 2.uid",
+    "canonical": "scripts/objects/house_builder.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "scripts/player/interaction_controller 2.gd",
+    "canonical": "scripts/player/interaction_controller.gd",
+    "identical": false
+  },
+  {
+    "removed": "scripts/player/interaction_controller 2.gd.uid",
+    "canonical": "scripts/player/interaction_controller.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "scripts/player/interaction_controller.gd 2.uid",
+    "canonical": "scripts/player/interaction_controller.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "scripts/player/bonbon_effects 2.gd",
+    "canonical": "scripts/player/bonbon_effects.gd",
+    "identical": true
+  },
+  {
+    "removed": "scripts/player/bonbon_effects 2.gd.uid",
+    "canonical": "scripts/player/bonbon_effects.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "scripts/player/bonbon_effects.gd 2.uid",
+    "canonical": "scripts/player/bonbon_effects.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "scripts/player/player_controller 2.gd",
+    "canonical": "scripts/player/player_controller.gd",
+    "identical": false
+  },
+  {
+    "removed": "scripts/player/player_controller 2.gd.uid",
+    "canonical": "scripts/player/player_controller.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "scripts/player/player_controller.gd 2.uid",
+    "canonical": "scripts/player/player_controller.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "scripts/player/shaders/hyper_aura 2.gdshader",
+    "canonical": "scripts/player/shaders/hyper_aura.gdshader",
+    "identical": true
+  },
+  {
+    "removed": "scripts/player/shaders/hyper_aura 2.gdshader.uid",
+    "canonical": "scripts/player/shaders/hyper_aura.gdshader.uid",
+    "identical": false
+  },
+  {
+    "removed": "scripts/player/shaders/hyper_aura.gdshader 2.uid",
+    "canonical": "scripts/player/shaders/hyper_aura.gdshader.uid",
+    "identical": true
+  },
+  {
+    "removed": "scripts/player/shaders/hyper_bloom 2.gdshader",
+    "canonical": "scripts/player/shaders/hyper_bloom.gdshader",
+    "identical": true
+  },
+  {
+    "removed": "scripts/player/shaders/hyper_bloom 2.gdshader.uid",
+    "canonical": "scripts/player/shaders/hyper_bloom.gdshader.uid",
+    "identical": false
+  },
+  {
+    "removed": "scripts/player/shaders/hyper_bloom.gdshader 2.uid",
+    "canonical": "scripts/player/shaders/hyper_bloom.gdshader.uid",
+    "identical": true
+  },
+  {
+    "removed": "scripts/ui/town_minimap 2.gd",
+    "canonical": "scripts/ui/town_minimap.gd",
+    "identical": false
+  },
+  {
+    "removed": "scripts/ui/town_minimap 2.gd.uid",
+    "canonical": "scripts/ui/town_minimap.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "scripts/ui/town_minimap.gd 2.uid",
+    "canonical": "scripts/ui/town_minimap.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "scripts/ui/vocabulary_hud 2.gd",
+    "canonical": "scripts/ui/vocabulary_hud.gd",
+    "identical": false
+  },
+  {
+    "removed": "scripts/ui/vocabulary_hud 2.gd.uid",
+    "canonical": "scripts/ui/vocabulary_hud.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "scripts/ui/vocabulary_hud.gd 2.uid",
+    "canonical": "scripts/ui/vocabulary_hud.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "scripts/world/building_exteriors 2.gd",
+    "canonical": "scripts/world/building_exteriors.gd",
+    "identical": true
+  },
+  {
+    "removed": "scripts/world/building_exteriors 2.gd.uid",
+    "canonical": "scripts/world/building_exteriors.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "scripts/world/building_exteriors.gd 2.uid",
+    "canonical": "scripts/world/building_exteriors.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "scripts/world/civic_zoo_upgrade 2.gd",
+    "canonical": "scripts/world/civic_zoo_upgrade.gd",
+    "identical": true
+  },
+  {
+    "removed": "scripts/world/civic_zoo_upgrade 2.gd.uid",
+    "canonical": "scripts/world/civic_zoo_upgrade.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "scripts/world/civic_zoo_upgrade.gd 2.uid",
+    "canonical": "scripts/world/civic_zoo_upgrade.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "scripts/world/compact_home 2.gd",
+    "canonical": "scripts/world/compact_home.gd",
+    "identical": true
+  },
+  {
+    "removed": "scripts/world/compact_home 2.gd.uid",
+    "canonical": "scripts/world/compact_home.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "scripts/world/compact_home.gd 2.uid",
+    "canonical": "scripts/world/compact_home.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "scripts/world/home_refinement 2.gd",
+    "canonical": "scripts/world/home_refinement.gd",
+    "identical": true
+  },
+  {
+    "removed": "scripts/world/home_refinement 2.gd.uid",
+    "canonical": "scripts/world/home_refinement.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "scripts/world/home_refinement.gd 2.uid",
+    "canonical": "scripts/world/home_refinement.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "scripts/world/legacy/interior_rebuild 2.gd",
+    "canonical": "scripts/world/legacy/interior_rebuild.gd",
+    "identical": true
+  },
+  {
+    "removed": "scripts/world/legacy/interior_rebuild 2.gd.uid",
+    "canonical": "scripts/world/legacy/interior_rebuild.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "scripts/world/legacy/interior_rebuild.gd 2.uid",
+    "canonical": "scripts/world/legacy/interior_rebuild.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "scripts/world/legacy/town_life 2.gd",
+    "canonical": "scripts/world/legacy/town_life.gd",
+    "identical": true
+  },
+  {
+    "removed": "scripts/world/legacy/town_life 2.gd.uid",
+    "canonical": "scripts/world/legacy/town_life.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "scripts/world/legacy/town_life.gd 2.uid",
+    "canonical": "scripts/world/legacy/town_life.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "scripts/world/library_market_interiors 2.gd",
+    "canonical": "scripts/world/library_market_interiors.gd",
+    "identical": true
+  },
+  {
+    "removed": "scripts/world/library_market_interiors 2.gd.uid",
+    "canonical": "scripts/world/library_market_interiors.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "scripts/world/library_market_interiors.gd 2.uid",
+    "canonical": "scripts/world/library_market_interiors.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "scripts/world/natural_town_layout 2.gd",
+    "canonical": "scripts/world/natural_town_layout.gd",
+    "identical": true
+  },
+  {
+    "removed": "scripts/world/natural_town_layout 2.gd.uid",
+    "canonical": "scripts/world/natural_town_layout.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "scripts/world/natural_town_layout.gd 2.uid",
+    "canonical": "scripts/world/natural_town_layout.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "scripts/world/park_animals 2.gd",
+    "canonical": "scripts/world/park_animals.gd",
+    "identical": true
+  },
+  {
+    "removed": "scripts/world/park_animals 2.gd.uid",
+    "canonical": "scripts/world/park_animals.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "scripts/world/park_animals.gd 2.uid",
+    "canonical": "scripts/world/park_animals.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "scripts/world/rooftop_collisions 2.gd",
+    "canonical": "scripts/world/rooftop_collisions.gd",
+    "identical": true
+  },
+  {
+    "removed": "scripts/world/rooftop_collisions 2.gd.uid",
+    "canonical": "scripts/world/rooftop_collisions.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "scripts/world/rooftop_collisions.gd 2.uid",
+    "canonical": "scripts/world/rooftop_collisions.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "scripts/world/town_builder 2.gd",
+    "canonical": "scripts/world/town_builder.gd",
+    "identical": true
+  },
+  {
+    "removed": "scripts/world/town_builder 2.gd.uid",
+    "canonical": "scripts/world/town_builder.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "scripts/world/town_builder.gd 2.uid",
+    "canonical": "scripts/world/town_builder.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "scripts/world/town_polish 2.gd",
+    "canonical": "scripts/world/town_polish.gd",
+    "identical": true
+  },
+  {
+    "removed": "scripts/world/town_polish 2.gd.uid",
+    "canonical": "scripts/world/town_polish.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "scripts/world/town_polish.gd 2.uid",
+    "canonical": "scripts/world/town_polish.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "tools/add_vocabulary_articles 2.py",
+    "canonical": "tools/add_vocabulary_articles.py",
+    "identical": true
+  },
+  {
+    "removed": "tools/bake_editable_town 2.gd",
+    "canonical": "tools/bake_editable_town.gd",
+    "identical": false
+  },
+  {
+    "removed": "tools/bake_editable_town 2.gd.uid",
+    "canonical": "tools/bake_editable_town.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "tools/bake_editable_town.gd 2.uid",
+    "canonical": "tools/bake_editable_town.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "tools/bake_police_geometry 2.gd",
+    "canonical": "tools/bake_police_geometry.gd",
+    "identical": true
+  },
+  {
+    "removed": "tools/bake_police_geometry 2.gd.uid",
+    "canonical": "tools/bake_police_geometry.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "tools/bake_police_geometry.gd 2.uid",
+    "canonical": "tools/bake_police_geometry.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "tools/bake_rooftop_collisions 2.gd",
+    "canonical": "tools/bake_rooftop_collisions.gd",
+    "identical": true
+  },
+  {
+    "removed": "tools/bake_rooftop_collisions 2.gd.uid",
+    "canonical": "tools/bake_rooftop_collisions.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "tools/bake_rooftop_collisions.gd 2.uid",
+    "canonical": "tools/bake_rooftop_collisions.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "tools/build_home_assets 2.py",
+    "canonical": "tools/build_home_assets.py",
+    "identical": true
+  },
+  {
+    "removed": "tools/build_hospital_floors 2.py",
+    "canonical": "tools/build_hospital_floors.py",
+    "identical": true
+  },
+  {
+    "removed": "tools/build_learning_assets 2.py",
+    "canonical": "tools/build_learning_assets.py",
+    "identical": false
+  },
+  {
+    "removed": "tools/build_rooftop_assets 2.gd",
+    "canonical": "tools/build_rooftop_assets.gd",
+    "identical": true
+  },
+  {
+    "removed": "tools/build_rooftop_assets 2.gd.uid",
+    "canonical": "tools/build_rooftop_assets.gd.uid",
+    "identical": false
+  },
+  {
+    "removed": "tools/build_rooftop_assets.gd 2.uid",
+    "canonical": "tools/build_rooftop_assets.gd.uid",
+    "identical": true
+  },
+  {
+    "removed": "tools/expand_civic_wings 2.py",
+    "canonical": "tools/expand_civic_wings.py",
+    "identical": false
+  },
+  {
+    "removed": "tools/scene_writer 2.py",
+    "canonical": "tools/scene_writer.py",
+    "identical": true
+  },
+  {
+    "removed": "tools/update_town_map 2.py",
+    "canonical": "tools/update_town_map.py",
+    "identical": true
+  },
+  {
+    "removed": "tools/upgrade_civic_props 2.py",
+    "canonical": "tools/upgrade_civic_props.py",
+    "identical": true
+  }
+]

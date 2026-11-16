@@ -1,0 +1,106 @@
+[gd_scene load_steps=9 format=3]
+
+[sub_resource type="CylinderMesh" id="s1"]
+top_radius = 0.5
+bottom_radius = 0.5
+height = 1.0
+radial_segments = 18
+
+[sub_resource type="StandardMaterial3D" id="m1"]
+albedo_color = Color(0.960784314, 0.945098039, 0.905882353, 1)
+roughness = 0.82
+
+[sub_resource type="SphereMesh" id="s2"]
+radius = 0.5
+height = 1.0
+radial_segments = 14
+rings = 7
+
+[sub_resource type="StandardMaterial3D" id="m2"]
+albedo_color = Color(0.560784314, 0.741176471, 0.403921569, 1)
+roughness = 0.82
+
+[sub_resource type="StandardMaterial3D" id="m3"]
+albedo_color = Color(0.439215686, 0.654901961, 0.301960784, 1)
+roughness = 0.82
+
+[sub_resource type="SphereMesh" id="s3"]
+radius = 0.5
+height = 1.0
+radial_segments = 14
+rings = 7
+
+[sub_resource type="StandardMaterial3D" id="m4"]
+albedo_color = Color(0.733333333, 0.349019608, 0.305882353, 1)
+roughness = 0.82
+
+[sub_resource type="BoxShape3D" id="hit"]
+size = Vector3(1.1, 0.94, 1.1)
+
+[node name="Salad" type="Node3D"]
+metadata/word_key = "salad"
+metadata/learning_object = true
+
+[node name="Salad_bowl_00" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.15, 0)
+rotation_degrees = Vector3(0, 0, 0)
+mesh = SubResource("s1")
+material_override = SubResource("m1")
+scale = Vector3(0.79, 0.25, 0.79)
+
+[node name="Salad_greens_01" type="MeshInstance3D" parent="."]
+position = Vector3(-0.22, 0.31, -0.2)
+rotation_degrees = Vector3(0, 0, 0)
+mesh = SubResource("s2")
+material_override = SubResource("m2")
+scale = Vector3(0.27, 0.18, 0.27)
+
+[node name="Salad_greens_02" type="MeshInstance3D" parent="."]
+position = Vector3(0.2, 0.31, -0.2)
+rotation_degrees = Vector3(0, 0, 0)
+mesh = SubResource("s2")
+material_override = SubResource("m3")
+scale = Vector3(0.27, 0.18, 0.27)
+
+[node name="Salad_greens_03" type="MeshInstance3D" parent="."]
+position = Vector3(-0.23, 0.31, 0.2)
+rotation_degrees = Vector3(0, 0, 0)
+mesh = SubResource("s2")
+material_override = SubResource("m2")
+scale = Vector3(0.27, 0.18, 0.27)
+
+[node name="Salad_greens_04" type="MeshInstance3D" parent="."]
+position = Vector3(0.23, 0.31, 0.2)
+rotation_degrees = Vector3(0, 0, 0)
+mesh = SubResource("s2")
+material_override = SubResource("m3")
+scale = Vector3(0.27, 0.18, 0.27)
+
+[node name="Salad_greens_05" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.31, 0)
+rotation_degrees = Vector3(0, 0, 0)
+mesh = SubResource("s2")
+material_override = SubResource("m2")
+scale = Vector3(0.27, 0.18, 0.27)
+
+[node name="Cherry_tomato_06" type="MeshInstance3D" parent="."]
+position = Vector3(-0.19, 0.41, 0)
+rotation_degrees = Vector3(0, 0, 0)
+mesh = SubResource("s3")
+material_override = SubResource("m4")
+scale = Vector3(0.14, 0.14, 0.14)
+
+[node name="Cherry_tomato_07" type="MeshInstance3D" parent="."]
+position = Vector3(0.2, 0.41, 0.08)
+rotation_degrees = Vector3(0, 0, 0)
+mesh = SubResource("s3")
+material_override = SubResource("m4")
+scale = Vector3(0.14, 0.14, 0.14)
+
+[node name="Interaction" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Interaction"]
+position = Vector3(0, 0.45, 0)
+shape = SubResource("hit")

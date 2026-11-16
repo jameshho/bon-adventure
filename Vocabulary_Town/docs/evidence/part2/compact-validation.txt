@@ -1,0 +1,29 @@
+23 October 2026 — compact town validation, Godot 4.7.2
+See ../FINAL_VERIFICATION.md for baseline, scope and limitations.
+
+compact-missions.log
+COMPACT LAYOUT: 706 checks; 0 failures
+
+part2-after2.log
+BLUEPRINT: 348 loop clearance samples; 13 parking areas
+PART 2: 1572 checks; 0 failures; 534 road samples
+
+check_runtime_resources.gd.final.log
+Runtime resources: 309 checked; 0 failures
+
+check_public_garden.gd.final.log
+PUBLIC GARDEN: 0 failures; 1638 path samples; bridge crossed in both directions
+
+check_interaction.gd.final.log
+PASS: interaction targeting, highlights, cards, signals, doors, dismissal and range
+
+home-final.log
+REFERENCE HOME: 8 doors open and close with attached collision
+REFERENCE HOME: 191 shared-space clearance samples passed
+REFERENCE HOME: roof visibility and taxi driver placement passed
+
+aircraft-final.log
+AIRCRAFT: 30 checks; 0 failures
+
+road-physics-final.log
+ROAD PHYSICS: 125 checks; 0 failures; speeds { "Car": 9.39089965820312, "Truck": 5.41961765289307, "Bus": 4.61401987075806, "Taxi": 8.5744743347168, "Police_Car": 10.619194984436, "Ambulance": 6.96239805221558, "Fire_Truck": 5.42072629928589, "Motorcycle": 10.9253206253052 }

@@ -1,0 +1,22 @@
+PASS Rotor spools up after boarding
+PASS Original main rotor actually rotates
+PASS Original tail rotor actually rotates
+PASS Subtle rotor disk visible at flight RPM
+PASS Main rotor spins around its mast
+PASS Tail rotor spins around its axle
+PASS Forward flight pitches nose down
+PASS Pitch does not create unwanted altitude drift
+PASS Flight heading remains horizontal
+PASS Right turn banks the fuselage right
+PASS Banking turn changes heading
+PASS Braking raises the nose
+PASS Hover assist settles to a level hover
+PASS Reverse flight pitches nose up
+PASS Left turn banks left
+PASS Tilted helicopter collision envelope still blocks walls
+PASS Tail rotor has its own protective swept volume
+PASS Landing approach levels both skids
+PASS Aircraft lands safely after a banked approach
+PASS Rotor coasts down gradually after landing/exit
+PASS Parked helicopter rotors stop
+Failures: 0
