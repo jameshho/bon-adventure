@@ -7,7 +7,7 @@ extends RefCounted
 ##   const STEPS := ["add_bench", ...]          # applied in this order, each exactly once
 ##   func add_bench(town: Node3D, game) -> void # town = Main's Apartment, scale 1.3, town coords
 ## Never rename or remove a baked step (add a new one that undoes it).
-const STEPS := ["solid_roofs", "remove_bird", "tulip_beds", "plaza_fountains", "bronze_statue", "statue_blueprint", "statue_traced", "statue_traced_refit", "statue_reference", "statue_reference_finish", "statue_angular_portrait", "statue_temple_hair", "statue_hair_relief_fit", "statue_single_bronze", "bench_placement", "statue_patina", "statue_patina_warm", "toy_scooter", "toy_scooter_full_size", "statue_town_bronze", "mystery_house_site", "coplanar_gaps", "coplanar_gaps_2", "lion_blueprint_display", "lion_clay_display", "lion_clay_face_rework", "lion_clay_ears_fit", "lion_clay_eyes_mane", "lion_clay_ears_mane_two_layers", "giraffe_clay_display", "giraffe_clay_colours", "giraffe_clay_refine", "elephant_clay_display", "red_panda_clay_display", "elephant_clay_colours", "panda_clay_display", "cow_clay_display", "gorilla_clay_display", "panda_clay_face", "gorilla_clay_refine", "cow_clay_colours_eyes", "deer_clay_display", "cow_clay_muzzle", "gorilla_clay_eyelids", "deer_clay_eyes_ears", "cow_clay_lower_lip", "cow_clay_muzzle_reverted", "kangaroo_clay_display", "lion_clay_second_pass", "lion_crawl_display", "lion_crawl_colours", "lion_mix_display", "lion_temp_marks", "lion_temp_marks_lower", "rhino_clay_display", "zebra_clay_display", "lion_clay_roams", "lion_designs_removed", "black_bear_clay_display", "black_bear_clay_front_row", "black_bear_clay_soles", "flamingo_clay_display", "flamingo_clay_colours", "black_bear_cub_beside_bear", "black_bear_cub_clear_of_zebra", "flamingo_clay_back_feathers", "black_bear_cub_body", "golden_retriever_clay_display", "black_bear_cub_body_reverted", "black_bear_adult_clay_display", "black_bears_front_row_pair", "black_bear_cub_baby", "black_bear_cub_young_face", "golden_retriever_clay_coat", "duck_clay_display", "black_bear_cub_lighter_fur", "pig_clay_display", "clay_animals_roam", "clay_animals_spacing", "animals_bigger", "zoo_zones", "chapel_old_outline", "home_expansion_ground", "home_side_pad_trim", "statue_word", "clay_animals_unpacked", "parked_vehicles", "warehouse_entrance_walk", "spawn_clear_car", "clay_meshes_external"]
+const STEPS := ["solid_roofs", "remove_bird", "tulip_beds", "plaza_fountains", "bronze_statue", "statue_blueprint", "statue_traced", "statue_traced_refit", "statue_reference", "statue_reference_finish", "statue_angular_portrait", "statue_temple_hair", "statue_hair_relief_fit", "statue_single_bronze", "bench_placement", "statue_patina", "statue_patina_warm", "toy_scooter", "toy_scooter_full_size", "statue_town_bronze", "mystery_house_site", "coplanar_gaps", "coplanar_gaps_2", "lion_blueprint_display", "lion_clay_display", "lion_clay_face_rework", "lion_clay_ears_fit", "lion_clay_eyes_mane", "lion_clay_ears_mane_two_layers", "giraffe_clay_display", "giraffe_clay_colours", "giraffe_clay_refine", "elephant_clay_display", "red_panda_clay_display", "elephant_clay_colours", "panda_clay_display", "cow_clay_display", "gorilla_clay_display", "panda_clay_face", "gorilla_clay_refine", "cow_clay_colours_eyes", "deer_clay_display", "cow_clay_muzzle", "gorilla_clay_eyelids", "deer_clay_eyes_ears", "cow_clay_lower_lip", "cow_clay_muzzle_reverted", "kangaroo_clay_display", "lion_clay_second_pass", "lion_crawl_display", "lion_crawl_colours", "lion_mix_display", "lion_temp_marks", "lion_temp_marks_lower", "rhino_clay_display", "zebra_clay_display", "lion_clay_roams", "lion_designs_removed", "black_bear_clay_display", "black_bear_clay_front_row", "black_bear_clay_soles", "flamingo_clay_display", "flamingo_clay_colours", "black_bear_cub_beside_bear", "black_bear_cub_clear_of_zebra", "flamingo_clay_back_feathers", "black_bear_cub_body", "golden_retriever_clay_display", "black_bear_cub_body_reverted", "black_bear_adult_clay_display", "black_bears_front_row_pair", "black_bear_cub_baby", "black_bear_cub_young_face", "golden_retriever_clay_coat", "duck_clay_display", "black_bear_cub_lighter_fur", "pig_clay_display", "clay_animals_roam", "clay_animals_spacing", "animals_bigger", "zoo_zones", "chapel_old_outline", "home_expansion_ground", "home_side_pad_trim", "statue_word", "clay_animals_unpacked", "parked_vehicles", "warehouse_entrance_walk", "spawn_clear_car", "clay_meshes_external", "pig_clay_walks"]
 const Plaza = preload("res://scripts/buildings/monument_plaza.gd")
 
 ## Collision for the decorative gazebo roof cap (7 Nov 2026; scripts/buildings/roof_solids.gd).
@@ -1546,3 +1546,30 @@ func clay_meshes_external(town: Node3D, _game) -> void:
 			swapped += 1
 		source.free()
 		print("clay_meshes_external: %s takes %d part meshes from %s" % [town.get_path_to(model), swapped, path.get_file()])
+
+## The zoo pig walks with moving legs (user, 16 Nov 2026, approving the pilot in
+## docs/guides/ANIMAL_SYSTEM.md#clay-animal-animation-pilot-16-nov-2026): its static clay model
+## `ParkZoo/Pig/ClayPig` is replaced by the skinned rig scenes/animals/pig_clay_rigged.scn (same
+## model space, name and transform; Footprint body off as in _clay_roamer). The rig stays an
+## instance, so a rebuilt rig (tools/build_pig_clay_rig.gd) reaches the zoo without a new step; it
+## is not a `*_clay` scene, so unpack_clay_animals() and the web export filter leave it alone.
+## Its ClayAnimator walks it from park_animals.gd's movement; Main's clay_life blinks it.
+func pig_clay_walks(town: Node3D, _game) -> void:
+	var pig: Node3D = town.get_node("ParkZoo/Pig")
+	var old: Node3D = pig.get_node("ClayPig")
+	var before: AABB = pig.call("_visible_bounds")
+	var place := old.transform
+	var index := old.get_index()
+	pig.remove_child(old)
+	old.free()
+	var model: Node3D = load("res://scenes/animals/pig_clay_rigged.scn").instantiate()
+	model.name = "ClayPig"
+	model.transform = place
+	var footprint := model.get_node("Footprint") as CollisionObject3D
+	footprint.collision_layer = 0
+	footprint.collision_mask = 0
+	pig.add_child(model)
+	pig.move_child(model, index)
+	model.owner = town
+	print("pig_clay_walks: bounds %s -> %s" % [before, pig.call("_visible_bounds")])
+

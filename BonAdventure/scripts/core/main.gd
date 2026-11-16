@@ -58,6 +58,8 @@ var popups
 var hold_ui
 ## The town blinker (scripts/characters/plush_life.gd): every plush in group "figures".
 var plush_life
+## Blinker for the rigged clay zoo animals (group clay_animator.gd BLINK_GROUP).
+var clay_life
 ## Sun, sky, ambient, lamp glow and the time of day (scripts/world/day_night.gd); its HUD clock.
 var day_night
 var day_clock
@@ -72,6 +74,7 @@ const Board := preload("res://scripts/learning/activity_board.gd")
 const VehicleControls := preload("res://scripts/core/vehicle_controls.gd")
 const DoorAnimator := preload("res://scripts/core/door_animator.gd")
 const PlushLife := preload("res://scripts/characters/plush_life.gd")
+const ClayAnimator := preload("res://scripts/characters/clay_animator.gd")
 const RoomNames := preload("res://scripts/world/room_names.gd")
 ## The saved place (save and respawn, 14 Nov 2026) and the node that keeps saving it.
 const PlayerPlace := preload("res://scripts/core/player_place.gd")
@@ -194,6 +197,12 @@ func _ready() -> void:
 	plush_life.blink_gap = PlushLife.TOWN_BLINK_GAP
 	add_child(plush_life)
 	plush_life.follow_group("figures")
+	# Rigged clay zoo animals blink too (clay_animator.gd puts them in its BLINK_GROUP).
+	clay_life = PlushLife.new()
+	clay_life.blink_gap = PlushLife.TOWN_BLINK_GAP
+	add_child(clay_life)
+	clay_life.follow_group(ClayAnimator.BLINK_GROUP)
+	clay_life.name = "ClayLife"
 	area_vocabulary.drop_interactables(apartment)
 	# Sounds (scripts/core/sound.gd, data/sounds.json): binds the fixtures already built.
 	add_child(preload("res://scripts/core/sound.gd").new())

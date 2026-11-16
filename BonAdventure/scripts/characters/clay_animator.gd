@@ -81,9 +81,13 @@ func _ready() -> void:
 	_next_look = _clock + _rng.randf_range(look_gap.x, look_gap.y)
 	root.add_to_group(BLINK_GROUP)
 	# Off screen the pose is not updated (no skinning work); it catches up when seen again.
-	_screen = VisibleOnScreenNotifier3D.new()
+	# Named and reused, so a baked town that saved it (base.gd pig_clay_walks) does not get two.
+	_screen = root.get_node_or_null("OnScreen") as VisibleOnScreenNotifier3D
+	if _screen == null:
+		_screen = VisibleOnScreenNotifier3D.new()
+		_screen.name = "OnScreen"
+		root.add_child.call_deferred(_screen)
 	_screen.aabb = AABB(Vector3(-0.6, 0, -0.9), Vector3(1.2, 1.2, 1.8)) if not root.has_meta("anim_aabb") else root.get_meta("anim_aabb")
-	root.add_child.call_deferred(_screen)
 	var up := root.get_parent()
 	while up != null and _wanderer == null:
 		if up is Node3D and up.get_script() != null and "target" in up and "state" in up:

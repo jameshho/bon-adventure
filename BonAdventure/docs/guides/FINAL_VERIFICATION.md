@@ -10,6 +10,13 @@ Start at the [README](../../README.md); editing contracts are in the
 [architecture guide](ARCHITECTURE_REVIEW_PART1.md), and implementation details and
 six rendered views are in the [Part 2 handoff](../evidence/part2/HANDOFF.md).
 
+## Zoo pig walks — 16 November 2026
+
+The rigged clay pig replaces the zoo pig's static model (base step `pig_clay_walks`; record and
+limits in [ANIMAL_SYSTEM.md](ANIMAL_SYSTEM.md#zoo-pig-in-the-town-16-nov-2026)). `dev_focus.txt`
+= `all`, isolated `HOME`, run once: `runtime_resources`, `compact_layout`, `interaction` PASS;
+rendered walk frames in the full town. The full suite and a web export were not run.
+
 ## Lighter clay animal files — 16 November 2026
 
 Clay meshes saved as separate compressed files with compressed vertex attributes

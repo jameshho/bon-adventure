@@ -235,7 +235,9 @@ ride (E to sit, W/S to kick).
 - **Public garden:** lawns, flower borders, fountains, a pond with swan boats and a bridge, and
   the horse-and-rider statue. [Garden guide](../guides/public-garden/README.md)
 - **Zoo:** four fenced zones round a cherry-tree plaza: Savanna, Forest, Bamboo Grove and
-  Wildlife Plains, with Spanish signs; the clay-style animals were added 11–12 Nov.
+  Wildlife Plains, with Spanish signs; the clay-style animals were added 11–12 Nov. Since
+  16 Nov the pig walks with moving legs, breathes, looks around and blinks
+  ([walk frames](../evidence/pig-zoo-walk-20261116/walk.png)); the other animals still glide.
   [Zoo zones](../guides/TOWN_DESIGN_BRIEF.md#zoo-zones--12-november-2026) ·
   [animal sizes and movement](../guides/ANIMAL_SYSTEM.md)
 - **Coast:** a sandy beach with boulders and crabs, and a small deserted island.

@@ -90,7 +90,8 @@ scene keeps no script state. Each animal has its
 own deterministic random generator seeded from its scene path, avoiding synchronized
 circles. It chooses nearby random destinations, walks with smooth heading changes,
 stops briefly, or takes a longer rest. Rest means standing still; this change does
-not add skeletal leg animation or new lying-down poses. Fish remain at their
+not add skeletal leg animation or new lying-down poses (since 16 Nov 2026 the zoo pig walks
+with moving legs: [clay animal animation](#clay-animal-animation-16-nov-2026-the-zoo-pig-walks)). Fish remain at their
 water elevation and birds at their authored perch/flight elevation.
 
 Species profiles use **parent-local units per second** (world speed = value × 1.3).
@@ -837,16 +838,26 @@ the zoo in the town at noon (`zoo.gd`: overview, two mid views, zebra, pig, lion
 differs on at most 0.026% (`diff-zoo.txt`, `zoo-<overview|zebra|lion>-<before|after|diff>.png`).
 Not checked: the running game in a browser or on a phone, and no test suite was run.
 
-## Clay animal animation pilot (16 Nov 2026, awaiting the user's review)
+## Clay animal animation (16 Nov 2026; the zoo pig walks)
 
 Pilot on one animal, the clay pig, of reusable animation for the clay animals (user, 16 Nov
 2026: head, blink, idle and walk without seams, the same pastel clay look, good web
-performance). **Not in the zoo:** the zoo pig still glides, and no other animal is changed. The
-user approves the pilot before any rollout.
+performance). **In the zoo since 16 Nov 2026** (user approved the pilot: "Put it in the zoo"):
+base step `pig_clay_walks` swaps `ParkZoo/Pig/ClayPig` for an instance of the rig (same name,
+transform and bounds; Footprint off as in `_clay_roamer`), and Main's `clay_life` (a second
+`PlushLife`, `follow_group("clay_animals")`, town blink gap) blinks it. **Every other animal
+still glides**; each species needs its own bone spec (risks below) and is not approved yet.
+The rig's meshes and skin are separate files, `scenes/animals/clay_meshes/pig_rig/*.res`
+(written by the build tool), because the bake saves an instance's parts as overrides: with the
+meshes inside the rig scene, base.scn copied them (+1.35 MB); now it names them (+6.5 KB). The
+rig is not a `*_clay` scene, so `unpack_clay_animals()` and the web exclude filter leave it an
+instance, and a rebuilt rig reaches the zoo without a new step. The animator's on-screen
+notifier is a child named `OnScreen`, reused when present (the bake saves it).
+Town checks: [below](#zoo-pig-in-the-town-16-nov-2026).
 
 **Files.** `scripts/characters/clay_rig.gd` (bake-time rigger, any clay display),
 `tools/build_pig_clay_rig.gd` (the pig's bones and settings) →
-`scenes/animals/pig_clay_rigged.scn` (0.76 MB), and the runtime component
+`scenes/animals/pig_clay_rigged.scn` (3 KB + `clay_meshes/pig_rig/`, 0.73 MB), and the runtime component
 `scripts/characters/clay_animator.gd`. The rig is built from the finished
 `scenes/animals/pig_clay.tscn`; `pig_clay.gd`, `cow_clay.gd`, `lion_clay.gd` and the display
 scene are only read. Rebuild the rig after the display changes:
@@ -937,3 +948,13 @@ Risks for a rollout to other species:
   rig (`tools/build_pig_clay_rig.gd`), and the zoo's saved instance would need a swap step.
 - **The wander controller turns the animal while it glides** (`park_animals.gd`): with legs it
   may show foot sliding on sharp turns; tune `stride_scale` per species.
+
+### Zoo pig in the town (16 Nov 2026)
+
+`dev_focus.txt` = `all`, isolated `HOME`, each run once: base bake (`pig_clay_walks`: the pig's
+visible bounds identical before and after the swap), `run_checks.py --only
+runtime_resources,compact_layout,interaction`: all PASS. Rendered in the full town at noon by
+`docs/evidence/pig-zoo-walk-20261116/walk.gd`: `walk.png` (8 frames 0.12 s apart following the
+walking zoo pig from the side: legs trot, hooves lift, body bobs) and `context.png` (standing
+on its lawn). The same run: the pig is in group `clay_animals` and in `clay_life`'s list.
+Not checked: a web export or phone, frame time in the town, and the full check suite.

@@ -92,11 +92,38 @@ func _initialize() -> void:
 	animator.owner = rig
 	var stats = rig.get_meta("rig_stats")
 	rig.remove_meta("rig_stats")
+	# Meshes and the skin go to their own files (like tools/clay_save.gd), so the zoo's base.scn,
+	# which saves the rig's parts as overrides, names them instead of copying them (16 Nov 2026).
+	var result := _save_parts(rig)
 	var scene := PackedScene.new()
-	var result := scene.pack(rig)
+	if result == OK:
+		result = scene.pack(rig)
 	if result == OK:
 		result = ResourceSaver.save(scene, OUT, ResourceSaver.FLAG_COMPRESS)
 	print("PIG CLAY RIG: %s, %d ms, save %s" % [JSON.stringify(stats), Time.get_ticks_msec() - started, error_string(result)])
 	rig.free()
 	display.free()
 	quit(result)
+
+
+## Writes each mesh and skin of the rig to scenes/animals/clay_meshes/pig_rig/<node>.res
+## (zstd-compressed, vertex data unchanged) and points the nodes at those files.
+func _save_parts(rig: Node3D) -> Error:
+	var folder := "res://scenes/animals/clay_meshes/pig_rig/"
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(folder))
+	for old in DirAccess.get_files_at(folder):
+		if old.ends_with(".res"):
+			DirAccess.remove_absolute(ProjectSettings.globalize_path(folder + old))
+	for mi: MeshInstance3D in rig.find_children("*", "MeshInstance3D", true, false):
+		var base := folder + String(mi.name).to_snake_case().replace(" ", "_")
+		for pair in [["mesh", ""], ["skin", "_skin"]]:
+			var res: Resource = mi.get(pair[0])
+			if res == null:
+				continue
+			var path: String = base + pair[1] + ".res"
+			var result := ResourceSaver.save(res, path, ResourceSaver.FLAG_COMPRESS)
+			if result != OK:
+				return result
+			res.take_over_path(path)
+	return OK
+
