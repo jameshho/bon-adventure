@@ -31,7 +31,9 @@ where the player was and comes back at that building's entrance or on clear grou
 the hiding friends, buy fruit at the supermarket, visit the statue, then open the journal. It
 can be skipped, and replayed from Settings. No minigame offers appear while it runs. Since 16 Nov
 the rest of the town loads behind the title card after the house tour (with a progress bar), so
-the house tour itself no longer stutters.
+the house tour itself no longer stutters. Since 17 Nov the tour also starts behind the loading screen: the characters,
+rooms and close-ups of the house tour are drawn there first, so the first lines in the house no
+longer freeze on the web, and the loading bar moves with the real work all the way to the end.
 [Tutorial guide](../guides/ARCHITECTURE_REVIEW_PART1.md#welcome-tutorial)
 
 ## Languages

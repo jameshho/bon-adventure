@@ -13,7 +13,15 @@ extends Node
 ## textures are ready, then frames must come steadily) so play starts smoothly (user,
 ## 13 Nov 2026: the game must be well loaded before the player can play).
 ## Once the town is ready, a profile that has not finished the welcome tutorial plays it
-## (tutorial.gd, phase 6); Settings' "Replay" plays it again.
+## (tutorial.gd, phase 6); Settings' "Replay" plays it again. Since 17 Nov 2026 (user: the first
+## dialogue boxes in the house lagged on the web, the first impression must be smooth; a longer
+## first load is fine if the bar shows real progress) the tutorial starts BEHIND the loading
+## screen: its first place step puts the player on the bed and the cast in place, then the
+## warm-up looks round from there and draws every view the act will show (tutorial.gd
+## warm_views(): the face close-ups, a look round each spot) and the dialogue box once, so their
+## shaders are compiled before play. The bar: the scene file (FILE_SHARE), the town's build
+## steps (to TOWN_SHARE, weighted in main.gd), the tutorial's cast (to CAST_SHARE), then one
+## share per warm-up view.
 ## Home first (staged loading, 13 Nov 2026, user; measured in docs/guides/FINAL_VERIFICATION.md): a
 ## profile that will play the tutorial starts with only the base town and TUTORIAL_UNITS (the
 ## house and the shop, every place the tutorial goes; the park is in the base), so play starts
@@ -44,6 +52,15 @@ const WARM_HEADINGS := 6
 const WARM_STEADY_FRAMES := 8
 const WARM_FRAME_SECONDS := 1.0 / 24.0
 const WARM_MAX_SECONDS := 8.0
+## Most the warm-up waits for the tutorial to reach its first place step (it normally takes a
+## few frames).
+const PREPARE_MAX_MS := 5000
+## The loading bar: the scene file to FILE_SHARE, the town's build steps to TOWN_SHARE, the
+## tutorial's cast (one plush per frame) to CAST_SHARE, the warm-up views the rest (shares from
+## first-launch timings, 17 Nov 2026).
+const FILE_SHARE := 0.15
+const TOWN_SHARE := 0.55
+const CAST_SHARE := 0.7
 
 ## The building units (data/buildings.json) the tutorial uses; the only ones built before it.
 const TUTORIAL_UNITS := ["home", "supermarket"]
@@ -111,11 +128,13 @@ func start_town(id: String) -> void:
 	# Let the first shot draw before the scene file loads (a stall without threads).
 	await get_tree().process_frame
 	await get_tree().process_frame
-	main = (load(MAIN_SCENE) as PackedScene).instantiate()
+	main = (await _load_main_scene()).instantiate()
 	main.staged_loading = true
 	if not bool(ProfileManager.shared().active_profile().get("tutorial", {}).get("done", false)):
 		main.initial_units = _first_units()
-	main.loading_progress.connect(loading.set_progress)
+	main.loading_progress.connect(func(fraction: float) -> void:
+		if loading != null:
+			loading.set_progress(lerpf(FILE_SHARE, TOWN_SHARE, fraction)))
 	main.town_ready.connect(_on_town_ready, CONNECT_ONE_SHOT)
 	if OS.has_feature("web") and web_resume == null:
 		web_resume = WebResume.new()
@@ -125,20 +144,41 @@ func start_town(id: String) -> void:
 	get_viewport().disable_3d = true
 	add_child(main)
 
+## The scene file, read in the background where threads exist so the bar moves meanwhile (the
+## web build has none: one plain load).
+func _load_main_scene() -> PackedScene:
+	if OS.has_feature("web") or ResourceLoader.load_threaded_request(MAIN_SCENE) != OK:
+		return load(MAIN_SCENE) as PackedScene
+	var progress := []
+	while ResourceLoader.load_threaded_get_status(MAIN_SCENE, progress) == ResourceLoader.THREAD_LOAD_IN_PROGRESS:
+		loading.set_progress(FILE_SHARE * float(progress[0]))
+		await get_tree().process_frame
+	var scene := ResourceLoader.load_threaded_get(MAIN_SCENE) as PackedScene
+	return scene if scene != null else load(MAIN_SCENE) as PackedScene
+
 func _on_town_ready() -> void:
 	get_viewport().disable_3d = false
 	var resuming := not _resume.is_empty() and bool(ProfileManager.shared().active_profile().get("tutorial", {}).get("done", false))
 	if resuming:
 		web_resume.place(main, _resume)
 	_resume = {}
-	await _warm_up()
+	# The tutorial starts behind the loading screen and holds at its first place step.
+	var director: Node = Tutorial.begin(main, false, true)
+	if director != null:
+		var ends := Time.get_ticks_msec() + PREPARE_MAX_MS
+		while is_instance_valid(director) and director.running and not director.prepared and Time.get_ticks_msec() < ends:
+			loading.set_progress(lerpf(TOWN_SHARE, CAST_SHARE, float(director.cast_built) / maxf(director.cast_total, 1.0)))
+			await get_tree().process_frame
+	await _warm_up(director)
 	loading.finish()
 	loading = null
+	if is_instance_valid(director):
+		director.release()
 	if web_resume != null:
 		web_resume.watch(main)
 		if resuming:
 			web_resume.tell_back(main)
-	_load_rest(Tutorial.begin(main))
+	_load_rest(director)
 
 ## Web: a new build is waiting. In the town, ask the player (web_resume.gd); before that
 ## (title, characters, loading) switch to it now: nothing is lost yet.
@@ -200,13 +240,18 @@ func _load_rest_now(town: Node) -> void:
 ## Draws the town behind the loading screen until it runs smoothly: the camera looks in
 ## WARM_HEADINGS directions around the player, one drawn frame each (the first draw of each
 ## material compiles its shader, a stall on the web; a frame compiles everything in view however
-## long it takes), then WARM_STEADY_FRAMES frames in a row under WARM_FRAME_SECONDS (or
-## WARM_MAX_SECONDS in all).
-func _warm_up() -> void:
+## long it takes), then, with the tutorial (`director`), every view its act will show and its
+## dialogue box, then WARM_STEADY_FRAMES frames in a row under WARM_FRAME_SECONDS (or
+## WARM_MAX_SECONDS in all). The bar moves from CAST_SHARE to the end, one share per view.
+func _warm_up(director: Node = null) -> void:
 	loading.set_text(Lexicon.shared().phrase("app.getting_ready", Lexicon.shared().native))
 	var player: Node = main.player
+	var views: Array = director.warm_views() if is_instance_valid(director) else []
+	var total := float(WARM_HEADINGS + views.size() + (1 if is_instance_valid(director) else 0) + 1)
+	# Without the tutorial there is no cast share: the views take it.
+	var from := CAST_SHARE if is_instance_valid(director) else TOWN_SHARE
+	var done := 0
 	var start_yaw: float = player.camera_yaw
-	var started := Time.get_ticks_msec()
 	for i in WARM_HEADINGS:
 		player.camera_yaw = start_yaw + TAU * float(i) / WARM_HEADINGS
 		player.reset_camera()
@@ -214,12 +259,38 @@ func _warm_up() -> void:
 		# could wait forever while a browser tab or window is hidden and draws nothing).
 		await get_tree().process_frame
 		await get_tree().process_frame
+		done += 1
+		loading.set_progress(lerpf(from, 1.0, done / total))
 	player.camera_yaw = start_yaw
 	player.reset_camera()
+	if not views.is_empty():
+		var before := get_viewport().get_camera_3d()
+		var look := Camera3D.new()
+		look.name = "WarmUpCamera"
+		look.near = 0.05
+		look.far = main.camera.far
+		main.add_child(look)
+		look.make_current()
+		for view in views:
+			look.global_transform = view.transform
+			look.fov = float(view.fov)
+			await get_tree().process_frame
+			await get_tree().process_frame
+			done += 1
+			loading.set_progress(lerpf(from, 1.0, done / total))
+		if is_instance_valid(before):
+			before.make_current()
+		look.queue_free()
+	if is_instance_valid(director):
+		await director.warm_dialogue()
+		done += 1
+		loading.set_progress(lerpf(from, 1.0, done / total))
+	var started := Time.get_ticks_msec()
 	var steady := 0
 	while steady < WARM_STEADY_FRAMES and Time.get_ticks_msec() - started < WARM_MAX_SECONDS * 1000.0:
 		await get_tree().process_frame
 		steady = steady + 1 if get_process_delta_time() < WARM_FRAME_SECONDS else 0
+	loading.set_progress(1.0)
 
 ## Settings' "Replay the welcome tour": the tutorial from the start, in the running town.
 func replay_tutorial() -> void:

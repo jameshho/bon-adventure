@@ -101,10 +101,29 @@ var _cue_layer: CanvasLayer
 var _hint_spec: Dictionary = {}
 var _hint_touch := false
 const CONFINE_FLASH_MS := 2500
+## Behind the loading screen (app.gd, 17 Nov 2026, user: the first dialogue boxes in the house
+## lagged on the web): `covered` while the loading screen is still up. The act's first "place"
+## step then puts the player and the cast in place at once (no fade) and sets `prepared`; the
+## steps wait there until release(). Meanwhile app.gd draws warm_views() and warm_dialogue(), so
+## the first close-ups, rooms and the dialogue box are ready (their shaders compiled) when play
+## starts.
+var covered := false
+var prepared := false
+## Cast members built so far, of `cast_total` (app.gd's loading bar while `covered`).
+var cast_built := 0
+var cast_total := 0
+## Steps that may run while `covered` (nothing on screen, nothing for the player to read).
+const COVERED_STEPS := ["place", "door", "lock", "confine", "words"]
+## warm_views(): the look round each spot of the act, at about the follow camera's height.
+const WARM_SPOT_HEADINGS := 4
+const WARM_EYE_HEIGHT := 1.8
+const WARM_SPOT_GAP := 1.5
 
 ## Starts the tutorial for Main's active profile when it has not finished it (or `restart`: from
 ## the beginning, Settings' Replay). Returns the director, or null when there is nothing to play.
-static func begin(game, restart := false) -> Node:
+## `covered`: the loading screen is still up (app.gd): play stops at the first place step until
+## release().
+static func begin(game, restart := false, covered := false) -> Node:
 	var manager = ProfileManager.shared()
 	if manager.active_id == "":
 		return null
@@ -116,6 +135,7 @@ static func begin(game, restart := false) -> Node:
 		director = load("res://scripts/learning/tutorial.gd").new()
 		game.add_child(director)
 		director.setup(game)
+	director.covered = covered
 	director.start(0 if restart else int(progress.get("act", 0)))
 	return director
 
@@ -156,6 +176,7 @@ func start(from_act: int) -> void:
 		_stop()
 	running = true
 	_run += 1
+	prepared = false
 	act = clampi(from_act, 0, data.acts.size() - 1)
 	studied.clear()
 	_unlock_all()
@@ -169,7 +190,10 @@ func start(from_act: int) -> void:
 	for child in main.get_children():
 		if child.has_method("end_activity"):
 			child.end_activity()
-	_cast_actors()
+	var run := _run
+	await _cast_actors()
+	if run != _run:
+		return
 	_skip_layer.visible = true
 	_play(_run)
 
@@ -197,6 +221,8 @@ func _play(run: int) -> void:
 			_reset_props()
 		for spec in data.acts[act].steps:
 			step = spec
+			if covered and not COVERED_STEPS.has(str(spec.do)):
+				await _hold_until_released()
 			await _do(spec)
 			if run != _run:
 				return
@@ -204,6 +230,15 @@ func _play(run: int) -> void:
 	_stop()
 	_save({"act": 0, "done": true})
 	finished.emit(false)
+
+## Behind the loading screen: everything is in place; wait until app.gd lifts the screen.
+func _hold_until_released() -> void:
+	prepared = true
+	await until(func() -> bool: return not covered)
+
+## The loading screen is gone (app.gd): play on.
+func release() -> void:
+	covered = false
 
 func _alive(run: int) -> bool:
 	return run == _run and running and is_inside_tree()
@@ -517,36 +552,97 @@ func _look(values: Array) -> Vector3:
 ## fades in.
 func _place(spec: Dictionary) -> void:
 	var space := _space(str(spec.space))
+	if covered:
+		# Behind the loading screen: no fade, then hold (the close-up waits for the screen to lift).
+		_place_now(spec, space)
+		await _hold_until_released()
+		_open_on(spec)
+		return
 	var run := _run
 	await zone.fade_through(func() -> void:
 		# Skipped or replayed while the screen went dark: leave the player alone.
 		if run != _run:
 			return
-		if spec.has("player"):
-			zone.place_player(space, _vec(spec.player.at), _look(spec.player.look))
-		# Lying down needs the player beside the bed ("player" above).
-		if spec.has("bed"):
-			var bed := _bed(space, Vector3(float(spec.bed[0]), 0.0, float(spec.bed[1])))
-			if bed != null:
-				main.seating.sit_on(bed)
-		for role in spec.get("cast", {}):
-			var where: Dictionary = spec.cast[role]
-			put(role, space.to_global(_vec(where.at)), space.global_basis * _look(where.look), bool(where.get("ground", true)))
-			# A fixed close-up camera spot (npc_presence.gd meta talk_camera_at): the bathtub
-			# friend's face is walled in, so the automatic one swung round to the side.
-			var actor: Node3D = actors.get(role)
-			if actor != null:
-				if where.has("camera"):
-					actor.set_meta("talk_camera_at", space.to_global(_vec(where.camera)))
-				elif actor.has_meta("talk_camera_at"):
-					actor.remove_meta("talk_camera_at")
-		# "open_on": the screen comes up already zooming in on that cast member's face (the
-		# opening: BonBon talking, not the player in bed; user, 14 Nov 2026). The next "say" step
-		# with "face" on the same role keeps that close-up and zooms back out after its line.
-		if spec.has("open_on"):
-			var presence := _face(str(spec.open_on), null)
-			if presence != null:
-				presence.zoom_to_face(true))
+		_place_now(spec, space)
+		_open_on(spec))
+
+func _place_now(spec: Dictionary, space: Node3D) -> void:
+	if spec.has("player"):
+		zone.place_player(space, _vec(spec.player.at), _look(spec.player.look))
+	# Lying down needs the player beside the bed ("player" above).
+	if spec.has("bed"):
+		var bed := _bed(space, Vector3(float(spec.bed[0]), 0.0, float(spec.bed[1])))
+		if bed != null:
+			main.seating.sit_on(bed)
+	for role in spec.get("cast", {}):
+		var where: Dictionary = spec.cast[role]
+		put(role, space.to_global(_vec(where.at)), space.global_basis * _look(where.look), bool(where.get("ground", true)))
+		# A fixed close-up camera spot (npc_presence.gd meta talk_camera_at): the bathtub
+		# friend's face is walled in, so the automatic one swung round to the side.
+		var actor: Node3D = actors.get(role)
+		if actor != null:
+			if where.has("camera"):
+				actor.set_meta("talk_camera_at", space.to_global(_vec(where.camera)))
+			elif actor.has_meta("talk_camera_at"):
+				actor.remove_meta("talk_camera_at")
+
+## "open_on": the screen comes up already zooming in on that cast member's face (the opening:
+## BonBon talking, not the player in bed; user, 14 Nov 2026). The next "say" step with "face" on
+## the same role keeps that close-up and zooms back out after its line.
+func _open_on(spec: Dictionary) -> void:
+	if spec.has("open_on"):
+		var presence := _face(str(spec.open_on), null)
+		if presence != null:
+			presence.zoom_to_face(true)
+
+## Camera views the act will show up to its cutscene (app.gd draws them behind the loading
+## screen, 17 Nov 2026): every cast member's face close-up, then a look round
+## (WARM_SPOT_HEADINGS) from each spot of the act: the player's and the cast's places, the "wait"
+## spots and the walks. Each view is {"transform": Transform3D, "fov": degrees}.
+func warm_views() -> Array:
+	var views: Array = []
+	for role in actors:
+		var presence := _face(role, null)
+		if presence != null:
+			views.append({"transform": presence.face_transform(), "fov": NpcPresence.FACE_FOV})
+	var spots: Array[Vector3] = []
+	for spec in data.acts[act].steps:
+		if str(spec.do) == "cutscene":
+			break
+		var space := _space(str(spec.get("space", "world")))
+		match str(spec.do):
+			"place":
+				if spec.has("player"):
+					spots.append(space.to_global(_vec(spec.player.at)))
+				for role in spec.get("cast", {}):
+					spots.append(space.to_global(_vec(spec.cast[role].at)))
+			"walk":
+				for point in spec.path:
+					spots.append(space.to_global(Vector3(float(point[0]), 0.0, float(point[1]))))
+			"wait":
+				if spec.has("at") and spec.has("space"):
+					var at: Array = spec.at
+					spots.append(space.to_global(_vec(at) if at.size() == 3 else Vector3(float(at[0]), 0.0, float(at[1]))))
+	var kept: Array[Vector3] = []
+	var fov: float = main.camera.fov
+	for spot in spots:
+		if kept.any(func(other: Vector3) -> bool: return _flat(other, spot) < WARM_SPOT_GAP):
+			continue
+		kept.append(spot)
+		var eye := _ground(spot) + Vector3.UP * WARM_EYE_HEIGHT
+		for i in WARM_SPOT_HEADINGS:
+			var look := Vector3.FORWARD.rotated(Vector3.UP, TAU * float(i) / WARM_SPOT_HEADINGS)
+			views.append({"transform": Transform3D(Basis.looking_at(look + Vector3.DOWN * 0.25, Vector3.UP), eye), "fov": fov})
+	return views
+
+## Shows the dialogue box with a Next button for a moment and hides it (app.gd, behind the
+## loading screen): its first drawing (fonts at the box's size, styles, icons) happens then.
+func warm_dialogue() -> void:
+	panel.show_dialogue(_speaker("guide"), narration("tutorial.good_morning"), [{"id": NEXT, "label": narration("app.next"), "icon": "next"}])
+	await get_tree().process_frame
+	await get_tree().process_frame
+	if _line.is_empty() or panel.current_line() != _line:
+		panel.hide_dialogue()
 
 func _bed(space: Node3D, at: Vector3) -> Node3D:
 	var best: Node3D = null
@@ -620,7 +716,16 @@ func _cast_actors() -> void:
 	_cast_root.name = "Cast"
 	_world.add_child(_cast_root)
 	var maker := HouseCharacters.new()
+	cast_built = 0
+	cast_total = cast.size()
 	for role in cast:
+		# Behind the loading screen one plush per frame (each sculpts its meshes, about 0.7 s on a
+		# first launch), so the bar moves between them.
+		if covered and cast_built > 0:
+			var run := _run
+			await get_tree().process_frame
+			if run != _run:
+				return
 		var id: String = cast[role]
 		var spec: Dictionary = HouseCharacters.spec_of(id)
 		var actor: Node3D = maker.worker(str(spec.scene), str(spec.get("costume", "")), "", _cast_root, role, Vector3.ZERO, Vector3.FORWARD)
@@ -636,6 +741,7 @@ func _cast_actors() -> void:
 		_hide_twin(id)
 		if role == "guide":
 			_make_guide_talker(actor)
+		cast_built += 1
 	# Props out of the way while it runs (tutorial.json "hide": the mahjong table and its
 	# players, user 14 Nov 2026); _clear_cast() brings them back.
 	for path in data.get("hide", []):

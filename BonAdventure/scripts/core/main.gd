@@ -120,16 +120,20 @@ var render_culling
 var indoor_visibility
 var minimaps: Array = []
 signal unit_added(key: String)
-## Loading steps besides the building units (the awaits in _ready).
-const LOADING_EXTRA_STEPS := 5
-var _loading_done := 0
-var _loading_total := 1
+## Loading steps besides the building units (the awaits in _ready), weighted by how long the
+## work before each takes, in building units (17 Nov 2026, first launch, native: a unit about
+## 0.6 s; the rest of the world 0.55 s, the player 0.8 s, the HUD 1.0 s, shops 0.25 s, the
+## rest 0.35 s), so the bar moves with the real work.
+const LOADING_STEP_WEIGHTS := {"world": 0.9, "player": 1.3, "ui": 1.7, "shops": 0.4, "rest": 0.6}
+var _loading_done := 0.0
+var _loading_total := 1.0
 
 ## One step of the staged loading: report progress and wait a frame (nothing when not staged).
-func _loading_step() -> void:
+## `step`: a LOADING_STEP_WEIGHTS key; none = one building unit.
+func _loading_step(step := "") -> void:
 	if not staged_loading:
 		return
-	_loading_done += 1
+	_loading_done += float(LOADING_STEP_WEIGHTS.get(step, 1.0))
 	loading_progress.emit(minf(float(_loading_done) / _loading_total, 1.0))
 	await get_tree().process_frame
 
@@ -155,17 +159,17 @@ func _ready() -> void:
 	progress_language = Lexicon.shared().foreign
 	ui_languages = Lexicon.shared().native + "/" + progress_language
 	studied_words = VocabularyProgress.load_studied_words(vocabulary, vocabulary_aliases, progress_language)
-	_loading_total = (initial_units.size() if not initial_units.is_empty() else ModularTown.focused_units().size()) + LOADING_EXTRA_STEPS
+	_loading_total = (initial_units.size() if not initial_units.is_empty() else ModularTown.focused_units().size()) + LOADING_STEP_WEIGHTS.values().reduce(func(a, b): return a + b, 0.0)
 	await build_world()
 	# tools/bake_unit.gd: stop with the finished world, before player, UI and sessions.
 	if get_meta("bake_world_only", false):
 		return
-	await _loading_step()
+	await _loading_step("world")
 	make_player()
-	await _loading_step()
+	await _loading_step("player")
 	register_driveable_vehicles()
 	make_ui()
-	await _loading_step()
+	await _loading_step("ui")
 	zones = preload("res://scripts/world/town_zones.gd").new()
 	apartment.add_child(zones)
 	zones.setup(apartment, player)
@@ -177,7 +181,7 @@ func _ready() -> void:
 	add_child(interaction)
 	make_shops()
 	make_popups()
-	await _loading_step()
+	await _loading_step("shops")
 	area_vocabulary = preload("res://scripts/learning/area_vocabulary.gd").new()
 	area_vocabulary.build(apartment, zones, vocabulary, vocabulary_aliases)
 	seating = preload("res://scripts/player/seating_controller.gd").new()
@@ -220,7 +224,7 @@ func _ready() -> void:
 	update_progress_display()
 	apply_world_language()
 	if not get_meta("editing_snapshot", false):
-		await _loading_step()
+		await _loading_step("rest")
 		preload("res://scripts/world/garden_rendering.gd").new().build(apartment)
 		render_culling = preload("res://scripts/world/render_culling.gd").new()
 		render_culling.build(self)

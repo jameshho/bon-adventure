@@ -269,7 +269,7 @@ stays up until they are in (at most 60 s, `tutorial.json` `cutscene_max_seconds`
 waiting after that (a slow device, a profile resuming at a later act) at quiet moments of the
 tutorial (a fade, a dialogue line), the rest at once behind the loading screen
 when the tutorial ends or is skipped. Profiles that finished the tutorial, checks and tools load
-every unit before `town_ready`, as before. Measurements: [FINAL_VERIFICATION.md](FINAL_VERIFICATION.md#staged-loading-home-first--13-november-2026).
+every unit before `town_ready`, as before. Since 17 Nov 2026 the tutorial itself starts behind the loading screen and its views are drawn there first ([welcome tutorial](ARCHITECTURE_REVIEW_PART1.md#welcome-tutorial), "Start behind the loading screen"). Measurements: [FINAL_VERIFICATION.md](FINAL_VERIFICATION.md#staged-loading-home-first--13-november-2026).
 
 - `ModularTown.add_unit(town, key)` puts one unit's parts back like `load_units()`. An absent
   unit's empty site pivot (`reference_world_layout.gd`, meta `unit_placeholder`) is replaced, so
