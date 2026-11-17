@@ -28,6 +28,14 @@ var _title := false
 ## "Last update on 11-15 at 19:25", bottom right (user, 15 Nov 2026; build_stamp.gd); none when
 ## the game runs from the project, and none over the tutorial's title cutscene.
 var _stamp: Label
+## Title mode's second line ("Little Town of Words") and the small skip note (17 Nov 2026, user:
+## the tutorial's town reveal has a subtitle and can be skipped with a click or tap).
+var _subtitle: Label
+var _note: Label
+## True: a click, tap or key emits skip_requested (show_title()'s `note`).
+var skippable := false
+
+signal skip_requested
 
 func _init() -> void:
 	name = "LoadingScreen"
@@ -71,19 +79,43 @@ func _init() -> void:
 	_stamp.add_theme_color_override("font_color", Color(GOLD, 0.8))
 	_stamp.add_theme_color_override("font_outline_color", FILL)
 	_root.add_child(_stamp)
-	for node in [_track, _bar, _label, _stamp]:
+	_subtitle = Label.new()
+	_subtitle.add_theme_color_override("font_color", GOLD)
+	_subtitle.add_theme_color_override("font_outline_color", FILL)
+	_subtitle.visible = false
+	_root.add_child(_subtitle)
+	_note = Label.new()
+	_note.add_theme_color_override("font_color", Color(GOLD, 0.85))
+	_note.add_theme_color_override("font_outline_color", FILL)
+	_note.visible = false
+	_root.add_child(_note)
+	for node in [_track, _bar, _label, _stamp, _subtitle, _note]:
 		node.z_index = 2
+	_root.gui_input.connect(func(event: InputEvent) -> void:
+		if skippable and ((event is InputEventMouseButton and event.pressed) or (event is InputEventScreenTouch and event.pressed)):
+			skip_requested.emit())
 
 ## Title mode: `text` large over the pictures; the progress bar only with `bar` (the tutorial's
 ## cutscene while buildings still load, 16 Nov 2026).
-func show_title(text: String, bar := false) -> void:
+## `subtitle`: a second, smaller line under the title; `note`: a small line at the bottom (the
+## skip hint), and then a click, tap or key emits skip_requested.
+func show_title(text: String, bar := false, subtitle := "", note := "") -> void:
 	_title = true
 	_label.text = text
+	_subtitle.text = subtitle
+	_subtitle.visible = subtitle != ""
+	_note.text = note
+	_note.visible = note != ""
+	skippable = note != ""
 	_track.visible = bar
 	_bar.visible = bar
 	_stamp.visible = false
 
 ## Replaces the line over the bar (app.gd's warm-up: "Getting everything ready…").
+func _unhandled_key_input(event: InputEvent) -> void:
+	if skippable and event.is_pressed() and not event.is_echo():
+		skip_requested.emit()
+
 func set_text(text: String) -> void:
 	_label.text = text
 
@@ -130,8 +162,18 @@ func _process(delta: float) -> void:
 	_bar.size = Vector2(width * _shown, height)
 	_label.add_theme_font_size_override("font_size", roundi((54 if _title else 26) * f))
 	_label.add_theme_constant_override("outline_size", roundi((14 if _title else 8) * f))
-	_label.position = Vector2((screen.x - _label.get_minimum_size().x) * 0.5, screen.y * 0.72 if _title else _track.position.y - 46.0 * f)
+	_label.position = Vector2((screen.x - _label.get_minimum_size().x) * 0.5, screen.y * (0.64 if _subtitle.visible else 0.72) if _title else _track.position.y - 46.0 * f)
 	_label.size = _label.get_minimum_size()
+	if _subtitle.visible:
+		_subtitle.add_theme_font_size_override("font_size", roundi(30 * f))
+		_subtitle.add_theme_constant_override("outline_size", roundi(9 * f))
+		_subtitle.size = _subtitle.get_minimum_size()
+		_subtitle.position = Vector2((screen.x - _subtitle.size.x) * 0.5, _label.position.y + _label.size.y + 2.0 * f)
+	if _note.visible:
+		_note.add_theme_font_size_override("font_size", roundi(18 * f))
+		_note.add_theme_constant_override("outline_size", roundi(5 * f))
+		_note.size = _note.get_minimum_size()
+		_note.position = Vector2((screen.x - _note.size.x) * 0.5, screen.y - _note.size.y - 18.0 * f)
 	if _stamp.visible:
 		_stamp.add_theme_font_size_override("font_size", roundi(18 * f))
 		_stamp.add_theme_constant_override("outline_size", roundi(5 * f))

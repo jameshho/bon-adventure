@@ -1386,7 +1386,7 @@ see it.
 
 | Part | Where |
 | --- | --- |
-| Acts and steps (place, say, hint, wait for stand / view / move / near / door / use / study / journal, door, walk, cutscene, shop, words, lock, confine) | `data/tutorial.json` (its `about` explains the fields); spaces are a unit's site (`home`, town units) or `world` (metres) |
+| Acts and steps (place, say, hint, wait for stand / view / move / near / door / use / study / journal, door, walk, cutscene, shop, words, lock, confine; since 17 Nov 2026 also controls, strip, pause, find and a `place` with a `picnic`) | `data/tutorial.json` (its `about` explains the fields); spaces are a unit's site (`home`, town units) or `world` (metres) |
 | Controls (16 Nov 2026, user) | Right after the player stands up BonBon teaches the two controls, each a `hint` and a `wait`: "Have a look around! Drag with the mouse to turn the view." (`for: "view"`: done once the view was turned 0.6 rad by hand, `player_controller.gd` `look_turned`, counted in `look_by()` only, so the follow camera does not count; or zoomed 1.5 m) and "Now walk a little! Use the W, A, S and D keys." (`for: "move"`: done after 1.5 m on foot). There is no separate camera / POV key: the view turns by dragging (right or left mouse button, a finger on the world) and zooms with the wheel or a pinch. On a touch screen (`hud.touch_mode`, set by `touch_controls.gd` on a touch screen or at the first touch) the steps' `touch_line` / `touch_where` say "Slide a finger on the right side of the screen…" and "Put your thumb on the left side of the screen and slide it — that's your joystick." (a first touch re-shows a hint in the touch wording). Meanwhile the control pulses: `scripts/ui/tutorial_cue.gd` (no words; a mouse or a fingertip gliding between two arrows right of the middle, outside the joystick's 40 %; the W A S D keys bottom left) and on a touch screen the joystick's own ring (`touch_controls.gd` `highlight_stick()`). When the player has tried it the cue and the hint go. Check: `tutorial` drives both steps and checks both wordings, the cue and the stick highlight |
 | Lines | `tutorial.*` in `data/phrases.json`, spoken in the NATIVE language (`narration()`: the same text in both slots, with meta `narration`, so the dialogue box shows no reading or translation); `"learning": true` lines (the friends' greeting) and the clerk's and cashier's `cashier.*` lines are in the language being learned; key words come in through `{word}` / `{items}` values |
 | Cast | Standing plushes of the house characters (`house_characters.gd` `worker()`, `spec_of()`, `ids()`); their seated twins are hidden and their blockers off meanwhile. The cast is solid too (`HouseCharacters.fit_blocker()`, 14 Nov 2026: the player cannot walk through BonBon). A friend who is the player's avatar is replaced by the next character in data order (BonBon stays the guide); since 14 Nov 2026 that stand-in (Bruno first) has no house twin to hide (`"in_house": false`, [record](REFERENCE_HOME.md#fewer-plushes-and-clear-walkways--14-november-2026)) |
@@ -1400,6 +1400,44 @@ see it.
 | Skip / Replay | The "Skip tutorial" button (`tutorial.skip`, says what it skips since 14 Nov 2026; it widens to its text; top centre, below the clock, hidden behind the journal, map, help and Settings) ends it and places the player at `skip_to` outside the home; Settings' "Replay the welcome tour" (`app.gd` `replay_tutorial()`) restarts it in the running town |
 | Start behind the loading screen (17 Nov 2026, user: the first dialogue boxes in the house lagged on the web; a longer first load is fine if the bar shows real progress) | `app.gd` `_on_town_ready()` starts the tutorial with `Tutorial.begin(main, false, true)` (`covered`) while the loading screen is still up: the cast is built one plush per frame (`cast_built` / `cast_total` move the bar), the act's first `place` step puts the player and the cast in place without a fade and the director holds there (`prepared`; only `place`, `door`, `lock`, `confine`, `words` steps run while covered). The warm-up then looks round from the bed and draws every view the act shows up to its cutscene (`warm_views()`: each cast member's face close-up, then four headings from each spot of the act's place, walk and wait steps, 1.8 m up, spots closer than 1.5 m merged) and the dialogue box once (`warm_dialogue()`), so their shaders compile behind the screen; then `release()` and the `open_on` close-up starts. The loading bar: scene file 0–15 % (read in the background where threads exist), town build steps to 55 % (weighted, `main.gd` `LOADING_STEP_WEIGHTS`), cast to 70 %, one share per warm-up view to 100 %. Measured: [tutorial-lag-20261117](../evidence/tutorial-lag-20261117/README.md) |
 | Cutscene | The loading screen's town pictures with the title (`loading_screen.gd` `show_title()`). Since 16 Nov 2026 (user: the house act lagged) it is also the loading screen for the buildings not loaded yet: `app.gd` `_load_rest()` adds none during the house act and all of them, one after another, while the cutscene is up; it stays at least `cutscene_seconds` (7 s) and until they are in, at most `cutscene_max_seconds` (60 s), with the progress bar under the title ([staged loading](MODULAR_TOWN.md#units-added-while-the-game-runs-home-first--13-november-2026)) |
+
+**Script revision, 17 Nov 2026 (user script "Little Town of Words").** The current tour; where
+this disagrees with the rows above or the 13–14 Nov notes below, this wins.
+- **Pacing:** no Next buttons. Each line stays for a reading time (`tutorial.gd`
+  `reading_seconds()`: 1.4 s + 0.055 s per character, 2.2–8 s), then 0.6 s (`LINE_GAP`) before
+  the next; a click, a tap, E or Enter skips ahead. BonBon's short remarks (`remark()`: wrong
+  door, locked door, "Hey! The supermarket is this way!", "Oops!", "Wait! We haven't paid yet!")
+  are timed bubbles that never hold the steps.
+- **Instruction strip:** the "UI" lines of the script ("Press E to get up", "Drag the curtain to
+  open it", "Find BonBon's two friends 1/2") show in the reusable
+  [instruction strip](COMPONENTS.md#instruction-strip) (`scripts/ui/instruction_strip.gd`), not
+  the speech bubble. Steps set it with `strip` / `touch_strip`, or the `strip` step type.
+- **Controls unlock in order** (`controls` step; `player_controller.gd` `look_allowed` /
+  `move_allowed`, `interaction_controller.gd` `interact_allowed`): only E in bed, then the view,
+  then walking (interactions still off), then everything. Nothing moves while a line is spoken.
+- **Find the friends** (`find` step): the bathtub friend (Sunny) and Leo in the yellow bedroom may
+  be found in either order. Leo does not move (user: only his lines changed). The curtain opens by
+  dragging it across (`DRAG_PIXELS` 90 × scale, within `CURTAIN_REACH` 4.5 m); a plain click does
+  not open it. Each find: the word card, a pause, then the friend's hello in the language being
+  learned with a face close-up. Hints come only when the player talks to BonBon, more precise
+  each time, always about a friend not found yet. The house's other doors: open-able rooms that
+  are not part of the hunt get BonBon's remark; the rest say "This door is locked! Let's look
+  somewhere else." (`lock` `remark` doors and `line`).
+- **Cutscene** shows the subtitle "Little Town of Words" (`loading_screen.gd` `show_title()`
+  `subtitle`) and can be skipped by a click, tap or key after 1 s.
+- **Market:** 1 apple, 2 bananas, 3 cookies for $2.50 (`data/tutorial.json` shop `items`). The
+  list stays up; a line done gets a check mark and a bounce (`shop_order_panel.gd` `done` / `pop`,
+  sound later); a wrong item gets "Oops!". Paying is "Pay with cash" in the
+  [money panel](COMPONENTS.md#money-panel-options) with only $1 bills and 25¢ (`only`) and the
+  instruction in the empty tray (`hint`); a wrong amount gets "Hmm... try again", unlimited, with
+  the panel's reset. The cast walks in and out on fixed waypoints.
+- **Park:** the statue card reads "statue of George Washington" (`data/words.json` `statue`), then
+  the journal (open, close), then a simple picnic east of the statue: a gingham blanket with the
+  basket of what was bought (`_make_picnic()`; 13 cm up, since the park lawn is drawn 5–10 cm
+  above its collider), the cast around it and closing lines (placeholders, to be rewritten).
+- Check: `docs/evidence/tutorial-script-20261117/verify.gd` (`tutorial`), see its
+  [README](../evidence/tutorial-script-20261117/README.md). The older check
+  `tutorial-20261112/verify.gd` and its notes below are history.
 
 Props it uses: the family bathtub's own curtain (`Family bathtub/Shower curtain`, a
 `door_animator.gd` `curtain` built by `home_furnishing.gd`; the tutorial draws it across the tub
@@ -1440,7 +1478,7 @@ Face close-ups (`npc_presence.gd`)
 wait until the previous one has eased back, since a close-up returns to the camera that was
 current when it started.
 
-Check: `docs/evidence/tutorial-20261112/verify.gd` (`tutorial`, full suite): a play-through with simulated
+Check (before 17 Nov 2026, superseded by `tutorial-script-20261117`): `docs/evidence/tutorial-20261112/verify.gd`: a play-through with simulated
 events; with graphics it saves the views `wake`, `bath-door`, `bathroom`, `friend`, `cutscene`,
 `shop-greeting`, `shop`, `fruit`, `basket`, `pay`, `statue`, `journal` in that folder (the greeting, basket,
 coloured terms, door wall and 3 s thanks since 14 Nov 2026).

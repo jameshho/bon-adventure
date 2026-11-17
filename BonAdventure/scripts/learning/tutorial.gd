@@ -25,6 +25,17 @@ extends Node
 ## (scripts/ui/tutorial_cue.gd; the joystick itself, touch_controls.gd highlight_stick()) and the
 ## step ends once the player has tried it, so it never blocks.
 ##
+## The tutorial script of 17 Nov 2026 (user; data/tutorial.json, phrases tutorial.*): BonBon's lines
+## are separate bubbles that move on by themselves after a reading time with a 0.6 s pause between
+## them (LINE_GAP; a click, a tap, E or Enter moves on at once) and hold the player meanwhile;
+## what the player must DO shows in the instruction strip (scripts/ui/instruction_strip.gd), not in
+## a bubble. Controls come one at a time ("controls" step: only E, then turning the view, then
+## walking too). The two hiding friends are found in either order ("find" step; hints only when
+## the player talks to BonBon, progressive and pointing at a friend not yet found); the shower
+## curtain opens by dragging it. Doors the hunt has no use for open with BonBon's remark, the
+## outside doors are locked. The town reveal has a subtitle and can be skipped, and the park
+## act ends with a picnic (a blanket and the bought food) before free exploration.
+##
 ## Progress lives in the active profile ("tutorial": {"act", "done"}, profile_manager.gd), saved
 ## at the start of each act (the checkpoint). Skip ends it and puts the player outside the home;
 ## Settings' "Replay" starts it again (app.gd). Checks and tools that load main.tscn directly have
@@ -51,6 +62,23 @@ const InteractIcons := preload("res://scripts/ui/interact_badge.gd")
 const MinigameHost := preload("res://scripts/learning/minigame_host.gd")
 const RenderCulling := preload("res://scripts/world/render_culling.gd")
 const TutorialCue := preload("res://scripts/ui/tutorial_cue.gd")
+const InstructionStrip := preload("res://scripts/ui/instruction_strip.gd")
+const ShoppingBasket := preload("res://scripts/world/shopping_basket.gd")
+## Dialogue pacing (user, 17 Nov 2026): a bubble stays READ_BASE + READ_PER_CHAR per character
+## (clamped to READ_MIN..READ_MAX seconds), then LINE_GAP seconds before the next one.
+const LINE_GAP := 0.6
+const READ_BASE := 1.4
+const READ_PER_CHAR := 0.055
+const READ_MIN := 2.2
+const READ_MAX := 8.0
+## A remark (a door, a wrong item, an answer when asked) stays its reading time plus this.
+const REMARK_EXTRA := 1.5
+## The shower curtain opens after a drag this long (pixels at window scale 1) that started on it,
+## from at most CURTAIN_REACH metres away.
+const DRAG_PIXELS := 90.0
+const CURTAIN_REACH := 4.5
+## The cutscene can be skipped after this many seconds (a click still in flight does not skip it).
+const CUTSCENE_SKIP_AFTER := 1.0
 const GOLD := Color("fff1c5")
 const FILL := Color(0.08, 0.16, 0.22, 0.88)
 const EDGE := Color("7abfb3")
@@ -100,6 +128,34 @@ var cue: Control
 var _cue_layer: CanvasLayer
 var _hint_spec: Dictionary = {}
 var _hint_touch := false
+## The instruction strip and what it shows ({"spec", "key", "note", "values", "touch"}; {} = none).
+var strip
+var _strip_spec: Dictionary = {}
+## "controls" step: {"look", "move", "use"} (missing = allowed). _speaking holds all three while a
+## line is read; _grabbing holds the view while the curtain is dragged.
+var _gate: Dictionary = {}
+var _speaking := false
+var _pausing := false
+var _advance := false
+var _said_end_ms := -100000
+var _skip_cutscene := false
+## "find" step: the spec, the roles found, how often BonBon was asked since the last find, and
+## the curtain's state when the hunt started.
+var _find_spec: Dictionary = {}
+var found: Dictionary = {}
+var _hint_asks := 0
+var _curtain_start := false
+## Doors that open with BonBon's remark during the hunt (door -> open last frame).
+var _remark_doors: Dictionary = {}
+var _remark_line := ""
+## The curtain drag: on while the hunt runs; _grab_travel counts the drag's pixels.
+var _curtain_drag := false
+var _grabbing := false
+var _grab_travel := 0.0
+## The picnic (blanket and basket) of a place step's "picnic"; removed when the tutorial ends.
+var _picnic: Node3D
+## actor -> its walk's Tween (_walk(); put() stops it).
+var _walks: Dictionary = {}
 const CONFINE_FLASH_MS := 2500
 ## Behind the loading screen (app.gd, 17 Nov 2026, user: the first dialogue boxes in the house
 ## lagged on the web): `covered` while the loading screen is still up. The act's first "place"
@@ -169,6 +225,13 @@ func setup(game) -> void:
 	add_child(_cue_layer)
 	cue = TutorialCue.new()
 	_cue_layer.add_child(cue)
+	strip = InstructionStrip.new()
+	# Below the Skip button (74 + 56 px at scale 1).
+	strip.top = 142.0
+	strip.hidden_when = func() -> bool:
+		return not running or zone.fading or is_instance_valid(_cutscene) or main.hud.is_journal_open() or main.hud.is_map_open() \
+			or main.hud.is_help_open() or main.settings_panel.visible or main.money_panel.visible
+	add_child(strip)
 
 ## Plays from act `from_act` (a checkpoint) to the end.
 func start(from_act: int) -> void:
@@ -263,7 +326,25 @@ func _do(spec: Dictionary) -> void:
 			_hint_touch = is_touch()
 			hint(_speaker(str(spec.who)), _text(spec))
 		"wait":
+			if spec.has("strip"):
+				show_strip(spec, "strip")
 			await _wait(spec)
+			if _strip_spec.get("spec") == spec:
+				clear_strip()
+		"controls":
+			# Which controls work (user, 17 Nov 2026): first only E, then turning the view, then
+			# walking too; a step without keys gives everything back.
+			_gate = spec.duplicate()
+			_apply_gate()
+		"strip":
+			if spec.get("off", false):
+				clear_strip()
+			else:
+				show_strip(spec)
+		"pause":
+			await _pause(float(spec.get("seconds", 1.0)), false)
+		"find":
+			await _find(spec)
 		"door":
 			var door := _door(spec)
 			if door != null and not main.doors[door].get("open", false):
@@ -272,7 +353,7 @@ func _do(spec: Dictionary) -> void:
 		"walk":
 			_walk(actors.get(str(spec.who)), spec)
 		"cutscene":
-			await _play_cutscene(str(spec.line))
+			await _play_cutscene(str(spec.line), str(spec.get("subtitle", "")))
 		"words":
 			main.interaction.word_cards = bool(spec.get("on", true))
 			# "only": the one word key a click may open (the statue step, user 13 Nov 2026).
@@ -329,10 +410,20 @@ func _speaker(role: String) -> String:
 	var id := str(cast.get(role, ""))
 	return HouseCharacters.name_of(id) if id != "" else ""
 
-## Shows `line` with a Next button and waits for it (or the box's ✕ or walking away). `face`:
-## the role whose face the camera shows meanwhile.
+## Shows `line` as one bubble and waits while it is read (reading_seconds()), or until a click,
+## tap, E or Enter moves on (_input()), the box's ✕ or another line takes the box. A line right
+## after another first waits LINE_GAP seconds with the box empty (user, 17 Nov 2026). The player
+## is held meanwhile (no walking, turning or using). `face`: the role whose face the camera shows.
 func say(speaker: Variant, line: Dictionary, face := "", node: Node3D = null) -> void:
-	_show(speaker, line, [{"id": NEXT, "label": narration("app.next"), "icon": "next"}])
+	var run := _run
+	if Time.get_ticks_msec() - _said_end_ms < 250:
+		await _pause(LINE_GAP)
+		if run != _run:
+			return
+	_speaking = true
+	_apply_gate()
+	_show(speaker, line, [])
+	_advance = false
 	var presence := _face(face, node)
 	if presence != null and not presence.is_zoomed():
 		# The last close-up eases back first: a new one would take its camera as the one to
@@ -341,11 +432,100 @@ func say(speaker: Variant, line: Dictionary, face := "", node: Node3D = null) ->
 		await until(func() -> bool: return get_viewport().get_camera_3d() == main.camera or Time.get_ticks_msec() > ends)
 		if get_viewport().get_camera_3d() == main.camera:
 			presence.zoom_to_face(true)
-	await until(func() -> bool: return _next or _closed or not panel.is_dialogue_visible() or panel.current_line() != _line)
+	var read_until := Time.get_ticks_msec() + int(reading_seconds(line) * 1000.0)
+	await until(func() -> bool: return _advance or _closed or Time.get_ticks_msec() >= read_until or not panel.is_dialogue_visible() or panel.current_line() != _line)
 	if presence != null:
 		presence.zoom_to_face(false)
 	if panel.is_dialogue_visible() and panel.current_line() == _line:
 		panel.hide_dialogue()
+	_speaking = false
+	_advance = false
+	_said_end_ms = Time.get_ticks_msec()
+	if run == _run:
+		_apply_gate()
+
+## Seconds a bubble stays: its length (a line in the language being learned also counts half its
+## translation), clamped.
+static func reading_seconds(line: Dictionary) -> float:
+	var chars := str(line.get("foreign", "")).length()
+	if not line.get("narration", false):
+		chars += int(str(line.get("native", "")).length() * 0.5)
+	return clampf(READ_BASE + chars * READ_PER_CHAR, READ_MIN, READ_MAX)
+
+## Waits `seconds`; `skippable`: a click, tap or key ends it at once (the gap between bubbles).
+func _pause(seconds: float, skippable := true) -> void:
+	_advance = false
+	_pausing = skippable
+	var ends := Time.get_ticks_msec() + int(seconds * 1000.0)
+	await until(func() -> bool: return (skippable and _advance) or Time.get_ticks_msec() >= ends)
+	_pausing = false
+	_advance = false
+
+## A short bubble that does not hold the player or the steps (a door BonBon has no use for, a
+## wrong item, her answer when asked): it closes by itself. Not over a line being read or a
+## question with buttons.
+func remark(role: String, id: String, values: Dictionary = {}) -> void:
+	if not running or _speaking or panel.has_choices():
+		return
+	var line: Dictionary = narration(id, values)
+	panel.show_dialogue(_speaker(role), line, [], reading_seconds(line) + REMARK_EXTRA)
+
+## A click or tap (not on a button: the box's translate and ✕, Skip), E or Enter moves the line
+## on; while the curtain drag is on, a press on the curtain and a drag open it.
+func _input(event: InputEvent) -> void:
+	if not running:
+		return
+	var at: Variant = _press_position(event)
+	if _speaking or _pausing:
+		if at != null and not _on_button(at):
+			_advance = true
+		elif (event is InputEventKey or event is InputEventAction) and event.is_pressed() and not event.is_echo() \
+				and (event.is_action("ui_accept") or event.is_action("use")):
+			_advance = true
+			# E only moves the line on (it would also get the player out of bed).
+			get_viewport().set_input_as_handled()
+	if _curtain_drag:
+		_drag_input(event, at)
+
+## The screen position of a left mouse press or a touch (a touch's emulated mouse press is left
+## out: the touch itself counts), else null.
+func _press_position(event: InputEvent) -> Variant:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed and event.device != InputEvent.DEVICE_ID_EMULATION:
+		return event.position
+	if event is InputEventScreenTouch and event.pressed:
+		return event.position
+	return null
+
+func _on_button(at: Vector2) -> bool:
+	var buttons: Array = [_skip_button]
+	if panel.get("dialogue_card") != null:
+		buttons.append_array(panel.dialogue_card.find_children("*", "BaseButton", true, false))
+	for button in buttons:
+		if is_instance_valid(button) and button.is_visible_in_tree() and button.get_global_rect().has_point(at):
+			return true
+	return false
+
+## Gives the player the controls the "controls" step allows, minus what a line being read or a
+## curtain drag holds back (player_controller.gd look_allowed / move_allowed,
+## interaction_controller.gd interact_allowed).
+func _apply_gate() -> void:
+	var held := running and _speaking
+	main.player.look_allowed = bool(_gate.get("look", true)) and not held and not _grabbing
+	main.player.move_allowed = bool(_gate.get("move", true)) and not held
+	main.interaction.interact_allowed = bool(_gate.get("use", true)) and not held
+
+# --- The instruction strip ----------------------------------------------------------------------
+
+## Shows a step's `key` phrase ("line", "strip"; its touch_ twin on a touch screen) in the
+## instruction strip, with an optional progress `note` and phrase `values`.
+func show_strip(spec: Dictionary, key := "line", note := "", values: Dictionary = {}) -> void:
+	_strip_spec = {"spec": spec, "key": key, "note": note, "values": values, "touch": is_touch()}
+	strip.show_text(lexicon.phrase(phrase_id(spec, key), lexicon.native, values), note)
+
+func clear_strip() -> void:
+	_strip_spec = {}
+	if strip != null:
+		strip.clear()
 
 ## Shows `line` without buttons; it stays while the player does what it asks.
 func hint(speaker: Variant, line: Dictionary) -> void:
@@ -465,20 +645,177 @@ func _door(spec: Dictionary) -> Node3D:
 func _flat(a: Vector3, b: Vector3) -> float:
 	return Vector2(a.x - b.x, a.z - b.z).length()
 
+# --- Finding the friends ---------------------------------------------------------------------
+
+## "find" (user, 17 Nov 2026): the hiding friends of "friends" are found in either order. Each
+## entry: "role", "hello" (its greeting, in the language being learned), "hints" (BonBon's
+## answers when asked, general to exact) and how it is found: "curtain" (the shower curtain of
+## tutorial.json "curtain": near "at" ("space", "radius") BonBon says the "approach" lines and the
+## strip asks to drag it; opening it reveals the friend, and the word "study" is studied) or
+## "radius" (walking that close to the friend). The strip shows "objective" with the count; BonBon
+## says "first" after the first and "all" after the last.
+func _find(spec: Dictionary) -> void:
+	_find_spec = spec
+	found.clear()
+	_hint_asks = 0
+	var curtain := _curtain_node()
+	_curtain_start = bool(main.doors[curtain].get("open", false)) if curtain != null else false
+	# The curtain opens by dragging only (a click or E on it does nothing meanwhile).
+	var item: Node = Interactable.on(curtain) if curtain != null else null
+	if item != null:
+		item.on_check = func() -> Variant: return false
+		_locked.append(item)
+	_curtain_drag = true
+	var friends: Array = spec.friends
+	while found.size() < friends.size():
+		_show_objective()
+		var next: Array = [{}]
+		var ok: bool = await until(func() -> bool:
+			next[0] = _find_trigger(friends)
+			return not next[0].is_empty())
+		if not ok:
+			return
+		var friend: Dictionary = next[0]
+		var revealed: bool = await _reveal(friend)
+		if not revealed:
+			return
+		found[str(friend.role)] = true
+		_hint_asks = 0
+		_show_objective()
+		await say(_speaker("guide"), narration(str(spec.get("first" if found.size() < friends.size() else "all", ""))))
+	_curtain_drag = false
+	_grabbing = false
+	_apply_gate()
+	clear_strip()
+	_find_spec = {}
+
+func _show_objective() -> void:
+	show_strip(_find_spec, "objective", "%d/%d" % [found.size(), _find_spec.friends.size()], {"name": _speaker("guide")})
+
+## The friend the player has just come to (or whose curtain is open), or {}.
+func _find_trigger(friends: Array) -> Dictionary:
+	for friend in friends:
+		if found.has(str(friend.role)):
+			continue
+		if friend.has("curtain"):
+			if _curtain_opened():
+				return friend
+			var point: Vector3 = _space(str(friend.space)).to_global(_vec(friend.at))
+			if _flat(main.player.global_position, point) <= float(friend.radius):
+				return friend
+		else:
+			var actor: Node3D = actors.get(str(friend.role))
+			if actor != null and _flat(main.player.global_position, actor.global_position) <= float(friend.radius):
+				return friend
+	return {}
+
+## Plays one friend's discovery; false when the tutorial stopped meanwhile.
+func _reveal(friend: Dictionary) -> bool:
+	var run := _run
+	if friend.has("curtain") and not _curtain_opened():
+		for id in friend.get("approach", []):
+			await say(_speaker("guide"), narration(str(id)))
+			if run != _run:
+				return false
+		show_strip(friend, "strip")
+		if not await until(_curtain_opened):
+			return false
+		_show_objective()
+	if friend.has("study"):
+		main.interaction.word_studied.emit(str(friend.study))
+	if friend.has("curtain"):
+		# The curtain slides back before the close-up.
+		await _pause(0.5, false)
+	var line: Dictionary = lexicon.line(str(friend.hello), {"name": _speaker(str(friend.role))})
+	await say(_speaker(str(friend.role)), line, str(friend.role))
+	return run == _run
+
+## BonBon's hint while the friends are hunted: the first friend not found yet (data order), the
+## more exact the more often she was asked since the last find.
+func _find_hint() -> String:
+	if _find_spec.is_empty():
+		return ""
+	for friend in _find_spec.friends:
+		if not found.has(str(friend.role)):
+			var hints: Array = friend.get("hints", [])
+			return str(hints[mini(_hint_asks, hints.size() - 1)]) if not hints.is_empty() else ""
+	return ""
+
+func _curtain_node() -> Node3D:
+	var curtain := main.apartment.get_node_or_null(NodePath(str(data.get("curtain", "")))) as Node3D
+	return curtain if curtain != null and main.doors.has(curtain) else null
+
+## The shower curtain was pulled back since the hunt started.
+func _curtain_opened() -> bool:
+	var curtain := _curtain_node()
+	return curtain != null and bool(main.doors[curtain].get("open", false)) != _curtain_start
+
+## The curtain drag: a press on the curtain (from at most CURTAIN_REACH metres) holds the view,
+## and a drag of DRAG_PIXELS (at the window's scale) pulls it back; letting go gives the view back.
+func _drag_input(event: InputEvent, at: Variant) -> void:
+	if at != null:
+		if not _speaking and _aims_at_curtain(at):
+			_grabbing = true
+			_grab_travel = 0.0
+			_apply_gate()
+		return
+	if not _grabbing:
+		return
+	if event is InputEventMouseMotion or event is InputEventScreenDrag:
+		_grab_travel += absf(event.relative.x) + absf(event.relative.y) * 0.3
+		var screen := get_viewport().get_visible_rect().size
+		if _grab_travel >= DRAG_PIXELS * clampf(minf(screen.y / 800.0, screen.x / 1100.0), 0.6, 3.0):
+			_grabbing = false
+			_apply_gate()
+			if not _curtain_opened():
+				DoorAnimator.toggle(main, _curtain_node())
+	elif (event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed) or (event is InputEventScreenTouch and not event.pressed):
+		_grabbing = false
+		_apply_gate()
+
+## The screen point `at` shows the shower curtain: the ray through it hits the curtain, or it is
+## near the cloth's middle on screen.
+func _aims_at_curtain(at: Vector2) -> bool:
+	var curtain := _curtain_node()
+	var camera := get_viewport().get_camera_3d()
+	if curtain == null or camera == null or _curtain_opened():
+		return false
+	var cloth := curtain.get_node_or_null("Curtain cloth") as MeshInstance3D
+	var middle: Vector3 = cloth.to_global(cloth.get_aabb().get_center()) if cloth != null else curtain.global_position
+	if _flat(main.player.global_position, middle) > CURTAIN_REACH:
+		return false
+	var from := camera.project_ray_origin(at)
+	var query := PhysicsRayQueryParameters3D.create(from, from + camera.project_ray_normal(at) * 12.0)
+	query.exclude = [main.player.get_rid()]
+	query.collide_with_areas = true
+	var hit: Dictionary = main.get_world_3d().direct_space_state.intersect_ray(query)
+	if not hit.is_empty() and hit.collider is Node and (curtain == hit.collider or curtain.is_ancestor_of(hit.collider)):
+		return true
+	if camera.is_position_behind(middle):
+		return false
+	return camera.unproject_position(middle).distance_to(at) <= get_viewport().get_visible_rect().size.y * 0.22
+
 # --- Locked doors and confining ---------------------------------------------------------------
 
 ## "lock": every door of the space (main.doors; not the shower curtains) except the ones named
 ## in "open" answers with the step's "line" instead of opening (user, 13 Nov 2026: the house tour
 ## only opens the rooms it uses). A later lock step replaces the list; _stop() unlocks all.
+## "remark" doors (17 Nov 2026, user) open as usual, and while the friends are hunted BonBon
+## says the step's "remark_line" when one is opened (rooms the hunt has no use for).
 func _lock(spec: Dictionary) -> void:
 	_unlock_all()
 	if spec.get("off", false):
 		return
 	var space := _space(str(spec.get("space", "home")))
 	var open: Array = spec.get("open", [])
+	var remarked: Array = spec.get("remark", [])
+	_remark_line = str(spec.get("remark_line", ""))
 	var line := str(spec.get("line", ""))
 	for door in main.doors:
 		if not is_instance_valid(door) or not space.is_ancestor_of(door):
+			continue
+		if remarked.has(str(door.name)):
+			_remark_doors[door] = bool(main.doors[door].get("open", false))
 			continue
 		if str(main.doors[door].get("type", "")) == "curtain" or open.has(str(door.name)):
 			continue
@@ -493,6 +830,7 @@ func _unlock_all() -> void:
 		if is_instance_valid(item):
 			item.on_check = Callable()
 	_locked.clear()
+	_remark_doors.clear()
 
 ## "confine": "rects" ([x0, z0, x1, z1] in the space) the player must stay inside, or "hold":
 ## true (stay where they are: the statue step); neither = free again. "line" flashes when the
@@ -531,7 +869,8 @@ func _physics_process(_delta: float) -> void:
 	var now := Time.get_ticks_msec()
 	if _confine_line != "" and now - _confine_flashed > CONFINE_FLASH_MS and best_distance > 0.0004:
 		_confine_flashed = now
-		main.hud.flash_quest_message(lexicon.phrase(_confine_line, lexicon.native))
+		# BonBon says it (17 Nov 2026: "Hey! The supermarket is this way!").
+		remark("guide", _confine_line)
 
 # --- Places and the cast ---------------------------------------------------------------------
 
@@ -567,6 +906,8 @@ func _place(spec: Dictionary) -> void:
 		_open_on(spec))
 
 func _place_now(spec: Dictionary, space: Node3D) -> void:
+	if spec.has("picnic"):
+		_make_picnic(space, spec.picnic)
 	if spec.has("player"):
 		zone.place_player(space, _vec(spec.player.at), _look(spec.player.look))
 	# Lying down needs the player beside the bed ("player" above).
@@ -585,6 +926,54 @@ func _place_now(spec: Dictionary, space: Node3D) -> void:
 				actor.set_meta("talk_camera_at", space.to_global(_vec(where.camera)))
 			elif actor.has_meta("talk_camera_at"):
 				actor.remove_meta("talk_camera_at")
+
+## The picnic (user, 17 Nov 2026): a gingham blanket on the ground at "at" ([x, y, z] in the
+## space), turned along "look", with the shopping basket (shopping_basket.gd) holding the food
+## bought in the market act (tutorial.json shop items). Gone when the tutorial ends.
+func _make_picnic(space: Node3D, spec: Dictionary) -> void:
+	_clear_picnic()
+	_picnic = Node3D.new()
+	_picnic.name = "TutorialPicnic"
+	_world.add_child(_picnic)
+	_picnic.global_position = _ground(space.to_global(_vec(spec.at)))
+	var facing: Vector3 = space.global_basis * _look(spec.look)
+	_picnic.global_basis = Basis.looking_at(Vector3(facing.x, 0, facing.z).normalized(), Vector3.UP)
+	var cloth := MeshInstance3D.new()
+	cloth.name = "Picnic blanket"
+	# A thin slab above the ground's collider: the park lawn is drawn 5 to 10 cm higher.
+	var slab := BoxMesh.new()
+	slab.size = Vector3(2.4, 0.03, 1.9)
+	cloth.mesh = slab
+	cloth.position.y = 0.13
+	cloth.material_override = _gingham()
+	cloth.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	_picnic.add_child(cloth)
+	var basket: Node3D = load(ShoppingBasket.SCENE).instantiate()
+	basket.name = "Picnic basket"
+	_picnic.add_child(basket)
+	basket.position = Vector3(0.35, 0.145, -0.15)
+	basket.rotation.y = 0.4
+	basket.show_items(data.shop.items)
+
+## Red and white gingham: a 2 x 2 pixel pattern repeated over the blanket.
+func _gingham() -> StandardMaterial3D:
+	var image := Image.create(2, 2, false, Image.FORMAT_RGB8)
+	image.set_pixel(0, 0, Color("d9483f"))
+	image.set_pixel(1, 0, Color("f2a39b"))
+	image.set_pixel(0, 1, Color("f2a39b"))
+	image.set_pixel(1, 1, Color("fbf4ec"))
+	var material := StandardMaterial3D.new()
+	material.albedo_texture = ImageTexture.create_from_image(image)
+	material.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
+	# BoxMesh UVs put each face in a third of the texture across: 3 x 9 checks along the top.
+	material.uv1_scale = Vector3(27, 14, 1)
+	material.roughness = 0.95
+	return material
+
+func _clear_picnic() -> void:
+	if is_instance_valid(_picnic):
+		_picnic.queue_free()
+	_picnic = null
 
 ## "open_on": the screen comes up already zooming in on that cast member's face (the opening:
 ## BonBon talking, not the player in bed; user, 14 Nov 2026). The next "say" step with "face" on
@@ -658,6 +1047,9 @@ func put(role: String, spot: Vector3, facing: Vector3, on_ground := true) -> voi
 	var actor: Node3D = actors.get(role)
 	if actor == null:
 		return
+	# A walk still under way would carry the actor back (17 Nov 2026: the cast walking off at the
+	# end of the market act reappeared at the supermarket in the park).
+	_stop_walk(actor)
 	var lift: float = actor.get_meta("tutorial_lift", 0.0)
 	actor.global_position = (_ground(spot) if on_ground else spot) + Vector3.UP * lift
 	var flat := Vector3(facing.x, 0, facing.z)
@@ -678,7 +1070,9 @@ func _walk(actor: Node3D, spec: Dictionary) -> void:
 		return
 	var space := _space(str(spec.space))
 	var lift: float = actor.get_meta("tutorial_lift", 0.0)
+	_stop_walk(actor)
 	var tween := actor.create_tween()
+	_walks[actor] = tween
 	var from := actor.global_position
 	for point in spec.path:
 		var to := _ground(space.to_global(Vector3(float(point[0]), 0.0, float(point[1])))) + Vector3.UP * lift
@@ -694,6 +1088,12 @@ func _walk(actor: Node3D, spec: Dictionary) -> void:
 		var facing: Vector3 = space.global_basis * _look(spec.look)
 		tween.tween_callback(func() -> void:
 			actor.global_basis = Basis.looking_at(Vector3(facing.x, 0, facing.z).normalized(), Vector3.UP))
+
+func _stop_walk(actor: Node3D) -> void:
+	var walk: Tween = _walks.get(actor)
+	if walk != null and walk.is_valid():
+		walk.kill()
+	_walks.erase(actor)
 
 ## Who plays each role: the guide and the friends of tutorial.json; a friend who is the player's
 ## avatar is replaced by the next house character (data order) not already in the cast.
@@ -775,9 +1175,13 @@ func where_line() -> String:
 			return phrase_id(step, "where")
 		"shop":
 			return shop.where() if is_instance_valid(shop) else ""
+		"find":
+			return _find_hint()
 	return ""
 
-## BonBon turns to the player and says where to go next; the line stays up like a hint.
+## BonBon turns to the player and says where to go next (a bubble that closes by itself). Hints
+## only come when asked (user, 17 Nov 2026); during the hunt and the shopping each ask gives the
+## next, more exact hint.
 func _talk_to_guide() -> void:
 	var id := where_line()
 	var actor: Node3D = actors.get("guide")
@@ -787,7 +1191,13 @@ func _talk_to_guide() -> void:
 	way.y = 0.0
 	if way.length() > 0.05:
 		actor.global_basis = Basis.looking_at(way.normalized(), Vector3.UP)
-	hint(_speaker("guide"), narration(id))
+	match str(step.get("do", "")):
+		"find":
+			_hint_asks += 1
+		"shop":
+			if is_instance_valid(shop):
+				shop.asked()
+	remark("guide", id)
 
 func _hide_twin(id: String) -> void:
 	var twin := main.get_node_or_null("HouseCharacters/" + id) as Node3D
@@ -839,6 +1249,7 @@ func _clear_cast() -> void:
 	if is_instance_valid(_cast_root):
 		_cast_root.queue_free()
 	actors.clear()
+	_walks.clear()
 
 ## Act 1 needs the family bathtub's curtain drawn along its rail, hiding the tub (the home's own
 ## curtain, home_furnishing.gd; in door_animator.gd terms "open" = drawn, and it starts bunched
@@ -855,19 +1266,27 @@ func _reset_props() -> void:
 ## user: app.gd _load_rest() adds Main's pending_units while it is up): it stays at least
 ## cutscene_seconds and until they are all in (at most cutscene_max_seconds), with the progress
 ## bar under the title while any are loading.
-func _play_cutscene(title_id: String) -> void:
+## `subtitle_id`: the line under the title (17 Nov 2026, user: "Little Town of Words"). A click,
+## tap or key skips it (after CUTSCENE_SKIP_AFTER s); buildings still loading then come in at the
+## market act's quiet moments (app.gd _load_rest()).
+func _play_cutscene(title_id: String, subtitle_id := "") -> void:
 	_cutscene = LoadingScreen.new()
 	add_child(_cutscene)
 	var total := float(main.pending_units.size())
-	_cutscene.show_title(lexicon.phrase(title_id, lexicon.native), total > 0.0)
+	_cutscene.show_title(lexicon.phrase(title_id, lexicon.native), total > 0.0,
+		lexicon.phrase(subtitle_id, lexicon.native) if subtitle_id != "" else "", lexicon.phrase("tutorial.tap_skip", lexicon.native))
+	_skip_cutscene = false
 	var started := Time.get_ticks_msec()
+	_cutscene.skip_requested.connect(func() -> void:
+		if Time.get_ticks_msec() - started >= CUTSCENE_SKIP_AFTER * 1000.0:
+			_skip_cutscene = true)
 	var least: float = started + float(data.get("cutscene_seconds", 7.0)) * 1000.0
 	var most: float = started + float(data.get("cutscene_max_seconds", 60.0)) * 1000.0
 	await until(func() -> bool:
 		var now := Time.get_ticks_msec()
 		if total > 0.0 and is_instance_valid(_cutscene):
 			_cutscene.set_progress(1.0 - main.pending_units.size() / total)
-		return now >= most or (now >= least and main.pending_units.is_empty()))
+		return _skip_cutscene or now >= most or (now >= least and main.pending_units.is_empty()))
 	if is_instance_valid(_cutscene):
 		_cutscene.finish()
 	_cutscene = null
@@ -896,6 +1315,18 @@ func _make_skip_button() -> void:
 	_skip_layer.add_child(_skip_button)
 
 func _process(_delta: float) -> void:
+	if running:
+		# The strip's wording follows the device (the first touch switches it).
+		if not _strip_spec.is_empty() and bool(_strip_spec.touch) != is_touch():
+			show_strip(_strip_spec.spec, _strip_spec.key, _strip_spec.note, _strip_spec.values)
+		# A door the hunt has no use for, opened: BonBon's remark.
+		for door in _remark_doors:
+			if not is_instance_valid(door):
+				continue
+			var now_open := bool(main.doors[door].get("open", false))
+			if now_open and not _remark_doors[door] and str(step.get("do", "")) == "find" and _remark_line != "":
+				remark("guide", _remark_line)
+			_remark_doors[door] = now_open
 	if not _skip_layer.visible:
 		return
 	# Finger sized and scaled with the window (money_panel.gd's rule), top centre.
@@ -926,6 +1357,15 @@ func _stop() -> void:
 	_line = {}
 	_hint_spec = {}
 	_show_cue("")
+	clear_strip()
+	_gate = {}
+	_speaking = false
+	_pausing = false
+	_grabbing = false
+	_curtain_drag = false
+	_find_spec = {}
+	_apply_gate()
+	_clear_picnic()
 	_clear_cast()
 	_skip_layer.visible = false
 	_unlock_all()

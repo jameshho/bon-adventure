@@ -50,6 +50,10 @@ var pick_hook: Callable = Callable()
 ## a click on a plain vocabulary object then shows no card and studies nothing. The pick hook
 ## and interactables still work.
 var word_cards := true
+## Off while the welcome tutorial's control steps or a line of its dialogue hold the player's
+## interactions back (tutorial.gd "controls", 17 Nov 2026, user): nothing can be focused or
+## clicked; input claims (standing up from the bed with E) still work.
+var interact_allowed := true
 ## Optional (obj: Node3D) -> bool: only objects it accepts open a word card (the welcome
 ## tutorial's statue step: only the statue, user 13 Nov 2026).
 var word_filter: Callable
@@ -210,7 +214,7 @@ func active_claim() -> Dictionary:
 
 ## Whether interactables can be focused at all now.
 func can_focus() -> bool:
-    return enabled and is_instance_valid(player) and player.get("controls_enabled") != false and not player.get("seated") \
+    return enabled and interact_allowed and is_instance_valid(player) and player.get("controls_enabled") != false and not player.get("seated") \
         and not player.get("noclip_enabled") and player.get("ladder_node") == null and active_claim().is_empty()
 
 ## E, or a tap on the badge: refreshes the focus (the player may have just turned) and activates
@@ -334,7 +338,7 @@ func click() -> void:
         if held.click.is_valid():
             held.click.call()
         return
-    if not enabled or player.get("controls_enabled") == false:
+    if not enabled or not interact_allowed or player.get("controls_enabled") == false:
         return
     # An open word card closes on any click or tap, wherever it lands (user, 14 Nov 2026: easy
     # to exit on a phone); that click does nothing else. The card's star and translate button

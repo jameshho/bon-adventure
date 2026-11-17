@@ -348,7 +348,7 @@
     "shelter": {"text": {"en": "shelter", "es": "el refugio", "zh": "候車亭"}, "category": "Streets & Town"},
     "sidewalk": {"text": {"en": "sidewalk", "es": "la banqueta", "zh": "行人路"}, "category": "Streets & Town"},
     "sign": {"text": {"en": "sign", "es": "el letrero", "zh": "告示牌"}, "category": "Streets & Town"},
-    "statue": {"text": {"en": "statue", "es": "la estatua", "zh": "雕像"}, "category": "Streets & Town", "note": "The Washington statue in the monument plaza (base step statue_word, 12 Nov 2026); taught in the welcome tutorial."},
+    "statue": {"text": {"en": "statue of George Washington", "es": "la estatua de George Washington", "zh": "喬治・華盛頓雕像"}, "category": "Streets & Town", "note": "The Washington statue in the monument plaza (base step statue_word, 12 Nov 2026); taught in the welcome tutorial. Its card reads 'statue of George Washington' (user, 17 Nov 2026); the key stays statue."},
     "street": {"text": {"en": "street", "es": "la calle", "zh": "街"}, "category": "Streets & Town"},
     "street sign": {"text": {"en": "street sign", "es": "el letrero de la calle", "zh": "路牌"}, "category": "Streets & Town"},
     "streetlight": {"text": {"en": "streetlight", "es": "el poste de luz", "zh": "街燈"}, "category": "Streets & Town"},

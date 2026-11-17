@@ -23,9 +23,9 @@ where the player was and comes back at that building's entrance or on clear grou
 
 ## Welcome tutorial
 
-<img src="../evidence/tutorial-20261112/cutscene.png" width="480" alt="Welcome tutorial opening">
+<img src="../evidence/tutorial-script-20261117/picnic.png" width="480" alt="Welcome tutorial picnic">
 
-*Screenshot 12 Nov; home and shop steps changed 14 Nov.*
+*Screenshot 17 Nov (the closing picnic).*
 
 "Welcome to Bon Adventure" runs once for a new profile: wake up in bed, a tour of the house, find
 the hiding friends, buy fruit at the supermarket, visit the statue, then open the journal. It
@@ -34,6 +34,12 @@ the rest of the town loads behind the title card after the house tour (with a pr
 the house tour itself no longer stutters. Since 17 Nov the tour also starts behind the loading screen: the characters,
 rooms and close-ups of the house tour are drawn there first, so the first lines in the house no
 longer freeze on the web, and the loading bar moves with the real work all the way to the end.
+Since 17 Nov it follows the user's script "Little Town of Words": lines move on by themselves
+(a click or tap skips), a strip at the top says what to do, the controls unlock one at a time,
+the two friends can be found in either order (drag the shower curtain open; ask BonBon for
+hints), the shopping list is 1 apple, 2 bananas and 3 cookies paid in $1 bills and quarters,
+the statue card reads "statue of George Washington", and the tour ends with a picnic in the park
+(placeholder lines). The journal's book button is cuter, with a clearer J.
 [Tutorial guide](../guides/ARCHITECTURE_REVIEW_PART1.md#welcome-tutorial)
 
 ## Languages

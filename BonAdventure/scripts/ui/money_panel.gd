@@ -40,6 +40,8 @@ var show_native := false
 ## Text lines, each {"foreign", "native"}: request, tray_title, bills, coins,
 ## total, submit, clear, close, translate (set by open()).
 var ui: Dictionary = {}
+## Denomination ids offered (open()'s "only"); empty = all.
+var only: Array = []
 
 var _shade: ColorRect
 var _card: PanelContainer
@@ -59,6 +61,9 @@ var _tray_box: PanelContainer
 var _tray_flow: HFlowContainer
 ## A faint hand in the empty tray (4 Nov 2026: replaces the "tap the money below" hint).
 var _tray_empty: TextureRect
+## open()'s "hint" (a String), shown in the empty tray under the hand (the welcome tutorial's
+## "Tap the bills and coins to make $2.50.", 17 Nov 2026).
+var _tray_hint: Label
 var _bills_title: Label
 var _bills_flow: HFlowContainer
 var _coins_title: Label
@@ -150,6 +155,11 @@ func _build() -> void:
 	_tray_empty.modulate = Color(DIM, 0.35)
 	_tray_empty.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	tray_stack.add_child(_tray_empty)
+	_tray_hint = _label(GOLD)
+	_tray_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_tray_hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_tray_hint.visible = false
+	tray_stack.add_child(_tray_hint)
 	_tray_flow = HFlowContainer.new()
 	_tray_flow.alignment = FlowContainer.ALIGNMENT_CENTER
 	tray_stack.add_child(_tray_flow)
@@ -203,6 +213,9 @@ func _build() -> void:
 ## Shows the panel for `lines` (see `ui`). The current selection is kept.
 func open(lines: Dictionary) -> void:
 	ui = lines
+	# "only": the denomination ids to offer (the welcome tutorial: $1 bills and quarters, 17 Nov
+	# 2026, user); none = all of Currency.DENOMS.
+	only = lines.get("only", [])
 	visible = true
 	_refresh()
 
@@ -300,6 +313,7 @@ func _refresh() -> void:
 		button.custom_minimum_size = Vector2(190, 62) * f
 	_submit_button.custom_minimum_size = Vector2(250, 72) * f
 	_tray_empty.custom_minimum_size = Vector2(0, 84 * f)
+	_set_font(_tray_hint, 26, f)
 	_tray_box.custom_minimum_size = Vector2(0, 120 * f)
 	(_tray_box.get_theme_stylebox("panel") as StyleBoxFlat).set_content_margin_all(18 * f)
 	_pool.add_theme_constant_override("separation", int(10 * f))
@@ -321,6 +335,8 @@ func _refresh() -> void:
 	_submit_button.disabled = counts.is_empty()
 	_clear_button.disabled = counts.is_empty()
 	_tray_empty.visible = counts.is_empty()
+	_tray_hint.text = str(ui.get("hint", ""))
+	_tray_hint.visible = counts.is_empty() and _tray_hint.text != ""
 	_fill(_tray_flow)
 	for denom in Currency.DENOMS:
 		var count := int(counts.get(denom.id, 0))
@@ -333,6 +349,8 @@ func _refresh() -> void:
 	_fill(_bills_flow)
 	_fill(_coins_flow)
 	for denom in Currency.DENOMS:
+		if not only.is_empty() and not only.has(denom.id):
+			continue
 		var piece := Piece.new()
 		piece.setup(denom, false, f * PIECE_SCALE)
 		piece.pressed.connect(add_piece.bind(str(denom.id)))

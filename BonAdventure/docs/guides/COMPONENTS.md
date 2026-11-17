@@ -19,6 +19,8 @@ Audited and consolidated 13 November 2026 (user request). Evidence: `docs/eviden
 | A shopping basket the player carries while shopping, showing what was picked | `ShoppingBasket.give(node)`, `basket.remember(key, picked)` + `show_items(counts)`, `ShoppingBasket.take_back(node)` | `scripts/world/shopping_basket.gd` (holds through `hand_hold.gd`) | [Holding items](#holding-items) |
 | An invisible wall in a doorway while a game runs (with a "leave?" or "not yet" zone inside it) | `MinigameZone.make_door_guard()` | `scripts/learning/minigame_zone.gd` | [Minigames](MINIGAMES.md#building-a-minigame); users: Mystery House, Alta Cocina, the welcome tutorial's store door (until paid, 14 Nov 2026) |
 | Words of the language being learned inside a native-language dialogue line, coloured, tap for the meaning | `Lexicon.native_line(id, {slot: {"learn": value}}, extra_terms)` (line `terms`) | `scripts/language/lexicon.gd`, drawn by `scripts/ui/shop_order_panel.gd` | [Coloured words](#coloured-words-in-the-dialogue-box) |
+| A one-line "what to do now" instruction, top centre, apart from speech (with an optional "1/2") | `InstructionStrip`: `show_text(line, note)`, `clear()`, `hidden_when` | `scripts/ui/instruction_strip.gd` | [Instruction strip](#instruction-strip) |
+| Paying with money: pick bills and coins (only some denominations, an instruction in the tray) | `money_panel.gd open(lines)` with `only` / `hint` | `scripts/ui/money_panel.gd` | [Money panel options](#money-panel-options) |
 | A close-up of an item | `object_inspector.gd open(item, camera, options)` | `scripts/player/object_inspector.gd` | [Holding guide](HAND_HOLD.md#inspecting) |
 | An elevator call or floor button; the cabin's floor picker (E at the panel: camera close-up, tap a 3D button; 14 Nov 2026) | `ElevatorCallButton` (`pick_size`, `picker_on_e`), built by `hospital_elevator.gd`; `elevator_floor_picker.gd` | `scripts/world/elevator_call_button.gd`, `scripts/ui/elevator_floor_picker.gd` | [Hospital guide](HOSPITAL_THREE_FLOORS.md#floor-picker--14-november-2026) |
 | Heavy goods carried in front, trolleys pushed and pulled | the warehouse game's own physics carry | `scripts/learning/warehouse_goods.gd` | [Holding items](#holding-items) |
@@ -28,7 +30,7 @@ Audited and consolidated 13 November 2026 (user request). Evidence: `docs/eviden
 | A small move: hop, shake, nod, lean | `PlushLife.play(host, figure, kind)` | `scripts/characters/plush_life.gd` | [Plush characters](#plush-characters) |
 | An NPC that talks, calls with "!" and gets a face close-up | `minigame_host.gd`, `npc_presence.gd` (meta `talk_face_drop` for a hat; meta `talk_camera_at`, a global point, fixes the close-up camera where walls block the automatic one, 13 Nov 2026) | `scripts/learning/` | [Minigames](MINIGAMES.md#building-a-minigame) |
 | Animals that wander | `park_animals.gd` profiles | `scripts/world/park_animals.gd` | [Animal system](ANIMAL_SYSTEM.md) |
-| A clay animal walks, breathes, turns its head (the 17 clay zoo animals, 16 Nov 2026; a new species needs its own `tools/build_<prefab>_clay_rig.gd` bone spec) | `clay_rig.gd` at bake time, then `clay_animator.gd` at run time; blinking through `PlushLife.follow_group("clay_animals")` | `scripts/characters/clay_rig.gd`, `scripts/characters/clay_animator.gd` | [Clay animal animation](ANIMAL_SYSTEM.md#clay-animal-animation-16-nov-2026) |
+| A clay animal walks, breathes, turns its head (the 17 clay zoo animals, 16 Nov 2026, and the tiger, 17 Nov; a new species needs its own `tools/build_<prefab>_clay_rig.gd` bone spec; a display that already has `LeftEye`/`RightEye` nodes lists them in `on_head`) | `clay_rig.gd` at bake time, then `clay_animator.gd` at run time; blinking through `PlushLife.follow_group("clay_animals")` | `scripts/characters/clay_rig.gd`, `scripts/characters/clay_animator.gd` | [Clay animal animation](ANIMAL_SYSTEM.md#clay-animal-animation-16-nov-2026) |
 | Lettering on a sign, board or tag in the town (readable size, translation, contrast) | `WorldSign.make(...)` / `WorldSign.restyle(label, {"read": metres, ...})`, `WorldSign.fit_board(...)` | `scripts/world/world_sign.gd` (translation: `scripts/world/sign_language.gd`) | [World signs](#world-signs) |
 
 ## Interaction
@@ -117,6 +119,25 @@ becomes a term `{"text", "gloss"}`; `"show": true` on it always shows the meanin
 "dos dólares con cincuenta centavos (= $2.50)"); `extra_terms` adds words already inside another
 value (`lexicon.word_term(key)`). Any line with a `terms` list gets this in the shared dialogue
 box (`shop_order_panel.gd`, its line is a `RichTextLabel`); nothing names a language in code.
+
+## Instruction strip
+
+User, 17 Nov 2026 (the welcome tutorial's "UI" lines): one slim line of what to do now, top
+centre, with a gold pointer, apart from the speech bubble of whoever talks. `scripts/ui/instruction_strip.gd`
+is its own CanvasLayer (layer 58): add one to the tree, then `show_text("Press E to get up.")`,
+`show_text("Find BonBon's two friends", "1/2")` or `clear()`. It stays until replaced or cleared,
+slides in with a short glow when the text changes, never takes a click or a finger and scales
+with the window like the panels (min(height / 800, width / 1100)). `hidden_when` (a `() -> bool`)
+hides it meanwhile without forgetting the text (journal, map, Settings, money panel open);
+`top` (pixels at scale 1) places it under other top-centre UI. User: the welcome tutorial
+(`tutorial.gd` `show_strip()`); any guided activity may reuse it rather than writing its own.
+
+## Money panel options
+
+`money_panel.gd open(lines)` takes, besides its labels: `only` (17 Nov 2026), the denomination
+ids to offer (`Currency.DENOMS` ids such as `bill_1`, `coin_25`; empty = all), and `hint`, a
+line shown inside the empty tray (the welcome tutorial: "Pay $2.50", so the instruction sits
+where the player looks instead of a strip covering the tray).
 
 ## Sitting and lying
 

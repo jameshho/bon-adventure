@@ -915,28 +915,57 @@ func _draw_bookmark_star() -> void:
     points.append(points[0])
     bookmark_star.draw_polyline(points, BOOKMARK_GOLD, 2.0 * k, true)
 
-## The open book with a red ribbon, drawn to fill most of the button at any size (its
-## shapes are laid out for a 40 px button and scaled by k).
+## The journal's book (user, 17 Nov 2026: cuter, with the J easy to see; was an open book with a
+## small J on its left page): a chubby closed book with a coral cover, cream page edges, a big
+## bold J on a cream label, a ribbon peeking out at the bottom and a little sparkle. Its shapes
+## are laid out for a 40 px button and scaled by k, so it fills most of the button at any size.
 func _draw_bookmark_book() -> void:
     var c: Vector2 = bookmark_button.size * 0.5
     var k: float = bookmark_button.size.x / 40.0
     var page := Color("fff3d4")
-    var edge := Color("cfb880")
-    var left := PackedVector2Array([c + Vector2(-14, -9) * k, c + Vector2(-1, -6) * k, c + Vector2(-1, 11) * k, c + Vector2(-14, 8) * k])
-    var right := PackedVector2Array([c + Vector2(1, -6) * k, c + Vector2(14, -9) * k, c + Vector2(14, 8) * k, c + Vector2(1, 11) * k])
-    for sheet in [left, right]:
-        bookmark_button.draw_colored_polygon(sheet, page)
-        var outline: PackedVector2Array = sheet.duplicate()
-        outline.append(sheet[0])
-        bookmark_button.draw_polyline(outline, edge, 1.5 * k, true)
-    # The J key on the left page (user, 13 Nov 2026; was three text lines): J opens the journal.
+    var page_line := Color("e2cf9f")
+    var cover := Color("f47c6a")
+    var spine := Color("d65a4b")
+    var ink := Color("2f5d6b")
+    # Ribbon first, so the book covers its top: two tails under the bottom edge.
+    var ribbon := Color("ffcf4d")
+    bookmark_button.draw_colored_polygon(PackedVector2Array([c + Vector2(4.5, 10) * k, c + Vector2(8.5, 10) * k, c + Vector2(8.5, 17.5) * k, c + Vector2(6.5, 15.6) * k, c + Vector2(4.5, 17.5) * k]), ribbon)
+    # Soft shadow, then the page block peeking out on the right and bottom.
+    _book_box(Rect2(c + Vector2(-12.5, -13) * k, Vector2(27, 28) * k), 5.0 * k, Color(0, 0, 0, 0.22))
+    _book_box(Rect2(c + Vector2(-12, -14.5) * k, Vector2(26, 27) * k), 5.0 * k, page)
+    # Page lines along the visible bottom and right edges.
+    bookmark_button.draw_line(c + Vector2(-11, 11) * k, c + Vector2(12.6, 11) * k, page_line, 0.9 * k, true)
+    bookmark_button.draw_line(c + Vector2(12.6, -12.5) * k, c + Vector2(12.6, 11) * k, page_line, 0.9 * k, true)
+    # The cover with a darker spine band on the left.
+    _book_box(Rect2(c + Vector2(-14, -16) * k, Vector2(25, 25.5) * k), 5.0 * k, cover)
+    _book_box(Rect2(c + Vector2(-14, -16) * k, Vector2(6, 25.5) * k), 5.0 * k, spine)
+    bookmark_button.draw_rect(Rect2(c + Vector2(-10, -16) * k, Vector2(2.5, 25.5) * k), spine)
+    # The label with a big bold J (the key that opens the journal; user, 13 Nov 2026).
+    var label := Rect2(c + Vector2(-5.5, -12) * k, Vector2(14, 17) * k)
+    _book_box(label, 3.5 * k, page)
     var font: Font = bookmark_button.get_theme_font("font")
-    var font_size := roundi(14.0 * k)
+    var font_size := roundi(16.0 * k)
     var glyph: Vector2 = font.get_string_size("J", HORIZONTAL_ALIGNMENT_LEFT, -1, font_size)
-    var baseline: Vector2 = c + Vector2(-7.5, 1.0) * k + Vector2(-glyph.x * 0.5, (font.get_ascent(font_size) - font.get_descent(font_size)) * 0.5)
-    bookmark_button.draw_string(font, baseline, "J", HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, Color("2f5d6b"))
-    # Ribbon marker hanging from the right page.
-    bookmark_button.draw_colored_polygon(PackedVector2Array([c + Vector2(6, -7.6) * k, c + Vector2(10, -8.2) * k, c + Vector2(10, 5) * k, c + Vector2(8, 3) * k, c + Vector2(6, 5) * k]), Color("e0645a"))
+    var baseline := label.get_center() + Vector2(-glyph.x * 0.5, (font.get_ascent(font_size) - font.get_descent(font_size)) * 0.5)
+    # The outline in the same colour makes the J bold whatever the theme font is.
+    bookmark_button.draw_string_outline(font, baseline, "J", HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, maxi(1, roundi(2.2 * k)), ink)
+    bookmark_button.draw_string(font, baseline, "J", HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, ink)
+    # A little sparkle on the cover's top right corner.
+    var spark := c + Vector2(11.5, -15) * k
+    var star := PackedVector2Array()
+    for i in 8:
+        var radius := (4.2 if i % 2 == 0 else 1.3) * k
+        var angle := -PI * 0.5 + i * PI / 4.0
+        star.append(spark + Vector2(cos(angle), sin(angle)) * radius)
+    bookmark_button.draw_colored_polygon(star, Color("fff6c9"))
+
+## A filled rounded rectangle on the journal button (StyleBoxFlat draws the corners smoothly).
+func _book_box(rect: Rect2, radius: float, color: Color) -> void:
+    var box := StyleBoxFlat.new()
+    box.bg_color = color
+    box.set_corner_radius_all(roundi(radius))
+    box.anti_aliasing = true
+    box.draw(bookmark_button.get_canvas_item(), rect)
 
 
 func make_ui_card(fill: Color, outline: Color, corners: int) -> StyleBoxFlat:

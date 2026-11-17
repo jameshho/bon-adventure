@@ -14,6 +14,14 @@ extends Node
 ## coloured in the dialogue box (Lexicon.native_line() terms; the amount always shows its
 ## digits); the cashier's thanks closes itself after 3 s; and until the fruit is paid for, the
 ## supermarket door holds the player back (minigame_zone.gd make_door_guard(), settings "door").
+##
+## Tutorial script, 17 Nov 2026 (user): the clerk welcomes the player and hands over the basket in
+## two bubbles; the shopping list (1 apple, 2 bananas, 3 cookies: settings "items") stays on
+## screen until paid, each line ticked green with a small bounce when complete (a sound can hook
+## in at _on_pick() once the game has audio); a wrong item gets BonBon's "Oops!"; her hints come
+## only when asked and follow what is still missing ("hints": fruit first, then the cookies,
+## general to exact); the cashier's "Pay with cash" opens the money panel with only $1 bills and
+## quarters (settings "money"), with unlimited tries; leaving unpaid gets BonBon's "Wait!".
 const ShopDialogue := preload("res://scripts/learning/shop_dialogue.gd")
 const Currency := preload("res://scripts/learning/currency.gd")
 const Interactable := preload("res://scripts/core/interactable.gd")
@@ -24,6 +32,8 @@ const THANKS_SECONDS := 3.0
 const PAY := "tutorial_pay"
 ## Metres from the cashier's front within which the player is "at the till".
 const TILL_RADIUS := 2.6
+## Fruit keys: while any of them is still on the list, BonBon's hints point to the fruit.
+const FRUIT := ["apple", "banana"]
 
 var tutorial
 var main
@@ -43,9 +53,15 @@ var paid := false
 ## "leave", "done".
 var phase := "order"
 var _paying := false
+## The last amount handed over was wrong (the cashier says so before asking again).
+var _wrong := false
 var _pay_pressed := false
 var _speakers: Dictionary = {}
 var _turned_off: Array = []
+## Times BonBon was asked for a hint since the list last changed (asked()); the list key that just
+## became complete (its row bounces once).
+var _asks := 0
+var _popped := ""
 ## The basket the clerk handed over (null before the greeting and after the trip).
 var basket: Node3D
 ## The store door's guard (minigame_zone.gd DoorGuard): stands while the player is inside and
@@ -101,7 +117,7 @@ func _make_door() -> void:
 	var ask_size := Vector3(1.2, size.y, size.z) if along_x else Vector3(size.x, size.y, 1.2)
 	door = tutorial.zone.make_door_guard(space, at + Vector3.UP * size.y * 0.5, size, ask_at, ask_size, "Tutorial store door", {
 		"blocking": func() -> bool: return not paid and _inside(space, at, inward, depth * 0.5 + 0.6),
-		"ask": func() -> void: panel.toast(tutorial.narration("tutorial.pay_first"), 2.5),
+		"ask": func() -> void: tutorial.remark("guide", "tutorial.pay_first"),
 		"layer": HouseCharacters.FIGURE_LAYER})
 
 func _remove_door() -> void:
@@ -120,29 +136,33 @@ func _inside(space: Node3D, at: Vector3, inward: Vector3, margin: float) -> bool
 
 ## The whole trip; returns when the player has paid and walked out (or the tutorial stopped).
 func play() -> void:
-	# The clerk greets the player and hands over a basket, in the native language.
-	var lexicon = dialogue.lexicon
-	await tutorial.say(_speakers.get(clerk, ""), tutorial.narration("tutorial.clerk_hello", {"word": {"learn": {"word": "basket"}}}), "", clerk)
+	var guide: String = tutorial._speaker("guide")
+	var clerk_name: Variant = _speakers.get(clerk, "")
+	var cashier_name: Variant = _speakers.get(cashier, "")
+	# The clerk welcomes the player and hands over a basket, in the native language.
+	await tutorial.say(clerk_name, tutorial.narration("tutorial.clerk_hello"), "", clerk)
+	await tutorial.say(clerk_name, tutorial.narration("tutorial.clerk_basket"), "", clerk)
 	if not tutorial.running:
 		return
 	basket = Basket.give(main)
-	var order: String = dialogue.items_text(remaining, dialogue.foreign)
-	var words: Array = []
-	for key in remaining:
-		words.append(lexicon.word_term(str(key)))
-	await tutorial.say(_speakers.get(clerk, ""), tutorial.narration("tutorial.clerk_order", {"items": order}, words), "", clerk)
-	phase = "pick"
-	# Shopping: clicks on the store's fruit go to the cart (InteractionController.pick_hook).
+	# The shopping list stays up until paid (clicks on products go to it: pick_hook).
 	interaction.clear_card()
-	interaction.pick_hook = _on_pick
 	panel.show_cart(_cart_data())
-	tutorial.hint(tutorial._speaker("guide"), tutorial.narration("tutorial.pick_fruit"))
+	await tutorial.say(guide, tutorial.narration("tutorial.get_list"))
+	await tutorial.say(guide, tutorial.narration("tutorial.click_item_touch" if tutorial.is_touch() else "tutorial.click_item"))
+	if not tutorial.running:
+		return
+	phase = "pick"
+	interaction.pick_hook = _on_pick
 	var picked: bool = await tutorial.until(func() -> bool: return remaining.is_empty())
 	if not picked:
 		return
-	_close_cart()
+	if interaction.pick_hook == Callable(self, "_on_pick"):
+		interaction.pick_hook = Callable()
+	phase = "list_done"
+	await tutorial.say(guide, tutorial.narration("tutorial.got_everything"))
+	await tutorial.say(guide, tutorial.narration("tutorial.go_pay"))
 	phase = "till"
-	tutorial.hint(tutorial._speaker("guide"), tutorial.narration("tutorial.go_pay"))
 	var till := _till()
 	var at_till: bool = await tutorial.until(func() -> bool: return tutorial._flat(main.player.global_position, till) <= TILL_RADIUS)
 	if not at_till:
@@ -150,10 +170,10 @@ func play() -> void:
 	# Paying: the cashier asks for the price in the native language, the amount in the language
 	# being learned with its digits ("dos dólares con cincuenta centavos (= $2.50)").
 	phase = "pay"
-	var request: Dictionary = tutorial.narration("cashier.request_1", {"amount": {"learn": dialogue.money_values(int(settings.price_cents)), "show": true}})
+	var request: Dictionary = tutorial.narration("tutorial.cashier_hello", {"amount": {"learn": dialogue.money_values(int(settings.price_cents)), "show": true}})
 	while not paid:
 		_pay_pressed = false
-		panel.show_dialogue(_speakers.get(cashier, ""), request, [{"id": PAY, "label": tutorial.narration("cashier.count"), "icon": "money"}])
+		panel.show_dialogue(cashier_name, request, [{"id": PAY, "label": tutorial.narration("tutorial.pay_cash"), "icon": "money"}])
 		var pressed: bool = await tutorial.until(func() -> bool: return _pay_pressed)
 		if not pressed:
 			return
@@ -161,14 +181,13 @@ func play() -> void:
 		var counted: bool = await tutorial.until(func() -> bool: return not _paying)
 		if not counted:
 			return
-	var thanks: Dictionary = tutorial.narration("cashier.correct")
-	panel.show_dialogue(_speakers.get(cashier, ""), thanks, [], THANKS_SECONDS)
+		if not paid and _wrong:
+			_wrong = false
+			await tutorial.say(cashier_name, tutorial.narration("tutorial.cashier_wrong"), "", cashier)
+	_close_cart()
+	await tutorial.say(cashier_name, tutorial.narration("tutorial.cashier_thanks"), "", cashier)
+	await tutorial.say(guide, tutorial.narration("tutorial.meet_outside"))
 	phase = "leave"
-	# Then BonBon says where everyone waits (13 Nov 2026: without it the player was left with no
-	# instruction after paying).
-	await tutorial.until(func() -> bool: return not panel.is_dialogue_visible() or panel.current_line() != thanks)
-	if tutorial.running:
-		tutorial.hint(tutorial._speaker("guide"), tutorial.narration("tutorial.where_leave_store"))
 	var outside: Dictionary = settings.outside
 	var exit_at: Vector3 = tutorial._space(str(outside.space)).to_global(tutorial._vec(outside.at))
 	await tutorial.until(func() -> bool: return tutorial._flat(main.player.global_position, exit_at) <= float(outside.radius))
@@ -178,10 +197,20 @@ func play() -> void:
 	Basket.take_back(main)
 	basket = null
 
-## The phrase id of where to go next (BonBon, tutorial.gd where_line()); "" while the clerk speaks
-## or the cashier's request with its button is up.
+## The phrase id of where to go next (BonBon, tutorial.gd where_line()); "" while someone speaks or
+## the cashier's request with its button is up. While shopping: the hints for what is still
+## missing (settings "hints": "fruit" while an apple or banana is missing, else "cookie"), the
+## more exact the more often she was asked.
 func where() -> String:
-	return {"pick": "tutorial.where_fruit", "till": "tutorial.where_till", "leave": "tutorial.where_leave_store"}.get(phase, "")
+	if phase == "pick":
+		var group := "fruit" if FRUIT.any(func(key: String) -> bool: return remaining.has(key)) else "cookie"
+		var hints: Array = settings.get("hints", {}).get(group, [])
+		return str(hints[mini(_asks, hints.size() - 1)]) if not hints.is_empty() else ""
+	return {"till": "tutorial.where_till", "leave": "tutorial.where_leave_store"}.get(phase, "")
+
+## BonBon was asked (tutorial.gd _talk_to_guide()): the next hint is more exact.
+func asked() -> void:
+	_asks += 1
 
 ## The point in front of the cashier (where a customer stands).
 func _till() -> Vector3:
@@ -201,9 +230,22 @@ func _cart_data() -> Dictionary:
 		"list_title": dialogue.line("shop.list_header"),
 		"cart_title": dialogue.line("shop.cart_header"),
 		"done": dialogue.line("shop.done_button"),
-		"needed": _rows(remaining),
+		"needed": _list_rows(),
 		"cart": _rows(cart),
 	}
+
+## The shopping list: every item of the order with how many are in the basket ("1/2") and
+## "done" once complete (shop_order_panel.gd ticks it; "pop" bounces the row just completed).
+func _list_rows() -> Array:
+	var rows: Array = []
+	for key in settings.items:
+		var want := int(settings.items[key])
+		var got := int(cart.get(key, 0))
+		var single := {key: want}
+		var count := "  %d/%d" % [got, want] if got > 0 and got < want else ""
+		rows.append({"key": key, "foreign": dialogue.items_text(single, dialogue.foreign) + count, "native": dialogue.items_text(single, dialogue.native) + count,
+			"done": got >= want, "pop": key == _popped})
+	return rows
 
 func _on_pick(obj: Node3D) -> void:
 	if not is_instance_valid(obj) or obj.has_meta("character_name") or obj.has_meta("hold_kind"):
@@ -212,14 +254,18 @@ func _on_pick(obj: Node3D) -> void:
 	if main.zones.resolve_global(obj.global_position) != store_zone:
 		return
 	if not remaining.has(key):
-		panel.toast(tutorial.narration("tutorial.not_on_list"))
+		tutorial.remark("guide", "tutorial.not_on_list")
 		return
 	remaining[key] = int(remaining[key]) - 1
+	_popped = ""
 	if int(remaining[key]) <= 0:
 		remaining.erase(key)
+		_popped = key
+		_asks = 0
 	cart[key] = int(cart.get(key, 0)) + 1
 	interaction.word_studied.emit(key)
 	panel.update_cart(_cart_data())
+	_popped = ""
 	_fill_basket(obj)
 
 ## Shows the cart's contents in the held basket; `picked`: the object just picked.
@@ -243,7 +289,7 @@ func _on_remove(key: String) -> void:
 ## The cart's Done button: the order is checked as it is picked, so this only reminds.
 func _on_done() -> void:
 	if interaction.pick_hook == Callable(self, "_on_pick") and not remaining.is_empty():
-		panel.toast(tutorial.narration("tutorial.pick_fruit"))
+		tutorial.remark("guide", "tutorial.get_list")
 
 func _close_cart() -> void:
 	if interaction.pick_hook == Callable(self, "_on_pick"):
@@ -266,21 +312,23 @@ func _open_money(request: Dictionary) -> void:
 		"clear": dialogue.line("money.clear"),
 		"close": dialogue.line("money.close"),
 		"translate": dialogue.line("common.show_translation"),
+		# Only $1 bills and quarters in the introductory payment (user, 17 Nov 2026); what to do
+		# shows in the empty tray (the instruction strip would cover the tray).
+		"only": settings.get("money", []),
+		"hint": tutorial.lexicon.phrase("tutorial.ui_pay", tutorial.lexicon.native, {"amount": Currency.usd(int(settings.price_cents))}),
 	})
 	money.set_progress(0, 0)
-	panel.toast(tutorial.narration("tutorial.pay_hint"), 4.0)
 	main.sync_player_controls()
 
 func _on_submitted(_cents: int) -> void:
 	if not _paying or not money.visible:
 		return
 	paid = Currency.is_exact(money.counts, int(settings.price_cents))
+	_wrong = not paid
 	money.hide_panel()
 	money.reset()
 	_paying = false
 	main.sync_player_controls()
-	if not paid:
-		panel.toast(tutorial.narration("cashier.wrong"), 3.0)
 
 func _on_money_close() -> void:
 	if not _paying:

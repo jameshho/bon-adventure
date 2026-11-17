@@ -42,6 +42,8 @@ const EDGE := Color("7abfb3")
 const GOLD := Color("fff1c5")
 const DIM := Color("aadddc")
 const TOAST := Color("ffd18b")
+## A shopping list row that is done (its check and text).
+const DONE := Color("8fe3a0")
 ## Words in the language being learned inside a line (see the top comment).
 const TERM := Color("ffb347")
 ## The order list and cart (user, 13 Nov 2026: smaller, see-through, modern): a glass card in the
@@ -649,7 +651,25 @@ func _refresh_cart() -> void:
 		var label := _label(22, Color.WHITE)
 		label.text = _text_of(row)
 		item.add_child(label)
+		# A row may be a shopping list's line (the welcome tutorial, 17 Nov 2026): "done" shows
+		# a green check and dims the text; "pop" (the row just completed) gives it a short bounce.
+		if row.has("done"):
+			var tick := TextureRect.new()
+			tick.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+			tick.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+			tick.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			tick.custom_minimum_size = Vector2(34, 34) * _factor
+			tick.texture = UiIcons.texture("check", 64)
+			tick.modulate = DONE if row.done else Color(1, 1, 1, 0.0)
+			item.add_child(tick)
+			if row.done:
+				label.add_theme_color_override("font_color", DONE)
 		needed_box.add_child(item)
+		if row.get("pop", false):
+			item.pivot_offset = Vector2(0, 20) * _factor
+			var bounce := item.create_tween()
+			item.scale = Vector2.ONE * 1.18
+			bounce.tween_property(item, "scale", Vector2.ONE, 0.35).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	_fill_rows(cart_box)
 	for row in _cart.cart:
 		var line := HBoxContainer.new()

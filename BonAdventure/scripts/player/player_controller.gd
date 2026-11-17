@@ -42,6 +42,11 @@ var sprint_enabled := false
 var hyper_enabled := false
 var noclip_enabled := false
 var controls_enabled := true
+## The welcome tutorial's control steps (tutorial.gd "controls", 17 Nov 2026, user): while false,
+## turning the view (look_by) or walking and jumping are ignored; the other controls stay as
+## controls_enabled says. Both true outside the tutorial.
+var look_allowed := true
+var move_allowed := true
 var orbiting := false
 var orbit_cursor := Vector2.ZERO
 var camera_yaw := 0.0
@@ -320,11 +325,13 @@ func _unhandled_input(event: InputEvent) -> void:
             infinite_jump_enabled = not infinite_jump_enabled
             infinite_jump_changed.emit(infinite_jump_enabled)
         elif event.is_action_pressed("jump"):
-            if not seated and not is_instance_valid(riding_vehicle):
+            if not seated and not is_instance_valid(riding_vehicle) and move_allowed:
                 jump_queued = true
 
 ## Turns the camera by a pointer movement (right-mouse orbit, a touch drag: touch_controls.gd).
 func look_by(relative: Vector2) -> void:
+    if not look_allowed:
+        return
     follow_pause = follow_pause_seconds
     look_turned += (absf(relative.x) + absf(relative.y)) * mouse_sensitivity
     camera_yaw -= relative.x * mouse_sensitivity
@@ -365,7 +372,7 @@ func movement_direction() -> Vector3:
             continue
         # Slow down into the last point so she stops on it instead of sliding past.
         return to.normalized() * (clampf(to.length() / 0.8, 0.35, 1.0) if auto_walk.size() == 1 else 1.0)
-    if not controls_enabled:
+    if not controls_enabled or not move_allowed:
         return Vector3.ZERO
     var axis := Vector3(
         Input.get_action_strength("move_right") - Input.get_action_strength("move_left"),
