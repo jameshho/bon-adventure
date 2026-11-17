@@ -6,7 +6,8 @@ extends Node
 ##
 ## A child of the rig's root, beside "Skeleton3D". Per-species settings are the exported
 ## properties below (the build tool writes them into the scene). Bone names follow clay_rig.gd's
-## spec: "body", "head", "tail", "ear_l", "ear_r" (each optional) and the bones in `legs`.
+## spec: "body", "neck", "head", "tail", "ear_l", "ear_r" (each optional) and the bones in `legs`
+## and `feet`.
 ##
 ## Ownership: this node is the only writer of the skeleton's bone poses. It never touches the
 ## eyes: blinking belongs to plush_life.gd (the rig's root has "Head/LeftEye" and
@@ -23,6 +24,14 @@ const BLINK_GROUP := "clay_animals"
 ## Leg bones and each one's phase in the cycle (0 ... 1). A trot: diagonal pairs together.
 @export var legs: PackedStringArray = ["leg_fl", "leg_fr", "leg_bl", "leg_br"]
 @export var leg_phase: PackedFloat32Array = [0.0, 0.5, 0.5, 0.0]
+## Per leg (same order as `legs`; empty = all 0): the swing angle in degrees the walk is centred
+## on, faded in with the walk. For a display modelled mid-stride (the deer): standing keeps the
+## display's pose, walking swings about straight legs.
+@export var leg_neutral_deg: PackedFloat32Array = []
+## Optional foot bones, one per leg (same order; "" = none), each a child of its leg: they turn
+## back against the leg's swing so a hoof stays level instead of digging its toe or heel into
+## the ground (wide feet: rhino, cow).
+@export var feet: PackedStringArray = []
 ## Distance from a leg's pivot to the ground (model units); with `swing_deg` it sets the stride.
 @export var leg_length := 0.4
 ## Forward and back swing of a leg, degrees each way at full walk.
@@ -45,6 +54,12 @@ const BLINK_GROUP := "clay_animals"
 ## Tail wag and ear flop (degrees).
 @export var tail_deg := 18.0
 @export var ear_deg := 7.0
+## Axis of the tail wag in the tail bone's frame: UP swings a tail that sticks out; FORWARD
+## swings a hanging tail like a pendulum (cow, zebra, rhino).
+@export var tail_axis := Vector3.UP
+## With an optional "neck" bone (child of "body", parent of "head"): the share of the head's
+## turn and nod that the neck takes; the head takes the rest.
+@export var neck_share := 0.4
 ## Below this speed (model units / s) the animal counts as standing.
 @export var still_speed := 0.05
 
@@ -71,7 +86,7 @@ var _screen: VisibleOnScreenNotifier3D
 func _ready() -> void:
 	var root := get_parent() as Node3D
 	skeleton = root.get_node("Skeleton3D") as Skeleton3D
-	for name in ["body", "head", "tail", "ear_l", "ear_r"] + Array(legs):
+	for name in ["body", "neck", "head", "tail", "ear_l", "ear_r"] + Array(legs) + Array(feet):
 		var i := skeleton.find_bone(name)
 		if i >= 0:
 			_bones[name] = i
@@ -170,9 +185,15 @@ func _pose() -> void:
 	# Legs: swing about the side-to-side axis (+ = the foot forward, toward -Z); lift while swinging.
 	for k in legs.size():
 		var a := cycle + TAU * leg_phase[k]
-		var angle := deg_to_rad(swing_deg) * sin(a) * w
+		var neutral := leg_neutral_deg[k] if k < leg_neutral_deg.size() else 0.0
+		var angle := deg_to_rad(swing_deg * sin(a) + neutral) * w
 		var up := lift * maxf(cos(a), 0.0) * w
+		# A slanted display leg is longer than its hip's height: straightened, it is lifted
+		# by the difference so the hoof does not sink into the ground.
+		up += leg_length * (1.0 / cos(deg_to_rad(neutral)) - 1.0) * w
 		_pose_bone(legs[k], Vector3(0, up, 0), Quaternion(Vector3.RIGHT, angle))
+		if k < feet.size() and feet[k] != "":
+			_pose_bone(feet[k], Vector3.ZERO, Quaternion(Vector3.RIGHT, -angle))
 	# Body: walking bob and roll; at rest a slow breath and a weight shift from side to side.
 	var breathe := sin(TAU * _clock / breath_seconds)
 	var sway := sin(TAU * _clock / (breath_seconds * 2.7))
@@ -185,10 +206,14 @@ func _pose() -> void:
 	# Head: the look (yaw, with a little tilt into the turn), a nod in step while walking, and a
 	# small counter-roll so the face stays level while the body rolls.
 	var nod := deg_to_rad(nod_deg * sin(2.0 * cycle + 0.6) * w)
-	_pose_bone("head", Vector3.ZERO, Quaternion(Vector3.UP, _yaw) * Quaternion(Vector3.FORWARD, -roll * 0.6 + _yaw * 0.15) * Quaternion(Vector3.RIGHT, nod))
+	var share := neck_share if _bones.has("neck") else 0.0
+	_pose_bone("neck", Vector3.ZERO, Quaternion(Vector3.UP, _yaw * share) * Quaternion(Vector3.RIGHT, nod * share))
+	var yaw := _yaw * (1.0 - share)
+	nod *= 1.0 - share
+	_pose_bone("head", Vector3.ZERO, Quaternion(Vector3.UP, yaw) * Quaternion(Vector3.FORWARD, -roll * 0.6 + yaw * 0.15) * Quaternion(Vector3.RIGHT, nod))
 	# Tail: a wag (faster when walking); ears flop a beat behind the bob.
 	var wag := deg_to_rad(tail_deg * sin(_clock * lerpf(2.2, 9.0, w)) * lerpf(0.35, 1.0, w))
-	_pose_bone("tail", Vector3.ZERO, Quaternion(Vector3.UP, wag))
+	_pose_bone("tail", Vector3.ZERO, Quaternion(tail_axis.normalized(), wag))
 	var flop := deg_to_rad(ear_deg * (sin(2.0 * cycle - 1.2) * w + 0.25 * breathe * idle))
 	_pose_bone("ear_l", Vector3.ZERO, Quaternion(Vector3.FORWARD, flop))
 	_pose_bone("ear_r", Vector3.ZERO, Quaternion(Vector3.FORWARD, -flop))
