@@ -111,7 +111,7 @@ func _initialize() -> void:
 	# The rhino: short heavy columns, a slow rolling walk, a small head turn.
 	var settings := {
 		"leg_length": M(0, 400).distance_to(M(0, RhinoClay.RGY)),
-		"leg_neutral_deg": neutral(),
+		"leg_neutral_deg": neutral(), "straighten_lift": true,
 		"feet": PackedStringArray(FEET),
 		"swing_deg": 18.0,
 		"lift": R(8),

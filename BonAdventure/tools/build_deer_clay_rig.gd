@@ -121,7 +121,7 @@ func _initialize() -> void:
 	# The deer: long thin legs, a light high-stepping walk, big ears and a swishing pom.
 	var settings := {
 		"leg_length": M(0, 418).distance_to(M(0, DeerClay.DY)),
-		"leg_neutral_deg": neutral(),
+		"leg_neutral_deg": neutral(), "straighten_lift": true,
 		"feet": PackedStringArray(FEET),
 		"swing_deg": 22.0,
 		"lift": R(16),
