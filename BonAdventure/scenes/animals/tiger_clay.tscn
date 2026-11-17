@@ -1,0 +1,70 @@
+[gd_scene format=3]
+
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/tiger/body.res" id="1_yak76"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/tiger/nose.res" id="2_bavdl"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/tiger/ears.res" id="3_pqed8"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/tiger/brows.res" id="4_v0iw6"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/tiger/left_eye.res" id="5_we0le"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/tiger/right_eye.res" id="6_voxyo"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/tiger/face_details.res" id="7_u1ius"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d22ni"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.86
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jnqcp"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+metallic_specular = 0.15
+roughness = 0.45
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lheo7"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.75
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7wnf2"]
+size = Vector3(1.4666668, 2.1000001, 3.6133332)
+
+[node name="TigerClayDisplay" type="Node3D" unique_id=820497306]
+metadata/source = "User's Tiger (Relaxed / Neutral) Character Blueprint, relaxed idle pose (16 Nov 2026)"
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=976812158]
+material_override = SubResource("StandardMaterial3D_d22ni")
+mesh = ExtResource("1_yak76")
+
+[node name="Nose" type="MeshInstance3D" parent="." unique_id=20185613]
+material_override = SubResource("StandardMaterial3D_d22ni")
+mesh = ExtResource("2_bavdl")
+
+[node name="Ears" type="MeshInstance3D" parent="." unique_id=704742172]
+material_override = SubResource("StandardMaterial3D_d22ni")
+mesh = ExtResource("3_pqed8")
+
+[node name="Brows" type="MeshInstance3D" parent="." unique_id=187205616]
+material_override = SubResource("StandardMaterial3D_d22ni")
+mesh = ExtResource("4_v0iw6")
+
+[node name="LeftEye" type="MeshInstance3D" parent="." unique_id=1119785606]
+transform = Transform3D(-0.8774667, 0.014588091, -0.4794158, 9.313226e-10, 0.99953747, 0.030414807, 0.47963774, 0.02668798, -0.8770607, -0.3, 1.45, -1.5029832)
+material_override = SubResource("StandardMaterial3D_jnqcp")
+cast_shadow = 0
+mesh = ExtResource("5_we0le")
+
+[node name="RightEye" type="MeshInstance3D" parent="." unique_id=359693372]
+transform = Transform3D(-0.8775063, -0.014477236, 0.47934663, -9.313226e-10, 0.99954426, 0.03018825, -0.47956523, 0.02649038, -0.8771063, 0.3, 1.45, -1.5029485)
+material_override = SubResource("StandardMaterial3D_jnqcp")
+cast_shadow = 0
+mesh = ExtResource("6_voxyo")
+
+[node name="Face details" type="MeshInstance3D" parent="." unique_id=1631865439]
+material_override = SubResource("StandardMaterial3D_lheo7")
+cast_shadow = 0
+mesh = ExtResource("7_u1ius")
+
+[node name="Footprint" type="StaticBody3D" parent="." unique_id=2047484708]
+
+[node name="@CollisionShape3D@2" type="CollisionShape3D" parent="Footprint" unique_id=1083251541]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0500001, 0.08000022)
+shape = SubResource("BoxShape3D_7wnf2")

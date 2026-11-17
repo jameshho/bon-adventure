@@ -12,7 +12,7 @@ const ClayRig := preload("res://scripts/characters/clay_rig.gd")
 const ClayAnimator := preload("res://scripts/characters/clay_animator.gd")
 
 
-## [{scene, out, folder, name, spec, animator: {property: value}}] (subclasses).
+## [{scene, out, folder, name, spec, animator: {property: value}, prepare (optional)}] (subclasses).
 func rigs() -> Array:
 	return []
 
@@ -29,6 +29,10 @@ func _initialize() -> void:
 func build_one(r: Dictionary) -> Error:
 	var started := Time.get_ticks_msec()
 	var display: Node3D = load(r.scene).instantiate()
+	# Optional `prepare`: a Callable given this copy of the display before it is rigged (the
+	# clay tiger closes the gaps its painted stripes leave in the body, so it thins cleanly).
+	if r.has("prepare"):
+		(r.prepare as Callable).call(display)
 	var rig := ClayRig.build(display, r.spec)
 	rig.name = r.name
 	rig.set_meta("source", "%s, rigged by %s (16 Nov 2026)" % [String(r.scene).trim_prefix("res://"), String(get_script().resource_path).trim_prefix("res://")])

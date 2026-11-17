@@ -1,0 +1,24 @@
+{
+  "tiger_clay": {
+    "eyes": true,
+    "rest_difference": [
+      [
+        0.7,
+        0.0074
+      ],
+      [
+        0.68,
+        0.0073
+      ],
+      [
+        0.76,
+        0.007
+      ],
+      [
+        0.73,
+        0.0055
+      ]
+    ],
+    "weight_colours": "root=9a9a9a body=4f8fe0 head=f2c14e tail=e05a8a tail_2=3fbf7f ear_l=e0743a ear_r=8a5be0 leg_fl=3fc6d8 leg_fr=b6d84a leg_bl=ff8fd0 leg_br=7a4a2a"
+  }
+}

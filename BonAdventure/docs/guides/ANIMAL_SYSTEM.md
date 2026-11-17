@@ -824,40 +824,77 @@ meet the grass in the views. The bake applied 1 step. In the town's daylight the
 reads nearly white (not deepened; open, low priority). Not checked in the running game; no
 test suite was run.
 
-## Clay tiger display (16 Nov 2026, awaiting the user's review; not in the zoo)
+## Clay tiger (16 Nov 2026, rebuilt 17 Nov; approved, rigged and in the zoo as its tiger)
 
 `scenes/animals/tiger_clay.tscn` is a static study of the user's "Tiger (Relaxed / Neutral)
 Character Blueprint" turnaround, built by `tools/build_tiger_clay.gd` from
 `scripts/characters/tiger_clay.gd` (extends the clay zebra: the lion's mesher, the giraffe's
-paint, the zebra's painted stripes; the pig's `_rings` for the eyes). 139,789 triangles (body
-128,410), built 2.1 town units to the ear tips, the `Tiger` height in `park_animals.gd`; the
-display height is the user's to choose at placement. It is separate from the wandering zoo tiger
-(`scenes/animals/tiger.tscn`), which is unchanged, and **nothing places it in the town**: no base
-step, no word, no behaviour.
-- Ready for rigging like the clay pig: `Body` is one fused mesh (torso, head, legs, cheek ruffs,
+paint, the zebra's painted stripes; the pig's `_rings` for the eyes). 145,468 triangles (body
+132,907), built 2.1 town units to the ear tips, the `Tiger` height in `park_animals.gd`; the
+zoo shows it at 2.63 like every animal (`DISPLAY_SCALE`). The user approved it on 17 Nov 2026
+and chose: rig it first, then replace the zoo's wandering tiger at the same height
+([below](#clay-tiger-walks-in-the-zoo-17-nov-2026)). The old piece-built prefab
+`scenes/animals/tiger.tscn` is no longer in the town; the file is kept.
+
+**Rebuilt from the ground up on 17 Nov 2026** (user, after two rounds: the head's shape and
+proportions were wrong; rebuild the geometry, head first, silhouette before features). What the
+first model got wrong, measured on the sheet with `measure.gd`: its skull was 142 px deep, 142
+tall and 176 wide where the sheet's is about 175 deep, 156 tall and 184 wide, a near-ball; the width had been made up with cheeks stuck on its sides.
+- **Profile solids (new, in `tiger_clay.gd`: `loft`, `_loft_f`, and its own `_dist`/`_box`,
+  which pass every other shape to the lion's).** The skull is built from horizontal slices and
+  the torso from cross-sections, each a rounded shape whose extents are the sheet's own
+  outlines (`_skull`, `_torso`, `B_TOP`/`B_BOTTOM`/`B_WIDE`), so the front and side silhouettes
+  are the sheet's by construction and can be corrected directly from an outline comparison.
+  The distance used for blending is `f / |grad f|`, floored by the distance to the solid's
+  26-direction faceted hull: without that floor the estimate collapses beside the solids' flat
+  end planes and a wide blend welds a stray sliver there (found at the top of the skull).
+  `lion_clay.gd` is not edited; a subclass's static `_dist` replaces it for that subclass only.
+- **Build order and stages** (`stage` in the script, for study only): 1 bare skull; 2 bridge,
+  muzzle mound with two whisker pads and a chin, lids, cheek ruffs, all run into the skull with
+  wide blends; 3 nose, ears, brows; 4 eyes and face details; 5 torso, legs, paws, tail; 6 coat.
+  Each stage was checked against the sheet before the next (`study.gd`).
+- **The sheet's views.** Its "side" view is turned 25 degrees toward the front (the eye, the
+  brow and both pairs of legs fit that turn), the front 3/4 is at 29 degrees and the rear 3/4
+  at 132 from the front; all are close to orthographic and level. Side-view positions are turned
+  back with `true_x()`; the animal stands square.
+- Ready for rigging like the clay pig: `Body` is one fused mesh (head, torso, legs, cheek ruffs,
   tail); `Nose`, `Ears` and `Brows` (the cream rolls) are separate pieces; `LeftEye` and
   `RightEye` are separate meshes, each on its own node at the eye's centre with local y up the
   eye and local z out of the face (the lid line and lower rim are part of the eye, so a squash
   closes it to one line); whiskers, whisker dots and the mouth are `Face details`.
-- Coat: orange clay with the cream (belly, chest, jaw, ruffs, paws) and the brown marks painted
-  on. To stay under the web budget the clay grid is about 3 cm and `_paint` runs two
-  edge-splitting passes instead of the zebra's three (`_paint_passes`, a new variable in
-  `zebra_clay.gd` whose default leaves the zebra as it was: rebuilt once, 313,181 triangles, mesh
-  files unchanged in git); the tiger's `_tinted` splits less widely round the cream edges.
-- The sheet's "side" view is turned about 20 degrees toward the front (far ear and far legs show
-  ahead of the near ones), so side-view positions are turned back (`T_TURN`) and the model stands
-  square, as in the sheet's front and back views.
-Renders: `docs/evidence/tiger-clay-20261116/` (`capture.gd` loads only the tiger scene:
-`compare.png` = the sheet's five views over the model from the same angles, `face.png` and
-`eyes.png` = sheet beside model for the head and the eyes, `turnaround.png` with a true side
-view and a view from above; frames are drawn on demand, so it does not hang when the window is
-covered). Revision, 17 Nov 2026 (user: "Revise it", after the first review): softer cheek ruffs
-(one puff with three small scallops behind), fuller hind thighs, puffier upper lids with a
-pouch under each eye, the brown cap over the nose made part of the nose (a smooth arch), a
-thicker forehead bar, low fur lumps on the chest, the paws' cream edge raised clear of the
-clay's own colour. Known differences that remain: the legs are straight columns; the ruffs are
-still a little larger than the sheet's; stripe edges are slightly rough close up (the cost of
-the triangle budget); the expression is a touch sterner. No test suite was run (no town change).
+- Coat: the clay is all orange; cream (belly, chest, throat, jaw, muzzle, ruffs, paws) and the
+  brown marks are painted with split edges. The clay grid is about 3 cm and `_paint` runs two
+  edge-splitting passes instead of the zebra's three (`_paint_passes`, a variable added to
+  `zebra_clay.gd` on 16 Nov whose default leaves the zebra as it was: rebuilt once then,
+  313,181 triangles, mesh files unchanged in git).
+Evidence, `docs/evidence/tiger-clay-20261116/` (every script loads only the tiger):
+`measure.gd` (the sheet's outlines row by row, gridded crops); `study.gd` (a build stage
+rendered orthographically from the sheet's angles with the outlines drawn over each other:
+`outline-head.png`, `outline-body.png`, `outline-paws.png`, `outline-muzzle.png` for the finished model: sheet with the model's outline
+in magenta above, model with the sheet's outline in blue below); `capture.gd` (the saved scene:
+`compare.png` = the sheet's five views over the model's, `face.png` and `eyes.png` = sheet
+beside model, `turnaround.png` with a true side view and a view from above).
+
+Face and paws pass, 17 Nov 2026 (user: "only refine the face and the paws"; torso, legs, tail
+and stripes untouched), measured on enlarged crops of the sheet:
+- Paws: three fat toes lying side by side (round-ended rolls from the heel to the front, real
+  grooves between them, `P_TOE`/`P_TOE_R`), the leg blended down into them so the grooves fade
+  over the top; the heel end spreads a little at the ground. Cream (`_paw_cream`): the toes and
+  the foot up to a level edge across the front of the leg, lower along the sides, and a tall
+  round arch up the back of each leg, as on the sheet's back view; the grooves are drawn a shade
+  darker (`T_TOE_LINE`; they split like the stripes because they are thinner than a triangle).
+  Before, each paw was a flat lens with three small bumps and a straight cream edge.
+- Face: the whisker pads are round balls about 46 px across and close together (were 54 by 37,
+  flat); the chin is softer; the nose has two wide wings over a short stem with a large nostril
+  under each wing (was a rounded triangle, sunk in the pads); the mouth line follows the sheet's
+  measured "W", lighter and fading toward its ends; one column of two whisker dots a side (the
+  sheet's second column is the whiskers' thick roots), three whiskers a side with thick roots;
+  the cheek ruffs' three scallops are a little more distinct.
+Known differences that remain: the chest is a smooth cream bib without the sheet's fur tufts;
+the cheek ruffs are still smoother than the sheet's lobes; the stripes follow the sheet's
+pattern but not stripe for stripe; the whites of the eyes have little soft shading; in the
+sheet's front and side views the near paws look about 4 px taller than the model's because the
+sheet's camera looks slightly down. No test suite was run (no town change).
 
 ## Clay rooster display (17 Nov 2026, approved by the user and placed on the farm)
 
@@ -1135,6 +1172,42 @@ runtime_resources,compact_layout,interaction`: all PASS. Rendered in the full to
 walking zoo pig from the side: legs trot, hooves lift, body bobs) and `context.png` (standing
 on its lawn). The same run: the pig is in group `clay_animals` and in `clay_life`'s list.
 Not checked: a web export or phone, frame time in the town, and the full check suite.
+
+### Clay tiger walks in the zoo (17 Nov 2026)
+
+User, 17 Nov 2026, on approving the clay tiger: "rig it first then replace the zoo tiger", the
+same height as the zoo tiger (2.63 shown).
+- **Rig.** `tools/build_tiger_clay_rig.gd` (extends `tools/clay_rig_tool.gd`) →
+  `scenes/animals/tiger_clay_rigged.scn` + `clay_meshes/tiger_rig/`: 45,422 triangles (display
+  145,468), one skinned surface. Bones: root, body, head (no neck bone: the big skull sits on
+  the shoulders and turns about a pivot in the neck, with the muzzle and cheek ruffs), tail and
+  tail_2 (the hanging tail swings like a pendulum, its tip a beat behind), ear_l, ear_r, four
+  legs (pivots inside the shoulder and thigh, shapes from under the belly to the paw). A
+  lateral walk with short steps, the soles kept on the ground (`keep_feet_down`).
+- **Two small extensions to shared code**, both no-ops for the other animals: `clay_rig.gd`
+  `on_head` pieces keep their own transform, so a display that already has `LeftEye` and
+  `RightEye` on their own nodes lists them there instead of `eyes` (the tiger's eyes include
+  their lid line and rim, so a blink closes them to one line); `clay_rig_tool.gd` takes an
+  optional `prepare` Callable for the display copy. The tiger uses it to close the gaps its
+  painted stripes leave in the body (the zebra tool's `_closed`): without that the simplifier
+  tore the paws and tail tip (rest difference about 18 levels; 0.7 after).
+- **Zoo.** Base step `tiger_clay_walks`: `ParkZoo/Tiger` (the last wild animal still built from
+  pieces, about 200 nodes) is rebuilt with `_clay_roamer` at its old home in Wildlife Plains
+  (−59.5, 119), facing, child index and word `tiger`, brought to the shown height (2.625 zoo
+  units) with its soles at the old tiger's level (y 0.155), then given the rig with
+  `_clay_walker`. `compare_scenes.gd`: 14,217 → 14,041 nodes, 203 differences, all under
+  `ParkZoo/Tiger` plus the step list.
+- **Checks** (`dev_focus.txt` = `all`, isolated `HOME`, each run once): `run_checks.py --only
+  runtime_resources,compact_layout,interaction,part2`: all PASS.
+  `docs/evidence/tiger-anim-20261117/`: `capture.gd` (display and rig only): `tiger_clay-compare.png`
+  (rest difference 0.68–0.76 levels, 0.55–0.74% of pixels over 8 levels), `-walk.png`,
+  `-seams.png` (head turned at both extremes of the swing: no tears), `-tail.png`, `-blink.png`,
+  `-weights.png`; `zoo.gd` (full town, noon): the tiger has the word, the rig, is in group
+  `clay_animals` and in `clay_life`'s list, and reaches `walking` with the walk faded in;
+  `zoo-context.png`, `zoo-close.png`, `zoo-walk.png` (8 frames 0.12 s apart).
+- Not checked: a web export or a phone, frame time with 18 rigs, and the full check suite.
+  A rebuilt display needs the rig rebuilt after it (`tools/build_tiger_clay_rig.gd`); the zoo
+  then picks it up with no new step.
 
 ### All clay zoo animals walk (16 Nov 2026)
 

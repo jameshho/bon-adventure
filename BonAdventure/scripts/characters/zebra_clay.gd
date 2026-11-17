@@ -294,6 +294,8 @@ func _stripes() -> void:
 
 ## Signed distance (working units) from the last _tinted() point to the nearest painted edge.
 var _edge := 0.0
+## Edge-splitting passes of _paint(); the clay tiger (tiger_clay.gd) uses 2 to stay light.
+var _paint_passes := 3
 
 ## cow_clay.gd's skin colour, also leaving the distance to the nearest stripe edge in _edge.
 func _tinted(v: Vector3, col: Color, reach: Array) -> Color:
@@ -344,7 +346,7 @@ func _paint(mesh: ArrayMesh) -> ArrayMesh:
 		cols.append(_tinted(verts[i], base[i], reach))
 		dist.append(_edge)
 	var span := CELL * 0.55
-	for pass_i in 3:
+	for pass_i in _paint_passes:
 		var out := PackedInt32Array()
 		var mids := {}
 		for t in range(0, idx.size(), 3):

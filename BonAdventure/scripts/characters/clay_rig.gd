@@ -38,7 +38,9 @@ extends RefCounted
 ##   blends: {mesh node name: blend}: a softer or harder blend for one part (e.g. a mane, far
 ##           from every bone's shapes). Optional; spec.blend otherwise.
 ##   on_head: rigid display meshes (e.g. "Face details") moved under the Head attachment
-##           unskinned, so they cost no skinning.
+##           unskinned, so they cost no skinning. A display that already has each eye on its own
+##           node ("LeftEye", "RightEye": centred, y up the eye) lists them here instead of
+##           giving `eyes`: they keep their names and frames, so plush_life.gd blinks them.
 ##   attach: {mesh node name: bone name}: like on_head for any bone; the mesh goes unskinned
 ##           under a BoneAttachment3D named after the bone + "Attach" (e.g. the deer's soft
 ##           antlers on "head" and its tail pom on "tail", which would otherwise be a second
@@ -150,7 +152,9 @@ static func build(display: Node3D, spec: Dictionary) -> Node3D:
 			var piece := (display.get_node(part) as MeshInstance3D).duplicate() as MeshInstance3D
 			if kept.has(part):
 				piece.mesh = kept[part]
-			piece.transform = Transform3D(Basis(), -head_pivot)
+			# A piece with its own transform (an eye the display already keeps on its own node,
+			# as the clay tiger does) keeps it; plain pieces sit at the display's origin as before.
+			piece.transform = Transform3D(Basis(), -head_pivot) * piece.transform
 			head.add_child(piece)
 	var attachments := {}
 	for part: String in spec.get("attach", {}):

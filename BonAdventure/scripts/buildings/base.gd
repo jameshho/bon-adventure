@@ -7,7 +7,7 @@ extends RefCounted
 ##   const STEPS := ["add_bench", ...]          # applied in this order, each exactly once
 ##   func add_bench(town: Node3D, game) -> void # town = Main's Apartment, scale 1.3, town coords
 ## Never rename or remove a baked step (add a new one that undoes it).
-const STEPS := ["solid_roofs", "remove_bird", "tulip_beds", "plaza_fountains", "bronze_statue", "statue_blueprint", "statue_traced", "statue_traced_refit", "statue_reference", "statue_reference_finish", "statue_angular_portrait", "statue_temple_hair", "statue_hair_relief_fit", "statue_single_bronze", "bench_placement", "statue_patina", "statue_patina_warm", "toy_scooter", "toy_scooter_full_size", "statue_town_bronze", "mystery_house_site", "coplanar_gaps", "coplanar_gaps_2", "lion_blueprint_display", "lion_clay_display", "lion_clay_face_rework", "lion_clay_ears_fit", "lion_clay_eyes_mane", "lion_clay_ears_mane_two_layers", "giraffe_clay_display", "giraffe_clay_colours", "giraffe_clay_refine", "elephant_clay_display", "red_panda_clay_display", "elephant_clay_colours", "panda_clay_display", "cow_clay_display", "gorilla_clay_display", "panda_clay_face", "gorilla_clay_refine", "cow_clay_colours_eyes", "deer_clay_display", "cow_clay_muzzle", "gorilla_clay_eyelids", "deer_clay_eyes_ears", "cow_clay_lower_lip", "cow_clay_muzzle_reverted", "kangaroo_clay_display", "lion_clay_second_pass", "lion_crawl_display", "lion_crawl_colours", "lion_mix_display", "lion_temp_marks", "lion_temp_marks_lower", "rhino_clay_display", "zebra_clay_display", "lion_clay_roams", "lion_designs_removed", "black_bear_clay_display", "black_bear_clay_front_row", "black_bear_clay_soles", "flamingo_clay_display", "flamingo_clay_colours", "black_bear_cub_beside_bear", "black_bear_cub_clear_of_zebra", "flamingo_clay_back_feathers", "black_bear_cub_body", "golden_retriever_clay_display", "black_bear_cub_body_reverted", "black_bear_adult_clay_display", "black_bears_front_row_pair", "black_bear_cub_baby", "black_bear_cub_young_face", "golden_retriever_clay_coat", "duck_clay_display", "black_bear_cub_lighter_fur", "pig_clay_display", "clay_animals_roam", "clay_animals_spacing", "animals_bigger", "zoo_zones", "chapel_old_outline", "home_expansion_ground", "home_side_pad_trim", "statue_word", "clay_animals_unpacked", "parked_vehicles", "warehouse_entrance_walk", "spawn_clear_car", "clay_meshes_external", "pig_clay_walks", "clay_animals_walk", "rooster_clay_display", "capybara_clay_display"]
+const STEPS := ["solid_roofs", "remove_bird", "tulip_beds", "plaza_fountains", "bronze_statue", "statue_blueprint", "statue_traced", "statue_traced_refit", "statue_reference", "statue_reference_finish", "statue_angular_portrait", "statue_temple_hair", "statue_hair_relief_fit", "statue_single_bronze", "bench_placement", "statue_patina", "statue_patina_warm", "toy_scooter", "toy_scooter_full_size", "statue_town_bronze", "mystery_house_site", "coplanar_gaps", "coplanar_gaps_2", "lion_blueprint_display", "lion_clay_display", "lion_clay_face_rework", "lion_clay_ears_fit", "lion_clay_eyes_mane", "lion_clay_ears_mane_two_layers", "giraffe_clay_display", "giraffe_clay_colours", "giraffe_clay_refine", "elephant_clay_display", "red_panda_clay_display", "elephant_clay_colours", "panda_clay_display", "cow_clay_display", "gorilla_clay_display", "panda_clay_face", "gorilla_clay_refine", "cow_clay_colours_eyes", "deer_clay_display", "cow_clay_muzzle", "gorilla_clay_eyelids", "deer_clay_eyes_ears", "cow_clay_lower_lip", "cow_clay_muzzle_reverted", "kangaroo_clay_display", "lion_clay_second_pass", "lion_crawl_display", "lion_crawl_colours", "lion_mix_display", "lion_temp_marks", "lion_temp_marks_lower", "rhino_clay_display", "zebra_clay_display", "lion_clay_roams", "lion_designs_removed", "black_bear_clay_display", "black_bear_clay_front_row", "black_bear_clay_soles", "flamingo_clay_display", "flamingo_clay_colours", "black_bear_cub_beside_bear", "black_bear_cub_clear_of_zebra", "flamingo_clay_back_feathers", "black_bear_cub_body", "golden_retriever_clay_display", "black_bear_cub_body_reverted", "black_bear_adult_clay_display", "black_bears_front_row_pair", "black_bear_cub_baby", "black_bear_cub_young_face", "golden_retriever_clay_coat", "duck_clay_display", "black_bear_cub_lighter_fur", "pig_clay_display", "clay_animals_roam", "clay_animals_spacing", "animals_bigger", "zoo_zones", "chapel_old_outline", "home_expansion_ground", "home_side_pad_trim", "statue_word", "clay_animals_unpacked", "parked_vehicles", "warehouse_entrance_walk", "spawn_clear_car", "clay_meshes_external", "pig_clay_walks", "clay_animals_walk", "rooster_clay_display", "capybara_clay_display", "tiger_clay_walks"]
 const Plaza = preload("res://scripts/buildings/monument_plaza.gd")
 
 ## Collision for the decorative gazebo roof cap (7 Nov 2026; scripts/buildings/roof_solids.gd).
@@ -1570,6 +1570,32 @@ func clay_animals_walk(town: Node3D, _game) -> void:
 	animals.erase("Pig")
 	for name: String in animals:
 		_clay_walker(town, name, animals[name])
+
+## The approved clay tiger (user, 17 Nov 2026: "rig it first then replace the zoo tiger", the
+## same height as the zoo tiger) takes the place of the wandering ParkZoo/Tiger, the last wild
+## animal still built from pieces: same name, home in Wildlife Plains, facing, child index, word
+## and park_animals.gd wandering, with its soles at the old tiger's level. Its model is the rig
+## scenes/animals/tiger_clay_rigged.scn (tools/build_tiger_clay_rig.gd), so it walks and blinks
+## like the other clay animals. _clay_roamer sizes it to the species height; the zoo shows every
+## animal DISPLAY_SCALE bigger (animals_bigger), so it is brought to that here.
+func tiger_clay_walks(town: Node3D, _game) -> void:
+	var Animals = preload("res://scripts/world/park_animals.gd")
+	var zoo: Node3D = town.get_node("ParkZoo")
+	var old: Node3D = zoo.get_node("Tiger")
+	var home: Vector3 = old.get("home") if old.get("home") is Vector3 and old.get("home") != Vector3.ZERO else old.position
+	var old_box: AABB = old.call("_visible_bounds")
+	var sole_y: float = home.y + old_box.position.y * old.scale.y
+	print("TIGER CLAY WALKS: old tiger height %.3f, soles at %.3f" % [old_box.size.y * old.scale.y, sole_y])
+	_clay_roamer(zoo, "Tiger", str(old.get_meta("word_key")), "tiger", Vector3(home.x, sole_y, home.z), old.rotation.y, old.get_index(), [old])
+	var animal: Node3D = zoo.get_node("Tiger")
+	var box: AABB = animal.call("_visible_bounds")
+	var factor: float = Animals.display_height("Tiger", zoo.global_basis.get_scale().y) / (box.size.y * animal.scale.y)
+	animal.scale *= factor
+	animal.position = Vector3(home.x, sole_y - box.position.y * animal.scale.y, home.z)
+	animal.set("home", animal.position)
+	animal.set_meta("display_size", box.size * animal.scale)
+	_clay_walker(town, "Tiger", "tiger")
+	print("TIGER CLAY WALKS: height %.3f at %s" % [box.size.y * animal.scale.y, animal.position])
 
 ## Replaces ParkZoo/<name>/Clay<Name>, a static clay model, with an instance of its skinned rig
 ## (same model space, so the same name and transform; Footprint body off as in _clay_roamer).
