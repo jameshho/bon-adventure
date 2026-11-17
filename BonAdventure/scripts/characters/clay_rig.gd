@@ -28,6 +28,11 @@ extends RefCounted
 ##           original vertices with their own normals and colours, so the clay stays smooth.
 ##
 ##   merge:  true joins skinned parts that share a material into one surface ("Clay").
+##   merge_into: {mesh node name: other part}: joins that part's surface whatever its own
+##           material or shadow setting (e.g. a small hair or face-detail mesh that must bend
+##           with a trunk or neck, without a second skinned surface). Optional.
+##   blends: {mesh node name: blend}: a softer or harder blend for one part (e.g. a mane, far
+##           from every bone's shapes). Optional; spec.blend otherwise.
 ##   on_head: rigid display meshes (e.g. "Face details") moved under the Head attachment
 ##           unskinned, so they cost no skinning.
 ##
@@ -73,9 +78,14 @@ static func build(display: Node3D, spec: Dictionary) -> Node3D:
 		var keep: float = spec.get("simplify", {}).get(part, 1.0)
 		if keep < 1.0:
 			arrays = _simplified(arrays, keep)
-		arrays = _skinned(arrays, skeleton, bones, names, spec.blend, stats, part)
+		arrays = _skinned(arrays, skeleton, bones, names, spec.get("blends", {}).get(part, spec.blend), stats, part)
 		var group = null
-		if spec.get("merge", false):
+		var into: String = spec.get("merge_into", {}).get(part, "")
+		if into != "":
+			for g in groups:
+				if g.name == into:
+					group = g
+		elif spec.get("merge", false):
 			for g in groups:
 				if g.material == source.material_override and g.shadow == source.cast_shadow:
 					group = g
