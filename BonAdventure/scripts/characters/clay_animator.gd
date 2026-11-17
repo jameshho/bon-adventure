@@ -63,6 +63,35 @@ const BLINK_GROUP := "clay_animals"
 ## Below this speed (model units / s) the animal counts as standing.
 @export var still_speed := 0.05
 
+## Optional settings for bigger or longer animals (big clay animals, 16 Nov 2026). Their defaults
+## leave an animal without them (the pig) exactly as before.
+## (Per-leg walking angles: `leg_neutral_deg` above.)
+## Per leg, the foot's ground contact point at rest (model space). When set, each leg bone is
+## shortened or lengthened along its length (within `foot_stretch`) so the foot stays on the
+## ground through the stance and lifts by `lift` in the swing, instead of sinking or floating as
+## the leg swings about its pivot.
+@export var foot_contacts: PackedVector3Array = []
+@export var foot_stretch := Vector2(0.8, 1.12)
+## Bones after "tail" in `tail_chain` wag about `tail_axis` too, each `tail_lag` radians later
+## than the one before, so a long tail waves.
+@export var tail_chain: PackedStringArray = []
+@export var tail_lag := 0.7
+## Axis the ears turn about, and seconds per slow ear fan (0: only the pig's flop in step).
+@export var ear_axis := Vector3.FORWARD
+@export var ear_fan_seconds := 0.0
+## Neck bones from the body to the head (giraffe, lion, elephant). The look is shared out along
+## them (`neck_share` of the turn on the neck, the rest on the head; the build tools set it) and
+## while walking the neck pumps `neck_pump_deg` per bone, twice a cycle. Without this list a
+## single bone named "neck" takes `neck_share` of the turn and the nod (hoofed animals).
+@export var neck: PackedStringArray = []
+@export var neck_pump_deg := 0.0
+## Trunk bones from the head to the tip: a slow sway from side to side (in step with the walk
+## while walking) and a curl, degrees per bone, each bone a little behind the one before.
+@export var trunk: PackedStringArray = []
+@export var trunk_sway_deg := 0.0
+@export var trunk_curl_deg := 0.0
+@export var trunk_seconds := 3.2
+
 var skeleton: Skeleton3D
 ## Smoothed speed (model units / s); set `speed_override` >= 0 to drive it by hand (captures).
 var speed := 0.0
@@ -86,7 +115,7 @@ var _screen: VisibleOnScreenNotifier3D
 func _ready() -> void:
 	var root := get_parent() as Node3D
 	skeleton = root.get_node("Skeleton3D") as Skeleton3D
-	for name in ["body", "neck", "head", "tail", "ear_l", "ear_r"] + Array(legs) + Array(feet):
+	for name in ["body", "neck", "head", "tail", "ear_l", "ear_r"] + Array(legs) + Array(feet) + Array(neck) + Array(trunk) + Array(tail_chain):
 		var i := skeleton.find_bone(name)
 		if i >= 0:
 			_bones[name] = i
@@ -188,6 +217,10 @@ func _pose() -> void:
 		var neutral := leg_neutral_deg[k] if k < leg_neutral_deg.size() else 0.0
 		var angle := deg_to_rad(swing_deg * sin(a) + neutral) * w
 		var up := lift * maxf(cos(a), 0.0) * w
+		if k < foot_contacts.size() and _bones.has(legs[k]):
+			# Planted: the leg stretches so its foot stays on the ground (big animals).
+			_plant(legs[k], foot_contacts[k], angle, lerpf(foot_contacts[k].y, up, w))
+			continue
 		# A slanted display leg is longer than its hip's height: straightened, it is lifted
 		# by the difference so the hoof does not sink into the ground.
 		up += leg_length * (1.0 / cos(deg_to_rad(neutral)) - 1.0) * w
@@ -206,14 +239,44 @@ func _pose() -> void:
 	# Head: the look (yaw, with a little tilt into the turn), a nod in step while walking, and a
 	# small counter-roll so the face stays level while the body rolls.
 	var nod := deg_to_rad(nod_deg * sin(2.0 * cycle + 0.6) * w)
-	var share := neck_share if _bones.has("neck") else 0.0
-	_pose_bone("neck", Vector3.ZERO, Quaternion(Vector3.UP, _yaw * share) * Quaternion(Vector3.RIGHT, nod * share))
-	var yaw := _yaw * (1.0 - share)
-	nod *= 1.0 - share
-	_pose_bone("head", Vector3.ZERO, Quaternion(Vector3.UP, yaw) * Quaternion(Vector3.FORWARD, -roll * 0.6 + yaw * 0.15) * Quaternion(Vector3.RIGHT, nod))
+	var head_yaw := _yaw
+	if not neck.is_empty():
+		head_yaw = _yaw * (1.0 - neck_share)
+		for k in neck.size():
+			var pump := deg_to_rad(neck_pump_deg * sin(2.0 * cycle - 0.4 * k) * w + 0.4 * breathe * idle)
+			_pose_bone(neck[k], Vector3.ZERO, Quaternion(Vector3.UP, _yaw * neck_share / neck.size()) * Quaternion(Vector3.RIGHT, pump))
+	elif _bones.has("neck"):
+		head_yaw = _yaw * (1.0 - neck_share)
+		_pose_bone("neck", Vector3.ZERO, Quaternion(Vector3.UP, _yaw * neck_share) * Quaternion(Vector3.RIGHT, nod * neck_share))
+		nod *= 1.0 - neck_share
+	_pose_bone("head", Vector3.ZERO, Quaternion(Vector3.UP, head_yaw) * Quaternion(Vector3.FORWARD, -roll * 0.6 + head_yaw * 0.15) * Quaternion(Vector3.RIGHT, nod))
+	for k in trunk.size():
+		var late := 0.7 * k
+		var side := trunk_sway_deg * (sin(TAU * _clock / trunk_seconds - late) * lerpf(1.0, 0.5, w) + sin(cycle - late) * w)
+		var curl := trunk_curl_deg * sin(TAU * _clock / (trunk_seconds * 1.6) - late)
+		_pose_bone(trunk[k], Vector3.ZERO, Quaternion(Vector3.FORWARD, deg_to_rad(side)) * Quaternion(Vector3.RIGHT, deg_to_rad(curl)))
 	# Tail: a wag (faster when walking); ears flop a beat behind the bob.
 	var wag := deg_to_rad(tail_deg * sin(_clock * lerpf(2.2, 9.0, w)) * lerpf(0.35, 1.0, w))
-	_pose_bone("tail", Vector3.ZERO, Quaternion(tail_axis.normalized(), wag))
+	var axis := tail_axis.normalized()
+	_pose_bone("tail", Vector3.ZERO, Quaternion(axis, wag))
+	for k in tail_chain.size():
+		var wave := deg_to_rad(tail_deg * sin(_clock * lerpf(2.2, 9.0, w) - tail_lag * (k + 1)) * lerpf(0.35, 1.0, w))
+		_pose_bone(tail_chain[k], Vector3.ZERO, Quaternion(axis, wave))
 	var flop := deg_to_rad(ear_deg * (sin(2.0 * cycle - 1.2) * w + 0.25 * breathe * idle))
-	_pose_bone("ear_l", Vector3.ZERO, Quaternion(Vector3.FORWARD, flop))
-	_pose_bone("ear_r", Vector3.ZERO, Quaternion(Vector3.FORWARD, -flop))
+	if ear_fan_seconds > 0.0:
+		flop = deg_to_rad(ear_deg * (sin(TAU * _clock / ear_fan_seconds) * lerpf(1.0, 0.6, w) + 0.5 * sin(2.0 * cycle - 1.2) * w))
+	_pose_bone("ear_l", Vector3.ZERO, Quaternion(ear_axis, flop))
+	_pose_bone("ear_r", Vector3.ZERO, Quaternion(ear_axis, -flop))
+
+
+## A leg turned `angle` about its pivot and stretched along y so that its foot (rest contact
+## point `foot`, model space) is at height `height`: R_x(angle) * scale_y(s) * (foot - pivot)
+## reaches height - pivot.y.
+func _plant(name: String, foot: Vector3, angle: float, height: float) -> void:
+	var pivot := skeleton.get_bone_global_rest(_bones[name]).origin
+	var f := foot - pivot
+	var s := 1.0
+	var down := f.y * cos(angle)
+	if absf(down) > 1e-4:
+		s = clampf((height - pivot.y + f.z * sin(angle)) / down, foot_stretch.x, foot_stretch.y)
+	_pose_bone(name, Vector3.ZERO, Quaternion(Vector3.RIGHT, angle), Vector3(1.0, s, 1.0))
