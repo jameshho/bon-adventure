@@ -23,6 +23,16 @@ const BLINK_GROUP := "clay_animals"
 ## Leg bones and each one's phase in the cycle (0 ... 1). A trot: diagonal pairs together.
 @export var legs: PackedStringArray = ["leg_fl", "leg_fr", "leg_bl", "leg_br"]
 @export var leg_phase: PackedFloat32Array = [0.0, 0.5, 0.5, 0.0]
+## Per leg (same order as `legs`; empty = all 0): the swing angle in degrees the walk is centred
+## on, faded in with the walk. For a display modelled mid-stride (the deer): standing keeps the
+## display's pose, walking swings about straight legs.
+@export var leg_neutral_deg: PackedFloat32Array = []
+## Lift a leg whenever its swing would put the sole below the ground it stands on in the display
+## (a leaning leg turned upright reaches lower; a paw swung back tips its toes down). The sole is
+## taken as flat, `foot_reach` (model units) each way along the body from under the paw, with
+## leg_length as the pivot's height and leg_neutral_deg giving the display's lean. Off for the pig.
+@export var keep_feet_down := false
+@export var foot_reach := 0.0
 ## Distance from a leg's pivot to the ground (model units); with `swing_deg` it sets the stride.
 @export var leg_length := 0.4
 ## Forward and back swing of a leg, degrees each way at full walk.
@@ -45,6 +55,14 @@ const BLINK_GROUP := "clay_animals"
 ## Tail wag and ear flop (degrees).
 @export var tail_deg := 18.0
 @export var ear_deg := 7.0
+## Axis of the tail wag in the tail bone's frame: UP swings a tail that sticks out; FORWARD
+## swings a hanging tail like a pendulum (cow, zebra, rhino).
+@export var tail_axis := Vector3.UP
+## Wags per second x TAU standing and walking (the pig: 2.2, 9.0; a happy dog wags faster).
+@export var wag_speed := Vector2(2.2, 9.0)
+## With an optional second tail bone "tail2" (child of "tail"): it swings the same way, this
+## many radians behind, so a long tail bends like a whip (red panda).
+@export var tail_lag := 0.9
 ## Below this speed (model units / s) the animal counts as standing.
 @export var still_speed := 0.05
 
@@ -71,7 +89,7 @@ var _screen: VisibleOnScreenNotifier3D
 func _ready() -> void:
 	var root := get_parent() as Node3D
 	skeleton = root.get_node("Skeleton3D") as Skeleton3D
-	for name in ["body", "head", "tail", "ear_l", "ear_r"] + Array(legs):
+	for name in ["body", "head", "tail", "tail2", "ear_l", "ear_r"] + Array(legs):
 		var i := skeleton.find_bone(name)
 		if i >= 0:
 			_bones[name] = i
@@ -170,8 +188,16 @@ func _pose() -> void:
 	# Legs: swing about the side-to-side axis (+ = the foot forward, toward -Z); lift while swinging.
 	for k in legs.size():
 		var a := cycle + TAU * leg_phase[k]
-		var angle := deg_to_rad(swing_deg) * sin(a) * w
+		var neutral := leg_neutral_deg[k] if k < leg_neutral_deg.size() else 0.0
+		var angle := deg_to_rad(swing_deg * sin(a) + neutral) * w
 		var up := lift * maxf(cos(a), 0.0) * w
+		if keep_feet_down:
+			# Height change of the sole's two ends (rest: y = -leg_length, z under the paw).
+			var under := -leg_length * tan(deg_to_rad(-neutral))
+			var low := INF
+			for z in [under - foot_reach, under + foot_reach]:
+				low = minf(low, leg_length * (1.0 - cos(angle)) - z * sin(angle))
+			up += maxf(-low, 0.0)
 		_pose_bone(legs[k], Vector3(0, up, 0), Quaternion(Vector3.RIGHT, angle))
 	# Body: walking bob and roll; at rest a slow breath and a weight shift from side to side.
 	var breathe := sin(TAU * _clock / breath_seconds)
@@ -187,8 +213,11 @@ func _pose() -> void:
 	var nod := deg_to_rad(nod_deg * sin(2.0 * cycle + 0.6) * w)
 	_pose_bone("head", Vector3.ZERO, Quaternion(Vector3.UP, _yaw) * Quaternion(Vector3.FORWARD, -roll * 0.6 + _yaw * 0.15) * Quaternion(Vector3.RIGHT, nod))
 	# Tail: a wag (faster when walking); ears flop a beat behind the bob.
-	var wag := deg_to_rad(tail_deg * sin(_clock * lerpf(2.2, 9.0, w)) * lerpf(0.35, 1.0, w))
-	_pose_bone("tail", Vector3.ZERO, Quaternion(Vector3.UP, wag))
+	var wag_t := _clock * lerpf(wag_speed.x, wag_speed.y, w)
+	var wag_size := tail_deg * lerpf(0.35, 1.0, w)
+	var wag := deg_to_rad(wag_size * sin(wag_t))
+	_pose_bone("tail", Vector3.ZERO, Quaternion(tail_axis.normalized(), wag))
+	_pose_bone("tail2", Vector3.ZERO, Quaternion(tail_axis.normalized(), deg_to_rad(wag_size * sin(wag_t - tail_lag))))
 	var flop := deg_to_rad(ear_deg * (sin(2.0 * cycle - 1.2) * w + 0.25 * breathe * idle))
 	_pose_bone("ear_l", Vector3.ZERO, Quaternion(Vector3.FORWARD, flop))
 	_pose_bone("ear_r", Vector3.ZERO, Quaternion(Vector3.FORWARD, -flop))

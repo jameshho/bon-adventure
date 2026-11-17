@@ -21,6 +21,10 @@ extends RefCounted
 ##           mesh is split by the nearest eye and each eye becomes its own MeshInstance3D centred
 ##           on its node (x toward the outer corner, y up the eye, z out of the face) under a
 ##           BoneAttachment3D named "Head", so plush_life.gd can blink it (it squashes local y).
+##           Optional "lids": {"mesh": node name, "reach": model units}: that mesh's triangles
+##           within `reach` of an eye (lid lines, an eye's outline) move into the eye's node as a
+##           second surface with their own material, so they close with the eye; the rest of the
+##           mesh stays where it was (e.g. on_head). Without "lids" nothing changes.
 ##   keep:   other display children copied as they are (e.g. "Footprint").
 ##   simplify: {mesh node name: fraction of triangles to keep}. Skinning costs per vertex every
 ##           frame the pose changes, so dense clay meshes are thinned at bake time with Godot's
@@ -106,18 +110,32 @@ static func build(display: Node3D, spec: Dictionary) -> Node3D:
 		head.bone_name = bone_name
 		var head_pivot: Vector3 = pivots[bone_name]
 		head.transform = Transform3D(Basis(), head_pivot)
+		var kept := {}
 		if spec.has("eyes"):
 			var source := display.get_node(spec.eyes.mesh) as MeshInstance3D
+			var lids := {}
+			if spec.eyes.has("lids"):
+				var lid_source := display.get_node(spec.eyes.lids.mesh) as MeshInstance3D
+				lids = _take_lids(lid_source.mesh, spec.eyes.eyes, spec.eyes.lids.reach)
+				lids.material = lid_source.material_override
+				kept[spec.eyes.lids.mesh] = lids.rest
 			for eye in _split_eyes(source.mesh, spec.eyes.eyes):
 				var node := MeshInstance3D.new()
 				node.name = eye.name
 				node.mesh = eye.mesh
 				node.transform = Transform3D(eye.basis, (eye.origin as Vector3) - head_pivot)
 				node.material_override = source.material_override
+				if lids.has(eye.name) and not (lids[eye.name][Mesh.ARRAY_VERTEX] as PackedVector3Array).is_empty():
+					node.material_override = null
+					node.mesh.surface_set_material(0, source.material_override)
+					node.mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, lids[eye.name])
+					node.mesh.surface_set_material(1, lids.material)
 				node.cast_shadow = source.cast_shadow
 				head.add_child(node)
 		for part: String in on_head:
 			var piece := (display.get_node(part) as MeshInstance3D).duplicate() as MeshInstance3D
+			if kept.has(part):
+				piece.mesh = kept[part]
 			piece.transform = Transform3D(Basis(), -head_pivot)
 			head.add_child(piece)
 	for keep: String in spec.get("keep", []):
@@ -265,6 +283,48 @@ static func _simplified(arrays: Array, keep: float) -> Array:
 			dst[k] = src[order[k]]
 		out[slot] = dst
 	out[Mesh.ARRAY_INDEX] = new_index
+	return out
+
+
+## The triangles of `mesh` within `reach` of an eye origin, per eye name in that eye's frame
+## (arrays), and the rest of the mesh as "rest".
+static func _take_lids(mesh: Mesh, eyes: Array, reach: float) -> Dictionary:
+	var arrays := mesh.surface_get_arrays(0)
+	var verts: PackedVector3Array = arrays[Mesh.ARRAY_VERTEX]
+	var norms: PackedVector3Array = arrays[Mesh.ARRAY_NORMAL]
+	var cols: PackedColorArray = arrays[Mesh.ARRAY_COLOR] if arrays[Mesh.ARRAY_COLOR] != null else PackedColorArray()
+	var index: PackedInt32Array = arrays[Mesh.ARRAY_INDEX] if arrays[Mesh.ARRAY_INDEX] != null else PackedInt32Array()
+	if index.is_empty():
+		for i in verts.size(): index.append(i)
+	var parts := [{"v": PackedVector3Array(), "n": PackedVector3Array(), "c": PackedColorArray(), "xf": Transform3D()}]
+	for e in eyes:
+		parts.append({"v": PackedVector3Array(), "n": PackedVector3Array(), "c": PackedColorArray(), "xf": Transform3D(e.basis, e.origin).affine_inverse()})
+	for t in range(0, index.size(), 3):
+		var centre := (verts[index[t]] + verts[index[t + 1]] + verts[index[t + 2]]) / 3.0
+		var pick := 0
+		for i in eyes.size():
+			if centre.distance_to(eyes[i].origin) < reach:
+				pick = i + 1
+		var part: Dictionary = parts[pick]
+		var xf: Transform3D = part.xf
+		for k in 3:
+			var i := index[t + k]
+			part.v.append(xf * verts[i])
+			part.n.append((xf.basis * norms[i]).normalized())
+			part.c.append(cols[i] if not cols.is_empty() else Color.WHITE)
+	var out := {}
+	for p in parts.size():
+		var a := []
+		a.resize(Mesh.ARRAY_MAX)
+		a[Mesh.ARRAY_VERTEX] = parts[p].v
+		a[Mesh.ARRAY_NORMAL] = parts[p].n
+		a[Mesh.ARRAY_COLOR] = parts[p].c
+		if p == 0:
+			var m := ArrayMesh.new()
+			m.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, a)
+			out.rest = m
+		else:
+			out[eyes[p - 1].name] = a
 	return out
 
 
