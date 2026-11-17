@@ -238,7 +238,9 @@ ride (E to sit, W/S to kick).
   Wildlife Plains, with Spanish signs; the clay-style animals were added 11–12 Nov. Since
   16 Nov the 17 clay animals walk with moving legs, breathe, look around and blink
   ([each one walking](../evidence/zoo-walk-20261116/walkers.png)); the 11 older piece-built
-  animals (tiger, monkey, horse and others) still glide.
+  animals (tiger, monkey, horse and others) still glide. Since 17 Nov a clay rooster stands
+  on the farm lawn by the farm gate ([view](../evidence/rooster-clay-20261116/zoo-close.png));
+  it is a still display with no word yet.
   [Zoo zones](../guides/TOWN_DESIGN_BRIEF.md#zoo-zones--12-november-2026) ·
   [animal sizes and movement](../guides/ANIMAL_SYSTEM.md)
 - **Coast:** a sandy beach with boulders and crabs, and a small deserted island.

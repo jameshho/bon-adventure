@@ -435,6 +435,55 @@ with `-- zoo`, the town views and `zoo-pair.png`, `zoo-pair-side.png` showing bo
 differences from the sheet: the belly hangs a little lower between the legs, and the head is
 smaller and lower against the body than on the sheet. No test suite was run.
 
+## Clay capybara study (16 Nov 2026, awaiting the user's review)
+
+`scenes/animals/capybara_clay.tscn` is a static study of the user's "Capybara Character
+Blueprint" turnaround (relaxed idle pose), built by `tools/build_capybara_clay.gd` from
+`scripts/characters/capybara_clay.gd` (extends the clay cow: same mesher and paint; the clay
+pig's ring patches for the eyes; meshed 2.6 times life size; about 105k triangles; 0.9 town
+units to the top of the head, a provisional height). **Not in the zoo and not approved**: no
+base step, no word, no behaviour; the place and the height are the user's decisions.
+It is built ready for rigging, like the clay pig: `Body` is one fused mesh (torso, head, legs,
+paws, tail nub) with the brown muzzle, the brown paws and the blush painted on; `Ears` is one
+separate piece; `LeftEye` and `RightEye` are separate meshes, each centred on its own node (x
+along the lid, y up the eye, z out of the face); lids, brows, nostrils and the mouth lines are
+`Face details`. The eyes are half closed: a straight dark lid, its nose end higher, over the
+lower half of a flat-set eye whose brown iris fills it to the lower edge (white only at the
+corners, no catch-light, as on the sheet). They lie on the slant where the head narrows to the
+muzzle, so they show from the front and the side.
+Renders: `docs/evidence/capybara-clay-20261116/` (`capture.gd` loads only the capybara scene:
+`compare.png` = the blueprint's five views above the model's at the same scale, `overlay.png`,
+`face.png`, `eyes.png`, `turnaround.png`). Four passes were compared against the sheet before
+the review. Known differences: no fur texture (smooth clay, as the other clay animals); the
+views are orthographic, so the 3/4 views show the muzzle larger than the sheet's perspective;
+the sheet's side view draws the nostril farther back than its front and 3/4 views, and the
+model follows the front views. The check suite was not run (nothing in the town changed).
+Second pass (user, 16 Nov 2026: a dent along the top of the head, head too bulky, hamster
+cheeks, head and body like separate shapes, body too rectangular): shrinking the head by eye
+and blending it into the body was judged "way worse" by the user and was undone.
+Third pass (user, same day: trace the sheet with vtracer first): `trace.py` and `cmp.py` in
+the evidence folder trace `reference.png` and the model's `turnaround.png` into colour regions
+and compare the outlines per scan line (`outline-compare.txt`: model minus sheet, sheet px).
+What the trace showed, and the model now follows:
+- The torso is one ball, about 128 px in radius centred at sheet (1005, 430), cut by the
+  ground; the first passes' loaf, belly and rump masses stood 8 to 25 px too high along the back.
+- The head was about 10% too wide (9 to 19 px across at eye height) and its back 15 to 30 px
+  too far back; cheeks and jaw are slimmer, and the neck keeps the sheet's shallow fold.
+- The sheet's "side" view is turned about 20 degrees toward the front (ears and paws), so
+  `capture.gd` now renders it that way; the eyes, ears, chest and front legs sit farther
+  forward than first measured. The lids land on the traced lid regions (front view exactly,
+  side view within 5 px).
+- The hind foot is a long low paw (sheet x 948 to 1095) standing a little proud of the ball.
+Result: median outline difference 1 to 4 px in the front and side views. Still different: the
+back view's head (the sheet's is narrower and off-centre, a perspective view; up to 15 px), the
+neck in the front view (5 to 9 px wider), the soles (about 3 px lower), no fur texture.
+Fourth pass (user, 17 Nov 2026: "another pass"): `feat.py` traces finer colour regions (ears,
+brows, lids, mouth, paws, feet) in the sheet and the model. Moved to the traced places: front
+legs and chest 8 to 10 px back (paws now sheet x 809 to 918 against 809 to 924), hind feet
+shorter and tucked in, the belly lifted off the ground behind the front legs, ears a little
+larger and farther back, brows forward and higher, the smile and middle line 3 px higher, the
+iris centred under the lid. About 105k triangles. Awaiting the user's review again.
+
 ## Clay pig display (11 Nov 2026)
 
 `scenes/animals/pig_clay.tscn` is a static study of the user's "Pig (Black & White) Character
@@ -774,6 +823,46 @@ thicker forehead bar, low fur lumps on the chest, the paws' cream edge raised cl
 clay's own colour. Known differences that remain: the legs are straight columns; the ruffs are
 still a little larger than the sheet's; stripe edges are slightly rough close up (the cost of
 the triangle budget); the expression is a touch sterner. No test suite was run (no town change).
+
+## Clay rooster display (17 Nov 2026, approved by the user and placed on the farm)
+
+`scenes/animals/rooster_clay.tscn` is a static study of the user's "Rooster Character Blueprint"
+turnaround (relaxed idle pose), built by `tools/build_rooster_clay.gd` from
+`scripts/characters/rooster_clay.gd` (extends the clay cow: same mesher, paint and ray helpers,
+feathers laid like the clay duck's; meshed 6 times life size; 137,632 triangles; 0.6 town units
+to the top of the comb, the user's choice, as built). "Rooster" is not in `ANIMAL_HEIGHTS` or the
+vocabulary, and the farm's hen is unchanged. One instance, `ParkZoo/RoosterClayDisplay`, stands
+on the farm lawn at town (72.5, 0.12, 103.5), right of the path from the farm gate and in front
+of the hen's home, facing the gate (base step `rooster_clay_display`, which also stores it as
+plain nodes with `unpack_clay_animals`, because the web export leaves the clay prefab scenes
+out). It has a box footprint and no word, movement, animation or interaction. A rebuilt prefab
+reaches the farm through its mesh files as long as the part names stay the same.
+
+Built ready for rigging like the clay pig: head, neck feathers, body, legs and feet are one fused
+mesh (`Body`); `Beak`, `Beak lower`, `Comb`, `Wattles`, `Wings` and `Tail` are separate clay
+pieces; each eye is its own mesh centred on its own node (`LeftEye`, `RightEye`: local x across
+the eye, y up the eye, z out of the face; one shaded dome with soft iris and pupil edges, built
+with the pig's ring builder); lids, brows, nostrils and the mouth line are `Face details`. The
+wing is one smooth pad with four low-relief lobes and a painted top-to-bottom shade; the neck
+feathers are two layers of tongues round the rim of a smooth cape; the tail is nine sickle
+blades (`_blade`).
+
+Renders: `docs/evidence/rooster-clay-20261116/` (`capture.gd` loads only the rooster scene:
+`compare.png` = each blueprint view above the model's at the same scale, `face-compare.png`,
+`eyes-compare.png`, `turnaround.png`, `face.png`, `eyes.png`; `reference.png` is the user's
+sheet). Town views (`capture.gd -- zoo`, isolated `HOME`, `VT_FOCUS=all VT_SPAWN=none`,
+`dev_focus.txt` = `all`, once): `zoo-close.png`, `zoo-side.png`, `zoo-location.png`; printed
+display y 0.156 world, physics ground beside it -0.046, the offset the other clay displays use;
+the feet meet the grass in the views. The bake applied 1 step (14,226 nodes).
+
+Known differences from the sheet (user approved 17 Nov 2026 after four review rounds): the
+sheet's front and side views disagree about the eyes; the model follows the front and 3/4
+views (eyes face 45° outward), so from the side they look narrower and sit further forward;
+the beak is smaller and pointier in profile; the neck hem is more regular; the tail is narrower
+from behind; the legs stand level (the sheet's side view staggers them). In the town's daylight
+the head and neck read paler and yellower than on the sheet (not deepened; open, low priority).
+Not checked: the running game, a web export or a phone; no test suite was run. Walking and
+blinking are a separate step the user has not approved yet (needs its own bone setup).
 
 ## Zoo zones (12 Nov 2026)
 
