@@ -86,13 +86,23 @@ func run():
 	main.open_settings()
 	check(not main.settings_panel._native_pick.disabled and main.settings_panel._switch_button.visible, "Settings lets the native language change and offers Switch player")
 	main.close_menus()
-	# The other units arrive one at a time while the tutorial plays (app.gd _load_rest()).
+	# The other units arrive one at a time while the tutorial plays (app.gd _load_rest()): none
+	# in the house act, all behind the title cutscene, which waits for them (16 Nov 2026).
 	check(main.get_node_or_null("FamilySession") == null, "the hospital's game waits for the hospital")
-	var ends := Time.get_ticks_msec() + 120000
-	while not main.pending_units.is_empty() and Time.get_ticks_msec() < ends:
+	# The tutorial begins after the warm-up (app.gd _on_town_ready()).
+	var begin_by := Time.get_ticks_msec() + 30000
+	while main.get_node_or_null("Tutorial") == null and Time.get_ticks_msec() < begin_by:
 		await process_frame
+	var tutorial: Node = main.get_node_or_null("Tutorial")
+	var quiet_until := Time.get_ticks_msec() + 4000
+	while Time.get_ticks_msec() < quiet_until:
+		await process_frame
+	check(tutorial != null and tutorial.act == 0 and main.pending_units.size() == 17, "no unit is added during the house act (%d pending)" % main.pending_units.size())
+	var cut_started := Time.get_ticks_msec()
+	if tutorial != null:
+		await tutorial._play_cutscene("tutorial.title")
 	var loaded: Array = main.apartment.get_meta("loaded_units", [])
-	check(main.pending_units.is_empty() and loaded.size() == 19, "every unit is added during the tutorial (%d)" % loaded.size())
+	check(main.pending_units.is_empty() and loaded.size() == 19, "every unit is added behind the title cutscene (%d, %.1f s)" % [loaded.size(), (Time.get_ticks_msec() - cut_started) / 1000.0])
 	var hospital: Node = main.apartment.get_node_or_null("RelocatedSites/Hospital")
 	check(hospital != null and not hospital.has_meta("unit_placeholder") and hospital.get_child_count() > 0, "a late unit takes its site's place (no renamed copy)")
 	check(main.get_node_or_null("FamilySession") != null and main.get_node("FamilySession").host != null, "a late unit's minigame is set up when it arrives")

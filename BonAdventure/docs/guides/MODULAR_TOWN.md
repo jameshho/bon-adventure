@@ -263,8 +263,11 @@ literal paths.
 Since 13 Nov 2026 (user, staged loading for the web) a profile that will play the welcome
 tutorial starts with the base world and only `home` and `supermarket` (`app.gd`
 `TUTORIAL_UNITS`, set as `Main.initial_units`); the other units wait in `Main.pending_units` and
-`app.gd` `_load_rest()` adds them one at a time with `Main.add_unit(key)` at quiet moments of the
-tutorial (a fade, the title cutscene, a dialogue line), the rest at once behind the loading screen
+`app.gd` `_load_rest()` adds them one at a time with `Main.add_unit(key)`: since 16 Nov 2026 (user:
+the house act lagged) none during the house act and all of them behind the title cutscene, which
+stays up until they are in (at most 60 s, `tutorial.json` `cutscene_max_seconds`); anything still
+waiting after that (a slow device, a profile resuming at a later act) at quiet moments of the
+tutorial (a fade, a dialogue line), the rest at once behind the loading screen
 when the tutorial ends or is skipped. Profiles that finished the tutorial, checks and tools load
 every unit before `town_ready`, as before. Measurements: [FINAL_VERIFICATION.md](FINAL_VERIFICATION.md#staged-loading-home-first--13-november-2026).
 

@@ -745,12 +745,23 @@ func _reset_props() -> void:
 # --- Cutscene, skip button, end ------------------------------------------------------------
 
 ## A few seconds of Bon Adventure: the loading screen's town pictures with the title over them.
+## It is also the loading screen for the buildings the tutorial has not used yet (16 Nov 2026,
+## user: app.gd _load_rest() adds Main's pending_units while it is up): it stays at least
+## cutscene_seconds and until they are all in (at most cutscene_max_seconds), with the progress
+## bar under the title while any are loading.
 func _play_cutscene(title_id: String) -> void:
 	_cutscene = LoadingScreen.new()
 	add_child(_cutscene)
-	_cutscene.show_title(lexicon.phrase(title_id, lexicon.native))
-	var ends: float = Time.get_ticks_msec() + float(data.get("cutscene_seconds", 7.0)) * 1000.0
-	await until(func() -> bool: return Time.get_ticks_msec() >= ends)
+	var total := float(main.pending_units.size())
+	_cutscene.show_title(lexicon.phrase(title_id, lexicon.native), total > 0.0)
+	var started := Time.get_ticks_msec()
+	var least: float = started + float(data.get("cutscene_seconds", 7.0)) * 1000.0
+	var most: float = started + float(data.get("cutscene_max_seconds", 60.0)) * 1000.0
+	await until(func() -> bool:
+		var now := Time.get_ticks_msec()
+		if total > 0.0 and is_instance_valid(_cutscene):
+			_cutscene.set_progress(1.0 - main.pending_units.size() / total)
+		return now >= most or (now >= least and main.pending_units.is_empty()))
 	if is_instance_valid(_cutscene):
 		_cutscene.finish()
 	_cutscene = null

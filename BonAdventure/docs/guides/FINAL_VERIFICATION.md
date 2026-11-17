@@ -7295,6 +7295,20 @@ them").** Same web setup; a scratch copy added every pending unit 0.3 s apart.
 Players who skip the tutorial early see a short "Getting everything ready" screen while the
 remaining units load.
 
+**No loading during the house act; buildings load behind the title cutscene (16 November 2026,
+user: "the tutorial is still kinda slow, especially at the start").** The house act had most of
+the 17 late-unit freezes (one every 1.5 s while a dialogue line showed, or after 20 s anyway)
+while the player was learning to look and walk. Now `app.gd` `_load_rest()` adds none during act
+0 and all of them, back to back, while the title cutscene is up; the cutscene shows the progress
+bar and stays until they are in (at least 7 s, at most `cutscene_max_seconds` 60 s; what is left
+after that loads as before). Checks (isolated `HOME`, `VT_FOCUS=all`): `runtime_resources` PASS,
+`tutorial` 113 checks, 0 failures; `app_flow` 24 checks, 0 failures, with the old "every unit is
+added during the tutorial" check replaced by "no unit is added during the house act" (4 s) and
+"every unit is added behind the title cutscene". Not measured: the cutscene's length on the web
+build or a phone (on the 13 Nov laptop timings the freezes add up to about 10 s, so expect a
+cutscene of roughly 10–15 s there, longer on a phone), and the shader stall when the player first
+walks outside. No rendered views (no visual change besides the bar under the title).
+
 ## Welcome tutorial review and loader owner fix — 13 November 2026
 
 User review of the welcome tutorial (9 items; [guide](ARCHITECTURE_REVIEW_PART1.md#welcome-tutorial)):

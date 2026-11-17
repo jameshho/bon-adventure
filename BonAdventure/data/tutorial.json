@@ -6,6 +6,7 @@
   "hide": ["RelocatedSites/Home/MahjongTable"],
   "skip_to": {"space": "home", "at": [1.0, 0.0, 18.6], "look": [0.0, 1.0]},
   "cutscene_seconds": 7.0,
+  "cutscene_max_seconds": 60.0,
   "card_seconds": 3.5,
   "shop": {"store": "supermarket", "items": {"apple": 1, "banana": 1}, "price_cents": 250, "outside": {"space": "world", "at": [-164.45, 0.0, 163.8], "radius": 3.5}, "door": {"space": "world", "at": [-172.4, 0.0, 163.8], "size": [0.4, 3.0, 7.4], "inward": [-1.0, 0.0]}},
   "acts": [

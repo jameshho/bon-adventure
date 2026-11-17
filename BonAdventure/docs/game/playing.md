@@ -29,7 +29,9 @@ where the player was and comes back at that building's entrance or on clear grou
 
 "Welcome to Bon Adventure" runs once for a new profile: wake up in bed, a tour of the house, find
 the hiding friends, buy fruit at the supermarket, visit the statue, then open the journal. It
-can be skipped, and replayed from Settings. No minigame offers appear while it runs.
+can be skipped, and replayed from Settings. No minigame offers appear while it runs. Since 16 Nov
+the rest of the town loads behind the title card after the house tour (with a progress bar), so
+the house tour itself no longer stutters.
 [Tutorial guide](../guides/ARCHITECTURE_REVIEW_PART1.md#welcome-tutorial)
 
 ## Languages

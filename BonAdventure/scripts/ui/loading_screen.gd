@@ -74,12 +74,13 @@ func _init() -> void:
 	for node in [_track, _bar, _label, _stamp]:
 		node.z_index = 2
 
-## Title mode: `text` large over the pictures, no progress bar.
-func show_title(text: String) -> void:
+## Title mode: `text` large over the pictures; the progress bar only with `bar` (the tutorial's
+## cutscene while buildings still load, 16 Nov 2026).
+func show_title(text: String, bar := false) -> void:
 	_title = true
 	_label.text = text
-	_track.visible = false
-	_bar.visible = false
+	_track.visible = bar
+	_bar.visible = bar
 	_stamp.visible = false
 
 ## Replaces the line over the bar (app.gd's warm-up: "Getting everything ready…").

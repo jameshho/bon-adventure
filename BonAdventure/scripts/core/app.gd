@@ -18,8 +18,11 @@ extends Node
 ## profile that will play the tutorial starts with only the base town and TUTORIAL_UNITS (the
 ## house and the shop, every place the tutorial goes; the park is in the base), so play starts
 ## about twice as soon. _load_rest() then adds the other buildings one at a time (each plush
-## character in its own frame, so a freeze is one plush's sculpting at most), at quiet moments
-## of the tutorial: a fade, the title cutscene or a line of dialogue being read. When the tutorial ends or is skipped, what is left loads at once
+## character in its own frame, so a freeze is one plush's sculpting at most). Since 16 Nov 2026
+## (user: the house act lagged) none during the house act; all of them behind the title cutscene,
+## which stays up until they are in (at most the tutorial's cutscene_max_seconds); anything left
+## after it (a slow device, or a profile resuming at a later act) at quiet moments of the
+## tutorial: a fade or a line of dialogue being read. When the tutorial ends or is skipped, what is left loads at once
 ## behind the loading screen. Profiles that finished the tutorial load the whole town as before.
 ## Web, after the browser dropped the graphics (WebGL context loss, 14 Nov 2026): the page reloads
 ## and web_resume.gd's note sends this scene straight to that profile's town, at the same spot.
@@ -164,6 +167,15 @@ func _load_rest(director: Node) -> void:
 		if not is_instance_valid(director) or not director.running:
 			await _load_rest_now(town)
 			return
+		# The title cutscene covers the screen: one building after another, no gap (it stays up
+		# until they are in, tutorial.gd _play_cutscene()). Before it, in the house act, nothing:
+		# the player is indoors learning the controls and sees none of them (user, 16 Nov 2026).
+		if is_instance_valid(director.get("_cutscene")):
+			await town.add_unit(town.pending_units[0])
+			last = Time.get_ticks_msec()
+			continue
+		if int(director.act) == 0:
+			continue
 		if now - last >= UNIT_GAP_MS and (_quiet_moment(director) or now - last >= UNIT_WAIT_MAX_MS):
 			await town.add_unit(town.pending_units[0])
 			last = Time.get_ticks_msec()
