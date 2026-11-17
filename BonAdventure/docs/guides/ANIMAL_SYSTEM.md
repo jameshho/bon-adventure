@@ -435,17 +435,31 @@ with `-- zoo`, the town views and `zoo-pair.png`, `zoo-pair-side.png` showing bo
 differences from the sheet: the belly hangs a little lower between the legs, and the head is
 smaller and lower against the body than on the sheet. No test suite was run.
 
-## Clay capybara study (16 Nov 2026, awaiting the user's review)
+## Clay capybara display (17 Nov 2026, approved by the user and placed in the zoo)
 
 `scenes/animals/capybara_clay.tscn` is a static study of the user's "Capybara Character
 Blueprint" turnaround (relaxed idle pose), built by `tools/build_capybara_clay.gd` from
 `scripts/characters/capybara_clay.gd` (extends the clay cow: same mesher and paint; the clay
-pig's ring patches for the eyes; meshed 2.6 times life size; about 105k triangles; 0.9 town
-units to the top of the head, a provisional height). **Not in the zoo and not approved**: no
-base step, no word, no behaviour; the place and the height are the user's decisions.
-It is built ready for rigging, like the clay pig: `Body` is one fused mesh (torso, head, legs,
-paws, tail nub) with the brown muzzle, the brown paws and the blush painted on; `Ears` is one
-separate piece; `LeftEye` and `RightEye` are separate meshes, each centred on its own node (x
+pig's ring patches for the eyes; meshed 2.6 times life size; about 104k triangles; 0.95 town
+units to the top of the head, the zoo pig's height, the user's choice). The user approved the
+design on 17 Nov 2026 after the fifth pass below (the rebuild as lofted masses), and chose a
+new display on the wild-animal lawn. One instance, `ParkZoo/CapybaraClayDisplay`, stands at
+town (-72.8, 0.12, 124.4): on the grass strip just inside the zoo gate, east of the gate walk
+and in front of the WILDLIFE PLAINS fence (outside the fenced zones, so no wandering animal
+meets its footprint), turned to face the gate (base step `capybara_clay_display`, which also
+stores it as plain nodes with `unpack_clay_animals`). It has a box footprint and no word,
+movement, animation or interaction; "Capybara" is not in `ANIMAL_HEIGHTS` or the vocabulary.
+Placement, 17 Nov 2026: the bake applied 1 step; `compare_scenes.gd` against the base before
+it shows the display's 7 nodes added and the step list, nothing else (8 differences; shared
+palette files 413 -> 414). Town views with `capture.gd -- zoo` (`VT_FOCUS=all VT_SPAWN=none`,
+isolated HOME, `dev_focus.txt` = `all`): `zoo-location.png`, `zoo-close.png`, `zoo-front.png`,
+`zoo-side.png`; printed display y 0.156 world, physics ground beside it -0.046, the offset
+the other clay displays use. The first place tried, (-71.0, 124.2), put its rump in a shrub
+on that strip; it was moved before this bake was kept. The check suite was not run.
+It is built ready for rigging, like the clay pig (since the fifth pass the ears are part of
+`Body` and there is no `Ears` node): `Body` is one fused mesh (torso, head, legs,
+paws, tail nub) with the brown muzzle, the brown paws and the blush painted on; `Ears` was one
+separate piece until then; `LeftEye` and `RightEye` are separate meshes, each centred on its own node (x
 along the lid, y up the eye, z out of the face); lids, brows, nostrils and the mouth lines are
 `Face details`. The eyes are half closed: a straight dark lid, its nose end higher, over the
 lower half of a flat-set eye whose brown iris fills it to the lower edge (white only at the
@@ -483,6 +497,27 @@ legs and chest 8 to 10 px back (paws now sheet x 809 to 918 against 809 to 924),
 shorter and tucked in, the belly lifted off the ground behind the front legs, ears a little
 larger and farther back, brows forward and higher, the smile and middle line 3 px higher, the
 iris centred under the lid. About 105k triangles. Awaiting the user's review again.
+Fifth pass, a rebuild from the ground up (user, 17 Nov 2026: the head was boxy, the muzzle
+looked pasted on, the body read as an assembly of overlapping shapes): the head and the torso
+are now each ONE lofted mass instead of ellipsoids run together. A loft is a row of
+cross-sections along the sheet's x (top, bottom, the height where it is widest, half width,
+how square its upper and lower halves are) joined by smooth curves, with rounded ends
+(`capybara_clay.gd::loft`, sections in `B_HEAD` and `_torso_sections()`). It is a new shape
+type for the shared mesher: `lion_clay.gd::_dist` and `_box` accept `{t: "fn", fn, lo, hi}`
+(a mass with its own field); the other clay animals do not use it and are unchanged. The
+head is one curve from the blunt rounded muzzle up the forehead and over the crown, a wedge
+from above, narrower over the crown than at the cheeks; the torso is a ball from the side and
+a pear from the front and back (widest low, tapering to the shoulders). Chest, legs and paws
+are run into the torso widely; the ears are now part of `Body` (a cup run into the skull at
+its base, smaller than the sheet's at the user's request), so there is no `Ears` node; the
+scene is `Body`, `LeftEye`, `RightEye`, `Face details`, `Footprint`. `_ray` is the pig's
+capped version (the lofts' field is not an exact distance near their ends; face details were
+buried without it). `outline-compare.txt` after the rebuild: median difference 1.5 px along
+the side view's nose, forehead, jaw and back, 2 to 3 px across the front view, 4 to 5 px
+across the back view; the lids land on the traced lid regions within 1 px. Still different:
+ears smaller and about 10 px lower than the sheet's (asked), the back view's head (the sheet's
+is narrower there, a perspective view), no fur texture. About 94k triangles at 0.9 units
+(104k at the placed 0.95). Approved by the user on 17 Nov 2026.
 
 ## Clay pig display (11 Nov 2026)
 

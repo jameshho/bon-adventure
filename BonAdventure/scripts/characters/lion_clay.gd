@@ -199,6 +199,10 @@ func _leg(b: Array, joints: Array, radii: Array, paw: Vector3) -> void:
 # --- Distance field and surface nets ------------------------------------------------------
 
 static func _dist(pr: Dictionary, p: Vector3) -> float:
+	if pr.t == "fn":
+		# A sculpted mass with its own field: {fn: Callable(p) -> distance, lo, hi: its bounds}
+		# (capybara_clay.gd's lofted head and body, 17 Nov 2026).
+		return pr.fn.call(p)
 	if pr.t == "ell":
 		var q: Vector3 = pr.inv * (p - pr.c)
 		var r: Vector3 = pr.r
@@ -214,6 +218,8 @@ static func _dist(pr: Dictionary, p: Vector3) -> float:
 
 static func _box(pr: Dictionary) -> AABB:
 	var pad: float = pr.k + CELL * 2.0
+	if pr.t == "fn":
+		return AABB(pr.lo - Vector3.ONE * pad, pr.hi - pr.lo + Vector3.ONE * pad * 2.0)
 	if pr.t == "ell":
 		var r: Vector3 = pr.r
 		var m := maxf(r.x, maxf(r.y, r.z))

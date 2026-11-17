@@ -1,0 +1,55 @@
+[gd_scene format=3]
+
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/capybara/body.res" id="1_mcbs1"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/capybara/left_eye.res" id="2_40mqw"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/capybara/right_eye.res" id="3_jp4w2"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/capybara/face_details.res" id="4_otl55"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sd6gd"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.88
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fm81u"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+metallic_specular = 0.25
+roughness = 0.35
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8entm"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.75
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_stpp3"]
+size = Vector3(0.7613241, 0.95000005, 1.4299653)
+
+[node name="CapybaraClayDisplay" type="Node3D" unique_id=721813297]
+metadata/source = "User's Capybara Character Blueprint, relaxed idle pose (16 Nov 2026)"
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=654970875]
+material_override = SubResource("StandardMaterial3D_sd6gd")
+mesh = ExtResource("1_mcbs1")
+
+[node name="LeftEye" type="MeshInstance3D" parent="." unique_id=1440203523]
+transform = Transform3D(-0.46220487, 0.18764, -0.86669374, -0.12555225, 0.953664, 0.27342573, 0.8778402, 0.23519403, -0.4172295, -0.24507554, 0.70486593, -0.47081706)
+material_override = SubResource("StandardMaterial3D_fm81u")
+cast_shadow = 0
+mesh = ExtResource("2_40mqw")
+
+[node name="RightEye" type="MeshInstance3D" parent="." unique_id=1925635511]
+transform = Transform3D(-0.46220487, -0.18764, 0.86669374, 0.12555225, 0.953664, 0.27342573, -0.8778402, 0.23519403, -0.4172295, 0.24507554, 0.70486593, -0.47081706)
+material_override = SubResource("StandardMaterial3D_fm81u")
+cast_shadow = 0
+mesh = ExtResource("3_jp4w2")
+
+[node name="Face details" type="MeshInstance3D" parent="." unique_id=99481233]
+material_override = SubResource("StandardMaterial3D_8entm")
+cast_shadow = 0
+mesh = ExtResource("4_otl55")
+
+[node name="Footprint" type="StaticBody3D" parent="." unique_id=2137403678]
+
+[node name="@CollisionShape3D@2" type="CollisionShape3D" parent="Footprint" unique_id=661866077]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.47500002, -0.11916369)
+shape = SubResource("BoxShape3D_stpp3")
