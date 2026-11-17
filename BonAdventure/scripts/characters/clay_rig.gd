@@ -30,6 +30,10 @@ extends RefCounted
 ##   merge:  true joins skinned parts that share a material into one surface ("Clay").
 ##   on_head: rigid display meshes (e.g. "Face details") moved under the Head attachment
 ##           unskinned, so they cost no skinning.
+##   attach: {mesh node name: bone name}: like on_head for any bone; the mesh goes unskinned
+##           under a BoneAttachment3D named after the bone + "Attach" (e.g. the deer's soft
+##           antlers on "head" and its tail pom on "tail", which would otherwise be a second
+##           skinned surface for their own material).
 ##
 ## Output: root (the display's name + "Rigged") with Skeleton3D (the skinned meshes as its
 ## children), Head (BoneAttachment3D on `eyes.bone`: eyes and on_head pieces) and the kept nodes.
@@ -120,6 +124,21 @@ static func build(display: Node3D, spec: Dictionary) -> Node3D:
 			var piece := (display.get_node(part) as MeshInstance3D).duplicate() as MeshInstance3D
 			piece.transform = Transform3D(Basis(), -head_pivot)
 			head.add_child(piece)
+	var attachments := {}
+	for part: String in spec.get("attach", {}):
+		var bone_name: String = spec.attach[part]
+		if not attachments.has(bone_name):
+			var at := BoneAttachment3D.new()
+			at.name = bone_name.to_pascal_case() + "Attach"
+			root.add_child(at)
+			at.use_external_skeleton = true
+			at.external_skeleton = NodePath("../Skeleton3D")
+			at.bone_name = bone_name
+			at.transform = Transform3D(Basis(), pivots[bone_name])
+			attachments[bone_name] = at
+		var rigid := (display.get_node(part) as MeshInstance3D).duplicate() as MeshInstance3D
+		rigid.transform = Transform3D(Basis(), -(pivots[bone_name] as Vector3))
+		attachments[bone_name].add_child(rigid)
 	for keep: String in spec.get("keep", []):
 		var node := display.get_node_or_null(keep)
 		if node != null:
