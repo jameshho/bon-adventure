@@ -10,6 +10,16 @@ Start at the [README](../../README.md); editing contracts are in the
 [architecture guide](ARCHITECTURE_REVIEW_PART1.md), and implementation details and
 six rendered views are in the [Part 2 handoff](../evidence/part2/HANDOFF.md).
 
+## All clay zoo animals walk — 16 November 2026
+
+Walking rigs for the other 16 clay zoo animals (four parallel sessions, merged; base step
+`clay_animals_walk`; record and limits in
+[ANIMAL_SYSTEM.md](ANIMAL_SYSTEM.md#all-clay-zoo-animals-walk-16-nov-2026)). `dev_focus.txt` =
+`all`, isolated `HOME`, run once: `runtime_resources`, `compact_layout`, `interaction` PASS; the
+pig's bone poses unchanged by the merged animator; all 17 animals rendered walking in the full
+town; frame time over the zoo 10.64 ms (animators running) against 8.57 ms (paused) on an M5.
+The full suite, a web export and a phone were not run.
+
 ## Zoo pig walks — 16 November 2026
 
 The rigged clay pig replaces the zoo pig's static model (base step `pig_clay_walks`; record and

@@ -1,7 +1,7 @@
 # Big clay animals walk: elephant, giraffe, lion (16 Nov 2026)
 
 These are walking rigs for three big clay zoo animals, built the way the pig was
-([pig method](../../guides/ANIMAL_SYSTEM.md#clay-animal-animation-16-nov-2026-the-zoo-pig-walks)).
+([pig method](../../guides/ANIMAL_SYSTEM.md#clay-animal-animation-16-nov-2026)).
 **None of them is in the zoo yet.** The coordinating session adds every rig with one base step
 and one bake, and writes the guides. This file is the record until then.
 
@@ -24,7 +24,7 @@ meta that sizes the on-screen notifier to the animal (the default box fits a pig
 - `clay_animator.gd`: new exported settings. Their defaults keep the old behaviour.
   - `leg_neutral_deg`: a per-leg angle added while walking. The displays stand mid-stride, so a
     reaching leg swings about a more upright angle once the animal walks.
-  - `feet` and `foot_stretch`: a per-leg rest contact point. Each leg bone is scaled along y
+  - `feet` (renamed `foot_contacts` when the four branches were merged) and `foot_stretch`: a per-leg rest contact point. Each leg bone is scaled along y
     (`_plant()`) so its foot stays on the ground through the stance and lifts by `lift` in the
     swing, instead of sinking or floating as it swings about its pivot. At rest the scale is
     exactly 1.

@@ -28,7 +28,7 @@ Audited and consolidated 13 November 2026 (user request). Evidence: `docs/eviden
 | A small move: hop, shake, nod, lean | `PlushLife.play(host, figure, kind)` | `scripts/characters/plush_life.gd` | [Plush characters](#plush-characters) |
 | An NPC that talks, calls with "!" and gets a face close-up | `minigame_host.gd`, `npc_presence.gd` (meta `talk_face_drop` for a hat; meta `talk_camera_at`, a global point, fixes the close-up camera where walls block the automatic one, 13 Nov 2026) | `scripts/learning/` | [Minigames](MINIGAMES.md#building-a-minigame) |
 | Animals that wander | `park_animals.gd` profiles | `scripts/world/park_animals.gd` | [Animal system](ANIMAL_SYSTEM.md) |
-| A clay animal walks, breathes, turns its head (the zoo pig only, 16 Nov 2026; other species need their own bone spec) | `clay_rig.gd` at bake time, then `clay_animator.gd` at run time; blinking through `PlushLife.follow_group("clay_animals")` | `scripts/characters/clay_rig.gd`, `scripts/characters/clay_animator.gd` | [Clay animal animation](ANIMAL_SYSTEM.md#clay-animal-animation-16-nov-2026-the-zoo-pig-walks) |
+| A clay animal walks, breathes, turns its head (the 17 clay zoo animals, 16 Nov 2026; a new species needs its own `tools/build_<prefab>_clay_rig.gd` bone spec) | `clay_rig.gd` at bake time, then `clay_animator.gd` at run time; blinking through `PlushLife.follow_group("clay_animals")` | `scripts/characters/clay_rig.gd`, `scripts/characters/clay_animator.gd` | [Clay animal animation](ANIMAL_SYSTEM.md#clay-animal-animation-16-nov-2026) |
 | Lettering on a sign, board or tag in the town (readable size, translation, contrast) | `WorldSign.make(...)` / `WorldSign.restyle(label, {"read": metres, ...})`, `WorldSign.fit_board(...)` | `scripts/world/world_sign.gd` (translation: `scripts/world/sign_language.gd`) | [World signs](#world-signs) |
 
 ## Interaction
@@ -246,7 +246,7 @@ in every language and prints which buildings still have small labels.
 | --- | --- |
 | Medium | Shared doors: migrate the buildings ([steps](DOORS.md#steps-to-finish)) |
 | Medium | World signs: migrate the other buildings' sign code, one building script step and bake each ([list](#world-signs)); the check prints which still have small labels |
-| Medium | Clay animal animation: the zoo pig walks (16 Nov 2026); every other species still glides and needs its own bone spec, not yet approved ([risks](ANIMAL_SYSTEM.md#clay-animal-animation-16-nov-2026-the-zoo-pig-walks)) |
+| Medium | Clay animal animation: the 17 clay zoo animals walk (16 Nov 2026); not checked on the web or a phone, the golden retriever rig is heavy (72k triangles), and the 11 older piece-built animals still glide ([rollout](ANIMAL_SYSTEM.md#all-clay-zoo-animals-walk-16-nov-2026)) |
 | Low | The player's arm swing uses BonBon's shoulder point; measure it when another plush needs to walk |
 | Low | Static `lie` characters in `house_characters.json` keep their eyes open; a `hold_eyes()` call would shut them if wanted |
 | Low | Zoo gate and warehouse cabinet could join `door_animator.gd` at the cost of a small timing change |

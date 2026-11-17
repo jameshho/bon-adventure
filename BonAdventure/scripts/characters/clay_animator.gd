@@ -310,7 +310,8 @@ func _pose() -> void:
 	var head_roll := -roll * 0.6
 	if not neck.is_empty() and neck_sway_deg != 0.0:
 		# S-neck: half the look, shared along it, and a sway with each bone the other way from the
-		# one before, so the head stays over the body; slower and smaller at rest.
+		# one before, so the head stays over the body; slower and smaller at rest. The head tilts
+		# with the whole look.
 		head_yaw = _yaw * 0.5
 		head_roll = 0.0
 		var swing := sin(cycle) * w + 0.4 * sin(TAU * _clock / (breath_seconds * 1.9)) * idle
@@ -328,7 +329,7 @@ func _pose() -> void:
 		_pose_bone("neck", Vector3.ZERO, Quaternion(Vector3.UP, _yaw * neck_share) * Quaternion(Vector3.RIGHT, nod * neck_share))
 		nod *= 1.0 - neck_share
 	var bob_at := Vector3(0, 0, -head_bob * sin(2.0 * cycle) * w) if head_bob > 0.0 else Vector3.ZERO
-	_pose_bone("head", bob_at, Quaternion(Vector3.UP, head_yaw) * Quaternion(Vector3.FORWARD, head_roll + head_yaw * 0.15) * Quaternion(Vector3.RIGHT, nod))
+	_pose_bone("head", bob_at, Quaternion(Vector3.UP, head_yaw) * Quaternion(Vector3.FORWARD, head_roll + (_yaw if neck_sway_deg != 0.0 and not neck.is_empty() else head_yaw) * 0.15) * Quaternion(Vector3.RIGHT, nod))
 	for k in trunk.size():
 		var late := 0.7 * k
 		var side := trunk_sway_deg * (sin(TAU * _clock / trunk_seconds - late) * lerpf(1.0, 0.5, w) + sin(cycle - late) * w)

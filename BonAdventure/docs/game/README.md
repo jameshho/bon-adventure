@@ -87,7 +87,7 @@ and wrong answers per word in the journal.
 | [Chapel](town.md#chapel) | Rebuilt sanctuary | 12 Nov |
 | [Farm barn](town.md#farm-barn) | Hayloft, tools and supplies | 1 Nov |
 | [Playground](town.md#playground) | Towers, slide, rideable swings | 1 Nov |
-| [Park, zoo and coast](town.md#park-zoo-and-coast) | Public garden, four zoo zones, island; the pig walks | 16 Nov (pig walks) |
+| [Park, zoo and coast](town.md#park-zoo-and-coast) | Public garden, four zoo zones, island; the clay animals walk | 16 Nov (clay animals walk) |
 
 ## Open items worth knowing while reviewing
 

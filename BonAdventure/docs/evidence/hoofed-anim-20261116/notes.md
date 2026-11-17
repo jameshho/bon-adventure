@@ -1,7 +1,7 @@
 # Hoofed clay animals walk: cow, zebra, deer, rhino (16 Nov 2026)
 
 Rigs for four clay zoo animals, made the pig's way
-(docs/guides/ANIMAL_SYSTEM.md#clay-animal-animation-16-nov-2026-the-zoo-pig-walks). **Not in
+(docs/guides/ANIMAL_SYSTEM.md#clay-animal-animation-16-nov-2026). **Not in
 the zoo yet**: the coordinating session places all rigs with one base step and one bake and
 writes the guides. Nothing in `base.gd`, `base.scn`, `main.gd`, `park_animals.gd`, the display
 scenes, the `*_clay.gd` meshers or the guides was changed.
@@ -28,6 +28,8 @@ Each root has `Skeleton3D/Clay` (one merged skinned surface), `Head/LeftEye`, `H
 - `leg_neutral_deg` (per leg, default empty = 0): the walk swings about this angle, faded in
   with the walk, and the leg is raised by `leg_length · (1/cos − 1)` so a straightened slanted
   leg does not sink. For displays modelled mid-stride (deer, rhino).
+  (After the merge this lift is opt-in, `straighten_lift = true`, set by the deer and rhino
+  tools; the other branches' animals use `leg_neutral_deg` without it.)
 - `feet` (per leg, default empty): optional foot bones (children of the legs) counter-rotated
   by the leg's swing, so wide hooves/feet stay level (rhino toenails dug ~4 cm in without it).
 - `tail_axis` (default `Vector3.UP`): `FORWARD` swings a hanging tail like a pendulum.

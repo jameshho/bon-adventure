@@ -1,7 +1,7 @@
 # Clay gorilla, kangaroo, duck and flamingo walking rigs (16 Nov 2026)
 
 Rigs for the four clay zoo animals whose gaits the pig's trot does not fit, built the pig's way
-(`docs/guides/ANIMAL_SYSTEM.md#clay-animal-animation-16-nov-2026-the-zoo-pig-walks`). **Not in
+(`docs/guides/ANIMAL_SYSTEM.md#clay-animal-animation-16-nov-2026`). **Not in
 the zoo yet**: the coordinating session places all rigs with one base step and one bake, and
 writes the guides. The display scenes and their `*_clay.gd` meshers were only read.
 

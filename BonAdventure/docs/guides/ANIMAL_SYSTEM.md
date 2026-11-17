@@ -90,8 +90,8 @@ scene keeps no script state. Each animal has its
 own deterministic random generator seeded from its scene path, avoiding synchronized
 circles. It chooses nearby random destinations, walks with smooth heading changes,
 stops briefly, or takes a longer rest. Rest means standing still; this change does
-not add skeletal leg animation or new lying-down poses (since 16 Nov 2026 the zoo pig walks
-with moving legs: [clay animal animation](#clay-animal-animation-16-nov-2026-the-zoo-pig-walks)). Fish remain at their
+not add skeletal leg animation or new lying-down poses (since 16 Nov 2026 the 17 clay zoo animals
+walk with moving legs: [clay animal animation](#clay-animal-animation-16-nov-2026)). Fish remain at their
 water elevation and birds at their authored perch/flight elevation.
 
 Species profiles use **parent-local units per second** (world speed = value × 1.3).
@@ -740,6 +740,41 @@ meet the grass in the views. The bake applied 1 step. In the town's daylight the
 reads nearly white (not deepened; open, low priority). Not checked in the running game; no
 test suite was run.
 
+## Clay tiger display (16 Nov 2026, awaiting the user's review; not in the zoo)
+
+`scenes/animals/tiger_clay.tscn` is a static study of the user's "Tiger (Relaxed / Neutral)
+Character Blueprint" turnaround, built by `tools/build_tiger_clay.gd` from
+`scripts/characters/tiger_clay.gd` (extends the clay zebra: the lion's mesher, the giraffe's
+paint, the zebra's painted stripes; the pig's `_rings` for the eyes). 139,789 triangles (body
+128,410), built 2.1 town units to the ear tips, the `Tiger` height in `park_animals.gd`; the
+display height is the user's to choose at placement. It is separate from the wandering zoo tiger
+(`scenes/animals/tiger.tscn`), which is unchanged, and **nothing places it in the town**: no base
+step, no word, no behaviour.
+- Ready for rigging like the clay pig: `Body` is one fused mesh (torso, head, legs, cheek ruffs,
+  tail); `Nose`, `Ears` and `Brows` (the cream rolls) are separate pieces; `LeftEye` and
+  `RightEye` are separate meshes, each on its own node at the eye's centre with local y up the
+  eye and local z out of the face (the lid line and lower rim are part of the eye, so a squash
+  closes it to one line); whiskers, whisker dots and the mouth are `Face details`.
+- Coat: orange clay with the cream (belly, chest, jaw, ruffs, paws) and the brown marks painted
+  on. To stay under the web budget the clay grid is about 3 cm and `_paint` runs two
+  edge-splitting passes instead of the zebra's three (`_paint_passes`, a new variable in
+  `zebra_clay.gd` whose default leaves the zebra as it was: rebuilt once, 313,181 triangles, mesh
+  files unchanged in git); the tiger's `_tinted` splits less widely round the cream edges.
+- The sheet's "side" view is turned about 20 degrees toward the front (far ear and far legs show
+  ahead of the near ones), so side-view positions are turned back (`T_TURN`) and the model stands
+  square, as in the sheet's front and back views.
+Renders: `docs/evidence/tiger-clay-20261116/` (`capture.gd` loads only the tiger scene:
+`compare.png` = the sheet's five views over the model from the same angles, `face.png` and
+`eyes.png` = sheet beside model for the head and the eyes, `turnaround.png` with a true side
+view and a view from above; frames are drawn on demand, so it does not hang when the window is
+covered). Revision, 17 Nov 2026 (user: "Revise it", after the first review): softer cheek ruffs
+(one puff with three small scallops behind), fuller hind thighs, puffier upper lids with a
+pouch under each eye, the brown cap over the nose made part of the nose (a smooth arch), a
+thicker forehead bar, low fur lumps on the chest, the paws' cream edge raised clear of the
+clay's own colour. Known differences that remain: the legs are straight columns; the ruffs are
+still a little larger than the sheet's; stripe edges are slightly rough close up (the cost of
+the triangle budget); the expression is a touch sterner. No test suite was run (no town change).
+
 ## Zoo zones (12 Nov 2026)
 
 User design (see the [design record](TOWN_DESIGN_BRIEF.md#zoo-zones--12-november-2026)): the 16
@@ -838,15 +873,18 @@ the zoo in the town at noon (`zoo.gd`: overview, two mid views, zebra, pig, lion
 differs on at most 0.026% (`diff-zoo.txt`, `zoo-<overview|zebra|lion>-<before|after|diff>.png`).
 Not checked: the running game in a browser or on a phone, and no test suite was run.
 
-## Clay animal animation (16 Nov 2026; the zoo pig walks)
+## Clay animal animation (16 Nov 2026)
 
 Pilot on one animal, the clay pig, of reusable animation for the clay animals (user, 16 Nov
 2026: head, blink, idle and walk without seams, the same pastel clay look, good web
 performance). **In the zoo since 16 Nov 2026** (user approved the pilot: "Put it in the zoo"):
 base step `pig_clay_walks` swaps `ParkZoo/Pig/ClayPig` for an instance of the rig (same name,
 transform and bounds; Footprint off as in `_clay_roamer`), and Main's `clay_life` (a second
-`PlushLife`, `follow_group("clay_animals")`, town blink gap) blinks it. **Every other animal
-still glides**; each species needs its own bone spec (risks below) and is not approved yet.
+`PlushLife`, `follow_group("clay_animals")`, town blink gap) blinks it. **Rolled out to every
+clay zoo animal the same day** (user: "do it to all the other animals"; clay animals first):
+[all clay zoo animals walk](#all-clay-zoo-animals-walk-16-nov-2026). The 11 older piece-built
+animals (tiger, monkey, horse, sheep, hen, cat, rabbit, field mouse, snake, turtle, fish) still
+glide.
 The rig's meshes and skin are separate files, `scenes/animals/clay_meshes/pig_rig/*.res`
 (written by the build tool), because the bake saves an instance's parts as overrides: with the
 meshes inside the rig scene, base.scn copied them (+1.35 MB); now it names them (+6.5 KB). The
@@ -897,6 +935,20 @@ with local y up the eye.
   group also means seat occupancy (`seating_controller.gd`). The plush rule "never rotate
   `Head`" stays for plushes; on a clay rig `Head` follows the head bone and is never written.
 - Off screen (a `VisibleOnScreenNotifier3D` it adds) and when hidden it does not update the pose.
+- Options added for the other species (16 Nov 2026, merged from four parallel rig sessions;
+  every default keeps the pig's behaviour, checked bone for bone by
+  `docs/evidence/odd-gaits-anim-20261116/pig_check.gd`). Legs and feet: `leg_neutral_deg`
+  (displays standing mid-stride swing about a straighter angle) with `straighten_lift` (raise a
+  straightened slanted leg so it does not sink; deer, rhino), `feet` (foot bones kept level),
+  `lower_legs` + `bend_deg` (a knee that folds while the leg swings; flamingo), `ground_lock`,
+  `keep_feet_down`, `foot_reach`, `foot_contacts` + `foot_stretch` (each leg scaled so its rest
+  contact point stays on the ground; elephant, giraffe, lion). Body: `hop`, `hop_pitch_deg`,
+  `tail_lift_deg` (kangaroo), `twist_deg`, `sway`. Neck and head: `neck` (one bone or a chain)
+  with `neck_share`, `neck_pump_deg` (duck, flamingo), `neck_sway_deg` (an S-neck that takes half
+  the turn), `head_bob`; `trunk`, `trunk_sway_deg`, `trunk_curl_deg`, `trunk_seconds` (elephant).
+  Tail and ears: `tail_axis`, `wag_speed`, `tail_chain` + `tail_lag` (a tail that follows
+  through), `ear_axis`, `ear_fan_seconds`. Each species' choices and renders are in its group's
+  evidence notes (table below).
 
 **Checks** (`docs/evidence/pig-anim-20261116/`; `capture.gd` loads only the two pig scenes and
 `pig_anim_test.tscn`, a stage with the original display beside the rigged pig wandering with
@@ -932,7 +984,8 @@ with local y up the eye.
 Not checked: a web export or a phone, and the town (the rig was never placed there). The check
 suite was not run (no town change).
 
-Risks for a rollout to other species:
+Risks for a rollout to other species (written before the rollout; how each was met is in
+[all clay zoo animals walk](#all-clay-zoo-animals-walk-16-nov-2026)):
 - **Bone shapes are per species.** Each needs its own spec (pivots and capsules in its sheet's
   pixels), and its folds may need another `blend`: long necks (giraffe, flamingo), a trunk,
   manes (the lion's mane is its own mesh and would need weights to the head and body), two-legged
@@ -958,3 +1011,45 @@ runtime_resources,compact_layout,interaction`: all PASS. Rendered in the full to
 walking zoo pig from the side: legs trot, hooves lift, body bobs) and `context.png` (standing
 on its lawn). The same run: the pig is in group `clay_animals` and in `clay_life`'s list.
 Not checked: a web export or phone, frame time in the town, and the full check suite.
+
+### All clay zoo animals walk (16 Nov 2026)
+
+User, 16 Nov 2026: "do it to all the other animals", clay animals first (the 11 older
+piece-built animals are not included). Rigs were built in four parallel sessions, one per group of
+gaits, each following the pig's method with its own `tools/build_<prefab>_clay_rig.gd` →
+`scenes/animals/<prefab>_clay_rigged.scn` + `clay_meshes/<prefab>_rig/`; per-species bone choices,
+renders (compare, seams, walk, blink) and limits are in each group's notes:
+
+| Group | Animals | Evidence |
+| --- | --- | --- |
+| Hoofed | cow, deer, rhino, zebra | [notes](../evidence/hoofed-anim-20261116/notes.md) |
+| Big | elephant (trunk), giraffe (neck chain), lion (mane, a second skinned surface) | [notes](../evidence/big-anim-20261116/notes.md) |
+| Bears and dog | black bear (adult and cub), panda, red panda, golden retriever | [notes](../evidence/bears-dog-anim-20261116/notes.md) |
+| Odd gaits | gorilla (knuckle walk), kangaroo (hop), duck, flamingo (folding ankle) | [notes](../evidence/odd-gaits-anim-20261116/notes.md) |
+
+**Merge.** All four sessions extended `clay_animator.gd`; the merge combined them into one file
+(options listed under the component API above). Renamed or changed in the merge: the big
+group's per-leg contact points `feet` → `foot_contacts` (`feet` stays the foot bones); the leg
+lift for `leg_neutral_deg` is opt-in (`straighten_lift`, deer and rhino); `neck` is one bone or a
+chain; the S-neck tilt follows the whole head yaw. Checked: the pig's bone poses equal the
+original animator's at 8 phases (`odd-gaits-anim-20261116/pig_check.gd`); each group's renders
+rebuilt from the merged animator match its session's (flamingo, giraffe, lion, deer exactly; the
+dog about 1% apart, from capture order).
+
+**Zoo.** Base step `clay_animals_walk` swaps the 16 other `ParkZoo/<Name>/Clay<Name>` models for
+their rigs with the pig's helper (`_clay_walker`: same name, transform and place among the
+children; Footprint off). Visible bounds before/after each swap agree within about 0.3%;
+`base.scn` +38 KB (the rig meshes stay external).
+
+**Town checks** (`dev_focus.txt` = `all`, isolated `HOME`, each run once):
+`run_checks.py --only runtime_resources,compact_layout,interaction`: all PASS.
+`docs/evidence/zoo-walk-20261116/zoo_walk.gd` (full town, noon): every one of the 17 animals
+reaches `walking` with the walk fully faded in; 17 rigs in group `clay_animals` and in
+`clay_life`'s list. `walkers.png` (each animal caught walking, camera on an unblocked side;
+the rhino's tile shows it only at the edge behind the deer) and `overview.png` (forest and wild
+lawns from above). Frame time over the zoo with every rig on screen at once, 900×600, Apple M5:
+10.64 ms with the 17 animators running, 8.57 ms with them paused (about 2.1 ms for the animation).
+
+Not checked: a web export or a phone (expect several times the M5 cost; the risks above list
+the savings), and the full check suite. The golden retriever rig is the heaviest (about 72k
+triangles; thinning it further is the first saving). The 11 piece-built animals still glide.

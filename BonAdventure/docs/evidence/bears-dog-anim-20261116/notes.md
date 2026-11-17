@@ -1,7 +1,7 @@
 # Clay rigs: black bear cub and adult, panda, red panda, golden retriever (16 Nov 2026)
 
 Walking rigs for five clay zoo animals, after the zoo pig's
-([method](../../guides/ANIMAL_SYSTEM.md#clay-animal-animation-16-nov-2026-the-zoo-pig-walks)).
+([method](../../guides/ANIMAL_SYSTEM.md#clay-animal-animation-16-nov-2026)).
 **Not in the zoo yet**: the coordinating session places all rigs with one base step and one
 bake, and writes the guides. Nothing in the town, `base.gd`, `park_animals.gd` or any guide was
 changed; the display scenes and their `*_clay.gd` meshers were only read.

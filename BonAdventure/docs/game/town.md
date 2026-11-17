@@ -236,8 +236,9 @@ ride (E to sit, W/S to kick).
   the horse-and-rider statue. [Garden guide](../guides/public-garden/README.md)
 - **Zoo:** four fenced zones round a cherry-tree plaza: Savanna, Forest, Bamboo Grove and
   Wildlife Plains, with Spanish signs; the clay-style animals were added 11–12 Nov. Since
-  16 Nov the pig walks with moving legs, breathes, looks around and blinks
-  ([walk frames](../evidence/pig-zoo-walk-20261116/walk.png)); the other animals still glide.
+  16 Nov the 17 clay animals walk with moving legs, breathe, look around and blink
+  ([each one walking](../evidence/zoo-walk-20261116/walkers.png)); the 11 older piece-built
+  animals (tiger, monkey, horse and others) still glide.
   [Zoo zones](../guides/TOWN_DESIGN_BRIEF.md#zoo-zones--12-november-2026) ·
   [animal sizes and movement](../guides/ANIMAL_SYSTEM.md)
 - **Coast:** a sandy beach with boulders and crabs, and a small deserted island.
