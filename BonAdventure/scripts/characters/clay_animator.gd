@@ -48,6 +48,39 @@ const BLINK_GROUP := "clay_animals"
 ## Below this speed (model units / s) the animal counts as standing.
 @export var still_speed := 0.05
 
+@export_group("Other gaits")
+## Optional gait settings (16 Nov 2026, gorilla, kangaroo, duck, flamingo). Their defaults
+## (empty, 0) leave the pig's trot exactly as it was.
+## Per leg, degrees the walk swings about instead of the rest pose (+ = forward), so a display
+## posed mid-stride walks evenly; the standing pose stays the rest pose.
+@export var leg_neutral_deg: PackedFloat32Array = []
+## Per leg, a child bone below the knee (or "" for none) that folds while the leg swings
+## (`bend_deg`, + = the foot back, as a flamingo's ankle), and a foot bone (or "") kept level
+## with the ground so the toes do not dig in when the leg swings.
+@export var lower_legs: PackedStringArray = []
+@export var bend_deg := 0.0
+@export var feet: PackedStringArray = []
+## Lift a swung leg so its foot bone's pivot never drops below where it rests (a limb that
+## leans at rest gets longer, vertically, as it swings through upright and would push its
+## foot into the ground). Needs `feet`.
+@export var ground_lock := false
+## Hop (kangaroo): the "root" bone rises along an arc once a cycle while the legs swing
+## together (give every leg the same phase). Height in model units; the body pitches nose up on
+## take-off and down on landing, and the tail lifts in the air and drops to land.
+@export var hop := 0.0
+@export var hop_pitch_deg := 0.0
+@export var tail_lift_deg := 0.0
+## Body yaw in step (a rolling shoulder or a waddle), degrees once a cycle; side shift of the
+## body over the standing leg (model units, once a cycle; the pig keeps its built-in 0.02).
+@export var twist_deg := 0.0
+@export var sway := 0.02
+## Head bob (a bird): the head pushes forward and back twice a cycle (model units).
+@export var head_bob := 0.0
+## Neck chain from the body to the head (e.g. a flamingo's S): each bone takes a share of the
+## head's look, and the chain sways side to side, alternating along the S (degrees).
+@export var neck: PackedStringArray = []
+@export var neck_sway_deg := 0.0
+
 var skeleton: Skeleton3D
 ## Smoothed speed (model units / s); set `speed_override` >= 0 to drive it by hand (captures).
 var speed := 0.0
@@ -71,7 +104,7 @@ var _screen: VisibleOnScreenNotifier3D
 func _ready() -> void:
 	var root := get_parent() as Node3D
 	skeleton = root.get_node("Skeleton3D") as Skeleton3D
-	for name in ["body", "head", "tail", "ear_l", "ear_r"] + Array(legs):
+	for name in ["body", "head", "tail", "ear_l", "ear_r", "root"] + Array(legs) + Array(lower_legs) + Array(feet) + Array(neck):
 		var i := skeleton.find_bone(name)
 		if i >= 0:
 			_bones[name] = i
@@ -171,24 +204,68 @@ func _pose() -> void:
 	for k in legs.size():
 		var a := cycle + TAU * leg_phase[k]
 		var angle := deg_to_rad(swing_deg) * sin(a) * w
+		if k < leg_neutral_deg.size():
+			angle += deg_to_rad(leg_neutral_deg[k]) * w
 		var up := lift * maxf(cos(a), 0.0) * w
+		var below := 0.0
+		var has_lower := k < lower_legs.size() and lower_legs[k] != ""
+		if has_lower:
+			below = -deg_to_rad(bend_deg) * maxf(cos(a), 0.0) * w
+		if ground_lock and k < feet.size() and _rest.has(feet[k]):
+			# The foot pivot in the leg's frame, at rest and posed.
+			var foot: Vector3 = (_rest[feet[k]] as Transform3D).origin
+			var posed := foot
+			if has_lower and _rest.has(lower_legs[k]):
+				var knee: Vector3 = (_rest[lower_legs[k]] as Transform3D).origin
+				foot = knee + foot
+				posed = knee + Basis(Vector3.RIGHT, below) * (posed)
+			posed = Basis(Vector3.RIGHT, angle) * posed
+			up += maxf(foot.y - posed.y, 0.0)
 		_pose_bone(legs[k], Vector3(0, up, 0), Quaternion(Vector3.RIGHT, angle))
+		if has_lower:
+			_pose_bone(lower_legs[k], Vector3.ZERO, Quaternion(Vector3.RIGHT, below))
+		if k < feet.size() and feet[k] != "":
+			_pose_bone(feet[k], Vector3.ZERO, Quaternion(Vector3.RIGHT, -angle - below))
+	if hop > 0.0:
+		# Up off the ground in the first half of the cycle (the legs swing back to forward in the
+		# air with leg_phase 0.75), down on the feet in the second.
+		_pose_bone("root", Vector3(0, hop * maxf(sin(cycle), 0.0) * w, 0), Quaternion.IDENTITY)
 	# Body: walking bob and roll; at rest a slow breath and a weight shift from side to side.
 	var breathe := sin(TAU * _clock / breath_seconds)
-	var sway := sin(TAU * _clock / (breath_seconds * 2.7))
+	var drift := sin(TAU * _clock / (breath_seconds * 2.7))
 	var bounce := bob * (0.5 - 0.5 * cos(2.0 * cycle)) * w
-	var roll := deg_to_rad(roll_deg * sin(cycle) * w + shift_deg * sway * idle)
-	var pitch := deg_to_rad(0.6 * breathe * idle)
-	_pose_bone("body", Vector3(sin(roll) * 0.02, bounce + 0.003 * breathe * idle, 0),
-			Quaternion(Vector3.FORWARD, roll) * Quaternion(Vector3.RIGHT, pitch),
+	var roll := deg_to_rad(roll_deg * sin(cycle) * w + shift_deg * drift * idle)
+	var hop_pitch := deg_to_rad(hop_pitch_deg * cos(cycle) * w)
+	var pitch := deg_to_rad(0.6 * breathe * idle) + hop_pitch
+	var twist := deg_to_rad(twist_deg * sin(cycle) * w)
+	_pose_bone("body", Vector3(sin(roll) * sway, bounce + 0.003 * breathe * idle, 0),
+			Quaternion(Vector3.UP, twist) * Quaternion(Vector3.FORWARD, roll) * Quaternion(Vector3.RIGHT, pitch),
 			Vector3(1.0 + breath * breathe * idle, 1.0 + breath * 0.4 * breathe * idle, 1.0))
 	# Head: the look (yaw, with a little tilt into the turn), a nod in step while walking, and a
 	# small counter-roll so the face stays level while the body rolls.
 	var nod := deg_to_rad(nod_deg * sin(2.0 * cycle + 0.6) * w)
-	_pose_bone("head", Vector3.ZERO, Quaternion(Vector3.UP, _yaw) * Quaternion(Vector3.FORWARD, -roll * 0.6 + _yaw * 0.15) * Quaternion(Vector3.RIGHT, nod))
+	var yaw := _yaw
+	if not neck.is_empty():
+		# The neck takes half the look, shared along it, and sways in an S (each bone the other
+		# way from the one before, so the head stays over the body); slower and smaller at rest.
+		yaw = _yaw * 0.5
+		var swing := sin(cycle) * w + 0.4 * sin(TAU * _clock / (breath_seconds * 1.9)) * idle
+		for k in neck.size():
+			var side := 1.0 if k % 2 == 0 else -1.0
+			_pose_bone(neck[k], Vector3.ZERO, Quaternion(Vector3.UP, _yaw * 0.5 / neck.size())
+					* Quaternion(Vector3.FORWARD, deg_to_rad(neck_sway_deg) * swing * side - (roll * 0.6 if k == 0 else 0.0)))
+	var bob_at := Vector3(0, 0, -head_bob * sin(2.0 * cycle) * w) if head_bob > 0.0 else Vector3.ZERO
+	_pose_bone("head", bob_at, Quaternion(Vector3.UP, yaw) * Quaternion(Vector3.FORWARD, (-roll * 0.6 if neck.is_empty() else 0.0) + _yaw * 0.15) * Quaternion(Vector3.RIGHT, nod))
 	# Tail: a wag (faster when walking); ears flop a beat behind the bob.
 	var wag := deg_to_rad(tail_deg * sin(_clock * lerpf(2.2, 9.0, w)) * lerpf(0.35, 1.0, w))
-	_pose_bone("tail", Vector3.ZERO, Quaternion(Vector3.UP, wag))
+	if tail_lift_deg != 0.0:
+		# Raised in the air, a beat late, and back down to rest for the landing (+ lifts the tail
+		# end: a negative turn about the side axis); it does not follow the body's hop pitch, so
+		# a tail resting on the ground never dips into it.
+		var lift_tail := -deg_to_rad(tail_lift_deg * maxf(sin(cycle - 0.5), 0.0) * w) - hop_pitch
+		_pose_bone("tail", Vector3.ZERO, Quaternion(Vector3.RIGHT, lift_tail) * Quaternion(Vector3.UP, wag))
+	else:
+		_pose_bone("tail", Vector3.ZERO, Quaternion(Vector3.UP, wag))
 	var flop := deg_to_rad(ear_deg * (sin(2.0 * cycle - 1.2) * w + 0.25 * breathe * idle))
 	_pose_bone("ear_l", Vector3.ZERO, Quaternion(Vector3.FORWARD, flop))
 	_pose_bone("ear_r", Vector3.ZERO, Quaternion(Vector3.FORWARD, -flop))
