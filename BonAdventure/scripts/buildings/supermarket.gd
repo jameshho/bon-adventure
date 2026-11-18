@@ -4,7 +4,7 @@ extends RefCounted
 ## Bake:  godot --headless --path . --script res://tools/bake_unit.gd -- supermarket
 ## Never rename or remove a baked step (add a new one that undoes it).
 ## Record: docs/guides/TOWN_DESIGN_BRIEF.md "Supermarket product art — 8 November 2026".
-const STEPS := ["product_models", "fixture_finish", "checkout_props", "seafood_ice", "surface_gaps", "coplanar_gaps", "coplanar_gaps_2", "coplanar_envelope", "glass_windows", "tutorial_fruit", "world_signs"]
+const STEPS := ["product_models", "fixture_finish", "checkout_props", "seafood_ice", "surface_gaps", "coplanar_gaps", "coplanar_gaps_2", "coplanar_envelope", "glass_windows", "tutorial_fruit", "world_signs", "clear_sections"]
 const Products = preload("res://scripts/buildings/supermarket_products.gd")
 const WorldSign = preload("res://scripts/world/world_sign.gd")
 const INTERIOR := "RelocatedSites/Supermarket/MarketInterior"
@@ -332,3 +332,133 @@ func world_signs(town: Node3D, _game) -> void:
 				label.set_meta("sign_fit_width", WorldSign.free_width(board, label, SMALL_MARGIN))
 			done += 1
 	print("SUPERMARKET world_signs: %d labels, %d tags grown" % [done, boards])
+
+## Clear sections (17 Nov 2026, user: "make sure the player can easily find the object they are
+## looking for as long as they know the word, so the section name should be clear"; record:
+## docs/guides/TOWN_DESIGN_BRIEF.md "Supermarket sections — 17 November 2026"). One word, one
+## section:
+## - PANTRY becomes SNACKS. Each gondola face holds one snack (the gondola by the left wall,
+##   x -43.2: chocolate on its wall face, candy on its aisle face; the one by the vegetables,
+##   x -39.4: cookies on the aisle face, crackers on its vegetable face) and the end caps
+##   chocolate and cookies. The pantry goods and the chip bags
+##   (word snack) leave the store; the groups keep their pick areas and are restocked.
+## - The produce stand keeps only the big fruit (watermelon, pineapple, coconut); the mango,
+##   apple, orange, banana and peach bins there are refilled with those three. Those small
+##   fruits stay on the fruit wall.
+## - The second fridge's ham, sausage and chicken (also at the meat & deli counter) become dairy.
+## - The drinks cooler and the home goods gondola trade places: the cooler now stands where the
+##   gondola stood, its front to the store, and the gondola stands against the right wall (x -20.1) with
+##   its one open face holding all six home goods (the wall face's groups go). Its toilet paper
+##   end cap moves with it.
+## - Coffee (iced coffee bottles) fills the cooler's top shelf.
+const SNACK_FACES := {-43.5: "chocolate", -42.9: "candy", -39.7: "cookie", -39.1: "cracker"}
+const SNACK_ENDCAPS := {"snack": "chocolate", "jar": "cookie"}
+const PANTRY_WORDS := ["cereal", "honey", "jam", "coffee", "tea", "sugar", "flour", "oil", "salt",
+	"pepper", "rice", "beans", "pasta", "tortilla", "can", "tuna", "soup", "olive", "salsa"]
+const STAND_REFILL := {"Mango display2": "watermelon", "Apple display3": "coconut",
+	"Orange display3": "watermelon", "Banana display2": "pineapple", "Peach display2": "coconut"}
+const FRIDGE_REFILL := {"Ham display": "yogurt", "Sausage display": "butter", "Chicken display": "milk",
+	"Ham display2": "eggs", "Sausage display2": "yogurt"}
+## Cooler: its box centre moves from x -20.7575 to the gondola's old centre -25.6. Gondola: from
+## centre -25.6 to 2 cm off the east wall's inner face (x -20.25; the cooler stood flush there).
+const COOLER_SHIFT := Vector3(-25.6 + 20.7575, 0, 0)
+const GONDOLA_SHIFT := Vector3(-20.25 - .02 - .5605 + 25.6, 0, 0)
+const COOLER_PARTS := ["Drinks cooler", "water bottle", "juice", "soda"]
+## The gondola's open face (x -25.9 before the move): [z of its bay, level y] -> word.
+const HOME_FACE := {"Soap display3": "toothbrush", "Sponge display3": "toothpaste",
+	"Detergent display3": "shampoo", "Soap display2": "soap", "Sponge display2": "sponge",
+	"Detergent display2": "shampoo", "Soap display": "detergent", "Sponge display": "detergent",
+	"Detergent display": "detergent"}
+
+func clear_sections(town: Node3D, _game) -> void:
+	var interior: Node3D = town.get_node(INTERIOR)
+	var products := Products.new()
+	var removed := 0
+	var restocked := 0
+	# Snacks: pantry goods on the gondola faces and the end caps become snacks.
+	var rekey := {}
+	for root in interior.get_children():
+		var kind := str(root.get_meta("word_key", ""))
+		if not root is Node3D or not str(root.name).contains("display"):
+			continue
+		var face := ""
+		for x in SNACK_FACES:
+			if absf((root as Node3D).position.x - x) < .05:
+				face = SNACK_FACES[x]
+		if kind in PANTRY_WORDS and face != "":
+			rekey[root] = face
+		elif SNACK_ENDCAPS.has(kind):
+			rekey[root] = SNACK_ENDCAPS[kind]
+	for name in STAND_REFILL:
+		rekey[interior.get_node(name)] = STAND_REFILL[name]
+	for name in FRIDGE_REFILL:
+		rekey[interior.get_node(name)] = FRIDGE_REFILL[name]
+	# Home goods: the gondola's wall face goes; its open face takes all six goods.
+	for root in interior.get_children():
+		if str(root.get_meta("word_key", "")) in ["toothbrush", "toothpaste", "shampoo"] \
+				and str(root.name).contains("display") and not root is Area3D:
+			interior.remove_child(root)
+			root.free()
+			removed += 1
+	for name in HOME_FACE:
+		rekey[interior.get_node(name)] = HOME_FACE[name]
+	# Coffee on the cooler's top shelf.
+	for name in ["Water Bottle display4", "Juice display4", "Soda display4"]:
+		rekey[interior.get_node(name)] = "coffee"
+	# Give every rekeyed group a temporary name, then its word's next free display name.
+	for root in rekey:
+		root.name = "Restock " + str(root.get_instance_id())
+	for root in rekey:
+		var kind: String = rekey[root]
+		var title := kind.capitalize() + " display"
+		var n := 1
+		while interior.has_node(title + ("" if n == 1 else str(n))):
+			n += 1
+		root.name = title + ("" if n == 1 else str(n))
+		root.set_meta("word_key", kind)
+		_fit_pick(root, products, kind)
+		products.restock(root)
+		restocked += 1
+	# Swap the cooler and the home goods gondola (whole roots: fixtures, goods, price tags).
+	var moved := 0
+	for root in interior.get_children():
+		if not root is Node3D:
+			continue
+		var kind := str(root.get_meta("word_key", ""))
+		var title := str(root.name)
+		if title == "Drinks cooler" or (kind in ["water bottle", "juice", "soda", "coffee"] and title.contains("display")):
+			(root as Node3D).position += COOLER_SHIFT
+			moved += 1
+		elif title in ["Household gondola", "Household endcap"] or (title.contains("display") and kind in
+				["soap", "sponge", "detergent", "toothbrush", "toothpaste", "shampoo", "toilet paper"]):
+			(root as Node3D).position += GONDOLA_SHIFT
+			moved += 1
+	# The PANTRY band reads SNACKS, with a wrapped-sweet pictogram.
+	for label: Label3D in interior.find_children("*", "Label3D", false, false):
+		if str(label.get_meta("sign_english", label.text)) == "PANTRY":
+			label.text = "SNACKS"
+			for meta in ["sign_source", "sign_english"]:
+				if label.has_meta(meta):
+					label.set_meta(meta, "SNACKS")
+			if str(label.name) == "PANTRY label":
+				label.name = "SNACKS label"
+	var icon := interior.get_node("PANTRY pictogram") as MeshInstance3D
+	icon.name = "SNACKS pictogram"
+	icon.mesh = products.pictogram("candy", "d08a3a")
+	if restocked != 106 or removed != 9:
+		push_error("supermarket clear_sections: expected 106 groups restocked and 9 removed")
+	print("SUPERMARKET clear_sections: %d groups restocked, %d removed, %d roots moved" % [restocked, removed, moved])
+
+## A group's pick box was sized for its old product (a tuna tin is 5 cm tall, a cracker box 19):
+## it gets the new product's height (its unit height grown by goods_scale, as restock() uses it,
+## plus the 2 cm margin; at most 0.42 m, under the next shelf) and keeps its bottom, width and depth.
+func _fit_pick(root: Node3D, products, kind: String) -> void:
+	for area in root.get_children():
+		if not area is Area3D:
+			continue
+		var shape := area.get_child(0) as CollisionShape3D
+		var box := (shape.shape as BoxShape3D).duplicate() as BoxShape3D
+		var height := minf(Products.FOOT[kind].z * products.goods_scale(kind) + .02, .42)
+		shape.position.y += (height - box.size.y) * .5
+		box.size.y = height
+		shape.shape = box

@@ -40,8 +40,6 @@ roughness = 0.78
 size = Vector3(0.550000, 0.650000, 0.550000)
 
 [node name="Can" type="Node3D"]
-metadata/word_key = "can"
-metadata/learning_object = true
 
 [node name="Tin_2" type="MeshInstance3D" parent="."]
 position = Vector3(0.000000, 0.280000, 0.000000)

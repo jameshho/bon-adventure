@@ -35,12 +35,13 @@ BonBon, Leo and Sunny live in the house, and the walkways were cleared.
 
 ## Supermarket
 
-<img src="../evidence/supermarket-visual-20261108/after-checkout.png" width="480" alt="Supermarket checkout">
+<img src="../evidence/supermarket-snacks-20261117/1-entrance.png" width="480" alt="Supermarket from the door">
 
-*Screenshot 8 Nov.*
+*Screenshot 17 Nov.*
 
-One open floor with nine departments (fruit, vegetables, dairy, bakery, meat, drinks, pantry and
-more); every product is a word with its own product art. A samoyed cashier at the till by the
+One open floor with nine departments (fruit, vegetables, refrigerated, bakery, meat, seafood,
+drinks & home, snacks, checkout); every product is a word with its own product art, and since
+17 Nov each word is in one clearly named section ([sections](../guides/TOWN_DESIGN_BRIEF.md#supermarket-sections--17-november-2026)). A samoyed cashier at the till by the
 door (Pay Up!) and a beagle clerk outside (Grocery Run). Since 16 Nov its signs are sized to be
 read across the hall in every language ([before and after](../evidence/world-signs-20261116/)).
 [2 Nov refit](../guides/TOWN_DESIGN_BRIEF.md#supermarket-refit-fruit-checkout-by-the-door-and-clerks--2-november-2026) ·

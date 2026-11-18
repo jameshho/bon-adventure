@@ -35,7 +35,6 @@ roughness = 0.82
 size = Vector3(0.300000, 0.420000, 0.200000)
 
 [node name="Cereal" type="Node3D"]
-metadata/word_key = "cereal"
 
 [node name="Package" type="MeshInstance3D" parent="."]
 position = Vector3(0.000000, 0.210000, 0.000000)

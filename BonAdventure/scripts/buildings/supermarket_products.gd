@@ -28,8 +28,8 @@ const FOOT = {
 	"sugar":Vector3(.16,.1,.2), "pasta":Vector3(.1,.08,.24), "tortilla":Vector3(.22,.22,.12), "oil":Vector3(.1,.1,.29),
 	"salt":Vector3(.1,.1,.15), "pepper":Vector3(.07,.07,.15), "honey":Vector3(.11,.11,.13), "jam":Vector3(.1,.1,.12),
 	"salsa":Vector3(.11,.11,.13), "olive":Vector3(.1,.1,.14), "jar":Vector3(.12,.12,.15), "can":Vector3(.1,.1,.12),
-	"tuna":Vector3(.11,.11,.05), "soup":Vector3(.1,.1,.12), "coffee":Vector3(.14,.1,.2), "tea":Vector3(.18,.1,.1),
-	"cookie":Vector3(.2,.09,.06), "snack":Vector3(.17,.09,.23), "chocolate":Vector3(.07,.05,.13), "candy":Vector3(.09,.05,.1),
+	"tuna":Vector3(.11,.11,.05), "soup":Vector3(.1,.1,.12), "coffee":Vector3(.08,.08,.22), "tea":Vector3(.18,.1,.1),
+	"cookie":Vector3(.2,.09,.06), "cracker":Vector3(.15,.07,.19), "snack":Vector3(.17,.09,.23), "chocolate":Vector3(.07,.05,.13), "candy":Vector3(.09,.05,.1),
 	"milk":Vector3(.11,.11,.21), "yogurt":Vector3(.085,.085,.07), "butter":Vector3(.13,.08,.045), "cheese":Vector3(.14,.1,.07),
 	"eggs":Vector3(.22,.12,.09), "ham":Vector3(.18,.14,.05), "sausage":Vector3(.18,.14,.06), "salad":Vector3(.16,.08,.2),
 	"chicken":Vector3(.2,.15,.08), "meat":Vector3(.2,.15,.06), "steak":Vector3(.25,.17,.05), "fish":Vector3(.14,.38,.08),
@@ -93,7 +93,7 @@ func variants(kind: String) -> int:
 		"avocado":2, "onion":2, "mushroom":2, "bell pepper":3, "cereal":4, "rice":2, "pasta":2, "oil":2, "jam":3,
 		"can":3, "coffee":2, "tea":2, "snack":4, "chocolate":3, "candy":4, "milk":3, "yogurt":3, "cheese":2,
 		"eggs":2, "water bottle":1, "soda":3, "juice":3, "soap":3, "sponge":2, "detergent":3, "toothbrush":3,
-		"toothpaste":2, "shampoo":3, "bread":3, "cake":3, "cupcake":3, "donut":3, "fish":2, "cookie":2}.get(kind, 1))
+		"toothpaste":2, "shampoo":3, "bread":3, "cake":3, "cupcake":3, "donut":3, "fish":2, "cookie":2, "cracker":2}.get(kind, 1))
 
 ## The cached mesh of one product unit.
 func model(kind: String, variant := 0) -> ArrayMesh:
@@ -338,6 +338,12 @@ func pictogram(kind: String, cut: String) -> ArrayMesh:
 			bx(Vector3(0, .3, 0), Vector3(.52, .12, .02), ink, MATTE)
 			bx(Vector3(0, -.06, -.012), Vector3(.36, .22, .01), cut, MATTE)
 			bx(Vector3(0, .225, -.012), Vector3(.5, .025, .01), cut, MATTE)
+		"candy":  # a wrapped sweet (SNACKS, 17 Nov 2026)
+			ball(Vector3.ZERO, Vector3(.4, .34, .02), ink, MATTE, Vector3.ZERO, 16)
+			for side in [-1, 1]:
+				prism(Vector3(side * .3, 0, 0), Vector3(.3, .22, .02), ink, MATTE, Vector3(0, 0, side * PI / 2))
+			bx(Vector3(-.05, .02, -.012), Vector3(.05, .22, .01), cut, MATTE, Vector3(0, 0, .5))
+			bx(Vector3(.07, -.02, -.012), Vector3(.05, .22, .01), cut, MATTE, Vector3(0, 0, .5))
 	return finish("Department pictogram " + kind)
 
 # ---------------------------------------------------------------------------------------------
@@ -558,7 +564,7 @@ func _bell_pepper(v: int) -> void:
 	cyl(Vector3(.004, .142, 0), Vector3(.016, .035, .016), "3f6e2a", MATTE, Vector3(0, 0, .2), 5)
 
 # ---------------------------------------------------------------------------------------------
-# Pantry (packages show a picture of what is inside on their front, -Z)
+# Pantry and snacks (packages show a picture of what is inside on their front, -Z)
 
 func _cereal(v: int) -> void:
 	var brand := pick(v, ["d84a3a", "3a7bd5", "6d9c3d", "e0a030"])
@@ -730,14 +736,18 @@ func _soup(_v: int) -> void:
 	for y in [.004, .116]:
 		cyl(Vector3(0, y, 0), Vector3(.092, .008, .092), "aab3ba", METAL, Vector3.ZERO, 10)
 
+## Iced coffee in a bottle (17 Nov 2026, user: coffee moves to the drinks cooler): dark coffee
+## behind a cream label with a coffee-cup badge, a brown or black cap.
 func _coffee(v: int) -> void:
-	var bag := pick(v, ["4e342e", "8e2a22"])
-	bx(Vector3(0, .09, 0), Vector3(.12, .18, .08), bag, SATIN)
-	bx(Vector3(0, .192, 0), Vector3(.12, .024, .04), darker(bag, .15), SATIN)
-	bx(Vector3(0, .1, 0), Vector3(.122, .06, .082), "d7a35a", SATIN)
-	ball(Vector3(0, .1, -.043), Vector3(.034, .046, .008), "5d3a1a", SATIN, Vector3(0, 0, .4), 8)
-	bx(Vector3(0, .1, -.047), Vector3(.004, .04, .002), "d7a35a", MATTE, Vector3(0, 0, .4))
-	badge(Vector3(.035, .155, -.041), .014, "1e1a18", SATIN)
+	var cap := pick(v, ["4e342e", "1e1a18"])
+	cyl(Vector3(0, .075, 0), Vector3(.07, .15, .07), "4a2c1a", SATIN, Vector3.ZERO, 10)
+	cyl(Vector3(0, .17, 0), Vector3(.07, .04, .07), "4a2c1a", SATIN, Vector3.ZERO, 10, .45)
+	cyl(Vector3(0, .197, 0), Vector3(.032, .016, .032), "4a2c1a", SATIN, Vector3.ZERO, 8)
+	cyl(Vector3(0, .211, 0), Vector3(.036, .018, .036), cap, SATIN, Vector3.ZERO, 8)
+	cyl(Vector3(0, .08, 0), Vector3(.072, .075, .072), CREAM, MATTE, Vector3.ZERO, 10)
+	cyl(Vector3(0, .074, -.037), Vector3(.026, .022, .004), "6d4c41", MATTE, Vector3(PI / 2, 0, 0), 8)
+	ring(Vector3(.016, .076, -.038), Vector3(.012, .004, .012), "6d4c41", MATTE, Vector3(PI / 2, 0, 0), .5, 8)
+	bx(Vector3(0, .1, -.037), Vector3(.03, .004, .002), cap, MATTE)
 
 func _tea(v: int) -> void:
 	var brand := pick(v, ["2e7d32", "b03030"])
@@ -756,6 +766,18 @@ func _cookie(v: int) -> void:
 		for o in [Vector3(-.01, .008, 0), Vector3(.01, -.006, 0)]:
 			ball(Vector3(-.06 + k * .04, .03, -.025) + o, Vector3(.008, .008, .004), "4a2a18", MATTE, Vector3.ZERO, 4)
 	bx(Vector3(-.085, .03, -.003), Vector3(.012, .06, .03), brand, SATIN)
+
+## A box of crackers (17 Nov 2026, snacks section): an upright box with square salted crackers
+## on its front, so it reads apart from the cookie sleeve.
+func _cracker(v: int) -> void:
+	var box := pick(v, ["d84315", "1565c0"])
+	bx(Vector3(0, .095, 0), Vector3(.14, .19, .06), box, MATTE)
+	bx(Vector3(0, .17, -.0305), Vector3(.12, .03, .001), CREAM, MATTE)
+	for k in 3:
+		var c := Vector3(-.035 + k * .035, .085 - absf(k - 1) * .012, -.033)
+		bx(c, Vector3(.042, .042, .004), "e3b866", MATTE, Vector3(0, 0, .12 * (k - 1)))
+		for o in [Vector3(-.01, .01, 0), Vector3(.01, .01, 0), Vector3(0, -.01, 0)]:
+			ball(c + o + Vector3(0, 0, -.003), Vector3(.005, .005, .002), "a8743a", MATTE, Vector3.ZERO, 4)
 
 func _snack(v: int) -> void:
 	var bag := pick(v, ["f9a825", "c62828", "43a047", "8e24aa"])

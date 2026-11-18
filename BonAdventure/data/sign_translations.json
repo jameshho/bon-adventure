@@ -59,7 +59,7 @@
   "SEAFOOD": {"es": "MARISCOS", "zh": "海鮮"},
   "FROZEN": {"es": "CONGELADOS", "zh": "冷凍食品"},
   "REFRIGERATED": {"es": "REFRIGERADOS", "zh": "冷藏食品"},
-  "PANTRY": {"es": "DESPENSA", "zh": "乾貨"},
+  "SNACKS": {"es": "BOTANAS", "zh": "零食"},
   "DRINKS & HOME": {"es": "BEBIDAS Y HOGAR", "zh": "飲品和家居"},
   "CHECKOUT": {"es": "CAJA", "zh": "收銀處"},
   "FRESH  •  $2.50": {"es": "FRESCO  •  $2.50", "zh": "新鮮  •  $2.50"},
