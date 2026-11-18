@@ -7,7 +7,7 @@
     },
     "Vehicles/Truck": {
       "zone": "supermarket",
-      "reason": "Delivery truck home area."
+      "reason": "Delivery truck home area; parked in the warehouse lot since 18 Nov 2026 (base step tutorial_lot_clear)."
     },
     "Vehicles/Bus": {
       "zone": "school",

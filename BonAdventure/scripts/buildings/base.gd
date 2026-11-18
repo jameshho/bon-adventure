@@ -7,7 +7,7 @@ extends RefCounted
 ##   const STEPS := ["add_bench", ...]          # applied in this order, each exactly once
 ##   func add_bench(town: Node3D, game) -> void # town = Main's Apartment, scale 1.3, town coords
 ## Never rename or remove a baked step (add a new one that undoes it).
-const STEPS := ["solid_roofs", "remove_bird", "tulip_beds", "plaza_fountains", "bronze_statue", "statue_blueprint", "statue_traced", "statue_traced_refit", "statue_reference", "statue_reference_finish", "statue_angular_portrait", "statue_temple_hair", "statue_hair_relief_fit", "statue_single_bronze", "bench_placement", "statue_patina", "statue_patina_warm", "toy_scooter", "toy_scooter_full_size", "statue_town_bronze", "mystery_house_site", "coplanar_gaps", "coplanar_gaps_2", "lion_blueprint_display", "lion_clay_display", "lion_clay_face_rework", "lion_clay_ears_fit", "lion_clay_eyes_mane", "lion_clay_ears_mane_two_layers", "giraffe_clay_display", "giraffe_clay_colours", "giraffe_clay_refine", "elephant_clay_display", "red_panda_clay_display", "elephant_clay_colours", "panda_clay_display", "cow_clay_display", "gorilla_clay_display", "panda_clay_face", "gorilla_clay_refine", "cow_clay_colours_eyes", "deer_clay_display", "cow_clay_muzzle", "gorilla_clay_eyelids", "deer_clay_eyes_ears", "cow_clay_lower_lip", "cow_clay_muzzle_reverted", "kangaroo_clay_display", "lion_clay_second_pass", "lion_crawl_display", "lion_crawl_colours", "lion_mix_display", "lion_temp_marks", "lion_temp_marks_lower", "rhino_clay_display", "zebra_clay_display", "lion_clay_roams", "lion_designs_removed", "black_bear_clay_display", "black_bear_clay_front_row", "black_bear_clay_soles", "flamingo_clay_display", "flamingo_clay_colours", "black_bear_cub_beside_bear", "black_bear_cub_clear_of_zebra", "flamingo_clay_back_feathers", "black_bear_cub_body", "golden_retriever_clay_display", "black_bear_cub_body_reverted", "black_bear_adult_clay_display", "black_bears_front_row_pair", "black_bear_cub_baby", "black_bear_cub_young_face", "golden_retriever_clay_coat", "duck_clay_display", "black_bear_cub_lighter_fur", "pig_clay_display", "clay_animals_roam", "clay_animals_spacing", "animals_bigger", "zoo_zones", "chapel_old_outline", "home_expansion_ground", "home_side_pad_trim", "statue_word", "clay_animals_unpacked", "parked_vehicles", "warehouse_entrance_walk", "spawn_clear_car", "clay_meshes_external", "pig_clay_walks", "clay_animals_walk", "rooster_clay_display", "capybara_clay_display", "tiger_clay_walks", "monkey_clay_display", "horse_clay_walks", "capybara_clay_walks", "chick_clay_display"]
+const STEPS := ["solid_roofs", "remove_bird", "tulip_beds", "plaza_fountains", "bronze_statue", "statue_blueprint", "statue_traced", "statue_traced_refit", "statue_reference", "statue_reference_finish", "statue_angular_portrait", "statue_temple_hair", "statue_hair_relief_fit", "statue_single_bronze", "bench_placement", "statue_patina", "statue_patina_warm", "toy_scooter", "toy_scooter_full_size", "statue_town_bronze", "mystery_house_site", "coplanar_gaps", "coplanar_gaps_2", "lion_blueprint_display", "lion_clay_display", "lion_clay_face_rework", "lion_clay_ears_fit", "lion_clay_eyes_mane", "lion_clay_ears_mane_two_layers", "giraffe_clay_display", "giraffe_clay_colours", "giraffe_clay_refine", "elephant_clay_display", "red_panda_clay_display", "elephant_clay_colours", "panda_clay_display", "cow_clay_display", "gorilla_clay_display", "panda_clay_face", "gorilla_clay_refine", "cow_clay_colours_eyes", "deer_clay_display", "cow_clay_muzzle", "gorilla_clay_eyelids", "deer_clay_eyes_ears", "cow_clay_lower_lip", "cow_clay_muzzle_reverted", "kangaroo_clay_display", "lion_clay_second_pass", "lion_crawl_display", "lion_crawl_colours", "lion_mix_display", "lion_temp_marks", "lion_temp_marks_lower", "rhino_clay_display", "zebra_clay_display", "lion_clay_roams", "lion_designs_removed", "black_bear_clay_display", "black_bear_clay_front_row", "black_bear_clay_soles", "flamingo_clay_display", "flamingo_clay_colours", "black_bear_cub_beside_bear", "black_bear_cub_clear_of_zebra", "flamingo_clay_back_feathers", "black_bear_cub_body", "golden_retriever_clay_display", "black_bear_cub_body_reverted", "black_bear_adult_clay_display", "black_bears_front_row_pair", "black_bear_cub_baby", "black_bear_cub_young_face", "golden_retriever_clay_coat", "duck_clay_display", "black_bear_cub_lighter_fur", "pig_clay_display", "clay_animals_roam", "clay_animals_spacing", "animals_bigger", "zoo_zones", "chapel_old_outline", "home_expansion_ground", "home_side_pad_trim", "statue_word", "clay_animals_unpacked", "parked_vehicles", "warehouse_entrance_walk", "spawn_clear_car", "clay_meshes_external", "pig_clay_walks", "clay_animals_walk", "rooster_clay_display", "capybara_clay_display", "tiger_clay_walks", "monkey_clay_display", "horse_clay_walks", "capybara_clay_walks", "chick_clay_display", "tutorial_lot_clear"]
 const Plaza = preload("res://scripts/buildings/monument_plaza.gd")
 
 ## Collision for the decorative gazebo roof cap (7 Nov 2026; scripts/buildings/roof_solids.gd).
@@ -1736,3 +1736,43 @@ func chick_clay_display(town: Node3D, _game) -> void:
 	model.rotation.y = PI
 	model.owner = town
 	unpack_clay_animals(town)
+
+## The supermarket's parking lot, where the welcome tutorial's market act starts (user, 18 Nov
+## 2026): the white car moves south (to the player's right, clear of the store entrance): three
+## bays from its first spot (spawn_clear_car already moved it one), since the next one is on the
+## lot's drive (4.4 town units needed, 3 there); the delivery
+## truck (Vehicles/Truck, a pickup) parks in the warehouse lot's west bay, half a unit west of the
+## motorcycle's spot to clear the truck corridors,
+## and every red motorcycle (motorcycle.tscn: the parked ones of parked_vehicles) leaves the map.
+## BonBon's teal scooter (Vehicles/Motorcycle, scooter.tscn) stays: it is the town's motorcycle now.
+const TRUCK_BAY := Vector3(-29.0, 0.06, 212.5)
+const TRUCK_YAW := 90.0
+
+func tutorial_lot_clear(town: Node3D, _game) -> void:
+	var vehicles := town.get_node("Vehicles") as Node3D
+	var car := vehicles.get_node("Parked car (east delivery)") as Node3D
+	var place := vehicles.transform * car.transform
+	place.origin.z -= 10.2
+	car.transform = vehicles.transform.affine_inverse() * place
+	# The truck's body centre goes on the bay the warehouse motorcycle used (as parked_vehicles()).
+	var truck := vehicles.get_node("Truck") as Node3D
+	var bounds := AABB()
+	var first := true
+	for collider in truck.get_node("StudyArea").get_children():
+		if collider is CollisionShape3D and collider.shape is BoxShape3D:
+			var box: AABB = collider.transform * AABB(-collider.shape.size * 0.5, collider.shape.size)
+			bounds = box if first else bounds.merge(box)
+			first = false
+	var turn := Basis(Vector3.UP, deg_to_rad(TRUCK_YAW))
+	var scale := (vehicles.transform * truck.transform).basis.get_scale()
+	var centre := bounds.get_center() * scale
+	# Its height above the ground stays; the lot is TRUCK_BAY.y above the old road spot.
+	var spot := Vector3(TRUCK_BAY.x, (vehicles.transform * truck.transform).origin.y + TRUCK_BAY.y, TRUCK_BAY.z) - turn * Vector3(centre.x, 0, centre.z)
+	truck.transform = vehicles.transform.affine_inverse() * Transform3D(turn.scaled(scale), spot)
+	var removed := 0
+	for vehicle in vehicles.get_children():
+		if vehicle.scene_file_path == "res://scenes/props/vehicles/motorcycle.tscn":
+			vehicles.remove_child(vehicle)
+			vehicle.free()
+			removed += 1
+	print("tutorial_lot_clear: car moved, truck parked at the warehouse, %d motorcycles removed" % removed)

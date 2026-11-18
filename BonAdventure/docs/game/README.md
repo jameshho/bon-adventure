@@ -61,7 +61,8 @@ and wrong answers per word in the journal.
 
 | Part | What is there | Last change |
 | --- | --- | --- |
-| [Title page and profiles](playing.md#starting-up) | The Bon Adventure logo and Play, then up to three profiles | 16 Nov (logo replaces the text title) |
+| [Title page and profiles](playing.md#starting-up) | The Bon Adventure logo and Play, then up to three profiles | 18 Nov (brown gaps between the logo's animals made transparent) |
+| [Welcome tutorial](playing.md#welcome-tutorial) | Wake up, find the friends, buy fruit, the statue, the journal, a picnic | 18 Nov (tighter timings, no ✕ or clock, face-to-face cuts, cast behind you at the market, gapless basket) |
 | App name and icon | "Bon Adventure: Little Town of Words" ("Bon Adventure" under the icon); icon is the pig's head on mint (the user's picture) | 16 Nov (renamed, new icon, [evidence](../evidence/bon-adventure-logo-20261116/README.md)) |
 
 ### Buildings and areas
@@ -69,7 +70,7 @@ and wrong answers per word in the journal.
 | Place | What is there | Last change |
 | --- | --- | --- |
 | [Home](town.md#home) | BonBon's house, pool, garage, mahjong table, electrical box; tutorial rooms | 14 Nov (plants, fewer plushes) |
-| [Supermarket](town.md#supermarket) | Nine departments, every product a word, cashier and clerk | 17 Nov (one word per section: snacks, drinks/home swap) |
+| [Supermarket](town.md#supermarket) | Nine departments, every product a word, cashier and clerk | 18 Nov (pickup truck moved to the warehouse lot, white car one bay clear of the entrance) |
 | [Library](town.md#library) | Six category shelves (3 books each), NEW BOOKS display at the rear wall, return cart, cosy reading corner | 17 Nov (new categories, desks removed, interior refresh, readable signs) |
 | [Restaurants](town.md#restaurants) | Alta Cocina, Pizza and Burger, Taquería | 12 Nov (Alta Cocina glass) |
 | [Bakery / Café](town.md#bakery--café) | Cake counter and seating | 28 Oct |
@@ -87,7 +88,7 @@ and wrong answers per word in the journal.
 | [Chapel](town.md#chapel) | Rebuilt sanctuary | 12 Nov |
 | [Farm barn](town.md#farm-barn) | Hayloft, tools and supplies | 1 Nov |
 | [Playground](town.md#playground) | Towers, slide, rideable swings | 1 Nov |
-| [Park, zoo and coast](town.md#park-zoo-and-coast) | Public garden, four zoo zones, island; the clay animals walk; the zoo's tiger and the farm's horse are the new clay models; clay capybara walks in Wildlife Plains (word: capybara); clay rooster and clay chick on the farm lawn, clay monkey inside the zoo gate | 18 Nov (clay chick) |
+| [Park, zoo and coast](town.md#park-zoo-and-coast) | Public garden, four zoo zones, island; the clay animals walk; the zoo's tiger and the farm's horse are the new clay models; clay capybara walks in Wildlife Plains (word: capybara); clay rooster and clay chick on the farm lawn, clay monkey inside the zoo gate; no red motorcycles (only BonBon's teal scooter) | 18 Nov (clay chick; red motorcycles removed, supermarket lot cleared) |
 
 ## Open items worth knowing while reviewing
 

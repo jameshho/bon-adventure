@@ -7684,3 +7684,19 @@ Same day, after the run above: the game was named **Library Helper** (user; `phr
 and the guide). Not re-run for this rename (data-only; `language` was not re-run). `docs/game/words.md`
 still shows the heading "Shelf Mission" until `tools/vocabulary_report.gd -- --write` runs next
 (the full suite does); the learning card links to that anchor until then.
+
+## Tutorial polish, supermarket lot and logo — 18 November 2026
+
+User's polish list ([evidence](../evidence/tutorial-polish-20261118/README.md),
+[design](ARCHITECTURE_REVIEW_PART1.md#welcome-tutorial)): tutorial timings and screen, face-to-face
+close-up cuts, the market act, the basket, base step `tutorial_lot_clear` (`bake_unit.gd -- base`:
+1 step, no errors; 15 motorcycles removed, the white car and the truck moved; reviewed with
+`compare_scenes.gd`), the logo's brown gaps. Godot 4.7.2, isolated `HOME`, `dev_focus.txt` = `all`.
+
+| Result | Checks |
+| --- | --- |
+| PASS | `tutorial` (runner, now `docs/evidence/tutorial-polish-20261118/verify.gd`): **168 checks, 0 failures**. On the way: a native crash from the check calling a freed shop node (check fixed) and a real race (the reply button could stay away when EN was held while the camera eased in; fixed in `tutorial.gd`). One graphical run before the last small change (cashier name, list ✕): 166 checks, 0 failures, views saved |
+| PASS | `vehicle_arcade`, `zoo_vehicles` (updated to 16 parked cars, 28 road vehicles, the scooter for the motorcycle tests; first run found the white car on the lot's drive and the truck 0.3 units in the truck corridor, both fixed and rebaked) |
+| PASS | `shop_basket`, `app_flow`, `day_night`, `interaction`, `vehicle_boarding`, `runtime_resources`, `language` (after adding the missing pinyin for 豚, from the capybara commit) |
+
+Not run: the full suite. Not checked on a real phone.

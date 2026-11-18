@@ -23,9 +23,9 @@ where the player was and comes back at that building's entrance or on clear grou
 
 ## Welcome tutorial
 
-<img src="../evidence/tutorial-review-20261117/market-cast.png" width="480" alt="Welcome tutorial at the supermarket">
+<img src="../evidence/tutorial-polish-20261118/market-cast.png" width="480" alt="Welcome tutorial at the supermarket">
 
-*Screenshot 17 Nov (the closing picnic).*
+*Screenshot 18 Nov (the friends wait behind you at the supermarket).*
 
 "Welcome to Bon Adventure" runs once for a new profile: wake up in bed, a tour of the house, find
 the hiding friends, buy fruit at the supermarket, visit the statue, then open the journal. It
@@ -53,7 +53,15 @@ guide is shown close up when the friends are found and for "There's so much more
 for "we need some food first"; a player who picked BonBon is guided by another character; no
 house character sits on the couch or naps on a bed during the tour; the friends no longer box
 you in at the supermarket; the list is just 1 apple and 2 bananas; and a replay starts with
-the house doors shut.
+the house doors shut. Since 18 Nov (user's polish list): tighter timings ("have a look around"
+1.8 s, a bigger drag then 2 s to look, a 10 m walk then 1 s, shorter "meet my friends" lines),
+the front door opens by itself after "There's so much more...", the dialogue box has no ✕, the
+clock is hidden and the Skip button steps aside while a strip shows, BonBon's short remarks go
+after 2 s ("not on our shopping list" 1.5 s), the camera cuts straight from one face to the
+next, the friends wait behind you at the supermarket without walking, the clerk and cashier are
+named in your language and the cashier's price shows no digits (hold EN if unsure), "Let's go
+pay!" is one line, the basket has no gaps and its handles vanish when you inspect it, and
+walking out of the store anywhere ends the shop.
 [Tutorial guide](../guides/ARCHITECTURE_REVIEW_PART1.md#welcome-tutorial)
 
 ## Languages

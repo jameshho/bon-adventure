@@ -112,6 +112,15 @@ tutorial's shop (`tutorial_shop.gd`) and the customer order game of stores with 
 in `data/shops.json` (`shop_session.gd`: the supermarket). A pick hook should ignore objects with
 a `hold_kind` meta (the held basket's own pick area).
 
+Since 18 Nov 2026 (user) the body is one closed tapered tub (no slits at the corners or the
+floor) and the handles are a separate `Handles` mesh that hides while the basket is inspected
+(`on_inspect_begin()` / `on_inspect_end()`, the hooks `object_inspector.gd` calls on any held
+item). The Inspect button also hides while the money panel is open.
+
+The dialogue box's ✕ can be turned off with `shop_panel.closable = false` (the welcome tutorial,
+18 Nov 2026), and `npc_presence.gd` `cut_from(other)` cuts from another NPC's face close-up to
+this one's without easing through the player's view.
+
 ## Coloured words in the dialogue box
 
 User, 14 Nov 2026: in a line spoken in the native language (the welcome tutorial, its clerk and

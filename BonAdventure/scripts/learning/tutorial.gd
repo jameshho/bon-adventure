@@ -185,6 +185,8 @@ var _picnic: Node3D
 ## actor -> its walk's Tween (_walk(); put() stops it).
 var _walks: Dictionary = {}
 const CONFINE_FLASH_MS := 2500
+## The Skip button's top edge (pixels at scale 1): where the HUD clock is, which the tutorial hides.
+const SKIP_TOP := 10.0
 ## Behind the loading screen (app.gd, 17 Nov 2026, user: the first dialogue boxes in the house
 ## lagged on the web): `covered` while the loading screen is still up. The act's first "place"
 ## step then puts the player and the cast in place at once (no fade) and sets `prepared`; the
@@ -291,6 +293,9 @@ func start(from_act: int) -> void:
 	_peek_introduced = act > 0
 	main.hud.tutorial_hidden = {"picker": true, "run": true, "peek": not _peek_introduced, "journal": true}
 	main.hud.tutorial_pulse = {}
+	# No ✕ on the dialogue box (its lines move on by themselves) and no clock (user, 18 Nov 2026).
+	panel.closable = false
+	_hide_clock(true)
 	# The shower curtain stays shut until the hunt (_find()).
 	_lock_curtain(act == 0)
 	if main.get("day_night") != null:
@@ -333,11 +338,12 @@ func _play(run: int) -> void:
 			step = spec
 			if covered and not COVERED_STEPS.has(str(spec.do)):
 				await _hold_until_released()
-			# A close-up kept from the last line stays only for the same speaker's next line.
+			# A close-up kept from the last line stays for the next line with a face: the same
+			# speaker's, or the camera cuts to the next speaker (say(); user, 18 Nov 2026).
 			var role := _say_face(spec)
-			if is_instance_valid(_held_face) and (role == "" or _face(role, null) != _held_face):
+			if is_instance_valid(_held_face) and role == "":
 				_release_face()
-			_keep_face = role != "" and i + 1 < steps.size() and _say_face(steps[i + 1]) == role
+			_keep_face = role != "" and i + 1 < steps.size() and _say_face(steps[i + 1]) != ""
 			await _do(spec)
 			if run != _run:
 				return
@@ -375,7 +381,7 @@ func _do(spec: Dictionary) -> void:
 			var reply: Dictionary = narration(str(spec.reply)) if spec.has("reply") else {}
 			# "face": "always": the close-up even when the speaker is far (user, 17 Nov 2026: BonBon
 			# in the living room after the friends are found).
-			await say(_speaker(str(spec.who)), _text(spec), _say_face(spec), null, reply, str(spec.get("face", "")) == "always")
+			await say(_speaker(str(spec.who)), _text(spec), _say_face(spec), null, reply, str(spec.get("face", "")) == "always", float(spec.get("seconds", 0.0)))
 		"hint":
 			_hint_spec = spec
 			_hint_touch = is_touch()
@@ -471,8 +477,11 @@ func _speaker(role: String) -> String:
 ## is held meanwhile (no walking, turning or using). `face`: the role whose face the camera shows
 ## ("guide" only while she is near and standing: _guide_face_ok()). `reply` (a line): a button
 ## with it, and the line waits for that button instead of moving on (user, 17 Nov 2026).
-## `always`: the guide's close-up even when she is far from the player.
-func say(speaker: Variant, line: Dictionary, face := "", node: Node3D = null, reply: Dictionary = {}, always := false) -> void:
+## `always`: the guide's close-up even when she is far from the player. `seconds` > 0: the line
+## stays exactly that long instead of its reading time (a say step's "seconds", user 18 Nov 2026).
+## A close-up kept from the line before (_held_face) cuts straight to this speaker's face, never
+## through the player's view (user, 18 Nov 2026).
+func say(speaker: Variant, line: Dictionary, face := "", node: Node3D = null, reply: Dictionary = {}, always := false, seconds := 0.0) -> void:
 	var run := _run
 	var keep := _keep_face
 	_keep_face = false
@@ -487,9 +496,15 @@ func say(speaker: Variant, line: Dictionary, face := "", node: Node3D = null, re
 	_replied = false
 	_awaiting_reply = not reply.is_empty()
 	var choices: Array = [{"id": REPLY, "label": reply, "icon": "next"}] if _awaiting_reply else []
+	# The reply waits for the EN introduction (_introduce_peek()); EN may be held while the camera
+	# still eases to the face, so the button comes back below whenever it was held back here.
+	var withheld := _need_peek and not choices.is_empty()
 	_show(speaker, line, [] if _need_peek else choices)
 	_advance = false
 	var presence := _face(face, node)
+	if presence != null and presence != _held_face and is_instance_valid(_held_face) and _held_face.is_zoomed():
+		presence.cut_from(_held_face)
+		_held_face = null
 	if presence != _held_face:
 		_release_face()
 	if presence != null and not presence.is_zoomed():
@@ -499,7 +514,7 @@ func say(speaker: Variant, line: Dictionary, face := "", node: Node3D = null, re
 		await until(func() -> bool: return get_viewport().get_camera_3d() == main.camera or Time.get_ticks_msec() > ends)
 		if get_viewport().get_camera_3d() == main.camera:
 			presence.zoom_to_face(true)
-	if _need_peek:
+	if withheld:
 		# The EN introduction: the reply comes once EN was held (_introduce_peek()).
 		await until(func() -> bool: return not _need_peek or _closed or not panel.is_dialogue_visible() or panel.current_line() != _line)
 		if run == _run and not _closed and panel.is_dialogue_visible() and panel.current_line() == _line:
@@ -508,7 +523,7 @@ func say(speaker: Variant, line: Dictionary, face := "", node: Node3D = null, re
 	if _awaiting_reply:
 		await until(func() -> bool: return _replied or _closed or not panel.is_dialogue_visible() or panel.current_line() != _line)
 	else:
-		var read_until := Time.get_ticks_msec() + int(reading_seconds(line) * 1000.0)
+		var read_until := Time.get_ticks_msec() + int((seconds if seconds > 0.0 else reading_seconds(line)) * 1000.0)
 		await until(func() -> bool: return _advance or _closed or Time.get_ticks_msec() >= read_until or not panel.is_dialogue_visible() or panel.current_line() != _line)
 	_awaiting_reply = false
 	if presence != null:
@@ -570,11 +585,14 @@ func _pause(seconds: float, skippable := true) -> void:
 ## A short bubble that does not hold the player or the steps (a door BonBon has no use for, a
 ## wrong item, her answer when asked): it closes by itself. Not over a line being read or a
 ## question with buttons.
+## tutorial.json "remark_seconds" (phrase id -> seconds) shortens one (user, 18 Nov 2026: "That's
+## not where we are going right now!" 2 s, "Oops! That's not on our shopping list!" 1.5 s).
 func remark(role: String, id: String, values: Dictionary = {}) -> void:
 	if not running or _speaking or panel.has_choices():
 		return
 	var line: Dictionary = narration(id, values)
-	panel.show_dialogue(_speaker(role), line, [], reading_seconds(line) + REMARK_EXTRA)
+	var seconds := float(data.get("remark_seconds", {}).get(id, reading_seconds(line) + REMARK_EXTRA))
+	panel.show_dialogue(_speaker(role), line, [], seconds)
 
 ## A click or tap (not on a button: the box's ✕, Skip), E or Enter moves the line on. A line
 ## waiting for a reply moves on only by its button, or E / Enter.
@@ -749,13 +767,18 @@ func _touch_controls() -> Node:
 	var stick: Node = ui.get_node_or_null("TouchControls") if ui != null else null
 	return stick if stick != null and stick.has_method("highlight_stick") else null
 
-## The nearest door of a space to [x, z] (doors are registered in Main.doors).
+## The door of a space named "name", else the nearest to "at" [x, z] (doors are registered in
+## Main.doors).
 func _door(spec: Dictionary) -> Node3D:
 	var space := _space(str(spec.space))
-	var at := Vector3(float(spec.at[0]), 0.0, float(spec.at[1]))
+	var at := Vector3(float(spec.get("at", [0, 0])[0]), 0.0, float(spec.get("at", [0, 0])[1]))
 	var best: Node3D = null
 	for door in main.doors:
 		if not is_instance_valid(door) or not space.is_ancestor_of(door):
+			continue
+		if spec.has("name"):
+			if str(door.name) == str(spec.name):
+				return door
 			continue
 		var local: Vector3 = space.to_local(door.global_position)
 		if best == null or _flat(local, at) < _flat(space.to_local(best.global_position), at):
@@ -834,7 +857,8 @@ func _reveal(friend: Dictionary) -> bool:
 			await say(_speaker("guide"), narration(str(id)))
 			if run != _run:
 				return false
-		show_strip(friend, "strip")
+		if friend.has("strip"):
+			show_strip(friend, "strip")
 		if not await until(_curtain_opened):
 			return false
 		_show_objective()
@@ -848,6 +872,8 @@ func _reveal(friend: Dictionary) -> bool:
 	# step's "reply" (in the language being learned).
 	_introduce_peek()
 	var reply: Dictionary = lexicon.line(str(_find_spec.get("reply", "tutorial.reply_nice")), {})
+	# BonBon answers next: the camera cuts from the friend's face to hers.
+	_keep_face = true
 	await say(_speaker(str(friend.role)), line, str(friend.role), null, reply)
 	_end_peek_intro()
 	return run == _run
@@ -873,6 +899,20 @@ func _introduce_peek() -> void:
 	if not settings.peek_changed.is_connected(watch):
 		settings.peek_changed.connect(watch)
 	_peek_watch = watch
+
+## The cashier's request (user, 18 Nov 2026): the strip reminds the player to hold EN when unsure
+## and the EN button pulses. Not in the Native display mode (no EN button there).
+func show_peek_strip() -> void:
+	if int(main.hud.mode) == GameSettings.NATIVE:
+		return
+	main.hud.tutorial_hidden["peek"] = false
+	main.hud.tutorial_pulse["peek"] = true
+	show_strip(PEEK_STRIP, "line", "", {"badge": GameSettings.shared().native_badge()})
+
+func clear_peek_strip() -> void:
+	main.hud.tutorial_pulse.erase("peek")
+	if _strip_spec.get("spec") == PEEK_STRIP:
+		clear_strip()
 
 func _end_peek_intro() -> void:
 	_need_peek = false
@@ -1559,9 +1599,10 @@ func _process(_delta: float) -> void:
 	_skip_button.add_theme_font_size_override("font_size", roundi(24 * f))
 	_skip_button.custom_minimum_size = Vector2(150, 56) * f
 	_skip_button.size = _skip_button.get_minimum_size()
-	# Below the HUD clock; out of the way of the journal, map, help and Settings.
-	_skip_button.position = Vector2((screen.x - _skip_button.size.x) * 0.5, 74.0 * f)
-	_skip_button.visible = not (main.hud.is_journal_open() or main.hud.is_map_open() or main.hud.is_help_open() or main.settings_panel.visible)
+	# Top centre where the HUD clock is (hidden meanwhile); out of the way of the journal, map, help
+	# and Settings, and of an instruction strip (user, 18 Nov 2026: hidden while one shows).
+	_skip_button.position = Vector2((screen.x - _skip_button.size.x) * 0.5, SKIP_TOP * f)
+	_skip_button.visible = _strip_spec.is_empty() and not (main.hud.is_journal_open() or main.hud.is_map_open() or main.hud.is_help_open() or main.settings_panel.visible)
 
 ## Ends the tutorial (skip or the last step): the cast leaves, the house twins come back, and
 ## everything it opened closes.
@@ -1592,6 +1633,8 @@ func _stop() -> void:
 	main.interaction.interact_filter = Callable()
 	main.hud.tutorial_hidden = {}
 	main.hud.tutorial_pulse = {}
+	panel.closable = true
+	_hide_clock(false)
 	_apply_gate()
 	_clear_picnic()
 	_clear_cast()
@@ -1603,6 +1646,12 @@ func _stop() -> void:
 	main.interaction.word_cards = true
 	main.interaction.card_seconds = 0.0
 	main.sync_player_controls()
+
+## The HUD clock is hidden while the tutorial runs (user, 18 Nov 2026).
+func _hide_clock(on: bool) -> void:
+	var clock = main.get("day_clock")
+	if clock != null and clock.has_method("set_hidden"):
+		clock.set_hidden(on)
 
 func _save(progress: Dictionary) -> void:
 	var manager = ProfileManager.shared()

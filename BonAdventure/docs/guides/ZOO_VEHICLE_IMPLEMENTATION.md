@@ -184,6 +184,16 @@ User requests (vehicles workstream). Check: `docs/evidence/town-checks/check_veh
 
 ## More parked vehicles — 14 November 2026
 
+**18 Nov 2026 (user): the red motorcycles are gone.** Base step `tutorial_lot_clear` removes
+every `motorcycle.tscn` (the 15 below: 14 in lots, 1 by the road), moves the east delivery
+lot's white car two bays south (clear of the supermarket entrance, where the tutorial's market
+act starts; the bay between is on the lot's drive) and parks the supermarket's delivery truck
+(`Vehicles/Truck`, a pickup) in the warehouse lot's west bay that motorcycle used (half a unit
+further west, clear of the truck corridors). BonBon's teal scooter (`Vehicles/Motorcycle`) is
+the town's only motorcycle; 16 parked cars remain (27 road vehicles and the helicopter).
+Checks `vehicle_arcade` and `zoo_vehicles` count and test those (the scooter for the motorcycle
+tests). The table below is the 14 Nov state.
+
 User request: every parking lot has at least one car and one motorcycle, plus a few cars by the
 roads. Base step `parked_vehicles` (`scripts/buildings/base.gd`, baked into `base.scn`) adds 31
 real `DriveableVehicle` prefabs under `Vehicles/` (registered like the others, so 43 road

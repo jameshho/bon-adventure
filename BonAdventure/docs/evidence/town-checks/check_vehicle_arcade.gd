@@ -75,7 +75,9 @@ func run():
     await physics_frame
     await physics_frame
     var car: DriveableVehicle = town.get_node("Vehicles/Parked car (sports)")
-    var bike: DriveableVehicle = town.get_node("Vehicles/Parked motorcycle (sports)")
+    # The red parked motorcycles left the map on 18 Nov 2026 (base step tutorial_lot_clear): the
+    # scooter is the town's motorcycle.
+    var bike: DriveableVehicle = town.get_node("Vehicles/Motorcycle")
     var car_home: Transform3D = car.global_transform
     var bike_home: Transform3D = bike.global_transform
     # A long wall along -X at z = 1004 (face z 1003.5); a 20 degree glance at 15 m/s.
@@ -140,7 +142,8 @@ func run():
 ## so it holds while this worktree still has the old warehouse scene.
 func warehouse_layout() -> void:
     var frame := Transform3D(Basis.IDENTITY, Vector3(-35, 0, 220.8))
-    for title in ["Parked car (warehouse)", "Parked motorcycle (warehouse)"]:
+    # 18 Nov 2026: the supermarket's delivery truck parks in the bay the warehouse motorcycle used.
+    for title in ["Parked car (warehouse)", "Truck"]:
         var vehicle: Node3D = town.get_node("Vehicles/" + title)
         var box := AABB()
         var first := true
@@ -166,7 +169,8 @@ func lots() -> void:
         for vehicle in game.driveable_vehicles:
             var p: Vector3 = lot.to_local(vehicle.global_position)
             if box.has_point(Vector3(p.x, box.get_center().y, p.z)): kinds.append(vehicle.get_meta("word_key", ""))
-        check(kinds.has("motorcycle") and (kinds.has("car") or kinds.has("taxi") or kinds.has("police car")), "%s has a car and a motorcycle %s" % [lot.name, kinds])
+        # A car in every lot; no motorcycles since 18 Nov 2026 (user: the red ones left the map).
+        check(kinds.has("car") or kinds.has("taxi") or kinds.has("police car"), "%s has a car %s" % [lot.name, kinds])
     for vehicle in town.get_node("Vehicles").get_children():
         if not (String(vehicle.name).begins_with("Parked ") or String(vehicle.name).begins_with("Road-side ")): continue
         found += 1
@@ -193,10 +197,11 @@ func lots() -> void:
                 if q.distance_to(Vector3(p.x, 0, p.z)) < 4.4:
                     check(false, "%s is clear of %s" % [vehicle.name, drive.name])
                     break
-    check(found == 31, "31 parked vehicles added (%d)" % found)
+    # 31 added on 14 Nov 2026, the 15 motorcycles among them removed on 18 Nov 2026.
+    check(found == 16, "16 parked cars (%d)" % found)
     warehouse_layout()
-    # Backing out of a bay works (nose-in parking): a car and a motorcycle on a terrain-level lot.
-    for title in ["Parked car (hospital)", "Parked motorcycle (hospital)"]:
+    # Backing out of a bay works (nose-in parking): a car on a terrain-level lot and the scooter.
+    for title in ["Parked car (hospital)", "Motorcycle"]:
         var vehicle: DriveableVehicle = town.get_node("Vehicles/" + title)
         var home: Transform3D = vehicle.global_transform
         vehicle.occupied = true

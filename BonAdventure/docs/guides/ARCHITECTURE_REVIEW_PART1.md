@@ -1405,6 +1405,31 @@ see it.
 | Start behind the loading screen (17 Nov 2026, user: the first dialogue boxes in the house lagged on the web; a longer first load is fine if the bar shows real progress) | `app.gd` `_on_town_ready()` starts the tutorial with `Tutorial.begin(main, false, true)` (`covered`) while the loading screen is still up: the cast is built one plush per frame (`cast_built` / `cast_total` move the bar), the act's first `place` step puts the player and the cast in place without a fade and the director holds there (`prepared`; only `place`, `door`, `lock`, `confine`, `words` steps run while covered). The warm-up then looks round from the bed and draws every view the act shows up to its cutscene (`warm_views()`: each cast member's face close-up, then four headings from each spot of the act's place, walk and wait steps, 1.8 m up, spots closer than 1.5 m merged) and the dialogue box once (`warm_dialogue()`), so their shaders compile behind the screen; then `release()` and the `open_on` close-up starts. The loading bar: scene file 0–15 % (read in the background where threads exist), town build steps to 55 % (weighted, `main.gd` `LOADING_STEP_WEIGHTS`), cast to 70 %, one share per warm-up view to 100 %. Measured: [tutorial-lag-20261117](../evidence/tutorial-lag-20261117/README.md) |
 | Cutscene | The loading screen's town pictures with the title (`loading_screen.gd` `show_title()`). Since 16 Nov 2026 (user: the house act lagged) it is also the loading screen for the buildings not loaded yet: `app.gd` `_load_rest()` adds none during the house act and all of them, one after another, while the cutscene is up; it stays at least `cutscene_seconds` (7 s) and until they are in, at most `cutscene_max_seconds` (60 s), with the progress bar under the title ([staged loading](MODULAR_TOWN.md#units-added-while-the-game-runs-home-first--13-november-2026)) |
 
+**Polish, 18 Nov 2026 (user's list).** Where this disagrees with the notes below, this wins.
+Check: [`tutorial-polish-20261118/verify.gd`](../evidence/tutorial-polish-20261118/README.md)
+(the `tutorial` check).
+- **Timings in the data:** a say step's `seconds` replaces the reading time (`look_around` 1.8 s,
+  `meet_friends` 2.0, `where_are_they` 2.3, `help_find` 2.0, `more_to_show` 3.0,
+  `lets_go_outside` 2.0); the view step needs `turn` 2 rad and is followed by a 2 s `pause`, the
+  walk step 10 m and a 1 s `pause`; `remark_seconds` (phrase id → seconds) shortens remarks
+  (`not_right_place`, "That's not where we are going right now!", and `not_there` 2 s,
+  `not_on_list` 1.5 s). A `door` step may name its door (`name`): the front door opens itself
+  after `more_to_show`.
+- **Screen:** the dialogue box has no ✕ (`shop_order_panel.gd` `closable`), the HUD clock is
+  hidden (`day_clock.gd` `set_hidden()`), the Skip button sits where the clock was and hides while
+  an instruction strip shows; no "press E to open the shower curtain" strip (the objective stays).
+- **Close-ups cut:** a line followed by another line with a face keeps its close-up and the next
+  one cuts straight to the new face (`npc_presence.gd` `cut_from()`), never through the player's
+  view (Sunny → BonBon after the hunt, BonBon → Sunny at the market).
+- **Market:** the cast stands behind the player from the start and never walks during the act
+  (the walks and the closing pause are gone); the clerk and cashier are named in the native
+  language; "Great! We got everything! Let's go pay!" (`got_everything_pay`) is one 2 s bubble in
+  BonBon's close-up; the cashier's amount has no digits and the strip shows "Don't understand?
+  Hold EN…" (`show_peek_strip()`) while the request is up; no Inspect button while the money panel
+  is open (`hold_inspect_ui.gd`); walking out counts anywhere 0.5 m past the doorway
+  (`tutorial_shop.gd` `_walked_out()`), so "walk out of the store" is no longer said outside.
+- **Lot:** base step `tutorial_lot_clear` (see [parked vehicles](ZOO_VEHICLE_IMPLEMENTATION.md#more-parked-vehicles--14-november-2026)).
+
 **Script revision, 17 Nov 2026 (user script "Little Town of Words").** The current tour; where
 this disagrees with the rows above or the 13–14 Nov notes below, this wins.
 - **Pacing:** no Next buttons. Each line stays for a reading time (`tutorial.gd`
@@ -1440,7 +1465,7 @@ this disagrees with the rows above or the 13–14 Nov notes below, this wins.
   basket of what was bought (`_make_picnic()`; 13 cm up, since the park lawn is drawn 5–10 cm
   above its collider), the cast around it and closing lines (placeholders, to be rewritten).
 - Check: `docs/evidence/tutorial-script-20261117/verify.gd` (the `tutorial` check until the
-  second review below), see its [README](../evidence/tutorial-script-20261117/README.md). The older check
+  second review below; since 18 Nov 2026 `tutorial-polish-20261118/verify.gd`, see the polish below), see its [README](../evidence/tutorial-script-20261117/README.md). The older check
   `tutorial-20261112/verify.gd` and its notes below are history.
 
 **User review, 17 Nov 2026 (evening).** Where this disagrees with the notes above, this wins.

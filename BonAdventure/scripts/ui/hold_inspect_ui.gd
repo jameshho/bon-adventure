@@ -63,7 +63,9 @@ func _process(_delta: float) -> void:
 
 func _refresh() -> void:
 	var open: bool = inspector.is_open()
-	var covered: bool = hud.is_map_open() or hud.is_journal_open() or hud.is_help_open()
+	# The money panel covers it too (user, 18 Nov 2026: no Inspect while paying).
+	var paying: bool = main.get("money_panel") != null and main.money_panel.visible
+	var covered: bool = hud.is_map_open() or hud.is_journal_open() or hud.is_help_open() or paying
 	inspect_button.visible = hand.is_holding() and not open and not covered and not _under_dialogue(inspect_button)
 	close_button.visible = open
 	set_process(hand.is_holding() or open)

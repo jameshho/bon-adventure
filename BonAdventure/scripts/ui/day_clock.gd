@@ -26,6 +26,8 @@ var back_button: Button
 var forward_button: Button
 var resume_button: Button
 var close_button: Button
+## True hides the clock (the welcome tutorial, user 18 Nov 2026: no clock while it runs).
+var kept_hidden := false
 var _scale := 1.0
 var _styles: Array = []
 
@@ -219,8 +221,13 @@ func _refresh() -> void:
 	resume_button.disabled = not day_night.paused
 
 
+## Hides (or shows again) the clock and closes its panel.
+func set_hidden(on: bool) -> void:
+	kept_hidden = on
+	_update_covered()
+
 func _update_covered() -> void:
-	var covered: bool = hud.is_map_open() or hud.is_journal_open() or hud.is_help_open()
+	var covered: bool = kept_hidden or hud.is_map_open() or hud.is_journal_open() or hud.is_help_open()
 	pill.visible = not covered
 	if covered:
 		close()

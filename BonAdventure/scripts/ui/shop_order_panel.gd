@@ -65,6 +65,16 @@ var show_native := false
 var translate_text: Dictionary = {"foreign": "", "native": ""}
 
 var dialogue_card: PanelContainer
+## The dialogue box's ✕ and the cart's quit ✕, and whether they show (the welcome tutorial turns
+## them off, user 18 Nov 2026: its lines move on by themselves and its list stays until paid).
+var dialogue_close: Button
+var closable := true:
+	set(on):
+		closable = on
+		if dialogue_close != null:
+			dialogue_close.visible = on
+		if cart_quit_button != null:
+			cart_quit_button.visible = on
 var speaker_label: Label
 ## The line itself (rich text: coloured terms, see the top comment).
 var foreign_label: RichTextLabel
@@ -363,9 +373,9 @@ func _build_dialogue() -> void:
 	translate_button = TranslateButton.new()
 	translate_button.pressed.connect(toggle_translation)
 	top.add_child(translate_button)
-	var close := _icon_button("close")
-	close.pressed.connect(func() -> void: dialogue_closed.emit())
-	top.add_child(close)
+	dialogue_close = _icon_button("close")
+	dialogue_close.pressed.connect(func() -> void: dialogue_closed.emit())
+	top.add_child(dialogue_close)
 	foreign_label = RichTextLabel.new()
 	foreign_label.bbcode_enabled = true
 	foreign_label.fit_content = true

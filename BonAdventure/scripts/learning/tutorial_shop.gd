@@ -23,6 +23,10 @@ extends Node
 ## only when asked and follow what is still missing ("hints" by group: "fruit", then any other
 ## group such as "cookie" if the list has more than fruit; general to exact); the cashier's "Pay with cash" opens the money panel with only $1 bills and
 ## quarters (settings "money"), with unlimited tries; leaving unpaid gets BonBon's "Wait!".
+##
+## Polish, 18 Nov 2026 (user): the clerk's and cashier's names are in the player's language; "Great!
+## We got everything! Let's go pay!" is one 2 s bubble in BonBon's close-up; the amount comes without
+## its digits and the strip says to hold EN when unsure; walking out anywhere past the doorway counts.
 const ShopDialogue := preload("res://scripts/learning/shop_dialogue.gd")
 const Currency := preload("res://scripts/learning/currency.gd")
 const Interactable := preload("res://scripts/core/interactable.gd")
@@ -30,6 +34,8 @@ const Basket := preload("res://scripts/world/shopping_basket.gd")
 const HouseCharacters := preload("res://scripts/characters/house_characters.gd")
 ## Seconds the cashier's thanks stays up after paying (user, 14 Nov 2026: no tap needed).
 const THANKS_SECONDS := 3.0
+## Seconds BonBon's "Great! We got everything! Let's go pay!" stays (user, 18 Nov 2026).
+const GO_PAY_SECONDS := 2.0
 const PAY := "tutorial_pay"
 ## Metres from the cashier's front within which the player is "at the till".
 const TILL_RADIUS := 2.6
@@ -84,8 +90,9 @@ func setup(director, shop_settings: Dictionary) -> void:
 	store_zone = str(rules.get("zone", store))
 	clerk = main.apartment.find_child(str(rules.get("clerk", "")), true, false) as Node3D
 	cashier = main.apartment.find_child(str(till.get("npc", "")), true, false) as Node3D
-	_speakers[clerk] = dialogue.speaker_line(str(clerk.get_meta("word_key", "")) if clerk != null else "", str(rules.get("clerk_gender", "")))
-	_speakers[cashier] = dialogue.speaker_line(str(cashier.get_meta("word_key", "")) if cashier != null else "", str(till.get("npc_gender", "")))
+	# Their names in the player's language, like the rest of the tutorial (user, 18 Nov 2026).
+	_speakers[clerk] = _native_name(str(clerk.get_meta("word_key", "")) if clerk != null else "", str(rules.get("clerk_gender", "")))
+	_speakers[cashier] = _native_name(str(cashier.get_meta("word_key", "")) if cashier != null else "", str(till.get("npc_gender", "")))
 	for npc in [clerk, cashier]:
 		var item := Interactable.on(npc)
 		if item != null and item.enabled:
@@ -99,6 +106,11 @@ func setup(director, shop_settings: Dictionary) -> void:
 	money.submitted.connect(_on_submitted)
 	money.close_requested.connect(_on_money_close)
 	_make_door()
+
+## A worker's name in the native language in every Display Mode ("Cashier", not "El Cajero").
+func _native_name(word_key: String, gender: String) -> Dictionary:
+	var name: String = str(dialogue.lexicon.word(word_key, dialogue.native, "", gender)).capitalize() if word_key != "" else ""
+	return {"foreign": name, "native": name}
 
 ## The invisible wall in the store's doorway (data/tutorial.json shop "door": its centre "at",
 ## "size" along the space's axes and the "inward" [x, z] direction, in "space"); walking into
@@ -161,21 +173,24 @@ func play() -> void:
 	if interaction.pick_hook == Callable(self, "_on_pick"):
 		interaction.pick_hook = Callable()
 	phase = "list_done"
-	await tutorial.say(guide, tutorial.narration("tutorial.got_everything"))
-	await tutorial.say(guide, tutorial.narration("tutorial.go_pay"))
+	# One bubble for 2 s, in BonBon's close-up wherever she is (user, 18 Nov 2026).
+	await tutorial.say(guide, tutorial.narration("tutorial.got_everything_pay"), "guide", null, {}, true, GO_PAY_SECONDS)
 	phase = "till"
 	var till := _till()
 	var at_till: bool = await tutorial.until(func() -> bool: return tutorial._flat(main.player.global_position, till) <= TILL_RADIUS)
 	if not at_till:
 		return
 	# Paying: the cashier asks for the price in the native language, the amount in the language
-	# being learned with its digits ("dos dólares con cincuenta centavos (= $2.50)").
+	# being learned without its digits (user, 18 Nov 2026: "un dólar con cincuenta centavos"; the
+	# strip reminds the player that holding EN shows it in their language).
 	phase = "pay"
-	var request: Dictionary = tutorial.narration("tutorial.cashier_hello", {"amount": {"learn": dialogue.money_values(int(settings.price_cents)), "show": true}})
+	var request: Dictionary = tutorial.narration("tutorial.cashier_hello", {"amount": {"learn": dialogue.money_values(int(settings.price_cents))}})
 	while not paid:
 		_pay_pressed = false
 		panel.show_dialogue(cashier_name, request, [{"id": PAY, "label": tutorial.narration("tutorial.pay_cash"), "icon": "money"}])
+		tutorial.show_peek_strip()
 		var pressed: bool = await tutorial.until(func() -> bool: return _pay_pressed)
+		tutorial.clear_peek_strip()
 		if not pressed:
 			return
 		_open_money(request)
@@ -189,14 +204,24 @@ func play() -> void:
 	await tutorial.say(cashier_name, tutorial.narration("tutorial.cashier_thanks"), "", cashier)
 	await tutorial.say(guide, tutorial.narration("tutorial.meet_outside"))
 	phase = "leave"
-	var outside: Dictionary = settings.outside
-	var exit_at: Vector3 = tutorial._space(str(outside.space)).to_global(tutorial._vec(outside.at))
-	await tutorial.until(func() -> bool: return tutorial._flat(main.player.global_position, exit_at) <= float(outside.radius))
+	await tutorial.until(_walked_out)
 	phase = "done"
 	_restore()
 	_remove_door()
 	Basket.take_back(main)
 	basket = null
+
+## The player is out of the store: past its doorway (settings "door") or near "outside" (user,
+## 18 Nov 2026: one who walked out anywhere was still told to walk out).
+func _walked_out() -> bool:
+	var spec: Dictionary = settings.get("door", {})
+	if not spec.is_empty():
+		var space: Node3D = tutorial._space(str(spec.space))
+		if not _inside(space, tutorial._vec(spec.at), tutorial._look(spec.inward).normalized(), -0.5):
+			return true
+	var outside: Dictionary = settings.outside
+	var exit_at: Vector3 = tutorial._space(str(outside.space)).to_global(tutorial._vec(outside.at))
+	return tutorial._flat(main.player.global_position, exit_at) <= float(outside.radius)
 
 ## The phrase id of where to go next (BonBon, tutorial.gd where_line()); "" while someone speaks or
 ## the cashier's request with its button is up. While shopping: the hints for what is still

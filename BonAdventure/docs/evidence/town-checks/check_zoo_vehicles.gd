@@ -40,7 +40,8 @@ func run_test() -> void:
     # 14 Nov 2026: +31 parked cars and motorcycles (base step parked_vehicles), 43 in all.
     # 9 Nov 2026: 12 = helicopter + eleven road vehicles (the eight Vehicles/ incl. the scooter
     # Motorcycle, school bus, Subi, warehouse delivery truck); the turboprop is fixed-wing.
-    verify(game.driveable_vehicles.filter(func(v): return not v.fixed_wing).size() == 43, "helicopter and all forty-two road vehicles (incl. Subi, school bus, warehouse truck, 31 parked 14 Nov) registered")
+    # 18 Nov 2026: the 15 red parked motorcycles removed (base step tutorial_lot_clear), 28 in all.
+    verify(game.driveable_vehicles.filter(func(v): return not v.fixed_wing).size() == 28, "helicopter and all twenty-seven road vehicles (incl. Subi, school bus, warehouse truck, 16 parked cars) registered")
     if gate != null:
         game.player.global_position = gate.global_position + Vector3(0, 0.8, -2.5)
         verify(game.interaction.activate_focus() and game.interaction.focus.get_parent() == gate, "E action can operate zoo gate")

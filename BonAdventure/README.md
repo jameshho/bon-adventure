@@ -14,7 +14,8 @@ the town directly with the last used profile (or the flat `user://` saves).
 
 **Bon Adventure: Little Town of Words** (user decision, 16 Nov 2026), "Bon Adventure" for short
 (the installed app's label). The logo is `assets/branding/bon_adventure_logo.webp`, cleaned from
-the user's picture in `assets/branding/source/`; the app icons are the user's pig-head picture (`assets/branding/source/app_icon_source.webp`)
+the user's picture in `assets/branding/source/` (`clean_logo.py`, then on 18 Nov 2026
+`clear_logo_pockets.gd` made the brown gaps between the animals transparent); the app icons are the user's pig-head picture (`assets/branding/source/app_icon_source.webp`)
 ([evidence](docs/evidence/bon-adventure-logo-20261116/README.md)). Shown so far on the title page
 (`app.title` is its fallback text) and, through `tools/deploy_web.py`, as the web page's title and
 the PWA manifest's `name` / `short_name`. The player character is **BonBon** (邦邦, a girl;

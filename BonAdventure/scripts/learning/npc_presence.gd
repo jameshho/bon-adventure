@@ -107,6 +107,40 @@ func zoom_to_face(on: bool) -> void:
 			if is_instance_valid(back) and _talk_camera.current:
 				back.make_current())
 
+## Cuts straight from `other`'s face close-up to this NPC's (no easing, never through the
+## player's view; the welcome tutorial's back-to-back speakers, user 18 Nov 2026). Easing back
+## later returns to the camera `other` would have returned to. Nothing when `other` shows none.
+func cut_from(other: Node) -> void:
+	if other == null or other == self or not other.is_zoomed():
+		return
+	var back: Camera3D = other.drop_close_up()
+	if back == null:
+		return
+	if _zoom_tween != null:
+		_zoom_tween.kill()
+	_previous_camera = back
+	if _talk_camera == null:
+		_talk_camera = Camera3D.new()
+		_talk_camera.name = "TalkCamera"
+		_talk_camera.fov = FACE_FOV
+		_talk_camera.near = 0.05
+		_talk_camera.far = back.far
+		add_child(_talk_camera)
+	var goal := face_transform()
+	_hide_player_if_in_view(goal)
+	_talk_camera.global_transform = goal
+	_talk_camera.make_current()
+
+## Ends this close-up at once, without easing back or switching cameras (cut_from() takes over);
+## returns the camera it would have returned to.
+func drop_close_up() -> Camera3D:
+	var back := _previous_camera
+	_previous_camera = null
+	if _zoom_tween != null:
+		_zoom_tween.kill()
+	_show_player()
+	return back if back != null and is_instance_valid(back) else null
+
 ## The point the talk camera frames: the NPC's face. Measured from the top of the NPC, so an
 ## NPC with a tall hat sets meta "talk_face_drop" (NPC-local units, the hat's height) to frame
 ## the face rather than the hat (Madame Luna, 10 Nov 2026).
