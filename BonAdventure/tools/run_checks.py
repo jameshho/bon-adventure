@@ -91,8 +91,8 @@ CHECKS = [
     # the isolated HOME and removes them.
     dict(id="player_place", script="res://docs/evidence/player-place-20261114/verify.gd", suites=["full"],
          summary=r"PLAYER PLACE: \d+ checks, (?P<n>\d+) failures"),
-    # The welcome tutorial after the revised script (17 Nov 2026; replaced tutorial-20261112).
-    dict(id="tutorial", script="res://docs/evidence/tutorial-script-20261117/verify.gd", suites=["full"],
+    # The welcome tutorial after the user's review (17 Nov 2026; replaced tutorial-script-20261117).
+    dict(id="tutorial", script="res://docs/evidence/tutorial-review-20261117/verify.gd", suites=["full"],
          summary=r"TUTORIAL: \d+ checks, (?P<n>\d+) failures"),
     # The supermarket order game's carried basket (14 Nov 2026, shopping_basket.gd).
     dict(id="shop_basket", script="res://docs/evidence/shop-basket-20261114/verify.gd", suites=["full"],

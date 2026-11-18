@@ -393,9 +393,16 @@ class Bedtime extends Node:
 		sleeper.bed = bed
 		sleeper.timer = rng.randf_range(ASLEEP.x, ASLEEP.y)
 
-	func get_up(sleeper: Dictionary, seating) -> void:
+	## Every sleeper back to its seat at once, seen or not (the welcome tutorial needs the beds free,
+	## tutorial.gd _set_naps()).
+	func wake_all(seating) -> void:
+		for sleeper in sleepers:
+			if is_instance_valid(sleeper.npc) and not sleeper.bed.is_empty():
+				get_up(sleeper, seating, true)
+
+	func get_up(sleeper: Dictionary, seating, force := false) -> void:
 		sleeper.timer = RETRY
-		if seating.player_at(sleeper.seat_point, 1.0) or not unseen([sleeper.seat_point, sleeper.bed.point]):
+		if not force and (seating.player_at(sleeper.seat_point, 1.0) or not unseen([sleeper.seat_point, sleeper.bed.point])):
 			return
 		var npc: Node3D = sleeper.npc
 		npc.global_transform = sleeper.seat

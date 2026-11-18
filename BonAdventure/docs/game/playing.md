@@ -23,7 +23,7 @@ where the player was and comes back at that building's entrance or on clear grou
 
 ## Welcome tutorial
 
-<img src="../evidence/tutorial-script-20261117/picnic.png" width="480" alt="Welcome tutorial picnic">
+<img src="../evidence/tutorial-review-20261117/market-cast.png" width="480" alt="Welcome tutorial at the supermarket">
 
 *Screenshot 17 Nov (the closing picnic).*
 
@@ -37,7 +37,7 @@ longer freeze on the web, and the loading bar moves with the real work all the w
 Since 17 Nov it follows the user's script "Little Town of Words": lines move on by themselves
 (a click or tap skips), a strip at the top says what to do, the controls unlock one at a time,
 the two friends can be found in either order (drag the shower curtain open; ask BonBon for
-hints), the shopping list is 1 apple, 2 bananas and 3 cookies paid in $1 bills and quarters,
+hints), the shopping list is paid in $1 bills and quarters,
 the statue card reads "statue of George Washington", and the tour ends with a picnic in the park
 (placeholder lines). The journal's book button is cuter, with a clearer J. Since the user's review of
 17 Nov: BonBon is shown close up while she talks; "Ready for an adventure?" waits for "Yes!" and
@@ -47,7 +47,13 @@ buildings' doors say it is not the right place; the EN button (hold it to read a
 language, now the only language toggle) and the journal button appear and pulse when they are
 introduced, and the ▶ games button and the Run button stay hidden; the tour starts at noon and BonBon walks at your
 speed; the town card can be skipped only once the whole town is loaded, so the market and park
-parts no longer stutter.
+parts no longer stutter. Since the second review of 17 Nov: in the house only the door where
+Leo hides opens (the others stay shut and the guide says her friends wouldn't hide there); the
+guide is shown close up when the friends are found and for "There's so much more...", and Sunny
+for "we need some food first"; a player who picked BonBon is guided by another character; no
+house character sits on the couch or naps on a bed during the tour; the friends no longer box
+you in at the supermarket; the list is just 1 apple and 2 bananas; and a replay starts with
+the house doors shut.
 [Tutorial guide](../guides/ARCHITECTURE_REVIEW_PART1.md#welcome-tutorial)
 
 ## Languages

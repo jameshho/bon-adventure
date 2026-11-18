@@ -1393,7 +1393,7 @@ see it.
 | Acts and steps (place, say, hint, wait for stand / view / move / near / door / use / study / journal, door, walk, cutscene, shop, words, lock, confine; since 17 Nov 2026 also controls, strip, pause, find and a `place` with a `picnic`) | `data/tutorial.json` (its `about` explains the fields); spaces are a unit's site (`home`, town units) or `world` (metres) |
 | Controls (16 Nov 2026, user) | Right after the player stands up BonBon teaches the two controls, each a `hint` and a `wait`: "Have a look around! Drag with the mouse to turn the view." (`for: "view"`: done once the view was turned 0.6 rad by hand, `player_controller.gd` `look_turned`, counted in `look_by()` only, so the follow camera does not count; or zoomed 1.5 m) and "Now walk a little! Use the W, A, S and D keys." (`for: "move"`: done after 1.5 m on foot). There is no separate camera / POV key: the view turns by dragging (right or left mouse button, a finger on the world) and zooms with the wheel or a pinch. On a touch screen (`hud.touch_mode`, set by `touch_controls.gd` on a touch screen or at the first touch) the steps' `touch_line` / `touch_where` say "Slide a finger on the right side of the screen…" and "Put your thumb on the left side of the screen and slide it — that's your joystick." (a first touch re-shows a hint in the touch wording). Meanwhile the control pulses: `scripts/ui/tutorial_cue.gd` (no words; a mouse or a fingertip gliding between two arrows right of the middle, outside the joystick's 40 %; the W A S D keys bottom left) and on a touch screen the joystick's own ring (`touch_controls.gd` `highlight_stick()`). When the player has tried it the cue and the hint go. Check: `tutorial` drives both steps and checks both wordings, the cue and the stick highlight |
 | Lines | `tutorial.*` in `data/phrases.json`, spoken in the NATIVE language (`narration()`: the same text in both slots, with meta `narration`, so the dialogue box shows no reading or translation); `"learning": true` lines (the friends' greeting) and the clerk's and cashier's `cashier.*` lines are in the language being learned; key words come in through `{word}` / `{items}` values |
-| Cast | Standing plushes of the house characters (`house_characters.gd` `worker()`, `spec_of()`, `ids()`); their seated twins are hidden and their blockers off meanwhile. The cast is solid too (`HouseCharacters.fit_blocker()`, 14 Nov 2026: the player cannot walk through BonBon). A friend who is the player's avatar is replaced by the next character in data order (BonBon stays the guide); since 14 Nov 2026 that stand-in (Bruno first) has no house twin to hide (`"in_house": false`, [record](REFERENCE_HOME.md#fewer-plushes-and-clear-walkways--14-november-2026)) |
+| Cast | Standing plushes of the house characters (`house_characters.gd` `worker()`, `spec_of()`, `ids()`); their seated twins are hidden and their blockers off meanwhile. The cast is solid too (`HouseCharacters.fit_blocker()`, 14 Nov 2026: the player cannot walk through BonBon). A friend who is the player's avatar is replaced by the next character in data order (since 17 Nov 2026 the guide too); since 14 Nov 2026 that stand-in (Bruno first) has no house twin to hide (`"in_house": false`, [record](REFERENCE_HOME.md#fewer-plushes-and-clear-walkways--14-november-2026)) |
 | Shop act | `scripts/learning/tutorial_shop.gd`: the supermarket's clerk and cashier (from `data/shops.json`) only speak, their interactables are off; the shared cart (`pick_hook`), dialogue box and money panel; a fixed order and price. Since 13 Nov 2026 the order is one apple and one banana for $2.50 (the order of two apples left players who had picked one of each waiting with no hint), the fruit is on the fruit table inside the door (supermarket step `tutorial_fruit`, [record](TOWN_DESIGN_BRIEF.md#tutorial-fruit-table--13-november-2026)), and after paying BonBon says to walk out (before, nothing told the player to leave the store). **User review, 14 Nov 2026:** the clerk first says "Hello, nice to meet you. Here's your shopping basket (*la canasta*)." and hands over a basket the player holds (`shopping_basket.gd` `give()`, hand profile `basket`); the picked fruit shows in it and it is taken back once the player walks out; the clerk and cashier speak the native language (`cashier.*` lines through `narration()`), with the order's words and the amount in the language being learned coloured in the dialogue box, the amount with its digits ("dos dólares con cincuenta centavos (= $2.50)", [coloured words](COMPONENTS.md#coloured-words-in-the-dialogue-box)); the cashier's thanks closes itself after 3 s (`THANKS_SECONDS`); and while the player is inside and has not paid, an invisible wall stands in the store's doorway (`tutorial.json` shop `door`, `minigame_zone.gd` `make_door_guard()`, walking into it says "Please pay at the checkout first!") |
 | Other NPCs | `activity_board.gd` `hold` = "tutorial": every activity's `blocker()` names it, so no "!" and no game starts; word cards still work |
 | Words | The shower curtain (when pulled back), the picked fruit and the statue go through `interaction.word_studied`, so they are saved and shown in the journal; nothing is written to the practice log |
@@ -1439,8 +1439,8 @@ this disagrees with the rows above or the 13–14 Nov notes below, this wins.
   the journal (open, close), then a simple picnic east of the statue: a gingham blanket with the
   basket of what was bought (`_make_picnic()`; 13 cm up, since the park lawn is drawn 5–10 cm
   above its collider), the cast around it and closing lines (placeholders, to be rewritten).
-- Check: `docs/evidence/tutorial-script-20261117/verify.gd` (`tutorial`), see its
-  [README](../evidence/tutorial-script-20261117/README.md). The older check
+- Check: `docs/evidence/tutorial-script-20261117/verify.gd` (the `tutorial` check until the
+  second review below), see its [README](../evidence/tutorial-script-20261117/README.md). The older check
   `tutorial-20261112/verify.gd` and its notes below are history.
 
 **User review, 17 Nov 2026 (evening).** Where this disagrees with the notes above, this wins.
@@ -1478,6 +1478,32 @@ this disagrees with the rows above or the 13–14 Nov notes below, this wins.
   behind it (to 100 %); only then does "Click or tap to skip" show. The market and park acts used
   to lag because it could be skipped with 14–17 buildings still loading, which then came in at
   their quiet moments ([lag notes](../evidence/tutorial-lag-20261117/README.md)).
+
+**User review, 17 Nov 2026 (second round, nine fixes).** Where this disagrees with the notes
+above, this wins.
+- **House doors:** the player can open only the hiding friend's door (Yellow bedroom) and, after
+  the hunt, the front door. Every other home door stays shut and the guide says in a bubble "I
+  don't think my friends would hide there." during the hunt, "That's not where we're going right
+  now!" otherwise (`lock` step `say: true`, `remark_line`, `line`; `_say_locked()`). A locked door
+  the tutorial opened (the suite door, the family bathroom) cannot be used, so it cannot shut the
+  player in. The old `remark` doors (open with a remark) and `tutorial.door_locked` are gone.
+- **Close-ups:** "You found one / everyone", "There's so much more I want to show you!" and
+  "Let's go outside!" are in the guide's close-up although she waits in the living room
+  (`say()` `always`; a step's `"face": "always"`); Sunny's "But wait... we need some food first!"
+  is in her close-up (`face: true`). "Let's take a peek!" was dropped.
+- **Guide stand-in:** a player whose avatar is BonBon (the default avatar) is guided by the next
+  house character in data order not in the cast (Bruno today), like the friends' stand-ins
+  (`_cast_actors()`).
+- **House twins:** every seated house character is hidden while the tutorial runs, not only the
+  cast's twins (the player's own character sat on the couch), and their naps are off: sleepers
+  go back to their seats (`house_characters.gd` Bedtime `wake_all()`, `_set_naps()`).
+- **Replay:** act 1 starts with every home door shut (`_reset_props()`; a replay found the front
+  door open and a twin napping on the guest bed).
+- **Market:** the cast walks to the store front south of the player's way to the door (the old
+  spots boxed the player in); the list is 1 apple and 2 bananas for $1.50 (the cookies and their
+  hints were dropped; the picnic line is "These bananas are yummy!").
+- Check: `docs/evidence/tutorial-review-20261117/verify.gd` (`tutorial`, replaces
+  `tutorial-script-20261117`), see its [README](../evidence/tutorial-review-20261117/README.md).
 
 Props it uses: the family bathtub's own curtain (`Family bathtub/Shower curtain`, a
 `door_animator.gd` `curtain` built by `home_furnishing.gd`; the tutorial draws it across the tub

@@ -1,7 +1,7 @@
 extends Node
 ## The welcome tutorial's shopping trip (PWA restructure phase 6, 12 Nov 2026; tutorial.gd step
 ## "shop", settings in data/tutorial.json "shop"): the store's clerk asks for a fixed order
-## (2 apples and 1 banana), the player clicks the fruit into the shared cart, pays the cashier
+## (1 apple and 2 bananas), the player clicks the fruit into the shared cart, pays the cashier
 ## the exact price with the money panel and walks out. Tutorial-only: it borrows the store's
 ## clerk and cashier as speakers (their own interactables are off meanwhile, so their games never
 ## start) and the shared cart, dialogue and money panels, whose real sessions ignore events while
@@ -16,11 +16,12 @@ extends Node
 ## supermarket door holds the player back (minigame_zone.gd make_door_guard(), settings "door").
 ##
 ## Tutorial script, 17 Nov 2026 (user): the clerk welcomes the player and hands over the basket in
-## two bubbles; the shopping list (1 apple, 2 bananas, 3 cookies: settings "items") stays on
+## two bubbles; the shopping list (settings "items"; 1 apple and 2 bananas since the user's review
+## of 17 Nov 2026, the cookies dropped) stays on
 ## screen until paid, each line ticked green with a small bounce when complete (a sound can hook
 ## in at _on_pick() once the game has audio); a wrong item gets BonBon's "Oops!"; her hints come
-## only when asked and follow what is still missing ("hints": fruit first, then the cookies,
-## general to exact); the cashier's "Pay with cash" opens the money panel with only $1 bills and
+## only when asked and follow what is still missing ("hints" by group: "fruit", then any other
+## group such as "cookie" if the list has more than fruit; general to exact); the cashier's "Pay with cash" opens the money panel with only $1 bills and
 ## quarters (settings "money"), with unlimited tries; leaving unpaid gets BonBon's "Wait!".
 const ShopDialogue := preload("res://scripts/learning/shop_dialogue.gd")
 const Currency := preload("res://scripts/learning/currency.gd")
@@ -199,7 +200,8 @@ func play() -> void:
 
 ## The phrase id of where to go next (BonBon, tutorial.gd where_line()); "" while someone speaks or
 ## the cashier's request with its button is up. While shopping: the hints for what is still
-## missing (settings "hints": "fruit" while an apple or banana is missing, else "cookie"), the
+## missing (settings "hints": "fruit" while an apple or banana is missing, else "cookie"; none
+## when that group has no hints), the
 ## more exact the more often she was asked.
 func where() -> String:
 	if phase == "pick":

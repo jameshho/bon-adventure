@@ -32,8 +32,8 @@ extends Node
 ## a bubble. Controls come one at a time ("controls" step: only E, then turning the view, then
 ## walking too). The two hiding friends are found in either order ("find" step; hints only when
 ## the player talks to BonBon, progressive and pointing at a friend not yet found); the shower
-## curtain opens by dragging it. Doors the hunt has no use for open with BonBon's remark, the
-## outside doors are locked. The town reveal has a subtitle and can be skipped, and the park
+## curtain opens by dragging it. In the house only the hiding friend's door opens (review of
+## 17 Nov 2026: the others are locked and BonBon says her friends would not hide there). The town reveal has a subtitle and can be skipped, and the park
 ## act ends with a picnic (a blanket and the bought food) before free exploration.
 ##
 ## Review of 17 Nov 2026 (user, evening): BonBon's lines are shown in a face close-up whenever she
@@ -134,7 +134,8 @@ var _cutscene: CanvasLayer
 var _confine: Array[Rect2] = []
 var _confine_line := ""
 var _confine_flashed := -100000
-## "lock" step: doors whose interactable says the step's line instead of opening.
+## "lock" step: doors whose interactable says the step's line instead of opening ({"item", "use":
+## its own on_use, given back by _unlock_all()}).
 var _locked: Array = []
 ## Doors a "door" step opened (door_animator.gd); _stop() closes those still open.
 var _opened: Array = []
@@ -161,8 +162,7 @@ var _find_spec: Dictionary = {}
 var found: Dictionary = {}
 var _hint_asks := 0
 var _curtain_start := false
-## Doors that open with BonBon's remark during the hunt (door -> open last frame).
-var _remark_doors: Dictionary = {}
+## A "say" lock step's line during the hunt (the guide's bubble at a locked door).
 var _remark_line := ""
 ## The face close-up kept on from one line to the next (the next step is the same speaker's).
 var _held_face: Node
@@ -373,7 +373,9 @@ func _do(spec: Dictionary) -> void:
 			await _place(spec)
 		"say":
 			var reply: Dictionary = narration(str(spec.reply)) if spec.has("reply") else {}
-			await say(_speaker(str(spec.who)), _text(spec), _say_face(spec), null, reply)
+			# "face": "always": the close-up even when the speaker is far (user, 17 Nov 2026: BonBon
+			# in the living room after the friends are found).
+			await say(_speaker(str(spec.who)), _text(spec), _say_face(spec), null, reply, str(spec.get("face", "")) == "always")
 		"hint":
 			_hint_spec = spec
 			_hint_touch = is_touch()
@@ -469,11 +471,12 @@ func _speaker(role: String) -> String:
 ## is held meanwhile (no walking, turning or using). `face`: the role whose face the camera shows
 ## ("guide" only while she is near and standing: _guide_face_ok()). `reply` (a line): a button
 ## with it, and the line waits for that button instead of moving on (user, 17 Nov 2026).
-func say(speaker: Variant, line: Dictionary, face := "", node: Node3D = null, reply: Dictionary = {}) -> void:
+## `always`: the guide's close-up even when she is far from the player.
+func say(speaker: Variant, line: Dictionary, face := "", node: Node3D = null, reply: Dictionary = {}, always := false) -> void:
 	var run := _run
 	var keep := _keep_face
 	_keep_face = false
-	if face == "guide" and node == null and not _guide_face_ok():
+	if face == "guide" and node == null and not always and not _guide_face_ok():
 		face = ""
 	if Time.get_ticks_msec() - _said_end_ms < 250:
 		await _pause(LINE_GAP)
@@ -795,7 +798,11 @@ func _find(spec: Dictionary) -> void:
 		found[str(friend.role)] = true
 		_hint_asks = 0
 		_show_objective()
-		await say(_speaker("guide"), narration(str(spec.get("first" if found.size() < friends.size() else "all", ""))))
+		# BonBon's answer in her close-up wherever she is (user, 17 Nov 2026); after the last friend
+		# it stays on for her next line ("more to show").
+		var last := found.size() >= friends.size()
+		_keep_face = last
+		await say(_speaker("guide"), narration(str(spec.get("all" if last else "first", ""))), "guide", null, {}, true)
 	clear_strip()
 	_find_spec = {}
 
@@ -911,8 +918,10 @@ func _curtain_opened() -> bool:
 ## only opens the rooms it uses). A later lock step replaces the list; _stop() unlocks all.
 ## "open_in" units keep all their doors (user, 17 Nov 2026: in the town acts only the
 ## supermarket's open; the others say they are not the right place); buildings that come in later
-## are locked too (_process()). "remark" doors (17 Nov 2026, user) open as usual, and while the friends are hunted BonBon
-## says the step's "remark_line" when one is opened (rooms the hunt has no use for).
+## are locked too (_process()). "say": true (the house act, user 17 Nov 2026: only the hiding
+## friend's door opens) has the guide say the line in a bubble instead, "remark_line" while the
+## friends are hunted ("my friends wouldn't hide there"); a locked door that stands open (the ones
+## the tutorial opened) cannot be used at all, so it never shuts the player in.
 func _lock(spec: Dictionary) -> void:
 	_unlock_all()
 	if spec.get("off", false):
@@ -928,14 +937,11 @@ func _lock(spec: Dictionary) -> void:
 		var site: Node3D = ModularTown.building(main.apartment, str(unit))
 		if site != null:
 			open_sites.append(site)
-	var remarked: Array = spec.get("remark", [])
 	_remark_line = str(spec.get("remark_line", ""))
 	var line := str(spec.get("line", ""))
+	var says := bool(spec.get("say", false))
 	for door in main.doors:
 		if not is_instance_valid(door) or not space.is_ancestor_of(door):
-			continue
-		if remarked.has(str(door.name)):
-			_remark_doors[door] = bool(main.doors[door].get("open", false))
 			continue
 		if str(main.doors[door].get("type", "")) == "curtain" or open.has(str(door.name)) \
 				or open_sites.any(func(site: Node3D) -> bool: return site.is_ancestor_of(door)):
@@ -943,16 +949,28 @@ func _lock(spec: Dictionary) -> void:
 		var item: Node = Interactable.on(door)
 		if item == null:
 			continue
-		item.on_check = func() -> Variant: return lexicon.phrase(line, lexicon.native) if line != "" else false
-		_locked.append(item)
+		_locked.append({"item": item, "use": item.on_use})
+		if says:
+			var shut := func() -> bool: return main.doors.has(door) and not bool(main.doors[door].get("open", false))
+			item.on_check = func() -> Variant: return shut.call()
+			item.on_use = func() -> void: _say_locked(line)
+		else:
+			item.on_check = func() -> Variant: return lexicon.phrase(line, lexicon.native) if line != "" else false
+
+## A "say" lock step's door was tried: the guide's bubble (remark_line during the hunt).
+func _say_locked(line: String) -> void:
+	var id := _remark_line if str(step.get("do", "")) == "find" and _remark_line != "" else line
+	if id != "":
+		remark("guide", id)
 
 func _unlock_all() -> void:
 	_lock_spec = {}
-	for item in _locked:
+	for entry in _locked:
+		var item: Node = entry.item
 		if is_instance_valid(item):
 			item.on_check = Callable()
+			item.on_use = entry.use
 	_locked.clear()
-	_remark_doors.clear()
 
 ## "confine": "rects" ([x0, z0, x1, z1] in the space) the player must stay inside, or "hold":
 ## true (stay where they are: the statue step); neither = free again. "line" flashes when the
@@ -1261,22 +1279,24 @@ func _stop_walk(actor: Node3D) -> void:
 		walk.kill()
 	_walks.erase(actor)
 
-## Who plays each role: the guide and the friends of tutorial.json; a friend who is the player's
-## avatar is replaced by the next house character (data order) not already in the cast.
+## Who plays each role: the guide and the friends of tutorial.json; one who is the player's
+## avatar is replaced by the next house character (data order) not already in the cast (user,
+## 17 Nov 2026: a player who picked BonBon is greeted by someone else).
 func _cast_actors() -> void:
 	var avatar := str(ProfileManager.shared().active_profile().get("avatar", ""))
 	var everyone: Array = HouseCharacters.ids()
-	cast = {"guide": str(data.guide)}
 	var taken: Array = [str(data.guide), avatar] + Array(data.friends)
+	var stand_in := func(id: String) -> String:
+		if id != avatar:
+			return id
+		for other in everyone:
+			if not taken.has(other):
+				taken.append(other)
+				return other
+		return id
+	cast = {"guide": stand_in.call(str(data.guide))}
 	for i in data.friends.size():
-		var id := str(data.friends[i])
-		if id == avatar:
-			for other in everyone:
-				if not taken.has(other):
-					id = other
-					taken.append(other)
-					break
-		cast["friend_%d" % (i + 1)] = id
+		cast["friend_%d" % (i + 1)] = stand_in.call(str(data.friends[i]))
 	_clear_cast()
 	_cast_root = Node3D.new()
 	_cast_root.name = "Cast"
@@ -1304,10 +1324,18 @@ func _cast_actors() -> void:
 		# Solid like every other character (user, 14 Nov 2026: NPCs you cannot walk past): the
 		# town's figures get their blocker when they are placed, the cast is made later.
 		HouseCharacters.fit_blocker(actor)
-		_hide_twin(id)
 		if role == "guide":
 			_make_guide_talker(actor)
 		cast_built += 1
+	# Every seated house character is hidden while it runs, not only the cast's own twins (user,
+	# 17 Nov 2026: the player's own character sat on the couch and napped on the guest bed), and
+	# none naps meanwhile (sleepers go back to their seats first).
+	_set_naps(false)
+	var twins: Node = main.get_node_or_null("HouseCharacters")
+	if twins != null:
+		for twin in twins.get_children():
+			if twin is Node3D:
+				_hide(twin)
 	# Props out of the way while it runs (tutorial.json "hide": the mahjong table and its
 	# players, user 14 Nov 2026); _clear_cast() brings them back.
 	for path in data.get("hide", []):
@@ -1365,10 +1393,15 @@ func _talk_to_guide() -> void:
 				shop.asked()
 	remark("guide", id)
 
-func _hide_twin(id: String) -> void:
-	var twin := main.get_node_or_null("HouseCharacters/" + id) as Node3D
-	if twin != null:
-		_hide(twin)
+## House characters' naps (house_characters.gd Bedtime) on or off; off also wakes every sleeper
+## (back to its seat), so no bed is taken.
+func _set_naps(on: bool) -> void:
+	var bedtime: Node = main.get_node_or_null("HouseCharacters/Bedtime")
+	if bedtime == null:
+		return
+	bedtime.set_process(on)
+	if not on and bedtime.has_method("wake_all"):
+		bedtime.wake_all(main.get("seating"))
 
 ## Hides `node` until _clear_cast(): not drawn (nor its render-batched copies), not solid, and its
 ## interactables (seats, talkers) are no candidates.
@@ -1416,11 +1449,18 @@ func _clear_cast() -> void:
 		_cast_root.queue_free()
 	actors.clear()
 	_walks.clear()
+	_set_naps(true)
 
 ## Act 1 needs the family bathtub's curtain drawn along its rail, hiding the tub (the home's own
 ## curtain, home_furnishing.gd; in door_animator.gd terms "open" = drawn, and it starts bunched
-## at the wall).
+## at the wall), and every other door of the home shut as in a new town (user, 17 Nov 2026: a
+## replay found the front door open); the act's "door" steps open what it needs.
 func _reset_props() -> void:
+	var home := _space("home")
+	for door in main.doors.keys():
+		if is_instance_valid(door) and home.is_ancestor_of(door) and str(main.doors[door].get("type", "")) != "curtain" \
+				and bool(main.doors[door].get("open", false)):
+			DoorAnimator.toggle(main, door)
 	var curtain: Node = main.apartment.get_node_or_null(NodePath(str(data.get("curtain", ""))))
 	if curtain != null and main.doors.has(curtain) and not main.doors[curtain].get("open", false):
 		DoorAnimator.toggle(main, curtain)
@@ -1509,14 +1549,6 @@ func _process(_delta: float) -> void:
 		# The strip's wording follows the device (the first touch switches it).
 		if not _strip_spec.is_empty() and bool(_strip_spec.touch) != is_touch():
 			show_strip(_strip_spec.spec, _strip_spec.key, _strip_spec.note, _strip_spec.values)
-		# A door the hunt has no use for, opened: BonBon's remark.
-		for door in _remark_doors:
-			if not is_instance_valid(door):
-				continue
-			var now_open := bool(main.doors[door].get("open", false))
-			if now_open and not _remark_doors[door] and str(step.get("do", "")) == "find" and _remark_line != "":
-				remark("guide", _remark_line)
-			_remark_doors[door] = now_open
 	if not _skip_layer.visible:
 		return
 	# Finger sized and scaled with the window (money_panel.gd's rule), top centre.
