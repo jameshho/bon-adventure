@@ -215,9 +215,11 @@ CHECKS = [
     # mission dialogue (11 Nov 2026; Main saves: isolated HOME).
     dict(id="library_shelves", script="res://docs/evidence/library-shelves-20261111/verify.gd", suites=["full"],
          summary=r"LIBRARY SHELVES: \d+ checks, (?P<n>\d+) failures"),
-    # Rosa's book-sorting game: NEW BOOKS display, return cart, placing, Rosa's checks, replay
-    # and stop (13 Nov 2026; headless writes no PNGs; Main saves: isolated HOME).
-    dict(id="library_sorting", script="res://docs/evidence/library-sorting-20261113/verify.gd", suites=["full"],
+    # Rosa's book-sorting game: new categories and titles, tracked words, gaps for every book, the
+    # display at the rear wall, placing (wrong shelf back to the hand), mid-game talk, the game
+    # ending by itself with a recap, resting and replenishing, "I'll help later" (17 Nov 2026,
+    # replaces the 13 Nov check; headless writes no PNGs; Main saves: isolated HOME).
+    dict(id="library_sorting", script="res://docs/evidence/library-refresh-20261117/verify.gd", suites=["full"],
          summary=r"LIBRARY SORTING: \d+ checks, (?P<n>\d+) failures"),
     # Day-night cycle, lamp glow, indoor light and the HUD clock (9 Nov 2026).
     dict(id="day_night", script="res://docs/evidence/day-night-20261109/verify.gd", suites=["full"],

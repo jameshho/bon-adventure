@@ -50,12 +50,12 @@ read across the hall in every language ([before and after](../evidence/world-sig
 
 ## Library
 
-<img src="../evidence/library-shelves-20261111/after-entrance.png" width="480" alt="Library shelves">
+<img src="../evidence/library-refresh-20261117/after-entrance.png" width="480" alt="Library shelves">
 
-*Screenshot 11 Nov.*
+*Screenshot 17 Nov.*
 
-Six bookcases, one per category (animals, sports, art, cooking, travel, nature), a reference table with a dictionary and atlas, a NEW BOOKS display and a return cart.
-Rosa the librarian runs Shelf Mission.
+Six bookcases, one per category (animals, sports, music, food, vehicles, plants), a reference table with a dictionary and atlas, a NEW BOOKS display at the rear wall and a return cart. A cosy reading corner with rugs, floor cushions, plants and bunting (17 Nov); the computer desks are gone.
+Rosa the librarian runs Library Helper.
 [Category shelves](../guides/TOWN_DESIGN_BRIEF.md#library-category-shelves-and-return-shelf--11-november-2026) ·
 [sorting game](../guides/TOWN_DESIGN_BRIEF.md#library-return-cart-and-book-sorting-game--13-november-2026)
 

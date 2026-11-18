@@ -7643,3 +7643,44 @@ rename owns it with the save move). Details, comparison and screenshots:
   2532 × 1170 (`capture.gd` there) and inspected: logo centred above Play, nothing clipped.
 - **Not tried:** a web export or deploy (the page title and manifest rewrite was only tried on
   the published files), installing on a phone, the new icon on a real home screen.
+
+## Library game review — 17 November 2026
+
+Rosa's book-sorting game after the user's review
+([design](TOWN_DESIGN_BRIEF.md#library-return-cart-and-book-sorting-game--13-november-2026)):
+Rosa's check removed, a wrong shelf wobbles the book back into the hand, new mid-game, start and
+win dialogue (`library_session.gd`, `data/phrases.json` group `library`). Godot 4.7.2, isolated
+`HOME`, each run once:
+
+| Result | Checks |
+| --- | --- |
+| PASS | `docs/evidence/library-dialogue-20261117/verify.gd` (new; runner `library_sorting` now points here instead of the 13 Nov check), graphics, `VT_FOCUS=library VT_SPAWN=none`: **37 checks, 0 failures**. Renders in the same folder: `talk-left`, `wrong-wobble`, `wrong-back-in-hand`, `right-shelf`, `win-recap` (Spanish) |
+| PASS | runner (`VT_FOCUS=all`): `runtime_resources`, `language` |
+| CRASH, not this work | `library_shelves`: a SCRIPT ERROR at its line 50. Its sign table and counts still describe the 8 categories and 24 books from before 16 Nov 2026 (no TRAVEL / NATURE, expects 24 books); stale since the six-categories change. Its Rosa part (greeting → Yes → `library.start`) is covered by the new check. Priority: medium (fix the fixture) |
+
+Not run: the full suite and the runner's headless `library_sorting` (the same script ran once
+with graphics above). The `win-recap` render's camera sits behind the cart, but the dialogue box
+text is readable.
+
+## Library new titles, tracking and cosy room — 17 November 2026
+
+Second library round the same day
+([design](TOWN_DESIGN_BRIEF.md#library-return-cart-and-book-sorting-game--13-november-2026)):
+steps `new_titles`, `rear_display`, `cosy_room` baked into `library.scn` (`bake_unit.gd -- library`:
+3 steps, no errors; the scene grew from 818 KB to 1,016 KB); new covers, words, sign
+translations, practice tracking and replenishing. Godot 4.7.2, isolated `HOME`, each run once:
+
+| Result | Checks |
+| --- | --- |
+| PASS | `docs/evidence/library-refresh-20261117/verify.gd` (new; runner `library_sorting` now points here), graphics, `VT_FOCUS=library VT_SPAWN=none`: **109 checks, 0 failures** (categories, titles and words, header words, free gaps for every book, desks gone, display/Rosa/cart spots, cart filled at load, practice: wrong first try negative, right positive, retry not recorded, resting with no "!" and `all_back`, replenish borrows the books and fills a new cart). Renders: `cart-new-titles`, `headers`, `talk-left`, `wrong-wobble`, `wrong-back-in-hand`, `right-shelf`, `win-recap` |
+| PASS | runner (`VT_FOCUS=all`): `runtime_resources`, `language`, `signs` |
+| PASS | `tools/vocabulary_report.gd -- --write` (`VT_FOCUS=all`): 5530 checks, 0 failures; `library_rosa` tests 24 words; files updated (`docs/game/words.md`, report). Report-only notes: *soccer* and *tennis* show as "placed but not clickable" (their only objects are the picture books, whose pick areas are built at load); new "same text" group: zh 足球 for *soccer* and *soccer ball* |
+| Views | `capture.gd -- before` / `-- after` in the same folder: top, entrance, rear |
+| PASS (fixture fixed) | `library_shelves` (runner, `VT_FOCUS=all`): **136 checks, 0 failures** after updating its stale fixture (`docs/evidence/library-shelves-20261111/verify.gd`: sign table from `SignLanguage`, counts from `Library.BOOKS`, display books carry their topic word, the "west computer desk" route replaced by one to the NEW BOOKS display). The first run of the updated fixture had 2 route failures from the new route ends: the west aisle route ran into the cosy room's rear corner plant in the old desk corner (now ends at z 50.6, before that dead end) and a guessed route between Rosa and the cart (dropped). Second run: PASS. This closes the CRASH recorded in the first-round section above |
+
+Not run: the full suite.
+
+Same day, after the run above: the game was named **Library Helper** (user; `phrases.games.library_rosa`
+and the guide). Not re-run for this rename (data-only; `language` was not re-run). `docs/game/words.md`
+still shows the heading "Shelf Mission" until `tools/vocabulary_report.gd -- --write` runs next
+(the full suite does); the learning card links to that anchor until then.

@@ -4,9 +4,15 @@ extends SceneTree
 ## picture books (each with a fitting home gap on its own category's bookcase), clear routes,
 ## and Rosa's greeting (since 13 Nov 2026 Yes starts the book-sorting game:
 ## docs/evidence/library-sorting-20261113/verify.gd covers it).
+## Fixture updated 17 Nov 2026 to the current library (six categories since 16 Nov, the 17 Nov
+## titles, topic words on the display books, the computer desks gone and the NEW BOOKS display at
+## the rear wall); the counts come from library.gd instead of being written here.
+## The west aisle route now stops at z 50.6: the old desk corner beyond it holds the cosy room's
+## rear corner plant and lamp (a dead end, not a walkway).
 ## HOME=<scratch> VT_FOCUS=all VT_SPAWN=none godot --headless --path . --script res://docs/evidence/library-shelves-20261111/verify.gd
 ## Writes nothing (study progress stays in the isolated HOME).
 const Library := preload("res://scripts/buildings/library.gd")
+const SignLanguage := preload("res://scripts/world/sign_language.gd")
 var checks := 0
 var failures := 0
 
@@ -36,9 +42,10 @@ func run() -> void:
 	# --- old fittings gone
 	for title in ["Bookcase backing", "Shelved book", "FICTION framed sign", "DISCOVER framed sign", "Book Bin"]:
 		check(not library.has_node(title), "removed: " + title)
-	# --- eight bookcases, headers in the learner's language, books and gaps
-	var signs := {"ANIMALS": "ANIMALES", "SPACE": "ESPACIO", "GEOGRAPHY": "GEOGRAFÍA", "HISTORY": "HISTORIA",
-		"SPORTS": "DEPORTES", "ART": "ARTE", "COOKING": "COCINA", "STORIES": "CUENTOS"}
+	# --- the category bookcases, headers in the learner's language, books and gaps
+	var titles_total := 0
+	for category in Library.CATEGORIES:
+		titles_total += Library.BOOKS[category[0]].size()
 	var cases := {}
 	for category in Library.CATEGORIES:
 		var frame: Node3D = shelves.get_node_or_null("Bookcase " + String(category[0]).capitalize())
@@ -47,7 +54,7 @@ func run() -> void:
 			continue
 		cases[category[0]] = frame
 		var sign := frame.get_node_or_null(category[1] + " sign") as Label3D
-		check(sign != null and sign.text in [category[1], signs[category[1]]], "%s header reads %s" % [category[0], sign.text if sign else "-"])
+		check(sign != null and sign.text in [category[1], SignLanguage.say(category[1], "es")], "%s header reads %s" % [category[0], sign.text if sign else "-"])
 		var rows := 0
 		for child in frame.get_children():
 			if String(child.name).begins_with("Books ") and str(child.get_meta("word_key", "")) == "book" and child.find_children("*", "Area3D", false, false).size() > 0:
@@ -56,9 +63,9 @@ func run() -> void:
 		check(rows == Library.TIERS.size(), "%s has %d clickable book rows (%d)" % [category[0], Library.TIERS.size(), rows])
 		check(frame.get_node("Gaps").get_child_count() >= 3, "%s has gaps" % category[0])
 	check(words.has("bookshelf") and words.has("book") and words.has("book bin") and words.has("shelf"), "words exist")
-	# --- the 24 picture books and their home gaps
+	# --- the picture books and their home gaps
 	var books: Node3D = shelves.get_node_or_null("New books shelf/ReturnBooks")
-	check(books != null and books.get_child_count() == 24, "24 books on the return shelf")
+	check(books != null and books.get_child_count() == titles_total, "%d books on the NEW BOOKS display" % titles_total)
 	check(shelves.has_node("Book drop") and str(shelves.get_node("Book drop").get_meta("word_key", "")) == "book bin", "book drop keeps the book bin word")
 	if books != null:
 		var titles := {}
@@ -66,7 +73,7 @@ func run() -> void:
 			var id := str(book.get_meta("library_category", ""))
 			var title := str(book.get_meta("book_title", ""))
 			titles[title] = true
-			check(bool(book.get_meta("return_book", false)) and str(book.get_meta("word_key", "")) == "book" and book.has_node("Interaction"), title + " is a clickable book")
+			check(bool(book.get_meta("return_book", false)) and str(book.get_meta("word_key", "")) == str(Library.BOOK_WORDS.get(title, "")) and book.has_node("Interaction"), title + " is a clickable book with its topic word")
 			check(Library.BOOKS.get(id, []).has(title), title + " belongs to " + id)
 			var label := book.find_child(title + " title", true, false) as Label3D
 			check(label != null and label.text != "", title + " cover title")
@@ -78,7 +85,7 @@ func run() -> void:
 				# The reusable book scene (12 Nov 2026) knows its own thickness.
 				var thick: float = book.thickness()
 				check(float(gap.get_meta("gap_width", 0.0)) > thick, "%s fits its gap (%.3f vs %.3f)" % [title, gap.get_meta("gap_width", 0.0), thick])
-		check(titles.size() == 24, "24 different titles")
+		check(titles.size() == titles_total, "%d different titles" % titles_total)
 	# --- player-sized routes (library-local; the site is scaled 1.3 in town)
 	var space: PhysicsDirectSpaceState3D = game.get_world_3d().direct_space_state
 	var capsule := CapsuleShape3D.new()
@@ -87,8 +94,8 @@ func run() -> void:
 	var shape := PhysicsShapeQueryParameters3D.new()
 	shape.shape = capsule
 	for route in [[Vector2(-15, 38.2), Vector2(-15, 48.6), "entrance spine"], [Vector2(-15, 48.6), Vector2(-13.2, 48.6), "front of the return shelf"],
-			[Vector2(-19.75, 42.5), Vector2(-19.75, 51.6), "west bookcase aisle"], [Vector2(-10.3, 42.5), Vector2(-10.3, 49.0), "east bookcase aisle"],
-			[Vector2(-19.5, 47.0), Vector2(-10.5, 47.0), "rear cross aisle"], [Vector2(-18.5, 50.0), Vector2(-17.0, 49.0), "west computer desk"]]:
+			[Vector2(-19.75, 42.5), Vector2(-19.75, 50.6), "west bookcase aisle"], [Vector2(-10.3, 42.5), Vector2(-10.3, 49.0), "east bookcase aisle"],
+			[Vector2(-19.5, 47.0), Vector2(-10.5, 47.0), "rear cross aisle"], [Vector2(-13.2, 48.6), Vector2(-12.3, 51.0), "to the NEW BOOKS display"]]:
 		var blocked := ""
 		for i in range(41):
 			var p: Vector2 = route[0].lerp(route[1], i / 40.0)

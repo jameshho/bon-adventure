@@ -2,7 +2,7 @@
 
 [← Minigames](minigames.md) · [Game guide](README.md)
 
-Generated 2026-11-16 by `tools/vocabulary_report.gd -- --write` from the game data. **Do not edit by hand**: words live in `data/words.json` and each game's data file; rerun the report after changing them. "Tested" words are the ones a question checks and the journal tracks; "shown" words appear in the game without being checked one at a time. Phrases (dialogue) are not listed. Where each word is placed in town: [vocabulary report](../vocabulary-report/summary.md).
+Generated 2026-11-17 by `tools/vocabulary_report.gd -- --write` from the game data. **Do not edit by hand**: words live in `data/words.json` and each game's data file; rerun the report after changing them. "Tested" words are the ones a question checks and the journal tracks; "shown" words appear in the game without being checked one at a time. Phrases (dialogue) are not listed. Where each word is placed in town: [vocabulary report](../vocabulary-report/summary.md).
 
 ## Grocery Run
 
@@ -306,11 +306,38 @@ Activity id `mystery_luna`. Tested: 11 · shown only: 0.
 | triangle | el triángulo | 三角形 |
 | yellow | amarillo | 黃色 |
 
-## Shelf Mission
+## Library Helper
 
-Activity id `library_rosa`. Tested: 0 · shown only: 0.
+Activity id `library_rosa`. Tested: 24 · shown only: 0.
 
-No words from `data/words.json` (phrases or generated language only, or a pastime).
+**Tested**
+
+| English | Spanish | Chinese |
+| --- | --- | --- |
+| airplane | el avión | 飛機 |
+| animal | el animal | 動物 |
+| basketball | el balón de basquetbol | 籃球 |
+| cactus | el cactus | 仙人掌 |
+| cake | el pastel | 蛋糕 |
+| car | el carro | 汽車 |
+| cat | el gato | 貓 |
+| cookie | la galleta | 曲奇 |
+| dog | el perro | 狗 |
+| drum | el tambor | 鼓 |
+| elephant | el elefante | 大象 |
+| flower | la flor | 花 |
+| food | la comida | 食物 |
+| guitar | la guitarra | 結他 |
+| music | la música | 音樂 |
+| piano | el piano | 鋼琴 |
+| pizza | la pizza | 薄餅 |
+| plant | la planta | 植物 |
+| soccer | el fútbol | 足球 |
+| sport | el deporte | 運動 |
+| tennis | el tenis | 網球 |
+| train | el tren | 火車 |
+| tree | el árbol | 樹 |
+| vehicle | el vehículo | 車輛 |
 
 ## Mahjong Club
 

@@ -28,7 +28,8 @@ extends SceneTree
 ## as shop_order.gd build_pool() does since 14 Nov 2026), family (the relative), restaurant (the dish), warehouse (the item,
 ## and since 8 Nov 2026 the colour and size its sentence names),
 ## flight (the time expression's word and the destination country; redesign of 7 Nov 2026),
-## grammar class (the noun of Chinese measure-word questions). Shows: words a game displays
+## grammar class (the noun of Chinese measure-word questions), Library Helper (the book's topic and
+## its category, 17 Nov 2026). Shows: words a game displays
 ## without testing them one at a time (restaurant properties, police clues and objects — two
 ## clue words per round, so not tracked — the month and weekday words of the family game and
 ## the weekday words of the flight board). Cashier money amounts and flight clock times and
@@ -189,6 +190,12 @@ func _game_words() -> void:
 	var mystery = load("res://scripts/buildings/mystery.gd")
 	for raw in mystery.COLORS.keys() + mystery.SHAPES:
 		use(tests, "mystery_luna", str(raw))
+	# Library Helper (17 Nov 2026): a book's first placement tests its topic and its category word.
+	var library = load("res://scripts/buildings/library.gd")
+	for raw in library.BOOK_WORDS.values():
+		use(tests, "library_rosa", str(raw))
+	for category in library.CATEGORIES:
+		use(tests, "library_rosa", str(category[3]))
 	var detective := _json("res://data/detective_game.json")
 	for game in ["lineup", "evidence"]:
 		var id: String = "lineup_rocco" if game == "lineup" else "evidence_mimi"

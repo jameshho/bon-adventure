@@ -289,24 +289,25 @@ Open the box and connect the wires by colour. A pastime; the box itself teaches 
 | Session | One puzzle per opening |
 | Progression | Not designed yet |
 
-## Shelf Mission
+## Library Helper
 
-*還書任務 · Cada libro en su sitio* (English name provisional) — **Rosa (samoyed librarian), by
+*圖書館小幫手 · Ayudante de biblioteca* (named by the user 17 Nov; was Shelf Mission) — **Rosa (samoyed librarian), by
 the NEW BOOKS display**
 
-<img src="../evidence/library-sorting-20261113/cart-filled.png" width="480" alt="Shelf Mission return cart">
+<img src="../evidence/library-refresh-20261117/cart-new-titles.png" width="480" alt="Library Helper return cart">
 
-*Screenshot 13 Nov.*
+*Screenshot 17 Nov.*
 
 Three to six books wait on the return cart. Take each one to a gap in the shelf for its category
-(animals, sports, art, cooking, travel, nature), then tell Rosa when finished; she says what is still wrong.
-Not tracked.
+(animals, sports, music, food, vehicles, plants): the right shelf sparkles, a wrong one wobbles the
+book back into your hand. When every book is home Rosa thanks you and recalls one book's shelf; a
+few minutes later the books are borrowed and a new cart arrives. Tracked: each book's first try.
 [Design](../guides/TOWN_DESIGN_BRIEF.md#library-return-cart-and-book-sorting-game--13-november-2026)
 
 | Learning card | |
 | --- | --- |
-| Purpose | Book categories (animals, sports, art, cooking, travel, nature; 3 books each) by sorting returned books. |
+| Purpose | Book topics (dogs, pizza, guitar…) and the six category words (animal, sport, music, food, vehicle, plant; 3 books each) by sorting returned books. |
 | Words | [Generated list](words.md#shelf-mission) |
-| Tracked in the journal | No (the titles are signs, not words) |
-| Session | One cart of 3–6 books |
-| Progression | Not designed yet |
+| Tracked in the journal | Yes (17 Nov): a book's first placement in a cart tests its topic word and its category word |
+| Session | One cart of 3–6 books; the next cart about 5 minutes after a perfect one |
+| Progression | Not designed yet. Planned (user, 17 Nov 2026): a level with plain spines, so the colours no longer match the shelves |

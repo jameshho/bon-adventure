@@ -55,7 +55,7 @@ and wrong answers per word in the journal.
 | [Mahjong Club](minigames.md#mahjong-club) | Table in front of the home | No | 9 Nov | 16 Nov (camera shows Awoo, bigger pinwheel discards) |
 | [Radar Patrol](minigames.md#radar-patrol) | Airport control tower | No (pastime) | 9 Nov | 15 Nov (easier taps) |
 | [Wire It Up!](minigames.md#wire-it-up) | Electrical box at the home | No (pastime) | 9 Nov | 9 Nov |
-| [Shelf Mission](minigames.md#shelf-mission) (name provisional) | Library | No | 13 Nov | 13 Nov |
+| [Library Helper](minigames.md#library-helper) | Library | Yes | 13 Nov | 17 Nov (new categories and titles, tracked words, replenishing cart, cosy library) |
 
 ### Start screens and app
 
@@ -70,7 +70,7 @@ and wrong answers per word in the journal.
 | --- | --- | --- |
 | [Home](town.md#home) | BonBon's house, pool, garage, mahjong table, electrical box; tutorial rooms | 14 Nov (plants, fewer plushes) |
 | [Supermarket](town.md#supermarket) | Nine departments, every product a word, cashier and clerk | 17 Nov (one word per section: snacks, drinks/home swap) |
-| [Library](town.md#library) | Six category shelves (3 books each), NEW BOOKS display, return cart | 16 Nov |
+| [Library](town.md#library) | Six category shelves (3 books each), NEW BOOKS display at the rear wall, return cart, cosy reading corner | 17 Nov (new categories, desks removed, interior refresh) |
 | [Restaurants](town.md#restaurants) | Alta Cocina, Pizza and Burger, Taquería | 12 Nov (Alta Cocina glass) |
 | [Bakery / Café](town.md#bakery--café) | Cake counter and seating | 28 Oct |
 | [Sports store](town.md#sports-store) | Departments incl. winter sports, plush staff | 9 Nov |
@@ -91,7 +91,7 @@ and wrong answers per word in the journal.
 
 ## Open items worth knowing while reviewing
 
-- **Shelf Mission** still has a provisional English name, and its open assumptions are listed in
+- **Library Helper** (named 17 Nov) has open assumptions (Cake, the 300 s rest) listed in
   its [design record](../guides/TOWN_DESIGN_BRIEF.md#library-return-cart-and-book-sorting-game--13-november-2026).
 - **Hidden for now** (14 Nov, trimming for phones): the minimap, the full map (M) and hyper speed
   are switched off, not deleted ([hidden features](../../README.md#hidden-features)).

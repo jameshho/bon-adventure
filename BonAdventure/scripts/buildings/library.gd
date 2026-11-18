@@ -3,7 +3,7 @@ extends RefCounted
 ## library unit (scenes/town/library.scn).
 ## Bake:  godot --headless --path . --script res://tools/bake_unit.gd -- library
 ## Never rename or remove a baked step (add a new one that undoes it).
-const STEPS := ["coplanar_gaps", "coplanar_gaps_2", "category_shelves", "glass_windows", "big_books", "return_cart", "cart_frame", "cart_spot", "six_categories"]
+const STEPS := ["coplanar_gaps", "coplanar_gaps_2", "category_shelves", "glass_windows", "big_books", "return_cart", "cart_frame", "cart_spot", "six_categories", "new_titles", "rear_display", "cosy_room"]
 
 ## Faces that shared a plane and flickered are set apart (10 Nov 2026,
 ## scripts/buildings/coplanar_gaps.gd).
@@ -50,16 +50,18 @@ const HEADER := Vector2(2.2, .46)
 ## Centres of the four bookcases along each side wall (front to back).
 const CASE_Z := [43.45, 45.9, 48.35, 50.8]
 ## Categories (six since 16 Nov 2026, user: easier for 7-year-olds; Space, Geography, History and
-## Stories were dropped, Travel and Nature added): west wall front to back (three), then east wall
-## back to front (three), all in the front three CASE_Z slots. id, sign text (English source, translated by
-## data/sign_translations.json), colour.
+## Stories were dropped, Travel and Nature added; 17 Nov 2026, user: Animals, Sports, Music, Food,
+## Vehicles, Plants, each in the colour of the category it replaces, so no book fits two shelves):
+## west wall front to back (three), then east wall back to front (three), all in the front three
+## CASE_Z slots. id, sign text (English source, translated by data/sign_translations.json), colour,
+## vocabulary word (data/words.json; the header is that word's object, step new_titles).
 const CATEGORIES := [
-	["animals", "ANIMALS", "4e8f3a"],
-	["sports", "SPORTS", "d4572a"],
-	["art", "ART", "b2437e"],
-	["cooking", "COOKING", "c98d14"],
-	["travel", "TRAVEL", "2f6fb5"],
-	["nature", "NATURE", "3f9a6a"],
+	["animals", "ANIMALS", "4e8f3a", "animal"],
+	["sports", "SPORTS", "d4572a", "sport"],
+	["music", "MUSIC", "b2437e", "music"],
+	["food", "FOOD", "c98d14", "food"],
+	["vehicles", "VEHICLES", "2f6fb5", "vehicle"],
+	["plants", "PLANTS", "3f9a6a", "plant"],
 ]
 const WOOD := "b8783f"
 const WOOD_DARK := "7f5130"
@@ -71,10 +73,10 @@ const GOLD := "d8b85a"
 const BOOK_SHADES := {
 	"animals": ["5a9a44", "72ad4f", "95c467", "bcd98f", "4d8a3e", "a9bf62"],
 	"sports": ["cf532a", "e5744a", "ef986a", "f5c39b", "bb412e", "e09c39"],
-	"art": ["ad417b", "cb6899", "e094b9", "f0c1d7", "964d9b", "dc7787"],
-	"cooking": ["cc951b", "e3b13d", "f0cc6b", "f6e2a4", "d5873a", "bfa045"],
-	"travel": ["2f6fb5", "4a88c8", "78a8dc", "a9c6ea", "3d5fa8", "5aa0b8"],
-	"nature": ["3f9a6a", "58b07e", "86c99e", "b6dfc0", "6aa14a", "d68aa0"],
+	"music": ["ad417b", "cb6899", "e094b9", "f0c1d7", "964d9b", "dc7787"],
+	"food": ["cc951b", "e3b13d", "f0cc6b", "f6e2a4", "d5873a", "bfa045"],
+	"vehicles": ["2f6fb5", "4a88c8", "78a8dc", "a9c6ea", "3d5fa8", "5aa0b8"],
+	"plants": ["3f9a6a", "58b07e", "86c99e", "b6dfc0", "6aa14a", "d68aa0"],
 }
 ## The bookcases' warm, toy-like wood (the reference's orange frames).
 const CASE_WOOD := "d99448"
@@ -84,15 +86,26 @@ const CASE_SHELF := "e6a85c"
 ## The return shelf (book drop: word "book bin", the 1 Nov returns bin's word) and Rosa beside it;
 ## (-13.2, 49.5) until 12 Nov 2026, when the wider four-tier rack for the larger books moved 0.3 east.
 const RACK := Vector3(-12.9, F, 49.55)
-## The 18 picture books to sort (titles chosen by the user, 11 and 16 Nov 2026), three per category;
-## English source text, translated like signs (data/sign_translations.json).
+## The 18 picture books to sort (titles chosen by the user, 11, 16 and 17 Nov 2026), three per
+## category; English source text, translated like signs (data/sign_translations.json).
 const BOOKS := {
-	"animals": ["Dinosaurs", "Dolphins", "Birds"],
-	"sports": ["Soccer", "Basketball", "Swimming"],
-	"art": ["Painting", "Drawing", "Music"],
-	"cooking": ["Pancakes", "Pizza", "Cookies"],
-	"travel": ["Cars", "Trains", "Airplanes"],
-	"nature": ["Flowers", "Trees", "Mountains"],
+	"animals": ["Dogs", "Cats", "Elephants"],
+	"sports": ["Soccer", "Basketball", "Tennis"],
+	"music": ["Guitar", "Piano", "Drums"],
+	"food": ["Pizza", "Cookies", "Cake"],
+	"vehicles": ["Cars", "Trains", "Airplanes"],
+	"plants": ["Flowers", "Trees", "Cactus"],
+}
+## Each title's vocabulary word (data/words.json; 17 Nov 2026, user: the book topics and the
+## category names are tracked words). The display's and the cart's books carry it as word_key, and
+## Library Helper records it (scripts/learning/library_session.gd; tools/vocabulary_report.gd).
+const BOOK_WORDS := {
+	"Dogs": "dog", "Cats": "cat", "Elephants": "elephant",
+	"Soccer": "soccer", "Basketball": "basketball", "Tennis": "tennis",
+	"Guitar": "guitar", "Piano": "piano", "Drums": "drum",
+	"Pizza": "pizza", "Cookies": "cookie", "Cake": "cake",
+	"Cars": "car", "Trains": "train", "Airplanes": "airplane",
+	"Flowers": "flower", "Trees": "tree", "Cactus": "cactus",
 }
 ## The reusable book (scenes/props/book.tscn): sizes of shelved and picture books, the plain
 ## shelf-book look and the picture-book covers (12 Nov 2026).
@@ -427,6 +440,26 @@ func _emblem(id: String, c: Vector3) -> void:
 			art.bx(c + Vector3(-.01, .045, -.04), Vector3(.12, .045, .01), "a9d6ee")
 			for sx in [-.085, .085]:
 				art.cyl(c + Vector3(sx, -.085, -.04), Vector3(.075, .03, .075), "2a2a2a", Art.MATTE, face, 14)
+		"music":
+			var ink := "4a2a6a"
+			art.ball(c + Vector3(-.06, -.07, -.02), Vector3(.085, .06, .04), ink)
+			art.ball(c + Vector3(.07, -.05, -.02), Vector3(.085, .06, .04), ink)
+			art.bx(c + Vector3(-.02, .0, -.02), Vector3(.018, .15, .02), ink)
+			art.bx(c + Vector3(.11, .02, -.02), Vector3(.018, .15, .02), ink)
+			art.bx(c + Vector3(.045, .085, -.02), Vector3(.15, .035, .02), ink, Art.MATTE, Vector3(0, 0, .15))
+		"food":
+			art.ball(c + Vector3(0, -.025, -.01), Vector3(.2, .18, .08), "d9534a")
+			art.ball(c + Vector3(-.045, .01, -.05), Vector3(.05, .04, .02), "f08a7a")
+			art.bx(c + Vector3(.0, .08, -.02), Vector3(.018, .05, .02), "6b4528")
+			art.ball(c + Vector3(.045, .09, -.02), Vector3(.07, .035, .02), "4e8f3a", Art.SATIN, Vector3(0, 0, -.4))
+		"vehicles":
+			_emblem("travel", c)
+		"plants":
+			art.cyl(c + Vector3(0, -.08, -.01), Vector3(.13, .08, .1), "c0703a", Art.SATIN, Vector3.ZERO, 12, .8)
+			art.bx(c + Vector3(0, -.03, -.01), Vector3(.02, .1, .02), "3f8f3a")
+			for k in 3:
+				var a: float = deg_to_rad(-40.0 + k * 40.0)
+				art.ball(c + Vector3(sin(a) * .07, .03 + cos(a) * .05, -.02), Vector3(.075, .045, .03), "4e9e3a", Art.SATIN, Vector3(0, 0, -a))
 		"nature":
 			var stem := "4e8f3a"
 			art.bx(c + Vector3(0, -.06, -.01), Vector3(.02, .15, .02), stem)
@@ -769,3 +802,229 @@ func cart_spot(town: Node3D, _game) -> void:
 		return
 	cart.position = CART_SPOT
 
+
+
+# =============================================================================================
+# new_titles (17 Nov 2026, user; docs/guides/TOWN_DESIGN_BRIEF.md "Library return cart and
+# book-sorting game"): the bookcases, drop and NEW BOOKS display are built again from the current
+# CATEGORIES and BOOKS (Animals, Sports, Music, Food, Vehicles, Plants; distinct titles so no book
+# fits two shelves). Each header becomes its category's word root ("Header <Category>", word from
+# CATEGORIES; the bookcase keeps "bookshelf" without the header's pick), and each display book
+# carries its topic word (BOOK_WORDS) instead of "book". Every bookcase keeps a home gap that fits
+# each of its three picture books, so a full cart can always be shelved.
+# =============================================================================================
+func new_titles(town: Node3D, game) -> void:
+	g = game
+	site = town.get_node_or_null("RelocatedSites/Library")
+	var shelves: Node3D = site.get_node_or_null("CategoryShelves") if site != null else null
+	if shelves == null:
+		push_error("library: category shelves not found")
+		return
+	art = Art.new()
+	rng.seed = 20261117
+	for child in shelves.get_children():
+		var title := String(child.name)
+		if title.begins_with("Bookcase ") or title in ["Book drop", "Return shelf", "New books shelf"]:
+			shelves.remove_child(child)
+			child.free()
+	_cases_and_returns(shelves)
+	var rack := shelves.get_node_or_null("Return shelf")
+	if rack != null:
+		rack.name = "New books shelf"
+		var header := rack.get_node_or_null("RETURNS header") as Label3D
+		if header != null:
+			header.name = "NEW BOOKS header"
+			header.text = "NEW BOOKS"
+			for meta in ["sign_source", "sign_english"]:
+				header.set_meta(meta, "NEW BOOKS")
+		for book in rack.get_node("ReturnBooks").get_children():
+			book.set_meta("word_key", BOOK_WORDS[str(book.get_meta("book_title"))])
+	for category in CATEGORIES:
+		var frame := shelves.get_node_or_null("Bookcase " + String(category[0]).capitalize()) as Node3D
+		if frame == null:
+			continue
+		var pick := frame.get_node_or_null("Interaction2")
+		if pick != null:
+			frame.remove_child(pick)
+			pick.free()
+		var head := _group(frame, "Header " + String(category[0]).capitalize())
+		head.set_meta("word_key", category[3])
+		head.set_meta("learning_object", true)
+		pick_area(head, AABB(Vector3(-HEADER.x * .5 - .12, CASE_HEIGHT + .02, -.09), Vector3(HEADER.x + .24, HEADER.y + .16, .2)))
+	preload("res://scripts/buildings/coplanar_gaps.gd").separate(town, "library", 6)
+
+# =============================================================================================
+# rear_display (17 Nov 2026, user's marked-up top view): the two computer desks at the rear
+# corners go (desks, chairs, monitors, keyboards); the NEW BOOKS display (with its book drop)
+# moves back against the rear wall at DISPLAY_SPOT, east of the help desk; Rosa and the return
+# cart stay beside it (ROSA_SPOT, CART_SPOT_2) with clear walks round them. The east framed print,
+# which the display would hide, moves to the west end of the rear wall.
+# =============================================================================================
+const DISPLAY_SPOT := Vector3(-12.3, F, 51.885)
+const ROSA_SPOT := Vector3(-14.5, F, 49.9)
+const CART_SPOT_2 := Vector3(-16.9, F, 49.25)
+## Where the computer desks and their chairs stood (library source frame, x and z).
+const DESK_ZONES := [Rect2(-19.7, 50.1, 2.4, 2.3), Rect2(-12.7, 50.1, 2.4, 2.3)]
+
+func rear_display(town: Node3D, _game) -> void:
+	site = town.get_node_or_null("RelocatedSites/Library")
+	var shelves: Node3D = site.get_node_or_null("CategoryShelves") if site != null else null
+	if shelves == null:
+		push_error("library: category shelves not found")
+		return
+	var doomed: Array = []
+	for child in site.get_children():
+		if not child is Node3D or child.position.y > 2.0:
+			continue
+		for zone in DESK_ZONES:
+			if zone.has_point(Vector2(child.position.x, child.position.z)):
+				doomed.append(child)
+				break
+	for node in doomed:
+		site.remove_child(node)
+		node.free()
+	var rack := shelves.get_node_or_null("New books shelf") as Node3D
+	var drop := shelves.get_node_or_null("Book drop") as Node3D
+	if rack == null or drop == null:
+		push_error("library: NEW BOOKS display not found")
+		return
+	var shift := DISPLAY_SPOT - rack.position
+	rack.position += shift
+	drop.position += shift
+	var cart := shelves.get_node_or_null("Return cart") as Node3D
+	if cart != null:
+		cart.position = CART_SPOT_2
+	var rosa := site.get_node_or_null(LIBRARIAN) as Node3D
+	if rosa != null:
+		rosa.position = ROSA_SPOT
+	var print2 := shelves.get_node_or_null("Framed print 2") as Node3D
+	if print2 != null:
+		print2.position.x = -20.0
+
+# =============================================================================================
+# cosy_room (17 Nov 2026, user: the room looked sparse; make it warm, chunky and toy-like like the
+# bookcases): a kids' reading corner on a round rug in the STORY CORNER (floor cushions, a floor
+# lamp), striped rugs under the two reading tables, the indoor flower patch in a raised wooden
+# planter, big potted plants in the rear corners where the desks stood, flag bunting along the rear
+# and side walls and a picture poster on the rear wall. Lamps are drawn (pale shades), not lit:
+# no extra lights (performance first, web target). Everything is mesh-kit word roots under
+# "CosyRoom" with blockers on what stands up.
+# =============================================================================================
+const RUG_WARM := ["e8a25a", "f3d7a6", "d9784a"]
+const CUSHION_TINTS := ["e8687a", "f2c231", "5aa0c8", "7cc35a"]
+
+func cosy_room(town: Node3D, game) -> void:
+	g = game
+	site = town.get_node_or_null("RelocatedSites/Library")
+	if site == null:
+		push_error("library: site not found")
+		return
+	art = Art.new()
+	var room := _group(site, "CosyRoom")
+	# Reading corner (front east, the STORY CORNER): round rug, floor cushions, floor lamp, plant.
+	var corner := Vector3(-11.3, F, 40.1)
+	item(room, "Reading corner rug", "rug", mesh_of("Library round rug", func() -> void:
+		art.cyl(Vector3(0, .006, 0), Vector3(2.9, .012, 2.9), "d9784a", Art.MATTE, Vector3.ZERO, 32)
+		art.cyl(Vector3(0, .012, 0), Vector3(2.6, .012, 2.6), "f3d7a6", Art.MATTE, Vector3.ZERO, 32)
+		art.ring(Vector3(0, .02, 0), Vector3(1.9, .006, 1.9), "e8a25a", Art.MATTE, Vector3.ZERO, .82, 32)
+		art.cyl(Vector3(0, .02, 0), Vector3(.9, .006, .9), "f2c231", Art.MATTE, Vector3.ZERO, 24)), corner, 0.0,
+		[AABB(Vector3(-1.45, 0, -1.45), Vector3(2.9, .04, 2.9))])
+	var spots := [Vector3(-11.3, F, 39.05), Vector3(-12.5, F, 41.05), Vector3(-10.05, F, 39.55), Vector3(-11.15, F, 41.35)]
+	for k in spots.size():
+		var tint: String = CUSHION_TINTS[k]
+		var cushion := item(room, "Floor cushion %d" % (k + 1), "cushion", mesh_of("Library floor cushion " + tint, func() -> void:
+			art.ball(Vector3(0, .15, 0), Vector3(.7, .3, .7), tint, Art.SATIN, Vector3.ZERO, 16)
+			art.ball(Vector3(0, .29, 0), Vector3(.14, .04, .14), art.darker(tint), Art.SATIN, Vector3.ZERO, 10)), spots[k], k * .7)
+		blocker(cushion, AABB(Vector3(-.3, 0, -.3), Vector3(.6, .3, .6)))
+	_floor_lamp(room, "Reading corner lamp", Vector3(-9.75, F, 41.95))
+	_big_plant(room, "Reading corner plant", Vector3(-9.75, F, 38.3), .8)
+	# Striped rugs under the reading tables.
+	for k in 2:
+		var x: float = -18.0 if k == 0 else -12.0
+		var tints: Array = [["5aa0c8", "a9d6ee", "f3ead6"], ["d4572a", "f0b87a", "f3ead6"]][k]
+		item(room, "Reading table rug %d" % (k + 1), "rug", mesh_of("Library table rug %d" % k, func() -> void:
+			art.bx(Vector3(0, .006, 0), Vector3(2.7, .012, 3.9), tints[0])
+			for j in 5:
+				art.bx(Vector3(0, .013, -1.6 + j * .8), Vector3(2.45, .006, .4), tints[1 + j % 2])
+			for sx in [-1.0, 1.0]:
+				for j in 9:
+					art.ball(Vector3(sx * 1.38, .01, -1.8 + j * .45), Vector3(.06, .02, .12), tints[0], Art.MATTE, Vector3.ZERO, 6)), Vector3(x, F, 44.5), 0.0,
+			[AABB(Vector3(-1.35, 0, -1.95), Vector3(2.7, .03, 3.9))])
+	# The indoor flower patch in a raised wooden planter (the blossoms rise with it).
+	var bed := site.get_node_or_null("Flower bed3") as Node3D
+	var planter_at := Vector3(-17.92, F, 39.22)
+	if bed != null:
+		site.remove_child(bed)
+		bed.free()
+	for child in site.get_children():
+		if child is Node3D and String(child.name).begins_with("Flower blossom") and absf(child.position.z - 39.2) < .4 and child.position.x < -16.5:
+			child.position.y += .42
+	var planter := item(room, "Flower planter", "planter", mesh_of("Library flower planter", func() -> void:
+		art.bx(Vector3(0, .2, 0), Vector3(1.85, .4, .6), CASE_WOOD, Art.SATIN)
+		art.bx(Vector3(0, .41, 0), Vector3(1.95, .05, .7), CASE_SHELF, Art.SATIN)
+		art.bx(Vector3(0, .425, 0), Vector3(1.75, .03, .5), "6b4a2b")
+		for k in 7:
+			art.ball(Vector3(-.78 + k * .26, .47, (k % 2) * .12 - .06), Vector3(.22, .1, .16), "58b24a", Art.SATIN, Vector3.ZERO, 8)), planter_at, 0.0,
+		[AABB(Vector3(-.98, 0, -.35), Vector3(1.96, .45, .7))])
+	blocker(planter, AABB(Vector3(-.98, 0, -.35), Vector3(1.96, .6, .7)))
+	# Big potted plants in the rear corners, a floor lamp beside the west one.
+	_big_plant(room, "Rear corner plant", Vector3(-20.15, F, 51.65), 1.2)
+	_big_plant(room, "Rear east plant", Vector3(-10.05, F, 51.75), 1.0)
+	_floor_lamp(room, "Rear corner lamp", Vector3(-19.1, F, 51.85))
+	# Bunting along the rear wall (above the clock) and the two side walls (above the bookcases).
+	_bunting(room, "Rear bunting", Vector3(-20.6, 4.85, REAR - .06), Vector3(-9.4, 4.85, REAR - .06), .3)
+	_bunting(room, "West bunting", Vector3(WEST + .06, 4.35, 38.4), Vector3(WEST + .06, 4.35, 51.8), .35)
+	_bunting(room, "East bunting", Vector3(EAST - .06, 4.35, 38.4), Vector3(EAST - .06, 4.35, 51.8), .35)
+	# A picture poster on the rear wall (an open book with stars: no text to translate).
+	item(room, "Reading poster", "poster", mesh_of("Library reading poster", func() -> void:
+		art.bx(Vector3(0, 0, .01), Vector3(.82, 1.0, .02), "2f6b4f", Art.SATIN)
+		art.bx(Vector3(0, 0, -.002), Vector3(.72, .9, .01), "fdf3dc")
+		art.bx(Vector3(0, .2, -.009), Vector3(.62, .42, .006), "a9d6ee")
+		for sx in [-1.0, 1.0]:
+			art.bx(Vector3(sx * .15, -.12, -.012), Vector3(.28, .2, .01), "f6efdf", Art.MATTE, Vector3(0, 0, sx * -.18))
+			art.bx(Vector3(sx * .15, -.12, -.008), Vector3(.3, .22, .006), "d9534a", Art.MATTE, Vector3(0, 0, sx * -.18))
+		for st in [Vector3(-.18, .28, .07), Vector3(.05, .34, .09), Vector3(.2, .2, .06), Vector3(-.03, .12, .05)]:
+			art.cyl(Vector3(st.x, st.y, -.016), Vector3(st.z, .006, st.z), "f2c231", Art.MATTE, Vector3(PI / 2, 0, 0), 5)), Vector3(-17.0, 2.5, REAR - .03), 0.0)
+
+## A tall potted plant: a chunky terracotta pot and a round bush of leaves, `h` metres high.
+func _big_plant(parent: Node3D, title: String, p: Vector3, h: float) -> void:
+	var pot := item(parent, title + " pot", "flowerpot", mesh_of("Library big pot", func() -> void:
+		art.cyl(Vector3(0, .22, 0), Vector3(.52, .44, .52), "c0703a", Art.SATIN, Vector3.ZERO, 16, .8)
+		art.cyl(Vector3(0, .45, 0), Vector3(.56, .06, .56), "d9824a", Art.SATIN, Vector3.ZERO, 16)
+		art.cyl(Vector3(0, .47, 0), Vector3(.46, .02, .46), "6b4a2b", Art.MATTE, Vector3.ZERO, 12)), p, 0.0)
+	blocker(pot, AABB(Vector3(-.3, 0, -.3), Vector3(.6, h, .6)))
+	item(parent, title, "plant", mesh_of("Library big plant %.1f" % h, func() -> void:
+		art.cyl(Vector3(0, .45 + (h - .5) * .3, 0), Vector3(.05, (h - .5) * .6, .05), "6b4a2b", Art.MATTE, Vector3.ZERO, 6)
+		for k in 7:
+			var a := TAU * k / 7.0
+			var r := .18 if k % 2 == 0 else .12
+			art.ball(Vector3(sin(a) * r, h - .25 + (k % 3) * .08, cos(a) * r), Vector3(.34, .28, .34), "4e9e3a" if k % 2 else "6ab04a", Art.SATIN, Vector3.ZERO, 10)
+		art.ball(Vector3(0, h - .08, 0), Vector3(.36, .3, .36), "58b24a", Art.SATIN, Vector3.ZERO, 10)), p, .4)
+
+## A chunky floor lamp with a pale warm shade (drawn only; it adds no light).
+func _floor_lamp(parent: Node3D, title: String, p: Vector3) -> void:
+	var lamp := item(parent, title, "floor lamp", mesh_of("Library floor lamp", func() -> void:
+		art.cyl(Vector3(0, .03, 0), Vector3(.42, .06, .42), CASE_WOOD_DARK, Art.SATIN, Vector3.ZERO, 16)
+		art.cyl(Vector3(0, .8, 0), Vector3(.06, 1.5, .06), CASE_WOOD, Art.SATIN, Vector3.ZERO, 8)
+		art.cyl(Vector3(0, 1.62, 0), Vector3(.5, .36, .5), "fff1cf", Art.MATTE, Vector3.ZERO, 16, .62)
+		art.ring(Vector3(0, 1.45, 0), Vector3(.52, .03, .52), GOLD, Art.SATIN, Vector3.ZERO, .9, 16)), p, 0.0)
+	blocker(lamp, AABB(Vector3(-.22, 0, -.22), Vector3(.44, 1.8, .44)))
+
+## A string of triangular felt flags sagging from `a` to `b` (`sag` metres at the middle).
+func _bunting(parent: Node3D, title: String, a: Vector3, b: Vector3, sag: float) -> void:
+	var length := a.distance_to(b)
+	var count := int(length / .42)
+	var dir := (b - a).normalized()
+	var yaw := atan2(-dir.z, dir.x)
+	var tints := ["e8687a", "f2c231", "5aa0c8", "7cc35a", "d9784a"]
+	var mesh := mesh_of(title, func() -> void:
+		for k in count + 1:
+			var t := float(k) / count
+			var x := (t - .5) * length
+			var y := -sag * 4.0 * t * (1.0 - t)
+			if k < count:
+				var t2 := float(k + 1) / count
+				var y2 := -sag * 4.0 * t2 * (1.0 - t2)
+				art.bx(Vector3(x + length / count * .5, (y + y2) * .5, 0), Vector3(length / count + .01, .012, .012), "8a5a2e", Art.MATTE, Vector3(0, 0, atan2(y2 - y, length / count)))
+				art.prism(Vector3(x + length / count * .5, (y + y2) * .5 - .13, 0), Vector3(.26, .24, .01), tints[k % tints.size()], Art.MATTE, Vector3(0, 0, PI)))
+	item(parent, title, "flag", mesh, (a + b) * .5, yaw)

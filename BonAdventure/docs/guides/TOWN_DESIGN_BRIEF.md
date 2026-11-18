@@ -453,7 +453,7 @@ These requirements preserve the user's intended contents without assigning new v
 | Building | Intended program and exterior constraints |
 | --- | --- |
 | House | Interior complete: preserve rooms, furniture, garage and outdoor features. Recognizable residential exterior; preserve the current home design. |
-| Library | Interior complete: retain bookshelves, reading areas, furniture and learning objects. Welcoming entrance and suitable reading windows. The user authorized the 1 November 2026 refresh ([reference table, wall finish and story ledge](#library-refresh-reference-table-dictionary-and-atlas--1-november-2026)) and the 11 November 2026 [category shelves, return shelf, 24 picture books and Rosa the librarian](#library-category-shelves-and-return-shelf--11-november-2026) and the 12 November 2026 [50 % larger books with new cover pictures, four-row bookcases, four-tier return rack and reusable book scene](#library-books-50--larger--12-november-2026); no other interior changes are approved. The shelving mission's mechanics are not designed yet (the user will describe them). |
+| Library | Interior complete: retain bookshelves, reading areas, furniture and learning objects. Welcoming entrance and suitable reading windows. The user authorized the 1 November 2026 refresh ([reference table, wall finish and story ledge](#library-refresh-reference-table-dictionary-and-atlas--1-november-2026)) and the 11 November 2026 [category shelves, return shelf, 24 picture books and Rosa the librarian](#library-category-shelves-and-return-shelf--11-november-2026) and the 12 November 2026 [50 % larger books with new cover pictures, four-row bookcases, four-tier return rack and reusable book scene](#library-books-50--larger--12-november-2026), and on 17 November 2026 [new categories and titles, the computer desks removed, the NEW BOOKS display at the rear wall and a cosy interior refresh](#library-return-cart-and-book-sorting-game--13-november-2026) (second round); no other interior changes are approved. The shelving mission's mechanics are not designed yet (the user will describe them). |
 | School | Compact **general/science teaching areas on one floor**. Latest wall requirement: exactly one center divider from the rear wall to the depth midpoint, with the entire front half open; no other interior walls or partitions. This supersedes the enclosed two-classroom/central-hall layout. General classroom: student desks/chairs, teacher desk, whiteboard, clock, bookshelves, stationery/supplies, subject books including geography, biology, chemistry, history, mathematics and economics, globe, maps and educational displays. Science classroom: laboratory tables, microscope, human skeleton, anatomy models/posters, periodic table and basic science equipment/displays. No separate classroom per subject. Exterior must read as a school with clear entry, windows and signage. The single-story shell and single rear divider now exist; detailed equipment/furnishing is still future work. Retained art/music/geography props are interim content-preservation placements, not new permanent vocabulary assignments. |
 | Hospital | **Three stories, approximately four rooms per floor.** First: reception, emergency care, examination rooms, waiting. Second: patient rooms, intensive care, operating room. Third: imaging, laboratory, physical therapy, doctors' offices. Functional three-floor elevator required by the 26 October remodel request; no basement. This program supersedes the older department arrangement and rear-wing design requirement. Preserve helicopter, functional landing/access envelope and hospital-bed design; retain/reuse other complicated working features unless a scoped decision explicitly replaces them. Clear medical entrance/signage and emergency vehicle access. |
 | Bank | Several exterior ATMs; reception/waiting, glass-partition teller counters, private consultation offices, stocks/bonds/market information screens, banker and businessperson NPCs. Everyday banking/basic finance; preserve useful vault. Modest modern bank with prominent entry. |
@@ -3574,12 +3574,45 @@ into `scenes/town/library.scn`); the game `scripts/learning/library_session.gd`
 | Placing | Every gap on the eight bookcases (`Gaps/Gap …`) has an Interactable: "E" while the hand holds a cart book and the gap is empty. The book stands spine out, cover width across the shelf. Right category: slides in, hops, ten gold sparks; wrong: placed with nothing else. A shelved book can be taken again (E) |
 | Rosa | Greeting → "Yes, I'll help!" → explains (cart, category shelves, tell me when finished). During the game, talking: "Are you finished?" with I'm finished! / Not yet / Stop helping. The check order: cart (or hand) → wrong shelf (first wrong book's shelf) → perfect. She shows "!" once the cart is empty. Stop helping removes the game's books. After perfect the books stay shelved until the next game clears them |
 
-Not decided by the user (assumed, easy to change): the "Stop helping" exit, Rosa's "!" when the
-cart is empty, books staying shelved until the next game, game name still "Shelf Mission"
-(provisional), no practice tracking or progress bar (titles are signs, not vocabulary).
-Check: `docs/evidence/library-sorting-20261113/verify.gd` (runner id `library_sorting`); renders in the
-same folder. Verification:
-[final verification](FINAL_VERIFICATION.md#library-book-sorting-game--13-november-2026).
+Not decided by the user (assumed, easy to change): books staying shelved until the next game,
+game name "Shelf Mission" (provisional until 17 Nov 2026, when the user named it **Library Helper**, ES *Ayudante de biblioteca*, ZH *圖書館小幫手*), no practice tracking or progress bar (titles are
+signs, not vocabulary). The "Stop helping" exit and Rosa's "!" when the cart is empty were
+replaced on 17 Nov 2026 (below).
+
+**User review, 17 Nov 2026 (supersedes the check and the dialogue above).** The user kept the
+core mechanic and approved these changes:
+
+| Item | Now |
+| --- | --- |
+| Rosa's check | Removed. No "Are you finished?", no "I'm finished" / "Not yet", no `cart_left` / `wrong_<category>` lines and no "!" when the cart is empty. The game ends by itself half a second after the last book lands on a gap of its own category |
+| Wrong shelf | Instant feedback: the book wobbles side to side along the shelf (no sparks), then goes back to its cart slot and into the hand (if the hand is still free). It never stays on a wrong shelf. Right shelf unchanged (slide, hop, sparks) |
+| Talking to Rosa mid-game | Holding one of the books: "You're holding a book! Find the shelf with the same sign." Otherwise "Just one more book to go!" / "Just {count} more books to go!" (count in words). Choices **OK** (closes) and **I'll help later** (replaces "Stop helping": the books go away, "That's OK. Thanks anyway!") |
+| Greeting | The full "Hi! I'm Rosa, the librarian…" the first time in a run; afterwards "Welcome back! I have more books to put away. Can you help?" |
+| Start | Two short lines: "Thank you! The books are on the cart." (4 s) then "Put each book on its shelf. Look at the signs!" |
+| Win | "Everything looks perfect! Thank you so much for your help!" plus one book from this cart: "Remember: the book "Pizza" goes on the Cooking shelf!" (title and shelf from the signs, in both languages); when it closes, "Another cart of books?" (Yes fills a fresh cart, Not now says goodbye) |
+
+Deferred by the user (17 Nov 2026): a level 2 with plain spines (today a book's spine colour
+matches its shelf) and progression in general; journal tracking of the book titles waits for new,
+more distinct categories and titles, which are being discussed.
+Check (first round): `docs/evidence/library-dialogue-20261117/verify.gd`; renders in the same
+folder. Verification: [final verification](FINAL_VERIFICATION.md#library-game-review--17-november-2026).
+
+**Second round, 17 Nov 2026 (user, from an annotated top view).**
+
+| Item | Now |
+| --- | --- |
+| Categories and titles | Distinct, so no book fits two shelves; each category keeps the colour of the one it replaces: **Animals** (Dogs, Cats, Elephants), **Sports** (Soccer, Basketball, Tennis), **Music** (Guitar, Piano, Drums; was Art), **Food** (Pizza, Cookies, Cake; was Cooking), **Vehicles** (Cars, Trains, Airplanes; was Travel), **Plants** (Flowers, Trees, Cactus; was Nature). The user removed Pancakes; Cake (an existing word) keeps three books a category, an assumption told to the user. "Vehicles" was rejected as a hard word on 16 Nov; the user approved it now. New cover pictures and header emblems (music notes, an apple, the car, a potted plant) in the same style |
+| Words | Tracked (user): each title has a vocabulary word (`BOOK_WORDS`, e.g. Drums → *drum*) and each category one (`CATEGORIES`: *animal, sport, music, food, vehicle, plant*). New words in `data/words.json`: *soccer* (the sport; *soccer ball* stays the ball), *tennis*, *animal*, *sport*, *music*, *vehicle*. The display and cart books carry their topic word (a click names the topic), each bookcase header is its category word's object. A book's first placement in a cart is one practice question for both words (right shelf positive, wrong negative) |
+| Gaps | Every bookcase has a home gap that fits each of its three picture books, so a full cart (at most three books of one category) can always be shelved; a wrong shelf still refuses the book (wobble, back to the hand) |
+| Map | The two rear-corner computer desks (desks, chairs, monitors, keyboards) are removed. The NEW BOOKS display and its book drop stand against the rear wall at (−12.3, 51.885), east of the help desk; Rosa at (−14.5, 49.9) between it and the return cart at (−16.9, 49.25). The east framed print moves to the west end of the rear wall (x −20) |
+| Replenish | No "Another cart?". After a perfect cart the sorted books stay on the shelves and the cart stays empty; Rosa shows no "!" and says "All the books are back. Come back later!". After **300 s of play (assumption, about 5 real minutes; the game clock does not advance)** the shelved books are "borrowed" (they leave the gaps), a new cart fills and Rosa offers again. Runtime only; the cart is also filled at load. "I'll help later" still clears the books |
+| Interior | `CosyRoom` (step `cosy_room`): a round rug with four chunky floor cushions, a floor lamp and a big plant in the STORY CORNER; striped rugs under both reading tables; the indoor flower patch now grows in a raised wooden planter; big potted plants in both rear corners and a floor lamp in the west one; felt flag bunting along the rear and side walls; a picture poster (open book and stars, no text) on the rear wall. Lamps are drawn, not lit (no extra lights) |
+
+Owner: steps `new_titles`, `rear_display`, `cosy_room` in `scripts/buildings/library.gd`;
+covers in `scripts/world/library_book.gd`; game `scripts/learning/library_session.gd`.
+Check: `docs/evidence/library-refresh-20261117/verify.gd` (runner id `library_sorting`, replacing
+the first-round check); before/after views by `capture.gd` in the same folder. Verification:
+[final verification](FINAL_VERIFICATION.md#library-new-titles-tracking-and-cosy-room--17-november-2026).
 
 ## Zoo zones — 12 November 2026
 

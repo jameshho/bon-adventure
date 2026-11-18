@@ -294,6 +294,10 @@ const COVERS := {
 	"Dolphins": ["2f8fd0", "7cc8ec"], "Cars": ["d9534a", "a8dcf0"], "Trains": ["3f6fb5", "c4e8f5"],
 	"Airplanes": ["4aa0d8", "bfe6f7"], "Flowers": ["e07a9a", "c4e8f5"], "Trees": ["4e9e3a", "a8dcf0"],
 	"Fairy Tale": ["8a5fc8", "c4e8f5"], "Mystery": ["2f3560", "3b3f6b"], "Adventure": ["4e9e3a", "a8dcf0"],
+	# 17 Nov 2026 (user: Animals, Sports, Music, Food, Vehicles, Plants).
+	"Dogs": ["c98a4a", "c4e8f5"], "Cats": ["e8963a", "fbe6cf"], "Elephants": ["7f8fa6", "c4e8f5"],
+	"Tennis": ["3f8fc0", "7cc35a"], "Guitar": ["d0508a", "fbe6cf"], "Piano": ["2f3560", "e3e8f5"],
+	"Drums": ["d9534a", "fbe6cf"], "Cake": ["e07a9a", "f9e3ea"], "Cactus": ["4e9e3a", "f6e2a4"],
 }
 
 const DARK := "2a2238"
@@ -589,6 +593,96 @@ func _picture(title: String, pc: Vector3) -> void:
 			_disc(pc, .062, .052, .05, "f9d3dc", 4)
 			for chip in [Vector3(-.035, .025, .02), Vector3(.0, .042, .016), Vector3(-.008, -.005, .02), Vector3(.035, .002, .018), Vector3(-.042, -.03, .016), Vector3(.012, -.042, .02), Vector3(.045, -.035, .015)]:
 				_bump(pc, chip.x, chip.y, chip.z, chip.z, "5a3420", 4, .008)
+		"Dogs":
+			var fur := "c98a4a"
+			for sx in [-1.0, 1.0]:
+				_bump(pc, sx * .058, .012, .036, .078, "8a5a2e", 2)
+			_bump(pc, 0, .0, .11, .1, fur, 3)
+			_bump(pc, 0, -.03, .06, .042, "f3dcb6", 4)
+			_disc(pc, -.026, .018, .016, DARK, 5)
+			_disc(pc, .026, .018, .016, DARK, 5)
+			_bump(pc, 0, -.016, .026, .018, DARK, 6, .008)
+			_bump(pc, 0, -.048, .016, .02, "e8687a", 5, .006)
+		"Cats":
+			var fur := "f0a24a"
+			for sx in [-1.0, 1.0]:
+				_tri(pc, sx * .042, .052, .042, .046, fur, 2, sx * .25)
+				_tri(pc, sx * .042, .048, .02, .024, "f6c8b0", 3, sx * .25)
+			_bump(pc, 0, -.004, .12, .1, fur, 3)
+			for sx in [-1.0, 1.0]:
+				_flat(pc, sx * .03, .02, .022, .006, "c96f22", 5, sx * .2)
+				_disc(pc, sx * .026, .0, .018, "4e9e3a", 5)
+				_flat(pc, sx * .026, .0, .005, .015, DARK, 6)
+				for k in 2:
+					_seg(pc, Vector2(sx * .024, -.026 + k * .012), Vector2(sx * .075, -.032 + k * .022), .003, "5a3a22", 6)
+			_tri(pc, 0, -.018, .016, .012, "e8687a", 6, PI)
+		"Elephants":
+			var skin := "9aa7b8"
+			for sx in [-1.0, 1.0]:
+				_bump(pc, sx * .055, .015, .06, .08, "8494a8", 2)
+				_bump(pc, sx * .055, .015, .04, .058, "f0b8c4", 3, .006)
+			_bump(pc, 0, .02, .08, .08, skin, 4)
+			_seg(pc, Vector2(0, -.005), Vector2(0, -.055), .028, skin, 5)
+			_seg(pc, Vector2(0, -.055), Vector2(.022, -.072), .024, skin, 5)
+			_disc(pc, -.022, .03, .012, DARK, 7)
+			_disc(pc, .022, .03, .012, DARK, 7)
+			for sx in [-1.0, 1.0]:
+				_tri(pc, sx * .026, -.022, .012, .03, WHITE, 6, PI + sx * .3)
+		"Tennis":
+			_disc(pc, 0, 0, .148, "9fbf2a", 2)
+			_disc(pc, 0, 0, .138, "d8ee4a", 3)
+			_bump(pc, -.03, .03, .04, .03, "eaf77a", 3, .004)
+			_arc(pc, -.1, 0, .072, -48, 48, .009, WHITE, 5)
+			_arc(pc, .1, 0, .072, 132, 228, .009, WHITE, 5)
+		"Guitar":
+			var wood := "d98a3a"
+			_seg(pc, Vector2(.0, .0), Vector2(.0, .078), .02, "7a4a22", 2)
+			_flat(pc, 0, .078, .03, .02, "5a3420", 3)
+			_disc(pc, 0, -.048, .085, wood, 3)
+			_disc(pc, 0, -.0, .065, wood, 3)
+			_disc(pc, 0, -.03, .026, "5a3420", 4)
+			_flat(pc, 0, -.064, .04, .008, "5a3420", 4)
+			for x in [-.004, .004]:
+				_flat(pc, x, .012, .0015, .13, "eae3d2", 5)
+		"Piano":
+			_flat(pc, 0, -.004, .18, .118, DARK, 1)
+			for k in 7:
+				_flat(pc, -.0765 + k * .0255, -.01, .023, .1, WHITE, 2)
+			for k in [0, 1, 3, 4, 5]:
+				_flat(pc, -.064 + k * .0255, .016, .014, .056, DARK, 3)
+		"Drums":
+			_bump(pc, 0, -.03, .15, .1, "c0392b", 2)
+			_flat(pc, 0, -.03, .15, .078, "d9534a", 2)
+			for x in [-.05, -.017, .017, .05]:
+				_seg(pc, Vector2(x, -.062), Vector2(x + .015, .002), .004, "f2c231", 3)
+			_bump(pc, 0, .012, .15, .038, "f4efe2", 4)
+			_seg(pc, Vector2(-.06, .02), Vector2(-.02, .078), .008, "c98a4a", 6)
+			_seg(pc, Vector2(.06, .02), Vector2(.02, .078), .008, "c98a4a", 6)
+			_disc(pc, -.06, .02, .016, "f4efe2", 7)
+			_disc(pc, .06, .02, .016, "f4efe2", 7)
+		"Cake":
+			_bump(pc, 0, -.07, .17, .022, WHITE, 2)
+			_flat(pc, 0, -.04, .13, .046, "f08aa8", 3)
+			_flat(pc, 0, .01, .1, .05, "f6c8d8", 3)
+			for k in 5:
+				_disc(pc, -.052 + k * .026, -.016, .022, WHITE, 4)
+			for k in 4:
+				_disc(pc, -.038 + k * .025, .036, .02, WHITE, 4)
+			_flat(pc, 0, .052, .01, .03, "7aa6d6", 5)
+			_bump(pc, 0, .074, .014, .02, "f2c231", 6, .008)
+			_disc(pc, -.03, -.044, .014, "c0392b", 5)
+			_disc(pc, .03, -.044, .014, "c0392b", 5)
+		"Cactus":
+			var green := "4e9e3a"
+			_flat(pc, 0, -.064, .08, .04, "c0703a", 2)
+			_flat(pc, 0, -.044, .09, .012, "a85a2e", 3)
+			_seg(pc, Vector2(0, -.035), Vector2(0, .06), .042, green, 3)
+			_seg(pc, Vector2(-.021, .0), Vector2(-.05, .0), .022, green, 3)
+			_seg(pc, Vector2(-.05, .0), Vector2(-.05, .035), .022, green, 3)
+			_seg(pc, Vector2(.021, -.012), Vector2(.048, -.012), .022, green, 3)
+			_seg(pc, Vector2(.048, -.012), Vector2(.048, .02), .022, green, 3)
+			_flat(pc, 0, .012, .004, .08, "3a7a2a", 4)
+			_bump(pc, 0, .078, .024, .02, "f08aa8", 5, .008)
 		"Fairy Tale":
 			_flat(pc, 0, -.077, .19, .016, "9fd38a", 1)
 			var wall := "f59ac0"
