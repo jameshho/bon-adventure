@@ -1,0 +1,64 @@
+[gd_scene format=3]
+
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/chick/body.res" id="1_tpreg"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/chick/beak.res" id="2_6mwtc"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/chick/crest.res" id="3_4ia0x"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/chick/wings.res" id="4_f4omn"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/chick/tail.res" id="5_jh4h8"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/chick/left_eye.res" id="6_uc5mp"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/chick/right_eye.res" id="7_2xpv8"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uqddx"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.86
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_au22k"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+metallic_specular = 0.2
+roughness = 0.3
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_o2ow7"]
+size = Vector3(0.25806454, 0.4, 0.35777128)
+
+[node name="ChickClayDisplay" type="Node3D" unique_id=1513124974]
+metadata/source = "User's Chick Character Blueprint, relaxed idle (16 Nov 2026)"
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=543112214]
+material_override = SubResource("StandardMaterial3D_uqddx")
+mesh = ExtResource("1_tpreg")
+
+[node name="Beak" type="MeshInstance3D" parent="." unique_id=1873264267]
+material_override = SubResource("StandardMaterial3D_uqddx")
+mesh = ExtResource("2_6mwtc")
+
+[node name="Crest" type="MeshInstance3D" parent="." unique_id=48374001]
+material_override = SubResource("StandardMaterial3D_uqddx")
+mesh = ExtResource("3_4ia0x")
+
+[node name="Wings" type="MeshInstance3D" parent="." unique_id=565391010]
+material_override = SubResource("StandardMaterial3D_uqddx")
+mesh = ExtResource("4_f4omn")
+
+[node name="Tail" type="MeshInstance3D" parent="." unique_id=1275254096]
+material_override = SubResource("StandardMaterial3D_uqddx")
+mesh = ExtResource("5_jh4h8")
+
+[node name="LeftEye" type="MeshInstance3D" parent="." unique_id=149838047]
+transform = Transform3D(-0.87725693, 0.030189736, -0.47907078, -0.059089214, 0.9836384, 0.17018823, 0.4763703, 0.17760673, -0.86111975, -0.065689154, 0.2516129, -0.12687759)
+material_override = SubResource("StandardMaterial3D_au22k")
+cast_shadow = 0
+mesh = ExtResource("6_uc5mp")
+
+[node name="RightEye" type="MeshInstance3D" parent="." unique_id=219094422]
+transform = Transform3D(-0.87725693, -0.030189736, 0.47907078, 0.059089214, 0.9836384, 0.17018823, -0.4763703, 0.17760673, -0.86111975, 0.065689154, 0.2516129, -0.12687759)
+material_override = SubResource("StandardMaterial3D_au22k")
+cast_shadow = 0
+mesh = ExtResource("7_2xpv8")
+
+[node name="Footprint" type="StaticBody3D" parent="." unique_id=836709741]
+
+[node name="@CollisionShape3D@2" type="CollisionShape3D" parent="Footprint" unique_id=310185673]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0.002932541)
+shape = SubResource("BoxShape3D_o2ow7")

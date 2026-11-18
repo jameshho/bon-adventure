@@ -87,7 +87,7 @@ and wrong answers per word in the journal.
 | [Chapel](town.md#chapel) | Rebuilt sanctuary | 12 Nov |
 | [Farm barn](town.md#farm-barn) | Hayloft, tools and supplies | 1 Nov |
 | [Playground](town.md#playground) | Towers, slide, rideable swings | 1 Nov |
-| [Park, zoo and coast](town.md#park-zoo-and-coast) | Public garden, four zoo zones, island; the clay animals walk; the zoo's tiger and the farm's horse are the new clay models; clay capybara walks in Wildlife Plains (word: capybara); clay rooster on the farm lawn, clay monkey inside the zoo gate | 17 Nov (clay capybara walks) |
+| [Park, zoo and coast](town.md#park-zoo-and-coast) | Public garden, four zoo zones, island; the clay animals walk; the zoo's tiger and the farm's horse are the new clay models; clay capybara walks in Wildlife Plains (word: capybara); clay rooster and clay chick on the farm lawn, clay monkey inside the zoo gate | 18 Nov (clay chick) |
 
 ## Open items worth knowing while reviewing
 

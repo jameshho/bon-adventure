@@ -1099,6 +1099,53 @@ the head and neck read paler and yellower than on the sheet (not deepened; open,
 Not checked: the running game, a web export or a phone; no test suite was run. Walking and
 blinking are a separate step the user has not approved yet (needs its own bone setup).
 
+## Clay chick display (18 Nov 2026, approved by the user and placed on the farm)
+
+`scenes/animals/chick_clay.tscn` is a static study of the user's "Chick Character Blueprint"
+turnaround (relaxed idle pose), built by `tools/build_chick_clay.gd` from
+`scripts/characters/chick_clay.gd` (extends the clay cow: same mesher, paint and ray helpers;
+meshed 9 times life size, the beak, crown and tail finer still with `_mesh_fine`; 141,684
+triangles; 0.4 town units to the top of the crown feathers, the user's choice, as built).
+"Chick" is not in `ANIMAL_HEIGHTS` or the vocabulary, and the farm's hen is unchanged. One
+instance, `ParkZoo/ChickClayDisplay`, stands on the farm lawn at town (71.7, 0.12, 103.8),
+beside the [clay rooster](#clay-rooster-display-17-nov-2026-approved-by-the-user-and-placed-on-the-farm)
+(0.8 town units toward the farm gate from it; the user's choice), facing the gate like the
+rooster (base step `chick_clay_display`, which also stores it as plain nodes with
+`unpack_clay_animals`). It has a box footprint and no word, movement, animation or interaction.
+A rebuilt prefab reaches the farm through its mesh files as long as the part names stay the same.
+
+Built ready for rigging like the clay pig: head, body, legs and feet are one fused mesh (`Body`);
+`Beak`, `Crest`, `Wings` and `Tail` are separate clay pieces; each eye is its own mesh centred on
+its own node (`LeftEye`, `RightEye`: local x across the eye, y up the eye, z out of the face; one
+painted dome that follows the head, with a catch-light). There is no `Face details` part: the
+chick has no brows or smile lines, and the mouth is the step between the two halves of the beak.
+The cream belly, the blush and a soft shade round each eye are painted on the skin.
+
+Shape (user's direction, 18 Nov 2026, after three earlier passes read as one egg): head and body
+are two round volumes with small blends, the head wider and fullest low at the cheeks, a soft
+fold at the neck that shows at the sides and back, and a rump behind the head. The crown is
+three smooth curved feathers (`_plume`: one round-ended tube each). Each wing is one thick
+smooth oval pad along the flank with three scalloped tips at the rear (`_wing_piece`).
+
+Renders: `docs/evidence/chick-clay-20261116/` (`capture.gd` loads only the chick scene:
+`compare.png` = each blueprint view above the model's at the same scale, `face.png`,
+`details.png`, `overlay.png`, `turnaround.png`; `reference.png` is the user's sheet). Town views
+(`capture.gd -- zoo`, isolated `HOME`, `VT_FOCUS=all VT_SPAWN=none`, `dev_focus.txt` = `all`,
+once): `zoo-close.png`, `zoo-front.png`, `zoo-side.png`, `zoo-location.png`; printed display y
+0.156 world, physics ground beside it -0.046, the offset the other clay displays use; the feet
+meet the grass in the views. The bake applied 1 step (13,975 nodes); `compare_scenes.gd` shows
+the display's 10 nodes added, and 26 signs gaining `sign_pixel_base` / `sign_outline_base` metas
+from the bake tool as it stood that day (not from this step). No test suite was run.
+
+Known differences from the sheet (user approved 18 Nov 2026 after five review rounds): the
+sheet's front and side views disagree about the eyes; the model follows the front and 3/4 views,
+so from the side they look narrower and sit nearer the beak. The sheet's 3/4 view shows a larger
+wing than its side view; the model follows the side view. From the front the toes splay into a
+flat pad (the sheet's point forward), and the tall crown feather merges with the short one at
+the base. The belly reads paler than the sheet's peach cream. An occasional single-pixel speck
+appears in studio renders; the meshes scan clean (no dark vertices, zero normals or flipped
+triangles), and the cause was not found. Not done: rigging, walking, blinking, a word.
+
 ## Zoo zones (12 Nov 2026)
 
 User design (see the [design record](TOWN_DESIGN_BRIEF.md#zoo-zones--12-november-2026)): the 16
