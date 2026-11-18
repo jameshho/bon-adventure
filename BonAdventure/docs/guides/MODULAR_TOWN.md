@@ -199,6 +199,14 @@ code: it builds materials as usual (`game.material_for()`, `StandardMaterial3D.n
 bake finds the matching palette file or writes a new one (`palette files written` / `materials
 shared` / `materials left unshared` in the report).
 
+Since 17 Nov 2026 the bake then shares meshes too (`tools/mesh_share.gd`, after the palette): a
+mesh the scene stores itself that is an exact copy of one met before in the same scene (same
+class and stored properties: surface bytes, LODs, primitive sizes; the same material objects) is
+replaced by that one, so the scene and the GPU hold it once (`meshes merged` in the report).
+Consequence for steps and runtime code: a baked mesh may be used by several nodes, so **duplicate()
+a mesh you found on a node before editing it in place** (measured and checked:
+[GPU memory on the web](performance/README.md#gpu-memory-on-the-web--14-november-2026)).
+
 **Rule: never change a material found on a town node in place.** A palette material is shared by
 every node in every scene with that look, so tinting it would recolour the whole town. Code that
 changes a found material must `duplicate()` it first (as `evidence_props.gd` does for wet props);
@@ -455,7 +463,10 @@ variable and the parts' transforms, so edits rebuild automatically; never used i
 `VT_SCULPT_CACHE=0` turns it off. Two fixes it needed: `plush_sculpt.gd` passes `part_to_root`
 as a `Projection` (a `Transform3D` value for the `mat4` uniform was lost when saved: the cat's
 colour points vanished), and `golden_sculpt.gd`'s coat colour is a named method like the other
-coats (a lambda cannot be kept). `pig_sculpt.gd` is untouched.
+coats (a lambda cannot be kept). `pig_sculpt.gd` is untouched. Since 17 Nov 2026 characters and
+costumes with the same key also share one set of mesh and material resources in memory (GPU
+memory: [GPU memory on the web](performance/README.md#gpu-memory-on-the-web--14-november-2026));
+a character's meshes and materials must therefore never be edited in place after its build.
 
 | Windowed to first drawn frame (isolated `HOME`) | Before | Cache filled | Cache warm |
 | --- | --- | --- | --- |

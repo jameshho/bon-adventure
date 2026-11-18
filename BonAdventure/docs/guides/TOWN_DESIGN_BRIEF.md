@@ -3676,3 +3676,25 @@ Owner: step `six_categories` in `scripts/buildings/library.gd` (deletes the old 
 return rack and header, rebuilds them, renames as in the 13 Nov section). Verified 16 Nov by
 `docs/evidence/library-six-categories-20261116/verify.gd` (30 checks, 0 failures; screenshots
 there). Old `COVERS`/sign/phrase entries for removed titles are left in as unused data.
+
+## Library readable signs — 17 November 2026
+
+**Request (17 Nov 2026):** on a phone in landscape the coloured shelf headers and the wall sign
+could not be read. They are now [world signs](COMPONENTS.md#world-signs) sized by the
+[readability rule](BUILDING_DESIGN_BLUEPRINT.md#sign-readability), in every language:
+
+- **Bookcase headers:** the pill grows from 2.2 × 0.46 to **2.3 × 0.6** (source metres; still
+  inside the 2.4 bookcase, clear of the bunting at 3.75), the emblem disc becomes 0.72 across and
+  sits on the pill's rounded end, and the lettering grows from 0.31 to **0.42 m** letter height
+  (town metres), centred in the free span beside the disc. A longer translation (VEHÍCULOS) shrinks
+  to that span, never below 0.35 m (reading distance 10.5 m).
+- **Wall boards:** BORROW & RETURN 0.30 m (its board widened to 3.6 to hold PRÉSTAMOS Y
+  DEVOLUCIONES on one line and raised 0.32 so it clears the NEW BOOKS display and the reading
+  poster, below the clock), STORY CORNER 0.32 m (board 3 % wider), REFERENCE 0.34 m.
+- **NEW BOOKS display header:** 0.26 m on its existing board.
+
+Font size stays 64 with outline 8 or none (no new atlas pairs); an outline is kept only where the
+cream lettering lacks 4.5 contrast on its colour. Word keys, the header pick areas (resized to the
+new plate) and Library Helper are unchanged. Owner: step `readable_signs` in
+`scripts/buildings/library.gd`. Views at 1280 × 720:
+`docs/evidence/library-signs-20261117/` (`capture.gd`); not checked on a real phone.

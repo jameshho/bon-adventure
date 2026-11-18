@@ -103,7 +103,11 @@ minigames.
 The game also runs as an installable web app in landscape on phones and tablets. A floating
 joystick appears where the left thumb touches; buttons on the right jump, use (E) and run; drag
 to look, pinch to zoom, tap to use. A phone held upright shows the landscape game turned 90°.
-New builds load automatically (15 Nov).
+New builds load automatically (15 Nov). With Low graphics on the web, a returning player's town
+starts with the buildings near where they come back, and the others appear in the fog as they come
+within about 150 m; a game in the ▶ picker whose building is not there yet builds it first
+(17 Nov, not yet tried on a phone:
+[nearby loading](../guides/performance/README.md#built--17-november-2026)).
 [Web app](../../README.md#web-app-pwa)
 
 ## Getting around

@@ -18,6 +18,15 @@ const SLACK := 2
 ## A CJK character is about this many Latin capitals wide.
 const WIDE := 1.7
 const PAIR := "  ·  "
+const RenderCulling := preload("res://scripts/world/render_culling.gd")
+## Web (both tiers): a sign's font size is moved up to the next render_culling LABEL_SIZES step,
+## with its pixel size scaled so the text keeps its size in the world, so every size it takes
+## shares a glyph atlas. Without this, each apply() (every Main.add_unit() and language change)
+## put the town's signs back on their own sizes, undoing share_label_sizes(): measured natively
+## 17 Nov 2026, 303 MB of glyph atlases instead of 37.5 MB after the staged loading
+## (docs/guides/performance/README.md "Proposal: load only nearby buildings on phones").
+## Checks may set it to try the web path natively.
+static var share_sizes := OS.has_feature("web")
 
 static var _table: Dictionary
 ## Authored text -> [kind, key], built once from the table.
@@ -92,6 +101,9 @@ static func translate_all(town: Node3D) -> int:
         # Older checks read the Spanish text.
         label.set_meta("sign_spanish", _text(found[0], found[1], "es", "en"))
         label.set_meta("sign_font_size", label.font_size)
+        # As authored, before render_culling's share_label_sizes() runs (_set_size()).
+        label.set_meta("sign_pixel_base", label.pixel_size)
+        label.set_meta("sign_outline_base", label.outline_size)
         label.add_to_group(GROUP)
         apply(label, shown_language())
         count += 1
@@ -122,7 +134,25 @@ static func apply(label: Label3D, lang: String) -> void:
     # Wrapped labels reflow within their width; single-line signs scale instead.
     if label.autowrap_mode == TextServer.AUTOWRAP_OFF:
         ratio = clampf((longest_line(str(label.get_meta("sign_source", label.get_meta("sign_english")))) + SLACK) / longest_line(label.text), MIN_SHRINK, 1.0)
-    label.font_size = maxi(1, roundi(int(label.get_meta("sign_font_size")) * ratio))
+    _set_size(label, maxi(1, roundi(int(label.get_meta("sign_font_size")) * ratio)))
+
+## Font size `size` (in authored pixel-size units); on the web the next shared step instead
+## (share_sizes), same size in the world, outline scaled as share_label_sizes() does.
+static func _set_size(label: Label3D, size: int) -> void:
+    if not share_sizes or not label.has_meta("sign_pixel_base"):
+        label.font_size = size
+        return
+    var step := size
+    for candidate in RenderCulling.LABEL_SIZES:
+        if candidate >= size:
+            step = candidate
+            break
+    var ratio := float(step) / float(size)
+    label.font_size = step
+    label.pixel_size = float(label.get_meta("sign_pixel_base")) / ratio
+    var outline := int(label.get_meta("sign_outline_base", 0))
+    if outline > 0:
+        label.outline_size = maxi(RenderCulling.LABEL_OUTLINE_STEP, roundi(outline * ratio / RenderCulling.LABEL_OUTLINE_STEP) * RenderCulling.LABEL_OUTLINE_STEP)
 
 ## World signs (scripts/world/world_sign.gd, 16 Nov 2026) keep their font size (one glyph atlas)
 ## and shrink their pixel size only when the text is wider than the board's free width

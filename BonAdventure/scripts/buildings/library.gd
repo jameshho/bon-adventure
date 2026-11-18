@@ -3,7 +3,7 @@ extends RefCounted
 ## library unit (scenes/town/library.scn).
 ## Bake:  godot --headless --path . --script res://tools/bake_unit.gd -- library
 ## Never rename or remove a baked step (add a new one that undoes it).
-const STEPS := ["coplanar_gaps", "coplanar_gaps_2", "category_shelves", "glass_windows", "big_books", "return_cart", "cart_frame", "cart_spot", "six_categories", "new_titles", "rear_display", "cosy_room"]
+const STEPS := ["coplanar_gaps", "coplanar_gaps_2", "category_shelves", "glass_windows", "big_books", "return_cart", "cart_frame", "cart_spot", "six_categories", "new_titles", "rear_display", "cosy_room", "readable_signs"]
 
 ## Faces that shared a plane and flickered are set apart (10 Nov 2026,
 ## scripts/buildings/coplanar_gaps.gd).
@@ -41,12 +41,19 @@ const REAR := 52.385
 const F := .04
 ## Bookcase: length along the wall, depth, carcass height; shelf surfaces (base board and three
 ## shelves, above F); the header board rests on top. Until 12 Nov 2026 2.58 high with five rows;
-## since step big_books (books 50 % larger) 2.78 high with four rows 0.64 apart.
+## since step big_books (books 50 % larger) 2.78 high with four rows 0.64 apart. The header was
+## 2.2 x 0.46 until step readable_signs (17 Nov 2026) made it 2.3 x 0.6 for larger lettering.
 const CASE_LEN := 2.4
 const CASE_DEPTH := .5
 const CASE_HEIGHT := 2.78
 const TIERS := [.14, .78, 1.42, 2.06]
-const HEADER := Vector2(2.2, .46)
+const HEADER := Vector2(2.3, .6)
+## Header emblem disc: rim diameter, raised above the pill's centre (the cloud-topped bump), and
+## centred on the pill's rounded end; the lettering's free span along the header in local x
+## (from the far end to the disc).
+const DISC := .72
+const DISC_RISE := .06
+const HEADER_TEXT := Vector2(-HEADER.x * .5 + .07, (HEADER.x - HEADER.y) * .5 - DISC * .5 - .05)
 ## Centres of the four bookcases along each side wall (front to back).
 const CASE_Z := [43.45, 45.9, 48.35, 50.8]
 ## Categories (six since 16 Nov 2026, user: easier for 7-year-olds; Space, Geography, History and
@@ -364,7 +371,7 @@ func _bookcase(parent: Node3D, category: Array, west: bool, z: float, homes: Arr
 	])
 	frame.set_meta("library_category", id)
 	blocker(frame, AABB(Vector3(-half, 0, 0), Vector3(CASE_LEN, CASE_HEIGHT + HEADER.y, CASE_DEPTH)))
-	label(frame, category[1] + " sign", category[1], Vector3(-.17, CASE_HEIGHT + .06 + HEADER.y * .5, -.005), .24, tint)
+	_header_sign(label(frame, category[1] + " sign", category[1], Vector3.ZERO, .24, tint), tint)
 	var gaps := _group(frame, "Gaps")
 	for row in TIERS.size():
 		_book_row(frame, gaps, id, row, homes)
@@ -388,17 +395,17 @@ func _carcass_mesh(id: String, tint: String) -> ArrayMesh:
 		# Header: a rounded pill in the category colour on a darker rim, with a round bump behind
 		# the cream emblem disc on the left (the reference's cloud-topped signs).
 		var hy: float = CASE_HEIGHT + .06 + HEADER.y * .5
-		var disc := Vector3(HEADER.x * .5 - .3, hy + .04, 0)
 		var straight: float = HEADER.x - HEADER.y
+		var disc := Vector3(straight * .5, hy + DISC_RISE, 0)
 		art.bx(Vector3(0, hy, .06), Vector3(straight, HEADER.y + .07, .05), CASE_WOOD_DARK, Art.SATIN)
 		art.bx(Vector3(0, hy, .025), Vector3(straight, HEADER.y, .03), tint, Art.SATIN)
 		for sx in [-1.0, 1.0]:
 			art.cyl(Vector3(sx * straight * .5, hy, .06), Vector3(HEADER.y + .07, .05, HEADER.y + .07), CASE_WOOD_DARK, Art.SATIN, face, 20)
 			art.cyl(Vector3(sx * straight * .5, hy, .025), Vector3(HEADER.y, .03, HEADER.y), tint, Art.SATIN, face, 20)
-		art.cyl(disc + Vector3(0, 0, .06), Vector3(.64, .05, .64), CASE_WOOD_DARK, Art.SATIN, face, 24)
-		art.cyl(disc + Vector3(0, 0, .025), Vector3(.57, .03, .57), tint, Art.SATIN, face, 24)
-		art.cyl(disc + Vector3(0, 0, .005), Vector3(.42, .03, .42), CREAM, Art.MATTE, face, 20)
-		art.ring(disc + Vector3(0, 0, -.008), Vector3(.44, .025, .44), GOLD, Art.SATIN, face, .88, 20)
+		art.cyl(disc + Vector3(0, 0, .06), Vector3(DISC, .05, DISC), CASE_WOOD_DARK, Art.SATIN, face, 24)
+		art.cyl(disc + Vector3(0, 0, .025), Vector3(DISC - .07, .03, DISC - .07), tint, Art.SATIN, face, 24)
+		art.cyl(disc + Vector3(0, 0, .005), Vector3(DISC - .22, .03, DISC - .22), CREAM, Art.MATTE, face, 20)
+		art.ring(disc + Vector3(0, 0, -.008), Vector3(DISC - .2, .025, DISC - .2), GOLD, Art.SATIN, face, .88, 20)
 		_emblem(id, disc + Vector3(0, 0, -.015)))
 
 ## A small 3D picture of the category in front of the header's disc (facing -Z, about .3 wide).
@@ -1028,3 +1035,119 @@ func _bunting(parent: Node3D, title: String, a: Vector3, b: Vector3, sag: float)
 				art.bx(Vector3(x + length / count * .5, (y + y2) * .5, 0), Vector3(length / count + .01, .012, .012), "8a5a2e", Art.MATTE, Vector3(0, 0, atan2(y2 - y, length / count)))
 				art.prism(Vector3(x + length / count * .5, (y + y2) * .5 - .13, 0), Vector3(.26, .24, .01), tints[k % tints.size()], Art.MATTE, Vector3(0, 0, PI)))
 	item(parent, title, "flag", mesh, (a + b) * .5, yaw)
+
+# =============================================================================================
+# readable_signs (17 Nov 2026; user's phone screenshot: the shelf headers and the wall sign could
+# not be read; record docs/guides/TOWN_DESIGN_BRIEF.md "Library readable signs"): the in-room
+# signs become world signs (scripts/world/world_sign.gd) sized to be read across the room in
+# every language. The six bookcase headers grow to HEADER (2.3 x 0.6, emblem disc DISC) with
+# lettering HEADER_EM; the wall boards (WALL_SIGNS) get larger lettering and, where a translation
+# is wider than the board, a wider board (BORROW & RETURN is also raised clear of the NEW BOOKS
+# display and the reading poster); the NEW BOOKS display gets larger lettering on its own board.
+# =============================================================================================
+const WorldSign := preload("res://scripts/world/world_sign.gd")
+## Letter height (em, world metres) and reading distance (world metres; the rule in
+## docs/guides/BUILDING_DESIGN_BLUEPRINT.md#sign-readability: a longer translation may shrink the
+## lettering to its board's free width, never below distance / 30).
+const HEADER_EM := .42
+const HEADER_READ := 10.5
+## Wall boards: English text (node names "<text> sign lettering", "<text> framed sign",
+## "<text> sign face"), em, reading distance, raise (source metres).
+const WALL_SIGNS := [
+	["BORROW & RETURN", .30, 9.0, .32],
+	["STORY CORNER", .32, 9.0, 0.0],
+	["REFERENCE", .34, 9.0, 0.0],
+]
+## Free board each side of a wall sign's widest translation (world metres).
+const WALL_MARGIN := .1
+const NEW_BOOKS_EM := .26
+const NEW_BOOKS_READ := 7.5
+
+func readable_signs(town: Node3D, game) -> void:
+	g = game
+	site = town.get_node_or_null("RelocatedSites/Library")
+	var shelves: Node3D = site.get_node_or_null("CategoryShelves") if site != null else null
+	if shelves == null:
+		push_error("library: category shelves not found")
+		return
+	art = Art.new()
+	for category in CATEGORIES:
+		var title := String(category[0]).capitalize()
+		var frame := shelves.get_node_or_null("Bookcase " + title) as Node3D
+		if frame == null:
+			push_error("library: bookcase %s not found" % title)
+			continue
+		(frame.get_node("Model") as MeshInstance3D).mesh = _carcass_mesh(category[0], category[2])
+		_set_box(frame.get_node_or_null("Header %s/Interaction" % title), AABB(Vector3(-HEADER.x * .5 - .12, CASE_HEIGHT + .02, -.09), Vector3(HEADER.x + .24, HEADER.y + .16, .2)))
+		_set_box(frame.get_node_or_null("Blocker"), AABB(Vector3(-CASE_LEN * .5, 0, 0), Vector3(CASE_LEN, CASE_HEIGHT + HEADER.y, CASE_DEPTH)))
+		var sign := frame.get_node_or_null(category[1] + " sign") as Label3D
+		if sign == null:
+			push_error("library: %s sign not found" % category[1])
+			continue
+		_header_sign(sign, category[2])
+	var codes: Array = ["en"] + WorldSign.SignLanguage.Lexicon.shared().playable_codes()
+	var grown := 0
+	for row in WALL_SIGNS:
+		var english: String = row[0]
+		var label := site.find_child(english + " sign lettering", true, false) as Label3D
+		var frame := site.find_child(english + " framed sign", true, false) as Node3D
+		var face := site.find_child(english + " sign face", true, false) as Node3D
+		if label == null or frame == null or face == null:
+			push_error("library: %s sign not found" % english)
+			continue
+		for node in [label, frame, face]:
+			node.position.y += row[3]
+		var face_mesh := _mesh_in(face)
+		var spec := {"read": row[2], "em": row[1], "board": WorldSign.board_colour(face_mesh, Color("2f6b4f"))}
+		WorldSign.restyle(label, spec)
+		var need := 0.0
+		for lang in codes:
+			need = maxf(need, WorldSign.text_width(label, WorldSign.SignLanguage.say(english, lang)))
+		need += 2.0 * WALL_MARGIN
+		var have := WorldSign.free_width(face_mesh, label, 0.0)
+		if need > have:
+			var border := WorldSign.free_width(_mesh_in(frame), label, 0.0) - have
+			_widen(face_mesh, label, need / have)
+			_widen(_mesh_in(frame), label, (need + border) / (have + border))
+			grown += 1
+		spec.fit_width = WorldSign.free_width(face_mesh, label, WALL_MARGIN)
+		WorldSign.restyle(label, spec)
+	var header := shelves.get_node_or_null("New books shelf/NEW BOOKS header") as Label3D
+	if header != null:
+		# The display's green header board is part of the rack mesh, 0.06 narrower (step return_cart).
+		var rack := shelves.get_node("New books shelf/Model") as MeshInstance3D
+		var free := WorldSign.free_width(rack, header, WALL_MARGIN) - .06 * header.global_transform.basis.get_scale().y
+		WorldSign.restyle(header, {"read": NEW_BOOKS_READ, "em": NEW_BOOKS_EM, "board": Color("2f6b4f"), "fit_width": free})
+	else:
+		push_error("library: NEW BOOKS header not found")
+	print("LIBRARY readable_signs: %d headers, %d wall boards (%d widened), NEW BOOKS %s" % [CATEGORIES.size(), WALL_SIGNS.size(), grown, header != null])
+
+## A bookcase header's lettering: centred in the header's free span (HEADER_TEXT), a world sign
+## that a longer translation shrinks to that span.
+func _header_sign(sign: Label3D, tint: String) -> void:
+	sign.position = Vector3((HEADER_TEXT.x + HEADER_TEXT.y) * .5, CASE_HEIGHT + .06 + HEADER.y * .5, -.005)
+	var scale := sign.global_transform.basis.get_scale().y
+	WorldSign.restyle(sign, {"read": HEADER_READ, "em": HEADER_EM, "board": Color(tint), "fit_width": (HEADER_TEXT.y - HEADER_TEXT.x) * scale})
+
+## Resizes the first box shape under a pick area or blocker to `bounds` (its owner's frame).
+func _set_box(holder: Node, bounds: AABB) -> void:
+	if holder == null:
+		return
+	for shape: CollisionShape3D in holder.find_children("*", "CollisionShape3D", true, false):
+		var cube := BoxShape3D.new()
+		cube.size = bounds.size
+		shape.shape = cube
+		shape.position = bounds.get_center()
+		return
+
+## The mesh of a sign board node (the node itself or its first mesh child).
+func _mesh_in(node: Node) -> MeshInstance3D:
+	if node is MeshInstance3D:
+		return node
+	return node.find_children("*", "MeshInstance3D", true, false)[0]
+
+## Stretches a board mesh by `ratio` along the label's width (about the mesh's own origin).
+func _widen(board: MeshInstance3D, label: Label3D, ratio: float) -> void:
+	var right := (board.global_transform.basis.inverse() * label.global_transform.basis.x).abs()
+	right /= right.length()
+	board.scale *= Vector3.ONE + right * (ratio - 1.0)

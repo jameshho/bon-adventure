@@ -1,0 +1,1152 @@
+{
+  "adapter": "Apple M5",
+  "base_with_first": {
+    "buffer_mb": 81.1983051300049,
+    "font_atlas_mb": 25.4,
+    "nodes": 19839.0,
+    "static_mb": 254.546405792236,
+    "texture_mb": 57.6312761306763,
+    "video_mb": 138.829581260681
+  },
+  "date": "2026-11-17",
+  "empty": {
+    "buffer_mb": 6.22644805908203,
+    "nodes": 2.0,
+    "static_mb": 32.8171167373657,
+    "texture_mb": 7.84012126922607,
+    "video_mb": 14.0665693283081
+  },
+  "entrances": {
+    "airport": [
+      -124.8,
+      291.2
+    ],
+    "bakery": [
+      157.3,
+      215.8
+    ],
+    "bank": [
+      159.3,
+      140.4
+    ],
+    "barn": [
+      85.8,
+      120.9
+    ],
+    "burger": [
+      -115.7,
+      60.5
+    ],
+    "chapel": [
+      -102.7,
+      212.5
+    ],
+    "clothing": [
+      -161.8,
+      213.2
+    ],
+    "electronics": [
+      156.6,
+      178.1
+    ],
+    "furniture": [
+      163.8,
+      289.9
+    ],
+    "home": [
+      1.3,
+      66.3
+    ],
+    "hospital": [
+      72.8,
+      281.4
+    ],
+    "library": [
+      66.3,
+      57.8
+    ],
+    "mystery": [
+      144.3,
+      106.6
+    ],
+    "pizza": [
+      -115.7,
+      60.5
+    ],
+    "playground": [
+      80.9,
+      215.1
+    ],
+    "police": [
+      -175.5,
+      104.0
+    ],
+    "restaurant": [
+      -48.1,
+      59.1
+    ],
+    "restaurants": [
+      -48.1,
+      59.1
+    ],
+    "school": [
+      13.0,
+      280.8
+    ],
+    "sports": [
+      124.8,
+      293.1
+    ],
+    "supermarket": [
+      -164.4,
+      163.8
+    ],
+    "taqueria": [
+      -79.3,
+      60.4
+    ],
+    "tower": [
+      -96.3,
+      313.7
+    ],
+    "warehouse": [
+      -61.4,
+      281.2
+    ]
+  },
+  "first": "barn",
+  "fonts": [
+    [
+      "",
+      91,
+      90,
+      52.9
+    ],
+    [
+      "NotoSansTC-SemiBold-subset.ttf",
+      27,
+      14,
+      8.1
+    ]
+  ],
+  "freed": {
+    "mystery": {
+      "buffer_mb": -0.58,
+      "nodes": -4556.0,
+      "static_mb": -18.53,
+      "texture_mb": 0.0,
+      "video_mb": -0.58
+    },
+    "restaurants": {
+      "buffer_mb": -20.4,
+      "nodes": -9057.0,
+      "static_mb": -39.92,
+      "texture_mb": -7.4,
+      "video_mb": -27.79
+    },
+    "school": {
+      "buffer_mb": -2.07,
+      "nodes": -3049.0,
+      "static_mb": -16.39,
+      "texture_mb": 0.0,
+      "video_mb": -2.07
+    },
+    "supermarket": {
+      "buffer_mb": -1.85,
+      "nodes": -4137.0,
+      "static_mb": -20.24,
+      "texture_mb": 0.0,
+      "video_mb": -1.85
+    }
+  },
+  "full": {
+    "buffer_mb": 224.482151031494,
+    "nodes": 76049.0,
+    "static_mb": 644.922206878662,
+    "texture_mb": 116.57147693634,
+    "video_mb": 341.053627967834
+  },
+  "graphics": "low",
+  "renderer": "gl_compatibility",
+  "startup_ms": 4718,
+  "top_textures": [],
+  "town_box": [
+    -303.8,
+    -38.7,
+    243.7,
+    405.6
+  ],
+  "units": {
+    "airport": {
+      "add_frames": 6,
+      "add_ms": 514.0,
+      "batch_instances": 283,
+      "batch_mesh_mb": 0.0,
+      "delta": {
+        "buffer_mb": 9.31,
+        "nodes": 4943.0,
+        "static_mb": 33.38,
+        "texture_mb": 4.04,
+        "video_mb": 13.35
+      },
+      "font_atlas_mb": 3.5,
+      "frames_over_50ms": 1,
+      "instantiate_ms": 9.8,
+      "load_ms": 43.5,
+      "mesh_mb": 8.64,
+      "parts": [
+        {
+          "box": [
+            -147.3,
+            306.4,
+            -82.4,
+            333.5
+          ],
+          "mesh_mb": 4.78,
+          "nodes": 4509,
+          "path": "Airport"
+        },
+        {
+          "box": [
+            -132.0,
+            265.6,
+            -123.7,
+            267.4
+          ],
+          "mesh_mb": 0.02,
+          "nodes": 39,
+          "path": "RelocatedSites/Travel"
+        },
+        {
+          "box": [
+            -147.3,
+            303.6,
+            -102.3,
+            306.6
+          ],
+          "mesh_mb": 0.01,
+          "nodes": 49,
+          "path": "Map facades/AIRPORT"
+        },
+        {
+          "box": [
+            -95.4,
+            289.0,
+            -93.9,
+            290.9
+          ],
+          "mesh_mb": 3.83,
+          "nodes": 59,
+          "path": "People/LionDriver"
+        }
+      ],
+      "plush": 1,
+      "plush_mesh_mb": 4.29,
+      "scene_nodes": 4248,
+      "worst_frame_ms": 209.3
+    },
+    "bakery": {
+      "add_frames": 5,
+      "add_ms": 197.9,
+      "batch_instances": 125,
+      "batch_mesh_mb": 0.01,
+      "delta": {
+        "buffer_mb": 3.11,
+        "nodes": 1978.0,
+        "static_mb": 12.5,
+        "texture_mb": 0.0,
+        "video_mb": 3.11
+      },
+      "font_atlas_mb": 0.0,
+      "frames_over_50ms": 0,
+      "instantiate_ms": 7.9,
+      "load_ms": 28.1,
+      "mesh_mb": 2.67,
+      "parts": [
+        {
+          "box": [
+            162.4,
+            207.6,
+            199.1,
+            222.4
+          ],
+          "mesh_mb": 0.06,
+          "nodes": 130,
+          "path": "RelocatedSites/Bakery"
+        },
+        {
+          "box": [
+            159.9,
+            206.5,
+            192.6,
+            225.1
+          ],
+          "mesh_mb": 0.49,
+          "nodes": 1277,
+          "path": "Buildings/BakeryCafe"
+        },
+        {
+          "box": [
+            161.6,
+            206.5,
+            192.5,
+            225.1
+          ],
+          "mesh_mb": 0.04,
+          "nodes": 401,
+          "path": "Map facades/BAKERY _ CAFE"
+        },
+        {
+          "box": [
+            186.8,
+            214.4,
+            188.6,
+            216.4
+          ],
+          "mesh_mb": 2.09,
+          "nodes": 45,
+          "path": "People/SamoyedCook"
+        }
+      ],
+      "plush": 0,
+      "plush_mesh_mb": 0.0,
+      "scene_nodes": 1806,
+      "worst_frame_ms": 23.6
+    },
+    "bank": {
+      "add_frames": 6,
+      "add_ms": 233.0,
+      "batch_instances": 60,
+      "batch_mesh_mb": 0.0,
+      "delta": {
+        "buffer_mb": 4.44,
+        "nodes": 1200.0,
+        "static_mb": 9.02,
+        "texture_mb": 0.0,
+        "video_mb": 4.44
+      },
+      "font_atlas_mb": 0.0,
+      "frames_over_50ms": 1,
+      "instantiate_ms": 4.3,
+      "load_ms": 16.7,
+      "mesh_mb": 3.82,
+      "parts": [
+        {
+          "box": [
+            158.2,
+            132.2,
+            184.3,
+            152.6
+          ],
+          "mesh_mb": 3.81,
+          "nodes": 1016,
+          "path": "RelocatedSites/Bank"
+        },
+        {
+          "box": [
+            162.5,
+            132.3,
+            184.1,
+            148.5
+          ],
+          "mesh_mb": 0.01,
+          "nodes": 124,
+          "path": "Map facades/BANK"
+        }
+      ],
+      "plush": 1,
+      "plush_mesh_mb": 3.73,
+      "scene_nodes": 1084,
+      "worst_frame_ms": 183.7
+    },
+    "chapel": {
+      "add_frames": 5,
+      "add_ms": 61.3,
+      "batch_instances": 92,
+      "batch_mesh_mb": 0.0,
+      "delta": {
+        "buffer_mb": 1.82,
+        "nodes": 1629.0,
+        "static_mb": 8.39,
+        "texture_mb": 0.0,
+        "video_mb": 1.82
+      },
+      "font_atlas_mb": 0.0,
+      "frames_over_50ms": 0,
+      "instantiate_ms": 5.4,
+      "load_ms": 14.0,
+      "mesh_mb": 0.87,
+      "parts": [
+        {
+          "box": [
+            -112.5,
+            216.8,
+            -92.8,
+            235.9
+          ],
+          "mesh_mb": 0.57,
+          "nodes": 1147,
+          "path": "RelocatedSites/Chapel"
+        },
+        {
+          "box": [
+            -109.9,
+            218.6,
+            -95.5,
+            224.6
+          ],
+          "mesh_mb": 0.3,
+          "nodes": 390,
+          "path": "Map facades/CHAPEL"
+        }
+      ],
+      "plush": 0,
+      "plush_mesh_mb": 0.0,
+      "scene_nodes": 1537,
+      "worst_frame_ms": 15.0
+    },
+    "clothing": {
+      "add_frames": 7,
+      "add_ms": 214.3,
+      "batch_instances": 111,
+      "batch_mesh_mb": 0.0,
+      "delta": {
+        "buffer_mb": 3.34,
+        "nodes": 1777.0,
+        "static_mb": 11.7,
+        "texture_mb": 1.79,
+        "video_mb": 5.14
+      },
+      "font_atlas_mb": 1.6,
+      "frames_over_50ms": 1,
+      "instantiate_ms": 6.3,
+      "load_ms": 41.4,
+      "mesh_mb": 3.49,
+      "parts": [
+        {
+          "box": [
+            -186.7,
+            206.4,
+            -183.0,
+            213.6
+          ],
+          "mesh_mb": 0.01,
+          "nodes": 38,
+          "path": "RelocatedSites/Clothing"
+        },
+        {
+          "box": [
+            -188.4,
+            205.5,
+            -166.2,
+            220.9
+          ],
+          "mesh_mb": 3.31,
+          "nodes": 1348,
+          "path": "Buildings/ClothingStore"
+        },
+        {
+          "box": [
+            -168.3,
+            205.9,
+            -166.1,
+            220.5
+          ],
+          "mesh_mb": 0.17,
+          "nodes": 280,
+          "path": "Map facades/CLOTHING"
+        }
+      ],
+      "plush": 2,
+      "plush_mesh_mb": 3.77,
+      "scene_nodes": 1640,
+      "worst_frame_ms": 123.0
+    },
+    "electronics": {
+      "add_frames": 5,
+      "add_ms": 77.0,
+      "batch_instances": 115,
+      "batch_mesh_mb": 0.0,
+      "delta": {
+        "buffer_mb": 0.94,
+        "nodes": 1699.0,
+        "static_mb": 11.65,
+        "texture_mb": 0.0,
+        "video_mb": 0.94
+      },
+      "font_atlas_mb": 0.0,
+      "frames_over_50ms": 0,
+      "instantiate_ms": 7.3,
+      "load_ms": 23.6,
+      "mesh_mb": 0.78,
+      "parts": [
+        {
+          "box": [
+            171.9,
+            175.8,
+            182.7,
+            185.4
+          ],
+          "mesh_mb": 0.02,
+          "nodes": 74,
+          "path": "RelocatedSites/Electronics"
+        },
+        {
+          "box": [
+            160.8,
+            170.2,
+            183.3,
+            186.0
+          ],
+          "mesh_mb": 0.54,
+          "nodes": 1225,
+          "path": "Buildings/ElectronicsStore"
+        },
+        {
+          "box": [
+            160.8,
+            170.6,
+            163.0,
+            185.6
+          ],
+          "mesh_mb": 0.21,
+          "nodes": 285,
+          "path": "Map facades/ELECTRONICS"
+        }
+      ],
+      "plush": 0,
+      "plush_mesh_mb": 0.0,
+      "scene_nodes": 1579,
+      "worst_frame_ms": 29.7
+    },
+    "furniture": {
+      "add_frames": 6,
+      "add_ms": 284.1,
+      "batch_instances": 82,
+      "batch_mesh_mb": 0.0,
+      "delta": {
+        "buffer_mb": 4.22,
+        "nodes": 1515.0,
+        "static_mb": 9.04,
+        "texture_mb": 0.0,
+        "video_mb": 4.22
+      },
+      "font_atlas_mb": 0.0,
+      "frames_over_50ms": 1,
+      "instantiate_ms": 4.3,
+      "load_ms": 39.5,
+      "mesh_mb": 3.99,
+      "parts": [
+        {
+          "box": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mesh_mb": 0.0,
+          "nodes": 1,
+          "path": "RelocatedSites/Furniture"
+        },
+        {
+          "box": [
+            147.4,
+            291.8,
+            180.2,
+            330.0
+          ],
+          "mesh_mb": 3.98,
+          "nodes": 1237,
+          "path": "Buildings/FurnitureStore"
+        },
+        {
+          "box": [
+            148.1,
+            294.8,
+            179.5,
+            295.5
+          ],
+          "mesh_mb": 0.02,
+          "nodes": 195,
+          "path": "Map facades/FURNITURE"
+        }
+      ],
+      "plush": 1,
+      "plush_mesh_mb": 3.63,
+      "scene_nodes": 1397,
+      "worst_frame_ms": 229.4
+    },
+    "home": {
+      "add_frames": 5,
+      "add_ms": 621.5,
+      "batch_instances": 244,
+      "batch_mesh_mb": 0.01,
+      "delta": {
+        "buffer_mb": 8.16,
+        "nodes": 4448.0,
+        "static_mb": 32.85,
+        "texture_mb": 9.42,
+        "video_mb": 17.57
+      },
+      "font_atlas_mb": 4.6,
+      "frames_over_50ms": 2,
+      "instantiate_ms": 12.7,
+      "load_ms": 38.8,
+      "mesh_mb": 4.43,
+      "parts": [
+        {
+          "box": [
+            -15.2,
+            17.8,
+            34.8,
+            69.2
+          ],
+          "mesh_mb": 4.43,
+          "nodes": 4185,
+          "path": "RelocatedSites/Home"
+        },
+        {
+          "box": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mesh_mb": 0.0,
+          "nodes": 1,
+          "path": "Buildings/HouseStructure"
+        },
+        {
+          "box": [
+            -1.4,
+            59.7,
+            4.0,
+            61.6
+          ],
+          "mesh_mb": 0.0,
+          "nodes": 9,
+          "path": "Map facades/HOME"
+        }
+      ],
+      "plush": 4,
+      "plush_mesh_mb": 3.44,
+      "scene_nodes": 3778,
+      "worst_frame_ms": 392.8
+    },
+    "hospital": {
+      "add_frames": 10,
+      "add_ms": 830.9,
+      "batch_instances": 605,
+      "batch_mesh_mb": 0.0,
+      "delta": {
+        "buffer_mb": 14.87,
+        "nodes": 6765.0,
+        "static_mb": 53.22,
+        "texture_mb": 10.5,
+        "video_mb": 25.37
+      },
+      "font_atlas_mb": 10.2,
+      "frames_over_50ms": 5,
+      "instantiate_ms": 24.9,
+      "load_ms": 122.8,
+      "mesh_mb": 13.05,
+      "parts": [
+        {
+          "box": [
+            65.2,
+            284.3,
+            92.0,
+            318.5
+          ],
+          "mesh_mb": 0.18,
+          "nodes": 236,
+          "path": "RelocatedSites/Hospital"
+        },
+        {
+          "box": [
+            53.6,
+            284.2,
+            94.1,
+            329.4
+          ],
+          "mesh_mb": 12.87,
+          "nodes": 5882,
+          "path": "Buildings/Hospital"
+        },
+        {
+          "box": [
+            61.1,
+            284.5,
+            84.5,
+            287.6
+          ],
+          "mesh_mb": 0.0,
+          "nodes": 39,
+          "path": "Map facades/HOSPITAL"
+        }
+      ],
+      "plush": 5,
+      "plush_mesh_mb": 15.24,
+      "scene_nodes": 5640,
+      "worst_frame_ms": 169.3
+    },
+    "library": {
+      "add_frames": 6,
+      "add_ms": 245.4,
+      "batch_instances": 84,
+      "batch_mesh_mb": 0.01,
+      "delta": {
+        "buffer_mb": 6.26,
+        "nodes": 2019.0,
+        "static_mb": 18.52,
+        "texture_mb": 4.83,
+        "video_mb": 11.09
+      },
+      "font_atlas_mb": 5.0,
+      "frames_over_50ms": 1,
+      "instantiate_ms": 5.2,
+      "load_ms": 17.4,
+      "mesh_mb": 4.1,
+      "parts": [
+        {
+          "box": [
+            55.3,
+            27.3,
+            74.5,
+            57.8
+          ],
+          "mesh_mb": 4.09,
+          "nodes": 1830,
+          "path": "RelocatedSites/Library"
+        },
+        {
+          "box": [
+            58.1,
+            52.9,
+            74.5,
+            54.9
+          ],
+          "mesh_mb": 0.01,
+          "nodes": 102,
+          "path": "Map facades/LIBRARY"
+        }
+      ],
+      "plush": 1,
+      "plush_mesh_mb": 3.79,
+      "scene_nodes": 1731,
+      "worst_frame_ms": 167.2
+    },
+    "mystery": {
+      "add_frames": 6,
+      "add_ms": 210.1,
+      "batch_instances": 188,
+      "batch_mesh_mb": 0.0,
+      "delta": {
+        "buffer_mb": 4.37,
+        "nodes": 4563.0,
+        "static_mb": 25.12,
+        "texture_mb": -0.17,
+        "video_mb": 4.2
+      },
+      "font_atlas_mb": 0.0,
+      "frames_over_50ms": 1,
+      "instantiate_ms": 8.6,
+      "load_ms": 16.0,
+      "mesh_mb": 4.03,
+      "parts": [
+        {
+          "box": [
+            143.5,
+            88.7,
+            190.7,
+            124.4
+          ],
+          "mesh_mb": 4.03,
+          "nodes": 4367,
+          "path": "MysteryHouse"
+        }
+      ],
+      "plush": 1,
+      "plush_mesh_mb": 2.74,
+      "scene_nodes": 4330,
+      "worst_frame_ms": 133.0
+    },
+    "playground": {
+      "add_frames": 5,
+      "add_ms": 72.8,
+      "batch_instances": 47,
+      "batch_mesh_mb": 0.0,
+      "delta": {
+        "buffer_mb": 2.3,
+        "nodes": 1121.0,
+        "static_mb": 5.36,
+        "texture_mb": 0.17,
+        "video_mb": 2.47
+      },
+      "font_atlas_mb": 0.0,
+      "frames_over_50ms": 0,
+      "instantiate_ms": 1.5,
+      "load_ms": 9.6,
+      "mesh_mb": 0.13,
+      "parts": [
+        {
+          "box": [
+            55.2,
+            214.0,
+            106.3,
+            247.9
+          ],
+          "mesh_mb": 0.13,
+          "nodes": 1074,
+          "path": "RelocatedSites/Playground"
+        }
+      ],
+      "plush": 0,
+      "plush_mesh_mb": 0.0,
+      "scene_nodes": 974,
+      "worst_frame_ms": 19.6
+    },
+    "police": {
+      "add_frames": 6,
+      "add_ms": 426.2,
+      "batch_instances": 93,
+      "batch_mesh_mb": 0.0,
+      "delta": {
+        "buffer_mb": 6.81,
+        "nodes": 2005.0,
+        "static_mb": 12.74,
+        "texture_mb": 0.13,
+        "video_mb": 6.93
+      },
+      "font_atlas_mb": 0.1,
+      "frames_over_50ms": 1,
+      "instantiate_ms": 4.7,
+      "load_ms": 16.8,
+      "mesh_mb": 6.21,
+      "parts": [
+        {
+          "box": [
+            -209.7,
+            90.6,
+            -175.9,
+            117.4
+          ],
+          "mesh_mb": 2.38,
+          "nodes": 1563,
+          "path": "RelocatedSites/Police"
+        },
+        {
+          "box": [
+            -180.9,
+            91.0,
+            -179.4,
+            117.0
+          ],
+          "mesh_mb": 0.03,
+          "nodes": 235,
+          "path": "Map facades/POLICE STATION"
+        },
+        {
+          "box": [
+            -199.0,
+            100.2,
+            -197.0,
+            101.9
+          ],
+          "mesh_mb": 1.9,
+          "nodes": 54,
+          "path": "People/CrocodilePoliceOfficer"
+        },
+        {
+          "box": [
+            -189.4,
+            109.4,
+            -187.6,
+            111.0
+          ],
+          "mesh_mb": 1.9,
+          "nodes": 54,
+          "path": "People/CatEvidenceOfficer"
+        }
+      ],
+      "plush": 1,
+      "plush_mesh_mb": 4.23,
+      "scene_nodes": 1797,
+      "worst_frame_ms": 149.4
+    },
+    "restaurants": {
+      "add_frames": 12,
+      "add_ms": 1309.3,
+      "batch_instances": 569,
+      "batch_mesh_mb": 0.04,
+      "delta": {
+        "buffer_mb": 40.9,
+        "nodes": 9066.0,
+        "static_mb": 55.09,
+        "texture_mb": 8.23,
+        "video_mb": 49.13
+      },
+      "font_atlas_mb": 1.0,
+      "frames_over_50ms": 8,
+      "instantiate_ms": 15.9,
+      "load_ms": 48.9,
+      "mesh_mb": 18.29,
+      "parts": [
+        {
+          "box": [
+            -131.7,
+            23.0,
+            -28.2,
+            72.8
+          ],
+          "mesh_mb": 18.11,
+          "nodes": 7555,
+          "path": "Restaurants"
+        },
+        {
+          "box": [
+            -68.5,
+            22.6,
+            -27.7,
+            58.0
+          ],
+          "mesh_mb": 0.11,
+          "nodes": 592,
+          "path": "Map facades/FINE DINING"
+        },
+        {
+          "box": [
+            -131.7,
+            46.0,
+            -91.9,
+            56.8
+          ],
+          "mesh_mb": 0.06,
+          "nodes": 122,
+          "path": "Map facades/PIZZA AND BURGER"
+        },
+        {
+          "box": [
+            -88.1,
+            54.9,
+            -70.5,
+            57.5
+          ],
+          "mesh_mb": 0.01,
+          "nodes": 218,
+          "path": "Map facades/TAQUERÍA"
+        }
+      ],
+      "plush": 9,
+      "plush_mesh_mb": 21.08,
+      "scene_nodes": 8168,
+      "worst_frame_ms": 280.8
+    },
+    "school": {
+      "add_frames": 6,
+      "add_ms": 380.8,
+      "batch_instances": 132,
+      "batch_mesh_mb": 0.0,
+      "delta": {
+        "buffer_mb": 8.69,
+        "nodes": 3054.0,
+        "static_mb": 39.97,
+        "texture_mb": 20.62,
+        "video_mb": 29.31
+      },
+      "font_atlas_mb": 10.2,
+      "frames_over_50ms": 1,
+      "instantiate_ms": 18.0,
+      "load_ms": 48.9,
+      "mesh_mb": 4.92,
+      "parts": [
+        {
+          "box": [
+            -0.5,
+            262.7,
+            33.2,
+            290.5
+          ],
+          "mesh_mb": 0.27,
+          "nodes": 453,
+          "path": "RelocatedSites/School"
+        },
+        {
+          "box": [
+            -2.9,
+            287.0,
+            28.9,
+            311.0
+          ],
+          "mesh_mb": 4.6,
+          "nodes": 1963,
+          "path": "Buildings/School"
+        },
+        {
+          "box": [
+            -2.8,
+            282.6,
+            28.8,
+            310.9
+          ],
+          "mesh_mb": 0.05,
+          "nodes": 500,
+          "path": "Map facades/SCHOOL"
+        }
+      ],
+      "plush": 1,
+      "plush_mesh_mb": 5.39,
+      "scene_nodes": 2853,
+      "worst_frame_ms": 255.5
+    },
+    "sports": {
+      "add_frames": 6,
+      "add_ms": 218.9,
+      "batch_instances": 129,
+      "batch_mesh_mb": 0.0,
+      "delta": {
+        "buffer_mb": 4.48,
+        "nodes": 2284.0,
+        "static_mb": 11.81,
+        "texture_mb": 0.0,
+        "video_mb": 4.48
+      },
+      "font_atlas_mb": 0.0,
+      "frames_over_50ms": 1,
+      "instantiate_ms": 8.8,
+      "load_ms": 51.1,
+      "mesh_mb": 4.06,
+      "parts": [
+        {
+          "box": [
+            117.2,
+            296.0,
+            132.4,
+            296.8
+          ],
+          "mesh_mb": 0.0,
+          "nodes": 23,
+          "path": "RelocatedSites/Sports"
+        },
+        {
+          "box": [
+            115.5,
+            295.1,
+            134.1,
+            330.4
+          ],
+          "mesh_mb": 3.78,
+          "nodes": 1942,
+          "path": "Buildings/SportsStore"
+        },
+        {
+          "box": [
+            115.9,
+            296.9,
+            133.7,
+            299.3
+          ],
+          "mesh_mb": 0.28,
+          "nodes": 190,
+          "path": "Map facades/SPORTS"
+        }
+      ],
+      "plush": 1,
+      "plush_mesh_mb": 3.68,
+      "scene_nodes": 2118,
+      "worst_frame_ms": 156.2
+    },
+    "supermarket": {
+      "add_frames": 7,
+      "add_ms": 641.1,
+      "batch_instances": 281,
+      "batch_mesh_mb": 0.0,
+      "delta": {
+        "buffer_mb": 12.05,
+        "nodes": 4142.0,
+        "static_mb": 26.83,
+        "texture_mb": 0.0,
+        "video_mb": 12.05
+      },
+      "font_atlas_mb": 0.0,
+      "frames_over_50ms": 2,
+      "instantiate_ms": 7.0,
+      "load_ms": 31.4,
+      "mesh_mb": 10.32,
+      "parts": [
+        {
+          "box": [
+            -207.1,
+            146.3,
+            -166.3,
+            181.1
+          ],
+          "mesh_mb": 10.3,
+          "nodes": 3564,
+          "path": "RelocatedSites/Supermarket"
+        },
+        {
+          "box": [
+            -206.4,
+            147.2,
+            -173.2,
+            180.4
+          ],
+          "mesh_mb": 0.0,
+          "nodes": 2,
+          "path": "Buildings/MarketDisplays"
+        },
+        {
+          "box": [
+            -207.1,
+            146.5,
+            -170.2,
+            181.1
+          ],
+          "mesh_mb": 0.02,
+          "nodes": 289,
+          "path": "Map facades/SUPERMARKET"
+        }
+      ],
+      "plush": 2,
+      "plush_mesh_mb": 8.54,
+      "scene_nodes": 3794,
+      "worst_frame_ms": 346.2
+    },
+    "warehouse": {
+      "add_frames": 7,
+      "add_ms": 394.6,
+      "batch_instances": 123,
+      "batch_mesh_mb": 0.0,
+      "delta": {
+        "buffer_mb": 7.22,
+        "nodes": 2002.0,
+        "static_mb": 12.15,
+        "texture_mb": -0.62,
+        "video_mb": 6.59
+      },
+      "font_atlas_mb": -0.6,
+      "frames_over_50ms": 2,
+      "instantiate_ms": 6.0,
+      "load_ms": 18.6,
+      "mesh_mb": 6.76,
+      "parts": [
+        {
+          "box": [
+            -65.1,
+            277.7,
+            -25.9,
+            306.0
+          ],
+          "mesh_mb": 6.76,
+          "nodes": 1872,
+          "path": "Warehouse"
+        }
+      ],
+      "plush": 2,
+      "plush_mesh_mb": 7.97,
+      "scene_nodes": 1811,
+      "worst_frame_ms": 196.6
+    }
+  }
+}

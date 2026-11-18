@@ -70,7 +70,7 @@ and wrong answers per word in the journal.
 | --- | --- | --- |
 | [Home](town.md#home) | BonBon's house, pool, garage, mahjong table, electrical box; tutorial rooms | 14 Nov (plants, fewer plushes) |
 | [Supermarket](town.md#supermarket) | Nine departments, every product a word, cashier and clerk | 17 Nov (one word per section: snacks, drinks/home swap) |
-| [Library](town.md#library) | Six category shelves (3 books each), NEW BOOKS display at the rear wall, return cart, cosy reading corner | 17 Nov (new categories, desks removed, interior refresh) |
+| [Library](town.md#library) | Six category shelves (3 books each), NEW BOOKS display at the rear wall, return cart, cosy reading corner | 17 Nov (new categories, desks removed, interior refresh, readable signs) |
 | [Restaurants](town.md#restaurants) | Alta Cocina, Pizza and Burger, Taquería | 12 Nov (Alta Cocina glass) |
 | [Bakery / Café](town.md#bakery--café) | Cake counter and seating | 28 Oct |
 | [Sports store](town.md#sports-store) | Departments incl. winter sports, plush staff | 9 Nov |

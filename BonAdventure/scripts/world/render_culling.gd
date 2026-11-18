@@ -19,10 +19,14 @@ extends RefCounted
 ##   by apply_graphics() at startup and again when Settings changes it, without a restart.
 ##   HIGH is exactly the look above. LOW: no sun shadows, a LOW_VIEW_DISTANCE camera far with
 ##   depth fog hiding the cut (day_night.gd set_graphics()), the short visibility ranges above
-##   (to LOW_SHORT_RANGE) times LOW_RANGE_SHARE, heavy meshes to HEAVY_LOW_RANGE, MSAA/screen-space AA off and, on the web, 3D at LOW_WEB_PIXEL_SHARE of the
-##   CSS pixel size. The perf readout (perf_readout.gd: ?perf=1, F3, Settings) shows the cost.
+##   (to LOW_SHORT_RANGE) times LOW_RANGE_SHARE, heavy meshes to HEAVY_LOW_RANGE, LOW_MSAA (2x since 17 Nov 2026),
+##   screen-space AA and TAA off and, on the web, 3D at LOW_WEB_PIXEL_SHARE of the
+##   CSS pixel size but at least LOW_WEB_MIN_LINES lines. The perf readout (perf_readout.gd: ?perf=1, F3, Settings) shows the cost.
 ## - Web build, both tiers (14 Nov 2026, WebGL context loss): Label3D font sizes share a few
 ##   steps (share_label_sizes()), so far fewer glyph atlases sit in GPU memory.
+## - Door leaves (17 Nov 2026): each door in Main.doors moves as one node, so its own static meshes
+##   (slab, panels, mouldings, handles: 35 per home door) are merged into one mesh per material
+##   under the door node (merge_door_leaves()); the frames around them were already batched.
 ## Nodes, collision, word areas, door metadata and interior roots are untouched;
 ## merged originals are only hidden, so the minimap still reads them (meta "render_batch" names
 ## each one's batch instance: show_batched() hides a merged prop's copies for a while). Animals,
@@ -55,6 +59,15 @@ const HEAVY_TRIANGLES := 30000
 const HEAVY_LOW_RANGE := 40.0
 const LOW_WEB_PIXEL_SHARE := 0.8
 const LOW_WEB_MIN_3D_SCALE := 0.25
+## Low on the web never draws the 3D with fewer lines than this on the screen's short side
+## (17 Nov 2026, user: on an iPhone 0.8 of the CSS size was only ~310 lines, so signs were
+## unreadable and edges broke up). A laptop on Low already draws about this many.
+const LOW_WEB_MIN_LINES := 720.0
+## Low's 3D multisampling (17 Nov 2026, user: broken edges on road lines, cars and buildings on an
+## iPhone). Road markings, signs and floor lines are plain-coloured geometry, so MSAA, not texture
+## filtering, smooths them. 2x cost 17 MB of video memory at 1560 x 720 (4x: 34 MB) and no draw
+## calls (docs/guides/performance/README.md "Graphics tiers"). Viewport.MSAA_DISABLED turns it off.
+const LOW_MSAA := Viewport.MSAA_2X
 ## Web: every font size + outline pair a Label3D uses gets its own glyph atlas on the GPU (0.5-2 MB
 ## each); the full town's 765 labels used 87 pairs (measured 14 Nov 2026, docs/guides/performance/README.md
 ## "GPU memory on the web"). share_label_sizes() moves each label up to the next LABEL_SIZES step
@@ -76,6 +89,8 @@ var affected := 0
 var simplified := 0
 var merged := 0
 var batches := 0
+var leaf_merged := 0
+var leaf_meshes := 0
 var _radii := {}
 var _unit_box := BoxMesh.new()
 var _unit_meshes := {}
@@ -100,6 +115,8 @@ const WEB_MIN_3D_SCALE := 0.5
 ## Share of the CSS pixel size and the lowest scale (1.0 and WEB_MIN_3D_SCALE on High; Low lowers both).
 static var web_pixel_share := 1.0
 static var web_min_scale := WEB_MIN_3D_SCALE
+## Fewest 3D lines on the screen's short side (0 = no floor; Low sets LOW_WEB_MIN_LINES).
+static var web_min_lines := 0.0
 
 
 static func apply_web_3d_scale(viewport: Viewport) -> void:
@@ -107,7 +124,12 @@ static func apply_web_3d_scale(viewport: Viewport) -> void:
 		return
 	var density := DisplayServer.screen_get_scale()
 	viewport.scaling_3d_mode = Viewport.SCALING_3D_MODE_BILINEAR
-	viewport.scaling_3d_scale = clampf(web_pixel_share / maxf(density, 1.0), web_min_scale, 1.0)
+	var scale := web_pixel_share / maxf(density, 1.0)
+	var size := viewport.get_visible_rect().size
+	var short_side := minf(size.x, size.y)
+	if web_min_lines > 0.0 and short_side > 0.0:
+		scale = maxf(scale, web_min_lines / short_side)
+	viewport.scaling_3d_scale = clampf(scale, web_min_scale, 1.0)
 
 
 func build(game: Node3D) -> void:
@@ -128,9 +150,10 @@ func build(game: Node3D) -> void:
 		_trim(child, child.name in MID_ROOTS)
 	_apply_segments()
 	_batch(game.apartment, game.doors)
+	merge_door_leaves(game.apartment, game.doors)
 	if OS.has_feature("web"):
 		share_label_sizes(game)
-	print("Render culling: %d props trimmed, %d round meshes simplified, %d meshes in %d static batches" % [affected, simplified, merged, batches])
+	print("Render culling: %d props trimmed, %d round meshes simplified, %d meshes in %d static batches, %d door-leaf meshes in %d" % [affected, simplified, merged, batches, leaf_merged, leaf_meshes])
 	_game = game
 	_note_ranged(game.apartment)
 	var settings = GameSettings.shared()
@@ -158,13 +181,14 @@ func apply_graphics(value: String) -> void:
 			"ssaa": viewport.screen_space_aa, "taa": viewport.use_taa}
 	if camera != null:
 		camera.far = LOW_VIEW_DISTANCE if low else _high.far
-	viewport.msaa_3d = Viewport.MSAA_DISABLED if low else _high.msaa
+	viewport.msaa_3d = LOW_MSAA if low else _high.msaa
 	viewport.screen_space_aa = Viewport.SCREEN_SPACE_AA_DISABLED if low else _high.ssaa
 	viewport.use_taa = false if low else _high.taa
 	if _game.get("day_night") != null:
 		_game.day_night.set_graphics(not low, LOW_VIEW_DISTANCE if low else 0.0)
 	web_pixel_share = LOW_WEB_PIXEL_SHARE if low else 1.0
 	web_min_scale = LOW_WEB_MIN_3D_SCALE if low else WEB_MIN_3D_SCALE
+	web_min_lines = LOW_WEB_MIN_LINES if low else 0.0
 	apply_web_3d_scale(viewport)
 	_apply_ranges(_ranged)
 
@@ -252,6 +276,9 @@ func add_parts(game: Node3D, parts: Array, key: String) -> void:
 	holder.add_child(container)
 	_make_batches(groups, container)
 	town.set_meta("static_batched_mesh_count", merged)
+	for part in roots:
+		if is_instance_valid(part):
+			merge_door_leaves(part, game.doors)
 	# The unit's ranges follow the current graphics tier.
 	var found: Array[GeometryInstance3D] = _note_ranged(container)
 	for part in parts:
@@ -455,6 +482,168 @@ func _make_batches(groups: Dictionary, container: Node3D) -> void:
 			source.set_meta("render_batch", [batch, i])
 		merged += entry.nodes.size()
 		batches += 1
+
+
+## Door leaves (17 Nov 2026): a door in Main.doors (hinge or slide; door_animator.gd) turns or
+## slides as one node, so the static batches leave all of it out (about 35 meshes per home door:
+## slab, panels, mouldings, hinges, handles). Its own plain meshes are merged into one mesh per
+## material, shadow, range and layers, a child of the door node ("Merged leaf", meta
+## "leaf_merge"), so they still move with it. Originals are hidden and tagged "render_batched" as
+## in the static batches (the badge, the minimap and interaction_controller._shown() still read
+## them). Left alone: curtains, doors that process, nested doors, anything processing, with
+## keep_own_draw or a word_key below the door, vehicle/animal/character scenes, transparent or
+## shader materials, skinned meshes, per-node transparency/overlays. Once per door (meta
+## "leaf_merged"). Returns the number of meshes merged.
+func merge_door_leaves(root: Node, doors: Dictionary) -> int:
+	var count := 0
+	for door in doors:
+		if not is_instance_valid(door) or not door is Node3D or door.has_meta("leaf_merged"):
+			continue
+		if door != root and not root.is_ancestor_of(door):
+			continue
+		if str(doors[door].get("type", "")) == "curtain" or door.is_processing() or door.is_physics_processing():
+			continue
+		if _under_skipped(door):
+			continue
+		door.set_meta("leaf_merged", true)
+		count += _merge_leaf(door, doors)
+	return count
+
+
+func _under_skipped(node: Node) -> bool:
+	var walk := node
+	while walk != null:
+		if _skipped_scene(walk) or (walk.get_parent() != null and str(walk.name) in SKIPPED_ROOTS):
+			return true
+		walk = walk.get_parent()
+	return false
+
+
+func _merge_leaf(door: Node3D, doors: Dictionary) -> int:
+	var groups := {}
+	var pending: Array = door.get_children()
+	var to_door := door.global_transform.affine_inverse()
+	while not pending.is_empty():
+		var node: Node = pending.pop_back()
+		if doors.has(node) or node.is_processing() or node.is_physics_processing() \
+				or node.has_meta("keep_own_draw") or node.has_meta("word_key") or _skipped_scene(node) \
+				or (node is Node3D and not (node as Node3D).visible):
+			continue
+		if node is MeshInstance3D:
+			_collect_leaf(node as MeshInstance3D, to_door, groups)
+		pending.append_array(node.get_children())
+	var count := 0
+	for key in groups:
+		var entry: Dictionary = groups[key]
+		if entry.nodes.size() < 2:
+			continue
+		var mesh := ArrayMesh.new()
+		for surface_key in entry.surfaces:
+			mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, entry.surfaces[surface_key])
+			mesh.surface_set_material(mesh.get_surface_count() - 1, surface_key[0])
+		var leaf := MeshInstance3D.new()
+		leaf.name = "Merged leaf"
+		leaf.mesh = mesh
+		leaf.cast_shadow = key[0]
+		leaf.visibility_range_end = key[1]
+		leaf.layers = key[2]
+		leaf.set_meta("leaf_merge", true)
+		door.add_child(leaf)
+		for source: MeshInstance3D in entry.nodes:
+			source.hide()
+			source.set_meta("render_batched", true)
+		count += entry.nodes.size()
+		leaf_meshes += 1
+	leaf_merged += count
+	return count
+
+
+# Adds a leaf mesh's surfaces, in door space, to the group of its shadow/range/layers setting
+# (one surface per material and vertex format), or leaves it out when it cannot merge.
+func _collect_leaf(node: MeshInstance3D, to_door: Transform3D, groups: Dictionary) -> void:
+	var mesh := node.mesh
+	if mesh == null or node.skin != null or node.material_overlay != null or node.transparency != 0.0 \
+			or mesh is ImmediateMesh:
+		return
+	var materials: Array = []
+	for s in range(mesh.get_surface_count()):
+		if mesh is ArrayMesh and (mesh as ArrayMesh).surface_get_primitive_type(s) != Mesh.PRIMITIVE_TRIANGLES:
+			return
+		var material: Material = node.material_override
+		if material == null and s < node.get_surface_override_material_count():
+			material = node.get_surface_override_material(s)
+		if material == null:
+			material = mesh.surface_get_material(s)
+		if material != null and (not material is BaseMaterial3D \
+				or (material as BaseMaterial3D).transparency != BaseMaterial3D.TRANSPARENCY_DISABLED):
+			return
+		materials.append(material)
+	var pose := to_door * node.global_transform
+	var normal_basis := pose.basis.inverse().transposed()
+	var mirrored := pose.basis.determinant() < 0.0
+	var key := [node.cast_shadow, node.visibility_range_end, node.layers]
+	if not groups.has(key):
+		groups[key] = {"surfaces": {}, "nodes": []}
+	var entry: Dictionary = groups[key]
+	for s in range(mesh.get_surface_count()):
+		var source: Array = mesh.surface_get_arrays(s)
+		var vertices: PackedVector3Array = source[Mesh.ARRAY_VERTEX]
+		if vertices.is_empty() or source[Mesh.ARRAY_BONES] != null:
+			continue
+		var has_uv: bool = source[Mesh.ARRAY_TEX_UV] != null
+		var has_color: bool = source[Mesh.ARRAY_COLOR] != null
+		var has_tangent: bool = source[Mesh.ARRAY_TANGENT] != null
+		# A surface per material and vertex format (a material with no UVs never mixes with one that has them).
+		var surface_key := [materials[s], has_uv, has_color, has_tangent]
+		if not entry.surfaces.has(surface_key):
+			var empty: Array = []
+			empty.resize(Mesh.ARRAY_MAX)
+			empty[Mesh.ARRAY_VERTEX] = PackedVector3Array()
+			empty[Mesh.ARRAY_NORMAL] = PackedVector3Array()
+			empty[Mesh.ARRAY_INDEX] = PackedInt32Array()
+			if has_uv: empty[Mesh.ARRAY_TEX_UV] = PackedVector2Array()
+			if has_color: empty[Mesh.ARRAY_COLOR] = PackedColorArray()
+			if has_tangent: empty[Mesh.ARRAY_TANGENT] = PackedFloat32Array()
+			entry.surfaces[surface_key] = empty
+		var target: Array = entry.surfaces[surface_key]
+		var base: int = (target[Mesh.ARRAY_VERTEX] as PackedVector3Array).size()
+		var out_vertices: PackedVector3Array = target[Mesh.ARRAY_VERTEX]
+		var out_normals: PackedVector3Array = target[Mesh.ARRAY_NORMAL]
+		var normals: PackedVector3Array = source[Mesh.ARRAY_NORMAL] if source[Mesh.ARRAY_NORMAL] != null else PackedVector3Array()
+		for i in vertices.size():
+			out_vertices.append(pose * vertices[i])
+			out_normals.append((normal_basis * normals[i]).normalized() if i < normals.size() else Vector3.UP)
+		target[Mesh.ARRAY_VERTEX] = out_vertices
+		target[Mesh.ARRAY_NORMAL] = out_normals
+		if has_uv:
+			var uvs: PackedVector2Array = target[Mesh.ARRAY_TEX_UV]
+			uvs.append_array(source[Mesh.ARRAY_TEX_UV])
+			target[Mesh.ARRAY_TEX_UV] = uvs
+		if has_color:
+			var colors: PackedColorArray = target[Mesh.ARRAY_COLOR]
+			colors.append_array(source[Mesh.ARRAY_COLOR])
+			target[Mesh.ARRAY_COLOR] = colors
+		if has_tangent:
+			var tangents: PackedFloat32Array = target[Mesh.ARRAY_TANGENT]
+			var from: PackedFloat32Array = source[Mesh.ARRAY_TANGENT]
+			for i in range(0, from.size(), 4):
+				var t := (pose.basis * Vector3(from[i], from[i + 1], from[i + 2])).normalized()
+				tangents.append_array([t.x, t.y, t.z, -from[i + 3] if mirrored else from[i + 3]])
+			target[Mesh.ARRAY_TANGENT] = tangents
+		var indices: PackedInt32Array = target[Mesh.ARRAY_INDEX]
+		var from_indices: PackedInt32Array = source[Mesh.ARRAY_INDEX] if source[Mesh.ARRAY_INDEX] != null else PackedInt32Array()
+		var corner_count: int = from_indices.size() if not from_indices.is_empty() else vertices.size()
+		for i in range(0, corner_count - 2, 3):
+			var a: int = from_indices[i] if not from_indices.is_empty() else i
+			var b: int = from_indices[i + 1] if not from_indices.is_empty() else i + 1
+			var c: int = from_indices[i + 2] if not from_indices.is_empty() else i + 2
+			# A mirrored pose turns the triangles inside out: keep their winding facing out.
+			if mirrored:
+				indices.append_array([base + a, base + c, base + b])
+			else:
+				indices.append_array([base + a, base + b, base + c])
+		target[Mesh.ARRAY_INDEX] = indices
+	entry.nodes.append(node)
 
 
 # Anything that moves, toggles or animates keeps its own draw. Pickable meshes may

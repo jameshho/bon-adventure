@@ -12,9 +12,12 @@ extends Control
 ## (minigame_host.gd launch()): no offer roll, no greeting. While that game runs its rounds are
 ## the chosen number (activity_board.gd set_rounds()), undone when the game is over.
 ##
-## Games whose building is left out by dev_focus.txt show "Building not loaded". Only one
+## Games whose building is left out by dev_focus.txt show "Building not loaded"; a game whose
+## building nearby loading has not built yet (nearby_units.gd, phones) can be played: Play builds
+## it first (a short freeze), then starts the game as usual. Only one
 ## game at a time: Play is off while any minigame runs or the player is in a vehicle.
 const Board := preload("res://scripts/learning/activity_board.gd")
+const NearbyUnits := preload("res://scripts/world/nearby_units.gd")
 const UiText := preload("res://scripts/language/ui_text.gd")
 const UiIcons := preload("res://scripts/ui/ui_icons.gd")
 
@@ -291,9 +294,9 @@ func _step(id: String, by: int) -> void:
 
 ## Why `id` cannot start now ("" when it can).
 func blocked(id: String) -> String:
-	if Board.shared().session(id) == null:
+	if Board.shared().session(id) == null and not _loadable(id):
 		return "launcher.absent"
-	if testing != "" or Board.shared().blocker("") != "":
+	if testing != "" or _loading_id != "" or Board.shared().blocker("") != "":
 		return "launcher.running"
 	if is_instance_valid(main.active_vehicle):
 		return "launcher.vehicle"
@@ -304,7 +307,7 @@ func _style_tiles() -> void:
 	var id := _selected()
 	for row in _rows:
 		var on: bool = row.id == id
-		var absent: bool = Board.shared().session(row.id) == null
+		var absent: bool = Board.shared().session(row.id) == null and not _loadable(row.id)
 		row.tile.modulate.a = 0.55 if absent else 1.0
 		row.tile.add_theme_stylebox_override("normal", _card(ROW_HOVER if on else ROW, GOLD if on else LINE.darkened(0.35), 12, 10))
 		row.tile.add_theme_stylebox_override("hover", _card(ROW_HOVER, GOLD if on else LINE, 12, 10))
@@ -334,10 +337,33 @@ func _update() -> void:
 
 # --- Starting a game -----------------------------------------------------------------------
 
-## Starts `id` with the chosen rounds; false when it cannot start now.
+## Whether `id`'s session is missing only because its building is still waiting to be built.
+func _loadable(id: String) -> bool:
+	var unit := NearbyUnits.unit_of_activity(id)
+	return unit != "" and main.pending_units.has(unit)
+
+## Starts `id` with the chosen rounds; false when it cannot start now. A game whose building is
+## still pending is built first (launch returns true at once; the game starts once it is in).
 func launch(id: String) -> bool:
 	if blocked(id) != "":
 		return false
+	if Board.shared().session(id) == null:
+		close()
+		_launch_after_loading(id)
+		return true
+	return _start(id)
+
+## The game whose building is being built for Play (nearby loading), "" otherwise.
+var _loading_id := ""
+
+func _launch_after_loading(id: String) -> void:
+	_loading_id = id
+	await main.ensure_unit(NearbyUnits.unit_of_activity(id))
+	_loading_id = ""
+	if Board.shared().session(id) != null and blocked(id) == "":
+		_start(id)
+
+func _start(id: String) -> bool:
 	var session: Object = Board.shared().session(id)
 	var host = session.get("host")
 	# A game with no NPC (Radar Patrol) starts itself where the player stands.

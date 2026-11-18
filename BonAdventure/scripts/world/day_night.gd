@@ -19,6 +19,9 @@ extends Node
 ## is fitted to the building around the player with rays (_fit_room()). Pixels inside its box
 ## take the indoor fill and everything outside the walls keeps the time of day's light. One
 ## probe, no light, hidden outdoors.
+## The renderer allocates the whole reflection atlas for it, so project.godot keeps that atlas at
+## one 16 px slot (18 Nov 2026: the defaults, 64 slots of 256 px, cost 257 MB of GPU memory; see
+## docs/guides/performance/README.md). A second probe needs reflection_count raised.
 ##
 ## Use: Main.build_world() calls setup(main); Main._ready() calls bind_town(apartment, player)
 ## before the render batchers run. The clock (scripts/ui/day_clock.gd) uses set_time(),

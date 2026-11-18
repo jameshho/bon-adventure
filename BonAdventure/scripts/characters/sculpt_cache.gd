@@ -15,7 +15,20 @@ extends RefCounted
 ## Keys hash the source of the whole script chain (and the outfit data), every script
 ## variable, and the transforms of the parts, so an edit simply builds and caches again.
 ## Older entries of an edited script are deleted. Never used in the editor; VT_SCULPT_CACHE=0
-## turns it off.
+## turns the files off.
+##
+## Shared meshes (17 Nov 2026, WebGL context loss, docs/guides/performance/README.md "GPU memory
+## on the web"): characters and costumes with the same key get the same mesh and material
+## resources in memory (the first one built or loaded, kept in _shared), so the GPU holds one
+## copy (two beagles, ten pizza staff in one shirt). Safe because nothing edits a character's
+## meshes or materials after its build: plush_life.gd blinks by node transform, costumes
+## hide parts by `visible` and reshape them into NEW meshes (plush_costume.gd _reshape), the
+## player's aura is a node overlay (bonbon_effects.gd). Code that changes a built character's
+## mesh or material in place must give it its own copy first. Script variables are copied per
+## character. An entry is dropped once no character (for a costume entry: no costume) that
+## used it is left, so suspects with random shirts or outfits tried on in the fitting room do
+## not pile up for the session. Works without the files too (checks run with VT_SCULPT_CACHE=0); not in the
+## editor; VT_MESH_SHARE=0 turns it off (measuring).
 ##
 ## Shaders: each character used to make its own Shader objects with identical code, and every
 ## copy is compiled on the first frame (about 0.9 s). shared_shader() keeps one per code.
@@ -29,10 +42,18 @@ static var _shaders := {}
 static var _source_hashes := {}
 ## Characters whose current meshes all came through here: instance id -> {key, meshes}.
 static var _built := {}
+## Key -> the entry every character with that key restores from (sharing() only).
+static var _shared := {}
+## Key -> WeakRefs of the characters (costumes) using that entry.
+static var _users := {}
 
 ## Off in the editor, and with the environment variable VT_SCULPT_CACHE=0 (always build).
 static func enabled() -> bool:
 	return not Engine.is_editor_hint() and OS.get_environment("VT_SCULPT_CACHE") != "0"
+
+## Characters with the same key share meshes in memory (see the header); off in the editor.
+static func sharing() -> bool:
+	return not Engine.is_editor_hint() and OS.get_environment("VT_MESH_SHARE") != "0"
 
 static func shared_shader(code: String) -> Shader:
 	if not _shaders.has(code):
@@ -43,7 +64,7 @@ static func shared_shader(code: String) -> Shader:
 
 ## Builds `sculpt` (its _build()) or restores its meshes from the cache.
 static func build(sculpt: Node3D) -> void:
-	if not enabled():
+	if not enabled() and not sharing():
 		sculpt.call("_build")
 		return
 	var key := _sculpt_key(sculpt)
@@ -52,13 +73,14 @@ static func build(sculpt: Node3D) -> void:
 ## Builds `costume` (its _build()) or restores its pieces and wearer changes from the cache.
 static func dress(costume: Node3D) -> void:
 	var wearer := costume.get_parent() as Node3D
-	if not enabled() or wearer == null:
+	if (not enabled() and not sharing()) or wearer == null:
 		costume.call("_build")
 		return
 	var key := _costume_key(costume, wearer)
 	_finish(wearer, costume, key, func() -> void: costume.call("_build"))
 
 static func _finish(root: Node3D, costume: Node3D, key: String, make: Callable) -> void:
+	_drop_unused()
 	if key == "" or not _restore(root, costume, key):
 		var before := _parts(root, costume)
 		make.call()
@@ -71,8 +93,22 @@ static func _finish(root: Node3D, costume: Node3D, key: String, make: Callable) 
 			if parts[path][0] != null:
 				meshes[path] = parts[path][0]
 		_built[root.get_instance_id()] = {"key": key, "meshes": meshes}
+		if _shared.has(key):
+			if not _users.has(key):
+				_users[key] = []
+			_users[key].append(weakref(costume if costume != null else root))
 	else:
 		_built.erase(root.get_instance_id())
+
+## Forgets shared entries whose characters (costumes) are all gone, so their meshes can be freed.
+static func _drop_unused() -> void:
+	for key in _shared.keys():
+		var alive: Array = _users.get(key, []).filter(func(user: WeakRef) -> bool: return user.get_ref() != null)
+		if alive.is_empty():
+			_shared.erase(key)
+			_users.erase(key)
+		else:
+			_users[key] = alive
 
 ## Mesh parts of `root` outside `skip`: path -> FIELDS values.
 static func _parts(root: Node3D, skip: Node) -> Dictionary:
@@ -150,13 +186,17 @@ static func _costume_key(costume: Node3D, wearer: Node3D) -> String:
 	return "plush_costume-" + source + "-" + "\n".join(state).sha256_text().substr(0, 16)
 
 static func _restore(root: Node3D, costume: Node3D, key: String) -> bool:
-	var path := FOLDER + key + ".res"
-	if not FileAccess.file_exists(path):
-		return false
-	# Fresh copies: two characters must never share (and later edit) one mesh or material.
-	var saved: Resource = ResourceLoader.load(path, "", ResourceLoader.CACHE_MODE_IGNORE_DEEP)
-	if saved == null or not saved.has_meta("parts"):
-		return false
+	var saved: Resource = _shared.get(key) if sharing() else null
+	if saved == null:
+		var path := FOLDER + key + ".res"
+		if not enabled() or not FileAccess.file_exists(path):
+			return false
+		# Fresh copies from the file (shared below only when sharing() is on).
+		saved = ResourceLoader.load(path, "", ResourceLoader.CACHE_MODE_IGNORE_DEEP)
+		if saved == null or not saved.has_meta("parts"):
+			return false
+		if sharing():
+			_shared[key] = saved
 	var parts: Dictionary = saved.get_meta("parts")
 	for node_path in parts:
 		if not root.get_node_or_null(NodePath(node_path)) is MeshInstance3D or not parts[node_path] is Dictionary:
@@ -203,6 +243,8 @@ static func _store(root: Node3D, costume: Node3D, key: String, before: Dictionar
 	var saved := Resource.new()
 	saved.set_meta("parts", parts)
 	saved.set_meta("state", state)
+	# The pieces are packed from duplicates of this costume's nodes, which keep its meshes: the
+	# next wearer with this key instantiates the same ones.
 	if costume != null:
 		var holder := Node3D.new()
 		for piece in costume.get_children():
@@ -215,6 +257,10 @@ static func _store(root: Node3D, costume: Node3D, key: String, before: Dictionar
 		if error != OK:
 			return
 		saved.set_meta("pieces", packed)
+	if sharing():
+		_shared[key] = saved
+	if not enabled():
+		return
 	DirAccess.make_dir_recursive_absolute(FOLDER)
 	# Entries made from an older version of the same script are stale.
 	var current := key.substr(0, key.rfind("-") + 1)
@@ -265,6 +311,9 @@ static func _storable(value: Variant) -> bool:
 static func _set_state(node: Node, wearer: Node, state: Dictionary) -> void:
 	for name in state.get("vars", {}):
 		var value: Variant = state.vars[name]
+		# Each character gets its own arrays and dictionaries (an entry may be shared).
+		if value is Array or value is Dictionary:
+			value = value.duplicate(true)
 		var current: Variant = node.get(name)
 		# A typed array (the sculpt's _body_profile) comes back untyped, and set() would
 		# silently keep the old value: convert it into the variable's own type.

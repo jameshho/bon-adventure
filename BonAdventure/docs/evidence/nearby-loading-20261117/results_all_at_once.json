@@ -1,0 +1,151 @@
+{
+  "adapter": "Apple M5",
+  "base_with_first": {
+    "buffer_mb": 249.764209747314,
+    "font_atlas_mb": 45.0,
+    "nodes": 76313.0,
+    "static_mb": 645.754549026489,
+    "texture_mb": 84.2381467819214,
+    "video_mb": 334.002356529236
+  },
+  "date": "2026-11-17",
+  "empty": {
+    "buffer_mb": 6.22644805908203,
+    "nodes": 2.0,
+    "static_mb": 32.6140270233154,
+    "texture_mb": 7.84012126922607,
+    "video_mb": 14.0665693283081
+  },
+  "entrances": {
+    "airport": [
+      -124.8,
+      291.2
+    ],
+    "bakery": [
+      157.3,
+      215.8
+    ],
+    "bank": [
+      159.3,
+      140.4
+    ],
+    "barn": [
+      85.8,
+      120.9
+    ],
+    "burger": [
+      -115.7,
+      60.5
+    ],
+    "chapel": [
+      -102.7,
+      212.5
+    ],
+    "clothing": [
+      -161.8,
+      213.2
+    ],
+    "electronics": [
+      156.6,
+      178.1
+    ],
+    "furniture": [
+      163.8,
+      289.9
+    ],
+    "home": [
+      1.3,
+      66.3
+    ],
+    "hospital": [
+      72.8,
+      281.4
+    ],
+    "library": [
+      66.3,
+      57.8
+    ],
+    "mystery": [
+      144.3,
+      106.6
+    ],
+    "pizza": [
+      -115.7,
+      60.5
+    ],
+    "playground": [
+      80.9,
+      215.1
+    ],
+    "police": [
+      -175.5,
+      104.0
+    ],
+    "restaurant": [
+      -48.1,
+      59.1
+    ],
+    "restaurants": [
+      -48.1,
+      59.1
+    ],
+    "school": [
+      13.0,
+      280.8
+    ],
+    "sports": [
+      124.8,
+      293.1
+    ],
+    "supermarket": [
+      -164.4,
+      163.8
+    ],
+    "taqueria": [
+      -79.3,
+      60.4
+    ],
+    "tower": [
+      -96.3,
+      313.7
+    ],
+    "warehouse": [
+      -61.4,
+      281.2
+    ]
+  },
+  "first": "all",
+  "fonts": [
+    [
+      "",
+      61,
+      60,
+      37.5
+    ],
+    [
+      "NotoSansTC-SemiBold-subset.ttf",
+      22,
+      12,
+      7.5
+    ]
+  ],
+  "freed": {},
+  "full": {
+    "buffer_mb": 249.764209747314,
+    "nodes": 76313.0,
+    "static_mb": 650.705129623413,
+    "texture_mb": 84.2381467819214,
+    "video_mb": 334.002356529236
+  },
+  "graphics": "low",
+  "renderer": "gl_compatibility",
+  "startup_ms": 6022,
+  "top_textures": [],
+  "town_box": [
+    -303.8,
+    -38.7,
+    243.7,
+    405.6
+  ],
+  "units": {}
+}

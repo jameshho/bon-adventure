@@ -1,0 +1,132 @@
+units' own cost, all loaded: 157.0 MB (buffers + freed textures)
+per unit: restaurants 50.8, hospital 14.9, supermarket 12.1, airport 9.3, warehouse 9.2, school 8.7, home 7.5, police 6.8, mystery 6.4, library 6.3, sports 4.5, bank 4.4, furniture 4.2, clothing 3.3, bakery 3.1, playground 2.3, chapel 1.8, electronics 0.9, barn 0.4
+
+radius 60 m: grid mean 21 MB (2.1 units), median 15, 90th pct 58, max 70
+  airport      20.4 MB  3 units  airport chapel warehouse
+  bakery        6.3 MB  3 units  bakery electronics playground
+  bank         11.8 MB  3 units  bank electronics mystery
+  barn          6.8 MB  2 units  barn mystery
+  burger       50.8 MB  1 units  restaurants
+  chapel       11.1 MB  2 units  airport chapel
+  clothing     17.2 MB  3 units  chapel clothing supermarket
+  electronics  14.9 MB  4 units  bakery bank electronics mystery
+  furniture     8.7 MB  2 units  furniture sports
+  home         64.6 MB  3 units  home library restaurants
+  hospital     30.3 MB  4 units  hospital playground school sports
+  library      14.2 MB  3 units  barn home library
+  mystery      11.2 MB  3 units  bank barn mystery
+  pizza        50.8 MB  1 units  restaurants
+  playground    2.3 MB  1 units  playground
+  police       69.6 MB  3 units  police restaurants supermarket
+  restaurant   58.3 MB  2 units  home restaurants
+  restaurants  58.3 MB  2 units  home restaurants
+  school       35.1 MB  4 units  hospital playground school warehouse
+  sports       25.9 MB  4 units  furniture hospital playground sports
+  supermarket  22.2 MB  3 units  clothing police supermarket
+  taqueria     50.8 MB  1 units  restaurants
+  tower        18.5 MB  2 units  airport warehouse
+  warehouse    29.0 MB  4 units  airport chapel school warehouse
+
+radius 90 m: grid mean 34 MB (3.6 units), median 29, 90th pct 65, max 77
+  airport      23.7 MB  4 units  airport chapel clothing warehouse
+  bakery       19.5 MB  6 units  bakery bank electronics furniture playground sports
+  bank         15.3 MB  5 units  bakery bank barn electronics mystery
+  barn         26.0 MB  6 units  bank barn electronics home library mystery
+  burger       57.6 MB  2 units  police restaurants
+  chapel       35.7 MB  5 units  airport chapel clothing supermarket warehouse
+  clothing     26.5 MB  4 units  airport chapel clothing supermarket
+  electronics  17.2 MB  5 units  bakery bank electronics mystery playground
+  furniture    29.0 MB  5 units  bakery furniture hospital playground sports
+  home         65.0 MB  4 units  barn home library restaurants
+  hospital     34.5 MB  5 units  furniture hospital playground school sports
+  library      20.6 MB  4 units  barn home library mystery
+  mystery      18.4 MB  5 units  bank barn electronics library mystery
+  pizza        57.6 MB  2 units  police restaurants
+  playground   34.4 MB  6 units  bakery electronics hospital playground school sports
+  police       69.6 MB  3 units  police restaurants supermarket
+  restaurant   58.3 MB  2 units  home restaurants
+  restaurants  58.3 MB  2 units  home restaurants
+  school       35.1 MB  4 units  hospital playground school warehouse
+  sports       29.0 MB  5 units  bakery furniture hospital playground sports
+  supermarket  24.0 MB  4 units  chapel clothing police supermarket
+  taqueria     58.3 MB  2 units  home restaurants
+  tower        20.4 MB  3 units  airport chapel warehouse
+  warehouse    29.0 MB  4 units  airport chapel school warehouse
+
+radius 130 m: grid mean 53 MB (6.0 units), median 49, 90th pct 82, max 120
+  airport      44.4 MB  6 units  airport chapel clothing school supermarket warehouse
+  bakery       41.1 MB  9 units  bakery bank barn electronics furniture hospital mystery playground sports
+  bank         23.9 MB  7 units  bakery bank barn electronics library mystery playground
+  barn         82.2 MB  9 units  bakery bank barn electronics home library mystery playground restaurants
+  burger       77.2 MB  4 units  home police restaurants supermarket
+  chapel       51.2 MB  7 units  airport chapel clothing police school supermarket warehouse
+  clothing     42.5 MB  6 units  airport chapel clothing police supermarket warehouse
+  electronics  41.1 MB  9 units  bakery bank barn electronics furniture hospital mystery playground sports
+  furniture    29.9 MB  6 units  bakery electronics furniture hospital playground sports
+  home         65.0 MB  4 units  barn home library restaurants
+  hospital     47.8 MB  8 units  bakery electronics furniture hospital playground school sports warehouse
+  library      75.8 MB  6 units  bank barn home library mystery restaurants
+  mystery      31.4 MB  8 units  bakery bank barn electronics home library mystery playground
+  pizza        77.2 MB  4 units  home police restaurants supermarket
+  playground   59.1 MB 11 units  bakery bank barn electronics furniture hospital mystery playground school sports warehouse
+  police       74.8 MB  5 units  chapel clothing police restaurants supermarket
+  restaurant   64.6 MB  3 units  home library restaurants
+  restaurants  64.6 MB  3 units  home library restaurants
+  school       50.7 MB  7 units  airport chapel hospital playground school sports warehouse
+  sports       38.6 MB  7 units  bakery electronics furniture hospital playground school sports
+  supermarket  84.1 MB  6 units  airport chapel clothing police restaurants supermarket
+  taqueria     77.2 MB  4 units  home police restaurants supermarket
+  tower        32.4 MB  5 units  airport chapel clothing school warehouse
+  warehouse    49.5 MB  7 units  airport chapel clothing hospital playground school warehouse
+
+radius 160 m: grid mean 68 MB (7.9 units), median 68, 90th pct 112, max 135
+  airport      44.4 MB  6 units  airport chapel clothing school supermarket warehouse
+  bakery       49.8 MB 10 units  bakery bank barn electronics furniture hospital mystery playground school sports
+  bank         55.0 MB 11 units  bakery bank barn electronics furniture home hospital library mystery playground sports
+  barn         90.9 MB 10 units  bakery bank barn electronics home library mystery playground restaurants school
+  burger       82.3 MB  6 units  chapel clothing home police restaurants supermarket
+  chapel      104.3 MB  9 units  airport chapel clothing playground police restaurants school supermarket warehouse
+  clothing     93.3 MB  7 units  airport chapel clothing police restaurants supermarket warehouse
+  electronics  56.1 MB 11 units  bakery bank barn electronics furniture hospital library mystery playground school sports
+  furniture    43.0 MB  8 units  bakery bank electronics furniture hospital playground school sports
+  home         73.7 MB  6 units  barn home library mystery playground restaurants
+  hospital     61.6 MB 10 units  airport bakery bank electronics furniture hospital playground school sports warehouse
+  library      79.1 MB  8 units  bank barn electronics home library mystery playground restaurants
+  mystery      31.4 MB  8 units  bakery bank barn electronics home library mystery playground
+  pizza        82.3 MB  6 units  chapel clothing home police restaurants supermarket
+  playground   72.9 MB 13 units  bakery bank barn electronics furniture home hospital library mystery playground school sports warehouse
+  police       74.8 MB  5 units  chapel clothing police restaurants supermarket
+  restaurant   83.8 MB  6 units  barn home library police restaurants supermarket
+  restaurants  83.8 MB  6 units  barn home library police restaurants supermarket
+  school       58.0 MB  9 units  airport bakery chapel furniture hospital playground school sports warehouse
+  sports       52.3 MB  9 units  bakery bank electronics furniture hospital playground school sports warehouse
+  supermarket  93.3 MB  7 units  airport chapel clothing police restaurants supermarket warehouse
+  taqueria     85.2 MB  6 units  chapel home library police restaurants supermarket
+  tower        59.3 MB  7 units  airport chapel clothing hospital school supermarket warehouse
+  warehouse    61.6 MB  8 units  airport chapel clothing hospital playground school supermarket warehouse
+
+radius 200 m: grid mean 90 MB (10.4 units), median 84, 90th pct 135, max 157
+  airport      68.4 MB  9 units  airport chapel clothing hospital playground police school supermarket warehouse
+  bakery       72.9 MB 13 units  bakery bank barn electronics furniture home hospital library mystery playground school sports warehouse
+  bank        114.4 MB 13 units  bakery bank barn electronics furniture home hospital library mystery playground restaurants school sports
+  barn        123.7 MB 14 units  bakery bank barn electronics furniture home hospital library mystery playground restaurants school sports warehouse
+  burger       89.0 MB  8 units  barn chapel clothing home library police restaurants supermarket
+  chapel      126.7 MB 11 units  airport chapel clothing home hospital playground police restaurants school supermarket warehouse
+  clothing    102.0 MB  8 units  airport chapel clothing police restaurants school supermarket warehouse
+  electronics  63.7 MB 12 units  bakery bank barn electronics furniture home hospital library mystery playground school sports
+  furniture    59.1 MB 11 units  bakery bank barn electronics furniture hospital mystery playground school sports warehouse
+  home        108.4 MB 12 units  bank barn chapel electronics home library mystery playground police restaurants school supermarket
+  hospital     70.2 MB 13 units  airport bakery bank barn chapel electronics furniture hospital mystery playground school sports warehouse
+  library      82.2 MB  9 units  bakery bank barn electronics home library mystery playground restaurants
+  mystery     114.4 MB 13 units  bakery bank barn electronics furniture home hospital library mystery playground restaurants school sports
+  pizza        89.0 MB  8 units  barn chapel clothing home library police restaurants supermarket
+  playground  134.8 MB 16 units  airport bakery bank barn chapel electronics furniture home hospital library mystery playground restaurants school sports warehouse
+  police       91.6 MB  7 units  airport chapel clothing home police restaurants supermarket
+  restaurant   97.7 MB 10 units  barn chapel clothing home library mystery playground police restaurants supermarket
+  restaurants  97.7 MB 10 units  barn chapel clothing home library mystery playground police restaurants supermarket
+  school       67.1 MB 13 units  airport bakery bank barn chapel clothing electronics furniture hospital playground school sports warehouse
+  sports       59.1 MB 11 units  bakery bank barn electronics furniture hospital mystery playground school sports warehouse
+  supermarket 109.5 MB  9 units  airport chapel clothing home police restaurants school supermarket warehouse
+  taqueria     89.0 MB  8 units  barn chapel clothing home library police restaurants supermarket
+  tower        61.6 MB  8 units  airport chapel clothing hospital playground school supermarket warehouse
+  warehouse    72.9 MB 10 units  airport chapel clothing hospital playground police school sports supermarket warehouse

@@ -1,0 +1,110 @@
+{
+  "adapter": "Apple M5",
+  "base_with_first": {
+    "buffer_mb": 85.1337223052979,
+    "font_atlas_mb": 18.4,
+    "nodes": 19751.0,
+    "static_mb": 246.607577323914,
+    "texture_mb": 50.1596879959106,
+    "video_mb": 135.293410301208
+  },
+  "date": "2026-11-17",
+  "empty": {
+    "buffer_mb": 6.22644805908203,
+    "nodes": 2.0,
+    "static_mb": 32.6959629058838,
+    "texture_mb": 7.84012126922607,
+    "video_mb": 14.0665693283081
+  },
+  "entrances": {
+    "barn": [
+      85.8,
+      120.9
+    ],
+    "playground": [
+      80.9,
+      215.1
+    ]
+  },
+  "first": "playground",
+  "fonts": [
+    [
+      "",
+      49,
+      44,
+      21.6
+    ],
+    [
+      "NotoSansTC-SemiBold-subset.ttf",
+      21,
+      4,
+      0.5
+    ]
+  ],
+  "freed": {},
+  "full": {
+    "buffer_mb": 85.5353298187256,
+    "nodes": 20963.0,
+    "static_mb": 256.751081466675,
+    "texture_mb": 53.7430219650269,
+    "video_mb": 139.278351783752
+  },
+  "graphics": "low",
+  "renderer": "gl_compatibility",
+  "startup_ms": 4234,
+  "top_textures": [],
+  "town_box": [
+    -303.8,
+    -38.7,
+    243.7,
+    405.6
+  ],
+  "units": {
+    "barn": {
+      "add_frames": 2,
+      "add_ms": 34.9,
+      "batch_instances": 107,
+      "batch_mesh_mb": 0.01,
+      "delta": {
+        "buffer_mb": 0.4,
+        "nodes": 1212.0,
+        "static_mb": 9.87,
+        "texture_mb": 3.58,
+        "video_mb": 3.98
+      },
+      "font_atlas_mb": 3.7,
+      "frames_over_50ms": 0,
+      "instantiate_ms": 2.7,
+      "load_ms": 6.5,
+      "mesh_mb": 0.28,
+      "parts": [
+        {
+          "box": [
+            77.2,
+            97.5,
+            94.4,
+            111.4
+          ],
+          "mesh_mb": 0.28,
+          "nodes": 1103,
+          "path": "Barn"
+        },
+        {
+          "box": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "mesh_mb": 0.0,
+          "nodes": 1,
+          "path": "Map facades/FARM BARN"
+        }
+      ],
+      "plush": 0,
+      "plush_mesh_mb": 0.0,
+      "scene_nodes": 1090,
+      "worst_frame_ms": 10.6
+    }
+  }
+}

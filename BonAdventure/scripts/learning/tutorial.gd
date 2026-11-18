@@ -1492,7 +1492,8 @@ func _play_cutscene(title_id: String, subtitle_id := "") -> void:
 	await until(func() -> bool:
 		if total > 0.0 and is_instance_valid(_cutscene):
 			_cutscene.set_progress(CUTSCENE_UNITS_SHARE * (1.0 - main.pending_units.size() / total))
-		return main.pending_units.is_empty() or Time.get_ticks_msec() >= most)
+		# A replay with nearby loading (nearby_units.gd) never waits for far buildings.
+		return main.pending_units.is_empty() or main.has_node("NearbyUnits") or Time.get_ticks_msec() >= most)
 	if run != _run:
 		return
 	var views: Array = []

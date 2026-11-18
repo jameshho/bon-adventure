@@ -568,8 +568,8 @@ saved with the other settings (`GameSettings.graphics`, `"low"`/`"high"` in the 
 | Short visibility ranges (High ≤ `LOW_SHORT_RANGE` 80 m: small props, details, plush characters) | as in the render trim above | × `LOW_RANGE_SHARE` 0.45, never under 20 m (props 60 → 27 m, plush 45 → 20 m) |
 | Longer ranges (building parts sized by 60× their size) | as above | unchanged; the far plane and fog cut them (shortening them made a church tower vanish under its spire) |
 | Heavy single meshes (≥ 30k triangles: the clay zoo animals, 60k–300k each) | no extra range | hidden beyond 40 m |
-| MSAA / screen-space AA / TAA | project values (all off today) | off |
-| Web 3D resolution | CSS pixel size, never under 0.5 of the screen | 0.8 of the CSS pixel size, never under 0.25 (an iPhone at 3× renders 0.27) |
+| MSAA / screen-space AA / TAA | project values (all off today) | since 17 Nov 2026 `LOW_MSAA` 2x MSAA (user report: broken edges on road lines, cars, buildings on an iPhone); screen-space AA and TAA off. See [Low anti-aliasing and indoor batching](#low-anti-aliasing-and-indoor-batching--17-november-2026) |
+| Web 3D resolution | CSS pixel size, never under 0.5 of the screen | 0.8 of the CSS pixel size, never under 0.25, and since 17 Nov 2026 at least `LOW_WEB_MIN_LINES` 720 lines on the short side (an iPhone at 3× rendered 0.27 ≈ 310 lines: unreadable signs and broken edges, user report; now ≈ 0.62). A laptop on Low already drew about 720 lines. **Not measured on a phone**: read `?perf=1` |
 
 Each range's High value is kept on the node as meta `high_range`, so switching back restores it
 exactly. Omni-light reach was not changed (optional in the brief; interiors depend on it).
@@ -627,18 +627,213 @@ the world, outline rounded to 2) and frees the atlases no label uses any more:
 (the probe forced the web-only step natively). Desktop builds are unchanged. The readout
 (`?perf=1`, F3) now shows "GPU … MB" so a phone can be read directly.
 
+**Changed 17 Nov 2026: shared meshes.** Same probe kind, full town, Low, 1280×800, first launch
+(empty sculpt cache), measured in a scratch copy with the committed `render_culling.gd` (another
+session's uncommitted batching/MSAA work was in the shared checkout);
+`evidence/gpu-mesh-sharing-20261117/measure.gd`:
+
+| | before | after |
+| --- | ---: | ---: |
+| video memory | 375.2 MB | **323.6 MB** |
+| buffers | 279.5 MB | 227.9 MB |
+| mesh bytes (each mesh once) | 205.2 MB in 13,264 meshes | **153.6 MB** in 9,945 |
+| plush characters | 116.7 MB in 1,284 | 84.5 MB in 781 (87.0 in 800 in an earlier run) |
+| buildings and the rest | 61.3 MB | 41.9 MB |
+| byte-identical copies | 76.3 MB (plush 46.7, rest 29.4) | 24.6 MB (plush 14.6, rest 10.0) |
+| Main ready (first launch) | 10.25 s | 10.12 s (no change; noise) |
+
+- **Plush characters and costumes** (`sculpt_cache.gd`, header): characters with the same sculpt
+  key, and costumes with the same costume key, now get the same mesh and material resources (the
+  first one built or loaded) instead of a fresh copy each. 40 plush characters use 15–16 torso
+  meshes (five cats, five beagles, four lions, three bears ... share one each). Also on with
+  `VT_SCULPT_CACHE=0` (checks); `VT_MESH_SHARE=0` turns it off. Checked before sharing: nothing
+  edits a built character's meshes or materials in place (`plush_life.gd` blinks by node transform,
+  costumes hide parts by `visible` and `_reshape()` into new meshes, BonBon's aura is a node
+  overlay; color points are set during the build only); script arrays and dictionaries are copied
+  per character. An entry is dropped once no character (costume) using it is left, so lineup
+  suspects with random shirts and outfits tried on do not pile up.
+- **Baked buildings** (`tools/mesh_share.gd`, called in `bake_unit.gd save()` after the material
+  palette): exact copies inside one baked scene (same surface bytes or primitive sizes, same
+  material objects) point at one mesh. Re-baked as a round trip (no steps;
+  `compare_scenes.gd` 0 differences each): mystery, restaurants, furniture, police, bakery, airport,
+  school, home (2,816 meshes merged; `mystery.scn` 8.7 → 1.9 MB on disk). Other units and the base
+  share theirs at their next bake. Only `render_culling.gd` edits baked meshes at runtime (sphere and
+  cylinder segments, already per shared mesh by its largest use); `warehouse.gd`, `ground_cut.gd`
+  and `supermarket_products.gd` edit meshes before assigning them. Side effect: more same-mesh
+  pieces per cell, so the static batches grew (16,935 → 17,239 pieces merged, 3,758 → 3,817 batches).
+
 **Not changed, measured for later** (in order of size):
-- Plush characters, 116 MB: each sculpts its own meshes (a beagle's torso 2.1 MB, again for every
-  beagle). A web-only lower sculpt resolution, or sharing one mesh between identical characters,
-  would cut the most.
-- 29 MB of meshes are byte-identical copies (12,922 meshes, 7,993 different; mostly Mystery House
-  trim). Sharing them is safe only after checking the code that edits meshes in place (costumes,
-  sculpt cache, supermarket products, ground cut).
+- Plush characters, 85 MB after sharing: 15 MB are still byte-identical copies under different
+  keys (a shirt on a sheep teacher and a sheep salesperson whose other variables differ, seated
+  mahjong players' torsos). A web-only lower sculpt resolution would cut the most.
+- 10 MB of byte-identical static copies remain: the base world (garden fountains, map facades,
+  vehicles, statue; about 3.5 MB) and the units not re-baked (each about 0.1–0.7 MB; library left
+  alone while another session baked it). Copies across different scene files are not shared.
 - Clay zoo animals, 50 MB (60k–300k triangles each).
 - The whole town is in memory at once; loading only nearby buildings on phones would be the big
-  step and is a design decision.
+  step. Measured and proposed 17 Nov 2026; the user chose the label fix, then option A (built
+  17 Nov, not yet measured on the web or a phone):
+  [proposal and what was built](#proposal-load-only-nearby-buildings-on-phones--17-november-2026).
 - The sun's shadow map (4096², about 64 MB) exists only on High with shadows; a `.web` override of
   `rendering/lights_and_shadows/directional_shadow/size` would shrink it if phones pick High.
+
+## Proposal: load only nearby buildings on phones — 17 November 2026
+
+> **Decision (user, 17 Nov 2026): "Label fix, then A".** Stage 0 and option A are approved and
+> built (stage 1 in part, stage 2 skipped); B and C stay unapproved options. What was built and
+> checked: [Built — 17 November 2026](#built--17-november-2026) below; the rest of this section is
+> the proposal as written. Measurements, probe and limits:
+> [evidence/nearby-loading-20261117](../../evidence/nearby-loading-20261117/README.md). Native M5
+> only (the web was not measured); four other sessions were editing batching, plush mesh sharing,
+> clay animals and library signs while it ran, so per-unit numbers are ±30 %.
+
+**What a unit costs.** With the whole town loaded at once the probe read 334 MB of video memory
+(373 MB on 14 Nov; sibling work has trimmed it since). The 19 building units
+(`data/buildings.json`) hold only **≈ 157 MB** of it (buffers 150 + restaurant posters 7); the base
+world (terrain, roads, park, clay zoo animals, font atlases, the player) holds the rest and stays
+whatever is done here. Restaurants alone is 51 MB (9 plush staff), then hospital 15, supermarket 12,
+airport, warehouse, school, home, police, mystery and library 6–9 each, the other nine 0.4–4.5.
+**Plush characters are ≈ 93 MB of the 157** (32 plushes; an upper bound, shared meshes counted
+in full). Load time is small (`load()` 9–125 ms, `instantiate()` 1–23 ms); the freeze is the
+`add_unit()` hook-up: 34–317 ms over 2–9 frames natively, **worst single frame 100–270 ms** for
+any unit with a plush or many nodes.
+
+**What a radius would hold** (`radius_table.txt`; a unit is near when any of its part boxes is):
+
+| loading radius | units held (grid mean) | MB held: mean / 90th pct / max | at entrances |
+| --- | ---: | --- | --- |
+| 90 m | 3.6 | 34 / 65 / 77 | |
+| 130 m (Low's view) | 6.0 | 53 / 82 / 120 | 24 (bank) – 84 (supermarket) |
+| 160 m | 7.9 | 68 / 112 / 135 | 31 (mystery) – 104 (chapel) |
+| all (today) | 19 | 157 | 157 |
+
+A 150 m load radius (Low's 130 m plus 20 m to hide the arrival in fog) would hold about **60 MB
+instead of 157 MB at a typical spot: ≈ 95 MB less, 334 → ≈ 240 MB**, but only ≈ 25–50 MB less on the
+west side (supermarket, clothing, chapel, police are within 160 m of the restaurants). High's
+longer view would need all of them, so this is a Low-on-web feature.
+
+**Found on the way, bigger than this proposal (P1, verify on a phone first).** Each
+`Main.add_unit()` calls `apply_world_language()`; `sign_language.gd apply()` sets every sign in the
+town back to its own `sign_font_size`, undoing `share_label_sizes()`, which on the web is re-run
+only for the new unit. In the probe (whole town re-shared after each unit) the default font ended
+with 170 glyph caches and **303 MB of atlases** against 37.5 MB when the town loads at once.
+Staged loading (every new profile's tutorial) and every language change in Settings take this
+path. Also suspected, not seen: labels shared once keep their divided `pixel_size` after the reset,
+so signs may draw smaller. Read the GPU line of `?perf=1` on a phone after the tutorial's buildings
+load; any nearby loading would call `add_unit()` again and again, so this comes first whatever is
+chosen.
+
+### What assumes every building exists
+
+Absent units already work at start (dev focus: `ModularTown.building()` returns null, the picker
+shows "Building not loaded", `Main.when_unit_loaded()` delays minigame sessions); late units work
+(staged loading). **Nothing can remove a unit** — there is no inverse of `add_unit()`, and the probe
+showed freeing a unit's nodes and batches returns only 0.6–28 MB of its 6–51 MB (mesh holders below).
+
+| system | today | loading late (A) | also freeing (B) |
+| --- | --- | --- | --- |
+| Minimap (`town_minimap.gd`) | `rebuild()` reads meshes and `ModularTown.building(…, 1)` once all units are in | needs every unit's footprint without the unit: save outlines/labels in `buildings.json` (or a baked map file) once | same; keep the stored outlines |
+| Minigames, NPC hosts, Board | sessions find their NPC once via `when_unit_loaded()`; `Board.session()` null = absent | works; picker "Play" for an absent game must load the unit, then place the player | sessions must drop and re-find their host; never free a unit while its game runs (`Board.blocker()`) |
+| Quests: tutorial, warehouse copy (built 300 m above the real warehouse), flight, mystery, detective, grammar | bind through `ModularTown.building()` / `when_unit_loaded()` | tutorial keeps `home` + `supermarket` first (as now) | pin their unit while running |
+| Doors (`Main.doors`, interactables), seats, word areas, solid figures, lamps, sounds, vehicles list | rebuilt or appended per unit in `add_unit()` (several are whole-town rescans) | works; make the rescans per part to cut the hitch | each needs a remove path; area words keep their keys (counts per area must not drop) |
+| Vehicles (Subi in the home garage, airport plane and tower helicopter, hospital helicopter) and road corridors | children of their unit | a vehicle appears with its unit | the driven vehicle must not be freed: pin its unit or move it to the base while driven; unloaded buildings have no collision, so the radius must stay ahead of top speed (cars up to 45 m/s) |
+| Static batches | units loaded at start merge into the town-wide `StaticRenderBatches`; late ones get `Unit_<key>` | unchanged | every unit must be batched in its own `Unit_<key>` (no unit pieces in the town-wide batches) |
+| Indoor visibility | links objects to batches; `unit_added` adds a unit | unchanged | needs `unit_removed`; its `_pieces` index keeps mesh references |
+| Mesh holders | `sculpt_cache.gd` `_built` / `_shared`, render trim lists, `ResourceLoader` cache | — | must let go, or freeing saves little (measured) |
+| Base links into units (`pending_node_refs`), cross-unit refs (posters' viewport textures) | resolved when a unit arrives | unchanged | must return to pending on removal |
+| Saves (`player_place.gd`), web resume (`web_resume.gd`) | position + entrance; restore falls back to the supermarket when the entrance's unit is absent | load the units near the saved spot / resume note **before** `town_ready` (`initial_units`) | same |
+| Warm-up (`app.gd _warm_up`) | compiles shaders for what is loaded | a unit arriving later compiles its new materials on first draw (a web stall); arrive in fog | same |
+
+### Options
+
+- **A. Load nearby, never free (grow only).** Start with the units near the player's spot (saved
+  place, resume note, or the tutorial's two), then add others nearest first when they come within
+  150 m (plus a speed look-ahead while driving or flying), at quiet moments. Reuses `add_unit()`,
+  `initial_units` and `when_unit_loaded()`. Saves the ≈ 95 MB only until the player has walked the
+  town; a long session ends where it is today. Also a faster first load. **Risk low; effort small**
+  (scheduler, stored map outlines, picker "load then go", restore/resume order).
+- **B. Full streaming (load within 150 m, free beyond 200 m).** A on top, plus `remove_unit()` and a
+  remove path in every system above, per-unit batching for all units, releasing the mesh holders,
+  pins (tutorial, running game, driven vehicle, the unit the player is in). Holds ≈ 60 MB of 157
+  at a typical spot all session: **≈ 334 → 240 MB, ≈ 290 MB at the worst spots**. **Risk high**
+  (stale references across ~15 systems, NPCs and doors resetting when a unit returns, a freeze each
+  time a unit comes back); **effort large**.
+- **C. Keep every building, free far plush meshes.** All nodes, collision, NPC hosts and sessions
+  stay; a plush beyond ~60 m drops its sculpted meshes and gets them back from the sculpt cache
+  when it nears (Low already hides plushes beyond 20 m). Targets the ≈ 93 MB that plushes are (more
+  than half of the units' share) with no system changes. Coming back costs about one 100 ms native
+  frame per plush (the single-plush units' worst frames), so it must happen well before 20 m.
+  Its value depends on the mesh-sharing session, which may already shrink plush memory a lot.
+  **Risk medium (hitches, costumes, sculpt cache); effort medium.**
+
+**Recommendation:** stage 0 (the label fix) and a phone reading first, then **A**; then, only if
+the phone still reads near its limit after the mesh-sharing and lighter-clay-animal work lands,
+**C** before B. B gives the most on paper but freeing measured as nearly useless until a long tail
+of holders is fixed, and every system would need an unload path.
+
+### Staged order (whichever option)
+
+0. Signs keep shared sizes after `apply_world_language()` (`sign_language.gd` reads the shared size,
+   or `share_label_sizes()` updates `sign_font_size` / `sign_pixel_size`); measure the GPU line on a
+   phone before and after the tutorial's buildings load.
+1. Spread `add_unit()`: one step per frame (place, plushes as now, doors/seats/word areas per part
+   instead of whole-town rescans, batching, language for the new unit only); target no native frame
+   over ~50 ms.
+2. Minimap outlines and labels stored per unit, so the map is whole with units absent.
+3. A (behind a Low-and-web switch, desktop unchanged): spot-based `initial_units` for restore and
+   web resume, the distance scheduler replacing `app.gd _load_rest()`, picker "load then go".
+4. Measure on the phone (GPU line, slow frames walking and driving across town); decide on C or B.
+5. C or B, if still needed.
+
+**Questions for the user:** which option; whether a building may appear in the fog at 130–150 m
+(or must already be there); whether doors, carts and NPC positions may reset when a building
+comes back (B only). Answered 17 Nov: the label fix, then A (buildings arrive in the fog).
+
+### Built — 17 November 2026
+
+- **Stage 0, signs keep shared label sizes** (`scripts/world/sign_language.gd`). On the web
+  (`share_sizes`), `apply()` snaps each translated sign's font size up to the next
+  `render_culling.gd` `LABEL_SIZES` step and divides `pixel_size` (and the outline) to keep its size
+  in the world, the way `share_label_sizes()` does; `translate_all()` records the label's authored
+  pixel and outline sizes. Natively with that path forced and every unit added one by one
+  (`results_signs_fixed.json`): **video memory 341 MB instead of 660 MB, font atlases 53 MB instead
+  of 303 MB** (textures 117 instead of 430). Library book titles are sized by `library_book.gd` and
+  still get their own sizes (a few glyph caches; left to the library's owner).
+- **Stage 1, in part** (`scripts/core/main.gd` `add_unit()`): the hook-up after a unit is placed
+  is spread over four frames (signs, reference layout and vehicles; word areas; seats, solid
+  figures, interactables and lamps; batching). Timed before the split (`time_add_unit.gd`):
+  placing and readying the unit 33–172 ms (still one frame), batching 9–46 ms, word areas up to
+  41 ms, reference layout 20 ms. The per-part rescans and the ~50 ms target are not done, and the
+  worst frame after the split was not measured. New `Main.ensure_unit(key)` waits for any unit
+  being added, then adds `key` if it is pending.
+- **Stage 2 skipped:** the minimap and full map are switched off (`Features.MINIMAP`,
+  `Features.FULL_MAP`); store outlines before turning them back on with nearby loading.
+- **Stage 3, option A:**
+  - `scripts/world/nearby_units.gd`: on for the web with Low graphics (`VT_NEARBY=1` / `0` forces
+    it). Every 0.25 s it adds the nearest pending unit within 150 m (any unit with High graphics),
+    and with a 3 s look-ahead above 9 m/s; at least 0.5 s between additions; never frees a unit.
+  - `data/nearby_units.json`, written by `tools/nearby_units_data.gd` (run it again after a unit's
+    footprint changes or a minigame moves): each unit's part boxes in town coordinates and the unit
+    each minigame's session lives in.
+  - `scripts/core/app.gd`: a profile that finished the tutorial starts with the units within 150 m
+    of its web resume note, else its saved place (plus that entrance's unit), plus the dev spawn's
+    unit; with neither, the supermarket's. Then the NearbyUnits node replaces `_load_rest()`.
+    Replaying the tutorial first builds its units with `ensure_unit()`. New profiles are unchanged
+    (the tutorial's staged loading).
+  - `scripts/ui/game_launcher.gd`: a game whose building is pending can be played; Play closes the
+    picker, builds the unit, then starts the game as before.
+  - `scripts/learning/tutorial.gd`: a replay's title cutscene does not wait for far units.
+- **Checked (native M5, 17 Nov, each once):**
+  [`verify.gd`](../../evidence/nearby-loading-20261117/verify.gd) 19 of 19 (start set at the home
+  is home, restaurants, library, barn and mystery; standing at the school adds it; police and
+  supermarket stay pending; signs on shared steps with their world size kept after
+  `apply_world_language()` and after more units; the picker builds the police station and takes the
+  player there; `ensure_unit()` builds the airport); `run_checks.py --only
+  tutorial,minigame_launcher,signs` all PASS. Other sessions were editing `render_culling.gd`,
+  `sculpt_cache.gd` and `library.gd` at the time.
+- **Not verified:** the web build and a phone (GPU line of `?perf=1`, slow frames walking and
+  driving across town: stage 4), the full suite, how a building appearing in the fog looks, the
+  first-draw shader stall of a late unit on the web. Next: stage 4, then decide on C or B.
 
 ## Indoor visibility: hide far, keep near — 14 November 2026
 
@@ -698,9 +893,104 @@ The supermarket and library were already at or below the street figure: their wa
 town and Low's 130 m view distance cuts the rest. The home bedroom is not (1,389 on Low): what is
 left is the home itself, seen from above while the Home roof is lifted. In that view the
 mahjong table alone gave about 350 unbatched surfaces and each door frame about 35 (unbatched:
-doors); batching them is a follow-up, not part of this pass. Rendered views (supermarket door
+doors); batching them is a follow-up, not part of this pass (done 17 Nov 2026: the "door frame"
+surfaces were the moving leaves, see [Low anti-aliasing and indoor batching](#low-anti-aliasing-and-indoor-batching--17-november-2026)). Rendered views (supermarket door
 from outside, inside looking out, doorway from inside, the street after stepping out, the bedroom
 windows, the library looking out) are described in the
 [verification record](../FINAL_VERIFICATION.md#indoor-visibility-hide-far-keep-near--14-november-2026).
 **Not measured:** an iPhone; long-shadow loss on High (hidden buildings beyond 22 m stop casting
 sun shadows into the yard while the player is inside).
+
+## Low anti-aliasing and indoor batching — 17 November 2026
+
+User report (17 Nov 2026): on an iPhone the 3D looked blocky — unreadable signs, broken edges on
+road lines, cars and buildings. Besides the 3D-resolution floor (`LOW_WEB_MIN_LINES`, Graphics
+tiers above), three changes were looked at, in `render_culling.gd` and `mahjong_view.gd`.
+
+- **Anti-aliasing on Low:** `apply_graphics()` sets `viewport.msaa_3d = LOW_MSAA` (2x) on Low
+  instead of off; screen-space AA and TAA stay off, High keeps the project values. One constant:
+  set it to `Viewport.MSAA_DISABLED` if a phone struggles.
+- **Anisotropic filtering: not enabled, on purpose.** A scan of every saved town scene
+  (`docs/evidence/render-batching-20261117/texture_scan.gd`) found 33,968 of about 34,100 mesh
+  surfaces plain-coloured StandardMaterial3D: road markings ("mark" 167, "stripe" 77, "line" 388),
+  floor lines, arrows and sign boards are all geometry, and sign text is Label3D. The only
+  textures are the ground shaders' 256² noise grain (grass, road, paving, sand, hospital floor),
+  ±9 % brightness that the road shader already fades out beyond 8–45 m, and 25 small
+  StandardMaterial3D textures. Anisotropic filtering would not change the smear the user saw
+  (geometry edges, now handled by MSAA and the resolution floor) and adds texture fetches on the
+  ground, which fills most of a phone's screen.
+- **Door leaves:** the "about 35 per door frame" in the indoor-visibility view were the moving
+  leaves (slab, panels, mouldings, hinge barrels, handles, under the node in `Main.doors`); the
+  fixed frames were already in the static batches. `merge_door_leaves()` (after `_batch()` in
+  `build()`, and for each unit in `add_parts()`) merges each door's own plain meshes into one
+  mesh per material and vertex format, one "Merged leaf" child per shadow/range/layers setting,
+  so it still swings or slides with the door. Originals are hidden and tagged `render_batched`
+  (badge, minimap and interaction still read them). Curtains, doors that process, nested doors,
+  anything processing, `keep_own_draw` or `word_key` below the door, vehicle/animal/character
+  scenes, transparent or shader materials and skinned meshes stay as they are. Full town: 446
+  leaf meshes became 52; the home's doors 398 → 11.
+- **Mahjong tiles:** the 136 tiles were 3 MeshInstance3D each (about 350 surfaces in view), kept
+  out of the batches (`keep_own_draw`: they move). `mahjong_view.gd` now draws all bodies, backs
+  and faces with three MultiMeshes (faces: a small shader reading the atlas cell from
+  `INSTANCE_CUSTOM`, same albedo/emission as the old per-kind materials); the 136 `Tile<n>` nodes
+  still hold the poses and visibility, `_sync()` copies them after a layout and every frame while
+  tiles slide (processing only then).
+
+**Measured** natively (M5, Compatibility, full town, Low, noon, 1560×720 ≈ an iPhone's 3D size
+with the 720-line floor; `docs/evidence/render-batching-20261117/probe.gd`, 30 frames per view).
+Video memory is compared only within one run: other sessions changed meshes between runs
+(buffers 280 → 231 MB) and the nearby-loading session's uncommitted edits were in the tree (they
+change only the web start; this native probe loads the whole town).
+
+| view | draws before → after | triangles |
+| --- | ---: | ---: |
+| street at spawn | 777 → 777 | 0.72 M |
+| home guest-suite bedroom (tutorial start) | 615 → 587 | 0.23 M |
+| same, facing the house | 1,008 → 941 | 0.36 M |
+| front yard with the mahjong table | 2,004 → 1,566 | 1.02 M |
+| mahjong table close-up (free camera) | 1,119 → 635 (re-taken from overhead: 105) | — |
+
+| street, Low | video memory | of which textures |
+| --- | ---: | ---: |
+| MSAA off | 328.0 MB | 97.0 MB |
+| **2x (now)** | **345.2 MB (+17.2)** | 114.1 MB |
+| 4x | 362.3 MB (+34.3) | 131.3 MB |
+
+MSAA adds no draw calls. Rendered views inspected: the street with MSAA off and 2x (the parking
+line and car outline lose their stair steps), the bedroom both ways, a home door closed, swinging
+and open (leaf, panels, hinges and handle move together), the mahjong table from above (walls,
+standing hands and discards with the right faces).
+
+**Found 17 Nov, fixed 18 Nov 2026: the indoor fill probe's reflection atlas (257 MB).** Walking
+indoors anywhere raised texture memory by 257 MB and it stayed there for the rest of the session.
+Confirmed cause: the one ReflectionProbe ("Indoor fill", `day_night.gd`, ambient colour only).
+The first time a probe is shown the Compatibility renderer allocates the whole reflection atlas,
+and Godot's defaults are 64 slots of 256 px cube maps (colour and radiance, with mipmaps), although
+this probe captures nothing (cull mask 0, intensity 0). **Changed:** `project.godot`
+`rendering/reflections/reflection_atlas/reflection_size=16` and `reflection_count=1` (all
+platforms and tiers; the probe, its fitted box and its colours are untouched). A second
+ReflectionProbe would need `reflection_count` raised; one that shows real reflections would need
+a larger `reflection_size`.
+
+Measured natively (M5, Compatibility, full town, Low, noon, 1560×720, one run per column, the
+probe held back and then released in the same run;
+`docs/evidence/indoor-fill-memory-20261118/measure.gd`). Buffers were 229.3 MB throughout.
+
+| view, Low | video memory before → after | textures before → after |
+| --- | ---: | ---: |
+| street at spawn | 343.5 → 343.5 MB | 114.1 → 114.1 MB |
+| home bedroom, probe held back | 343.5 → 343.5 MB | 114.1 → 114.1 MB |
+| home bedroom, probe on | 600.6 → **343.5 MB** | 371.3 → **114.2 MB** |
+| street again, after being indoors | 600.6 → 343.5 MB | 371.3 → 114.2 MB |
+| supermarket, 21:00 | 600.6 → 343.5 MB | 371.3 → 114.2 MB |
+
+Rendered views at 21:00 before and after, in the same folder (`before-*.png`, `after-*.png`): the
+home bedroom (the two files are byte-identical), the supermarket aisle and the supermarket door
+looking out at the night street (same lighting; the files differ only by moving characters).
+`day_night` check: 65 checks, 0 failures (headless, one run). Not measured on a phone or in a
+browser: WebGL 2 uses the same GLES3 code path, so the saving should carry over, but the
+`?perf=1` "GPU … MB" readout on the iPhone has not been read since.
+
+**Not measured:** an iPhone (`?perf=1`); fill-rate cost of 2x MSAA on a phone GPU; the mahjong
+table during a real game in a graphical run.
+

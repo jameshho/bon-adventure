@@ -5,7 +5,8 @@ extends Node3D
 ## 9 Nov 2026), then the player's game, and the preset again after they leave.
 ##
 ## 136 tile nodes are made once and placed from the game state (mahjong_game.gd) after every
-## change: the four walls (face down, two high; drawn stacks disappear), each NPC's concealed
+## change (since 17 Nov 2026 each tile node only holds the pose: all bodies, backs and faces are
+## drawn by three MultiMeshes, _sync(), 3 draw calls instead of about 350): the four walls (face down, two high; drawn stacks disappear), each NPC's concealed
 ## hand standing toward its owner (the player sees the backs; the player's own hand is the
 ## panel at the bottom of the screen), exposed melds face up at each seat's left, and
 ## discards face up in rows of six in front of each seat, the last one marked in gold.
@@ -118,7 +119,37 @@ const BODY_W := TW * 0.951
 const BODY_L := TL * 0.972
 
 var _tiles: Array[Node3D] = []
-var _faces: Array[MeshInstance3D] = []
+## Each tile's face kind (-1: no face shown, the tile lies or stands face down).
+var _faces: Array[int] = []
+## The three MultiMeshes drawing every tile (17 Nov 2026, render cost on phones: ~350 separate
+## surfaces were the largest unbatched group in the home's views; docs/guides/performance/README.md
+## "Indoor batching"): ivory bodies, green backs and faces (atlas cell in INSTANCE_CUSTOM.xy).
+## Instance i follows _tiles[i]; a hidden tile or face is scaled to nothing. _sync() copies the
+## poses after a layout and on every frame while tiles slide.
+var _bodies: MultiMesh
+var _backs: MultiMesh
+var _face_batch: MultiMesh
+var _face_material: ShaderMaterial
+var _dirty := false
+const FACE_SHADER := """shader_type spatial;
+// The tile faces of mahjong_view.gd: as its per-kind StandardMaterial3D (albedo and emission from
+// the atlas, emission colour white, roughness 0.7), the atlas cell from INSTANCE_CUSTOM.xy.
+uniform sampler2D atlas : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
+uniform vec4 tint : source_color = vec4(1.0);
+uniform float glow = 0.0;
+void vertex() {
+	UV = UV * vec2(1.0 / 9.0, 0.25) + INSTANCE_CUSTOM.xy;
+}
+void fragment() {
+	vec3 c = texture(atlas, UV).rgb;
+	ALBEDO = tint.rgb * c;
+	ROUGHNESS = 0.7;
+	EMISSION = (vec3(1.0) + c) * glow;
+}
+"""
+const BODY_Y := TT * 0.38 + TT * 0.31
+const BACK_Y := TT * 0.19
+const FACE_Y := TT + 0.0006
 var _materials: Array[StandardMaterial3D] = []
 var _atlas: SubViewport
 var _marker: MeshInstance3D
@@ -177,28 +208,21 @@ func build(letters: Array) -> void:
 	# shows its own edge from above.
 	var face_mesh := PlaneMesh.new()
 	face_mesh.size = Vector2(BODY_W, BODY_L)
+	_face_material = ShaderMaterial.new()
+	_face_material.shader = Shader.new()
+	_face_material.shader.code = FACE_SHADER
+	_face_material.set_shader_parameter("atlas", texture)
+	_face_material.set_shader_parameter("tint", Color(TILE_BRIGHTNESS, TILE_BRIGHTNESS, TILE_BRIGHTNESS))
+	_bodies = _tile_batch("BatchedBodies", ivory_mesh, ivory, true)
+	_backs = _tile_batch("BatchedBacks", back_mesh, back, true)
+	_face_batch = _tile_batch("BatchedFaces", face_mesh, _face_material, false)
 	for i in 136:
 		var tile := Node3D.new()
 		tile.name = "Tile%d" % i
-		var body := MeshInstance3D.new()
-		body.mesh = ivory_mesh
-		body.material_override = ivory
-		body.position.y = TT * 0.38 + TT * 0.31
-		tile.add_child(body)
-		var green := MeshInstance3D.new()
-		green.mesh = back_mesh
-		green.material_override = back
-		green.position.y = TT * 0.19
-		tile.add_child(green)
-		var face := MeshInstance3D.new()
-		face.mesh = face_mesh
-		face.position.y = TT + 0.0006
-		face.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-		tile.add_child(face)
 		tile.visible = false
 		add_child(tile)
 		_tiles.append(tile)
-		_faces.append(face)
+		_faces.append(-1)
 	_marker = MeshInstance3D.new()
 	_marker.name = "LastDiscard"
 	var ring := BoxMesh.new()
@@ -212,6 +236,48 @@ func build(letters: Array) -> void:
 	_marker.material_override = gold
 	_marker.visible = false
 	add_child(_marker)
+
+func _tile_batch(title: String, mesh: Mesh, material: Material, shadow: bool) -> MultiMesh:
+	var batch := MultiMesh.new()
+	batch.transform_format = MultiMesh.TRANSFORM_3D
+	batch.use_custom_data = mesh is PlaneMesh
+	batch.mesh = mesh
+	batch.instance_count = 136
+	for i in 136:
+		batch.set_instance_transform(i, Transform3D(Basis.from_scale(Vector3.ZERO), Vector3.ZERO))
+	var draw := MultiMeshInstance3D.new()
+	draw.name = title
+	draw.multimesh = batch
+	draw.material_override = material
+	draw.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON if shadow else GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	add_child(draw)
+	return batch
+
+## Copies every tile's pose into the three MultiMeshes (hidden tiles and faces: scaled to nothing).
+func _sync() -> void:
+	_dirty = false
+	var none := Transform3D(Basis.from_scale(Vector3.ZERO), Vector3.ZERO)
+	for i in _tiles.size():
+		var tile := _tiles[i]
+		var shown := tile.visible
+		var pose := tile.transform
+		_bodies.set_instance_transform(i, pose.translated_local(Vector3(0, BODY_Y, 0)) if shown else none)
+		_backs.set_instance_transform(i, pose.translated_local(Vector3(0, BACK_Y, 0)) if shown else none)
+		var kind := _faces[i]
+		_face_batch.set_instance_transform(i, pose.translated_local(Vector3(0, FACE_Y, 0)) if shown and kind >= 0 else none)
+		if kind >= 0:
+			_face_batch.set_instance_custom_data(i, Color(float(kind % 9) / 9.0, float(kind / 9) * 0.25, 0, 0))
+	set_process(not _slides.is_empty())
+
+func _mark() -> void:
+	_dirty = true
+	set_process(true)
+
+func _process(_delta: float) -> void:
+	if _dirty or not _slides.is_empty():
+		_sync()
+	else:
+		set_process(false)
 
 # --- The table-centre counter (user, 10 Nov 2026) ------------------------------------------
 
@@ -292,6 +358,7 @@ func set_daylight(level: float) -> void:
 		return
 	for material in _materials:
 		material.emission_energy_multiplier = glow
+	_face_material.set_shader_parameter("glow", glow)
 
 ## Repaints the faces with new wind letters (the language may have changed since the build).
 func repaint(letters: Array) -> void:
@@ -507,6 +574,7 @@ func _assign(targets: Array, instant: bool) -> void:
 			_stop_slide(index)
 			_tiles[index].visible = false
 	_info = next_info
+	_mark()
 
 ## Puts tile `index` at its target: at once (`snap`), or sliding there. A tile changing place
 ## (discarded, claimed) goes first; tiles only shifting along their row follow after
@@ -514,11 +582,8 @@ func _assign(targets: Array, instant: bool) -> void:
 ## one turn reads as discard, then the next player's draw.
 func _show(index: int, t: Dictionary, snap: bool, moved: bool, drawn: bool = false) -> void:
 	var tile := _tiles[index]
-	var face := _faces[index]
 	var kind := int(t.face)
-	face.visible = kind >= 0
-	if kind >= 0:
-		face.material_override = _materials[kind]
+	_faces[index] = kind
 	var hidden: bool = bool(t.hidden)
 	var goal: Transform3D = t.transform
 	if snap or not tile.visible and hidden:
@@ -548,6 +613,7 @@ func _end_slide(index: int) -> void:
 	if _slides.has(index):
 		_tiles[index].visible = not bool(_slides[index].hidden)
 		_slides.erase(index)
+		_mark()
 
 func _stop_slide(index: int) -> void:
 	if _slides.has(index):
@@ -564,3 +630,4 @@ func finish_slides() -> void:
 			slide.tween.kill()
 		_tiles[index].transform = slide.goal
 		_end_slide(index)
+	_mark()

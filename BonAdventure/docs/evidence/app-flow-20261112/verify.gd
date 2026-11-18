@@ -53,8 +53,12 @@ func run():
 	check(chosen == ["p1"] and manager.active_id == "p1", "Start creates and selects the profile")
 	check(str(manager.active_profile().get("profile_name", "")) == "Bruno", "the profile is named after its character")
 	check(GameSettings.shared().foreign == "zh", "the picked languages are saved to the profile")
-	# start_town ran through the connection; wait for the town.
-	for i in 6:
+	# start_town ran through the connection; wait for the town. main.tscn is read on a loader
+	# thread (app.gd _load_main_scene()), which can take more than a few frames: wait for it
+	# (18 Nov 2026; a fixed 6 frames quit while the thread was still reading, which printed
+	# misleading parse errors for vocabulary_hud.tscn and main.tscn).
+	var main_by := Time.get_ticks_msec() + 60000
+	while app.main == null and Time.get_ticks_msec() < main_by:
 		await process_frame
 	var main: Node = app.main
 	check(main != null and main.staged_loading, "the town is built in stages")

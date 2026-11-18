@@ -132,6 +132,13 @@ the first drawn frame: `restaurants, police` about 11 s → 3.9 s, full town 11.
 the character cache is filled (`user://sculpt_cache/`, about 58 MB, safe to delete;
 `VT_SCULPT_CACHE=0` turns it off; [details](docs/guides/MODULAR_TOWN.md#boot-time-follow-up--6-november-2026)).
 
+**Nearby loading (web, Low graphics; 17 Nov 2026).** A profile that finished the tutorial starts
+with only the buildings near its saved spot and adds the others as the player comes within 150 m
+(`scripts/world/nearby_units.gd`; `VT_NEARBY=1` / `0` forces it on / off natively). It reads
+`data/nearby_units.json`: run `tools/nearby_units_data.gd` again after a building's footprint
+changes or a minigame moves to another building
+([details](docs/guides/performance/README.md#built--17-november-2026)).
+
 `town_complete.tscn`, `town_reference.tscn` and `town_editable.tscn` are preserved
 inputs to older/rebuild workflows. Do not switch Main to one of them or run a baker
 as a routine edit: regeneration can overwrite authored scene overrides. See the

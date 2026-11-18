@@ -31,7 +31,10 @@ extends Node
 ## which stays up until they are in (at most the tutorial's cutscene_max_seconds); anything left
 ## after it (a slow device, or a profile resuming at a later act) at quiet moments of the
 ## tutorial: a fade or a line of dialogue being read. When the tutorial ends or is skipped, what is left loads at once
-## behind the loading screen. Profiles that finished the tutorial load the whole town as before.
+## behind the loading screen. Profiles that finished the tutorial load the whole town as before,
+## except with nearby loading (phones: web + Low graphics, user decision 17 Nov 2026,
+## scripts/world/nearby_units.gd): they start with the buildings near where they come back
+## (_nearby_first_units()) and nearby_units.gd adds the rest as the player comes near.
 ## Web, after the browser dropped the graphics (WebGL context loss, 14 Nov 2026): the page reloads
 ## and web_resume.gd's note sends this scene straight to that profile's town, at the same spot.
 const MAIN_SCENE := "res://scenes/main.tscn"
@@ -42,6 +45,9 @@ const LoadingScreen := preload("res://scripts/ui/loading_screen.gd")
 const Tutorial := preload("res://scripts/learning/tutorial.gd")
 const Lexicon := preload("res://scripts/language/lexicon.gd")
 const WebResume := preload("res://scripts/core/web_resume.gd")
+const NearbyUnits := preload("res://scripts/world/nearby_units.gd")
+const PlayerPlace := preload("res://scripts/core/player_place.gd")
+const DevFocus := preload("res://scripts/core/dev_focus.gd")
 
 ## Warm-up: the camera looks in WARM_HEADINGS directions, one drawn frame each (70° tall view,
 ## about 100° wide in landscape, so six overlap all round), then needs this many steady frames
@@ -132,6 +138,8 @@ func start_town(id: String) -> void:
 	main.staged_loading = true
 	if not bool(ProfileManager.shared().active_profile().get("tutorial", {}).get("done", false)):
 		main.initial_units = _first_units()
+	elif NearbyUnits.enabled():
+		main.initial_units = _nearby_first_units()
 	main.loading_progress.connect(func(fraction: float) -> void:
 		if loading != null:
 			loading.set_progress(lerpf(FILE_SHARE, TOWN_SHARE, fraction)))
@@ -195,6 +203,44 @@ func _first_units() -> Array:
 	var first: Array = TUTORIAL_UNITS.filter(func(key) -> bool: return focused.has(key))
 	return first if not first.is_empty() else focused
 
+## Nearby loading: the units near where this profile comes back (the web resume note, else its
+## saved place, else the supermarket spawn), with the saved building's unit and the dev spawn's.
+func _nearby_first_units() -> Array:
+	var apartment: Node3D = main.get_node("Apartment")
+	var entrances: Dictionary = main.get_script().get_script_constant_map()["ENTRANCES"]
+	var must: Array = []
+	var at := Vector2.INF
+	if not _resume.is_empty():
+		var local: Vector3 = apartment.transform.affine_inverse() * Vector3(float(_resume.get("x", 0.0)), 0.0, float(_resume.get("z", 0.0)))
+		at = Vector2(local.x, local.z)
+	var place: Dictionary = PlayerPlace.read() if PlayerPlace.enabled() else {}
+	if not place.is_empty():
+		if not at.is_finite():
+			at = Vector2(float(place.x), float(place.z))
+		var entrance: Array = entrances.get(str(place.get("entrance", "")), [])
+		if not entrance.is_empty():
+			must.append(entrance[0])
+	var dev: Array = entrances.get(DevFocus.dev_spawn(), [])
+	if not dev.is_empty():
+		must.append(dev[0])
+	if not at.is_finite():
+		# The usual spawn, outside the supermarket (Main.spawn_position()).
+		must.append("supermarket")
+		var boxes: Array = NearbyUnits.data().get("boxes", {}).get("supermarket", [])
+		at = Vector2((boxes[0][0] + boxes[0][2]) * 0.5, (boxes[0][1] + boxes[0][3]) * 0.5) if not boxes.is_empty() else Vector2.ZERO
+	return NearbyUnits.initial_for(at, apartment.transform.basis.get_scale().x, must)
+
+## What is left after the tutorial (or without one): with nearby loading, the rest comes as the
+## player comes near (nearby_units.gd); otherwise all of it now, behind a loading screen.
+func _finish_loading(town: Node) -> void:
+	if NearbyUnits.enabled():
+		if not town.pending_units.is_empty() and not town.has_node("NearbyUnits"):
+			var nearby := NearbyUnits.new()
+			nearby.setup(town)
+			town.add_child(nearby)
+		return
+	await _load_rest_now(town)
+
 ## Adds Main's pending building units one at a time while the tutorial plays (see the header).
 func _load_rest(director: Node) -> void:
 	var town: Node = main
@@ -205,7 +251,7 @@ func _load_rest(director: Node) -> void:
 			return
 		var now := Time.get_ticks_msec()
 		if not is_instance_valid(director) or not director.running:
-			await _load_rest_now(town)
+			await _finish_loading(town)
 			return
 		# The title cutscene covers the screen: one building after another, no gap (it stays up
 		# until they are in, tutorial.gd _play_cutscene()). Before it, in the house act, nothing:
@@ -283,6 +329,9 @@ func _warm_up(director: Node = null) -> void:
 ## Settings' "Replay the welcome tour": the tutorial from the start, in the running town.
 func replay_tutorial() -> void:
 	if main != null and loading == null:
+		# Nearby loading may not have built the tutorial's buildings yet.
+		for key in TUTORIAL_UNITS:
+			await main.ensure_unit(key)
 		Tutorial.begin(main, true)
 
 ## In a browser, saves live in the site's IndexedDB, which the browser may clear when space

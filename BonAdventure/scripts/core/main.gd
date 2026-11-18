@@ -609,6 +609,15 @@ func when_unit_loaded(key: String, job: Callable) -> void:
 	else:
 		job.call()
 
+## Adds building unit `key` now if it is still pending (await it), after any unit being added;
+## nothing when it is loaded or not focused. Nearby loading (nearby_units.gd) uses it for the
+## minigame picker and the tutorial replay.
+func ensure_unit(key: String) -> void:
+	while _adding_unit:
+		await get_tree().process_frame
+	if pending_units.has(key):
+		await add_unit(key)
+
 ## Adds pending building unit `key` to the running town (staged loading, 13 Nov 2026) and gives
 ## it what _ready gives the units loaded at start (its plush characters go back one per frame
 ## first, so their sculpting is spread over frames; await it): doors, map entries, translated signs,
@@ -625,7 +634,9 @@ func add_unit(key: String) -> void:
 		ModularTown.put_back(apartment, entry)
 	ModularTown.finish_refs(apartment)
 	pending_units.erase(key)
-	_adding_unit = false
+	# The hook-up runs over several frames (17 Nov 2026, nearby loading stage 1: in one frame it
+	# took 60-130 ms natively, render batching and word areas the most; measured in
+	# docs/evidence/nearby-loading-20261117/time_add_unit.gd).
 	var SignLanguage := preload("res://scripts/world/sign_language.gd")
 	var signs := 0
 	for part in parts:
@@ -635,8 +646,11 @@ func add_unit(key: String) -> void:
 	if reference_layout != null:
 		reference_layout.add_unit()
 	register_driveable_vehicles()
+	await get_tree().process_frame
 	for part in parts:
 		area_vocabulary.add(part, apartment, zones, vocabulary, vocabulary_aliases)
+	await get_tree().process_frame
+	for part in parts:
 		seating.add_seats(part)
 		preload("res://scripts/characters/house_characters.gd").solidify_figures(self, part)
 	DoorAnimator.make_interactables(self)
@@ -644,8 +658,10 @@ func add_unit(key: String) -> void:
 	area_vocabulary.drop_interactables(apartment)
 	for part in parts:
 		day_night.bind_lamps(part)
+	await get_tree().process_frame
 	if render_culling != null:
 		render_culling.add_parts(self, parts, key)
+	_adding_unit = false
 	var jobs: Array = _unit_jobs.get(key, [])
 	_unit_jobs.erase(key)
 	for job in jobs:

@@ -31,9 +31,12 @@ extends SceneTree
 ##                             own scripts at load, so their generated output is not saved
 ## Materials: before saving, identical materials are routed through the shared palette
 ## (tools/material_palette.gd, materials/palette/<hash>.tres), so a look is stored once.
+## Meshes: then exact copies in the scene are pointed at one mesh (tools/mesh_share.gd, 17 Nov 2026),
+## so the scene and the GPU hold it once.
 const SignLanguage = preload("res://scripts/world/sign_language.gd")
 const ModularTown = preload("res://scripts/world/modular_town.gd")
 const MaterialPalette = preload("res://tools/material_palette.gd")
+const MeshShare = preload("res://tools/mesh_share.gd")
 const BUILDINGS := "res://scripts/buildings/"
 ## Name of the base world (scenes/town/base.scn, own script scripts/buildings/base.gd).
 const BASE := "base"
@@ -43,6 +46,7 @@ var old_owner: Node
 var report := {}
 var unit_indices := {}
 var palette := MaterialPalette.new()
+var mesh_share := MeshShare.new()
 
 func _initialize() -> void:
     run_units.call_deferred()
@@ -163,6 +167,7 @@ func run_units() -> void:
     for key in holders:
         holders[key].free()
     report.merge(palette.counts)
+    report.merge(mesh_share.counts)
     print("BAKE UNIT: report ", report)
     print("BAKE UNIT: ", "done" if failed == 0 else str(failed) + " failed")
     quit(0 if failed == 0 else 1)
@@ -430,6 +435,7 @@ func save(top: Node, path: String) -> int:
     flatten_broken(top)
     prepare(top, top)
     palette.apply(top)
+    mesh_share.apply(top)
     var packed := PackedScene.new()
     var error := packed.pack(top)
     if error == OK:
