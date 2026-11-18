@@ -238,11 +238,14 @@ ride (E to sit, W/S to kick).
 - **Zoo:** four fenced zones round a cherry-tree plaza: Savanna, Forest, Bamboo Grove and
   Wildlife Plains, with Spanish signs; the clay-style animals were added 11–12 Nov. Since
   16 Nov the 17 clay animals walk with moving legs, breathe, look around and blink
-  ([each one walking](../evidence/zoo-walk-20261116/walkers.png)); the 10 older piece-built
-  animals (monkey, horse and others) still glide. Since 17 Nov the zoo's tiger is the new
+  ([each one walking](../evidence/zoo-walk-20261116/walkers.png)); the 9 older piece-built
+  animals (monkey, sheep and others) still glide. Since 17 Nov the zoo's tiger is the new
   clay tiger, a sleepy-eyed cub that walks and blinks like the others
   ([in the zoo](../evidence/tiger-anim-20261117/zoo-close.png),
-  [walking](../evidence/tiger-anim-20261117/zoo-walk.png)). Since 17 Nov a clay rooster stands
+  [walking](../evidence/tiger-anim-20261117/zoo-walk.png)), and the farm's horse is the new
+  clay horse, which trots and blinks
+  ([on the farm](../evidence/horse-anim-20261117/zoo-close.png),
+  [walking](../evidence/horse-anim-20261117/zoo-walk.png)). Since 17 Nov a clay rooster stands
   on the farm lawn by the farm gate ([view](../evidence/rooster-clay-20261116/zoo-close.png))
   and a clay capybara sits on the grass just inside the zoo gate
   ([view](../evidence/capybara-clay-20261116/zoo-close.png)), with a clay baby monkey across

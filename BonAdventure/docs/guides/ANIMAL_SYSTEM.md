@@ -519,6 +519,85 @@ ears smaller and about 10 px lower than the sheet's (asked), the back view's hea
 is narrower there, a perspective view), no fur texture. About 94k triangles at 0.9 units
 (104k at the placed 0.95). Approved by the user on 17 Nov 2026.
 
+## Clay horse (17 Nov 2026, approved, rigged, replaces the zoo horse)
+
+`scenes/animals/horse_clay.tscn` is a static study of the user's "Horse Character Blueprint"
+turnaround (relaxed idle pose), built by `tools/build_horse_clay.gd` from
+`scripts/characters/horse_clay.gd`, which extends the clay capybara and reuses its lofted
+masses, capped surface ray and mesh helpers (about 96k triangles; 1.9 town units to the ear
+tips, the zoo horse's species height). The user approved the design on 17 Nov 2026 after the
+third pass below and chose: rig it, then replace the zoo horse, at the zoo horse's size (2.4
+town units = the species height times `DISPLAY_SCALE`; `ANIMAL_HEIGHTS` unchanged). Record:
+[clay horse walks in the zoo](#clay-horse-walks-in-the-zoo-17-nov-2026).
+The sheet was traced with vtracer first (`docs/evidence/horse-clay-20261117/`: `trace.py`,
+`prof.py` for the outlines per scan line, `hcmp.py` to compare the model's render with them,
+`outline-compare.txt`). Torso, neck (a loft running down the sheet, its lower end inside the
+torso) and head are each one lofted mass, run together with tapered legs, shoulders and
+haunches into one fused `Body`, which also carries the ears and the hooves; the cream muzzle,
+the blaze, the socks, the dark hooves and the ears' pink are painted on it. `Mane` (lobes down
+the crest and a forelock) and `Tail` are separate pieces; `LeftEye` and `RightEye` are separate
+meshes centred on their nodes (y up the eye); lash lines, brows, nostrils and the smile are
+`Face details`. Scene: `Body`, `Mane`, `Tail`, `LeftEye`, `RightEye`, `Face details`,
+`Footprint`.
+For this model the capybara's helpers read the sheet's frame from instance variables
+(`_px`, `_ox`, `_gy`, `_fine`, `_stretch` in `capybara_clay.gd`; `loft` also takes an axis), with
+the capybara's own values as defaults: a capybara rebuild after the change gave the same
+triangle count and left its committed mesh files unchanged in git.
+What the trace showed: the sheet's side view is turned about 20 degrees toward the viewer (the
+far ear and far hind leg stand about 30 px ahead of the near ones), so `capture.gd` renders the
+side view that way and the model is drawn 4% longer than the sheet's side view (`_stretch`);
+the face stands steep above a full muzzle and is a wedge from above, which is what lets the
+eyes show from the front. `outline-compare.txt`: median difference 2 to 3 px across the front
+and back views and 4 px along the side view's rows. Second pass (user, 17 Nov 2026: "another
+pass"): the mane is a low ridge with a row of flat pointed locks on the crest and on both
+sides of the neck, each over the next (lofts; `loft` gained `side_z`, a mirrored pair, and a
+crease flag); the smile is thicker with a flat middle and upturned corners; the coat a little
+less orange. Known differences: the mane's locks are plainer than the sheet's and there are
+no strands beside the neck in the front view; the forelock and tail are simpler;
+(third pass, below, rebuilt the face) the far ear sits about 15 px farther back
+than the sheet's in the side view; the front legs read a little wider apart in the side view
+(the sheet does not turn them with the body); the coat is a little more orange; no fur texture.
+The check suite was not run (nothing in the town changed).
+Third pass, the face rebuilt (user, 17 Nov 2026: too long, angular and flat, above all from the
+side; body, legs, mane and tail not to change): a finer trace (`ref_fine`, 6-level layers in
+`hhead.py`) keeps the cream muzzle apart from the sheet's background, which the first trace
+had merged, so the first head was fitted to the coat's edge only. New `H_HEAD` sections: a
+short round muzzle whose top slopes up at about 45 degrees to the foot of the face, a face
+standing almost upright and rounding over into the crown, a level jaw behind a chin that
+hangs a little below it, full cheeks (squarer lower half). The eyes sit in shallow pressed
+sockets with a soft shade round the rim, and bulge less; the blaze runs from under the forelock
+between the eyes and widens into the muzzle's cream; the smile sits on the muzzle's front.
+`head-compare.txt`: side view within 0 to 4 px along the face front, muzzle, chin and jaw
+(the forelock's edge, part of the mane, is 7 to 14 px behind the sheet's); front view within
+0 to 3 px from the brow to the chin. About 96k triangles. Approved by the user on 17 Nov 2026.
+
+### Clay horse walks in the zoo (17 Nov 2026)
+
+- **Rig.** `tools/build_horse_clay_rig.gd` (extends `clay_rig_tool.gd`) builds
+  `scenes/animals/horse_clay_rigged.scn` with meshes in `clay_meshes/horse_rig/`: 34,355
+  triangles against the display's 97,582, one skinned surface. Bones: root, body, neck (upright,
+  shares the head's look, `neck_share` 0.45), head, tail and tail_2, ear_l and ear_r (the ears
+  are part of `Body`), four legs. `Mane` bends over head, neck and body; `Tail` over body and
+  the two tail bones; eyes and face details ride the head unskinned (`on_head`). The body is
+  closed with the zebra tool's `_closed` before thinning, as for the tiger. A trot (diagonal
+  pairs), swing 22 degrees.
+- **Zoo.** Base step `horse_clay_walks` (the same steps as `tiger_clay_walks`): `ParkZoo/Horse`
+  on the farm lawn is rebuilt with `_clay_roamer` at its old home (55.5, 91.2), facing, child
+  index and word `horse`, brought to the shown height (2.375 zoo units, the old horse's) with
+  its soles at the old horse's level (y 0.140), then given the rig with `_clay_walker`.
+  `compare_scenes.gd`: 14,048 -> 13,939 nodes, 136 differences, all under `ParkZoo/Horse` plus
+  the step list.
+- **Evidence** `docs/evidence/horse-anim-20261117/`: `capture.gd` (display and rig only):
+  `horse_clay-compare.png` (rest difference 0.68 to 0.93 levels), `-walk.png`, `-seams.png`
+  (head turned at both extremes of the swing: no tears), `-tail.png`, `-blink.png`,
+  `-weights.png`; `zoo.gd` (full town, noon, `dev_focus.txt` = `all`, isolated `HOME`): the
+  horse has the word, the rig, is in group `clay_animals` and in `clay_life`'s list, and
+  reaches `walking`; `zoo-context.png`, `zoo-close.png`, `zoo-walk.png` (the farm shelter
+  hides it in some frames).
+- **Checks**: `run_checks.py --only runtime_resources,compact_layout,interaction,part2`, each run once
+  (`dev_focus.txt` = `all`, isolated `HOME`): all PASS (interaction reported 0 s).
+- Not checked: a web export or a phone, frame time with 19 rigs, and the full check suite.
+
 ## Clay monkey display (17 Nov 2026, approved by the user and placed in the zoo)
 
 `scenes/animals/monkey_clay.tscn` is a static study of the user's "Monkey Character Blueprint"

@@ -1,0 +1,65 @@
+[gd_scene format=3]
+
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/horse/body.res" id="1_uel5s"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/horse/mane.res" id="2_hcmdx"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/horse/tail.res" id="3_i4uj0"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/horse/left_eye.res" id="4_g1387"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/horse/right_eye.res" id="5_k3tmm"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/horse/face_details.res" id="6_5hfdu"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nhdpc"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.88
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2unlp"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+metallic_specular = 0.3
+roughness = 0.3
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4pn35"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.75
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pecut"]
+size = Vector3(0.59507835, 1.9000001, 1.8522239)
+
+[node name="HorseClayDisplay" type="Node3D" unique_id=40389004]
+metadata/source = "User's Horse Character Blueprint, relaxed idle pose (17 Nov 2026)"
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=1057594887]
+material_override = SubResource("StandardMaterial3D_nhdpc")
+mesh = ExtResource("1_uel5s")
+
+[node name="Mane" type="MeshInstance3D" parent="." unique_id=276603739]
+material_override = SubResource("StandardMaterial3D_nhdpc")
+mesh = ExtResource("2_hcmdx")
+
+[node name="Tail" type="MeshInstance3D" parent="." unique_id=441589822]
+material_override = SubResource("StandardMaterial3D_nhdpc")
+mesh = ExtResource("3_i4uj0")
+
+[node name="LeftEye" type="MeshInstance3D" parent="." unique_id=860736450]
+transform = Transform3D(-0.5023221, 0.22754255, -0.8342044, -7.450581e-09, 0.96475434, 0.26315215, 0.8646806, 0.13218714, -0.48461744, -0.14697511, 1.4764522, -0.895725)
+material_override = SubResource("StandardMaterial3D_2unlp")
+cast_shadow = 0
+mesh = ExtResource("4_g1387")
+
+[node name="RightEye" type="MeshInstance3D" parent="." unique_id=1652725684]
+transform = Transform3D(-0.5023221, -0.22754255, 0.8342044, 7.450581e-09, 0.96475434, 0.26315215, -0.8646806, 0.13218714, -0.48461744, 0.14697511, 1.4764522, -0.895725)
+material_override = SubResource("StandardMaterial3D_2unlp")
+cast_shadow = 0
+mesh = ExtResource("5_k3tmm")
+
+[node name="Face details" type="MeshInstance3D" parent="." unique_id=555834957]
+material_override = SubResource("StandardMaterial3D_4pn35")
+cast_shadow = 0
+mesh = ExtResource("6_5hfdu")
+
+[node name="Footprint" type="StaticBody3D" parent="." unique_id=1485181408]
+
+[node name="@CollisionShape3D@2" type="CollisionShape3D" parent="Footprint" unique_id=1396950895]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95000005, -0.17461297)
+shape = SubResource("BoxShape3D_pecut")
