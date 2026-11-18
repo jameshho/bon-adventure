@@ -1,0 +1,55 @@
+[gd_scene format=3]
+
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/monkey/body.res" id="1_jhw73"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/monkey/left_eye.res" id="2_1fme2"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/monkey/right_eye.res" id="3_xcksy"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/monkey/face_details.res" id="4_tm7w4"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fmd18"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.88
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rnvwj"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+metallic_specular = 0.45
+roughness = 0.22
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y4ux0"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.75
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0t7vg"]
+size = Vector3(0.51515156, 0.8500001, 0.6088155)
+
+[node name="MonkeyClayDisplay" type="Node3D" unique_id=1325374531]
+metadata/source = "User's Monkey Character Blueprint, relaxed idle pose (17 Nov 2026)"
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=392320116]
+material_override = SubResource("StandardMaterial3D_fmd18")
+mesh = ExtResource("1_jhw73")
+
+[node name="LeftEye" type="MeshInstance3D" parent="." unique_id=1480302539]
+transform = Transform3D(-0.9063077, 0.124774575, -0.40377903, -7.450581e-09, 0.9554225, 0.2952418, 0.42261827, 0.26757994, -0.8659069, -0.10575054, 0.570997, -0.29122388)
+material_override = SubResource("StandardMaterial3D_rnvwj")
+cast_shadow = 0
+mesh = ExtResource("2_1fme2")
+
+[node name="RightEye" type="MeshInstance3D" parent="." unique_id=616564489]
+transform = Transform3D(-0.9063077, -0.124774575, 0.40377903, 7.450581e-09, 0.9554225, 0.2952418, -0.42261827, 0.26757994, -0.8659069, 0.10575054, 0.570997, -0.29122388)
+material_override = SubResource("StandardMaterial3D_rnvwj")
+cast_shadow = 0
+mesh = ExtResource("3_xcksy")
+
+[node name="Face details" type="MeshInstance3D" parent="." unique_id=730625577]
+material_override = SubResource("StandardMaterial3D_y4ux0")
+cast_shadow = 0
+mesh = ExtResource("4_tm7w4")
+
+[node name="Footprint" type="StaticBody3D" parent="." unique_id=948643988]
+
+[node name="@CollisionShape3D@2" type="CollisionShape3D" parent="Footprint" unique_id=198673981]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.42500004, 0.07024795)
+shape = SubResource("BoxShape3D_0t7vg")

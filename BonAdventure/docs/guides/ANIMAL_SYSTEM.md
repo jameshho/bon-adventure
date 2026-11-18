@@ -519,6 +519,54 @@ ears smaller and about 10 px lower than the sheet's (asked), the back view's hea
 is narrower there, a perspective view), no fur texture. About 94k triangles at 0.9 units
 (104k at the placed 0.95). Approved by the user on 17 Nov 2026.
 
+## Clay monkey display (17 Nov 2026, approved by the user and placed in the zoo)
+
+`scenes/animals/monkey_clay.tscn` is a static study of the user's "Monkey Character Blueprint"
+turnaround (relaxed sitting pose), built by `tools/build_monkey_clay.gd` from
+`scripts/characters/monkey_clay.gd`, which extends the clay capybara (its lofted masses,
+capped surface ray, skin drop and mesh helpers, with the sheet's frame in `_px`, `_ox`, `_gy`,
+`_fine`, `_stretch` as for the horse); meshed 3.6 times life size, about 92k triangles; 0.85
+town units to the top of the tuft, the `Monkey` height in `park_animals.gd`. One instance,
+`ParkZoo/MonkeyClayDisplay`, stands at town (-83.2, 0.12, 124.4): on the grass strip just
+inside the zoo gate, west of the gate walk and in front of the BAMBOO GROVE fence (the
+capybara's spot mirrored across the walk; outside the zones, so no wandering animal meets its
+footprint), turned to face the gate (base step `monkey_clay_display`, which also stores it as
+plain nodes with `unpack_clay_animals`). It has a box footprint and no word, movement,
+animation or interaction; the zoo's piece-built `Monkey` (Bamboo Grove) is unchanged.
+Scene: `Body` (one fused mesh: head, tuft, ears, torso, arms, hands, legs, feet, tail; the tan
+face mask, belly, hands and feet, the ears' pink and the blush painted on), `LeftEye`,
+`RightEye` (each centred on its own node, y up the eye), `Face details` (upper rims, brows,
+nostrils, smile), `Footprint`.
+The head is ONE lofted mass (`M_HEAD`: tops and bottoms read column by column from the
+sheet's side view, half widths from its front view; the muzzle sections' tops drawn to a soft
+ridge so it rises into the nose bridge without a shelf across the face), closed behind by a
+round skull ellipsoid that hides the loft's closing point (it shaded as a dimple on the back
+of the head). The first head, eight ellipsoids run together (skull, face plate, jowls,
+muzzle, chin, nose, two eye pads), matched the sheet's outlines but made a lumpy face: a snout
+with a 25 px ledge beside it, a ridge round the brow and cheeks, lumps under the eyes, a notch
+under the chin, and eyes tilted on the slope between two shapes (user, 17 Nov 2026: "the face
+is so weird"). Lesson: outlines do not check the surface inside them; check a face with a
+bare-clay render under a low light and a depth grid (`surface.png`; the depth grid is a ray
+per (y, z) from the front), and build a smooth face as one loft, not separate shapes.
+The eyes lie on the skin, facing 25 degrees out and 18 degrees up (the skin's own facing under
+them), with one catch-light up and to the monkey's left in both eyes (one light, as on the
+sheet), not mirrored.
+Renders: `docs/evidence/monkey-clay-20261117/` (`capture.gd` loads only the monkey scene:
+`compare.png` = the sheet's five views above the model's at the same scale, `overlay.png`,
+`face.png`, `eyes.png`, `turnaround.png`; `surface.png` = the bare clay under a low light;
+with `-- zoo`: `zoo-location.png`, `zoo-close.png`, `zoo-front.png`). The 3/4 and rear 3/4
+camera angles were estimated from the sheet. Known differences: the tuft is rounded knobs, not
+the sheet's swept curls; the belly narrows a little at the waist; the face is flatter than the
+sheet's in the side view (the user asked for a flat, smooth face); a very faint line behind
+the ear where the skull meets the loft shows only in the bare-clay render; no fur texture.
+Placement, 17 Nov 2026: the bake applied 1 step; `compare_scenes.gd` against the committed
+base shows the display's 7 nodes added and the step list, nothing else (8 differences; shared
+palette files 404 -> 405). Town views with `capture.gd -- zoo` (`VT_FOCUS=all VT_SPAWN=none`,
+isolated HOME, `dev_focus.txt` = `all`); printed display y 0.156 world, physics ground under
+and round it -0.046, the offset the other clay displays use; the hands and feet stand on the
+grass. Checks: `run_checks.py --only runtime_resources,zoo_vehicles` PASS (the full suite was
+not run).
+
 ## Clay pig display (11 Nov 2026)
 
 `scenes/animals/pig_clay.tscn` is a static study of the user's "Pig (Black & White) Character

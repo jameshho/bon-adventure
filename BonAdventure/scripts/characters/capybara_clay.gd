@@ -87,6 +87,20 @@ static func HT(x: float, y: float, z := 0.0) -> Vector3:
 	return BT(H_PIVOT.x + (x - H_PIVOT.x) * HS, H_PIVOT.y + (y - H_PIVOT.y) * HS, z * HS)
 
 
+# The shared helpers (loft, _ray, _bdrop, _local_mesh, _bfit) read the sheet's frame from
+# these, so a model that extends this one (horse_clay.gd) sets its own in _init.
+var _px := BK        # sheet pixel -> working unit
+var _ox := BX        # sheet x at the model origin
+var _gy := BGY       # sheet y of the ground
+var _fine := BF      # meshed this many times larger than life
+var _stretch := 1.0  # sheet x is drawn this much longer about _ox (a side view turned toward the viewer shows the length short)
+
+
+## Sheet pixel -> working space in this model's frame.
+func _pt(x: float, y: float, z := 0.0) -> Vector3:
+	return Vector3(X0 + (x - _ox) * _px * _stretch, (_gy - y) * _px, z * _px)
+
+
 ## Sheet pixel -> working space (y up).
 static func BT(x: float, y: float, z := 0.0) -> Vector3:
 	return Vector3(X0 + (x - BX) * BK, (BGY - y) * BK, z * BK)
@@ -140,7 +154,13 @@ static func _torso_sections() -> Array:
 
 
 ## Adds a lofted mass to a group. `place` maps a sheet point to working space (BT or HT).
-func loft(g: Array, sections: Array, caps: Vector2, col: Color, k := 0.0) -> Dictionary:
+## `axis` = (pivot x, pivot y, degrees): the sections then run along a line turned that far
+## from the sheet's x about the pivot (90 = straight down), and their "x" and "y" are measured
+## along and across it (a neck, a leg).
+## `side_z` > 0 makes a mirrored pair, one mass that far to either side of the middle (locks).
+func loft(g: Array, sections: Array, caps: Vector2, col: Color, k := 0.0, axis := Vector3.ZERO, side_z := 0.0, crease := false) -> Dictionary:
+	var ca := cos(deg_to_rad(axis.z))
+	var sa := sin(deg_to_rad(axis.z))
 	var keys := []
 	for j in range(1, 7):
 		var row := []
@@ -156,8 +176,10 @@ func loft(g: Array, sections: Array, caps: Vector2, col: Color, k := 0.0) -> Dic
 		bottom = maxf(bottom, st[2])
 		wide = maxf(wide, st[4])
 	var fn := func(p: Vector3) -> float:
-		var sx := BX + (p.x - X0) / BK
-		var sy := BGY - p.y / BK
+		var px := _ox + (p.x - X0) / (_px * _stretch) - axis.x
+		var py := _gy - p.y / _px - axis.y
+		var sx := px * ca + py * sa + axis.x
+		var sy := -px * sa + py * ca + axis.y
 		var x := clampf(sx, x0, x1)
 		# Rounded ends: the section shrinks about its widest height along a quarter ellipse.
 		var s := 1.0
@@ -169,7 +191,7 @@ func loft(g: Array, sections: Array, caps: Vector2, col: Color, k := 0.0) -> Dic
 		var dy := sy - yc
 		var h := ((yc - Pig._curve(keys[0], x)) if dy < 0.0 else (Pig._curve(keys[1], x) - yc)) * s
 		var n := Pig._curve(keys[4] if dy < 0.0 else keys[5], x)
-		var z := absf(p.z / BK)
+		var z := absf(absf(p.z / _px) - side_z)
 		dy = absf(dy)
 		var reach := Vector2(z, dy).length()
 		var d := -minf(w, h)
@@ -178,9 +200,17 @@ func loft(g: Array, sections: Array, caps: Vector2, col: Color, k := 0.0) -> Dic
 			d = reach * (1.0 - 1.0 / maxf(r, 0.001)) if r > 0.02 else -minf(w, h)
 		if sx != x:
 			d = Vector2(maxf(d, 0.0), sx - x).length()
-		return d * BK
-	var pr := {"t": "fn", "fn": fn, "lo": BT(x0, bottom, -wide).min(BT(x1, top, wide)), "hi": BT(x0, bottom, -wide).max(BT(x1, top, wide)),
-			"k": k * BK, "col": col, "crease": false, "paint": false}
+		return d * _px
+	# Bounds: the sections' box, turned back into the sheet.
+	var lo := Vector3(INF, INF, INF)
+	var hi := -lo
+	for corner in [Vector2(x0, top), Vector2(x0, bottom), Vector2(x1, top), Vector2(x1, bottom)]:
+		var rel: Vector2 = corner - Vector2(axis.x, axis.y)
+		for z in [-wide - side_z, wide + side_z]:
+			var at := _pt(rel.x * ca - rel.y * sa + axis.x, rel.x * sa + rel.y * ca + axis.y, z)
+			lo = lo.min(at)
+			hi = hi.max(at)
+	var pr := {"t": "fn", "fn": fn, "lo": lo, "hi": hi, "k": k * _px, "col": col, "crease": crease, "paint": false}
 	g.append(pr)
 	return pr
 
@@ -303,7 +333,7 @@ func _ray(group: Array, from: Vector3, dir: Vector3) -> Array:
 			found = true
 			break
 		before = p
-		p += d * clampf(f * 0.5, 0.05, (0.5 if f < 20.0 * BK else 8.0) * BK)
+		p += d * clampf(f * 0.5, 0.05, (0.5 if f < 20.0 * _px else 8.0) * _px)
 	if found:
 		for i in 12:
 			var mid := (before + p) * 0.5
@@ -319,11 +349,11 @@ func _ray(group: Array, from: Vector3, dir: Vector3) -> Array:
 
 ## Drops a point near the skin onto it along -n, then lifts it `lift` sheet px.
 func _bdrop(p: Vector3, n: Vector3, lift: float) -> Vector3:
-	var q := p + n * 14.0 * BK
+	var q := p + n * 14.0 * _px
 	for i in 900:
 		if _field(_body, q) <= 0.0: break
 		q -= n * 0.1
-	return q + n * lift * BK
+	return q + n * lift * _px
 
 
 # --- Eyes ---------------------------------------------------------------------------------
@@ -416,7 +446,7 @@ func _eye_node(side: float) -> Transform3D:
 func _local_mesh(g, xf: Transform3D) -> ArrayMesh:
 	var inv := xf.affine_inverse()
 	for i in g.verts.size():
-		g.verts[i] = inv * (to_model(g.verts[i]) / BF)
+		g.verts[i] = inv * (to_model(g.verts[i]) / _fine)
 		g.norms[i] = inv.basis * normal_to_model(g.norms[i])
 	return g.commit()
 
@@ -491,7 +521,7 @@ func _bfit(mesh: ArrayMesh) -> ArrayMesh:
 	var arrays := mesh.surface_get_arrays(0)
 	var verts: PackedVector3Array = arrays[Mesh.ARRAY_VERTEX]
 	for i in verts.size():
-		verts[i] /= BF
+		verts[i] /= _fine
 	arrays[Mesh.ARRAY_VERTEX] = verts
 	var out := ArrayMesh.new()
 	out.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
