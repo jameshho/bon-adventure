@@ -8,9 +8,9 @@ Generated 2026-11-17 by `tools/vocabulary_report.gd -- --write` (whole town load
 
 | | Words |
 | --- | ---: |
-| In data/words.json | 794 |
-| Placed in the saved scenes | 772 |
-| Clickable somewhere (study by clicking) | 747 |
+| In data/words.json | 795 |
+| Placed in the saved scenes | 773 |
+| Clickable somewhere (study by clicking) | 748 |
 | Placed only by scripts at load (runtime) | 0 |
 | Only on a bound world label (poster) | 0 |
 | Tested by a game | 150 |

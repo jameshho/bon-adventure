@@ -247,11 +247,12 @@ ride (E to sit, W/S to kick).
   ([on the farm](../evidence/horse-anim-20261117/zoo-close.png),
   [walking](../evidence/horse-anim-20261117/zoo-walk.png)). Since 17 Nov a clay rooster stands
   on the farm lawn by the farm gate ([view](../evidence/rooster-clay-20261116/zoo-close.png))
-  and a clay capybara sits on the grass just inside the zoo gate
-  ([view](../evidence/capybara-clay-20261116/zoo-close.png)), with a clay baby monkey across
-  the gate walk from it, in front of the Bamboo Grove
-  ([view](../evidence/monkey-clay-20261117/zoo-close.png)); all three are still displays with
-  no word yet (the zoo's own piece-built monkey is unchanged).
+  and a clay capybara waddles and blinks in Wildlife Plains and teaches *capybara*
+  ([view](../evidence/capybara-anim-20261117/zoo-close.png),
+  [walking](../evidence/capybara-anim-20261117/zoo-walk.png)); just inside the zoo gate sits
+  a clay baby monkey, in front of the Bamboo Grove
+  ([view](../evidence/monkey-clay-20261117/zoo-close.png)); the rooster and the monkey are
+  still displays with no word yet (the zoo's own piece-built monkey is unchanged).
   [Zoo zones](../guides/TOWN_DESIGN_BRIEF.md#zoo-zones--12-november-2026) ·
   [animal sizes and movement](../guides/ANIMAL_SYSTEM.md)
 - **Coast:** a sandy beach with boulders and crabs, and a small deserted island.

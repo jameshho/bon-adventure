@@ -435,7 +435,7 @@ with `-- zoo`, the town views and `zoo-pair.png`, `zoo-pair-side.png` showing bo
 differences from the sheet: the belly hangs a little lower between the legs, and the head is
 smaller and lower against the body than on the sheet. No test suite was run.
 
-## Clay capybara display (17 Nov 2026, approved by the user and placed in the zoo)
+## Clay capybara (17 Nov 2026, approved; since the same day it walks in Wildlife Plains)
 
 `scenes/animals/capybara_clay.tscn` is a static study of the user's "Capybara Character
 Blueprint" turnaround (relaxed idle pose), built by `tools/build_capybara_clay.gd` from
@@ -448,7 +448,9 @@ town (-72.8, 0.12, 124.4): on the grass strip just inside the zoo gate, east of 
 and in front of the WILDLIFE PLAINS fence (outside the fenced zones, so no wandering animal
 meets its footprint), turned to face the gate (base step `capybara_clay_display`, which also
 stores it as plain nodes with `unpack_clay_animals`). It has a box footprint and no word,
-movement, animation or interaction; "Capybara" is not in `ANIMAL_HEIGHTS` or the vocabulary.
+movement, animation or interaction; "Capybara" was not in `ANIMAL_HEIGHTS` or the vocabulary.
+**Superseded the same day:** the display was replaced by a wandering, rigged capybara
+([clay capybara walks](#clay-capybara-walks-in-the-zoo-17-nov-2026)).
 Placement, 17 Nov 2026: the bake applied 1 step; `compare_scenes.gd` against the base before
 it shows the display's 7 nodes added and the step list, nothing else (8 differences; shared
 palette files 413 -> 414). Town views with `capture.gd -- zoo` (`VT_FOCUS=all VT_SPAWN=none`,
@@ -518,6 +520,40 @@ across the back view; the lids land on the traced lid regions within 1 px. Still
 ears smaller and about 10 px lower than the sheet's (asked), the back view's head (the sheet's
 is narrower there, a perspective view), no fur texture. About 94k triangles at 0.9 units
 (104k at the placed 0.95). Approved by the user on 17 Nov 2026.
+
+### Clay capybara walks in the zoo (17 Nov 2026)
+
+User, 17 Nov 2026: "rig the capybara so it walks and blinks"; asked where and whether it gets a
+word, the user chose Wildlife Plains and a new word.
+- **Rig.** `tools/build_capybara_clay_rig.gd` (extends `clay_rig_tool.gd`) builds
+  `scenes/animals/capybara_clay_rigged.scn` with meshes in `clay_meshes/capybara_rig/`: 31,437
+  triangles against the display's 107,136, one skinned surface (`Body`). Bones: root, body,
+  head (no neck bone; it turns about a pivot in the nape), ear_l and ear_r, two stubby front
+  legs and the two long hind paws. A slow lateral waddle with the soles kept on the ground
+  (`keep_feet_down`), roll 4 degrees, slow breathing. The eyes already sit on their own nodes
+  and ride the head (`on_head`); a blink closes the half-open eyes under their lids. The body
+  is closed with the zebra tool's `_closed` before thinning.
+- **Word and species.** `data/words.json`: `capybara` (el capibara / 水豚, Animals).
+  `park_animals.gd`: `PROFILES` "capybara" (slow, long rests) and `ANIMAL_HEIGHTS` "Capybara"
+  0.76, which is under the small-animal minimum, so it is shown at the minimum times
+  `DISPLAY_SCALE`: 0.975 zoo units, the closest the zoo's sizing allows to the 0.95 the user
+  chose for the display.
+- **Zoo.** Base step `capybara_clay_walks`: `ParkZoo/CapybaraClayDisplay` goes and a wandering
+  `ParkZoo/Capybara` (`_clay_roamer`, then `_clay_walker`) stands in Wildlife Plains at
+  (-67.8, 120.0), in the open front of the zone, facing the gate, soles at the tiger's level
+  (y 0.155). `compare_scenes.gd`: 13,939 -> 13,946 nodes, 22 differences, all the display's
+  nodes removed and the new animal's added, plus the step list. Two homes were tried first:
+  (-65.5, 120.3) faced a shrub at the fence, and at (-65.5, 118.4) it never left `idle` in two
+  town runs (inside the elephant's footprint distance, `park_animals.gd::_clear_step`).
+- **Evidence** `docs/evidence/capybara-anim-20261117/`: `capture.gd` (display and rig only):
+  `capybara_clay-compare.png` (rest difference 0.54 to 0.58 levels), `-walk.png`, `-seams.png`,
+  `-blink.png`, `-weights.png`, `-tail.png`; `zoo.gd` (full town, `dev_focus.txt` = `all`,
+  isolated `HOME`): the capybara has the word, the rig, is in group `clay_animals` and in
+  `clay_life`'s list, and reaches `walking`; `zoo-context.png`, `zoo-close.png`, `zoo-walk.png`.
+- **Checks** on the final bake, each run once: `run_checks.py --only
+  runtime_resources,compact_layout,interaction,part2,vocabulary_report`: all PASS
+  (interaction reported 0 s).
+- Not checked: a web export or a phone, frame time with 20 rigs, and the full check suite.
 
 ## Clay horse (17 Nov 2026, approved, rigged, replaces the zoo horse)
 

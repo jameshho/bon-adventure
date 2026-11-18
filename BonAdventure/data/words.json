@@ -619,6 +619,7 @@
     "animal": {"text": {"en": "animal", "es": "el animal", "zh": "動物"}, "category": "Animals", "note": "A library bookcase category (Library Helper, 17 Nov 2026)."},
     "bear": {"text": {"en": "bear", "es": "el oso", "zh": "熊"}, "category": "Animals"},
     "bear cub": {"text": {"en": "bear cub", "es": "el osezno", "zh": "小熊"}, "category": "Animals"},
+    "capybara": {"text": {"en": "capybara", "es": "el capibara", "zh": "水豚"}, "category": "Animals"},
     "cat": {"text": {"en": "cat", "es": "el gato", "zh": "貓"}, "category": "Animals"},
     "cow": {"text": {"en": "cow", "es": "la vaca", "zh": "牛"}, "category": "Animals"},
     "crab": {"text": {"en": "crab", "es": "el cangrejo", "zh": "蟹"}, "category": "Animals"},

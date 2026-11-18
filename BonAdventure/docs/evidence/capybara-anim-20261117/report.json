@@ -1,0 +1,24 @@
+{
+  "capybara_clay": {
+    "eyes": true,
+    "rest_difference": [
+      [
+        0.54,
+        0.0006
+      ],
+      [
+        0.58,
+        0.001
+      ],
+      [
+        0.55,
+        0.0005
+      ],
+      [
+        0.55,
+        0.0005
+      ]
+    ],
+    "weight_colours": "root=9a9a9a body=4f8fe0 head=f2c14e ear_l=e05a8a ear_r=3fbf7f leg_fl=e0743a leg_bl=8a5be0 leg_fr=3fc6d8 leg_br=b6d84a"
+  }
+}

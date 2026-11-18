@@ -18,7 +18,9 @@ const PROFILES := {
     "gorilla":[.45,2.5,3.0,.35], "deer":[.7,2.5,2.0,.2],
     "kangaroo":[.75,2.5,2.0,.25], "rhinoceros":[.4,2.5,3.0,.35],
     "zebra":[.7,2.5,2.0,.25], "bear cub":[.55,2.0,2.0,.25],
-    "flamingo":[.3,1.8,3.0,.3]
+    "flamingo":[.3,1.8,3.0,.3],
+    # Clay capybara (17 Nov 2026): slow and mostly resting.
+    "capybara":[.3,2.0,4.0,.45]
 }
 ## Species display sizes (docs/guides/ANIMAL_SYSTEM.md): visible height in the zoo's town units, or
 ## length for the aquatic animals, with a fixed minimum world height measured from the snake.
@@ -34,7 +36,10 @@ const ANIMAL_HEIGHTS = {
     "Hen":.5, "Duck":.45,
     # Clay animals new to the zoo (11 Nov 2026, base step clay_animals_roam), at their built sizes.
     "Panda":1.67, "Red Panda":.91, "Gorilla":2.3, "Deer":2.0, "Kangaroo":2.3,
-    "Rhinoceros":2.4, "Zebra":1.71, "Bear Cub":1.05, "Flamingo":1.4
+    "Rhinoceros":2.4, "Zebra":1.71, "Bear Cub":1.05, "Flamingo":1.4,
+    # Clay capybara (17 Nov 2026): the user chose 0.95 shown ("like the pig"); this is under the
+    # small-animal minimum, so it is shown at the minimum times DISPLAY_SCALE, about 0.975.
+    "Capybara":.76
 }
 ## Every ParkZoo animal is shown this much bigger than its species height above (user, 11 Nov
 ## 2026: "make everything bigger"; rhinoceros and gorilla raised further and the bear cub made
