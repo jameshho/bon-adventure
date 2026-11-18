@@ -326,7 +326,8 @@ func _update_hud_buttons() -> void:
 	var free: bool = player.controls_enabled and not _hidden_by_panel() and not hud.is_map_open() and not hud.is_journal_open() and not hud.is_help_open()
 	var cover := _dialogue_cover()
 	_place(run_button, run_rect, UiText.t("hud.run_button"),
-			free and not driving and not player.seated and not hud.game_buttons_hidden() and not cover.intersects(run_rect))
+			free and not driving and not player.seated and not hud.game_buttons_hidden() and not cover.intersects(run_rect)
+			and not hud.tutorial_hidden.get("run", false))
 	_apply_styles(run_button, _run_styles[player.sprint_enabled])
 	var gold := Color("fff1c5")
 	run_button.add_theme_color_override("font_color", gold if player.sprint_enabled else Color("fff2d8"))

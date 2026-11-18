@@ -57,6 +57,9 @@ var interact_allowed := true
 ## Optional (obj: Node3D) -> bool: only objects it accepts open a word card (the welcome
 ## tutorial's statue step: only the statue, user 13 Nov 2026).
 var word_filter: Callable
+## Optional (item: Interactable) -> bool: only interactables it accepts can be focused, pressed
+## or clicked (the welcome tutorial: doors and BonBon only, user 17 Nov 2026; tutorial.gd).
+var interact_filter: Callable
 ## Optional () -> bool, true while the shared dialogue box shows (Main): a click or tap then
 ## opens no word card (14 Nov 2026, user), unless word_filter is set: a line that asks for one
 ## object (the tutorial's statue) lets exactly that object's card open. Interactables, the
@@ -271,6 +274,8 @@ func _pick_focus(bangs: Array[Vector3], dots: Array[Vector3]) -> Node:
         var owner_node: Node3D = item.get_parent() as Node3D
         if owner_node == null or not owner_node.is_inside_tree() or not item.enabled:
             continue
+        if interact_filter.is_valid() and not interact_filter.call(item):
+            continue
         var origin := owner_node.global_position
         var coarse := Vector2(origin.x - feet.x, origin.z - feet.z).length_squared()
         if coarse > COARSE_RANGE * COARSE_RANGE and coarse > item.discover_distance * item.discover_distance:
@@ -351,6 +356,8 @@ func click() -> void:
         activate_focus()
         return
     var item := aimed_interactable()
+    if item != null and interact_filter.is_valid() and not interact_filter.call(item):
+        item = null
     if item != null:
         if item == focus or _clickable(item):
             activate(item)

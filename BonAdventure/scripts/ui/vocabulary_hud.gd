@@ -114,6 +114,12 @@ var bookmark_button: Button
 ## Hold to see the town's signs in the native language (the touch twin of holding L,
 ## 9 Nov 2026); left of the gear, labelled with the native badge (EN, ES, 中).
 var peek_button: Button
+## The welcome tutorial's HUD buttons (user, 17 Nov 2026): names ("peek", "journal", "picker")
+## hidden until the tutorial introduces them (tutorial.gd), and those that pulse meanwhile to ask
+## for a click. The picker (game_launcher.gd) reads tutorial_hidden too.
+var tutorial_hidden := {}
+var tutorial_pulse := {}
+var _pulse_time := 0.0
 ## The bottom-right cluster (10 Nov 2026, user): a 2 x 2 block of equal buttons, the journal
 ## (bookmark_button), the full map, the minigame picker (game_launcher.gd places it with
 ## bottom_slot(2)) and help. Since 14 Nov 2026 (user) the journal and the picker are a second
@@ -610,13 +616,16 @@ func _process(delta: float) -> void:
     reticle_group.visible = Input.mouse_mode == Input.MOUSE_MODE_CAPTURED and not is_card_visible()
     # Full-screen windows cover the top-right buttons (the journal has its own ✕).
     var covered: bool = is_map_open() or is_journal_open() or is_help_open()
-    bookmark_button.visible = not covered and not cluster_hidden(bookmark_button)
+    bookmark_button.visible = not covered and not cluster_hidden(bookmark_button) and not tutorial_hidden.get("journal", false)
     map_button.visible = Features.FULL_MAP and not covered and not cluster_hidden(map_button)
     # Hidden (14 Nov 2026, user): F1 opens the guide; its ✕ closes it.
     help_button.visible = false
     settings_button.visible = not covered
     # Native mode already shows the native language, so there is nothing to peek at.
-    peek_button.visible = not covered and mode != GameSettings.NATIVE
+    peek_button.visible = not covered and mode != GameSettings.NATIVE and not tutorial_hidden.get("peek", false)
+    _pulse_time += delta
+    for entry in [["peek", peek_button], ["journal", bookmark_button]]:
+        _pulse(entry[1], tutorial_pulse.get(entry[0], false))
     # The peek ends when neither L nor the button is held (a release eaten by a popup,
     # the window losing focus or the button hiding cannot leave it stuck on).
     if GameSettings.shared().peeking and not Input.is_physical_key_pressed(KEY_L) and not (peek_button.visible and peek_button.is_pressed()):
@@ -852,6 +861,18 @@ func game_buttons_hidden() -> bool:
 
 ## Whether `button` is hidden by a game (cluster_off) or under what covers the lower screen
 ## (cluster_cover: the dialogue box).
+## A gentle grow-and-shrink with a gold tint while the tutorial asks for this button.
+func _pulse(button: Control, on: bool) -> void:
+    button.pivot_offset = button.size * 0.5
+    if not on:
+        if button.scale != Vector2.ONE:
+            button.scale = Vector2.ONE
+            button.self_modulate = Color.WHITE
+        return
+    var wave := 0.5 + 0.5 * sin(_pulse_time * 6.0)
+    button.scale = Vector2.ONE * (1.0 + 0.12 * wave)
+    button.self_modulate = Color.WHITE.lerp(BOOKMARK_GOLD, wave)
+
 func cluster_hidden(button: Control) -> bool:
     if cluster_off or in_minigame:
         return true

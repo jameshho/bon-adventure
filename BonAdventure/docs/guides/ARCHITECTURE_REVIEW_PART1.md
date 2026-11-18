@@ -392,8 +392,12 @@ any new world text that should switch languages should bind the same way.
 HUD's native-badge button left of the gear (`peek_button`, for touch) sets
 `GameSettings.peeking`; `world_language()` then names the native language and Main's
 `apply_world_language()` re-renders signs and bound labels until it is released. It is not
-a Display Mode: it is never saved, does not change dialogue, cards or practice recording,
-and the button is hidden in Native mode. The HUD ends a peek whose release was missed
+a Display Mode: it is never saved, does not change cards or practice recording, and the
+button is hidden in Native mode. Since 17 Nov 2026 (user) it is the one language toggle for
+the dialogue box too: while it is held the box (`shop_order_panel.gd`) shows its lines in the
+native language (`translation_shown("")` marks the open question translated), and the box's
+own translate bubble is gone. The other minigame panels still have their own translate
+bubbles. The HUD ends a peek whose release was missed
 (neither key nor button held).
 
 **World signs in every taught language (user decision, 9 Nov 2026).** `data/sign_translations.json`
@@ -1438,6 +1442,42 @@ this disagrees with the rows above or the 13–14 Nov notes below, this wins.
 - Check: `docs/evidence/tutorial-script-20261117/verify.gd` (`tutorial`), see its
   [README](../evidence/tutorial-script-20261117/README.md). The older check
   `tutorial-20261112/verify.gd` and its notes below are history.
+
+**User review, 17 Nov 2026 (evening).** Where this disagrees with the notes above, this wins.
+- **Close-ups:** BonBon's lines are shown in her face close-up (`npc_presence.gd`) whenever she is
+  within `GUIDE_FACE_RANGE` 8 m and not walking (`_say_face()`, `_guide_face_ok()`); consecutive
+  lines of the same speaker keep the close-up (`_held_face`).
+- **Replies:** a `say` step's `reply` is a button the line waits for (a click elsewhere does not
+  move it on; E / Enter presses it). "Ready for an adventure?" waits for "Yes!" before the
+  close-up eases back; each friend's greeting waits for "Hi! Nice to meet you!" in the language
+  being learned (`find` step `reply`).
+- **Controls:** the view step waits for a real drag of 1.5 rad (zooming counts only where a step
+  sets `zoom`; walking stays off); the walk step counts the way walked, 6 m. Only doors (and the
+  shower curtain) and BonBon can be used during the tutorial (`interaction_controller.gd`
+  `interact_filter`; seats, faucets, stations and vehicles are not even focused). In the market
+  and park acts every door outside the supermarket says "That's not where we're going right
+  now!" (`lock` step `space: world`, `open_in` units; doors of buildings that load later are
+  locked when they come in). Most town buildings have open doorways and register no doors (the
+  supermarket, library, school and bakery among them, measured 17 Nov 2026); the 14 town doors
+  are inside buildings such as the bank, police station and hospital.
+- **Shower curtain:** shut until the hunt (`_lock_curtain()`), then it opens with E or a click
+  like any door; the strip says "Press E to open the shower curtain." (no drag, no "someone
+  behind the curtain?" line).
+- **HUD:** the minigame picker (▶) and the Run button are hidden for the whole tutorial and running is off (`_process()`); the EN button and the
+  journal button are hidden until introduced and pulse then (`vocabulary_hud.gd`
+  `tutorial_hidden`, `tutorial_pulse`). The EN button comes with the first friend's greeting:
+  the strip says to hold it, and the reply shows once it was held (`_introduce_peek()`; skipped in
+  Native mode). The journal button comes with the journal step and stops pulsing once opened.
+- **One language toggle:** holding EN (or L) also flips the dialogue box to the native language
+  (`shop_order_panel.gd` follows `GameSettings.peek_changed`); the box has no translate bubble
+  of its own any more. See hold-to-peek in [vocabulary data procedure](#vocabulary-data-procedure).
+- **Clock and pace:** it starts at noon (`START_MINUTES`, `day_night.gd` `set_time()`); the cast
+  walks at the player's walking speed (`_walk_speed()`, `player_controller.gd` `walk_speed`).
+- **Title cutscene:** not skippable until every building is in (bar to 80 %) and the market and
+  park acts' views (cast and shop-staff close-ups, a look round each spot, the picnic) are drawn
+  behind it (to 100 %); only then does "Click or tap to skip" show. The market and park acts used
+  to lag because it could be skipped with 14–17 buildings still loading, which then came in at
+  their quiet moments ([lag notes](../evidence/tutorial-lag-20261117/README.md)).
 
 Props it uses: the family bathtub's own curtain (`Family bathtub/Shower curtain`, a
 `door_animator.gd` `curtain` built by `home_furnishing.gd`; the tutorial draws it across the tub

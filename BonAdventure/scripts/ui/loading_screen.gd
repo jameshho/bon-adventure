@@ -111,6 +111,13 @@ func show_title(text: String, bar := false, subtitle := "", note := "") -> void:
 	_bar.visible = bar
 	_stamp.visible = false
 
+## Title mode: shows the skip `note` and makes the screen skippable from now on ("" = neither).
+## The tutorial's cutscene does this once the buildings behind it are in (17 Nov 2026).
+func set_skip_note(note: String) -> void:
+	_note.text = note
+	_note.visible = note != ""
+	skippable = note != ""
+
 ## Replaces the line over the bar (app.gd's warm-up: "Getting everything ready…").
 func _unhandled_key_input(event: InputEvent) -> void:
 	if skippable and event.is_pressed() and not event.is_echo():

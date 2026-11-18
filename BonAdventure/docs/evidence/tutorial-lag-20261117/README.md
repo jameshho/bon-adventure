@@ -46,3 +46,25 @@ desktop build it has no frame over 40 ms.
 - `docs/evidence/tutorial-20261112/verify.gd`, headless, `VT_FOCUS=all`: **113 checks, 0 failures**.
 - The title cutscene still stalls (100–580 ms frames) while the remaining buildings load behind
   it; unchanged and left for later (only its pictures stutter).
+
+## Second pass: the market and park acts (17 Nov 2026, evening)
+
+User: still some lag during the activities of the tutorial. Cause, from a frame log over the whole
+tutorial check (headless, `VT_FOCUS=all`, frames over 40 ms with the step and the buildings still
+pending): the title cutscene could be skipped after 1 s, with 14–17 of the 17 remaining buildings
+not loaded yet; they then came in during the market and park acts at "quiet moments" (any time a
+line was on screen), and the market, supermarket and park were drawn for the first time in play.
+
+Change: the cutscene cannot be skipped until every building is in (bar to 80 %) and the market
+and park acts' views are drawn behind it (`tutorial.gd` `warm_views(act)`, `draw_views()`; bar to
+100 %); only then does "Click or tap to skip" show
+([guide](../../guides/ARCHITECTURE_REVIEW_PART1.md#welcome-tutorial)).
+
+| Frames over 40 ms (headless whole-tutorial log) | Before | After |
+| --- | --- | --- |
+| During the market act (act 2) | 3 (51–128 ms, buildings loading) | none |
+| During the park act (act 3) | 3 (52–244 ms, buildings loading) | none |
+| Title card up until every building is in | skipped at 1 s with 14 pending | about 6 s (inside its 7 s minimum) |
+
+Not measured on the web after this change (the web build was not re-exported); the cutscene's
+own pictures still stutter while buildings load behind it, as before.

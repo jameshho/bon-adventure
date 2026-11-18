@@ -57,6 +57,11 @@ func can_interact() -> Variant:      # optional: true, false (no badge) or a rea
 - An object that holds E for a while registers an input claim instead of reading the key.
 - `kind` (USE, TALK, DRIVE, ...) is set by every interactable but read by nothing yet. Keep
   setting it: it is the hook for the planned sounds. It does not change behaviour.
+- To allow only some interactables for a while (the welcome tutorial: doors and BonBon, 17 Nov
+  2026), set `interaction_controller.gd` `interact_filter` (item -> bool); the others are not
+  focused and a click on them does nothing. Clear it (`Callable()`) afterwards. A rejected item's
+  own `on_check` is not run; to answer with a line instead ("not the right place"), leave it
+  allowed and set its `on_check` to return the line.
 
 ## Things that open
 
@@ -111,8 +116,9 @@ a `hold_kind` meta (the held basket's own pick area).
 
 User, 14 Nov 2026: in a line spoken in the native language (the welcome tutorial, its clerk and
 cashier), words in the language being learned are coloured, and a tap or click on one shows its
-meaning after it ("(= apple)", phrase `common.term_meaning`); a second tap hides it; the
-translate button shows them all. No hover, so it works on touch. Build the line with
+meaning after it ("(= apple)", phrase `common.term_meaning`); a second tap hides it; holding
+the HUD's EN button (or L) shows them all (since 17 Nov 2026 the one language toggle: the box
+has no translate bubble of its own; `shop_order_panel.gd` follows `GameSettings.peek_changed`). No hover, so it works on touch. Build the line with
 `Lexicon.native_line(id, values, extra_terms)` (or `tutorial.narration()`): a value
 `{"learn": <word ref, per-language text, ...>}` is written in the language being learned and
 becomes a term `{"text", "gloss"}`; `"show": true` on it always shows the meaning (amounts:

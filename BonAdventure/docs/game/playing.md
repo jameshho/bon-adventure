@@ -39,7 +39,15 @@ Since 17 Nov it follows the user's script "Little Town of Words": lines move on 
 the two friends can be found in either order (drag the shower curtain open; ask BonBon for
 hints), the shopping list is 1 apple, 2 bananas and 3 cookies paid in $1 bills and quarters,
 the statue card reads "statue of George Washington", and the tour ends with a picnic in the park
-(placeholder lines). The journal's book button is cuter, with a clearer J.
+(placeholder lines). The journal's book button is cuter, with a clearer J. Since the user's review of
+17 Nov: BonBon is shown close up while she talks; "Ready for an adventure?" waits for "Yes!" and
+each friend's hello for "Hi! Nice to meet you!"; the view and walking steps wait for a real drag
+and a longer walk; the shower curtain opens with E; only doors and BonBon can be used, and other
+buildings' doors say it is not the right place; the EN button (hold it to read any line in your
+language, now the only language toggle) and the journal button appear and pulse when they are
+introduced, and the ▶ games button and the Run button stay hidden; the tour starts at noon and BonBon walks at your
+speed; the town card can be skipped only once the whole town is loaded, so the market and park
+parts no longer stutter.
 [Tutorial guide](../guides/ARCHITECTURE_REVIEW_PART1.md#welcome-tutorial)
 
 ## Languages

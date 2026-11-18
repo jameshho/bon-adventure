@@ -264,23 +264,11 @@ func _warm_up(director: Node = null) -> void:
 	player.camera_yaw = start_yaw
 	player.reset_camera()
 	if not views.is_empty():
-		var before := get_viewport().get_camera_3d()
-		var look := Camera3D.new()
-		look.name = "WarmUpCamera"
-		look.near = 0.05
-		look.far = main.camera.far
-		main.add_child(look)
-		look.make_current()
-		for view in views:
-			look.global_transform = view.transform
-			look.fov = float(view.fov)
-			await get_tree().process_frame
-			await get_tree().process_frame
-			done += 1
-			loading.set_progress(lerpf(from, 1.0, done / total))
-		if is_instance_valid(before):
-			before.make_current()
-		look.queue_free()
+		# (A lambda gets a copy of `done`: the drawer counts the views itself.)
+		var before := done
+		await director.draw_views(views, func(drawn: int) -> void:
+			loading.set_progress(lerpf(from, 1.0, (before + drawn) / total)))
+		done += views.size()
 	if is_instance_valid(director):
 		await director.warm_dialogue()
 		done += 1

@@ -23,10 +23,16 @@ extends Control
 ## the box colours them (TERM) and a tap or click on one shows its native meaning after it
 ## ("(= apple)", phrase common.term_meaning), again to hide it; the translate button shows every
 ## meaning, and a term with "show" always does (an amount and its digits). No hover needed.
+##
+## One language toggle (user, 17 Nov 2026): the box has no translate bubble of its own any more;
+## holding the HUD's EN button (or L), GameSettings.peeking, shows every open card (dialogue,
+## cart, quit prompt) in the native language, and letting go shows the language being learned
+## again. The bubbles still exist (sessions set show_native) but stay hidden.
 const GameSettings := preload("res://scripts/core/game_settings.gd")
 const PinyinText := preload("res://scripts/ui/pinyin_text.gd")
 const UiIcons := preload("res://scripts/ui/ui_icons.gd")
 const TranslateButton := preload("res://scripts/ui/translate_button.gd")
+const PracticeLog := preload("res://scripts/learning/practice_log.gd")
 const ProductPictures := preload("res://scripts/ui/product_pictures.gd")
 const Lexicon := preload("res://scripts/language/lexicon.gd")
 
@@ -139,7 +145,18 @@ func _init() -> void:
 
 func _ready() -> void:
 	get_viewport().size_changed.connect(_rescale)
+	GameSettings.shared().peek_changed.connect(_on_peek)
 	_rescale()
+
+## The HUD's EN button (hold) or L: the open cards switch language while it is held. A peek at a
+## shown line counts as its translation seen (practice_log.gd), as the bubble's press did.
+func _on_peek() -> void:
+	show_native = GameSettings.shared().peeking
+	refresh_display()
+	if show_native and (dialogue_card.visible or cart_card.visible):
+		PracticeLog.shared().translation_shown.emit("")
+	if _auto_close > 0.0:
+		_auto_close = maxf(_auto_close, 6.0)
 
 ## Sets every font size and minimum size from the sizes recorded at design height.
 func _rescale() -> void:
@@ -154,6 +171,8 @@ func _rescale() -> void:
 	for button in [translate_button, cart_translate_button]:
 		button.refresh(show_native, factor)
 		button.tooltip_text = str(translate_text.get("native", ""))
+		# One toggle: the HUD's EN button (17 Nov 2026).
+		button.visible = false
 	_fit_cards.call_deferred()
 	# Wrapped labels report their height for the width they had BEFORE this layout, so the
 	# cards are measured again once the new width has settled.
@@ -482,6 +501,8 @@ func show_dialogue(speaker: Variant, line: Dictionary, choices: Array = [], auto
 	_choices = choices
 	_auto_close = auto_close if choices.is_empty() else 0.0
 	_open_terms = {}
+	# A new line is in the language being learned unless EN is held right now.
+	show_native = GameSettings.shared().peeking
 	if is_instance_valid(walker):
 		_shown_at = walker.global_position
 	dialogue_card.visible = true

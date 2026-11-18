@@ -34,3 +34,28 @@ Other checks (17 Nov 2026): `python3 tools/run_checks.py` (quick, `VT_FOCUS=all`
 `data/pinyin_zh.json`, then `--only language` PASS. `tools/vocabulary_report.gd -- --write`:
 5479 checks, 0 failures, `docs/game/words.md` unchanged (the statue's key is unchanged; the
 tutorial is not a minigame). The full suite was not run.
+
+## User review, 17 Nov 2026 (evening)
+
+Changes ([guide](../../guides/ARCHITECTURE_REVIEW_PART1.md#welcome-tutorial), "User review, 17 Nov
+2026"): BonBon's close-ups, the "Yes!" and "¡Hola! ¡Mucho gusto!" replies, the EN and journal
+introductions (pulsing), the dialogue box following the EN hold (no translate bubble of its own),
+the shower curtain opening with E, only doors and BonBon usable, other buildings' doors "not the
+right place", the ▶ picker and the Run button hidden and running off, noon start, BonBon at the
+player's speed, a 1.5 rad drag and 6 m walk, and the title card held until the town is loaded and
+the later acts are drawn ([lag notes](../tutorial-lag-20261117/README.md)).
+
+`verify.gd` was extended for all of these. Results, `VT_FOCUS=all`, isolated HOME:
+- headless: **117 checks, 0 failures**;
+- with graphics (one run, before the Run-button checks were added): 116 checks, 0 failures, views
+  saved; the process was killed at quit (exit 137) after printing its result.
+
+New views: `hold-en` (the EN introduction: strip, gold EN button, no reply yet), `curtain-e`
+(the strip "Press E to open the shower curtain." and the E badge). `friend` now shows the reply
+button. `curtain-drag.png` is from the earlier drag version (history).
+
+Limitations: `hold-en.png` was taken 3 frames into Leo's close-up, so the camera had not eased
+in yet (it shows the wall); `wake.png` caught the loading screen fading out. The pulsing was
+seen in one still only (gold text), not in motion. Most town buildings have open doorways, so
+the "not the right place" lock affects only the doors that exist (bank, police, hospital and
+similar); the supermarket has no door objects to keep open.

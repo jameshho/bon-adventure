@@ -188,7 +188,7 @@ func _build_detail() -> void:
 func toggle() -> void:
 	if visible:
 		close()
-	elif enabled:
+	elif enabled and not main.hud.tutorial_hidden.get("picker", false):
 		open()
 
 func open() -> void:
@@ -368,7 +368,9 @@ func _process(delta: float) -> void:
 		if session == null or (_since > SETTLE and not session.busy() and not session.activity_running()):
 			_finish_test()
 	var hud = main.hud
+	# Off while the welcome tutorial runs (user, 17 Nov 2026: no minigames meanwhile).
 	corner_button.visible = enabled and not visible and testing == "" and Board.shared().running_id == "" \
+			and not hud.tutorial_hidden.get("picker", false) \
 			and not (hud.is_map_open() or hud.is_journal_open() or hud.is_help_open()) \
 			and not hud.cluster_hidden(corner_button)
 	if visible:

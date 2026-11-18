@@ -8,9 +8,16 @@ extends SceneTree
 ##   until the walk is learned) and the instruction strip says what to do (keyboard and touch);
 ## - the two friends are found in either order (here the bedroom friend first): hints only when
 ##   asked, pointing at a friend not found yet and more exact on each ask; a door the hunt has no
-##   use for opens with BonBon's remark, the outside doors are locked; the curtain opens by a drag
-##   that starts on it (a click on it does nothing);
+##   use for opens with BonBon's remark, the outside doors are locked; the curtain opens with E
+##   (shut until the hunt);
 ## - the town reveal has its subtitle and is skipped by a click;
+## Review of 17 Nov 2026 (user): "Ready for an adventure?" waits for "Yes!" in BonBon's close-up;
+## the view step waits for a real drag (zooming does not count, no walking); the walk step counts
+## the way walked; only doors and BonBon can be used; it starts at noon and the cast walks at the
+## player's speed; the EN button is hidden until the first friend's greeting, then pulses with the
+## strip until held, and the greeting waits for a reply; the journal button appears and pulses
+## at its step; the minigame picker is hidden; the reveal can be skipped only once every building
+## is in; in the town acts other buildings' doors say "not the right place".
 ## - the market: BonBon leads, the clerk's two lines and the basket, the shopping list of 1 apple,
 ##   2 bananas and 3 cookies ticked as it fills, BonBon's "Oops!" for a wrong item, hints that
 ##   follow what is missing, the money panel with only $1 bills and quarters, a wrong then a right
@@ -29,6 +36,7 @@ const DoorAnimator := preload("res://scripts/core/door_animator.gd")
 const Interactable := preload("res://scripts/core/interactable.gd")
 const PracticeLog := preload("res://scripts/learning/practice_log.gd")
 const Lexicon := preload("res://scripts/language/lexicon.gd")
+const ModularTown := preload("res://scripts/world/modular_town.gd")
 const SHOTS := "res://docs/evidence/tutorial-script-20261117/"
 
 var checks := 0
@@ -83,10 +91,16 @@ func wait_until(test: Callable, seconds := 20.0) -> bool:
 func auto_advance() -> void:
 	while is_instance_valid(tutorial):
 		await process_frame
-		if fast and tutorial.running and (tutorial._speaking or tutorial._pausing):
+		if fast and tutorial.running and (tutorial._speaking or tutorial._pausing) and not tutorial._awaiting_reply:
 			# Long enough for the checks to read the line first.
 			await frames(8)
 			tutorial._advance = true
+
+## Presses the reply button of the line waiting for one.
+func reply() -> void:
+	await wait_until(func() -> bool: return main.shop_panel.has_choices())
+	main.shop_panel.choice_pressed.emit(Tutorial.REPLY)
+	await frames(2)
 
 ## Waits for the line `id` (native) to show; returns whether it did.
 func wait_line(id: String, values := {}, seconds := 20.0) -> bool:
@@ -129,6 +143,7 @@ func run() -> void:
 	check(bool(manager.active_profile().get("tutorial", {}).get("done", false)), "the profile records it as done")
 	check(Board.shared().hold == "" and main.player.look_allowed and main.player.move_allowed and main.interaction.interact_allowed, "the hold and every control are back")
 	check(not is_instance_valid(tutorial._picnic) and not tutorial.strip.is_showing(), "the picnic and the strip go when it ends")
+	check(not main.interaction.interact_filter.is_valid() and main.hud.tutorial_hidden.is_empty(), "everything can be used again and every HUD button is back")
 	for key in ["shower curtain", "apple", "banana", "cookie", "statue"]:
 		check(main.studied_words.has(key), "'%s' counts as studied (journal)" % key)
 	check(PracticeLog.shared().counts.is_empty(), "nothing is recorded in the practice log")
@@ -142,15 +157,25 @@ func act_house() -> void:
 	fast = false
 	check(await wait_line("tutorial.good_morning"), "BonBon says good morning (%s)" % shown())
 	var first: Dictionary = main.shop_panel.current_line()
-	check(not main.shop_panel.has_choices(), "a line has no Next button")
 	check(not player.look_allowed and not player.move_allowed and not main.interaction.interact_allowed, "only E works in bed")
 	check(player.seated, "the player wakes lying on the bed")
-	var started := Time.get_ticks_msec()
+	check(absf(float(main.day_night.minutes) - Tutorial.START_MINUTES) < 30.0, "the tutorial starts at noon (%.0f min)" % float(main.day_night.minutes))
+	check(not main.hud.peek_button.visible and not main.hud.bookmark_button.visible and main.hud.tutorial_hidden.get("picker", false) and main.hud.tutorial_hidden.get("run", false), "the EN, journal, minigame and Run buttons are hidden")
+	check(is_equal_approx(tutorial._walk_speed(), float(player.walk_speed)), "the cast walks at the player's walking speed (%.1f m/s)" % tutorial._walk_speed())
+	var curtain_item: Node = Interactable.on(tutorial._curtain_node())
+	check(curtain_item != null and curtain_item.check() is bool and not curtain_item.check(), "the shower curtain stays shut before the hunt")
 	await shot("wake")
-	await wait_until(func() -> bool: return main.shop_panel.current_line() != first or not main.shop_panel.is_dialogue_visible(), 12.0)
-	var read := (Time.get_ticks_msec() - started) / 1000.0
-	var want: float = Tutorial.reading_seconds(first)
-	check(read > want - 0.6 and read < want + 0.8, "the line stays its reading time (%.1f s, want %.1f s)" % [read, want])
+	# "Ready for an adventure?" waits for "Yes!" (a click elsewhere does not move it on).
+	await wait_until(func() -> bool: return main.shop_panel.has_choices())
+	check(main.shop_panel.has_choices(), "good morning has a reply button")
+	await create_timer(Tutorial.reading_seconds(first) + 1.0).timeout
+	check(main.shop_panel.current_line() == first, "it waits past its reading time for the reply")
+	tutorial._advance = true
+	await frames(3)
+	check(main.shop_panel.current_line() == first, "a click elsewhere does not move it on")
+	check(get_root().get_viewport().get_camera_3d() != main.camera, "BonBon's close-up while she asks")
+	await reply()
+	check(not main.shop_panel.is_dialogue_visible() or main.shop_panel.current_line() != first, "'Yes!' moves it on")
 	# The strip asks for E.
 	await frames(3)
 	check(tutorial.strip.text == phrase("tutorial.ui_get_up"), "the strip says to press E (%s)" % tutorial.strip.text)
@@ -162,7 +187,14 @@ func act_house() -> void:
 		tries += 1
 	# Turning the view: only the view works.
 	check(await wait_line("tutorial.look_around"), "BonBon: have a look around")
-	tutorial._advance = true
+	var look_line: Dictionary = main.shop_panel.current_line()
+	var started := Time.get_ticks_msec()
+	await frames(30)
+	check(get_root().get_viewport().get_camera_3d() != main.camera, "BonBon's lines are in a close-up while she is near")
+	await wait_until(func() -> bool: return main.shop_panel.current_line() != look_line or not main.shop_panel.is_dialogue_visible(), 12.0)
+	var read := (Time.get_ticks_msec() - started) / 1000.0
+	var want: float = Tutorial.reading_seconds(look_line)
+	check(read > want - 0.6 and read < want + 0.8, "the line stays its reading time (%.1f s, want %.1f s)" % [read, want])
 	await wait_until(func() -> bool: return tutorial.strip.text == phrase("tutorial.ui_look"))
 	check(player.look_allowed and not player.move_allowed and not main.interaction.interact_allowed, "the view step allows turning only")
 	main.hud.set_touch_mode(true)
@@ -171,19 +203,44 @@ func act_house() -> void:
 	main.hud.set_touch_mode(false)
 	await frames(3)
 	await shot("strip-look")
-	player.look_by(Vector2(400, 0))
+	# Zooming does not count; a short drag is not enough.
+	player.camera_distance += 3.0
+	var turn_px: float = 0.8 / float(player.mouse_sensitivity)
+	player.look_by(Vector2(turn_px, 0))
+	await frames(10)
+	check(str(tutorial.step.get("for", "")) == "view", "zooming and a short drag do not finish the view step")
+	check(not player.move_allowed, "no walking during the view step")
+	player.sprint_enabled = true
+	await frames(2)
+	check(not player.sprint_enabled, "running stays off during the tutorial")
+	player.look_by(Vector2(turn_px, 0))
 	# The next line comes after the gap.
 	check(await wait_line("tutorial.try_walking"), "BonBon: now try walking")
 	tutorial._advance = true
 	await wait_until(func() -> bool: return tutorial.strip.text == phrase("tutorial.ui_move"))
 	check(player.look_allowed and player.move_allowed and not main.interaction.interact_allowed, "the walking step allows the view and walking, nothing to use")
 	await shot("strip-move")
-	await teleport(player.global_position + Vector3(2.0, 0, 0), Vector3(1, 0, 0))
+	# The way walked counts (there and back), and 2 m is not enough.
+	var spot: Vector3 = player.global_position
+	await teleport(spot + Vector3(2.0, 0, 0), Vector3(1, 0, 0))
+	await frames(5)
+	check(str(tutorial.step.get("for", "")) == "move", "2 m of walking is not enough")
+	for i in 3:
+		await teleport(spot, Vector3(-1, 0, 0))
+		await teleport(spot + Vector3(2.0, 0, 0), Vector3(1, 0, 0))
 	check(await wait_line("tutorial.join_me"), "BonBon: join me in the living room")
 	tutorial._advance = true
 	await wait_until(func() -> bool: return str(tutorial.step.get("for", "")) == "near")
 	check(player.look_allowed and player.move_allowed and main.interaction.interact_allowed, "after the walk every control works")
 	check(tutorial.where_line() == "tutorial.where_chair", "asked, BonBon says she is by the chair")
+	var filter: Callable = main.interaction.interact_filter
+	var seat: Node = null
+	for item in get_nodes_in_group("interactables"):
+		var target: Node = item.get_parent()
+		if tutorial._space("home").is_ancestor_of(target) and not main.doors.has(target) and seat == null:
+			seat = item
+	check(filter.is_valid() and seat != null and not filter.call(seat), "only doors and BonBon can be used (%s is not)" % (str(seat.get_parent().name) if seat != null else "none"))
+	check(filter.call(Interactable.on(tutorial.actors.guide)), "BonBon can be talked to")
 	var site: Node3D = tutorial._space("home")
 	await teleport(site.to_global(Vector3(-1.4, 0.0, 6.2)), site.global_basis * Vector3(-1, 0, 0))
 	# Consecutive lines: a click moves the first on, the next comes after the gap.
@@ -208,12 +265,14 @@ func act_house() -> void:
 	var reveal: Node = tutorial._cutscene
 	check(reveal._label.text == phrase("tutorial.title") and reveal._subtitle.visible and reveal._subtitle.text == phrase("tutorial.subtitle"), "the reveal shows 'Bon Adventure' and its subtitle")
 	await shot("reveal")
-	await create_timer(1.2).timeout
+	check(not reveal.skippable, "the reveal cannot be skipped while buildings load")
+	check(await wait_until(func() -> bool: return not is_instance_valid(reveal) or reveal.skippable, 120.0), "it says 'Click or tap to skip' once ready")
+	check(main.pending_units.is_empty(), "every building is in by then (%d left)" % main.pending_units.size())
 	var skipped_at := Time.get_ticks_msec()
 	reveal.skip_requested.emit()
 	check(await wait_until(func() -> bool: return not is_instance_valid(tutorial._cutscene) or tutorial._cutscene != reveal, 3.0), "a click skips the reveal (%.1f s)" % ((Time.get_ticks_msec() - skipped_at) / 1000.0))
 
-## The hunt: the bedroom friend first (either order), hints, doors, then the curtain by a drag.
+## The hunt: the bedroom friend first (either order), hints, doors, then the curtain with E.
 func find_friends(site: Node3D) -> void:
 	var guide: Node = Interactable.on(tutorial.actors.guide)
 	guide.activate()
@@ -236,6 +295,21 @@ func find_friends(site: Node3D) -> void:
 	var leo: Node3D = tutorial.actors.friend_2
 	await teleport(leo.global_position + Vector3(1.5, 0, 0), Vector3(-1, 0, 0))
 	check(await wait_until(func() -> bool: return shown() == lexicon.phrase("tutorial.leo_hello", lexicon.foreign, {"name": tutorial._speaker("friend_2")})), "the bedroom friend greets in the language being learned")
+	# The EN introduction: the button shows and pulses, the strip says to hold it, no reply yet.
+	await frames(3)
+	check(main.hud.peek_button.visible and main.hud.tutorial_pulse.get("peek", false), "the EN button appears and pulses")
+	check(tutorial.strip.text == phrase("tutorial.ui_hold_en", {"badge": GameSettings.shared().native_badge()}), "the strip: hold EN (%s)" % tutorial.strip.text)
+	check(not main.shop_panel.has_choices(), "no reply until EN was held")
+	await shot("hold-en")
+	# (Checked at once: the HUD ends a peek no key or button holds on its next frame.)
+	GameSettings.shared().set_peek(true)
+	check(main.shop_panel.show_native and not main.hud.tutorial_pulse.get("peek", false), "holding EN shows the line in the native language; the pulse stops")
+	check(not main.shop_panel.translate_button.visible, "the dialogue box has no translate button of its own")
+	GameSettings.shared().set_peek(false)
+	await frames(3)
+	check(main.shop_panel.has_choices(), "the reply shows once EN was held")
+	check(not main.shop_panel.show_native, "letting go flips it back")
+	await reply()
 	check(await wait_line("tutorial.found_one"), "BonBon: you found one")
 	await wait_until(func() -> bool: return tutorial.strip.progress == "1/2")
 	check(tutorial.strip.progress == "1/2", "the objective counts 1/2")
@@ -243,30 +317,19 @@ func find_friends(site: Node3D) -> void:
 	# The bathroom: BonBon's approach lines, the drag strip.
 	var curtain: Node3D = tutorial._curtain_node()
 	await teleport(site.to_global(Vector3(-7.9, 0, 9.6)), site.global_basis * Vector3(-1, 0, 0))
-	check(await wait_line("tutorial.peek_curtain"), "BonBon: someone behind that curtain?")
-	check(await wait_until(func() -> bool: return tutorial.strip.text == phrase("tutorial.ui_drag_curtain")), "the strip asks to drag the curtain (%s)" % tutorial.strip.text)
+	check(await wait_line("tutorial.take_peek"), "BonBon: let's take a peek")
+	check(await wait_until(func() -> bool: return tutorial.strip.text == phrase("tutorial.ui_open_curtain")), "the strip says to press E (%s)" % tutorial.strip.text)
 	var item: Node = Interactable.on(curtain)
-	check(item != null and item.check() is bool and not item.check(), "a click or E on the curtain does nothing (drag it)")
+	check(item != null and item.check() == true, "the curtain can be used now")
 	main.player.camera_distance = 2.4
-	await shot("curtain-drag")
-	var camera: Camera3D = get_root().get_viewport().get_camera_3d()
-	var cloth: MeshInstance3D = curtain.get_node("Curtain cloth")
-	var middle: Vector3 = cloth.to_global(cloth.get_aabb().get_center())
-	if render:
-		check(tutorial._aims_at_curtain(camera.unproject_position(middle)), "a press on the curtain grabs it")
-	tutorial._grabbing = true
-	tutorial._apply_gate()
-	check(not main.player.look_allowed, "dragging the curtain does not turn the view")
-	var motion := InputEventMouseMotion.new()
-	var screen: Vector2 = get_root().get_viewport().get_visible_rect().size
-	motion.relative = Vector2(Tutorial.DRAG_PIXELS * clampf(minf(screen.y / 800.0, screen.x / 1100.0), 0.6, 3.0) * 0.6, 0)
-	tutorial._drag_input(motion, null)
-	check(not tutorial._curtain_opened(), "a short drag is not enough")
-	tutorial._drag_input(motion, null)
+	await shot("curtain-e")
+	item.activate()
 	await frames(2)
-	check(tutorial._curtain_opened(), "a longer drag pulls the curtain back")
+	check(tutorial._curtain_opened(), "E pulls the curtain back")
 	check(await wait_until(func() -> bool: return shown() == lexicon.phrase("tutorial.sunny_hello", lexicon.foreign, {"name": tutorial._speaker("friend_1")})), "the bathtub friend greets")
 	await shot("friend")
+	check(main.shop_panel.has_choices(), "the greeting waits for a reply")
+	await reply()
 	check(await wait_line("tutorial.found_all"), "BonBon: you found everyone")
 
 # --- Act 2 -----------------------------------------------------------------------------------
@@ -275,6 +338,13 @@ func act_market() -> void:
 	check(await wait_until(func() -> bool: return tutorial.act == 1 and shown() == phrase("tutorial.picnic"), 30.0), "the market act opens at the supermarket with the picnic idea")
 	check(await wait_line("tutorial.need_food"), "the friend: we need food")
 	check(await wait_line("tutorial.to_supermarket"), "BonBon: to the supermarket")
+	# (Most town buildings have open doorways; the bank's office and vault are doors.)
+	var bank: Node3D = ModularTown.building(main.apartment, "bank")
+	var other_door: Node3D = null
+	for door in main.doors:
+		if bank != null and bank.is_ancestor_of(door) and other_door == null:
+			other_door = door
+	check(other_door != null and str(Interactable.on(other_door).check()) == phrase("tutorial.not_right_place"), "another building's door: not the right place (%s)" % (str(Interactable.on(other_door).check()) if other_door != null else "no door"))
 	await wait_until(func() -> bool: return tutorial.shop != null)
 	var trip: Node = tutorial.shop
 	check(await wait_line("tutorial.clerk_hello"), "the clerk welcomes the player")
@@ -377,14 +447,18 @@ func act_park() -> void:
 	check(lexicon.word("statue", "en") == "statue of George Washington", "the statue's word reads 'statue of George Washington'")
 	await shot("statue-card")
 	check(await wait_line("tutorial.statue_name"), "BonBon: it's a statue of George Washington")
+	check(not main.hud.bookmark_button.visible, "the journal button is hidden before its step")
 	await wait_until(func() -> bool: return str(tutorial.step.get("for", "")) == "journal")
 	check(tutorial.strip.text == phrase("tutorial.ui_open_journal"), "the strip: open the journal")
+	await frames(3)
+	check(main.hud.bookmark_button.visible and main.hud.tutorial_pulse.get("journal", false), "the journal button appears and pulses")
 	await shot("journal-button")
 	if render:
 		await book_icon()
 	main.toggle_study_journal()
 	await frames(4)
 	check(not tutorial.strip.is_showing(), "the strip hides over the open journal")
+	check(not main.hud.tutorial_pulse.get("journal", false), "opened, the journal button stops pulsing")
 	main.toggle_study_journal()
 	check(await wait_line("tutorial.picnic_eat", {}, 20.0), "BonBon: let's eat")
 	check(is_instance_valid(tutorial._picnic) and tutorial._picnic.get_node("Picnic basket").item_count() == 6, "the picnic blanket with the bought food")
