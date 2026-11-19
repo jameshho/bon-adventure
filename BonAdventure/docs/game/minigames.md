@@ -2,7 +2,7 @@
 
 [← Game guide](README.md)
 
-Fourteen minigames, each run by a plush character (or an object) somewhere in town. A gold "!"
+Fifteen minigames, each run by a plush character (or an object) somewhere in town. A gold "!"
 over a character means it has a game to offer; talk to it with E, a click or a tap. Every game
 can also be started straight away from the **minigame picker** (▶ button top right, or F9).
 
@@ -16,7 +16,8 @@ in the game's learning card, and keep the details of rules and code in the linke
 Word lists are **not** written here: [words.md](words.md) is generated from the game data by
 `tools/vocabulary_report.gd -- --write`, and `data/words.json` stays the only word source.
 
-**Progression today:** none. A game has a fixed length per session (`data/activities.json`),
+**Progression today:** only [Next, Please!](#next-please) gets harder within a session (since
+18 Nov 2026). Otherwise a game has a fixed length per session (`data/activities.json`),
 and the journal shows right and wrong answers per word, but no game uses that history yet: no
 levels, no harder questions, no review of weak words, no unlocks.
 
@@ -311,3 +312,28 @@ few minutes later the books are borrowed and a new cart arrives. Tracked: each b
 | Tracked in the journal | Yes (17 Nov): a book's first placement in a cart tests its topic word and its category word |
 | Session | One cart of 3–6 books; the next cart about 5 minutes after a perfect one |
 | Progression | Not designed yet. Planned (user, 17 Nov 2026): a level with plain spines, so the colours no longer match the shelves |
+
+## Next, Please!
+
+*下一位！ · ¡El siguiente!* (proposed name, 18 Nov; awaiting the user's choice) — **Bear banker,
+bank reception; played at teller window 2**
+
+<img src="../evidence/bank-teller-20261118/customer-asks.png" width="480" alt="Next, Please! customer at the teller window">
+
+*Screenshot 18 Nov.*
+
+The regular teller is on a break, so the banker asks you to cover window 2. Plush customers walk
+up from the queue, each with a story (a new bike, cakes for the grandchildren, a telescope…), and
+ask for an amount in words. Check their account on the teller monitor, then count out the cash
+with $5, $10, $50 and $100 bills, or tell them politely that there is not enough money. One
+customer a session only wants change and must get no $100 bills back. Mistakes get an
+in-character answer (what they received, in words) and a retry. Not tracked.
+[Design](../guides/TOWN_DESIGN_BRIEF.md#bank-teller-game--18-november-2026)
+
+| Learning card | |
+| --- | --- |
+| Purpose | Understand spoken amounts from 100 to 500 (cien … quinientos, ciento cincuenta, trescientos sesenta y cinco), compare them with a balance written in digits, and count them out in bills of 5, 10, 50 and 100. |
+| Words | [Generated list](words.md#next-please) (amounts are generated language, not word-list words) |
+| Tracked in the journal | No (amounts are generated language, like Pay Up!) |
+| Session | 5 customers (`data/activities.json`); a customer counts when served right the first time (the exact cash, or a correct "not enough") |
+| Progression | Within a session (user, 18 Nov 2026): first whole hundreds (cien … quinientos), then hundreds and fifty, then any multiple of 5 that needs the $10 and $5 bills; one customer is short of money (a balance a little under the request) and one wants change for whole hundreds. Not yet across sessions |

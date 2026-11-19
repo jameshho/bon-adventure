@@ -71,6 +71,9 @@ var _bills_title: Label
 var _bills_flow: HFlowContainer
 var _coins_title: Label
 var _coins_flow: HFlowContainer
+## The coins section tag, hidden with the coins when open()'s "only" offers none (the bank
+## teller game: $5, $10, $50 and $100 bills only, 18 Nov 2026).
+var _coins_tag: Control
 var _total_label: Label
 var _request_pill: PanelContainer
 var _bills_box: PanelContainer
@@ -192,7 +195,8 @@ func _build() -> void:
 	_bills_flow.alignment = FlowContainer.ALIGNMENT_CENTER
 	_bills_box.add_child(_bills_flow)
 	_coins_title = _label(GOLD)
-	_pool.add_child(_tag(_coins_title, "coins"))
+	_coins_tag = _tag(_coins_title, "coins")
+	_pool.add_child(_coins_tag)
 	_coins_flow = HFlowContainer.new()
 	_coins_flow.alignment = FlowContainer.ALIGNMENT_CENTER
 	_pool.add_child(_coins_flow)
@@ -430,6 +434,9 @@ func _refresh() -> void:
 			_tray_flow.add_child(piece)
 	_fill(_bills_flow)
 	_fill(_coins_flow)
+	var any_coin := only.is_empty() or only.any(func(id) -> bool: return str(Currency.denom(str(id)).get("kind", "")) == "coin")
+	_coins_tag.visible = any_coin
+	_coins_flow.visible = any_coin
 	for denom in Currency.DENOMS:
 		if not only.is_empty() and not only.has(denom.id):
 			continue

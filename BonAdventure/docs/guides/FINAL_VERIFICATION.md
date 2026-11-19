@@ -7700,3 +7700,22 @@ close-up cuts, the market act, the basket, base step `tutorial_lot_clear` (`bake
 | PASS | `shop_basket`, `app_flow`, `day_night`, `interaction`, `vehicle_boarding`, `runtime_resources`, `language` (after adding the missing pinyin for 豚, from the capybara commit) |
 
 Not run: the full suite. Not checked on a real phone.
+
+## Bank teller game — 18 November 2026
+
+New minigame **Next, Please!** (name proposed) at the bank's teller window 2
+([design](TOWN_DESIGN_BRIEF.md#bank-teller-game--18-november-2026),
+[learning card](../game/minigames.md#next-please)); no building change, no bake. Godot 4.7.2,
+isolated `HOME`:
+
+| Result | Checks |
+| --- | --- |
+| PASS | `docs/evidence/bank-teller-20261118/verify.gd` (new, runner `bank_teller`), graphics, `VT_FOCUS=bank VT_SPAWN=none`: **93 checks, 0 failures** (amount stages, balances, change rule, every `teller.*` phrase in es/en/zh, the banker on the shared host, the fade behind window 2, customers walking up and queueing, the monitor balance, wrong "not enough", wrong count with the amount in words, retry keeping the tray, change with a $100 refused, bills-only money screen with no coins, the leave question and "no", the end in the lobby, leaving mid-game). Run twice: the first run (also 0 failures) showed "Ventanilla 2" wrapping on the idle monitor; fixed (smaller idle text) and run once more for the screenshots |
+| Views | [customer asks](../evidence/bank-teller-20261118/customer-asks.png), [monitor balance](../evidence/bank-teller-20261118/monitor-balance.png), [money screen](../evidence/bank-teller-20261118/money-screen.png), [lobby view](../evidence/bank-teller-20261118/teller-view.png) |
+| PASS | runner (`VT_FOCUS=all`): `runtime_resources`, `signs` |
+| NEW (not from this change) | runner `language`: zh characters 便 逛 have no pinyin reading. They come from the existing `app.explore` line (隨便逛逛！), not from the teller phrases (24 new teller characters and 12 words were added to `data/pinyin_zh.json`) |
+| PASS | `tools/vocabulary_report.gd -- --write` (`VT_FOCUS=all`): 5452 checks, 0 failures; `teller_bank` tests no words (generated amounts); files updated (`docs/game/words.md`, report) |
+
+Not run: the full suite. Not done: `tools/build_cjk_font.py` (it downloads the full Noto Sans TC
+from google/fonts; waiting for the user's go-ahead), so until it runs, 23 new Chinese characters
+of the teller lines are missing from the web build's font subset (`--check` lists them).

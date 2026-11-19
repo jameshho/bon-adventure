@@ -221,6 +221,11 @@ CHECKS = [
     # replaces the 13 Nov check; headless writes no PNGs; Main saves: isolated HOME).
     dict(id="library_sorting", script="res://docs/evidence/library-refresh-20261117/verify.gd", suites=["full"],
          summary=r"LIBRARY SORTING: \d+ checks, (?P<n>\d+) failures"),
+    # The bank teller game "Next, Please!": amount stages, balances, change, the banker on the
+    # shared host, window 2, the monitor, mistakes and retries, bills-only money screen, the
+    # leave question, the end in the lobby (18 Nov 2026; headless writes no PNGs; isolated HOME).
+    dict(id="bank_teller", script="res://docs/evidence/bank-teller-20261118/verify.gd", suites=["full"],
+         summary=r"BANK TELLER: \d+ checks, (?P<n>\d+) failures"),
     # Day-night cycle, lamp glow, indoor light and the HUD clock (9 Nov 2026).
     dict(id="day_night", script="res://docs/evidence/day-night-20261109/verify.gd", suites=["full"],
          summary=r"DAY NIGHT: \d+ checks, (?P<n>\d+) failures"),

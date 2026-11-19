@@ -136,7 +136,8 @@ Since 18 Nov its storefront is in the shared [shop-row look](../guides/TOWN_DESI
 
 *Screenshot 1 Nov.*
 
-Tellers, a waiting area, a consultation office, the vault and indoor ATMs; a bear banker.
+Tellers, a waiting area, a consultation office, the vault and indoor ATMs; a bear banker, who
+runs the teller game [Next, Please!](minigames.md#next-please) (18 Nov) at window 2.
 [Design record](../guides/TOWN_DESIGN_BRIEF.md#bank-interior--28-october-2026)
 
 ## Police station

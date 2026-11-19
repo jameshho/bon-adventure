@@ -38,6 +38,7 @@ dated history of rules and implementation.
 | Airport control tower | **Redesigned and made walkable (user-approved: lift + stair, three levels, narrow shaft flaring only at the cabin).** Shaft 8.4 × 8.4 and 22 high, 360° glass control room 11.2 × 11.2 at the top, discreet side door; site, zone `control_tower` and terminal untouched. | Implemented 29 October 2026; see [record](#airport-control-tower--29-october-2026). No new words. Roof, wrap-around observation deck and west deck door added 12 November 2026 ([record](#control-tower-roof-and-observation-deck--12-november-2026)). |
 | Storefront exteriors | Eight fronts restyled from the user's "Propuesta de rediseño exterior" sheet: per-shop palette, awnings, wall lamps, flower boxes, icon signs (user decisions, 1 November 2026: all eight shown, the sheet's palette also on approved fronts, decorative parapets allowed, no street furniture). | Implemented 1 November 2026, no resize or collision change; see [record](#storefront-exterior-redesign--1-november-2026). |
 | Cashier money minigame | Supermarket cashier (samoyed, at the till) asks for $0.25–$300.00 in Spanish; the player counts it out from 10 bills and coins on a full-screen touch-friendly screen (user decisions, 4 November 2026). | Implemented 4 November 2026 for the supermarket cashier only; see [record](#cashier-money-minigame--4-november-2026). |
+| Bank teller game | **Next, Please!** (name proposed): the bear banker at reception asks the player to cover teller window 2; plush customers come up from the queue ropes and ask for $100–$500 in words; the teller checks the balance on the window's monitor, then counts out $5 / $10 / $50 / $100 bills or declines a short account; one customer a session wants change without $100 bills (user decisions, 18 Nov 2026). **No building change**: the existing teller line, queue ropes and banker are used as built. | Built 18 Nov 2026; see [record](#bank-teller-game--18-november-2026). |
 | Hospital family game | **Dr. Li** (a woman; pig plush in the doctor outfit) outside, right of the hospital entrance, runs a family-tree question game in a 2D overlay. Decisions (4 Nov 2026): 3–4 tree templates with randomized names (foreign-language names), genders and birthdays; a fixed reference date for ages; dates shown MM/DD/YYYY with an "MM/DD/YYYY" legend under them; a gender icon per person; portraits rendered once from the plush sculpts and cached; Spanish questions with the "show translation" toggle; version 1 uses 6–8 templates; coins deferred. Words are taught by **four school posters** (family tree + couples strip on the divider's Science face; months, before/after, older/younger on the General rear wall). | Stage 1 (language framework) and Stage 2 (words, names, posters, Dr. Li placed with a name card) built 4 Nov 2026; Stage 3 (question generator, validator, overlay, Dr. Li's "!" and dialogue) not built. See [record](#hospital-family-game--4-november-2026). |
 | Airport flight game | **Capitán Bruno** (the house bear, a second copy in the pilot costume) at the information desk just right of the terminal door (moved 6 Nov 2026) gives a Spanish instruction; the player finds the one matching flight on the departure board (**board only since 7 Nov 2026**: the five-bookmark booklet was removed). Decisions (5 Nov 2026): 5 questions per session, progress counts only first-try finds, no coins; Bruno says what was wrong; leaving asks first; vocabulary summary at the end; destinations are **countries only**; MM/DD/YYYY dates, 24-hour times on :00 / :30 (no "y cuarto" / "menos cuarto"); one shared random "today" (2026–2027) also used by the family game; works with Chinese. | Built 5 Nov 2026; layout, flags and bilingual rows revised 6 Nov 2026; redesigned 7 Nov 2026 to test time expressions (board only, 4 countries, near-miss flights; [redesign](#board-only-redesign-time-expressions--7-november-2026)). See [record](#airport-flight-game--5-november-2026). |
 | Alta Cocina restaurant game | **Twinkle** (waiter) at the host stand offers it; a random seated house-character customer orders one meal (starter, main, dessert, drink); the player inspects dishes by icons, bars and a thermometer only and serves the one match. Decisions (6 Nov 2026): one customer per session, 4 orders, 1–2 requirements with light intensity, negation off, a course counts once served, no coins, code-drawn art, four wall posters, all three languages. | Built 6 Nov 2026. **Flow redesigned 11 Nov 2026 (user):** Twinkle sends the player to one of two seated customers, the order is taken on an order tablet, the customer reacts and Twinkle reports back; textures and extras removed; a menu book on a table by the host stand. Same day, second request: 2–3 courses per customer, a door question instead of walking out, Twinkle names no customer. See [record](#alta-cocina-restaurant-game--6-november-2026) and [redesign](#restaurant-game-reception-tables-and-order-tablet--11-november-2026). |
@@ -3748,3 +3749,46 @@ one inside view each): `docs/evidence/shop-row-20261118/` (`capture.gd`, `before
 **Not done yet:** the other buildings; `bon_style.gd` still holds its own copies of the UI colours
 (it belongs to the UI restyle in progress) and should read them from `game_palette.gd` once that
 work is committed.
+
+## Bank teller game — 18 November 2026
+
+**Request (user, through the whole-game audit session).** A bank teller minigame: customers walk
+up to the window and ask for a withdrawal or for change; the teller first checks the account
+balance, then counts out the cash. It teaches counting money from 100 to 500 with $5, $10, $50
+and $100 notes only (no smaller change). Like Pay Up!, but with livelier dialogue in the voice of
+the other games. Purpose and progression: [learning card](../game/minigames.md#next-please).
+
+**Decisions (user, 18 Nov 2026, the three recommended options):**
+
+| Decision | Choice |
+| --- | --- |
+| Place and host | The **bear banker** (`BearBanker`, reception, until now no game) offers it: "the teller is on her break, can you help at window two?". Yes fades the player behind **teller window 2** (the middle of the three, facing the lobby); customers come up from the queue ropes. No building change: the teller line, ropes and banker stay as built ([bank interior](#bank-interior--28-october-2026)) |
+| Balance check | "Check the account" turns the camera to window 2's **monitor**, which shows the customer's name and balance in digits (in-world text in the foreign language); the customer asks "I asked for {amount}. Do I have enough?" with **Count out the cash** / **Sorry, not enough**. One customer per session is short |
+| Rounds and progression | 5 customers per session (`data/activities.json`); first whole hundreds (cien … quinientos), then hundreds and fifty, then any multiple of 5 that needs $10 and $5 bills; **one change customer** brings whole hundreds ($100–$300) and must get no $100 bill back |
+
+**Built.**
+
+- `scripts/learning/teller_session.gd` on the shared host (the banker, his "!", greeting, leave
+  question) and zone (the fade and placing the player). Spots are town coordinates measured from
+  `scenes/town/bank.scn` (window 2 at z 107.7; the player at x 139.25 between the teller chairs
+  and the back counter; the customer at x 135.75). The player cannot walk out from behind the
+  counter, so the game always ends with a fade back to the banker (`host.place_player_near()`).
+- Customers: house characters (`house_characters.gd worker()`, not BonBon, not twice in a row),
+  each with its own face camera (`npc_presence.gd`, framed from the teller's side above the glass
+  with `talk_camera_at`); they bounce from the queue to the window, nod, hop when paid, shake
+  their head when short and tilt it at a mistake (`plush_life.gd`), then walk out past the
+  reception desk. The next customer waits in the queue while one is served.
+- Personas (`data/bank_teller.json`, text in `data/phrases.json` group `teller`): bike, baker
+  (grandchildren and cakes), telescope (piggy bank of dreams), beach, guitar (start a band),
+  goldfish (bigger aquarium), party, garden; each with a request, thanks and a "not enough" line.
+  Customers say *usted* to the teller; the banker says *tú* to the player.
+- Mistakes: declining an account that has enough ("Look at the screen again!"), counting when it
+  is short ("Do I really have that?"), a wrong total ("Hmm… there's {given} here, but I asked for
+  {amount}", both in words) and a $100 back to a change customer; each has a retry, and the
+  customer no longer counts toward the session.
+- The shared money screen with `only` = the four bills; its Coins section now hides when no coin
+  is offered ([money panel options](COMPONENTS.md#money-panel-options)).
+- Not tracked in the journal (amounts are generated language, like Pay Up!); no rewards.
+- Check: `docs/evidence/bank-teller-20261118/verify.gd` (`bank_teller` in `tools/run_checks.py`);
+  screenshots in the same folder.
+

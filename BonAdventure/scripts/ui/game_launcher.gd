@@ -44,7 +44,7 @@ const ICONS := {
 	"shop_supermarket": "cart", "cashier_supermarket": "money", "family_dr_li": "family",
 	"warehouse_ramon": "lift", "flight_bruno": "takeoff", "restaurant_twinkle": "cloche",
 	"grammar_lana": "pencil", "lineup_rocco": "look", "evidence_mimi": "squeeze",
-	"mystery_luna": "door", "library_rosa": "book", "mahjong_mei": "tiles", "radar_patrol": "radar", "electrical_box": "bolt",
+	"mystery_luna": "door", "library_rosa": "book", "teller_bank": "money", "mahjong_mei": "tiles", "radar_patrol": "radar", "electrical_box": "bolt",
 }
 ## Games with no rounds to choose (one endless game or one puzzle; the library's book sorting is
 ## one cart of 3-6 books, 13 Nov 2026): no stepper, and launch() sets no rounds, so the data
