@@ -1,5 +1,27 @@
 # Final verification — 20 October 2026
 
+## Current state — 18 November 2026
+
+Read this first; everything below is a dated log, and each entry describes only its own run.
+
+- **Last full suite:** 16 Nov 2026, `run_checks.py full`, `dev_focus.txt` = `all`: PASS 47,
+  NEW 6, TIMEOUT 3 ([record](#docs-reorganised-into-game--guides--evidence--archive--16-november-2026)).
+  All 9 were traced to game changes and their checks fixed; the 9 re-run once: **PASS 7, KNOWN 2,
+  NEW 0** ([triage](#triage-of-the-16-november-full-run-failures--16-november-2026)).
+- **Since then:** only targeted checks per change (each entry lists them and what was not run).
+  No full suite has been run on the 17–18 Nov changes.
+- **Known failures:** [`data/expected_check_failures.json`](../../data/expected_check_failures.json)
+  is the list (each with a date, reason and priority): `map_facades` (a street ray hits the
+  hospital's glass front before its facade, P3) and `rooftops` (the barn's gambrel roof is
+  steeper than walkable, by design). Open low-priority noise: `day_night` logs engine errors from
+  `verify.gd:90` (P4).
+- **How to run:** [README Verification](../../README.md#verification).
+- **Order:** entries from 14–16 Nov are at the top (newest first); entries from 12–18 Nov were
+  also appended at the end, from [Library books 50 % larger](#library-books-50--larger--12-november-2026)
+  onwards. Add new entries at the end; the newest are the last ones.
+
+## Introduction — 20 October 2026
+
 Current vehicle status is in the [road rewrite](#road-vehicle-physics-rewrite--22-october-2026)
 and [helicopter rewrite](#helicopter-physics-rewrite--22-october-2026)
 below. Earlier sections retain their dated baselines; their
