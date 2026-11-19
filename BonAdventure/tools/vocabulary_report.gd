@@ -406,7 +406,7 @@ func _guide_words() -> String:
 			names[str(phrase_id).trim_prefix("games.")] = lexicon.phrases[phrase_id]
 	var out: Array = ["# Words in each minigame", "",
 		"[← Minigames](minigames.md) · [Game guide](README.md)", "",
-		"Generated %s by `tools/vocabulary_report.gd -- --write` from the game data. **Do not edit by hand**: words live in `data/words.json` and each game's data file; rerun the report after changing them. \"Tested\" words are the ones a question checks and the journal tracks; \"shown\" words appear in the game without being checked one at a time. Phrases (dialogue) are not listed. Where each word is placed in town: [vocabulary report](../vocabulary-report/summary.md)." % Time.get_date_string_from_system(),
+		"Generated %s by `tools/vocabulary_report.gd -- --write` from the game data. **Do not edit by hand**: words live in `data/words.json` and each game's data file; rerun the report after changing them. \"Tested\" words are the ones a question checks and the journal tracks; \"shown\" words appear in the game without being checked one at a time. Phrases (dialogue) are not listed. Where each word is placed in town: [vocabulary report](../guides/vocabulary-report/summary.md)." % Time.get_date_string_from_system(),
 		""]
 	for id in names:
 		var name: String = str(names[id].get("en", id)) if names[id] is Dictionary else str(id)

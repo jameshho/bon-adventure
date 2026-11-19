@@ -3,7 +3,7 @@ extends RefCounted
 ## electronics unit (scenes/town/electronics.scn).
 ## Bake:  godot --headless --path . --script res://tools/bake_unit.gd -- electronics
 ## Never rename or remove a baked step (add a new one that undoes it).
-const STEPS := ["coplanar_gaps", "coplanar_gaps_2", "glass_windows", "shop_row_style"]
+const STEPS := ["coplanar_gaps", "coplanar_gaps_2", "glass_windows", "shop_row_style", "clay_makeover"]
 
 ## Faces that shared a plane and flickered are set apart (10 Nov 2026,
 ## scripts/buildings/coplanar_gaps.gd).
@@ -26,3 +26,11 @@ func glass_windows(town: Node3D, _game) -> void:
 func shop_row_style(town: Node3D, game) -> void:
 	var ShopRow := preload("res://scripts/buildings/shop_row.gd")
 	print("shop_row electronics: ", ShopRow.restyle(town, game, "electronics"))
+
+
+## Clay makeover (user, 18 Nov 2026: the store "needs a huge makeover"; design approved in chat;
+## docs/guides/TOWN_DESIGN_BRIEF.md "Electronics store makeover — 18 November 2026"): the room
+## rebuilt in the game palette with clay-like products, lit screens, six world signs, no prices,
+## a plush clerk and a spot kept for a clerk minigame (scripts/buildings/electronics_makeover.gd).
+func clay_makeover(town: Node3D, game) -> void:
+	preload("res://scripts/buildings/electronics_makeover.gd").new().build(town, game)

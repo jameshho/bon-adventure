@@ -1,5 +1,27 @@
 # Final verification — 20 October 2026
 
+## Current state — 18 November 2026
+
+Read this first; everything below is a dated log, and each entry describes only its own run.
+
+- **Last full suite:** 16 Nov 2026, `run_checks.py full`, `dev_focus.txt` = `all`: PASS 47,
+  NEW 6, TIMEOUT 3 ([record](#docs-reorganised-into-game--guides--evidence--archive--16-november-2026)).
+  All 9 were traced to game changes and their checks fixed; the 9 re-run once: **PASS 7, KNOWN 2,
+  NEW 0** ([triage](#triage-of-the-16-november-full-run-failures--16-november-2026)).
+- **Since then:** only targeted checks per change (each entry lists them and what was not run).
+  No full suite has been run on the 17–18 Nov changes.
+- **Known failures:** [`data/expected_check_failures.json`](../../data/expected_check_failures.json)
+  is the list (each with a date, reason and priority): `map_facades` (a street ray hits the
+  hospital's glass front before its facade, P3) and `rooftops` (the barn's gambrel roof is
+  steeper than walkable, by design). Open low-priority noise: `day_night` logs engine errors from
+  `verify.gd:90` (P4).
+- **How to run:** [README Verification](../../README.md#verification).
+- **Order:** entries from 14–16 Nov are at the top (newest first); entries from 12–18 Nov were
+  also appended at the end, from [Library books 50 % larger](#library-books-50--larger--12-november-2026)
+  onwards. Add new entries at the end; the newest are the last ones.
+
+## Introduction — 20 October 2026
+
 Current vehicle status is in the [road rewrite](#road-vehicle-physics-rewrite--22-october-2026)
 and [helicopter rewrite](#helicopter-physics-rewrite--22-october-2026)
 below. Earlier sections retain their dated baselines; their
@@ -25,6 +47,25 @@ isolated `HOME`, working tree with the uncommitted supermarket layout work prese
 | `food_shopping_vocab` (new in the full suite) | hard-coded 500 words, pre-6 Nov store paths, SCRIPT ERROR and hang | rewritten for the modular town with a watchdog: PASS, 105 checks, all 13 words placed and picked |
 
 Not run: the full suite.
+
+## Minigame progression: levels and stars — 18 November 2026
+
+Shared levels, stars and unlocks (`game_progress.gd`; [progression](MINIGAMES.md#progression)),
+wired into Pay Up! and Grocery Run; the other games are designed only. `dev_focus.txt` = `all`,
+isolated `HOME` (`tools/run_checks.py`), each run once: `minigame_progression` (new, 41 checks)
+PASS; `runtime_resources`, `profiles`, `shop_basket`, `minigame_launcher`, `tutorial`, `app_flow`
+PASS; `activity_lifecycle` PASS after updating its summary comparison for the three new keys
+(`misses`, `needed`, `custom`). Not from this change, recorded as found: `language` NEW
+(`zh` readings missing for 便 逛, already in `data/phrases.json` at b4af467), `compact_layout` NEW
+(the known vehicle count, "all forty-four road/air vehicles registered"), `practice_log` NEW
+("shop bubble: … translated": the check presses `toggle_translation()`, which no longer records a
+translation since the EN button took that over, `shop_order_panel.gd` `_on_peek()`). One windowed
+run at 1280 × 720 rendered [picker, greeting badge and star card](../evidence/minigame-progression-20261118/).
+After merging `main` (e23ecff, wayfinding: the picker's Go there button) `minigame_progression`,
+`minigame_launcher`, `activity_lifecycle`, `runtime_resources` PASS, and the picker re-rendered
+(Rounds, Level, Go there and Play fit at 1280 × 720).
+The full suite, a web export and a phone were not run. `tools/build_cjk_font.py --check` could not
+run (no fontTools); the new Chinese text uses only characters already in the data at b4af467.
 
 ## All clay zoo animals walk — 16 November 2026
 
@@ -1279,7 +1320,7 @@ supplies and the entrance. Nearby school NPCs/flower bed clear the new walls.
 Pre-edit baseline: resources **309 / 0 failures**, compact layout **706 / 0**.
 An additional pre-resize runtime inventory used the backed-up original three
 world scripts and unchanged Main in the isolated copy; its fingerprints/keys are
-saved in [baseline.json](../evidence/resize-20261025/baseline.json). It is not regenerated from
+saved in `docs/resize-20261025/baseline.json` (deleted 7 Nov 2026 with the retired October snapshot checks; in the old-history bundle). It is not regenerated from
 the new implementation. The dimension check compares other buildings, site
 frames, park/landmarks/vehicles and **301 unchanged supermarket components**
 against that evidence. All **12 registered doors** remain. Geometry fingerprints
@@ -2847,7 +2888,7 @@ Isolated project, headless: `check_reference_home` (8 doors, 191 clearance sampl
 
 ### 2026-10-29 ceiling, roof gap, seating and garage doors
 
-Changes are listed in [REFERENCE_HOME.md](REFERENCE_HOME.md#ceiling-roof-seating-and-garage-doors--29-october-2026). All runs used the isolated user directory.
+Changes are listed in [REFERENCE_HOME.md](REFERENCE_HOME.md#ceiling-roof-seating-and-garage-doors--29-october-2026-user-request). All runs used the isolated user directory.
 
 - `check_reference_home` (headless): 8 doors open and close, including the reversed access door; 191 clearance samples; roof visibility and taxi driver all passed. One intermediate layout, with the north end chair pulled out, failed the z 4.25 walkway route and was reverted.
 - Scratch garage script (graphical): 14 checks, 0 failures:
@@ -6298,7 +6339,7 @@ sharp; the 3D is slightly softer; shadow edges show stair-steps on the road.
 
 ## Minigame test launcher and the older games on the shared host — 9 November 2026
 
-What changed ([guide](MINIGAMES.md#test-launcher)): an F9 / corner-button test launcher (debug
+What changed ([guide](MINIGAMES.md#minigame-picker)): an F9 / corner-button test launcher (debug
 builds) starts any game with a chosen number of rounds and records no practice; the shop,
 cashier and warehouse sessions now use `minigame_host.gd` (and the warehouse `minigame_zone.gd`),
 which gives the cashier the gold "!" it lacked; grammar and mahjong read their rounds from the
@@ -7716,3 +7757,54 @@ close-up cuts, the market act, the basket, base step `tutorial_lot_clear` (`bake
 | PASS | `shop_basket`, `app_flow`, `day_night`, `interaction`, `vehicle_boarding`, `runtime_resources`, `language` (after adding the missing pinyin for 豚, from the capybara commit) |
 
 Not run: the full suite. Not checked on a real phone.
+
+## Bank interior refresh — 18 November 2026
+
+[Record](TOWN_DESIGN_BRIEF.md#bank-interior-refresh--18-november-2026). Bake: `tools/bake_unit.gd -- bank`
+(5 steps; 8 door parts stripped; 6 palette material files written), then once more for the sixth step `chair_backs`. Checks, run once each on the baked unit:
+
+- `docs/evidence/bank-refresh-20261118/verify.gd` (on the first bake; `chair_backs` only recolours
+  four meshes and was not re-checked; headless, `VT_FOCUS=all`, isolated `HOME`):
+  144 checks, **1 failure: "mascot pig behind the reception desk"**: `Animals/PigBank` does not
+  exist in the town (it is also absent from the before views), so the 28 Oct mascot check no longer
+  applies; not caused by this change. Everything else passed, including doors registered, closed
+  doors blocking and opened doors passable, rooms behind reachable, no "•" door labels, and the
+  teller line, window-2 monitor and BearBanker unmoved.
+  (A first run had two errors in the new check itself, door leaves measured in their own frame
+  and an un-awaited coroutine; fixed and run once more.)
+- The 28 Oct `bank-interior-20261028/verify.gd` is superseded by the new check (it looks for the
+  word on the door roots, which are now the components). It is not in `tools/run_checks.py`.
+- Views: `capture.gd` with `VT_FOCUS=bank` (only the bank loaded), noon, eye level: before and after
+  sheets in the folder. Not checked: night, a phone, the full suite.
+
+## Bank teller game — 18 November 2026
+
+New minigame **Next, Please!** (name proposed) at the bank's teller window 2
+([design](TOWN_DESIGN_BRIEF.md#bank-teller-game--18-november-2026),
+[learning card](../game/minigames.md#next-please)); no building change, no bake. Godot 4.7.2,
+isolated `HOME`:
+
+| Result | Checks |
+| --- | --- |
+| PASS | `docs/evidence/bank-teller-20261118/verify.gd` (new, runner `bank_teller`), graphics, `VT_FOCUS=bank VT_SPAWN=none`: **93 checks, 0 failures** (amount stages, balances, change rule, every `teller.*` phrase in es/en/zh, the banker on the shared host, the fade behind window 2, customers walking up and queueing, the monitor balance, wrong "not enough", wrong count with the amount in words, retry keeping the tray, change with a $100 refused, bills-only money screen with no coins, the leave question and "no", the end in the lobby, leaving mid-game). Run twice: the first run (also 0 failures) showed "Ventanilla 2" wrapping on the idle monitor; fixed (smaller idle text) and run once more for the screenshots |
+| Views | [customer asks](../evidence/bank-teller-20261118/customer-asks.png), [monitor balance](../evidence/bank-teller-20261118/monitor-balance.png), [money screen](../evidence/bank-teller-20261118/money-screen.png), [lobby view](../evidence/bank-teller-20261118/teller-view.png) |
+| PASS | runner (`VT_FOCUS=all`): `runtime_resources`, `signs` |
+| NEW (not from this change) | runner `language`: zh characters 便 逛 have no pinyin reading. They come from the existing `app.explore` line (隨便逛逛！), not from the teller phrases (24 new teller characters and 12 words were added to `data/pinyin_zh.json`) |
+| PASS | `tools/vocabulary_report.gd -- --write` (`VT_FOCUS=all`): 5452 checks, 0 failures; `teller_bank` tests no words (generated amounts); files updated (`docs/game/words.md`, report) |
+
+After merging `main` (1519cbd, the shared progression system) and adding `Board.add_miss` once
+per missed customer: runner `bank_teller` PASS (headless), `runtime_resources` PASS, `language` the
+same NEW 便 逛 as above.
+
+After merging `main` (2a2da89, the bank interior refresh): `verify.gd` graphics,
+`VT_FOCUS=bank VT_SPAWN=none`: **93 checks, 0 failures**; the four views above were re-rendered
+on the recoloured bank (window 2, the monitor, BearBanker and the customer paths unchanged).
+
+After merging `main` (f7b8c24, electronics makeover and docs cleanup): runner `bank_teller` and
+`runtime_resources` PASS, `language` the same NEW 便 逛; `docs/game/words.md` regenerated to resolve
+its conflict (`vocabulary_report.gd -- --write`, `VT_FOCUS=all`: 5451 checks, 0 failures).
+
+Then (user, 18 Nov): the name was approved, and `tools/build_cjk_font.py` rebuilt
+`fonts/NotoSansTC-SemiBold-subset.ttf` (1391 characters, 439 KB); `--check`: 1396 needed, 0 missing.
+
+Not run: the full suite.

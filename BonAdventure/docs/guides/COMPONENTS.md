@@ -31,6 +31,7 @@ Audited and consolidated 13 November 2026 (user request). Evidence: `docs/eviden
 | An NPC that talks, calls with "!" and gets a face close-up | `minigame_host.gd`, `npc_presence.gd` (meta `talk_face_drop` for a hat; meta `talk_camera_at`, a global point, fixes the close-up camera where walls block the automatic one, 13 Nov 2026) | `scripts/learning/` | [Minigames](MINIGAMES.md#building-a-minigame) |
 | Animals that wander | `park_animals.gd` profiles | `scripts/world/park_animals.gd` | [Animal system](ANIMAL_SYSTEM.md) |
 | A clay animal walks, breathes, turns its head (the 17 clay zoo animals, 16 Nov 2026, and the tiger, 17 Nov; a new species needs its own `tools/build_<prefab>_clay_rig.gd` bone spec; a display that already has `LeftEye`/`RightEye` nodes lists them in `on_head`) | `clay_rig.gd` at bake time, then `clay_animator.gd` at run time; blinking through `PlushLife.follow_group("clay_animals")` | `scripts/characters/clay_rig.gd`, `scripts/characters/clay_animator.gd` | [Clay animal animation](ANIMAL_SYSTEM.md#clay-animal-animation-16-nov-2026) |
+| A window: glass, frame, sill; a real opening in a wall (18 Nov 2026: frame presets HOUSE / SHOPFRONT / CIVIC / ARCHED in the game palette) | `scenes/props/window.tscn`; `GlassWindows.real_window(town, unit, parent, centre, outward, look)` in a building step | `scripts/world/glass_window.gd`, `scripts/buildings/glass_windows.gd` | [Windows](WINDOWS.md#real-windows--18-november-2026) |
 | Lettering on a sign, board or tag in the town (readable size, translation, contrast) | `WorldSign.make(...)` / `WorldSign.restyle(label, {"read": metres, ...})`, `WorldSign.fit_board(...)` | `scripts/world/world_sign.gd` (translation: `scripts/world/sign_language.gd`) | [World signs](#world-signs) |
 
 ## Interaction
@@ -152,7 +153,8 @@ hides it meanwhile without forgetting the text (journal, map, Settings, money pa
 `money_panel.gd open(lines)` takes, besides its labels: `only` (17 Nov 2026), the denomination
 ids to offer (`Currency.DENOMS` ids such as `bill_1`, `coin_25`; empty = all), and `hint`, a
 line shown inside the empty tray (the welcome tutorial: "Pay $2.50", so the instruction sits
-where the player looks instead of a strip covering the tray).
+where the player looks instead of a strip covering the tray). With no coin among `only` the Coins section is hidden (18 Nov 2026, the
+bank teller game: $5, $10, $50 and $100 bills).
 
 ## Sitting and lying
 
@@ -269,7 +271,7 @@ below `sign_min_em`. `tools/bake_unit.gd` keeps the base pixel size in the scene
 added only when the lettering lacks contrast against its board.
 
 Users: the supermarket (`supermarket.gd` step `world_signs`, 16 Nov 2026: department bands,
-lane numbers and OPEN tags, PRODUCE, price board, MARKET, facades). Not yet migrated, with their
+lane numbers and OPEN tags, PRODUCE, price board, MARKET, facades). The electronics store (`electronics_makeover.gd`, 18 Nov 2026: its six signs). Not yet migrated, with their
 own sign code: `base.gd` (`_zz_sign`), `sports.gd`, `home_expansion.gd`, `restaurants.gd`,
 `library.gd`, `chapel.gd`, `mystery.gd`, `warehouse.gd`, `town_zones.gd`,
 `hospital_elevator.gd`, `coplanar_gaps.gd` and the door scenes' signs. The check

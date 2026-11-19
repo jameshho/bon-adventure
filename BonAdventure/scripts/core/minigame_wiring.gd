@@ -59,6 +59,12 @@ static func build(main) -> void:
 			var cashier_session = preload("res://scripts/learning/cashier_session.gd").new()
 			main.add_child(cashier_session)
 			cashier_session.setup(cashier_id, shop_dialogue, shop_panel, main.money_panel, main.interaction, main.zones, main.player, main.apartment))
+	# The bank teller game (bear banker, teller window 2; 18 Nov 2026): same dialogue box and
+	# money screen, played behind the bank's teller counter.
+	_when(main, "bank", func() -> void:
+		var teller_session = preload("res://scripts/learning/teller_session.gd").new()
+		main.add_child(teller_session)
+		teller_session.setup(shop_dialogue, shop_panel, main.money_panel, main.interaction, main.player, main.apartment, main))
 	# Dr. Li's family game (hospital): same dialogue box, plus the family panel.
 	main.family_panel = preload("res://scripts/ui/family_panel.gd").new()
 	hud.ui_root.add_child(main.family_panel)
@@ -157,6 +163,10 @@ static func build(main) -> void:
 	main.game_launcher = preload("res://scripts/ui/game_launcher.gd").new()
 	main.hud.ui_root.add_child(main.game_launcher)
 	main.game_launcher.setup(main)
+	# The stars card at the end of a session of a game with levels (progression, 18 Nov 2026).
+	main.star_card = preload("res://scripts/ui/star_card.gd").new()
+	main.hud.ui_root.add_child(main.star_card)
+	main.star_card.setup()
 	# The dialogue box reaches over the bottom-right cluster: buttons under it hide (10 Nov 2026).
 	main.hud.cluster_cover = func() -> Rect2:
 		var card: Control = main.shop_panel.dialogue_card

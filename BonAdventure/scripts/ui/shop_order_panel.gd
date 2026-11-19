@@ -90,6 +90,11 @@ var closable := true:
 ## The speaker's blue name pill and its name.
 var speaker_tag: PanelContainer
 var speaker_label: Label
+## The level and best stars beside the speaker's pill while an NPC offers its game (progression,
+## game_progress.gd, 18 Nov 2026; minigame_host.gd show_level()). Every new line hides it.
+var level_badge: PanelContainer
+var level_label: Label
+var level_stars: HBoxContainer
 ## The line itself (rich text: coloured terms, see the top comment).
 var foreign_label: RichTextLabel
 var native_label: Label
@@ -194,6 +199,7 @@ func _rescale() -> void:
 	dialogue_card.add_theme_stylebox_override("panel", _cream_box(factor, margin, true))
 	quit_card.add_theme_stylebox_override("panel", _cream_box(factor, 22.0 * factor, false))
 	speaker_tag.add_theme_stylebox_override("panel", _tag_box(factor))
+	level_badge.add_theme_stylebox_override("panel", _level_box(factor))
 	for button in [translate_button, cart_translate_button]:
 		button.refresh(show_native, factor)
 		button.tooltip_text = str(translate_text.get("native", ""))
@@ -297,6 +303,22 @@ func _cream_box(factor: float, margin: float, tail: bool) -> StyleBox:
 		look.tail_at = 0.5
 	return look
 
+## The level badge: a pale pill beside the speaker's.
+func _level_box(factor: float) -> StyleBox:
+	var look := BonStyle.flat(BonStyle.SKY_TOP, roundi(16 * factor), roundi(3 * factor), false)
+	look.content_margin_left = 12.0 * factor
+	look.content_margin_right = 12.0 * factor
+	look.content_margin_top = 2.0 * factor
+	look.content_margin_bottom = 3.0 * factor
+	return look
+
+## Shows the level badge (`text`: "Level 2", `earned`: best stars at it) on the line on screen.
+func show_level(text: String, earned: int) -> void:
+	level_label.text = text
+	for i in level_stars.get_child_count():
+		(level_stars.get_child(i) as TextureRect).texture = BonStyle.icon_texture("star_on" if i < earned else "star_off", 96)
+	level_badge.visible = dialogue_card.visible
+
 ## The speaker's blue name pill (inside the box, user 18 Nov 2026).
 func _tag_box(factor: float) -> StyleBox:
 	var look = BonStyle.box("tag", factor)
@@ -375,6 +397,26 @@ func _build_dialogue() -> void:
 	BonStyle.use_font(speaker_label, 700)
 	speaker_label.autowrap_mode = TextServer.AUTOWRAP_OFF
 	tag.add_child(speaker_label)
+	level_badge = PanelContainer.new()
+	level_badge.name = "LevelBadge"
+	level_badge.visible = false
+	level_badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	level_badge.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	level_badge.add_theme_stylebox_override("panel", _level_box(1.0))
+	top.add_child(level_badge)
+	var level_line := HBoxContainer.new()
+	level_line.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	level_line.add_theme_constant_override("separation", 8)
+	level_badge.add_child(level_line)
+	level_label = _label(20, BonStyle.INK)
+	BonStyle.use_font(level_label, 700)
+	level_label.autowrap_mode = TextServer.AUTOWRAP_OFF
+	level_label.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	level_line.add_child(level_label)
+	level_stars = BonStyle.stars(0, 22.0)
+	for star in level_stars.get_children():
+		star.set_meta("base_min", Vector2(22, 22))
+	level_line.add_child(level_stars)
 	var spacer := Control.new()
 	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -526,6 +568,7 @@ func show_dialogue(speaker: Variant, line: Dictionary, choices: Array = [], auto
 	if is_instance_valid(walker):
 		_shown_at = walker.global_position
 	dialogue_card.visible = true
+	level_badge.visible = false
 	_refresh_dialogue()
 
 ## Turns the compact dialogue box on or off (see the top comment).

@@ -143,7 +143,7 @@ collapsed. The inspected runtime town registers **170 seats**, including generat
 restaurant chairs without vocabulary labels. Public-garden source meshes survive
 batching, so their seat anchors remain valid.
 
-The restaurant builders (`restaurant_interiors.gd`, `restaurant_venues.gd`) mark
+The restaurant builders (`restaurant_interiors.gd`, `restaurant_venues.gd`; deleted 6 Nov 2026, the chairs are now baked in `scenes/town/restaurants.scn`) mark
 all generated chairs with `sit_enabled=true` and an explicit local `sit_forward`.
 This avoids relying on names, since repeated generated names can become
 `@Node3D@...`. These are interaction tags only; no new word keys or colliders are

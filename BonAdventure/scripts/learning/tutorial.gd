@@ -291,7 +291,7 @@ func start(from_act: int) -> void:
 	# journal step; the minigame picker and the Run button stay hidden, and running is off (user,
 	# 17 Nov 2026: the player walks at the cast's pace).
 	_peek_introduced = act > 0
-	main.hud.tutorial_hidden = {"picker": true, "run": true, "peek": not _peek_introduced, "journal": true}
+	main.hud.tutorial_hidden = {"picker": true, "map": true, "run": true, "peek": not _peek_introduced, "journal": true}
 	main.hud.tutorial_pulse = {}
 	# No ✕ on the dialogue box (its lines move on by themselves) and no clock (user, 18 Nov 2026).
 	panel.closable = false

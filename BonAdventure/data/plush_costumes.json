@@ -37,6 +37,12 @@
       {"piece": "name_tag", "at": [0.17, -0.27], "layer": 1, "stripe": "e0605c"},
       {"piece": "pen", "at": [0.10, -0.70], "layer": 1, "color": "2c4f86"}
     ]},
+    "electronics_shopkeeper": {"pieces": [
+      {"piece": "shirt", "color": "fafafa", "sleeve": 0.2, "bottom": 0.5, "collar": true},
+      {"piece": "apron", "color": "3d93d6", "layer": 1, "pocket": true, "bib": 0.3},
+      {"piece": "name_tag", "at": [0.17, -0.27], "layer": 1, "stripe": "f7cf3f"},
+      {"piece": "pen", "at": [0.10, -0.70], "layer": 1, "color": "16536a"}
+    ]},
     "grocery_shopkeeper": {"pieces": [
       {"piece": "shirt", "color": "fafafa", "sleeve": 0.2, "bottom": 0.5, "collar": true},
       {"piece": "apron", "color": "2b5a8c", "layer": 1, "pocket": true, "bib": 0.3},

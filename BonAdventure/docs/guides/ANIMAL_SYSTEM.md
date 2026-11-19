@@ -179,7 +179,7 @@ and saved scene overrides; restart Main to apply them once.
 | `scripts/world/park_animals.gd` | Shared movement state and configurable `PROFILES`, cached obstacle queries; self-setup of the `ParkZoo` animals (lawn habitat, slope following from the saved park ground); species display sizes `ANIMAL_HEIGHTS`, `SMALL_ANIMAL_LENGTHS`, `MIN_ANIMAL_WORLD_HEIGHT` (checked by `docs/evidence/part2/verify.gd`). |
 | `scripts/world/reference_world_layout.gd` | Was the initial habitat relocation (deleted 6 Nov 2026; result saved). |
 | `scripts/world/park_terrain.gd` (deleted 6 Nov 2026) | Built the park ground and gave animals whose roam touches a slope a `ground` callback (a lambda), which a scene cannot save. Fixed 6 Nov 2026: `park_animals.gd` sets `ground` itself from the saved ground mesh ([verification](#verification--6-november-2026)). |
-| `scripts/world/coast.gd`, `crab.gd` | Coast/island placement, crab mesh and scuttle. |
+| `scripts/world/crab.gd`; coast in `scenes/town/base.scn` (`scripts/buildings/base.gd`) | Crab mesh and scuttle; the coast/island and crab placement are baked in the base scene (their builder `coast.gd` was deleted 6 Nov 2026). |
 | `scenes/player/bonbon_player.tscn`, `scenes/characters/BonBon.tscn` | Playable character/model scale reference. |
 | `docs/evidence/town-checks/check_animals.gd` | Minimum, all instance measurements, picking, movement, obstacle, containment, captures and timing. |
 
