@@ -46,7 +46,9 @@ func run():
 	board.add_success(game)
 	a.running = false
 	board.watch()
-	check(log.size() == 2 and log[1][1] == game and log[1][2] == {"rounds": 2, "target": 2, "completed": true}, "ended with a completed summary: %s" % str(log.back()))
+	# Progression (18 Nov 2026) added "misses", "needed" and "custom" to the summary.
+	var ended: Dictionary = log[1][2] if log.size() == 2 else {}
+	check(log.size() == 2 and log[1][1] == game and ended.get("rounds") == 2 and ended.get("target") == 2 and ended.get("completed") == true and ended.get("misses") == 0 and ended.has("needed") and ended.has("custom"), "ended with a completed summary: %s" % str(log.back()))
 	check(board.running_id == "", "running_id clears")
 	board.begin(game)
 	a.running = true

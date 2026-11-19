@@ -48,6 +48,8 @@ var electrical_box_session
 var elevator_floor_picker
 ## The minigame picker, F9 or the ▶ corner button (scripts/ui/game_launcher.gd).
 var game_launcher
+## The stars card after a session of a game with levels (scripts/ui/star_card.gd).
+var star_card
 var shop_panel
 ## What sync_player_controls() last saw of talk_locked() (_process() re-syncs on a change).
 var player_talk_locked := false

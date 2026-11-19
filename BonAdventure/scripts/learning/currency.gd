@@ -47,18 +47,31 @@ static func denom(id: String) -> Dictionary:
 	return {}
 
 ## A weighted random request. Pass a seeded RandomNumberGenerator for repeatable tests.
-static func random_cents(rng: RandomNumberGenerator = null) -> int:
+## Progression (game_progress.gd, 18 Nov 2026): `max_cents` caps the amount (the buckets above it
+## drop out, the one it falls in is cut short) and `step` is its smallest unit in cents (100:
+## whole dollars, 25: quarters); the result is a multiple of `step`, at least `step`.
+static func random_cents(rng: RandomNumberGenerator = null, max_cents: int = MAX_CENTS, step: int = 1) -> int:
 	if rng == null:
 		rng = RandomNumberGenerator.new()
 		rng.randomize()
-	var roll := rng.randf()
-	var edge := 0.0
+	max_cents = clampi(max_cents, MIN_CENTS, MAX_CENTS)
+	step = maxi(1, step)
+	var buckets: Array = []
+	var weight := 0.0
 	for bucket in REQUEST_BUCKETS:
+		if int(bucket[0]) <= max_cents:
+			buckets.append([int(bucket[0]), mini(int(bucket[1]), max_cents), float(bucket[2])])
+			weight += float(bucket[2])
+	var roll := rng.randf() * weight
+	var edge := 0.0
+	var picked: Array = buckets[buckets.size() - 1]
+	for bucket in buckets:
 		edge += float(bucket[2])
 		if roll < edge:
-			return rng.randi_range(int(bucket[0]), int(bucket[1]))
-	var last: Array = REQUEST_BUCKETS[REQUEST_BUCKETS.size() - 1]
-	return rng.randi_range(int(last[0]), int(last[1]))
+			picked = bucket
+			break
+	var cents := rng.randi_range(int(picked[0]), int(picked[1]))
+	return clampi(cents - cents % step, step, max_cents - max_cents % step)
 
 # --- Payment ---------------------------------------------------------------------------
 

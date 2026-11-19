@@ -20,6 +20,10 @@ const Host := preload("res://scripts/learning/minigame_host.gd")
 ## Practice tracking (practice_log.gd): one order is one question testing each ordered item;
 ## an item is right when the first Done had none of it missing.
 const PracticeLog := preload("res://scripts/learning/practice_log.gd")
+## Levels and stars (game_progress.gd, 18 Nov 2026): the player's level replaces some of the
+## store's order rules (data/activities.json "levels"; an empty "order_words" opens every product
+## sold in the store); every wrong Done and a declined retry is a miss.
+const Progress := preload("res://scripts/learning/game_progress.gd")
 ## A store with "basket": true in data/shops.json hands the player a shopping basket while the
 ## order is shopped (user, 14 Nov 2026; the same basket as the welcome tutorial's shop):
 ## given when the cart opens, picked items show in it, taken back when the order is handed in,
@@ -41,6 +45,10 @@ var zones
 var player: Node3D
 var clerk: Node3D
 var pool: Array = []
+## The store's own rules and the words sold there (data/shops.json, words.json `sold_in`), kept
+## so each order can apply the player's level to them.
+var _store_rules: Dictionary = {}
+var _sold_in: Dictionary = {}
 var store_zone := ""
 var order
 var in_zone := false
@@ -70,6 +78,8 @@ func setup(for_store: String, shop_dialogue, shop_panel, interaction_controller,
 	zones = town_zones
 	player = explorer
 	rules = dialogue.store_rules(for_store)
+	_store_rules = rules
+	_sold_in = sold_in
 	store_zone = str(rules.get("zone", for_store))
 	pool = Order.build_pool(for_store, sold_in, rules.get("order_words", []))
 	clerk = world.find_child(str(rules.get("clerk", "")), true, false) as Node3D
@@ -145,7 +155,13 @@ func _join(parts: Array) -> Dictionary:
 ## Yes on the greeting (or the test launcher): a new session of orders.
 func start_game() -> void:
 	Board.shared().begin(activity_id())
+	_apply_level()
 	_start_order()
+
+## The store's order rules with the player's level on top; the pool follows "order_words".
+func _apply_level() -> void:
+	rules = _store_rules.merged(Progress.shared().params(activity_id()), true)
+	pool = Order.build_pool(store_id, _sold_in, rules.get("order_words", []))
 
 func _start_order() -> void:
 	order = Order.new(store_id, pool, rules)
@@ -180,6 +196,7 @@ func _on_choice(id: String) -> void:
 			if order != null:
 				order.decline_retry()
 				_practice_done()
+			Board.shared().add_miss(activity_id())
 			_finish_order()
 			needs_help = false
 			_say("shop.decline_goodbye")
@@ -190,6 +207,7 @@ func _on_talk_closed(_line_id: String) -> void:
 	if order != null and order.state == Order.State.RETRY_OFFER and not awaiting_return:
 		order.decline_retry()
 		_practice_done()
+		Board.shared().add_miss(activity_id())
 		_finish_order()
 		needs_help = false
 
@@ -266,6 +284,8 @@ func _on_done() -> void:
 	PracticeLog.shared().first_answer(first)
 	if _result.state != Order.State.RETRY_OFFER:
 		_practice_done()
+	if _result.state != Order.State.COMPLETE:
+		Board.shared().add_miss(activity_id())
 	_close_cart()
 	awaiting_return = true
 	_say("shop.return_to_clerk", {"clerk": dialogue.role(str(clerk.get_meta("word_key", "")), str(rules.get("clerk_gender", "")))})

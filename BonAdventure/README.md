@@ -274,6 +274,8 @@ atomic writes (temporary file + rename). With no profile the files stay directly
 the first profile created adopts copies of them and the originals stay as a backup. Main uses
 the selected profile, else the last used one. `tools/bake_unit.gd` bakes with saves read-only.
 Device-wide settings belong in `user://device.json`. Check: `profiles` (quick suite).
+Since 18 Nov 2026 each profile also keeps its minigame levels and stars in `game_progress.json`
+([progression](docs/guides/MINIGAMES.md#progression); no file means level 1 everywhere, so older saves need no migration).
 Since 14 Nov 2026 (user) each profile also keeps the player's last place in `player_place.json`:
 reopening a game that finished the welcome tutorial puts the player outside the entrance of the
 building they were in, or at the nearest safe spot near where they stood outdoors (vehicles are

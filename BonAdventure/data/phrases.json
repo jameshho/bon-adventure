@@ -1324,7 +1324,15 @@
       "absent": {"es": "Edificio no cargado", "en": "Building not loaded", "zh": "建築未載入", "note": "The game's building is left out by dev_focus.txt."},
       "running": {"es": "Termina primero el juego actual", "en": "Finish the current game first", "zh": "請先完成目前的遊戲"},
       "vehicle": {"es": "Baja primero del vehículo", "en": "Get out of the vehicle first", "zh": "請先下車"},
-      "endless": {"es": "Sin rondas: juega cuanto quieras", "en": "No rounds: play as long as you like", "zh": "沒有回合：想玩多久都可以", "note": "In the detail bar instead of the rounds stepper for a game with no rounds (Radar Patrol, the electrical box)."}
+      "endless": {"es": "Sin rondas: juega cuanto quieras", "en": "No rounds: play as long as you like", "zh": "沒有回合：想玩多久都可以", "note": "In the detail bar instead of the rounds stepper for a game with no rounds (Radar Patrol, the electrical box)."},
+      "level": {"es": "Nivel", "en": "Level", "zh": "等級", "note": "Interface text: the picker's level stepper label (progression, game_progress.gd, 18 Nov 2026)."}
+    },
+    "progress": {
+      "level": {"es": "Nivel {n}", "en": "Level {n}", "zh": "第 {n} 級", "note": "Interface text (native language), progression (game_progress.gd, 18 Nov 2026): a game's level on the greeting badge and the star card."},
+      "level_short": {"es": "Nv. {n}", "en": "Lv {n}", "zh": "{n} 級", "note": "The level pill on a picker tile."},
+      "level_up": {"es": "¡Subes de nivel! Nivel {n} desbloqueado", "en": "Level up! Level {n} unlocked", "zh": "升級！可以玩第 {n} 級"},
+      "top_level": {"es": "¡Nivel máximo!", "en": "Top level!", "zh": "最高等級！", "note": "Three stars at the last level."},
+      "next_hint": {"es": "Consigue 3 estrellas para el nivel {n}", "en": "Get 3 stars for level {n}", "zh": "取得 3 星升上第 {n} 級"}
     }
   }
 }
