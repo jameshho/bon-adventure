@@ -48,6 +48,10 @@ var electrical_box_session
 var elevator_floor_picker
 ## The minigame picker, F9 or the ▶ corner button (scripts/ui/game_launcher.gd).
 var game_launcher
+## Wayfinding (18 Nov 2026): the guide arrow (scripts/ui/guide_arrow.gd) and the town map
+## (scripts/ui/town_map_panel.gd, in hud.map_overlay; null while Features.FULL_MAP is off).
+var guide
+var town_map
 var shop_panel
 ## What sync_player_controls() last saw of talk_locked() (_process() re-syncs on a change).
 var player_talk_locked := false
@@ -580,15 +584,19 @@ func make_ui() -> void:
 		minimaps.append(minimap)
 		if Features.FULL_MAP:
 			minimap.on_tap = hud.toggle_map
+	# Wayfinding (18 Nov 2026, user): the guide arrow, and the town map as a baked picture
+	# (tools/bake_town_map.gd) with the places and games of data/town_map.json; nothing is drawn
+	# from the town's meshes (the live map it replaced cost up to 64 ms a frame).
+	guide = preload("res://scripts/ui/guide_arrow.gd").new()
+	# Under every HUD window (as the minimap was); it hides itself in minigames.
+	hud.ui_root.add_child(guide)
+	hud.ui_root.move_child(guide, 0)
+	guide.setup(self)
 	if Features.FULL_MAP:
-		# Full map uses the same live geometry as the minimap, so moved shops stay accurate.
-		var atlas := preload("res://scripts/ui/town_minimap.gd").new()
-		hud.map_overlay.add_child(atlas)
-		atlas.setup(apartment,player)
-		minimaps.append(atlas)
-		atlas.full_map=true
-		atlas.update_pose()
-		hud.map_image.visible=false
+		town_map = preload("res://scripts/ui/town_map_panel.gd").new()
+		hud.map_overlay.add_child(town_map)
+		town_map.setup(self, guide)
+		hud.map_toggled.connect(sync_player_controls)
 	player.movement_mode_changed.connect(hud.set_movement_mode)
 	player.infinite_jump_changed.connect(hud.set_infinite_jump)
 	hud.set_movement_mode(false, false)
@@ -719,7 +727,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			if not hud.in_minigame:
 				hud.toggle_help()
 		elif event.is_action_pressed("map"):
-			if Features.FULL_MAP and not hud.in_minigame:
+			# Not while the welcome tutorial hides the map button (18 Nov 2026).
+			if Features.FULL_MAP and not hud.in_minigame and (hud.is_map_open() or not hud.tutorial_hidden.get("map", false)):
 				if hud.is_journal_open():
 					toggle_study_journal()
 				hud.toggle_map()
