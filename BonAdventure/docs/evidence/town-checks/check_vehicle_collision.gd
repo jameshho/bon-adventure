@@ -1,4 +1,5 @@
 extends SceneTree
+const InteractableScript = preload("res://scripts/core/interactable.gd")
 var failures: Array[String] = []
 func check(ok: bool, message: String):
     if not ok:
@@ -48,13 +49,20 @@ func run():
         check(body is StaticBody3D,"Saved town instance solid: "+str(vehicle.name))
         var shape = body.get_node("StudyShape")
         var target: Vector3 = shape.global_position
-        game.player.global_position = target+Vector3(0,4.5,0) - Vector3(0, 1.1, 0)
+        # Since 12 Nov 2026 a vehicle is an Interactable (click or tap = board/drive, like E), not
+        # a word: aimed_object() skips it by design. So aim as a player does: stand on the ground
+        # beside the cabin, point at the vehicle (camera above it, clear of neighbours) and the
+        # click must find this vehicle's Interactable, in range.
+        var side: Vector3 = vehicle.global_basis.z.normalized()
+        game.player.global_position = Vector3(target.x, vehicle.global_position.y, target.z) + side*(shape.shape.size.z/2+1.0)
         game.camera.global_position = target+Vector3(0,4.5,0)
         game.camera.look_at(target,Vector3.FORWARD)
         game.interaction.pointer_position = root.get_visible_rect().size * 0.5
-        check(game.interaction.aimed_object()==vehicle,"Vehicle remains selectable: "+str(vehicle.name))
+        var item = game.interaction.aimed_interactable()
+        check(item!=null and item==InteractableScript.on(vehicle) and game.interaction._clickable(item),"Vehicle remains selectable: "+str(vehicle.name)+" (aimed "+(str(item.get_parent().name) if item!=null else "nothing")+")")
+        check(game.interaction.aimed_object()==null,"Vehicle opens no word card (it is an interactable): "+str(vehicle.name))
     check(town_count>=8,"All vehicle types present in active town")
-    print("VEHICLES: ",failures.size()," failures; 8 types block player from four directions, allow walking around, and ",town_count," saved instances remain selectable")
+    print("VEHICLES: ",failures.size()," failures; 8 types block player from four directions, allow walking around, and ",town_count," saved instances remain selectable (their Interactable is aimed and clickable)")
     game.queue_free()
     await process_frame
     quit(0 if failures.is_empty() else 1)

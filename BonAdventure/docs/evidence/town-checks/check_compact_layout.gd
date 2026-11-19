@@ -74,9 +74,11 @@ func run():
     # car, ambulance, fire truck, the motorcycle that is now the scooter), school bus, Subi and the
     # warehouse delivery truck (drivable since 8 Nov). The scooter replaced the motorcycle, not added.
     # 14 Nov 2026: +31 parked cars and motorcycles (base step parked_vehicles), 44 in all.
-    if game.driveable_vehicles.size()!=44:
+    # 18 Nov 2026: base step tutorial_lot_clear (26cf153) removed the 15 parked red motorcycles,
+    # leaving 16 parked cars (12 lot cars + 4 road-side): 29 in all.
+    if game.driveable_vehicles.size()!=29:
         print("  vehicles: ",game.driveable_vehicles.map(func(v): return str(town.get_path_to(v))))
-    check(game.driveable_vehicles.size()==44,"all forty-four road/air vehicles registered (13 + 31 parked)")
+    check(game.driveable_vehicles.size()==29,"all twenty-nine road/air vehicles registered (13 + 16 parked cars)")
     check(game.zoo_gate!=null and game.farm_gate!=null,"relocated gates registered")
     for gate in [game.zoo_gate,game.farm_gate]:
         gate.toggle_gate()

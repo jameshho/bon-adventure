@@ -149,6 +149,10 @@ CHECKS = [
          prefix="VEHICLE BOARDING: ", summary=r"VEHICLE BOARDING: \d+ checks; (?P<n>\d+) failures"),
     dict(id="vehicle_doors", script="res://docs/evidence/town-checks/check_vehicle_doors.gd", suites=["full"], fps=True,
          prefix="DOORS: ", summary=r"VEHICLE DOORS: \d+ checks; (?P<n>\d+) failures"),
+    # Food and shopping words: from words.json, placed in the town, ray-picked, card shows the
+    # translation (rewritten for the modular town 18 Nov 2026).
+    dict(id="food_shopping_vocab", script="res://docs/evidence/town-checks/check_food_shopping_vocab.gd", suites=["full"],
+         summary=r"FOOD & SHOPPING GODOT RUNTIME CHECK: \d+ requested words; \d+ checks; (?P<n>\d+) failures", timeout=480),
     dict(id="building_lookup", script="res://docs/evidence/town-checks/check_building_lookup.gd", suites=["full"], fps=True,
          summary=r"BUILDING LOOKUP: \d+ checks, (?P<n>\d+) failures"),
     dict(id="warehouse", script="res://docs/evidence/warehouse-20261114/verify.gd", suites=["full"],

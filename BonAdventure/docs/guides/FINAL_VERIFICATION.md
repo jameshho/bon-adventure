@@ -10,6 +10,22 @@ Start at the [README](../../README.md); editing contracts are in the
 [architecture guide](ARCHITECTURE_REVIEW_PART1.md), and implementation details and
 six rendered views are in the [Part 2 handoff](../evidence/part2/HANDOFF.md).
 
+## Stale checks updated — 18 November 2026
+
+Checks whose expectations predated recent changes, each run once (`dev_focus.txt` = `all`,
+isolated `HOME`, working tree with the uncommitted supermarket layout work present):
+
+| Check | Before | Now |
+| --- | --- | --- |
+| `day_night`, `bath_fixtures` | NEW / TIMEOUT on 13 Nov (lamp and fixture counts) | PASS with no change: already fixed since |
+| `rooftops` | KNOWN | KNOWN, only the 2 barn roof labels |
+| `electrical_box` | TIMEOUT (minimap Nil, 14 Nov) | PASS, 55 checks, no change: the minimap is already optional in its `verify.gd` |
+| `compact_layout` | NEW: 44 vehicles expected | PASS: expects 29, since `tutorial_lot_clear` (`26cf153`) removed the 15 parked motorcycles |
+| `check_vehicle_collision.gd` (run alone) | "Vehicle remains selectable" failed for all 39 | 0 failures: since 12 Nov a vehicle is an Interactable, which never opens a word card, so the check now aims at it as a player does and requires its Interactable to be aimed and clickable |
+| `food_shopping_vocab` (new in the full suite) | hard-coded 500 words, pre-6 Nov store paths, SCRIPT ERROR and hang | rewritten for the modular town with a watchdog: PASS, 105 checks, all 13 words placed and picked |
+
+Not run: the full suite.
+
 ## All clay zoo animals walk — 16 November 2026
 
 Walking rigs for the other 16 clay zoo animals (four parallel sessions, merged; base step
