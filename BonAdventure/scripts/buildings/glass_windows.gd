@@ -200,3 +200,181 @@ static func _arch_disc(pane: MeshInstance3D, w: float, h: float) -> Node3D:
 		return parent if String(node.name).begins_with("@") and parent != area else node
 	return null
 
+
+## Real windows (user, 18 Nov 2026; docs/guides/WINDOWS.md "Real windows"). Adds a window with a
+## frame preset at `centre` (town coordinates, the middle of the wall's depth), its +Z facing
+## `outward` (the outdoors side, `outside = FRONT`), under `parent`, then opens the wall:
+## - every wall layer that spans the whole opening (a BoxMesh: wall, pier, facade skin, painted
+##   lining) gets a hole: its mesh becomes up to four boxes around it (one ArrayMesh on the same
+##   node, same material, so collisions, metas and owners stay; the wall's collision is unchanged,
+##   so the glass still blocks);
+## - every part lying inside the opening (within MARGIN along the wall, `reach` in front of or
+##   behind it: old panes and windows,
+##   panels, frames, sills, mullions, painted window views) is removed; if one was a clickable
+##   word (e.g. "window"), the new window becomes that word, with a thin click body in the opening;
+## - parts that only partly overlap the opening are left alone and reported.
+## `look` sets the window's exports (width, height, frame_style, frame_accent, wall_depth, bars, name).
+## Returns {"window", "cut": [paths], "removed": [paths], "partial": [paths], "word"}.
+## Old window parts lie within this much of the opening, along the wall (bases and piers beside
+## a window reach further and stay).
+const MARGIN := 0.25
+
+static func real_window(town: Node3D, unit: String, parent: Node3D, centre: Vector3, outward: Vector3,
+		look: Dictionary, reach := 0.4) -> Dictionary:
+	var window: Node3D = WINDOW.instantiate()
+	var title := String(look.get("name", "Window"))
+	for key in look:
+		if key != "name":
+			window.set(key, look[key])
+	window.outside = GlassWindow.Outside.FRONT
+	var z := outward.normalized()
+	var basis := Basis(Vector3.UP.cross(z).normalized(), Vector3.UP, z)
+	window.transform = parent.global_transform.affine_inverse() * town.global_transform * Transform3D(basis, centre)
+	parent.add_child(window)
+	window.name = title
+	var size: Vector2 = window.opening_size()
+	var frame: float = (size.x - window.width) * 0.5
+	var hole := Rect2(-size.x * 0.5, -window.height * 0.5 - frame, size.x, size.y)
+	var depth: float = window.wall_depth * 0.5
+	var to_window := window.global_transform.affine_inverse()
+	var result := {"window": window, "cut": [], "removed": [], "partial": []}
+	var doomed := {}
+	for part in ModularTown.registry()[unit].parts:
+		var root := town.get_node_or_null(NodePath(part))
+		if root == null:
+			continue
+		for mesh: MeshInstance3D in root.find_children("*", "MeshInstance3D", true, false):
+			if mesh.mesh == null or window.is_ancestor_of(mesh):
+				continue
+			var box: AABB = to_window * mesh.global_transform * mesh.get_aabb()
+			if box.end.z < -depth - reach or box.position.z > depth + reach:
+				continue
+			var flat := Rect2(box.position.x, box.position.y, box.size.x, box.size.y)
+			if not flat.intersects(hole.grow(-0.01)):
+				continue
+			var path := str(town.get_path_to(mesh))
+			# A wall layer reaches well past the opening (a frame around the old pane does not).
+			if flat.encloses(hole.grow(0.2)) and box.size.z < window.wall_depth + 0.1:
+				if _cut(mesh, window, hole):
+					result.cut.append(path)
+				else:
+					result.partial.append(path + " (not a box)")
+			elif hole.grow(MARGIN).encloses(flat) and box.position.z > -depth - reach and box.end.z < depth + reach:
+				doomed[mesh.get_parent() if mesh.has_meta(GlassWindow.PART_META) else mesh] = true
+			else:
+				result.partial.append(path)
+	# A holder left with nothing else to draw goes too (with its collision bodies); never a part root.
+	var tops := {}
+	for node: Node in doomed:
+		var top := node
+		while not _is_part_root(town, unit, top.get_parent()) and _only(top.get_parent(), doomed):
+			top = top.get_parent()
+		tops[top] = true
+	var removed := []
+	for top: Node in tops:
+		if not tops.keys().any(func(other: Node) -> bool: return other != top and other.is_ancestor_of(top)):
+			removed.append(top)
+	var word := ""
+	for top: Node in removed:
+		for node in [top] + top.find_children("*", "", true, false):
+			for key in ["word_key", "word"]:
+				if word == "" and node.has_meta(key):
+					word = str(node.get_meta(key))
+		result.removed.append(str(town.get_path_to(top)))
+		top.get_parent().remove_child(top)
+		top.free()
+	result.word = word
+	if word != "":
+		# Still a clickable word (as Main.box makes one): the root's word_key and a thin body
+		# over the glass, in the wall's opening.
+		window.set_meta("word_key", word)
+		var body := StaticBody3D.new()
+		body.name = "Click"
+		body.set_meta("object_name", title)
+		body.set_meta("root", window)
+		body.set_meta("word", word)
+		var shape := CollisionShape3D.new()
+		var box := BoxShape3D.new()
+		box.size = Vector3(size.x, size.y, 0.06)
+		shape.shape = box
+		shape.position = Vector3(0, hole.get_center().y, 0)
+		body.add_child(shape)
+		window.add_child(body)
+	return result
+
+
+static func _is_part_root(town: Node3D, unit: String, node: Node) -> bool:
+	if node == null or node == town:
+		return true
+	for part in ModularTown.registry()[unit].parts:
+		if town.get_node_or_null(NodePath(part)) == node:
+			return true
+	return false
+
+
+## True when everything `holder` draws is in `doomed` (collision bodies and empty nodes don't count).
+static func _only(holder: Node, doomed: Dictionary) -> bool:
+	for child in holder.find_children("*", "", true, false):
+		if not (child is VisualInstance3D):
+			continue
+		var node: Node = child
+		var gone := false
+		while node != holder:
+			if doomed.has(node):
+				gone = true
+				break
+			node = node.get_parent()
+		if not gone:
+			return false
+	return true
+
+
+## Replaces a box wall's mesh by up to four boxes around the hole (`hole` in the window's XY).
+static func _cut(mesh: MeshInstance3D, window: Node3D, hole: Rect2) -> bool:
+	var box := mesh.mesh as BoxMesh
+	if box == null:
+		return false
+	var to_mesh := mesh.global_transform.affine_inverse() * window.global_transform
+	var cut: AABB = to_mesh * AABB(Vector3(hole.position.x, hole.position.y, -50), Vector3(hole.size.x, hole.size.y, 100))
+	var half := box.size * 0.5
+	# The wall's thin axis runs through the hole; of the other two, the one nearest the window's
+	# up direction is vertical.
+	var thin := 0
+	for i in range(3):
+		if box.size[i] < box.size[thin]:
+			thin = i
+	var up := (mesh.global_transform.basis.inverse() * window.global_transform.basis.y).normalized()
+	var others := [0, 1, 2].filter(func(i: int) -> bool: return i != thin)
+	var v: int = others[0] if absf(up[others[0]]) > absf(up[others[1]]) else others[1]
+	var h: int = others[1] if v == others[0] else others[0]
+	var h0 := clampf(cut.position[h], -half[h], half[h])
+	var h1 := clampf(cut.end[h], -half[h], half[h])
+	var v0 := clampf(cut.position[v], -half[v], half[v])
+	var v1 := clampf(cut.end[v], -half[v], half[v])
+	# Below, above, and the two sides: [h from, h to, v from, v to].
+	var pieces := [[-half[h], half[h], -half[v], v0], [-half[h], half[h], v1, half[v]],
+		[-half[h], h0, v0, v1], [h1, half[h], v0, v1]]
+	var st := SurfaceTool.new()
+	var any := false
+	for piece in pieces:
+		if piece[1] - piece[0] < 0.002 or piece[3] - piece[2] < 0.002:
+			continue
+		var size := box.size
+		size[h] = piece[1] - piece[0]
+		size[v] = piece[3] - piece[2]
+		var at := Vector3.ZERO
+		at[h] = (piece[0] + piece[1]) * 0.5
+		at[v] = (piece[2] + piece[3]) * 0.5
+		var part := BoxMesh.new()
+		part.size = size
+		st.append_from(part, 0, Transform3D(Basis.IDENTITY, at))
+		any = true
+	if not any:
+		return false
+	var out := st.commit()
+	if box.material != null:
+		out.surface_set_material(0, box.material)
+	out.resource_name = "%s with window" % mesh.name
+	mesh.mesh = out
+	return true
+
