@@ -89,6 +89,9 @@ var minus: Button
 var plus: Button
 var count: Label
 var play: Button
+## "Go there" (wayfinding, 18 Nov 2026): guides the player to the selected game on foot with the
+## guide arrow (guide_arrow.gd) instead of starting it here.
+var go: Button
 
 func setup(game) -> void:
 	main = game
@@ -184,6 +187,9 @@ func _build_detail() -> void:
 	_d_endless.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_d_endless.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	line.add_child(_d_endless)
+	go = _button("", "next", func() -> void: go_there(_selected()))
+	go.name = "Go there"
+	line.add_child(go)
 	play = _button("", "play", func() -> void: launch(_selected()))
 	play.name = "Play"
 	play.add_theme_stylebox_override("normal", _card(BonStyle.GREEN_BOTTOM, LINE, 18))
@@ -221,6 +227,7 @@ func refresh_display() -> void:
 	_d_rounds_label.text = UiText.t("launcher.rounds")
 	_d_endless.text = UiText.t("launcher.endless")
 	play.text = UiText.t("launcher.play")
+	go.text = UiText.t("map.go")
 	_tabs["learning"].text = UiText.t("launcher.learning")
 	_tabs["pastime"].text = UiText.t("launcher.pastimes")
 	for grid in _grids.values():
@@ -339,6 +346,8 @@ func _update() -> void:
 	_d_endless.visible = endless
 	count.text = str(rounds(id))
 	play.disabled = why != ""
+	go.visible = main.guide != null and why != "launcher.absent"
+	go.disabled = why == "launcher.running" or (main.guide != null and main.guide.target_game == id)
 	minus.disabled = rounds(id) <= 1
 	plus.disabled = rounds(id) >= MAX_ROUNDS
 
@@ -387,6 +396,14 @@ func _start(id: String) -> bool:
 	else:
 		session.launch()
 	return true
+
+## Closes the window and points the guide arrow at game `id`'s NPC (or its spot on the map when
+## its building is not built yet).
+func go_there(id: String) -> void:
+	if id == "" or main.guide == null:
+		return
+	close()
+	main.guide.go_to_game(id)
 
 ## The game started here is over (its session neither talks nor plays): the data's rounds
 ## count again.
@@ -461,6 +478,9 @@ func _layout() -> void:
 	for button in [minus, plus]:
 		button.custom_minimum_size = Vector2(tap.call(56.0), tap.call(56.0))
 	play.custom_minimum_size = Vector2(170 * f, tap.call(72.0))
+	go.custom_minimum_size = Vector2(0, tap.call(72.0))
+	go.add_theme_font_size_override("font_size", roundi(20 * f))
+	go.add_theme_constant_override("icon_max_width", roundi(26 * f))
 	play.add_theme_font_size_override("font_size", roundi(24 * f))
 	play.add_theme_constant_override("icon_max_width", roundi(30 * f))
 	_place.call_deferred()
