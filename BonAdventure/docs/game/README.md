@@ -61,8 +61,9 @@ and wrong answers per word in the journal.
 
 | Part | What is there | Last change |
 | --- | --- | --- |
-| [Title page and profiles](playing.md#starting-up) | The Bon Adventure logo and Play, then up to three profiles | 18 Nov (brown gaps between the logo's animals made transparent) |
+| [Title page and profiles](playing.md#starting-up) | The Bon Adventure logo and Play, then up to three profiles, the character grid and the language page; loading bar; dialogue box | 18 Nov (new cream-and-meadow art style from the user's mockups: candy buttons, cloud titles, Fredoka font, cream dialogue box; [style guide](../guides/UI_STYLE.md)) |
 | [Welcome tutorial](playing.md#welcome-tutorial) | Wake up, find the friends, buy fruit, the statue, the journal, a picnic | 18 Nov (tighter timings, no ✕ or clock, face-to-face cuts, cast behind you at the market, gapless basket) |
+| In-game screens | Settings, journal, F1 guide, HUD buttons, word card, clock, cart, game picker and minigame cards | 18 Nov (same art style in soft blue: soft blue cards and buttons with white rims, dark teal Fredoka text; [views](../evidence/ui-style-20261118/), [style guide](../guides/UI_STYLE.md)) |
 | App name and icon | "Bon Adventure: Little Town of Words" ("Bon Adventure" under the icon); icon is the pig's head on mint (the user's picture) | 16 Nov (renamed, new icon, [evidence](../evidence/bon-adventure-logo-20261116/README.md)) |
 
 ### Buildings and areas

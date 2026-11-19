@@ -5,24 +5,26 @@ extends CanvasLayer
 ## loading_progress drives set_progress(); finish() fades it out and frees it.
 ## The welcome tutorial's cutscene (tutorial.gd, 12 Nov 2026) shows the same pictures with a
 ## title instead of the bar (show_title()).
+## Since 18 Nov 2026 (user; docs/guides/UI_STYLE.md, mockup design-references/ui/loading-bar.png)
+## the line (light Fredoka words with a dark teal edge) sits over a striped green bar with a dark
+## outline (BonStyle.StripedBar) at the bottom; no panel behind them (user, 18 Nov 2026: the
+## cloud "bubble" was removed). The title mode's words are Fredoka too.
 const SHOTS := ["res://assets/ui/app/shot_1.webp", "res://assets/ui/app/shot_2.webp", "res://assets/ui/app/shot_3.webp", "res://assets/ui/app/shot_4.webp"]
 const SHOT_SECONDS := 2.6
 const FADE_SECONDS := 0.7
 const ZOOM := 0.06
 const Lexicon := preload("res://scripts/language/lexicon.gd")
 const BuildStamp := preload("res://scripts/core/build_stamp.gd")
-const FILL := Color("142a38")
-const EDGE := Color("7abfb3")
-const BAR := Color("3fae5a")
-const GOLD := Color("fff1c5")
+const BonStyle := preload("res://scripts/ui/bon_style.gd")
+const FILL := BonStyle.INK
+const GOLD := BonStyle.RIM
 
 var _root: Control
 var _shots: Array[TextureRect] = []
 var _time := 0.0
 var _progress := 0.0
 var _shown := 0.0
-var _track: ColorRect
-var _bar: ColorRect
+var _bar: BonStyle.StripedBar
 var _label: Label
 var _title := false
 ## "Last update on 11-15 at 19:25", bottom right (user, 15 Nov 2026; build_stamp.gd); none when
@@ -62,13 +64,10 @@ func _init() -> void:
 		shot.modulate.a = 0.0
 		_root.add_child(shot)
 		_shots.append(shot)
-	_track = ColorRect.new()
-	_track.color = Color(FILL, 0.85)
-	_root.add_child(_track)
-	_bar = ColorRect.new()
-	_bar.color = BAR
+	_bar = BonStyle.StripedBar.new()
 	_root.add_child(_bar)
 	_label = Label.new()
+	BonStyle.use_font(_label, 700)
 	_label.text = Lexicon.shared().phrase("app.loading", Lexicon.shared().native)
 	_label.add_theme_color_override("font_color", GOLD)
 	_label.add_theme_color_override("font_outline_color", FILL)
@@ -80,16 +79,18 @@ func _init() -> void:
 	_stamp.add_theme_color_override("font_outline_color", FILL)
 	_root.add_child(_stamp)
 	_subtitle = Label.new()
+	BonStyle.use_font(_subtitle, 600)
 	_subtitle.add_theme_color_override("font_color", GOLD)
 	_subtitle.add_theme_color_override("font_outline_color", FILL)
 	_subtitle.visible = false
 	_root.add_child(_subtitle)
 	_note = Label.new()
+	BonStyle.use_font(_note, 600)
 	_note.add_theme_color_override("font_color", Color(GOLD, 0.85))
 	_note.add_theme_color_override("font_outline_color", FILL)
 	_note.visible = false
 	_root.add_child(_note)
-	for node in [_track, _bar, _label, _stamp, _subtitle, _note]:
+	for node in [_bar, _label, _stamp, _subtitle, _note]:
 		node.z_index = 2
 	_root.gui_input.connect(func(event: InputEvent) -> void:
 		if skippable and ((event is InputEventMouseButton and event.pressed) or (event is InputEventScreenTouch and event.pressed)):
@@ -107,7 +108,6 @@ func show_title(text: String, bar := false, subtitle := "", note := "") -> void:
 	_note.text = note
 	_note.visible = note != ""
 	skippable = note != ""
-	_track.visible = bar
 	_bar.visible = bar
 	_stamp.visible = false
 
@@ -136,11 +136,15 @@ func finish() -> void:
 	fade.tween_property(_root, "modulate:a", 0.0, 0.6)
 	fade.tween_callback(queue_free)
 
+func _factor() -> float:
+	var screen := _root.get_viewport_rect().size
+	return clampf(minf(screen.y / 800.0, screen.x / 1100.0), 0.6, 3.0)
+
 func _process(delta: float) -> void:
 	_time += delta
 	_shown = move_toward(_shown, _progress, delta * 1.5)
 	var screen := _root.get_viewport_rect().size
-	var f := clampf(minf(screen.y / 800.0, screen.x / 1100.0), 0.6, 3.0)
+	var f := _factor()
 	# Each shot holds SHOT_SECONDS and fades in over the one before, zooming in slowly.
 	var count := _shots.size()
 	if count > 0:
@@ -161,16 +165,22 @@ func _process(delta: float) -> void:
 			shot.z_index = 1 if i == current else 0
 			shot.pivot_offset = screen * 0.5
 			shot.scale = Vector2.ONE * (1.0 + ZOOM * clampf(age / (SHOT_SECONDS + FADE_SECONDS), 0.0, 1.0))
-	var width := screen.x * 0.5
-	var height := 14.0 * f
-	_track.position = Vector2((screen.x - width) * 0.5, screen.y - 70.0 * f)
-	_track.size = Vector2(width, height)
-	_bar.position = _track.position
-	_bar.size = Vector2(width * _shown, height)
-	_label.add_theme_font_size_override("font_size", roundi((54 if _title else 26) * f))
-	_label.add_theme_constant_override("outline_size", roundi((14 if _title else 8) * f))
-	_label.position = Vector2((screen.x - _label.get_minimum_size().x) * 0.5, screen.y * (0.64 if _subtitle.visible else 0.72) if _title else _track.position.y - 46.0 * f)
+	# The cloud panel (loading mode) holds the line and the bar; in title mode the bar sits low.
+	var width := minf(screen.x - 32.0, 640.0 * f)
+	var height := 30.0 * f
+	_bar.f = f
+	_bar.value = _shown
+	_label.add_theme_font_size_override("font_size", roundi((58 if _title else 40) * f))
+	_label.add_theme_constant_override("outline_size", roundi((14 if _title else 11) * f))
 	_label.size = _label.get_minimum_size()
+	if _title:
+		_bar.size = Vector2(width, height)
+		_bar.position = Vector2((screen.x - width) * 0.5, screen.y - 80.0 * f)
+		_label.position = Vector2((screen.x - _label.size.x) * 0.5, screen.y * (0.64 if _subtitle.visible else 0.72))
+	else:
+		_bar.size = Vector2(width, height)
+		_bar.position = Vector2((screen.x - width) * 0.5, screen.y - height - 48.0 * f)
+		_label.position = Vector2((screen.x - _label.size.x) * 0.5, _bar.position.y - _label.size.y - 10.0 * f)
 	if _subtitle.visible:
 		_subtitle.add_theme_font_size_override("font_size", roundi(30 * f))
 		_subtitle.add_theme_constant_override("outline_size", roundi(9 * f))

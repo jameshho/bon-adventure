@@ -17,16 +17,17 @@ const PinyinText := preload("res://scripts/ui/pinyin_text.gd")
 const UiIcons := preload("res://scripts/ui/ui_icons.gd")
 const TranslateButton := preload("res://scripts/ui/translate_button.gd")
 const ProgressBarRow := preload("res://scripts/ui/progress_bar.gd")
+const BonStyle := preload("res://scripts/ui/bon_style.gd")
 
 signal leave_requested
 
-const FILL := Color("1d1840")
-const EDGE := Color("b48cff")
-const GOLD := Color("fff1c5")
-const DIM := Color("cdbff2")
+const FILL := BonStyle.SKY
+const EDGE := BonStyle.RIM
+const GOLD := BonStyle.INK
+const DIM := BonStyle.INK_SOFT
 ## Praise after a right door, and the highlighted key words after a wrong one.
-const GOOD := Color("a8e6a3")
-const KEY := Color("ffd24a")
+const GOOD := Color("3f9a35")
+const KEY := BonStyle.TERM
 const DESIGN := Vector2(1100, 800)
 const WIDTH_SHARE := 0.5
 ## Below the HUD clock at the top centre (render review, 9 Nov 2026: at 0.02 the clock covered
@@ -56,6 +57,8 @@ var native_label: RichTextLabel
 var hint_label: Label
 
 func _init() -> void:
+	# Fredoka everywhere inside (UI art style, docs/guides/UI_STYLE.md, 18 Nov 2026).
+	theme = BonStyle.theme()
 	name = "Mystery card"
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	anchor_right = 1.0
@@ -65,8 +68,11 @@ func _init() -> void:
 	var style := StyleBoxFlat.new()
 	style.bg_color = Color(FILL, .94)
 	style.border_color = EDGE
-	style.set_border_width_all(2)
-	style.set_corner_radius_all(15)
+	style.set_border_width_all(4)
+	style.set_corner_radius_all(24)
+	style.anti_aliasing = true
+	style.shadow_color = Color(0.1, 0.27, 0.32, 0.22)
+	style.shadow_size = 10
 	style.set_content_margin_all(12)
 	card.add_theme_stylebox_override("panel", style)
 	add_child(card)
@@ -93,9 +99,10 @@ func _init() -> void:
 	leave_button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	for state in ["normal", "hover", "pressed"]:
 		var box := StyleBoxFlat.new()
-		box.bg_color = Color(EDGE, {"normal": 0.0, "hover": .18, "pressed": .35}[state])
+		box.bg_color = {"normal": BonStyle.SKY_TOP, "hover": BonStyle.RIM, "pressed": BonStyle.SKY.darkened(0.08)}[state]
+		box.anti_aliasing = true
 		box.border_color = EDGE
-		box.set_border_width_all(2)
+		box.set_border_width_all(4)
 		box.set_corner_radius_all(12)
 		leave_button.add_theme_stylebox_override(state, box)
 	leave_button.pressed.connect(func() -> void: leave_requested.emit())

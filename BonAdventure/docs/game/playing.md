@@ -8,16 +8,23 @@ each section.
 
 ## Starting up
 
-<img src="../evidence/bon-adventure-logo-20261116/title_1280x720.png" width="480" alt="Title page with the Bon Adventure logo">
+<img src="../evidence/ui-style-20261118/avatar.png" width="480" alt="Pick your character: eight plush tiles on a mint card">
 
-*Screenshot 16 Nov (title page); [profile screen](../evidence/app-flow-20261112/profiles.png) 12 Nov.*
+*Screenshot 18 Nov (character grid); also [title page](../evidence/ui-style-20261118/splash.png),
+[saved players](../evidence/ui-style-20261118/profiles.png),
+[languages](../evidence/ui-style-20261118/languages.png),
+[loading](../evidence/ui-style-20261118/loading.png) and
+[dialogue box](../evidence/ui-style-20261118/dialogue.png).*
 
 A title screen with the **Bon Adventure: Little Town of Words** logo (16 Nov; it replaced
 the text title) and Play, then a character screen with up to three profiles, each
 with its own avatar (one of the house plushes) and its own saves. A new profile picks the
 language it speaks and the one it wants to learn, then the town loads. Each profile remembers
 where the player was and comes back at that building's entrance or on clear ground nearby
-(14 Nov).
+(14 Nov). Since 18 Nov the screens follow the user's mockups ([UI art style](../guides/UI_STYLE.md)):
+a saved player is picked (green, check mark) and played with Next; the character grid shows eight
+plushes (not Sunny); the language page has round flags and **Just explore!**, which starts the new
+player with "Show everything in my language" on.
 [Project README](../../README.md) (startup flow) ·
 [recorded checks](../guides/FINAL_VERIFICATION.md) (search `app_flow`). There is no separate startup guide yet.
 

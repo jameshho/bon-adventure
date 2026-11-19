@@ -62,6 +62,10 @@ building resizes or deferred interior/vocabulary work.
   before designing or testing for them. Since 13 Nov 2026 (user) a touch device held upright on the web
   shows the landscape game turned 90° (the Web preset's `html/head_include`); that is not a
   portrait layout, so keep designing for landscape only.
+- **UI art style** (user, 18 Nov 2026): every 2D screen, card, dialogue box and button follows
+  [UI art style](BonAdventure/docs/guides/UI_STYLE.md) and is built with `scripts/ui/bon_style.gd`
+  (palette, Fredoka font, pills, cards, tiles); never style a Button or panel by hand. The user's
+  mockups in `docs/guides/design-references/ui/` are the reference.
 - For minigames, start with [Building a minigame](BonAdventure/docs/guides/MINIGAMES.md#building-a-minigame):
   a new or changed game uses the shared `minigame_host.gd` (NPC, "!", talking, offers, leave question)
   and `minigame_zone.gd` (in-world fade, placing, doorway), not copies from older sessions.

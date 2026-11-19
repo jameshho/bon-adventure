@@ -16,19 +16,20 @@ const PinyinText := preload("res://scripts/ui/pinyin_text.gd")
 const UiIcons := preload("res://scripts/ui/ui_icons.gd")
 const TranslateButton := preload("res://scripts/ui/translate_button.gd")
 const ProgressBarRow := preload("res://scripts/ui/progress_bar.gd")
+const BonStyle := preload("res://scripts/ui/bon_style.gd")
 
 signal person_pressed(id: String)
 signal answer_pressed(answer: String)
 signal next_pressed
 signal close_requested
 
-const FILL := Color("142a38")
-const EDGE := Color("7abfb3")
-const GOLD := Color("fff1c5")
-const DIM := Color("aadddc")
-const CARD := Color("fffaf0")
-const INK := Color("2b3b40")
-const LINE := Color("7abfb3")
+const FILL := BonStyle.SKY
+const EDGE := BonStyle.RIM
+const GOLD := BonStyle.INK
+const DIM := BonStyle.INK_SOFT
+const CARD := BonStyle.SKY_TOP
+const INK := BonStyle.INK
+const LINE := BonStyle.RIM
 const RIGHT := Color("3fae5a")
 const WRONG := Color("d0505a")
 ## Gender icon colours, the same blue and red as the school family poster's figures.
@@ -80,6 +81,8 @@ var _exit: Button
 var cards: Dictionary = {}
 
 func _init() -> void:
+	# Fredoka everywhere inside (UI art style, docs/guides/UI_STYLE.md, 18 Nov 2026).
+	theme = BonStyle.theme()
 	name = "Family panel"
 	visible = false
 	mouse_filter = Control.MOUSE_FILTER_STOP
@@ -89,7 +92,7 @@ func _init() -> void:
 	portraits.name = "Portraits"
 	add_child(portraits)
 	_shade = ColorRect.new()
-	_shade.color = Color(0.02, 0.05, 0.08, 0.82)
+	_shade.color = BonStyle.SHADE
 	_shade.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_shade.anchor_right = 1.0
 	_shade.anchor_bottom = 1.0
@@ -107,8 +110,9 @@ func _init() -> void:
 	resized.connect(_on_resized)
 	visibility_changed.connect(_on_resized)
 
-func _style(color: Color, border: Color = EDGE, width: int = 2, radius: int = 14) -> StyleBoxFlat:
+func _style(color: Color, border: Color = EDGE, width: int = 4, radius: int = 20) -> StyleBoxFlat:
 	var style := StyleBoxFlat.new()
+	style.anti_aliasing = true
 	style.bg_color = color
 	style.border_color = border
 	style.set_border_width_all(width)

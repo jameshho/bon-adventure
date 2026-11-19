@@ -444,8 +444,9 @@ outside the rules modules. Known scheduled exceptions are listed, with reasons, 
    `language.<code>` phrase (its name in every language, for Settings). `native` /
    `foreign` there are only the defaults: the player picks both for a new profile and in
    Settings (4 Nov 2026, the profile's `settings.json`); nothing else needs editing if the
-   check passes. A playable language becomes a tile on the new-profile language page
-   (`app_screens.gd`: `badge` in a circle, the English `language.<code>` name, `name` below).
+   check passes. A playable language becomes a pill on the new-profile language page
+   (`app_screens.gd`, since 18 Nov 2026: its round `flag` from `bon_style.gd` (`flag_<id>`
+   SVG; add one for a new flag) and the English `language.<code>` name).
    That page and the other screens before the town show in the `native` default, English
    (14 Nov 2026), which is also what a new profile starts with.
 2. Write `scripts/language/rules_<code>.gd` extending `language_rules.gd`; override every

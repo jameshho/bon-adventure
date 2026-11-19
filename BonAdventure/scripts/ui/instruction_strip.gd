@@ -11,10 +11,12 @@ extends CanvasLayer
 ## () -> bool) hides it meanwhile without forgetting the text (an open journal or map).
 ## `top` (pixels at scale 1) places it below other top-centre UI (the tutorial's Skip button).
 ## Owners: scripts/learning/tutorial.gd (the welcome tutorial); any guided activity may reuse it.
-const GOLD := Color("fff1c5")
-const FILL := Color(0.08, 0.16, 0.22, 0.9)
-const EDGE := Color("f2c14e")
-const PROGRESS := Color("9fe0c8")
+const BonStyle := preload("res://scripts/ui/bon_style.gd")
+# UI art style (18 Nov 2026): a soft blue strip with a white rim, dark teal text, a green pointer.
+const GOLD := BonStyle.INK
+const FILL := Color(0.875, 0.953, 0.957, 0.97)
+const EDGE := BonStyle.GREEN_BOTTOM
+const PROGRESS := Color("3f9a35")
 ## Seconds of the slide-in and the pulse when the text changes.
 const IN_SECONDS := 0.25
 
@@ -39,10 +41,10 @@ func _init() -> void:
 	_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_style = StyleBoxFlat.new()
 	_style.bg_color = FILL
-	_style.border_color = EDGE
-	_style.set_border_width_all(2)
-	_style.set_corner_radius_all(16)
-	_style.shadow_color = Color(0, 0, 0, 0.22)
+	_style.border_color = BonStyle.RIM
+	_style.set_border_width_all(4)
+	_style.set_corner_radius_all(22)
+	_style.shadow_color = Color(0.1, 0.27, 0.32, 0.25)
 	_style.shadow_size = 8
 	_style.anti_aliasing = true
 	_panel.add_theme_stylebox_override("panel", _style)
@@ -72,6 +74,7 @@ func _make_label(color: Color) -> Label:
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	label.add_theme_color_override("font_color", color)
+	label.add_theme_font_override("font", BonStyle.font(700))
 	return label
 
 ## Shows `line` (and an optional progress note such as "1/2"); the strip slides in when the
@@ -129,4 +132,4 @@ func _process(delta: float) -> void:
 	_panel.position = Vector2((screen.x - _panel.size.x) * 0.5, top * f - (1.0 - ease_in) * 18.0 * f)
 	_panel.modulate.a = ease_in
 	# A gentle glow of the edge while it is new, so the change is noticed.
-	_style.border_color = EDGE.lerp(Color.WHITE, 0.5 * maxf(0.0, 1.0 - _age / 1.2))
+	_style.border_color = BonStyle.RIM.lerp(EDGE, maxf(0.0, 1.0 - _age / 1.2))

@@ -4,10 +4,12 @@ extends HBoxContainer
 ## the activity has no target (data/activities.json "progress": 0). Only rounds answered
 ## right the first time count (scripts/learning/activity_board.gd).
 ## Use: bar.set_progress(done, target); bar.apply_scale(window factor).
-const EDGE := Color("7abfb3")
-const FILL := Color("3fae5a")
-const TRACK := Color("0c1c27")
-const GOLD := Color("fff1c5")
+const BonStyle := preload("res://scripts/ui/bon_style.gd")
+# UI art style (18 Nov 2026): a light blue track with a white rim, a green fill, dark teal count.
+const EDGE := BonStyle.RIM
+const FILL := BonStyle.GREEN_BOTTOM
+const TRACK := Color("cfe8eb")
+const GOLD := BonStyle.INK
 
 var done := 0
 var target := 0
@@ -29,6 +31,7 @@ func _init() -> void:
 	add_child(_bar)
 	_label = Label.new()
 	_label.add_theme_color_override("font_color", GOLD)
+	_label.add_theme_font_override("font", BonStyle.font(700))
 	_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_label)
 	visible = false

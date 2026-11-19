@@ -27,12 +27,15 @@ signal wire_rejected(index: int)
 
 const DESIGN := Vector2(1100, 800)
 ## The HUD's colours (scripts/ui/day_clock.gd).
-const FILL := Color(0.07, 0.14, 0.19, 0.92)
-const EDGE := Color("7abfb3")
-const GOLD := Color("e7c27c")
-const INK := Color("fff6e6")
-const TEAL := Color("a9d5c6")
-const GOOD := Color("8fdca0")
+const BonStyle := preload("res://scripts/ui/bon_style.gd")
+# UI art style (18 Nov 2026, docs/guides/UI_STYLE.md): a soft blue bar with a white rim, dark teal
+# words, green on hover.
+const FILL := Color(0.875, 0.953, 0.957, 0.96)
+const EDGE := BonStyle.RIM
+const GOLD := BonStyle.INK
+const INK := BonStyle.INK
+const TEAL := BonStyle.GREEN_BOTTOM
+const GOOD := BonStyle.GREEN_BOTTOM
 ## Seconds: fade in/out, a wire springing back.
 const FADE := 0.22
 const RETURN := 0.28
@@ -62,7 +65,7 @@ var _bar := Rect2()
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	visible = false
-	_font = get_theme_default_font()
+	_font = BonStyle.font(700)
 	_close_button = Button.new()
 	_close_button.text = "✕"
 	_close_button.focus_mode = Control.FOCUS_NONE
@@ -153,13 +156,17 @@ func _layout() -> void:
 	_close_button.add_theme_font_size_override("font_size", int(24 * _k))
 	for kind in ["normal", "hover", "pressed", "disabled"]:
 		var style := StyleBoxFlat.new()
-		style.bg_color = Color("1d3a4c") if kind != "hover" else Color("1d3a4c").lightened(0.12)
-		style.border_color = TEAL if kind == "hover" else EDGE
-		style.set_border_width_all(maxi(2, int(2 * _k)))
+		# A cream round ✕, like the money panel's (user's mockup, 18 Nov 2026).
+		style.bg_color = Color("fbf1e1") if kind != "hover" else Color("fff8ee")
+		if kind == "pressed":
+			style.bg_color = Color("f1e2c8")
+		style.anti_aliasing = true
+		style.border_color = EDGE
+		style.set_border_width_all(maxi(3, int(4 * _k)))
 		style.set_corner_radius_all(int(button * 0.5))
 		_close_button.add_theme_stylebox_override(kind, style)
 	_close_button.add_theme_color_override("font_color", INK)
-	_close_button.add_theme_color_override("font_hover_color", Color.WHITE)
+	_close_button.add_theme_color_override("font_hover_color", INK)
 	queue_redraw()
 
 # --- The box in screen space --------------------------------------------------------------
@@ -280,9 +287,9 @@ func _draw_bar() -> void:
 	var style := StyleBoxFlat.new()
 	style.bg_color = FILL
 	style.border_color = EDGE
-	style.set_border_width_all(maxi(2, int(2 * _k)))
+	style.set_border_width_all(maxi(3, int(4 * _k)))
 	style.set_corner_radius_all(int(_bar.size.y * 0.5))
-	style.shadow_color = Color(0, 0, 0, 0.3)
+	style.shadow_color = Color(0.1, 0.27, 0.32, 0.25)
 	style.shadow_size = int(8 * _k)
 	draw_style_box(style, _bar)
 	var lamp := _bar.position + Vector2(_bar.size.y * 0.5, _bar.size.y * 0.5)
@@ -296,7 +303,7 @@ func _draw_bar() -> void:
 	var wide := _font.get_string_size(how, HORIZONTAL_ALIGNMENT_LEFT, -1, how_size).x
 	if wide > room:
 		how_size = maxi(9, int(how_size * room / wide))
-	draw_string(_font, Vector2(x, _bar.position.y + 50 * _k), how, HORIZONTAL_ALIGNMENT_LEFT, room, how_size, INK)
+	draw_string(_font, Vector2(x, _bar.position.y + 50 * _k), how, HORIZONTAL_ALIGNMENT_LEFT, room, how_size, BonStyle.INK_SOFT)
 
 ## "Electrical Box Repaired!" in a HUD card over the upper part of the view.
 func _draw_success() -> void:
@@ -308,14 +315,15 @@ func _draw_success() -> void:
 	var at := Vector2((size.x - card_size.x) * 0.5, size.y * 0.035 - 16 * _k * (1.0 - t))
 	var card := Rect2(at, card_size)
 	var style := StyleBoxFlat.new()
-	style.bg_color = Color(FILL, FILL.a * t)
-	style.border_color = Color(GOLD, t)
-	style.set_border_width_all(maxi(2, int(2 * _k)))
-	style.set_corner_radius_all(int(18 * _k))
-	style.shadow_color = Color(0, 0, 0, 0.3 * t)
+	# "Repaired!" in a cream pill with a green tick (the money panel's request pill).
+	style.bg_color = Color(Color("fbf1e1"), t)
+	style.border_color = Color(EDGE, t)
+	style.set_border_width_all(maxi(3, int(4 * _k)))
+	style.set_corner_radius_all(int(card_size.y * 0.5))
+	style.shadow_color = Color(0.1, 0.27, 0.32, 0.25 * t)
 	style.shadow_size = int(10 * _k)
 	draw_style_box(style, card)
 	var mark := card.position + Vector2(34 * _k, card_size.y * 0.5)
 	draw_circle(mark, 14 * _k, Color(GOOD, t))
-	draw_polyline(PackedVector2Array([mark + Vector2(-7, 0) * _k, mark + Vector2(-2, 6) * _k, mark + Vector2(8, -6) * _k]), Color(FILL, t), 3 * _k, true)
+	draw_polyline(PackedVector2Array([mark + Vector2(-7, 0) * _k, mark + Vector2(-2, 6) * _k, mark + Vector2(8, -6) * _k]), Color(Color.WHITE, t), 3 * _k, true)
 	draw_string(_font, Vector2(card.position.x + 58 * _k, card.position.y + card_size.y * 0.5 + font_size * 0.35), text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, Color(INK, t))

@@ -22,6 +22,7 @@ const PinyinText := preload("res://scripts/ui/pinyin_text.gd")
 const UiIcons := preload("res://scripts/ui/ui_icons.gd")
 const TranslateButton := preload("res://scripts/ui/translate_button.gd")
 const ProgressBarRow := preload("res://scripts/ui/progress_bar.gd")
+const BonStyle := preload("res://scripts/ui/bon_style.gd")
 
 signal leave_requested
 signal tool_pressed(id: String)
@@ -30,15 +31,15 @@ signal accuse_pressed
 signal choice_pressed(index: int)
 signal next_pressed
 
-const FILL := Color("13213a")
-const EDGE := Color("8fb3e8")
-const GOLD := Color("fff1c5")
-const DIM := Color("b9cdee")
-const GOOD := Color("9be59b")
-const BAD := Color("ffb4a2")
-const BUTTON := Color("29426e")
-const BUTTON_ON := Color("f2c230")
-const ACCUSE := Color("2f7d4f")
+const FILL := BonStyle.SKY
+const EDGE := BonStyle.RIM
+const GOLD := BonStyle.INK
+const DIM := BonStyle.INK_SOFT
+const GOOD := Color("3f9a35")
+const BAD := Color("d0523f")
+const BUTTON := BonStyle.SKY_TOP
+const BUTTON_ON := BonStyle.GREEN_BOTTOM
+const ACCUSE := BonStyle.GREEN_BOTTOM
 const DESIGN := Vector2(1100, 800)
 const WIDTH_SHARE := 0.56
 const TOP := 0.02
@@ -80,6 +81,8 @@ var _choices: Array = []
 var _choice_buttons: Array = []
 
 func _init() -> void:
+	# Fredoka everywhere inside (UI art style, docs/guides/UI_STYLE.md, 18 Nov 2026).
+	theme = BonStyle.theme()
 	name = "Detective card"
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	anchor_right = 1.0
@@ -89,8 +92,11 @@ func _init() -> void:
 	var style := StyleBoxFlat.new()
 	style.bg_color = Color(FILL, .94)
 	style.border_color = EDGE
-	style.set_border_width_all(2)
-	style.set_corner_radius_all(15)
+	style.set_border_width_all(4)
+	style.set_corner_radius_all(24)
+	style.anti_aliasing = true
+	style.shadow_color = Color(0.1, 0.27, 0.32, 0.22)
+	style.shadow_size = 10
 	style.set_content_margin_all(12)
 	card.add_theme_stylebox_override("panel", style)
 	add_child(card)
@@ -171,13 +177,17 @@ func _button(tint: Color) -> Button:
 	button.focus_mode = Control.FOCUS_NONE
 	button.set_meta("tint", tint)
 	button.expand_icon = false
-	button.add_theme_color_override("font_color", Color.WHITE)
-	button.add_theme_color_override("font_hover_color", Color.WHITE)
-	button.add_theme_color_override("font_pressed_color", Color.WHITE)
+	# White words on green, dark teal on soft blue (UI art style, 18 Nov 2026).
+	var ink: Color = Color.WHITE if tint.get_luminance() < 0.6 else BonStyle.INK
+	for key in ["font_color", "font_hover_color", "font_pressed_color", "icon_normal_color", "icon_hover_color", "icon_pressed_color"]:
+		button.add_theme_color_override(key, ink)
 	for state in ["normal", "hover", "pressed"]:
 		var box := StyleBoxFlat.new()
 		box.bg_color = tint.lightened(0.12) if state == "hover" else tint
-		box.set_corner_radius_all(10)
+		box.border_color = BonStyle.RIM
+		box.set_border_width_all(4)
+		box.anti_aliasing = true
+		box.set_corner_radius_all(18)
 		box.set_content_margin_all(8)
 		button.add_theme_stylebox_override(state, box)
 	return button
@@ -262,7 +272,7 @@ func show_summary(title: Dictionary, lines: Array, finish: Dictionary) -> void:
 	for child in summary_box.get_children():
 		child.queue_free()
 	for line in lines:
-		summary_box.add_child(_label(24, Color.WHITE))
+		summary_box.add_child(_label(24, GOLD))
 		summary_box.add_child(_label(18, DIM))
 	refresh_display()
 
@@ -311,9 +321,9 @@ func refresh_display() -> void:
 		button.tooltip_text = str(spec.label.get("native", ""))
 		button.disabled = _solved
 		if str(spec.id) == _tool:
-			_paint(button, BUTTON_ON, Color("13213a"))
+			_paint(button, BUTTON_ON, Color.WHITE)
 		else:
-			_paint(button, BUTTON, Color.WHITE)
+			_paint(button, BUTTON, BonStyle.INK)
 	accuse_button.text = settings.stacked(_accuse, show_native) if not _accuse.is_empty() else ""
 	accuse_button.tooltip_text = str(_accuse.get("native", ""))
 	accuse_button.visible = not _solved and not _accuse.is_empty()

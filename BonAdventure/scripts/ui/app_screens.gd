@@ -17,6 +17,10 @@ extends Control
 ## English, whatever a profile picked; user decision 14 Nov 2026: every player reads English).
 ## Sizes follow the window like the money panel (min(h / 800, w / 1100)), shrinking further when
 ## a page would not fit (a landscape phone), and every target is finger sized (AGENTS.md).
+## Since 18 Nov 2026 (user) every page is built to the user's mockups in the UI art style
+## (docs/guides/UI_STYLE.md, scripts/ui/bon_style.gd): a mint card with a cloud title and a meadow,
+## glossy pill buttons, 4 x 2 character tiles (no Sunny), saved players picked then played with
+## Next, language pills with round flags and "Just explore!" (Show everything in my language).
 ## scripts/core/app.gd drives it: show_splash() -> splash_done (the Play button, Enter or Space),
 ## show_profiles() -> profile_chosen(id) (also emitted after a new profile is created).
 signal splash_done
@@ -29,6 +33,7 @@ const UiIcons := preload("res://scripts/ui/ui_icons.gd")
 const SaveStore := preload("res://scripts/core/save_store.gd")
 const BuildStamp := preload("res://scripts/core/build_stamp.gd")
 const VocabularyProgress := preload("res://scripts/learning/vocabulary_progress.gd")
+const BonStyle := preload("res://scripts/ui/bon_style.gd")
 const BACKDROP := "res://assets/ui/app/backdrop.webp"
 ## The user's logo (16 Nov 2026), cleaned and trimmed: assets/branding/source/clean_logo.py.
 const LOGO := "res://assets/branding/bon_adventure_logo.webp"
@@ -37,12 +42,9 @@ const LOGO_WIDTH := 820.0
 const PORTRAIT := "res://assets/ui/avatars/%s.webp"
 const CHARACTERS := "res://data/house_characters.json"
 
-const FILL := Color("142a38")
-const EDGE := Color("7abfb3")
-const GOLD := Color("fff1c5")
-const DIM := Color("aadddc")
-const PICKED := Color("3fae5a")
 const DESIGN := Vector2(1100, 800)
+## The language page's size against the window factor (user, 18 Nov 2026: shorter card).
+const LANGUAGES_SCALE := 0.8
 
 var _page := ""
 var _factor := 1.0
@@ -50,6 +52,8 @@ var _content: Control
 ## The onboarding draft: name, profile_name, avatar, native, foreign.
 var _draft: Dictionary = {}
 var _delete_id := ""
+## The saved player picked on the profiles page (Next plays it).
+var _picked_profile := ""
 ## "Last update on 11-15 at 19:25" in the bottom-right corner of every page (user, 15 Nov 2026;
 ## build_stamp.gd); hidden when the game runs from the project.
 var _stamp: Label
@@ -60,7 +64,7 @@ func _init() -> void:
 	anchor_bottom = 1.0
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	var back := ColorRect.new()
-	back.color = FILL.darkened(0.3)
+	back.color = BonStyle.MINT_TOP
 	back.anchor_right = 1.0
 	back.anchor_bottom = 1.0
 	back.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -75,7 +79,8 @@ func _init() -> void:
 		picture.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		add_child(picture)
 	var shade := ColorRect.new()
-	shade.color = Color(0.02, 0.05, 0.08, 0.35)
+	# A light wash keeps the backdrop bright behind the cards (UI_STYLE.md: no dark shade).
+	shade.color = Color(1, 1, 1, 0.12)
 	shade.anchor_right = 1.0
 	shade.anchor_bottom = 1.0
 	shade.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -89,8 +94,9 @@ func _init() -> void:
 	_stamp.grow_horizontal = Control.GROW_DIRECTION_BEGIN
 	_stamp.grow_vertical = Control.GROW_DIRECTION_BEGIN
 	_stamp.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_stamp.add_theme_color_override("font_color", Color(DIM, 0.85))
-	_stamp.add_theme_color_override("font_outline_color", FILL)
+	BonStyle.use_font(_stamp, 600)
+	_stamp.add_theme_color_override("font_color", BonStyle.INK)
+	_stamp.add_theme_color_override("font_outline_color", BonStyle.RIM)
 	_stamp.z_index = 1
 	add_child(_stamp)
 
@@ -176,7 +182,7 @@ func _splash() -> Control:
 	box.anchor_bottom = 1.0
 	box.alignment = BoxContainer.ALIGNMENT_CENTER
 	box.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	box.add_theme_constant_override("separation", roundi(24 * f))
+	box.add_theme_constant_override("separation", roundi(28 * f))
 	if ResourceLoader.exists(LOGO):
 		var logo := TextureRect.new()
 		logo.texture = load(LOGO)
@@ -189,127 +195,161 @@ func _splash() -> Control:
 		logo.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 		box.add_child(logo)
 	else:
-		var title := _label(_t("app.title"), 120, GOLD)
-		title.add_theme_constant_override("outline_size", roundi(18 * f))
-		title.add_theme_color_override("font_outline_color", FILL)
-		box.add_child(title)
-	var play := _button(_t("app.play"), "play")
-	play.custom_minimum_size = Vector2(300 * f, 96 * f)
-	play.add_theme_font_size_override("font_size", roundi(44 * f))
-	play.add_theme_constant_override("icon_max_width", roundi(40 * f))
-	var style := StyleBoxFlat.new()
-	style.bg_color = PICKED
-	style.border_color = GOLD
-	style.set_border_width_all(roundi(3 * f))
-	style.set_corner_radius_all(roundi(48 * f))
-	style.set_content_margin_all(16 * f)
-	for state in ["normal", "hover", "pressed"]:
-		var look := style.duplicate()
-		look.bg_color = PICKED.lightened(0.12) if state == "hover" else (PICKED.darkened(0.15) if state == "pressed" else PICKED)
-		play.add_theme_stylebox_override(state, look)
-	play.add_theme_color_override("font_color", Color.WHITE)
-	play.add_theme_color_override("font_hover_color", Color.WHITE)
-	play.add_theme_color_override("font_pressed_color", Color.WHITE)
+		box.add_child(BonStyle.title(_t("app.title"), f, 80))
+	# The big glossy Play pill (docs/guides/design-references/ui/play-button.png).
+	var play := BonStyle.button(_t("app.play"), "primary", "play", f, 50, Vector2(330, 108))
 	play.pressed.connect(func() -> void: splash_done.emit())
 	var holder := CenterContainer.new()
+	holder.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	holder.add_child(play)
 	box.add_child(holder)
+	# Play breathes (UI_STYLE.md: gentle motion); the press squash is BonStyle's.
 	var pulse := play.create_tween().set_loops()
 	pulse.tween_property(play, "scale", Vector2.ONE * 1.04, 0.9).set_trans(Tween.TRANS_SINE)
 	pulse.tween_property(play, "scale", Vector2.ONE, 0.9).set_trans(Tween.TRANS_SINE)
-	play.resized.connect(func() -> void: play.pivot_offset = play.size * 0.5)
 	return box
 
+## The saved players (docs/guides/design-references/ui/profiles-and-languages.webp): a tile each
+## with its progress and a Delete under it, and "New player"; a tap picks one (green, check),
+## Next plays it.
 func _profiles_page() -> Control:
 	var manager = ProfileManager.shared()
+	var entries: Array = manager.profiles()
+	var ids: Array = entries.map(func(entry: Dictionary) -> String: return str(entry.id))
+	if not ids.has(_picked_profile):
+		var last := str(manager.index.get("last", ""))
+		_picked_profile = last if ids.has(last) else (str(ids[0]) if not ids.is_empty() else "")
 	var page := _page_box(_t("app.pick_avatar"))
 	var row := HBoxContainer.new()
 	row.alignment = BoxContainer.ALIGNMENT_CENTER
-	row.add_theme_constant_override("separation", roundi(20 * _factor))
+	row.add_theme_constant_override("separation", roundi(30 * _factor))
 	page.add_child(row)
-	for entry in manager.profiles():
+	for entry in entries:
 		var id := str(entry.id)
 		var column := VBoxContainer.new()
-		column.add_theme_constant_override("separation", roundi(8 * _factor))
+		column.add_theme_constant_override("separation", roundi(16 * _factor))
 		row.add_child(column)
-		var pick := _tile(str(entry.avatar), str(entry.profile_name), false)
-		pick.pressed.connect(func() -> void: profile_chosen.emit(id))
+		var pick := BonStyle.tile(_portrait(str(entry.avatar)), str(entry.profile_name), id == _picked_profile, _factor, _progress_text(id), Vector2(236, 270))
+		pick.pressed.connect(func() -> void:
+			_picked_profile = id
+			_rebuild())
 		column.add_child(pick)
-		var progress := _label(_progress_text(id), 20, DIM)
-		column.add_child(progress)
-		var remove := _button(_t("app.delete"), "trash")
-		remove.add_theme_font_size_override("font_size", roundi(22 * _factor))
+		var remove := BonStyle.button(_t("app.delete"), "minor", "trash", _factor, 28, Vector2(200, 64))
+		remove.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 		remove.pressed.connect(func() -> void:
 			_delete_id = id
 			_show("delete"))
 		column.add_child(remove)
 	if manager.can_create():
-		var add := _tile("", _t("app.new_profile"), false)
-		add.icon = UiIcons.texture("plus", roundi(96 * _factor))
+		var add := BonStyle.tile(BonStyle.icon_texture("plus", 160), _t("app.new_profile"), false, _factor, "", Vector2(236, 270))
 		add.pressed.connect(show_new_profile)
-		row.add_child(add)
+		var column := VBoxContainer.new()
+		column.add_child(add)
+		row.add_child(column)
+	var back := BonStyle.button(_t("app.back"), "back", "arrow_left", _factor)
+	back.pressed.connect(show_splash)
+	var next := BonStyle.button(_t("app.next"), "primary", "play", _factor)
+	next.disabled = _picked_profile == ""
+	next.pressed.connect(func() -> void: profile_chosen.emit(_picked_profile))
+	page.add_child(_nav(back, next))
 	return page
 
+## The character grid (docs/guides/design-references/ui/character-grid.webp): 4 x 2 tiles, every
+## house character but those with "picker": false (Sunny; user, 18 Nov 2026).
 func _avatar_page() -> Control:
 	var page := _page_box(_t("app.pick_avatar"))
 	if ProfileManager.shared().has_legacy_saves():
-		var note := _label(_t("app.found_saves"), 24, DIM)
+		var note := BonStyle.label(_t("app.found_saves"), 22, BonStyle.INK_SOFT, _factor, 600)
 		note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		page.add_child(note)
 	var grid := GridContainer.new()
-	grid.columns = 5
-	grid.add_theme_constant_override("h_separation", roundi(12 * _factor))
-	grid.add_theme_constant_override("v_separation", roundi(12 * _factor))
+	grid.columns = 4
+	grid.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	grid.add_theme_constant_override("h_separation", roundi(22 * _factor))
+	grid.add_theme_constant_override("v_separation", roundi(22 * _factor))
 	page.add_child(grid)
 	var names := _character_names()
-	for id in ProfileManager.avatar_ids():
-		var tile := _tile(id, str(names.get(id, id)), str(_draft.avatar) == id, 0.62)
+	for id in _picker_ids():
+		var tile := BonStyle.tile(_portrait(id), str(names.get(id, id)), str(_draft.avatar) == id, _factor, "", Vector2(200, 218))
 		tile.pressed.connect(func() -> void:
 			_draft.avatar = id
 			_rebuild())
 		grid.add_child(tile)
 	# Back to the saved characters, or to the title when there are none.
-	var back := _button(_t("app.back"), "back")
+	var back := BonStyle.button(_t("app.back"), "back", "arrow_left", _factor)
 	back.pressed.connect(func() -> void:
 		if ProfileManager.shared().profiles().is_empty():
 			show_splash()
 		else:
 			_show("profiles"))
-	var next := _button(_t("app.next"), "next")
+	var next := BonStyle.button(_t("app.next"), "primary", "arrow_right", _factor)
 	next.pressed.connect(func() -> void: _show("languages"))
 	page.add_child(_nav(back, next))
 	return page
 
-## "I speak" and "I want to learn", each a row of language tiles (every playable language).
+## "I speak" and "I want to learn", each a band with a row of language pills (every playable
+## language, its round flag and its English name), then "Just explore!" (user, 18 Nov 2026: the
+## same as Settings' "Show everything in my language" for the new player).
+## Shorter than the other pages (user, 18 Nov 2026: in proportion to the screen, not its whole
+## height): built at LANGUAGES_SCALE of the window factor, with a plain title (no cloud, no sprout).
 func _languages_page() -> Control:
+	var full := _factor
+	_factor *= LANGUAGES_SCALE
 	var lexicon = Lexicon.shared()
 	var codes: Array = lexicon.playable_codes()
-	var page := _page_box(_t("app.languages"))
-	page.add_child(_label(_t("app.languages_hint"), 24, DIM))
+	var page := _page_box(_t("app.languages"), true)
 	for key in ["native", "foreign"]:
-		var heading := HBoxContainer.new()
-		heading.add_theme_constant_override("separation", roundi(14 * _factor))
-		heading.add_child(_label(_t("app.i_speak" if key == "native" else "app.i_learn"), 32, GOLD, HORIZONTAL_ALIGNMENT_LEFT))
-		var use := _label(_t("app.i_speak_hint" if key == "native" else "app.i_learn_hint"), 22, DIM, HORIZONTAL_ALIGNMENT_LEFT)
-		use.size_flags_vertical = Control.SIZE_SHRINK_END
-		heading.add_child(use)
-		page.add_child(heading)
 		var grid := GridContainer.new()
 		grid.columns = codes.size() if codes.size() <= 4 else 3
-		grid.add_theme_constant_override("h_separation", roundi(14 * _factor))
-		grid.add_theme_constant_override("v_separation", roundi(14 * _factor))
-		page.add_child(grid)
+		grid.add_theme_constant_override("h_separation", roundi(16 * _factor))
+		grid.add_theme_constant_override("v_separation", roundi(12 * _factor))
 		for code in codes:
-			var choice := _language_tile(str(code), str(_draft[key]) == str(code))
+			var spec: Dictionary = lexicon.languages.get(str(code), {})
+			var choice := BonStyle.choice(BonStyle.flag(str(spec.get("flag", ""))), _t("language." + str(code)), str(_draft[key]) == str(code), _factor)
 			choice.pressed.connect(func() -> void: _pick_language(key, str(code)))
 			grid.add_child(choice)
-	var back := _button(_t("app.back"), "back")
+		var hint := "(%s)" % _t("app.i_speak_hint" if key == "native" else "app.i_learn_hint")
+		page.add_child(BonStyle.band(_t("app.i_speak" if key == "native" else "app.i_learn"), hint, grid, _factor))
+	page.add_child(_explore_choice())
+	var back := BonStyle.button(_t("app.back"), "back", "arrow_left", _factor)
 	back.pressed.connect(func() -> void: _show("avatar"))
-	var start := _button(_t("app.start"), "play")
-	_primary(start)
+	var start := BonStyle.button(_t("app.start"), "primary", "play", _factor)
 	start.pressed.connect(_create_profile)
 	page.add_child(_nav(back, start))
+	_factor = full
 	return page
+
+## "Just explore! Play in my language." with a round tick on the right; a tap toggles it.
+func _explore_choice() -> Button:
+	var f := _factor
+	var on := bool(_draft.get("explore", false))
+	var choice := Button.new()
+	choice.focus_mode = Control.FOCUS_NONE
+	choice.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	choice.custom_minimum_size = Vector2(0, 104) * f
+	BonStyle.style_button(choice, "explore_on" if on else "explore", f)
+	var row := HBoxContainer.new()
+	row.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	row.offset_left = 26 * f
+	row.offset_right = -28 * f
+	row.add_theme_constant_override("separation", roundi(22 * f))
+	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	choice.add_child(row)
+	row.add_child(_picture(BonStyle.icon_texture("gamepad", 128), 76 * f))
+	var words := VBoxContainer.new()
+	words.alignment = BoxContainer.ALIGNMENT_CENTER
+	words.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	words.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	words.add_theme_constant_override("separation", 0)
+	words.add_child(BonStyle.label(_t("app.explore"), 32, BonStyle.INK, f, 700, HORIZONTAL_ALIGNMENT_LEFT))
+	words.add_child(BonStyle.label(_t("app.explore_hint"), 22, BonStyle.INK_SOFT, f, 600, HORIZONTAL_ALIGNMENT_LEFT))
+	row.add_child(words)
+	row.add_child(_picture(BonStyle.icon_texture("radio_on" if on else "radio_off", 96), 42 * f))
+	choice.pressed.connect(func() -> void:
+		_draft.explore = not on
+		_rebuild())
+	BonStyle.squash_on_press(choice)
+	return choice
 
 ## One side's language; picking the other side's language swaps the two (never the same twice).
 func _pick_language(key: String, code: String) -> void:
@@ -329,18 +369,21 @@ func _create_profile() -> void:
 		return
 	manager.select(id)
 	GameSettings.shared().set_languages(str(_draft.native), str(_draft.foreign))
+	# "Just explore!" is Settings' "Show everything in my language" (user, 18 Nov 2026).
+	GameSettings.shared().set_native(bool(_draft.get("explore", false)))
 	_draft = {}
 	profile_chosen.emit(id)
 
 func _delete_page() -> Control:
 	var entry: Dictionary = ProfileManager.shared().get_profile(_delete_id)
 	var page := _page_box(_t("app.delete"))
-	var warning := _label(_t("app.delete_confirm", {"name": str(entry.get("profile_name", ""))}), 26, GOLD)
+	var warning := BonStyle.label(_t("app.delete_confirm", {"name": str(entry.get("profile_name", ""))}), 30, BonStyle.INK, _factor, 600)
 	warning.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	warning.custom_minimum_size = Vector2(640, 0) * _factor
 	page.add_child(warning)
-	var cancel := _button(_t("app.cancel"), "back")
+	var cancel := BonStyle.button(_t("app.cancel"), "back", "arrow_left", _factor)
 	cancel.pressed.connect(func() -> void: _show("profiles"))
-	var remove := _button(_t("app.delete"), "trash")
+	var remove := BonStyle.button(_t("app.delete"), "danger", "trash", _factor)
 	remove.pressed.connect(func() -> void:
 		ProfileManager.shared().delete(_delete_id)
 		show_profiles())
@@ -349,164 +392,44 @@ func _delete_page() -> Control:
 
 # --- Builders ------------------------------------------------------------------------------
 
-## The centred panel around a page (HUD colours, rounded, scaled).
+## The centred card around a page (BonStyle: mint card with a meadow along the bottom).
 func _card(page: Control) -> Control:
-	var f := _factor
 	var center := CenterContainer.new()
 	center.anchor_right = 1.0
 	center.anchor_bottom = 1.0
 	center.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var card := PanelContainer.new()
-	var style := StyleBoxFlat.new()
-	style.bg_color = Color(FILL, 0.94)
-	style.border_color = EDGE
-	style.set_border_width_all(2)
-	style.set_corner_radius_all(roundi(16 * f))
-	style.set_content_margin_all(28 * f)
-	card.add_theme_stylebox_override("panel", style)
-	card.custom_minimum_size = Vector2(minf(720.0 * f, get_viewport_rect().size.x - 32.0), 0)
-	card.add_child(page)
+	var card := BonStyle.card(page, _factor)
+	card.custom_minimum_size = Vector2(minf(880.0 * _factor, get_viewport_rect().size.x - 32.0), 0)
 	center.add_child(card)
 	return center
 
-func _page_box(title: String) -> VBoxContainer:
+## A page's column under its title: the cloud banner, or `plain` dark teal words alone.
+func _page_box(title: String, plain := false) -> VBoxContainer:
 	var page := VBoxContainer.new()
-	page.add_theme_constant_override("separation", roundi(16 * _factor))
-	page.add_child(_label(title, 38, GOLD))
+	page.add_theme_constant_override("separation", roundi(20 * _factor))
+	if plain:
+		var words := BonStyle.label(title, 50, BonStyle.INK, _factor)
+		words.custom_minimum_size = Vector2(0, 64) * _factor
+		page.add_child(words)
+	else:
+		page.add_child(BonStyle.title(title, _factor))
 	return page
 
-func _label(text: String, size: int, color: Color, align := HORIZONTAL_ALIGNMENT_CENTER) -> Label:
-	var label := Label.new()
-	label.text = text
-	label.horizontal_alignment = align
-	label.add_theme_font_size_override("font_size", roundi(size * _factor))
-	label.add_theme_color_override("font_color", color)
-	return label
+func _picture(texture: Texture2D, px: float) -> TextureRect:
+	var picture := TextureRect.new()
+	picture.texture = texture
+	picture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	picture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	picture.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	picture.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	picture.custom_minimum_size = Vector2(px, px)
+	return picture
 
-func _button(text: String, icon: String = "") -> Button:
-	var button := Button.new()
-	button.text = text
-	button.focus_mode = Control.FOCUS_NONE
-	button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	button.custom_minimum_size = Vector2(180 * _factor, 64 * _factor)
-	button.add_theme_font_size_override("font_size", roundi(28 * _factor))
-	if icon != "":
-		button.icon = UiIcons.texture(icon, 64)
-		button.add_theme_constant_override("icon_max_width", roundi(28 * _factor))
-	return button
+func _portrait(avatar: String) -> Texture2D:
+	return load(PORTRAIT % avatar) if avatar != "" and ResourceLoader.exists(PORTRAIT % avatar) else null
 
-## A big square picture button: a character portrait (or an icon) over a name.
-func _tile(avatar: String, caption: String, picked: bool, size := 1.0) -> Button:
-	var f := _factor * size
-	var tile := _button(caption)
-	tile.custom_minimum_size = Vector2(190 * f, 230 * f)
-	tile.add_theme_font_size_override("font_size", roundi(26 * f))
-	tile.vertical_icon_alignment = VERTICAL_ALIGNMENT_TOP
-	tile.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	tile.expand_icon = true
-	tile.icon = null
-	tile.add_theme_constant_override("icon_max_width", roundi(150 * f))
-	if avatar != "" and ResourceLoader.exists(PORTRAIT % avatar):
-		tile.icon = load(PORTRAIT % avatar)
-	if picked:
-		var style := StyleBoxFlat.new()
-		style.bg_color = PICKED.darkened(0.35)
-		style.border_color = PICKED
-		style.set_border_width_all(roundi(4 * _factor))
-		style.set_corner_radius_all(roundi(12 * _factor))
-		for state in ["normal", "hover", "pressed"]:
-			tile.add_theme_stylebox_override(state, style)
-	return tile
-
-## A language tile: the badge (EN, ES, 中) in a circle, the language's name in the page's
-## language and, below, its own name (Español); green with a gold border and a check when picked.
-func _language_tile(code: String, picked: bool) -> Button:
-	var f := _factor
-	var lexicon = Lexicon.shared()
-	var spec: Dictionary = lexicon.languages.get(code, {})
-	var shown := _t("language." + code)
-	var own := str(spec.get("name", code))
-	var tile := Button.new()
-	tile.focus_mode = Control.FOCUS_NONE
-	tile.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	tile.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	tile.custom_minimum_size = Vector2(285 * f, 104 * f)
-	tile.tooltip_text = shown
-	for state in ["normal", "hover", "pressed"]:
-		var look := StyleBoxFlat.new()
-		look.set_corner_radius_all(roundi(14 * f))
-		if picked:
-			look.bg_color = PICKED.darkened(0.2)
-			look.border_color = GOLD
-			look.set_border_width_all(maxi(2, roundi(4 * f)))
-		else:
-			look.bg_color = FILL.lightened(0.12 if state == "hover" else (0.02 if state == "pressed" else 0.07))
-			look.border_color = EDGE.darkened(0.25)
-			look.set_border_width_all(maxi(1, roundi(2 * f)))
-		tile.add_theme_stylebox_override(state, look)
-	var row := HBoxContainer.new()
-	row.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	row.offset_left = 16 * f
-	# Room on the right for the check mark (it is not part of the row, so no tile shifts).
-	row.offset_right = -46 * f
-	row.add_theme_constant_override("separation", roundi(14 * f))
-	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	tile.add_child(row)
-	var badge := PanelContainer.new()
-	badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	badge.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	badge.custom_minimum_size = Vector2(60, 60) * f
-	var disc := StyleBoxFlat.new()
-	disc.bg_color = GOLD if picked else Color(FILL, 0.0)
-	disc.border_color = GOLD if picked else EDGE
-	disc.set_border_width_all(maxi(1, roundi(3 * f)))
-	disc.set_corner_radius_all(roundi(30 * f))
-	badge.add_theme_stylebox_override("panel", disc)
-	var mark := _label(str(spec.get("badge", code.to_upper())), 24, FILL if picked else EDGE)
-	mark.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	badge.add_child(mark)
-	row.add_child(badge)
-	var names := VBoxContainer.new()
-	names.alignment = BoxContainer.ALIGNMENT_CENTER
-	names.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	names.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	names.add_theme_constant_override("separation", 0)
-	names.add_child(_label(shown, 32, Color.WHITE, HORIZONTAL_ALIGNMENT_LEFT))
-	if own != shown:
-		names.add_child(_label(own, 22, GOLD if picked else DIM, HORIZONTAL_ALIGNMENT_LEFT))
-	row.add_child(names)
-	if picked:
-		var tick := TextureRect.new()
-		tick.texture = UiIcons.texture("check", roundi(34 * f))
-		tick.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		tick.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		tick.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		tick.anchor_left = 1.0
-		tick.anchor_right = 1.0
-		tick.anchor_top = 0.5
-		tick.anchor_bottom = 0.5
-		tick.offset_left = -44 * f
-		tick.offset_right = -10 * f
-		tick.offset_top = -17 * f
-		tick.offset_bottom = 17 * f
-		tile.add_child(tick)
-	return tile
-
-## The page's main action: green with a gold border, like the title's Play.
-func _primary(button: Button) -> void:
-	for state in ["normal", "hover", "pressed"]:
-		var look := StyleBoxFlat.new()
-		look.bg_color = PICKED.lightened(0.12) if state == "hover" else (PICKED.darkened(0.15) if state == "pressed" else PICKED)
-		look.border_color = GOLD
-		look.set_border_width_all(maxi(2, roundi(3 * _factor)))
-		look.set_corner_radius_all(roundi(12 * _factor))
-		look.set_content_margin_all(12 * _factor)
-		button.add_theme_stylebox_override(state, look)
-	for colour in ["font_color", "font_hover_color", "font_pressed_color"]:
-		button.add_theme_color_override(colour, Color.WHITE)
-
-## Back on the left, the main action on the right (either may be null).
-func _nav(back: Button, forward: Button) -> HBoxContainer:
+## Back on the left, the main action on the right (either may be null), a little above the meadow.
+func _nav(back: Button, forward: Button) -> Control:
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", roundi(16 * _factor))
 	if back != null:
@@ -516,7 +439,21 @@ func _nav(back: Button, forward: Button) -> HBoxContainer:
 	row.add_child(gap)
 	if forward != null:
 		row.add_child(forward)
-	return row
+	var margin := MarginContainer.new()
+	margin.add_theme_constant_override("margin_top", roundi(8 * _factor))
+	margin.add_theme_constant_override("margin_left", roundi(30 * _factor))
+	margin.add_theme_constant_override("margin_right", roundi(30 * _factor))
+	margin.add_child(row)
+	return margin
+
+## The character ids the new-player grid offers, in data order.
+static func _picker_ids() -> Array:
+	var ids: Array = []
+	var data: Variant = JSON.parse_string(FileAccess.get_file_as_string(CHARACTERS))
+	for spec in (data.get("characters", []) if data is Dictionary else []):
+		if spec.get("picker", true) != false:
+			ids.append(str(spec.get("id", "")))
+	return ids
 
 ## "Spanish · 12 words": the language a saved profile learns and the words it has found there,
 ## read from its own save files (nothing is selected).

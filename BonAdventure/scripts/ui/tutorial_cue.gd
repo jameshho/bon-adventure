@@ -9,9 +9,12 @@ extends Control
 ##           screen). On a touch screen the joystick itself pulses (touch_controls.gd
 ##           highlight_stick()), so nothing is drawn here.
 ## Sized with the window like the panels (money_panel.gd: min(height / 800, width / 1100)).
-const GOLD := Color("fff1c5")
-const FILL := Color(0.08, 0.16, 0.22, 0.78)
-const EDGE := Color("7abfb3")
+const BonStyle := preload("res://scripts/ui/bon_style.gd")
+# UI art style (18 Nov 2026): soft blue keys and pill, dark teal marks, a green pulse.
+const GOLD := BonStyle.INK
+const FILL := Color(0.875, 0.953, 0.957, 0.94)
+const EDGE := BonStyle.RIM
+const GLOW := BonStyle.GREEN_BOTTOM
 
 ## "view", "move" or "" (nothing).
 var kind := ""
@@ -25,7 +28,7 @@ func _init() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 func _ready() -> void:
-	_font = get_theme_default_font()
+	_font = BonStyle.font(700)
 
 func show_cue(what: String, on_touch: bool) -> void:
 	kind = what
@@ -57,7 +60,7 @@ func _draw_view() -> void:
 	# A dark pill behind the arrows and the glider (readable on a bright wall or sky).
 	var pill := StyleBoxFlat.new()
 	pill.bg_color = FILL
-	pill.border_color = Color(GOLD, glow)
+	pill.border_color = EDGE.lerp(GLOW, glow - 0.5)
 	pill.set_border_width_all(maxi(2, roundi(3.0 * f)))
 	pill.set_corner_radius_all(roundi(64.0 * f))
 	var half := Vector2(reach + 34.0 * f, 64.0 * f)
@@ -70,16 +73,16 @@ func _draw_view() -> void:
 	var at := center + Vector2(sin(t * 2.2) * reach * 0.45, 0.0)
 	if touch:
 		# A fingertip: a filled dot with a soft ring.
-		draw_circle(at, 30.0 * f, Color(GOLD, 0.9))
-		draw_arc(at, 42.0 * f, 0.0, TAU, 48, Color(GOLD, 0.45), maxf(2.0, 4.0 * f), true)
+		draw_circle(at, 30.0 * f, Color(GLOW, 0.9))
+		draw_arc(at, 42.0 * f, 0.0, TAU, 48, Color(GLOW, 0.45), maxf(2.0, 4.0 * f), true)
 	else:
 		# A mouse: a rounded body, the button split and a cable.
 		var size := Vector2(52.0, 78.0) * f
 		var body := StyleBoxFlat.new()
-		body.bg_color = Color(GOLD, 0.95)
+		body.bg_color = BonStyle.RIM
 		body.set_corner_radius_all(roundi(26.0 * f))
 		draw_style_box(body, Rect2(at - size * 0.5, size))
-		var line := Color(FILL, 1.0)
+		var line := GOLD
 		draw_line(at + Vector2(-size.x * 0.5, -size.y * 0.12), at + Vector2(size.x * 0.5, -size.y * 0.12), line, maxf(2.0, 3.0 * f))
 		draw_line(at + Vector2(0.0, -size.y * 0.5), at + Vector2(0.0, -size.y * 0.12), line, maxf(2.0, 3.0 * f))
 
@@ -97,10 +100,10 @@ func _draw_keys() -> void:
 		var rect := Rect2(origin + cell * (side + gap), Vector2(side, side))
 		var cap := StyleBoxFlat.new()
 		cap.bg_color = FILL
-		cap.border_color = GOLD.lerp(EDGE, 1.0 - glow)
+		cap.border_color = GLOW.lerp(EDGE, 1.0 - glow)
 		cap.set_border_width_all(maxi(2, roundi(4.0 * f)))
 		cap.set_corner_radius_all(roundi(12.0 * f))
-		cap.shadow_color = Color(GOLD, 0.35 * glow)
+		cap.shadow_color = Color(GLOW, 0.35 * glow)
 		cap.shadow_size = roundi(10.0 * f)
 		draw_style_box(cap, rect)
 		var size := roundi(side * 0.55)

@@ -18,16 +18,19 @@ const PinyinText := preload("res://scripts/ui/pinyin_text.gd")
 const UiIcons := preload("res://scripts/ui/ui_icons.gd")
 const TranslateButton := preload("res://scripts/ui/translate_button.gd")
 const ProgressBarRow := preload("res://scripts/ui/progress_bar.gd")
-## Hand over: the main action, drawn larger and in the accent colour.
-const ACCENT := Color("2f7d6f")
+const BonStyle := preload("res://scripts/ui/bon_style.gd")
 
 signal submitted(cents: int)
 signal close_requested
 
-const FILL := Color("142a38")
-const EDGE := Color("7abfb3")
-const GOLD := Color("fff1c5")
-const DIM := Color("aadddc")
+const FILL := BonStyle.SKY
+const EDGE := BonStyle.RIM
+const GOLD := BonStyle.INK
+const DIM := BonStyle.INK_SOFT
+## The mockup's parts: cream pills and tray, the light bills strip, the soft blue section tags.
+const CREAM := Color("fbf1e1")
+const STRIP := Color("f1f9fa")
+const TAG := Color("e4f4f6")
 const MAX_EACH := 99
 ## Bills and coins are drawn larger than the text scale so they are easy to hit on touch.
 const PIECE_SCALE := 1.15
@@ -69,18 +72,24 @@ var _bills_flow: HFlowContainer
 var _coins_title: Label
 var _coins_flow: HFlowContainer
 var _total_label: Label
+var _request_pill: PanelContainer
+var _bills_box: PanelContainer
+var _total_pill: PanelContainer
+var _basket: TextureRect
 var _clear_button: Button
 var _submit_button: Button
 var _close_button: Button
 
 func _init() -> void:
+	# Fredoka everywhere inside (UI art style, docs/guides/UI_STYLE.md, 18 Nov 2026).
+	theme = BonStyle.theme()
 	name = "Money panel"
 	visible = false
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	anchor_right = 1.0
 	anchor_bottom = 1.0
 	_shade = ColorRect.new()
-	_shade.color = Color(0.02, 0.05, 0.08, 0.82)
+	_shade.color = BonStyle.SHADE
 	_shade.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_shade.anchor_right = 1.0
 	_shade.anchor_bottom = 1.0
@@ -98,15 +107,6 @@ func _init() -> void:
 	resized.connect(_on_resized)
 	visibility_changed.connect(_on_resized)
 
-func _style(color: Color, border: bool = true) -> StyleBoxFlat:
-	var style := StyleBoxFlat.new()
-	style.bg_color = color
-	if border:
-		style.border_color = EDGE
-		style.set_border_width_all(2)
-	style.set_corner_radius_all(14)
-	return style
-
 func _label(color: Color) -> Label:
 	var label := Label.new()
 	label.add_theme_color_override("font_color", color)
@@ -122,10 +122,25 @@ func _button(handler: Callable) -> Button:
 	return button
 
 func _build() -> void:
+	# Layout to the user's mockup (docs/guides/design-references/ui/money-panel.webp, 18 Nov 2026):
+	# the request in a cream pill, section tags ("Tu mano", "Billetes", "Monedas"), a cream hand
+	# tray, the bills on a light strip, the total in a cream pill with a basket, cream Clear and
+	# Leave pills and a green Pay pill. Box sizes are set in _refresh() (they scale with the window).
 	var head := HBoxContainer.new()
+	head.alignment = BoxContainer.ALIGNMENT_BEGIN
 	_stack.add_child(head)
+	_request_pill = PanelContainer.new()
+	_request_pill.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_request_pill.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	head.add_child(_request_pill)
 	_request_label = _label(GOLD)
-	head.add_child(_request_label)
+	_request_label.autowrap_mode = TextServer.AUTOWRAP_OFF
+	_request_label.add_theme_font_override("font", BonStyle.font(700))
+	_request_pill.add_child(_request_label)
+	var spacer := Control.new()
+	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	head.add_child(spacer)
 	progress = ProgressBarRow.new()
 	head.add_child(progress)
 	_translate_button = TranslateButton.new()
@@ -134,19 +149,20 @@ func _build() -> void:
 	_x_button = _button(func() -> void: close_requested.emit())
 	_x_button.icon = UiIcons.texture("close", 64)
 	_x_button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_x_button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	head.add_child(_x_button)
 	_reading_label = PinyinText.style(_label(GOLD.darkened(0.15)))
 	_stack.add_child(_reading_label)
 	_native_label = _label(DIM)
 	_stack.add_child(_native_label)
-	_tray_title = _label(DIM)
-	_stack.add_child(_tray_title)
+	_tray_title = _label(GOLD)
+	_stack.add_child(_tag(_tray_title, ""))
 	_tray_box = PanelContainer.new()
-	_tray_box.add_theme_stylebox_override("panel", _style(Color("0c1c27")))
 	_tray_box.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_tray_box.size_flags_stretch_ratio = 3.0
 	_stack.add_child(_tray_box)
 	var tray_stack := VBoxContainer.new()
+	tray_stack.alignment = BoxContainer.ALIGNMENT_CENTER
 	_tray_box.add_child(tray_stack)
 	_tray_empty = TextureRect.new()
 	_tray_empty.texture = UiIcons.texture("hand", 128)
@@ -168,21 +184,42 @@ func _build() -> void:
 	_pool.size_flags_stretch_ratio = 2.0
 	_pool.alignment = BoxContainer.ALIGNMENT_CENTER
 	_stack.add_child(_pool)
-	_bills_title = _label(DIM)
-	_pool.add_child(_bills_title)
+	_bills_title = _label(GOLD)
+	_pool.add_child(_tag(_bills_title, "bills"))
+	_bills_box = PanelContainer.new()
+	_pool.add_child(_bills_box)
 	_bills_flow = HFlowContainer.new()
 	_bills_flow.alignment = FlowContainer.ALIGNMENT_CENTER
-	_pool.add_child(_bills_flow)
-	_coins_title = _label(DIM)
-	_pool.add_child(_coins_title)
+	_bills_box.add_child(_bills_flow)
+	_coins_title = _label(GOLD)
+	_pool.add_child(_tag(_coins_title, "coins"))
 	_coins_flow = HFlowContainer.new()
 	_coins_flow.alignment = FlowContainer.ALIGNMENT_CENTER
 	_pool.add_child(_coins_flow)
 	var bar := HBoxContainer.new()
 	bar.alignment = BoxContainer.ALIGNMENT_END
 	_stack.add_child(bar)
+	_total_pill = PanelContainer.new()
+	_total_pill.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_total_pill.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	bar.add_child(_total_pill)
+	var total_row := HBoxContainer.new()
+	total_row.alignment = BoxContainer.ALIGNMENT_CENTER
+	_total_pill.add_child(total_row)
+	_basket = TextureRect.new()
+	_basket.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_basket.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	_basket.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	total_row.add_child(_basket)
 	_total_label = _label(GOLD)
-	bar.add_child(_total_label)
+	_total_label.autowrap_mode = TextServer.AUTOWRAP_OFF
+	_total_label.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	_total_label.add_theme_font_override("font", BonStyle.font(700))
+	total_row.add_child(_total_label)
+	var gap := Control.new()
+	gap.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	gap.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	bar.add_child(gap)
 	_clear_button = _button(clear)
 	_clear_button.icon = UiIcons.texture("trash", 64)
 	bar.add_child(_clear_button)
@@ -191,22 +228,48 @@ func _build() -> void:
 		if cents > 0:
 			submitted.emit(cents))
 	_submit_button.icon = UiIcons.texture("hand", 64)
-	for state in ["normal", "hover", "pressed"]:
-		var style := _style(ACCENT.lightened(0.12) if state == "hover" else ACCENT)
-		style.border_color = GOLD
-		_submit_button.add_theme_stylebox_override(state, style)
-	var off := _style(Color("1d3442"))
-	off.border_color = Color(EDGE, 0.35)
-	_submit_button.add_theme_stylebox_override("disabled", off)
 	bar.add_child(_submit_button)
 	_close_button = _button(func() -> void: close_requested.emit())
 	_close_button.icon = UiIcons.texture("close", 64)
 	bar.add_child(_close_button)
-	for button in [_clear_button, _submit_button, _close_button]:
-		button.add_theme_constant_override("h_separation", 10)
-		# Disabled buttons fade clearly (nothing to clear or hand over yet).
-		button.add_theme_color_override("font_disabled_color", Color(DIM, 0.4))
-		button.add_theme_color_override("icon_disabled_color", Color(DIM, 0.4))
+
+## A section tag: a small soft blue pill holding `title` (and a BonStyle icon, "" = none). The
+## pill is styled in _refresh() (group "money_tag").
+func _tag(title: Label, icon: String) -> Control:
+	title.autowrap_mode = TextServer.AUTOWRAP_OFF
+	title.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	title.add_theme_font_override("font", BonStyle.font(700))
+	var holder := HBoxContainer.new()
+	holder.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var pill := PanelContainer.new()
+	pill.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	pill.add_to_group("money_tag")
+	holder.add_child(pill)
+	var row := HBoxContainer.new()
+	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	pill.add_child(row)
+	if icon != "":
+		var picture := TextureRect.new()
+		picture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		picture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		picture.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		picture.set_meta("icon_name", icon)
+		picture.add_to_group("money_tag_icon")
+		row.add_child(picture)
+	row.add_child(title)
+	return holder
+
+## A box of the mockup's parts at the window factor `f`: `fill` inside a white rim.
+func _part(fill: Color, radius: float, rim: float, f: float, margin_x: float, margin_y: float, shadow := true) -> StyleBoxFlat:
+	var look := BonStyle.flat(fill, roundi(radius * f), maxi(2, roundi(rim * f)), shadow)
+	if shadow:
+		look.shadow_size = roundi(8 * f)
+		look.shadow_offset = Vector2(0, 3 * f)
+	look.content_margin_left = margin_x * f
+	look.content_margin_right = margin_x * f
+	look.content_margin_top = margin_y * f
+	look.content_margin_bottom = margin_y * f
+	return look
 
 # --- Public API ----------------------------------------------------------------------------
 
@@ -289,8 +352,29 @@ func _refresh() -> void:
 	var share := minf(0.94, TALL_LIMIT * screen.x / screen.y)
 	_card.anchor_top = 0.5 - share / 2.0
 	_card.anchor_bottom = 0.5 + share / 2.0
-	_card.add_theme_stylebox_override("panel", _style(FILL))
-	(_card.get_theme_stylebox("panel") as StyleBoxFlat).set_content_margin_all(16 * f)
+	_card.add_theme_stylebox_override("panel", _part(FILL, 44, 7, f, 22, 18))
+	_request_pill.add_theme_stylebox_override("panel", _part(CREAM, 40, 5, f, 26, 8))
+	_tray_box.add_theme_stylebox_override("panel", _part(CREAM, 30, 5, f, 18, 14, false))
+	_bills_box.add_theme_stylebox_override("panel", _part(STRIP, 26, 5, f, 14, 12, false))
+	_total_pill.add_theme_stylebox_override("panel", _part(CREAM, 40, 5, f, 26, 8))
+	for pill in get_tree().get_nodes_in_group("money_tag"):
+		if is_ancestor_of(pill):
+			pill.add_theme_stylebox_override("panel", _part(TAG, 24, 4, f, 16, 3, false))
+			(pill.get_child(0) as HBoxContainer).add_theme_constant_override("separation", roundi(10 * f))
+	for picture in get_tree().get_nodes_in_group("money_tag_icon"):
+		if is_ancestor_of(picture):
+			picture.texture = BonStyle.icon_texture(str(picture.get_meta("icon_name")), roundi(34 * f))
+			picture.custom_minimum_size = Vector2(32, 32) * f
+	_basket.texture = BonStyle.icon_texture("basket", roundi(48 * f))
+	_basket.custom_minimum_size = Vector2(46, 46) * f
+	(_basket.get_parent() as HBoxContainer).add_theme_constant_override("separation", roundi(16 * f))
+	BonStyle.style_button(_clear_button, "minor", f, 26)
+	BonStyle.style_button(_close_button, "minor", f, 26)
+	BonStyle.style_button(_x_button, "minor", f, 26)
+	BonStyle.style_button(_submit_button, "primary", f, 30)
+	for button in [_clear_button, _close_button, _x_button]:
+		for name in ["font_color", "font_hover_color", "font_pressed_color", "font_hover_pressed_color", "icon_normal_color", "icon_hover_color", "icon_pressed_color", "icon_hover_pressed_color"]:
+			button.add_theme_color_override(name, GOLD)
 	_stack.add_theme_constant_override("separation", int(8 * f))
 	_set_font(_request_label, 34, f)
 	_set_font(_native_label, 24, f)
@@ -300,22 +384,20 @@ func _refresh() -> void:
 	_set_font(_coins_title, 22, f)
 	_set_font(_total_label, 38, f)
 	for button in [_x_button, _clear_button, _submit_button, _close_button]:
-		_set_font(button, 24, f)
-		button.add_theme_constant_override("icon_max_width", roundi(28 * f))
-	_set_font(_submit_button, 28, f)
-	_submit_button.add_theme_constant_override("icon_max_width", roundi(34 * f))
-	_x_button.custom_minimum_size = Vector2(60, 52) * f
+		button.add_theme_constant_override("icon_max_width", roundi(30 * f))
+		button.add_theme_constant_override("h_separation", roundi(14 * f))
+	_submit_button.add_theme_constant_override("icon_max_width", roundi(40 * f))
+	_x_button.custom_minimum_size = Vector2(64, 60) * f
 	_translate_button.refresh(show_native, f)
 	progress.apply_scale(f)
 	_translate_button.tooltip_text = str(ui.get("translate", {}).get("native", ""))
 	# Equal widths for the two side buttons; Hand over is the widest and tallest.
 	for button in [_clear_button, _close_button]:
-		button.custom_minimum_size = Vector2(190, 62) * f
-	_submit_button.custom_minimum_size = Vector2(250, 72) * f
+		button.custom_minimum_size = Vector2(190, 70) * f
+	_submit_button.custom_minimum_size = Vector2(250, 76) * f
 	_tray_empty.custom_minimum_size = Vector2(0, 84 * f)
 	_set_font(_tray_hint, 26, f)
 	_tray_box.custom_minimum_size = Vector2(0, 120 * f)
-	(_tray_box.get_theme_stylebox("panel") as StyleBoxFlat).set_content_margin_all(18 * f)
 	_pool.add_theme_constant_override("separation", int(10 * f))
 	for flow in [_tray_flow, _bills_flow, _coins_flow]:
 		flow.add_theme_constant_override("h_separation", int(14 * f))

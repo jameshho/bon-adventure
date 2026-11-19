@@ -8,9 +8,11 @@ extends Button
 ## translation_shown: "" = the open question's words, or `word_key` for the word card).
 const GameSettings := preload("res://scripts/core/game_settings.gd")
 const PracticeLog := preload("res://scripts/learning/practice_log.gd")
-const EDGE := Color("7abfb3")
-const FILL := Color("7abfb3")
-const INK := Color("142a38")
+const BonStyle := preload("res://scripts/ui/bon_style.gd")
+# UI art style (18 Nov 2026): a blue bubble, outlined on light blue while hidden, filled while shown.
+const EDGE := BonStyle.BLUE_BOTTOM
+const FILL := BonStyle.BLUE_BOTTOM
+const INK := Color.WHITE
 
 var on := false
 var factor := 1.0
@@ -47,18 +49,18 @@ func _draw() -> void:
 	var body := Rect2(Vector2(4, 4) * f, size - Vector2(8, 14) * f)
 	var style := StyleBoxFlat.new()
 	style.set_corner_radius_all(int(12 * f))
-	style.bg_color = FILL if on else Color(1, 1, 1, 0.06 if is_hovered() else 0.0)
+	style.bg_color = FILL if on else (BonStyle.RIM if is_hovered() else BonStyle.SKY_TOP)
 	style.border_color = EDGE
 	style.set_border_width_all(maxi(2, int(2.5 * f)))
 	draw_style_box(style, body)
 	# The bubble's tail, bottom left.
 	var tip := PackedVector2Array([body.position + Vector2(12 * f, body.size.y - 1), body.position + Vector2(26 * f, body.size.y - 1), body.position + Vector2(10 * f, body.size.y + 9 * f)])
 	draw_colored_polygon(tip, FILL if on else EDGE)
-	var font := get_theme_font("font")
+	var font: Font = BonStyle.font(700)
 	var font_size := roundi(22 * f)
 	var width := font.get_string_size(badge, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
 	var baseline := body.get_center().y + (font.get_ascent(font_size) - font.get_descent(font_size)) / 2.0
-	draw_string(font, Vector2(body.get_center().x - width / 2.0, baseline), badge, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, INK if on else Color.WHITE)
+	draw_string(font, Vector2(body.get_center().x - width / 2.0, baseline), badge, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, INK if on else EDGE)
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_MOUSE_ENTER or what == NOTIFICATION_MOUSE_EXIT:

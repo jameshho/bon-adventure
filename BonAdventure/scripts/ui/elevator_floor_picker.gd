@@ -25,11 +25,14 @@ signal closed(elevator: Node3D)
 const GROUP := "elevator_floor_picker"
 const DESIGN := Vector2(1100, 800)
 ## The HUD's colours (scripts/ui/day_clock.gd, as electrical_box_panel.gd).
-const FILL := Color(0.07, 0.14, 0.19, 0.92)
-const EDGE := Color("7abfb3")
-const GOLD := Color("e7c27c")
-const INK := Color("fff6e6")
-const TEAL := Color("a9d5c6")
+const BonStyle := preload("res://scripts/ui/bon_style.gd")
+# UI art style (18 Nov 2026, docs/guides/UI_STYLE.md): a soft blue bar with a white rim, dark teal
+# words, green on hover.
+const FILL := Color(0.875, 0.953, 0.957, 0.96)
+const EDGE := BonStyle.RIM
+const GOLD := BonStyle.INK
+const INK := BonStyle.INK
+const TEAL := BonStyle.GREEN_BOTTOM
 const FADE := 0.18
 ## Camera glide in and back (a little quicker than the electrical box: no door to open).
 const ZOOM_SECONDS := 0.6
@@ -59,7 +62,7 @@ func _ready() -> void:
 	add_to_group(GROUP)
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	visible = false
-	_font = get_theme_default_font()
+	_font = BonStyle.font(700)
 	_close_button = Button.new()
 	_close_button.text = "✕"
 	_close_button.focus_mode = Control.FOCUS_NONE
@@ -266,13 +269,17 @@ func _layout() -> void:
 	_close_button.add_theme_font_size_override("font_size", int(24 * _k))
 	for kind in ["normal", "hover", "pressed", "disabled"]:
 		var style := StyleBoxFlat.new()
-		style.bg_color = Color("1d3a4c") if kind != "hover" else Color("1d3a4c").lightened(0.12)
-		style.border_color = TEAL if kind == "hover" else EDGE
-		style.set_border_width_all(maxi(2, int(2 * _k)))
+		# A cream round ✕, like the money panel's (user's mockup, 18 Nov 2026).
+		style.bg_color = Color("fbf1e1") if kind != "hover" else Color("fff8ee")
+		if kind == "pressed":
+			style.bg_color = Color("f1e2c8")
+		style.anti_aliasing = true
+		style.border_color = EDGE
+		style.set_border_width_all(maxi(3, int(4 * _k)))
 		style.set_corner_radius_all(int(button * 0.5))
 		_close_button.add_theme_stylebox_override(kind, style)
 	_close_button.add_theme_color_override("font_color", INK)
-	_close_button.add_theme_color_override("font_hover_color", Color.WHITE)
+	_close_button.add_theme_color_override("font_hover_color", INK)
 	queue_redraw()
 
 func _draw() -> void:
@@ -283,13 +290,13 @@ func _draw() -> void:
 			if rect.size.x <= 0.0:
 				continue
 			var radius := minf(rect.size.x, rect.size.y) * 0.42
-			draw_arc(rect.get_center(), radius, 0.0, TAU, 48, Color(TEAL, 0.75), maxf(2.0, 3.0 * _k), true)
+			draw_arc(rect.get_center(), radius, 0.0, TAU, 48, Color(BonStyle.RIM, 0.9), maxf(3.0, 4.0 * _k), true)
 	var style := StyleBoxFlat.new()
 	style.bg_color = FILL
 	style.border_color = EDGE
-	style.set_border_width_all(maxi(2, int(2 * _k)))
+	style.set_border_width_all(maxi(3, int(4 * _k)))
 	style.set_corner_radius_all(int(_bar.size.y * 0.5))
-	style.shadow_color = Color(0, 0, 0, 0.3)
+	style.shadow_color = Color(0.1, 0.27, 0.32, 0.25)
 	style.shadow_size = int(8 * _k)
 	draw_style_box(style, _bar)
 	var x := _bar.position.x + 28 * _k

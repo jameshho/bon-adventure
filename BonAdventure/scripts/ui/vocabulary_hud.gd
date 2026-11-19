@@ -17,6 +17,7 @@ const PinyinText := preload("res://scripts/ui/pinyin_text.gd")
 const PracticeLog := preload("res://scripts/learning/practice_log.gd")
 const Lexicon := preload("res://scripts/language/lexicon.gd")
 const UiIcons := preload("res://scripts/ui/ui_icons.gd")
+const BonStyle := preload("res://scripts/ui/bon_style.gd")
 ## Switched-off features (minimap, full map, hyper speed; README.md#hidden-features).
 const Features := preload("res://scripts/core/features.gd")
 ## Interface text in the native language (data/phrases.json; UI Stage 3, 4 Nov 2026).
@@ -109,7 +110,8 @@ var flight_label: Label
 # button (top right) opens the journal, whose Saved tab lists them (9 Nov 2026: the separate
 # saved-words panel was merged into the journal). Persisted by VocabularyProgress.
 const VocabularyProgress = preload("res://scripts/learning/vocabulary_progress.gd")
-const BOOKMARK_GOLD := Color("ffd27f")
+const BOOKMARK_GOLD := Color("e9a91f")   # the saved-word star (same as the journal's)
+const PULSE_TINT := Color("c4ecb0")   # a tutorial-pulsed button glows soft green (no yellow, 18 Nov 2026)
 var bookmark_button: Button
 ## Hold to see the town's signs in the native language (the touch twin of holding L,
 ## 9 Nov 2026); left of the gear, labelled with the native badge (EN, ES, 中).
@@ -180,6 +182,9 @@ func _ready() -> void:
     ui_root = Control.new()
     ui_root.name = "Viewport aligned HUD"
     ui_root.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    # Fredoka for every HUD text (UI art style, docs/guides/UI_STYLE.md, 18 Nov 2026).
+    ui_root.theme = Theme.new()
+    ui_root.theme.default_font = BonStyle.font(600)
     add_child(ui_root)
     flight_label=Label.new()
     flight_label.position=Vector2(18,345)
@@ -242,10 +247,14 @@ func _ready() -> void:
     popup_panel.visible = false
     ui_root.add_child(popup_panel)
     var card := StyleBoxFlat.new()
-    card.bg_color = Color(0.07, 0.14, 0.19, 0.98)
-    card.border_color = Color("e7c27c")
-    card.set_border_width_all(2)
-    card.set_corner_radius_all(18)
+    card.bg_color = BonStyle.SKY
+    card.border_color = BonStyle.RIM
+    card.set_border_width_all(5)
+    card.set_corner_radius_all(28)
+    card.shadow_color = Color(0.1, 0.27, 0.32, 0.22)
+    card.shadow_size = 14
+    card.shadow_offset = Vector2(0, 5)
+    card.anti_aliasing = true
     card.content_margin_left = 34
     card.content_margin_right = 34
     card.content_margin_top = 28
@@ -259,32 +268,33 @@ func _ready() -> void:
     category_label = Label.new()
     category_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
     category_label.add_theme_font_size_override("font_size", 15)
-    category_label.add_theme_color_override("font_color", Color("a9d5c6"))
+    category_label.add_theme_color_override("font_color", BonStyle.INK_SOFT)
     stack.add_child(category_label)
     title_label = Label.new()
     title_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
     title_label.add_theme_font_size_override("font_size", 16)
-    title_label.add_theme_color_override("font_color", Color("e6c58c"))
+    title_label.add_theme_color_override("font_color", BonStyle.BROWN)
     stack.add_child(title_label)
     primary_label = Label.new()
     primary_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
     primary_label.add_theme_font_size_override("font_size", 40)
-    primary_label.add_theme_color_override("font_color", Color("fff6e6"))
+    primary_label.add_theme_color_override("font_color", BonStyle.INK)
+    primary_label.add_theme_font_override("font", BonStyle.font(700))
     stack.add_child(primary_label)
     reading_label = PinyinText.style(Label.new())
     reading_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
     reading_label.add_theme_font_size_override("font_size", 24)
-    reading_label.add_theme_color_override("font_color", Color("f2d9a0"))
+    reading_label.add_theme_color_override("font_color", BonStyle.TERM)
     stack.add_child(reading_label)
     secondary_label = Label.new()
     secondary_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
     secondary_label.add_theme_font_size_override("font_size", 24)
-    secondary_label.add_theme_color_override("font_color", Color("bed9e4"))
+    secondary_label.add_theme_color_override("font_color", Color("3d5560"))
     stack.add_child(secondary_label)
     close_hint = Label.new()
     phrase_label(close_hint, "card.foot")
     close_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-    close_hint.add_theme_color_override("font_color", Color("bac6cc"))
+    close_hint.add_theme_color_override("font_color", BonStyle.INK_SOFT)
     stack.add_child(close_hint)
 
     mode = GameSettings.shared().display
@@ -304,8 +314,11 @@ func _ready() -> void:
     peek_button.focus_mode = Control.FOCUS_NONE
     peek_button.mouse_filter = Control.MOUSE_FILTER_STOP
     peek_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-    peek_button.add_theme_color_override("font_color", Color("fff2d8"))
-    peek_button.add_theme_color_override("font_pressed_color", BOOKMARK_GOLD)
+    for state in ["font_color", "font_hover_color"]:
+        peek_button.add_theme_color_override(state, BonStyle.INK)
+    peek_button.add_theme_color_override("font_pressed_color", Color.WHITE)
+    peek_button.add_theme_color_override("font_hover_pressed_color", Color.WHITE)
+    peek_button.add_theme_font_override("font", BonStyle.font(700))
     style_corner_button(peek_button)
     peek_button.button_down.connect(func() -> void: GameSettings.shared().set_peek(true))
     peek_button.button_up.connect(func() -> void: GameSettings.shared().set_peek(false))
@@ -392,13 +405,13 @@ func _ready() -> void:
     # progress, not a second database of vocabulary discoveries.
     journal_overlay = ColorRect.new()
     journal_overlay.name = "Study journal dimmer"
-    journal_overlay.color = Color(0.02, 0.05, 0.08, 0.88)
+    journal_overlay.color = BonStyle.SHADE
     journal_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
     journal_overlay.visible = false
     ui_root.add_child(journal_overlay)
     journal_panel = PanelContainer.new()
     journal_panel.mouse_filter = Control.MOUSE_FILTER_STOP
-    journal_panel.add_theme_stylebox_override("panel", make_ui_card(Color("142b37"), Color("cfb880"), 18))
+    journal_panel.add_theme_stylebox_override("panel", make_light_card(BonStyle.MINT_TOP, 34))
     journal_overlay.add_child(journal_panel)
     var journal_stack := VBoxContainer.new()
     journal_stack.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -414,13 +427,14 @@ func _ready() -> void:
     journal_icon = TextureRect.new()
     journal_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
     journal_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-    journal_icon.modulate = BOOKMARK_GOLD
+    journal_icon.modulate = BonStyle.INK
     journal_icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
     journal_header.add_child(journal_icon)
     journal_title = Label.new()
     journal_title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
     journal_title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-    journal_title.add_theme_color_override("font_color", Color("fff3cc"))
+    journal_title.add_theme_color_override("font_color", BonStyle.INK)
+    journal_title.add_theme_font_override("font", BonStyle.font(700))
     journal_header.add_child(journal_title)
     var progress_stack := VBoxContainer.new()
     progress_stack.alignment = BoxContainer.ALIGNMENT_CENTER
@@ -428,16 +442,16 @@ func _ready() -> void:
     journal_header.add_child(progress_stack)
     journal_progress_label = Label.new()
     journal_progress_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-    journal_progress_label.add_theme_color_override("font_color", Color("bcd9dc"))
+    journal_progress_label.add_theme_color_override("font_color", BonStyle.INK_SOFT)
     progress_stack.add_child(journal_progress_label)
     journal_progress = ProgressBar.new()
     journal_progress.show_percentage = false
     journal_progress.mouse_filter = Control.MOUSE_FILTER_IGNORE
     var bar_back := StyleBoxFlat.new()
-    bar_back.bg_color = Color("0c1b24")
+    bar_back.bg_color = Color("cfe8eb")
     bar_back.set_corner_radius_all(6)
     var bar_fill := StyleBoxFlat.new()
-    bar_fill.bg_color = Color("8fdba0")
+    bar_fill.bg_color = BonStyle.GREEN_BOTTOM
     bar_fill.set_corner_radius_all(6)
     journal_progress.add_theme_stylebox_override("background", bar_back)
     journal_progress.add_theme_stylebox_override("fill", bar_fill)
@@ -475,7 +489,7 @@ func _ready() -> void:
 
     help_overlay = PanelContainer.new()
     help_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
-    help_overlay.add_theme_stylebox_override("panel", make_ui_card(Color("1b303c"), Color("9ebbd2"), 18))
+    help_overlay.add_theme_stylebox_override("panel", make_light_card(BonStyle.MINT_TOP, 30))
     help_overlay.visible = false
     ui_root.add_child(help_overlay)
     build_help_content()
@@ -542,8 +556,9 @@ func _layout_hud() -> void:
     card_box.content_margin_right = 40.0 * f
     card_box.content_margin_top = 34.0 * f
     card_box.content_margin_bottom = 24.0 * f
-    card_box.set_corner_radius_all(roundi(22 * f))
-    card_box.set_border_width_all(maxi(2, roundi(3 * f)))
+    card_box.set_corner_radius_all(roundi(32 * f))
+    card_box.set_border_width_all(maxi(3, roundi(6 * f)))
+    card_box.shadow_size = roundi(14 * f)
     (popup_panel.get_child(0) as VBoxContainer).add_theme_constant_override("separation", roundi(12 * f))
     category_label.add_theme_font_size_override("font_size", roundi(22 * f))
     title_label.add_theme_font_size_override("font_size", roundi(24 * f))
@@ -861,7 +876,7 @@ func game_buttons_hidden() -> bool:
 
 ## Whether `button` is hidden by a game (cluster_off) or under what covers the lower screen
 ## (cluster_cover: the dialogue box).
-## A gentle grow-and-shrink with a gold tint while the tutorial asks for this button.
+## A gentle grow-and-shrink with a soft green tint while the tutorial asks for this button.
 func _pulse(button: Control, on: bool) -> void:
     button.pivot_offset = button.size * 0.5
     if not on:
@@ -871,7 +886,7 @@ func _pulse(button: Control, on: bool) -> void:
         return
     var wave := 0.5 + 0.5 * sin(_pulse_time * 6.0)
     button.scale = Vector2.ONE * (1.0 + 0.12 * wave)
-    button.self_modulate = Color.WHITE.lerp(BOOKMARK_GOLD, wave)
+    button.self_modulate = Color.WHITE.lerp(PULSE_TINT, wave)
 
 func cluster_hidden(button: Control) -> bool:
     if cluster_off or in_minigame:
@@ -881,16 +896,26 @@ func cluster_hidden(button: Control) -> bool:
     var cover: Rect2 = cluster_cover.call()
     return cover.has_area() and cover.intersects(Rect2(button.position, button.size))
 
-## The top-right gear and book: the same dark box, teal edge on hover (sized in _layout_hud).
+## The top-right gear and book and the bottom-right buttons: a cream square with a white rim and
+## an INK icon; pressed turns green with a white icon (UI art style, 18 Nov 2026; sized in
+## _layout_hud).
 func style_corner_button(button: Button) -> void:
-    var looks := {"normal": [Color("142a38"), Color("7abfb3")], "hover": [Color("1d3a4c"), Color("a9d5c6")], "pressed": [Color("1d3a4c"), BOOKMARK_GOLD]}
+    var looks := {"normal": BonStyle.SKY, "hover": BonStyle.SKY_TOP, "pressed": BonStyle.GREEN_BOTTOM}
     for state in looks:
-        var style := make_ui_card(looks[state][0], looks[state][1], 12)
+        var style := make_ui_card(looks[state], BonStyle.RIM, 12)
+        style.set_border_width_all(4)
+        style.shadow_color = Color(0.1, 0.27, 0.32, 0.25)
+        style.shadow_size = 6
+        style.shadow_offset = Vector2(0, 3)
+        style.anti_aliasing = true
         corner_styles.append(style)
         button.add_theme_stylebox_override(state, style)
-        if state == "hover":
-            button.add_theme_stylebox_override("hover_pressed", style)
+    button.add_theme_stylebox_override("hover_pressed", button.get_theme_stylebox("pressed"))
     button.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
+    for name in ["icon_normal_color", "icon_hover_color", "icon_focus_color"]:
+        button.add_theme_color_override(name, BonStyle.INK)
+    for name in ["icon_pressed_color", "icon_hover_pressed_color"]:
+        button.add_theme_color_override(name, Color.WHITE)
 
 # Canonical dictionary key for the open card. The interaction controller shows
 # English as journal_english(key) and Spanish as vocabulary[key], so match both.
@@ -925,7 +950,7 @@ func _draw_bookmark_star() -> void:
     # Drawn for a 44 px button and scaled with it (the card scales with the window).
     var k: float = bookmark_star.size.x / 44.0
     if bookmark_star.is_hovered():
-        bookmark_star.draw_circle(center, 21.0 * k, Color(1, 1, 1, 0.08))
+        bookmark_star.draw_circle(center, 21.0 * k, Color(0.48, 0.29, 0.13, 0.08))
     var points := PackedVector2Array()
     for i in 10:
         var radius: float = (17.0 if i % 2 == 0 else 7.2) * k
@@ -989,6 +1014,17 @@ func _book_box(rect: Rect2, radius: float, color: Color) -> void:
     box.draw(bookmark_button.get_canvas_item(), rect)
 
 
+## A big light card (the journal and the F1 guide): `fill` inside a thick white rim with a soft
+## shadow (UI art style, 18 Nov 2026). A StyleBoxFlat so _layout_hud can set its margins.
+func make_light_card(fill: Color, corners: int) -> StyleBoxFlat:
+    var card := make_ui_card(fill, BonStyle.RIM, corners)
+    card.set_border_width_all(6)
+    card.shadow_color = Color(0.1, 0.27, 0.32, 0.3)
+    card.shadow_size = 18
+    card.shadow_offset = Vector2(0, 6)
+    card.anti_aliasing = true
+    return card
+
 func make_ui_card(fill: Color, outline: Color, corners: int) -> StyleBoxFlat:
     var card := StyleBoxFlat.new()
     card.bg_color = fill
@@ -1047,22 +1083,22 @@ func render_journal() -> void:
 const HELP_PLAIN_TOKENS := ["/", "+", "hold", "then"]
 ## Words on key caps, shown in the native language; other caps are printed key names.
 const KEY_WORDS := {"hold": "help.key_hold", "then": "help.key_then", "Right-click": "help.key_right_click", "Left-click": "help.key_left_click", "Scroll": "help.key_scroll", "Space": "help.key_space"}
-const HELP_ON := Color("2f7d4f")
-const HELP_OFF := Color("34444f")
+const HELP_ON := Color("45a83c")
+const HELP_OFF := Color("c9e5e8")
 
 ## Every key in the game, grouped; rows are [keys, description, optional toggle id];
 ## titles and descriptions are phrase ids (help.*), key words are KEY_WORDS.
 func help_sections() -> Array:
     return [
         [
-            ["help.toggles", Color("f5e2ac"), [
+            ["help.toggles", BonStyle.BROWN, [
                 [["Shift"], "help.sprint", "sprint"],
                 [["H"], "help.hyper", "hyper"] if Features.HYPER_SPEED else [],
                 [["I"], "help.jump", "jump"],
                 [["N"], "help.noclip", "noclip"],
                 [["B"], "help.zones", "zones"],
                 [["F3"], "help.fps", "fps"]]],
-            ["help.move", Color("9fd6a8"), [
+            ["help.move", Color("3f9a35"), [
                 [["W", "A", "S", "D"], "help.walk"],
                 [["Space"], "help.jump_row"],
                 [["W", "/", "S"], "help.ladder"],
@@ -1071,7 +1107,7 @@ func help_sections() -> Array:
                 [["Space", "/", "Ctrl"], "help.fly"]]],
         ],
         [
-            ["help.learn", Color("9ebbd2"), [
+            ["help.learn", Color("2f87cf"), [
                 [["Left-click"], "help.study"],
                 [["E"], "help.use"],
                 [["J"], "help.journal"],
@@ -1079,26 +1115,26 @@ func help_sections() -> Array:
                 [["hold", "L"], "help.peek"],
                 [["F1"], "help.guide"],
                 [["Esc"], "help.esc"]]],
-            ["help.cars", Color("f2b27a"), [
+            ["help.cars", BonStyle.TERM, [
                 [["W", "/", "S"], "help.accelerate"],
                 [["A", "/", "D"], "help.steer"],
                 [["Space", "/", "R"], "help.brake"],
                 [["E"], "help.get_out"]]],
-            ["help.seats", Color("d9a9e8"), [
+            ["help.seats", Color("9a5bb5"), [
                 [["A", "/", "D"], "help.swivel"],
                 [["W", "/", "S"], "help.swan"],
                 [["E", "then", "W", "/", "S"], "help.swing"],
                 [["1", "/", "2", "/", "3"], "help.elevator"]]],
         ],
         [
-            ["help.helicopter", Color("f2b27a"), [
+            ["help.helicopter", BonStyle.TERM, [
                 [["W", "/", "S"], "help.pitch_accelerate"],
                 [["A", "/", "D"], "help.bank_turn"],
                 [["Space", "/", "Shift"], "help.rise"],
                 [["hold", "R"], "help.hover"],
                 [["C"], "help.easy_flying"],
                 [["E"], "help.heli_exit"]]],
-            ["help.turboprop", Color("f2b27a"), [
+            ["help.turboprop", BonStyle.TERM, [
                 [["W", "/", "Space"], "help.plane_up"],
                 [["S", "/", "Shift"], "help.plane_down"],
                 [["C"], "help.easy_flying"],
@@ -1116,8 +1152,8 @@ func make_keycap(text: String) -> PanelContainer:
     var cap := PanelContainer.new()
     cap.mouse_filter = Control.MOUSE_FILTER_IGNORE
     var style := StyleBoxFlat.new()
-    style.bg_color = Color("0f1d26")
-    style.border_color = Color("9ebbd2")
+    style.bg_color = BonStyle.RIM
+    style.border_color = BonStyle.SKY_EDGE
     style.set_border_width_all(1)
     style.border_width_bottom = 3
     style.set_corner_radius_all(5)
@@ -1129,7 +1165,8 @@ func make_keycap(text: String) -> PanelContainer:
     var label := Label.new()
     label.text = text
     label.add_theme_font_size_override("font_size", 13)
-    label.add_theme_color_override("font_color", Color("f5e2ac"))
+    label.add_theme_color_override("font_color", BonStyle.INK)
+    label.add_theme_font_override("font", BonStyle.font(700))
     cap.add_child(label)
     return cap
 
@@ -1145,7 +1182,7 @@ func make_help_row(keys: Array, description: String, toggle_id: String) -> HBoxC
             var plain := Label.new()
             plain.text = UiText.maybe(KEY_WORDS.get(key, str(key)))
             plain.add_theme_font_size_override("font_size", 12)
-            plain.add_theme_color_override("font_color", Color("9ebbd2"))
+            plain.add_theme_color_override("font_color", BonStyle.INK_SOFT)
             key_box.add_child(plain)
         else:
             key_box.add_child(make_keycap(UiText.maybe(KEY_WORDS.get(key, str(key)))))
@@ -1156,7 +1193,7 @@ func make_help_row(keys: Array, description: String, toggle_id: String) -> HBoxC
     text.custom_minimum_size.x = 90
     text.size_flags_horizontal = Control.SIZE_EXPAND_FILL
     text.add_theme_font_size_override("font_size", 14)
-    text.add_theme_color_override("font_color", Color("f8f3e6"))
+    text.add_theme_color_override("font_color", Color("3d5560"))
     row.add_child(text)
     if not toggle_id.is_empty():
         var pill := PanelContainer.new()
@@ -1188,7 +1225,8 @@ func build_help_content() -> void:
     var title := Label.new()
     title.text = UiText.t("help.title").to_upper()
     title.add_theme_font_size_override("font_size", 26)
-    title.add_theme_color_override("font_color", Color("f5e2ac"))
+    title.add_theme_color_override("font_color", BonStyle.INK)
+    title.add_theme_font_override("font", BonStyle.font(700))
     header.add_child(title)
     var spacer := Control.new()
     spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -1196,7 +1234,7 @@ func build_help_content() -> void:
     var close_hint := Label.new()
     close_hint.text = UiText.t("help.close")
     close_hint.add_theme_font_size_override("font_size", 14)
-    close_hint.add_theme_color_override("font_color", Color("9ebbd2"))
+    close_hint.add_theme_color_override("font_color", BonStyle.INK_SOFT)
     header.add_child(close_hint)
     help_close = Button.new()
     help_close.name = "Close help"
@@ -1216,6 +1254,13 @@ func build_help_content() -> void:
     help_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
     help_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
     body.add_child(help_scroll)
+    # A light scroll bar like the journal's (UI art style, 18 Nov 2026).
+    var bar := help_scroll.get_v_scroll_bar()
+    for part in [["scroll", Color("cfe8eb")], ["grabber", Color("9fcfd5")], ["grabber_highlight", Color("8cc6cd")], ["grabber_pressed", BonStyle.GREEN_BOTTOM]]:
+        var look := StyleBoxFlat.new()
+        look.bg_color = part[1]
+        look.set_corner_radius_all(8)
+        bar.add_theme_stylebox_override(part[0], look)
     var flow := HFlowContainer.new()
     flow.size_flags_horizontal = Control.SIZE_EXPAND_FILL
     flow.add_theme_constant_override("h_separation", 14)
@@ -1229,14 +1274,15 @@ func build_help_content() -> void:
         flow.add_child(stack)
         for section in column:
             var card := PanelContainer.new()
-            card.add_theme_stylebox_override("panel", make_ui_card(Color("243e4d"), Color("3d5b6e"), 10))
+            card.add_theme_stylebox_override("panel", make_ui_card(BonStyle.SKY, BonStyle.RIM, 18))
             stack.add_child(card)
             var rows := VBoxContainer.new()
             rows.add_theme_constant_override("separation", 5)
             card.add_child(rows)
             var heading := Label.new()
             heading.text = UiText.t(section[0]).to_upper()
-            heading.add_theme_font_size_override("font_size", 14)
+            heading.add_theme_font_size_override("font_size", 15)
+            heading.add_theme_font_override("font", BonStyle.font(700))
             heading.add_theme_color_override("font_color", section[1])
             rows.add_child(heading)
             for entry in section[2]:
@@ -1256,7 +1302,7 @@ func set_help_state(id: String, on: bool, text: String = "") -> void:
     var label: Label = pill["label"]
     var style: StyleBoxFlat = pill["style"]
     label.text = text if not text.is_empty() else UiText.t("hud.on" if on else "hud.off")
-    label.add_theme_color_override("font_color", Color("ffffff") if on else Color("aebfca"))
+    label.add_theme_color_override("font_color", Color("ffffff") if on else BonStyle.INK_SOFT)
     style.bg_color = HELP_ON if on else HELP_OFF
 
 func set_infinite_jump(enabled: bool) -> void:

@@ -84,6 +84,7 @@ extends Control
 ## view drag; only the first finger has an emulated click). A mouse click never reaches this layer.
 const UiIcons := preload("res://scripts/ui/ui_icons.gd")
 const UiText := preload("res://scripts/language/ui_text.gd")
+const BonStyle := preload("res://scripts/ui/bon_style.gd")
 ## Switched-off features (hyper speed: no lightning button; README.md#hidden-features).
 const Features := preload("res://scripts/core/features.gd")
 const FILL := Color(0.08, 0.16, 0.22, 0.55)
@@ -160,8 +161,9 @@ var _font: Font
 var run_button: Button
 var reset_button: Button
 var _run_styles: Dictionary = {}
-const RUN_LIT := [Color("2b7a70"), Color("fff1c5")]
-const RESET_RED := [Color("b3261e"), Color("ff9c8f")]
+# Run (on: green) and Reset (coral) in the UI art style (18 Nov 2026), white rims.
+const RUN_LIT := [BonStyle.GREEN_BOTTOM, BonStyle.RIM]
+const RESET_RED := [BonStyle.CORAL_BOTTOM, BonStyle.RIM]
 
 func _init() -> void:
 	name = "TouchControls"
@@ -296,11 +298,17 @@ func _hud_button(title: String, handler: Callable) -> Button:
 func _styles(colors: Variant) -> Dictionary:
 	var looks := {}
 	for state in ["normal", "hover", "pressed", "hover_pressed"]:
-		var fill: Color = Color("142a38") if colors == null else colors[0]
-		var edge: Color = Color("7abfb3") if colors == null else colors[1]
+		var fill: Color = BonStyle.SKY if colors == null else colors[0]
+		var edge: Color = BonStyle.RIM if colors == null else colors[1]
 		if state == "pressed" or state == "hover_pressed":
-			fill = fill.darkened(0.2)
-		looks[state] = hud.make_ui_card(fill, edge, 12)
+			fill = fill.darkened(0.12)
+		var look: StyleBoxFlat = hud.make_ui_card(fill, edge, 12)
+		look.set_border_width_all(4)
+		look.shadow_color = Color(0.1, 0.27, 0.32, 0.25)
+		look.shadow_size = 6
+		look.shadow_offset = Vector2(0, 3)
+		look.anti_aliasing = true
+		looks[state] = look
 	return looks
 
 func _apply_styles(button: Button, looks: Dictionary) -> void:
@@ -329,9 +337,9 @@ func _update_hud_buttons() -> void:
 			free and not driving and not player.seated and not hud.game_buttons_hidden() and not cover.intersects(run_rect)
 			and not hud.tutorial_hidden.get("run", false))
 	_apply_styles(run_button, _run_styles[player.sprint_enabled])
-	var gold := Color("fff1c5")
-	run_button.add_theme_color_override("font_color", gold if player.sprint_enabled else Color("fff2d8"))
-	run_button.add_theme_color_override("font_hover_color", gold)
+	var ink: Color = Color.WHITE if player.sprint_enabled else BonStyle.INK
+	run_button.add_theme_color_override("font_color", ink)
+	run_button.add_theme_color_override("font_hover_color", ink)
 	_place(reset_button, reset_rect, UiText.t("vehicle.reset_plane"),
 			free and driving and bool(vehicle.get("fixed_wing")) and not cover.intersects(reset_rect))
 

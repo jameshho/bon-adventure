@@ -27,17 +27,18 @@ signal picked(id: String)
 signal kept
 signal cancelled
 
-const FILL := Color("142a38")
-const EDGE := Color("7abfb3")
-const GOLD := Color("fff1c5")
-const DIM := Color("aadddc")
-const KEEP := Color("2f9a5b")
+const FILL := BonStyle.SKY
+const EDGE := BonStyle.RIM
+const GOLD := BonStyle.INK
+const DIM := BonStyle.INK_SOFT
+const KEEP := BonStyle.GREEN_BOTTOM
 const DESIGN := Vector2(1100, 800)
 ## Design sizes (× the window factor): an outfit card, the ‹ › buttons, the swipe distance.
 const CARD := Vector2(130, 104)
 const ARROW_WIDTH := 64.0
 const SWIPE := 48.0
 const TouchControls := preload("res://scripts/ui/touch_controls.gd")
+const BonStyle := preload("res://scripts/ui/bon_style.gd")
 const WIDTH_SHARE := 0.86
 const BOTTOM_MARGIN := 0.02
 ## The word the title shows (data/words.json).
@@ -68,6 +69,8 @@ var keep_button: Button
 var _cards: Dictionary = {}
 
 func _init() -> void:
+	# Fredoka everywhere inside (UI art style, docs/guides/UI_STYLE.md, 18 Nov 2026).
+	theme = BonStyle.theme()
 	name = "Outfit picker"
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	anchor_right = 1.0
@@ -77,8 +80,11 @@ func _init() -> void:
 	var style := StyleBoxFlat.new()
 	style.bg_color = Color(FILL, .94)
 	style.border_color = EDGE
-	style.set_border_width_all(2)
-	style.set_corner_radius_all(15)
+	style.set_border_width_all(4)
+	style.set_corner_radius_all(24)
+	style.anti_aliasing = true
+	style.shadow_color = Color(0.1, 0.27, 0.32, 0.22)
+	style.shadow_size = 10
 	style.set_content_margin_all(12)
 	card.add_theme_stylebox_override("panel", style)
 	add_child(card)
@@ -96,7 +102,7 @@ func _init() -> void:
 	dots_label.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	dots_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	top.add_child(dots_label)
-	cancel_button = _action_button("Cancel", FILL.lightened(0.18))
+	cancel_button = _action_button("Cancel", BonStyle.SKY_TOP)
 	cancel_button.pressed.connect(func() -> void: cancelled.emit())
 	top.add_child(cancel_button)
 	keep_button = _action_button("Keep", KEEP)
@@ -107,7 +113,7 @@ func _init() -> void:
 	top.add_child(translate_button)
 	var strip := HBoxContainer.new()
 	stack.add_child(strip)
-	prev_button = _action_button("Previous", FILL.lightened(0.12))
+	prev_button = _action_button("Previous", BonStyle.SKY_TOP)
 	prev_button.text = "‹"
 	prev_button.set_meta("base_font", 40)
 	prev_button.pressed.connect(func() -> void: turn_page(-1))
@@ -116,7 +122,7 @@ func _init() -> void:
 	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	row.alignment = BoxContainer.ALIGNMENT_CENTER
 	strip.add_child(row)
-	next_button = _action_button("Next", FILL.lightened(0.12))
+	next_button = _action_button("Next", BonStyle.SKY_TOP)
 	next_button.text = "›"
 	next_button.set_meta("base_font", 40)
 	next_button.pressed.connect(func() -> void: turn_page(1))
@@ -141,7 +147,8 @@ func _box(color: Color, border: Color, width: int) -> StyleBoxFlat:
 	box.bg_color = color
 	box.border_color = border
 	box.set_border_width_all(width)
-	box.set_corner_radius_all(12)
+	box.set_corner_radius_all(18)
+	box.anti_aliasing = true
 	box.set_content_margin_all(8)
 	return box
 
@@ -150,13 +157,14 @@ func _action_button(button_name: String, color: Color) -> Button:
 	button.name = button_name
 	button.focus_mode = Control.FOCUS_NONE
 	button.set_meta("base_font", 24)
-	button.add_theme_stylebox_override("normal", _box(color, color, 0))
-	button.add_theme_stylebox_override("disabled", _box(Color(color, 0.35), color, 0))
-	button.add_theme_color_override("font_disabled_color", Color(Color.WHITE, 0.3))
-	button.add_theme_stylebox_override("hover", _box(color.lightened(0.12), color, 0))
-	button.add_theme_stylebox_override("pressed", _box(color.darkened(0.15), color, 0))
-	for state in ["font_color", "font_hover_color", "font_pressed_color"]:
-		button.add_theme_color_override(state, Color.WHITE)
+	button.add_theme_stylebox_override("normal", _box(color, BonStyle.RIM, 4))
+	button.add_theme_stylebox_override("disabled", _box(BonStyle.SKY.lerp(Color(0.86, 0.88, 0.88), 0.6), BonStyle.RIM, 4))
+	button.add_theme_color_override("font_disabled_color", Color(BonStyle.INK, 0.4))
+	button.add_theme_stylebox_override("hover", _box(color.lightened(0.1), BonStyle.RIM, 4))
+	button.add_theme_stylebox_override("pressed", _box(color.darkened(0.1), BonStyle.RIM, 4))
+	var ink: Color = Color.WHITE if color.get_luminance() < 0.6 else BonStyle.INK
+	for state in ["font_color", "font_hover_color", "font_pressed_color", "icon_normal_color", "icon_hover_color", "icon_pressed_color"]:
+		button.add_theme_color_override(state, ink)
 	return button
 
 ## Shows the picker with `outfit_ids` (outfit order, "" first) and `current` outlined.
@@ -249,11 +257,12 @@ func select(id: String) -> void:
 
 func _style_card(button: Button, on: bool) -> void:
 	var width := maxi(2, roundi((4.0 if on else 2.0) * _factor))
-	var base := Color(FILL.lightened(0.22 if on else 0.08), 1.0)
-	var border := GOLD if on else EDGE.darkened(0.25)
+	# Soft blue cards with a white rim; the chosen one has a green rim (UI art style, 18 Nov 2026).
+	var base := BonStyle.SKY_TOP
+	var border := BonStyle.GREEN_BOTTOM if on else EDGE
 	button.add_theme_stylebox_override("normal", _box(base, border, width))
-	button.add_theme_stylebox_override("hover", _box(base.lightened(0.08), GOLD if on else EDGE, width))
-	button.add_theme_stylebox_override("pressed", _box(base.darkened(0.1), GOLD, width))
+	button.add_theme_stylebox_override("hover", _box(BonStyle.RIM, border, width))
+	button.add_theme_stylebox_override("pressed", _box(base.darkened(0.06), BonStyle.GREEN_BOTTOM, width))
 
 ## The job name of outfit `id` as a {"foreign", "native"} line (outfits.* phrases).
 static func outfit_line(id: String) -> Dictionary:

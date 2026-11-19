@@ -19,16 +19,17 @@ const PinyinText := preload("res://scripts/ui/pinyin_text.gd")
 const UiIcons := preload("res://scripts/ui/ui_icons.gd")
 const TranslateButton := preload("res://scripts/ui/translate_button.gd")
 const ProgressBarRow := preload("res://scripts/ui/progress_bar.gd")
+const BonStyle := preload("res://scripts/ui/bon_style.gd")
 
 signal leave_requested
 signal hint_requested
 
-const FILL := Color("142a38")
-const EDGE := Color("7abfb3")
-const GOLD := Color("fff1c5")
-const DIM := Color("aadddc")
+const FILL := BonStyle.SKY
+const EDGE := BonStyle.RIM
+const GOLD := BonStyle.INK
+const DIM := BonStyle.INK_SOFT
 ## The praise line between two tasks.
-const GOOD := Color("a8e6a3")
+const GOOD := Color("3f9a35")
 const DESIGN := Vector2(1100, 800)
 ## Card width as a share of the window, and its top margin.
 const WIDTH_SHARE := 0.5
@@ -51,6 +52,8 @@ var reading_label: Label
 var native_label: Label
 
 func _init() -> void:
+	# Fredoka everywhere inside (UI art style, docs/guides/UI_STYLE.md, 18 Nov 2026).
+	theme = BonStyle.theme()
 	name = "Warehouse task card"
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	anchor_right = 1.0
@@ -60,8 +63,11 @@ func _init() -> void:
 	var style := StyleBoxFlat.new()
 	style.bg_color = Color(FILL, .94)
 	style.border_color = EDGE
-	style.set_border_width_all(2)
-	style.set_corner_radius_all(15)
+	style.set_border_width_all(4)
+	style.set_corner_radius_all(24)
+	style.anti_aliasing = true
+	style.shadow_color = Color(0.1, 0.27, 0.32, 0.22)
+	style.shadow_size = 10
 	style.set_content_margin_all(12)
 	card.add_theme_stylebox_override("panel", style)
 	add_child(card)
@@ -108,9 +114,10 @@ func _icon_button(icon_name: String) -> Button:
 	button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	for state in ["normal", "hover", "pressed"]:
 		var style := StyleBoxFlat.new()
-		style.bg_color = Color(EDGE, {"normal": 0.0, "hover": .18, "pressed": .35}[state])
+		style.bg_color = {"normal": BonStyle.SKY_TOP, "hover": BonStyle.RIM, "pressed": BonStyle.SKY.darkened(0.08)}[state]
+		style.anti_aliasing = true
 		style.border_color = EDGE
-		style.set_border_width_all(2)
+		style.set_border_width_all(4)
 		style.set_corner_radius_all(12)
 		button.add_theme_stylebox_override(state, style)
 	return button

@@ -11,9 +11,11 @@ const UiText := preload("res://scripts/language/ui_text.gd")
 const UiIcons := preload("res://scripts/ui/ui_icons.gd")
 const GameClock := preload("res://scripts/learning/game_clock.gd")
 const GameSettings := preload("res://scripts/core/game_settings.gd")
-const INK := Color("fff6e6")
-const GOLD := Color("e6c58c")
-const TEAL := Color("a9d5c6")
+const BonStyle := preload("res://scripts/ui/bon_style.gd")
+# UI art style (18 Nov 2026, docs/guides/UI_STYLE.md): soft blue with dark teal text.
+const INK := BonStyle.INK
+const GOLD := BonStyle.BROWN
+const TEAL := BonStyle.INK_SOFT
 
 var day_night
 var hud
@@ -36,6 +38,7 @@ func setup(cycle, owner_hud) -> void:
 	day_night = cycle
 	hud = owner_hud
 	name = "Day clock"
+	theme = BonStyle.theme()
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_build()
 	day_night.time_changed.connect(func(_minute: int) -> void: _refresh())
@@ -74,7 +77,7 @@ func _build() -> void:
 	pill.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	pill.expand_icon = false
 	pill.alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_style_button(pill, Color("142a38"), Color("7abfb3"))
+	_style_button(pill, BonStyle.SKY, BonStyle.RIM)
 	pill.pressed.connect(toggle)
 	add_child(pill)
 
@@ -82,8 +85,8 @@ func _build() -> void:
 	panel.name = "Clock panel"
 	panel.visible = false
 	panel.mouse_filter = Control.MOUSE_FILTER_STOP
-	var card := _box(Color(0.07, 0.14, 0.19, 0.97), Color("e7c27c"), 18)
-	card.set_border_width_all(2)
+	var card := _box(BonStyle.SKY, BonStyle.RIM, 22)
+	card.set_border_width_all(5)
 	panel.add_theme_stylebox_override("panel", card)
 	add_child(panel)
 	var stack := VBoxContainer.new()
@@ -131,12 +134,12 @@ func _icon_button(icon: String) -> Button:
 	button.focus_mode = Control.FOCUS_NONE
 	button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	button.set_meta("icon_name", icon)
-	_style_button(button, Color("1d3a4c"), Color("7abfb3"))
+	_style_button(button, BonStyle.SKY, BonStyle.RIM)
 	return button
 
 
 func _style_button(button: Button, fill: Color, edge: Color) -> void:
-	var looks := {"normal": [fill, edge], "hover": [fill.lightened(0.12), TEAL], "pressed": [fill.lightened(0.12), Color("ffd27f")], "disabled": [fill.darkened(0.25), fill.lightened(0.2)]}
+	var looks := {"normal": [fill, edge], "hover": [BonStyle.SKY_TOP, edge], "pressed": [fill.darkened(0.08), edge], "disabled": [fill.lerp(Color(0.86, 0.88, 0.88), 0.6), edge]}
 	for state in looks:
 		var style := _box(looks[state][0], looks[state][1], 12)
 		button.add_theme_stylebox_override(state, style)
@@ -145,16 +148,21 @@ func _style_button(button: Button, fill: Color, edge: Color) -> void:
 	button.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
 	for color in ["font_color", "font_hover_color", "font_pressed_color", "font_hover_pressed_color", "icon_normal_color", "icon_hover_color", "icon_pressed_color"]:
 		button.add_theme_color_override(color, INK)
-	button.add_theme_color_override("font_disabled_color", INK.darkened(0.45))
-	button.add_theme_color_override("icon_disabled_color", INK.darkened(0.45))
+	button.add_theme_color_override("font_disabled_color", Color(INK, 0.4))
+	button.add_theme_color_override("icon_disabled_color", Color(INK, 0.4))
+	button.add_theme_font_override("font", BonStyle.font(700))
 
 
 func _box(fill: Color, edge: Color, radius: int) -> StyleBoxFlat:
 	var style := StyleBoxFlat.new()
 	style.bg_color = fill
 	style.border_color = edge
-	style.set_border_width_all(2)
+	style.set_border_width_all(4)
 	style.set_corner_radius_all(radius)
+	style.anti_aliasing = true
+	style.shadow_color = Color(0.1, 0.27, 0.32, 0.22)
+	style.shadow_size = 6
+	style.shadow_offset = Vector2(0, 3)
 	_styles.append(style)
 	return style
 

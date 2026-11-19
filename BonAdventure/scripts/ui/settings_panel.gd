@@ -12,15 +12,17 @@ extends Control
 ## "Camera follows me" (14 Nov 2026, user): the follow camera's checkbox, on by default
 ## (GameSettings.set_follow_camera; player_controller.gd follow_view()).
 ## "Switch player" (only when the game runs from scenes/app.tscn) goes back to the profile select.
+## UI art style (user, 18 Nov 2026; docs/guides/UI_STYLE.md): a mint BonStyle card with a meadow
+## over a light teal veil, a dark teal title, cream checkboxes that turn green, cream drop-downs,
+## Low / High as a toggle pair, cream Switch / Replay pills and a green Close.
 const GameSettings := preload("res://scripts/core/game_settings.gd")
 const Lexicon := preload("res://scripts/language/lexicon.gd")
 const UiIcons := preload("res://scripts/ui/ui_icons.gd")
 const PerfReadout := preload("res://scripts/ui/perf_readout.gd")
+const BonStyle := preload("res://scripts/ui/bon_style.gd")
 
-const FILL := Color("142a38")
-const EDGE := Color("7abfb3")
-const GOLD := Color("fff1c5")
-const DIM := Color("aadddc")
+const GOLD := BonStyle.INK
+const DIM := BonStyle.INK_SOFT
 const DESIGN := Vector2(1100, 800)
 
 var _card: PanelContainer
@@ -51,22 +53,15 @@ func _init() -> void:
 	anchor_right = 1.0
 	anchor_bottom = 1.0
 	var shade := ColorRect.new()
-	shade.color = Color(0.02, 0.05, 0.08, 0.7)
+	shade.color = BonStyle.SHADE
 	shade.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	shade.anchor_right = 1.0
 	shade.anchor_bottom = 1.0
 	add_child(shade)
-	_card = PanelContainer.new()
-	_card.mouse_filter = Control.MOUSE_FILTER_STOP
-	var style := StyleBoxFlat.new()
-	style.bg_color = FILL
-	style.border_color = EDGE
-	style.set_border_width_all(2)
-	style.set_corner_radius_all(16)
-	_card.add_theme_stylebox_override("panel", style)
-	add_child(_card)
 	_stack = VBoxContainer.new()
-	_card.add_child(_stack)
+	_card = BonStyle.card(_stack, 1.0)
+	_card.mouse_filter = Control.MOUSE_FILTER_STOP
+	add_child(_card)
 	var head := HBoxContainer.new()
 	_stack.add_child(head)
 	_title = _label(GOLD)
@@ -228,40 +223,31 @@ func _layout() -> void:
 
 func _apply_layout(screen: Vector2) -> void:
 	var f := _factor
-	(_card.get_theme_stylebox("panel") as StyleBoxFlat).set_content_margin_all(26 * f)
+	BonStyle.rescale_card(_card, f)
 	_stack.add_theme_constant_override("separation", roundi(14 * f))
-	_title.add_theme_font_size_override("font_size", roundi(34 * f))
+	_title.add_theme_font_size_override("font_size", roundi(40 * f))
 	for label in [_native_title, _foreign_title, _graphics_title]:
 		label.add_theme_font_size_override("font_size", roundi(24 * f))
-	_native_mode.add_theme_font_size_override("font_size", roundi(26 * f))
-	_native_mode.custom_minimum_size = Vector2(0, 60 * f)
-	_native_mode.add_theme_constant_override("h_separation", roundi(14 * f))
-	# The box is drawn from the theme icons, so it is redrawn at the scaled size.
-	_native_mode.add_theme_icon_override("checked", UiIcons.texture("box_checked", roundi(40 * f)))
-	_native_mode.add_theme_icon_override("unchecked", UiIcons.texture("box", roundi(40 * f)))
-	_follow_camera.add_theme_font_size_override("font_size", roundi(26 * f))
-	_follow_camera.custom_minimum_size = Vector2(0, 60 * f)
-	_follow_camera.add_theme_constant_override("h_separation", roundi(14 * f))
-	_follow_camera.add_theme_icon_override("checked", UiIcons.texture("box_checked", roundi(40 * f)))
-	_follow_camera.add_theme_icon_override("unchecked", UiIcons.texture("box", roundi(40 * f)))
-	_show_fps.add_theme_font_size_override("font_size", roundi(24 * f))
-	_show_fps.custom_minimum_size = Vector2(0, 56 * f)
-	_show_fps.add_theme_constant_override("h_separation", roundi(14 * f))
-	_show_fps.add_theme_icon_override("checked", UiIcons.texture("box_checked", roundi(36 * f)))
-	_show_fps.add_theme_icon_override("unchecked", UiIcons.texture("box", roundi(36 * f)))
+	for check in [_native_mode, _follow_camera, _show_fps]:
+		BonStyle.style_check(check, f, 24 if check == _show_fps else 26)
+	for pick in [_native_pick, _foreign_pick]:
+		BonStyle.style_option(pick, f, 26)
+	for choice in [_low_button, _high_button]:
+		BonStyle.style_toggle(choice, f, 26)
+	BonStyle.style_button(_switch_button, "soft", f, 26)
+	BonStyle.style_button(_replay_button, "soft", f, 26)
+	BonStyle.style_button(_close_button, "primary", f, 28)
+	BonStyle.style_button(_x_button, "soft_quiet", f, 26)
 	_graphics_row.add_theme_constant_override("separation", roundi(14 * f))
 	for button in [_close_button, _switch_button, _replay_button, _native_pick, _foreign_pick, _low_button, _high_button]:
-		button.add_theme_font_size_override("font_size", roundi(26 * f))
-		button.custom_minimum_size = Vector2(0, 60 * f)
+		button.custom_minimum_size = Vector2(0, 64 * f)
 		button.add_theme_constant_override("icon_max_width", roundi(26 * f))
-	_close_button.custom_minimum_size = Vector2(220 * f, 60 * f)
-	_switch_button.custom_minimum_size = Vector2(220 * f, 60 * f)
-	_replay_button.custom_minimum_size = Vector2(220 * f, 60 * f)
+	_close_button.custom_minimum_size = Vector2(220 * f, 66 * f)
+	_switch_button.custom_minimum_size = Vector2(220 * f, 64 * f)
+	_replay_button.custom_minimum_size = Vector2(220 * f, 64 * f)
 	_profile_row.add_theme_constant_override("separation", roundi(14 * f))
-	_x_button.custom_minimum_size = Vector2(56 * f, 50 * f)
-	_x_button.add_theme_constant_override("icon_max_width", roundi(26 * f))
-	_native_pick.get_popup().add_theme_font_size_override("font_size", roundi(26 * f))
-	_foreign_pick.get_popup().add_theme_font_size_override("font_size", roundi(26 * f))
+	_x_button.custom_minimum_size = Vector2(56 * f, 56 * f)
+	_x_button.add_theme_constant_override("icon_max_width", roundi(24 * f))
 	var width := minf(760.0 * f, screen.x - 40.0)
 	_card.size = Vector2(width, 0)
 	_card.size = Vector2(width, _card.get_combined_minimum_size().y)
@@ -269,6 +255,7 @@ func _apply_layout(screen: Vector2) -> void:
 
 func _label(color: Color) -> Label:
 	var label := Label.new()
+	BonStyle.use_font(label, 700)
 	label.add_theme_color_override("font_color", color)
 	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	# Short titles on one line: a wrapped label measured before its first layout reports

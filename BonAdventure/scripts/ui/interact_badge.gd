@@ -1,16 +1,17 @@
 extends Node3D
 ## The in-world interaction icons (12 Nov 2026, user): the one "E" badge pinned to the focused
 ## interactable, and the pooled discovery icons (the gold "!" over an NPC offering a game, moved
-## here from npc_presence.gd; a subtle dot over a pastime station). HUD style (day_clock.gd):
-## dark teal disc, gold edge, cream "E". Constant on-screen size (fixed_size), always drawn on
+## here from npc_presence.gd; a subtle dot over a pastime station). UI art style (18 Nov 2026,
+## docs/guides/UI_STYLE.md): soft blue disc, white rim, dark teal Fredoka "E". Constant on-screen size (fixed_size), always drawn on
 ## top, one shared texture per icon kind, nodes pooled; no shaders, no per-object processing.
 ## Owned and driven by interaction_controller.gd (focus pass); guide:
 ## docs/guides/ARCHITECTURE_REVIEW_PART1.md#interaction-system.
 
-const FILL := Color("142a38")
-const EDGE := Color("e7c27c")
-const RING := Color("7abfb3")
-const INK := Color("fff6e6")
+const BonStyle := preload("res://scripts/ui/bon_style.gd")
+const FILL := Color("e9f7f8")
+const EDGE := BonStyle.RIM
+const RING := BonStyle.INK_SOFT
+const INK := BonStyle.INK
 ## World size of the badge quad at fixed_size: about 4.5 % of the view height at 70°.
 const BADGE_SIZE := 0.064
 const DOT_SIZE := 0.026
@@ -47,6 +48,7 @@ func _ready() -> void:
 	_badge_text.font_size = 64
 	_badge_text.outline_size = 0
 	_badge_text.modulate = INK
+	_badge_text.font = BonStyle.font(700)
 	_badge_text.pixel_size = BADGE_SIZE * 0.62 / 64.0
 	_badge_text.fixed_size = true
 	_badge_text.billboard = BaseMaterial3D.BILLBOARD_ENABLED

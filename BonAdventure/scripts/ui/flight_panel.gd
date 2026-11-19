@@ -30,6 +30,7 @@ const UiIcons := preload("res://scripts/ui/ui_icons.gd")
 const TranslateButton := preload("res://scripts/ui/translate_button.gd")
 const ProgressBarRow := preload("res://scripts/ui/progress_bar.gd")
 const Flags := preload("res://scripts/ui/flags.gd")
+const BonStyle := preload("res://scripts/ui/bon_style.gd")
 
 signal flight_pressed(id: String)
 signal why_pressed
@@ -38,10 +39,10 @@ signal finish_pressed
 signal close_requested
 signal tab_changed(id: String)
 
-const FILL := Color("142a38")
-const EDGE := Color("7abfb3")
-const GOLD := Color("fff1c5")
-const DIM := Color("aadddc")
+const FILL := BonStyle.SKY
+const EDGE := BonStyle.RIM
+const GOLD := BonStyle.INK
+const DIM := BonStyle.INK_SOFT
 const RIGHT := Color("3fae5a")
 const WRONG := Color("d0505a")
 ## Departures screen colours (the 3D board in the terminal is navy with yellow times).
@@ -117,13 +118,15 @@ var _exit: Button
 var rows: Dictionary = {}
 
 func _init() -> void:
+	# Fredoka everywhere inside (UI art style, docs/guides/UI_STYLE.md, 18 Nov 2026).
+	theme = BonStyle.theme()
 	name = "Flight panel"
 	visible = false
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	anchor_right = 1.0
 	anchor_bottom = 1.0
 	_shade = ColorRect.new()
-	_shade.color = Color(0.02, 0.05, 0.08, 0.82)
+	_shade.color = BonStyle.SHADE
 	_shade.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_shade.anchor_right = 1.0
 	_shade.anchor_bottom = 1.0
@@ -141,8 +144,9 @@ func _init() -> void:
 	resized.connect(_on_resized)
 	visibility_changed.connect(_on_resized)
 
-func _style(color: Color, border: Color = EDGE, width: int = 2, radius: int = 14) -> StyleBoxFlat:
+func _style(color: Color, border: Color = EDGE, width: int = 4, radius: int = 20) -> StyleBoxFlat:
 	var style := StyleBoxFlat.new()
+	style.anti_aliasing = true
 	style.bg_color = color
 	style.border_color = border
 	style.set_border_width_all(width)
@@ -447,8 +451,8 @@ func _rebuild_tabs() -> void:
 		for state in ["font_color", "font_hover_color", "font_pressed_color", "font_focus_color", "icon_normal_color", "icon_hover_color", "icon_pressed_color", "icon_focus_color"]:
 			button.add_theme_color_override(state, color)
 		for state in ["normal", "hover", "pressed", "focus"]:
-			var fill := BOARD if chosen else FILL.lightened(0.04 if state != "hover" else 0.1)
-			var style := _style(fill, BOARD_EDGE if chosen else EDGE.darkened(0.4), 3 if chosen else 2, 10)
+			var fill := BOARD if chosen else (BonStyle.SKY_TOP if state != "hover" else BonStyle.RIM)
+			var style := _style(fill, BOARD_EDGE if chosen else EDGE, 3 if chosen else 4, 12)
 			style.set_content_margin_all(8 * f)
 			button.add_theme_stylebox_override(state, style)
 		_tabs.add_child(button)

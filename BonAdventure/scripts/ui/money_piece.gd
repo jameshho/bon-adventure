@@ -6,8 +6,12 @@ signal pressed
 
 const BILL_SIZE := Vector2(150, 70)
 const COIN_SIZE := {"coin_1": 64.0, "coin_5": 72.0, "coin_10": 58.0, "coin_25": 80.0}
-const BILL_TINT := {"bill_1": "b8d4a8", "bill_5": "c4d6a4", "bill_10": "d3d99f", "bill_20": "a9d1b4", "bill_50": "c2c9a2", "bill_100": "b5d6c3"}
-const COIN_TINT := {"coin_1": "c47a4a", "coin_5": "c9ccd0", "coin_10": "d6d9dd", "coin_25": "b9bdc2"}
+## Bright, soft colours to the user's mockup (docs/guides/design-references/ui/money-panel.webp,
+## 18 Nov 2026): light green notes ($10 and $50 yellow), a darker edge, a ring round the value.
+const BILL_TINT := {"bill_1": "c9eda4", "bill_5": "dcf3a8", "bill_10": "f6ef9e", "bill_20": "c8edbc", "bill_50": "eee29c", "bill_100": "cdeec9"}
+const BILL_EDGE := {"bill_1": "3f8f3c", "bill_5": "5d9a32", "bill_10": "b9a43a", "bill_20": "3f8f4a", "bill_50": "a8902e", "bill_100": "3f8f4a"}
+const COIN_TINT := {"coin_1": "eb8a4e", "coin_5": "dcdfe3", "coin_10": "e7e9ec", "coin_25": "cdd0d5"}
+const BonStyle := preload("res://scripts/ui/bon_style.gd")
 
 var denom: Dictionary = {}
 var count := 0
@@ -46,41 +50,71 @@ func _gui_input(event: InputEvent) -> void:
 		accept_event()
 
 func _draw() -> void:
-	var font := ThemeDB.fallback_font
-	var area := Rect2(Vector2.ZERO, piece_size() * scale_factor)
-	var lift := Vector2(0, -3 * scale_factor) if _hover else Vector2.ZERO
+	var k := scale_factor
+	var area := Rect2(Vector2.ZERO, piece_size() * k)
+	var lift := Vector2(0, -3 * k) if _hover else Vector2.ZERO
 	area.position += lift
-	var label_size := int(round((22.0 if denom.kind == "bill" else 20.0) * scale_factor))
+	var label_size := int(round((24.0 if denom.kind == "bill" else 21.0) * k))
+	var bold: Font = BonStyle.font(700)
 	if denom.kind == "bill":
 		var tint := Color(BILL_TINT[denom.id])
-		draw_rect(Rect2(area.position + Vector2(0, 4 * scale_factor), area.size), Color(0, 0, 0, 0.28))
-		draw_rect(area, Color("2f5d3a"))
-		draw_rect(area.grow(-3 * scale_factor), tint)
-		draw_rect(area.grow(-7 * scale_factor), Color("2f5d3a"), false, maxf(1.0, scale_factor))
+		var edge := Color(BILL_EDGE[denom.id])
+		var ink := edge.darkened(0.45)
+		var shadow := StyleBoxFlat.new()
+		shadow.bg_color = Color(0.1, 0.27, 0.32, 0.18)
+		shadow.set_corner_radius_all(roundi(7 * k))
+		draw_style_box(shadow, Rect2(area.position + Vector2(0, 5 * k), area.size))
+		var body := StyleBoxFlat.new()
+		body.bg_color = tint
+		body.border_color = edge
+		body.set_border_width_all(maxi(2, roundi(3.5 * k)))
+		body.set_corner_radius_all(roundi(7 * k))
+		body.anti_aliasing = true
+		draw_style_box(body, area)
+		# A thin inner frame with little rounded notches in its corners.
+		var inner := area.grow(-8 * k)
+		var frame := StyleBoxFlat.new()
+		frame.draw_center = false
+		frame.border_color = Color(edge, 0.45)
+		frame.set_border_width_all(maxi(1, roundi(1.5 * k)))
+		frame.set_corner_radius_all(roundi(6 * k))
+		frame.anti_aliasing = true
+		draw_style_box(frame, inner)
+		for corner in [inner.position, Vector2(inner.end.x, inner.position.y), inner.end, Vector2(inner.position.x, inner.end.y)]:
+			draw_arc(corner, 6 * k, 0.0, TAU, 16, Color(edge, 0.45), maxf(1.0, 1.5 * k), true)
 		var centre := area.get_center()
-		draw_set_transform(centre, 0.0, Vector2(1.0, 1.25))
-		draw_circle(Vector2.ZERO, area.size.y * 0.27, tint.darkened(0.12))
-		draw_arc(Vector2.ZERO, area.size.y * 0.27, 0.0, TAU, 28, Color("2f5d3a"), maxf(1.0, scale_factor))
-		draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
+		var ring := area.size.y * 0.31
+		draw_circle(centre, ring, tint.lightened(0.18))
+		draw_arc(centre, ring, 0.0, TAU, 40, edge, maxf(1.5, 2.5 * k), true)
 		var number := str(denom.label).trim_prefix("$")
-		var corner := int(round(15.0 * scale_factor))
-		draw_string(font, area.position + Vector2(10, 20) * scale_factor, number, HORIZONTAL_ALIGNMENT_LEFT, -1, corner, Color("1f4026"))
-		draw_string(font, area.position + Vector2(area.size.x - 10 * scale_factor - 40 * scale_factor, area.size.y - 9 * scale_factor), number, HORIZONTAL_ALIGNMENT_RIGHT, 40 * scale_factor, corner, Color("1f4026"))
-		draw_string(font, Vector2(area.position.x, centre.y + label_size * 0.36), denom.label, HORIZONTAL_ALIGNMENT_CENTER, area.size.x, label_size, Color("163020"))
+		var corner_size := int(round(15.0 * k))
+		draw_string(bold, area.position + Vector2(11, 22) * k, number, HORIZONTAL_ALIGNMENT_LEFT, -1, corner_size, ink)
+		draw_string(bold, area.position + Vector2(area.size.x - 51 * k, area.size.y - 10 * k), number, HORIZONTAL_ALIGNMENT_RIGHT, 40 * k, corner_size, ink)
+		draw_string(bold, Vector2(area.position.x, centre.y + label_size * 0.36), denom.label, HORIZONTAL_ALIGNMENT_CENTER, area.size.x, label_size, ink)
 	else:
 		var tint := Color(COIN_TINT[denom.id])
 		var radius := area.size.x * 0.5
 		var centre := area.get_center()
-		draw_circle(centre + Vector2(0, 3 * scale_factor), radius, Color(0, 0, 0, 0.28))
-		draw_circle(centre, radius, tint.darkened(0.35))
-		draw_circle(centre, radius - 3 * scale_factor, tint)
-		draw_arc(centre, radius - 7 * scale_factor, 0.0, TAU, 32, tint.darkened(0.25), maxf(1.0, scale_factor))
-		draw_string(font, Vector2(area.position.x, centre.y + label_size * 0.36), denom.label, HORIZONTAL_ALIGNMENT_CENTER, area.size.x, label_size, Color("2b2b2b"))
+		draw_circle(centre + Vector2(0, 4 * k), radius, Color(0.1, 0.27, 0.32, 0.2))
+		draw_circle(centre, radius, tint.darkened(0.22))
+		draw_circle(centre, radius - 4 * k, tint)
+		draw_arc(centre, radius - 8 * k, 0.0, TAU, 40, tint.lightened(0.35), maxf(1.0, 2.0 * k), true)
+		draw_string(bold, Vector2(area.position.x, centre.y + label_size * 0.36), denom.label, HORIZONTAL_ALIGNMENT_CENTER, area.size.x, label_size, tint.darkened(0.62))
 	if _hover:
-		draw_rect(area.grow(2 * scale_factor), Color(1, 0.85, 0.4, 0.9), false, 2.0 * scale_factor)
+		var glow := StyleBoxFlat.new()
+		glow.draw_center = false
+		glow.border_color = Color(1, 1, 1, 0.95)
+		glow.set_border_width_all(maxi(2, roundi(3 * k)))
+		glow.set_corner_radius_all(roundi((10.0 if denom.kind == "bill" else area.size.x * 0.5 / k + 3.0) * k))
+		glow.anti_aliasing = true
+		draw_style_box(glow, area.grow(3 * k))
 	if show_count and count > 0:
-		var badge := Vector2(46, 28) * scale_factor
-		var rect := Rect2(Vector2(area.end.x - badge.x * 0.8, area.position.y - badge.y * 0.25), badge)
-		draw_rect(rect, Color("142a38"))
-		draw_rect(rect, Color("7abfb3"), false, maxf(1.0, scale_factor))
-		draw_string(font, rect.position + Vector2(0, badge.y * 0.74), "×%d" % count, HORIZONTAL_ALIGNMENT_CENTER, badge.x, int(round(18.0 * scale_factor)), Color("fff1c5"))
+		# A dark teal tag with a white count (the mockup).
+		var badge := Vector2(48, 30) * k
+		var rect := Rect2(Vector2(area.end.x - badge.x * 0.85, area.position.y - badge.y * 0.4), badge)
+		var tag := StyleBoxFlat.new()
+		tag.bg_color = BonStyle.INK
+		tag.set_corner_radius_all(roundi(8 * k))
+		tag.anti_aliasing = true
+		draw_style_box(tag, rect)
+		draw_string(bold, rect.position + Vector2(0, badge.y * 0.72), "×%d" % count, HORIZONTAL_ALIGNMENT_CENTER, badge.x, int(round(19.0 * k)), Color.WHITE)

@@ -28,14 +28,17 @@ const MAX_ROUNDS := 30
 ## Seconds after Play before "the game is over" may be decided (a fade or the first line may
 ## take a moment to start).
 const SETTLE := 0.6
+const BonStyle := preload("res://scripts/ui/bon_style.gd")
 const COLUMNS := 3
-const FILL := Color("142a38")
-const LINE := Color("7abfb3")
-const ROW := Color("1b3646")
-const ROW_HOVER := Color("23465a")
-const TEXT := Color("fff2d8")
-const MUTED := Color("bac6cc")
-const GOLD := Color("f2c35c")
+# UI art style (18 Nov 2026, docs/guides/UI_STYLE.md): soft blue window and tiles with white rims,
+# dark teal text; the chosen tile has a green rim.
+const FILL := BonStyle.SKY
+const LINE := BonStyle.RIM
+const ROW := BonStyle.SKY_TOP
+const ROW_HOVER := BonStyle.RIM
+const TEXT := BonStyle.INK
+const MUTED := BonStyle.INK_SOFT
+const GOLD := BonStyle.GREEN_BOTTOM
 ## Each game's tile icon (ui_icons.gd); "play" for a game not listed.
 const ICONS := {
 	"shop_supermarket": "cart", "cashier_supermarket": "money", "family_dr_li": "family",
@@ -90,15 +93,16 @@ var play: Button
 func setup(game) -> void:
 	main = game
 	name = "GameLauncher"
+	theme = BonStyle.theme()
 	set_anchors_preset(Control.PRESET_FULL_RECT)
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	visible = false
 	_shade = ColorRect.new()
-	_shade.color = Color(0, 0, 0, 0.45)
+	_shade.color = BonStyle.SHADE
 	_shade.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_shade)
 	window = PanelContainer.new()
-	window.add_theme_stylebox_override("panel", _card(FILL, LINE, 18))
+	window.add_theme_stylebox_override("panel", _card(FILL, LINE, 30))
 	add_child(window)
 	var stack := VBoxContainer.new()
 	stack.add_theme_constant_override("separation", 10)
@@ -140,7 +144,7 @@ func setup(game) -> void:
 
 ## The bar under the tiles: the selected game, its rounds and Play.
 func _build_detail() -> void:
-	_detail.add_theme_stylebox_override("panel", _card(ROW, LINE.darkened(0.2), 14))
+	_detail.add_theme_stylebox_override("panel", _card(ROW, LINE, 18))
 	var line := HBoxContainer.new()
 	line.add_theme_constant_override("separation", 14)
 	_detail.add_child(line)
@@ -182,8 +186,11 @@ func _build_detail() -> void:
 	line.add_child(_d_endless)
 	play = _button("", "play", func() -> void: launch(_selected()))
 	play.name = "Play"
-	play.add_theme_stylebox_override("normal", _card(Color("2f6e4f"), GOLD, 12))
-	play.add_theme_stylebox_override("hover", _card(Color("3a8560"), GOLD, 12))
+	play.add_theme_stylebox_override("normal", _card(BonStyle.GREEN_BOTTOM, LINE, 18))
+	play.add_theme_stylebox_override("hover", _card(BonStyle.GREEN_BOTTOM.lightened(0.1), LINE, 18))
+	play.add_theme_stylebox_override("pressed", _card(BonStyle.GREEN_BOTTOM.darkened(0.1), LINE, 18))
+	for name in ["font_color", "font_hover_color", "font_pressed_color", "icon_normal_color", "icon_hover_color", "icon_pressed_color"]:
+		play.add_theme_color_override(name, Color.WHITE)
 	line.add_child(play)
 
 # --- Opening and closing -------------------------------------------------------------------
@@ -269,7 +276,7 @@ func _show_tab(kind: String) -> void:
 	for k in KINDS:
 		_grids[k].visible = k == kind
 		var on: bool = k == kind
-		_tabs[k].add_theme_stylebox_override("normal", _card(Color("3b5f3f") if on else Color("23495c"), GOLD if on else LINE, 10))
+		_tabs[k].add_theme_stylebox_override("normal", _card(Color("c9ecb4") if on else BonStyle.SKY_TOP, GOLD if on else LINE, 16))
 	_style_tiles()
 	_update()
 	_layout()
@@ -309,7 +316,7 @@ func _style_tiles() -> void:
 		var on: bool = row.id == id
 		var absent: bool = Board.shared().session(row.id) == null and not _loadable(row.id)
 		row.tile.modulate.a = 0.55 if absent else 1.0
-		row.tile.add_theme_stylebox_override("normal", _card(ROW_HOVER if on else ROW, GOLD if on else LINE.darkened(0.35), 12, 10))
+		row.tile.add_theme_stylebox_override("normal", _card(ROW_HOVER if on else ROW, GOLD if on else LINE, 12, 10))
 		row.tile.add_theme_stylebox_override("hover", _card(ROW_HOVER, GOLD if on else LINE, 12, 10))
 		row.tile.add_theme_stylebox_override("pressed", _card(ROW_HOVER, GOLD, 12, 10))
 		row.icon.modulate = GOLD if on else TEXT
@@ -480,8 +487,9 @@ func _card(fill: Color, outline: Color, corners: int, margin: float = 14.0) -> S
 	var card := StyleBoxFlat.new()
 	card.bg_color = fill
 	card.border_color = outline
-	card.set_border_width_all(2)
+	card.set_border_width_all(4)
 	card.set_corner_radius_all(corners)
+	card.anti_aliasing = true
 	card.set_content_margin_all(margin)
 	return card
 
@@ -502,11 +510,15 @@ func _button(text: String, icon: String, handler: Callable) -> Button:
 	button.add_theme_constant_override("icon_max_width", 26)
 	button.add_theme_color_override("font_color", TEXT)
 	button.add_theme_color_override("icon_normal_color", TEXT)
+	button.add_theme_color_override("font_disabled_color", Color(TEXT, 0.4))
+	button.add_theme_color_override("icon_disabled_color", Color(TEXT, 0.4))
 	for state in ["normal", "hover", "pressed", "disabled"]:
-		var fill := Color("23495c") if state != "hover" else Color("2d5c73")
+		var fill: Color = BonStyle.SKY_TOP if state != "hover" else BonStyle.RIM
+		if state == "pressed":
+			fill = BonStyle.SKY.darkened(0.08)
 		if state == "disabled":
-			fill = Color("1a2c36")
-		button.add_theme_stylebox_override(state, _card(fill, LINE if state != "disabled" else LINE.darkened(0.5), 10))
+			fill = BonStyle.SKY.lerp(Color(0.86, 0.88, 0.88), 0.6)
+		button.add_theme_stylebox_override(state, _card(fill, LINE, 16))
 	button.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
 	button.pressed.connect(handler)
 	return button

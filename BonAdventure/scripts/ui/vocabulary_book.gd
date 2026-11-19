@@ -15,28 +15,35 @@ extends VBoxContainer
 ## Since 9 Nov 2026 the Saved tab is the game's saved-words list (the HUD's book button opens
 ## this journal; the separate saved-words panel was removed) and every control is styled here
 ## (style_button(); the HUD styles its own header buttons with it too).
+## UI art style (user, 18 Nov 2026; docs/guides/UI_STYLE.md): a light cream table on the HUD's mint
+## card, dark teal and brown Fredoka text, BonStyle pills for tabs, menus and toggles (green when
+## chosen), restyled at every window scale (apply_scale()).
 const PracticeLog := preload("res://scripts/learning/practice_log.gd")
 const Lexicon := preload("res://scripts/language/lexicon.gd")
 const UiText := preload("res://scripts/language/ui_text.gd")
 const PinyinText := preload("res://scripts/ui/pinyin_text.gd")
 const UiIcons := preload("res://scripts/ui/ui_icons.gd")
+const BonStyle := preload("res://scripts/ui/bon_style.gd")
 
-const GOLD := Color("ffd27f")
-const HEADING := Color("e8c78e")
-const FOREIGN := Color("bce1d7")
-const TEXT := Color("f3f3eb")
-const DIM := Color("6e8794")
-const RIGHT := Color("8fdba0")
-const WRONG := Color("f19a8f")
-const HINT := Color("bcd9dc")
-## Control colours: buttons, the active tab (gold, dark text) and the table's frame.
-const BUTTON := Color("1b3644")
-const BUTTON_EDGE := Color("2f5366")
-const BUTTON_HOVER := Color("24485c")
-const TEAL := Color("7abfb3")
-const ACTIVE := Color("e7c27c")
-const INK := Color("142b37")
-const FRAME := Color("0f222d")
+## Light palette (UI art style, 18 Nov 2026; was the dark HUD colours).
+const GOLD := Color("e9a91f")
+const HEADING := BonStyle.BROWN
+const FOREIGN := BonStyle.INK
+const TEXT := Color("3d5560")
+const DIM := Color("a5b3b6")
+const RIGHT := Color("3f9a35")
+const WRONG := Color("d0523f")
+const HINT := BonStyle.INK_SOFT
+## Frame colours: the table's cream frame, its edge and the scroll bar.
+const BUTTON_EDGE := BonStyle.RIM
+const BUTTON_HOVER := Color("cde9ec")
+const TEAL := Color("8cc6cd")
+const ACTIVE := BonStyle.GREEN_BOTTOM
+const INK := BonStyle.INK
+const FRAME := BonStyle.SKY   # in-game cards are soft blue (user, 18 Nov 2026)
+const TRANSLATED := Color("4f86b0")
+## [button, kind] of every button styled here, restyled at each window scale (apply_scale()).
+var styled_buttons: Array = []
 const FILTERS := ["all", "studied", "saved"]
 const FILTER_ICONS := {"all": "book", "studied": "check", "saved": "star"}
 const SORTS := ["foreign", "native", "right", "wrong"]
@@ -116,6 +123,9 @@ var detail_hint: Label
 
 func _init() -> void:
 	name = "Vocabulary book"
+	# Fredoka for every label, button and menu inside (UI art style).
+	theme = Theme.new()
+	theme.default_font = BonStyle.font(600)
 	size_flags_vertical = Control.SIZE_EXPAND_FILL
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_theme_constant_override("separation", 8)
@@ -132,8 +142,8 @@ func _init() -> void:
 		button.toggle_mode = true
 		style_button(button, "tab")
 		if id == "saved":
-			button.add_theme_color_override("icon_normal_color", GOLD)
-			button.add_theme_color_override("icon_hover_color", GOLD)
+			button.set_meta("icon_color", GOLD)
+			_style_one(button)
 		filter_buttons[id] = button
 		tab_bar.add_child(button)
 	var tab_space := Control.new()
@@ -148,11 +158,11 @@ func _init() -> void:
 	search.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	search.size_flags_stretch_ratio = 1.4
 	search.clear_button_enabled = true
-	search.add_theme_stylebox_override("normal", _style(Color("0c1b24"), Color("3d5b6e"), 10, 14, 6))
-	var focused := _style(Color("0c1b24"), ACTIVE, 10, 14, 6)
+	search.add_theme_stylebox_override("normal", _style(FRAME, BUTTON_EDGE, 24, 18, 6))
+	var focused := _style(FRAME, ACTIVE, 24, 18, 6)
 	search.add_theme_stylebox_override("focus", focused)
 	search.add_theme_color_override("font_color", TEXT)
-	search.add_theme_color_override("font_placeholder_color", Color("7f97a0"))
+	search.add_theme_color_override("font_placeholder_color", Color("86aab1"))
 	search.add_theme_color_override("caret_color", ACTIVE)
 	search.text_changed.connect(func(text: String) -> void:
 		query = text
@@ -174,10 +184,11 @@ func _init() -> void:
 	for menu in [category_menu, area_menu, sort_menu]:
 		style_button(menu, "plain")
 		var popup: PopupMenu = menu.get_popup()
-		popup.add_theme_stylebox_override("panel", _style(INK, BUTTON_EDGE, 10, 6, 6))
-		popup.add_theme_stylebox_override("hover", _style(BUTTON_HOVER, BUTTON_HOVER, 6, 8, 4))
-		popup.add_theme_color_override("font_color", TEXT)
-		popup.add_theme_color_override("font_hover_color", Color("fff3cc"))
+		popup.add_theme_stylebox_override("panel", _style(FRAME, BUTTON_EDGE, 14, 8, 8))
+		popup.add_theme_stylebox_override("hover", _style(BonStyle.GREEN_TOP, BonStyle.GREEN_TOP, 10, 8, 4))
+		popup.add_theme_color_override("font_color", BonStyle.BROWN)
+		popup.add_theme_color_override("font_hover_color", Color.WHITE)
+		popup.add_theme_font_override("font", BonStyle.font(600))
 	# Scores: a short on/off toggle in the tab row (teal when the score columns show; the
 	# tooltip says Show / Hide scores), so the tools row keeps room for the menus.
 	scores_button = _button(func() -> void: set_show_scores(not show_scores))
@@ -190,7 +201,7 @@ func _init() -> void:
 	table_card = PanelContainer.new()
 	table_card.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	table_card.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	table_card.add_theme_stylebox_override("panel", _style(FRAME, Color("223f4f"), 12, 10, 6))
+	table_card.add_theme_stylebox_override("panel", _style(FRAME, BUTTON_EDGE, 18, 12, 8))
 	table.add_child(table_card)
 	var card_stack := VBoxContainer.new()
 	card_stack.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -229,8 +240,8 @@ func _init() -> void:
 	list_area.add_child(empty_label)
 	empty_label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	scroll = VScrollBar.new()
-	scroll.add_theme_stylebox_override("scroll", _style(Color("0a1820"), Color("0a1820"), 6, 0, 0))
-	scroll.add_theme_stylebox_override("grabber", _style(Color("3d5b6e"), Color("3d5b6e"), 6, 0, 0))
+	scroll.add_theme_stylebox_override("scroll", _style(Color("cfe8eb"), Color("cfe8eb"), 12, 0, 0))
+	scroll.add_theme_stylebox_override("grabber", _style(Color("9fcfd5"), Color("9fcfd5"), 12, 0, 0))
 	scroll.add_theme_stylebox_override("grabber_highlight", _style(TEAL, TEAL, 6, 0, 0))
 	scroll.add_theme_stylebox_override("grabber_pressed", _style(ACTIVE, ACTIVE, 6, 0, 0))
 	scroll.value_changed.connect(func(_v: float) -> void: _draw_rows())
@@ -244,7 +255,7 @@ func _init() -> void:
 	hint = Label.new()
 	hint.name = "Hint"
 	hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	hint.add_theme_color_override("font_color", Color("8fb3ba"))
+	hint.add_theme_color_override("font_color", HINT)
 	footer_bar.add_child(hint)
 	_build_detail()
 
@@ -267,33 +278,29 @@ func _scale_style(entry: Array) -> void:
 	style.content_margin_bottom = entry[2] * factor
 	style.set_corner_radius_all(roundi(entry[3] * factor))
 
-## The journal's button look. "tab": a pill that turns gold with dark text when chosen;
-## "plain": a rounded button that turns teal when on (toggles, open menus).
+## The journal's button look (BonStyle, 18 Nov 2026). "tab": a cream pill that turns green with
+## white words when chosen; "plain": the same for toggles and open menus. Restyled at each
+## window scale by apply_scale(); the HUD styles its header buttons with it too.
 func style_button(button: Button, kind: String) -> void:
-	var on_fill := Color("2f6b5e")
-	var on_edge := Color("a9d5c6")
-	var on_text := Color("ffffff")
-	var radius := 10.0
-	if kind == "tab":
-		on_fill = ACTIVE
-		on_edge = ACTIVE
-		on_text = INK
-		radius = 24.0
-	var looks := {
-		"normal": [BUTTON, BUTTON_EDGE],
-		"hover": [BUTTON_HOVER, TEAL],
-		"pressed": [on_fill, on_edge],
-		"hover_pressed": [on_fill.lightened(0.08), on_edge],
-		"disabled": [BUTTON.darkened(0.25), BUTTON_EDGE]}
-	for state in looks:
-		button.add_theme_stylebox_override(state, _style(looks[state][0], looks[state][1], radius, 16, 6))
-	button.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
-	for color in ["font_color", "font_hover_color", "font_focus_color", "icon_normal_color", "icon_hover_color", "icon_focus_color"]:
-		if not button.has_theme_color_override(color):
-			button.add_theme_color_override(color, TEXT)
-	for color in ["font_pressed_color", "font_hover_pressed_color", "icon_pressed_color", "icon_hover_pressed_color"]:
-		button.add_theme_color_override(color, on_text)
+	if not styled_buttons.any(func(e: Array) -> bool: return e[0] == button):
+		styled_buttons.append([button, kind])
+	_style_one(button)
 	button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+
+func _style_one(button: Button) -> void:
+	var size := 18.0
+	if button.has_theme_font_size_override("font_size"):
+		size = float(button.get_theme_font_size("font_size")) / factor
+	BonStyle.style_toggle(button, factor, size)
+	for state in ["normal", "hover", "pressed", "hover_pressed", "disabled"]:
+		var look := button.get_theme_stylebox(state)
+		look.content_margin_left = 16.0 * factor
+		look.content_margin_right = 16.0 * factor
+		look.content_margin_top = 4.0 * factor
+		look.content_margin_bottom = 6.0 * factor
+	if button.has_meta("icon_color"):
+		for name in ["icon_normal_color", "icon_hover_color"]:
+			button.add_theme_color_override(name, button.get_meta("icon_color"))
 
 ## A button whose menu ticks any number of choices (first item: "All", which clears them).
 ## `chosen` is the dictionary it fills (chosen_categories or chosen_areas); the menu stays open
@@ -418,7 +425,7 @@ func _make_row(is_header: bool) -> Control:
 		star.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 		star.set_meta("base_width", STAR_WIDTH)
 		star.add_theme_color_override("font_color", GOLD)
-		star.add_theme_color_override("font_hover_color", Color("fff3cc"))
+		star.add_theme_color_override("font_hover_color", GOLD.lightened(0.25))
 		star.pressed.connect(func() -> void:
 			var key := str(line.get_meta("key", ""))
 			if key != "":
@@ -428,6 +435,10 @@ func _make_row(is_header: bool) -> Control:
 		var cell := _cell(spec[0], spec[1])
 		if is_header:
 			cell.add_theme_color_override("font_color", HEADING)
+		elif line.get_child_count() == 1:
+			cell.add_theme_color_override("font_color", FOREIGN)   # the word (dark on cream)
+		elif line.get_child_count() == 2:
+			cell.add_theme_color_override("font_color", TEXT)   # its translation
 		line.add_child(cell)
 	if is_header:
 		return line
@@ -438,7 +449,7 @@ func _make_row(is_header: bool) -> Control:
 	row.mouse_filter = Control.MOUSE_FILTER_PASS
 	var plain := StyleBoxEmpty.new()
 	var hover := StyleBoxFlat.new()
-	hover.bg_color = Color("1d3a4c")
+	hover.bg_color = BUTTON_HOVER
 	hover.set_corner_radius_all(6)
 	for state in ["normal", "pressed", "focus", "disabled"]:
 		row.add_theme_stylebox_override(state, plain)
@@ -446,7 +457,7 @@ func _make_row(is_header: bool) -> Control:
 	# Every other word row is a shade lighter, so a row's words read across.
 	var stripe := ColorRect.new()
 	stripe.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	stripe.color = Color(1, 1, 1, 0.035)
+	stripe.color = Color(0.09, 0.33, 0.42, 0.05)
 	row.add_child(stripe)
 	stripe.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	row.add_child(line)
@@ -508,7 +519,7 @@ func _build_detail() -> void:
 	detail_star.focus_mode = Control.FOCUS_NONE
 	detail_star.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	detail_star.add_theme_color_override("font_color", GOLD)
-	detail_star.add_theme_color_override("font_hover_color", Color("fff3cc"))
+	detail_star.add_theme_color_override("font_hover_color", GOLD.lightened(0.25))
 	detail_star.pressed.connect(func() -> void: bookmark_toggled.emit(detail_key))
 	top.add_child(detail_star)
 	detail_tiles = HBoxContainer.new()
@@ -518,7 +529,9 @@ func _build_detail() -> void:
 		var tile := PanelContainer.new()
 		tile.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		var style := StyleBoxFlat.new()
-		style.bg_color = Color("243e4d")
+		style.bg_color = BonStyle.SKY
+		style.border_color = BonStyle.RIM
+		style.set_border_width_all(3)
 		style.set_corner_radius_all(10)
 		tile.add_theme_stylebox_override("panel", style)
 		var stack := VBoxContainer.new()
@@ -531,7 +544,7 @@ func _build_detail() -> void:
 		detail_tiles.add_child(tile)
 	var games_card := PanelContainer.new()
 	games_card.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	games_card.add_theme_stylebox_override("panel", _style(FRAME, Color("223f4f"), 12, 14, 10))
+	games_card.add_theme_stylebox_override("panel", _style(FRAME, BUTTON_EDGE, 18, 14, 10))
 	detail.add_child(games_card)
 	var games_scroll := ScrollContainer.new()
 	games_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
@@ -893,7 +906,7 @@ func _render_detail() -> void:
 		[UiText.t("journal.col_studied"), "✓" if studied.has(key) else "–", RIGHT if studied.has(key) else DIM],
 		[UiText.t("journal.col_right"), str(sums.positive), RIGHT],
 		[UiText.t("journal.col_wrong"), str(sums.negative), WRONG],
-		[UiText.t("journal.col_translated"), str(sums.translated), Color("9ebbd2")]]
+		[UiText.t("journal.col_translated"), str(sums.translated), TRANSLATED]]
 	for i in 4:
 		var labels: Array = detail_tiles.get_child(i).get_child(0).get_children()
 		labels[0].text = tiles[i][0]
@@ -914,7 +927,7 @@ func _render_detail() -> void:
 			_detail_cell(game_name(id), TEXT, true)
 			for outcome in PracticeLog.OUTCOMES:
 				var n := int(entry.get(outcome, 0))
-				var color: Color = DIM if n == 0 else {"positive": RIGHT, "negative": WRONG, "translated": Color("9ebbd2")}[outcome]
+				var color: Color = DIM if n == 0 else {"positive": RIGHT, "negative": WRONG, "translated": TRANSLATED}[outcome]
 				_detail_cell(str(n), color, false)
 	_scale_detail()
 
@@ -990,6 +1003,10 @@ func apply_scale(f: float) -> void:
 	_font(empty_label, 20)
 	for row in rows:
 		_scale_row(row)
+	# Buttons rebuilt elsewhere (filter menus) may have been freed since they were styled.
+	styled_buttons = styled_buttons.filter(func(entry: Array) -> bool: return is_instance_valid(entry[0]))
+	for entry in styled_buttons:
+		_style_one(entry[0])
 	_layout_rows()
 	_scale_detail()
 

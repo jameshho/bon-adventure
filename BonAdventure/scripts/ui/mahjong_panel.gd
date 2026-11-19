@@ -19,6 +19,7 @@ const Tiles := preload("res://scripts/ui/mahjong_tiles.gd")
 const UiIcons := preload("res://scripts/ui/ui_icons.gd")
 const Portraits := preload("res://scripts/ui/plush_portraits.gd")
 const TranslateButton := preload("res://scripts/ui/translate_button.gd")
+const BonStyle := preload("res://scripts/ui/bon_style.gd")
 
 signal tile_pressed(kind: int)
 ## A tile double-clicked (or tapped twice) while another player is playing: play it
@@ -32,20 +33,23 @@ signal leave_requested
 signal lessons_requested
 signal again_pressed
 
-const FILL := Color("142a38")
-const EDGE := Color("7abfb3")
-const GOLD := Color("fff1c5")
-const DIM := Color("aadddc")
+const FILL := BonStyle.SKY
+const EDGE := BonStyle.RIM
+const GOLD := BonStyle.INK
+const DIM := BonStyle.INK_SOFT
 const WIN := Color("c4262e")
 ## The big Mahjong! button: gold with red letters, gently pulsing.
 const WIN_FILL := Color("ffc93c")
 const WIN_INK := Color("b3202a")
 const WIN_PULSE := 1.06
-const CALL := Color("2f6f9a")
-const PASS := Color("55606a")
+# The money panel's pattern (user's mockup, design-references/ui/money-panel.webp, 18 Nov 2026):
+# green for the calls, cream pills for Pass / Keep / Leave and the hand's tray, soft blue cards.
+const CALL := BonStyle.GREEN_BOTTOM
+const PASS := Color("fbf1e1")
+const TRAY := Color("fbf1e1")
 ## The scoreboard's change after a hand: points won, points paid.
-const GAIN := Color("8fe0a0")
-const LOSS := Color("ff9a8a")
+const GAIN := Color("3f9a35")
+const LOSS := Color("d0523f")
 const TILE := Vector2(62, 84)
 const DESIGN := Vector2(1100, 800)
 ## Places in the hand bar besides the drawn tile (13 less 3 for each exposed set).
@@ -115,6 +119,8 @@ var portraits
 var _scores: Array = []
 
 func _init() -> void:
+	# Fredoka everywhere inside (UI art style, docs/guides/UI_STYLE.md, 18 Nov 2026).
+	theme = BonStyle.theme()
 	name = "Mahjong panel"
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	anchor_right = 1.0
@@ -159,6 +165,8 @@ func _init() -> void:
 	leave_button.pressed.connect(func() -> void: leave_requested.emit())
 	corner_row.add_child(leave_button)
 	hand_bar = _card()
+	# The hand sits in a cream tray, like the money panel's "Tu mano".
+	(hand_bar.get_theme_stylebox("panel") as StyleBoxFlat).bg_color = TRAY
 	add_child(hand_bar)
 	hand_row = HBoxContainer.new()
 	hand_row.alignment = BoxContainer.ALIGNMENT_BEGIN
@@ -199,10 +207,14 @@ func _card() -> PanelContainer:
 	var card := PanelContainer.new()
 	card.mouse_filter = Control.MOUSE_FILTER_STOP
 	var style := StyleBoxFlat.new()
-	style.bg_color = Color(FILL, .9)
+	style.bg_color = Color(FILL, .96)
 	style.border_color = EDGE
-	style.set_border_width_all(2)
-	style.set_corner_radius_all(14)
+	style.set_border_width_all(5)
+	style.set_corner_radius_all(26)
+	style.anti_aliasing = true
+	style.shadow_color = Color(0.1, 0.27, 0.32, 0.25)
+	style.shadow_size = 10
+	style.shadow_offset = Vector2(0, 4)
 	style.set_content_margin_all(10)
 	card.add_theme_stylebox_override("panel", style)
 	return card
@@ -393,11 +405,16 @@ func _button(text: String, color: Color, font_size: int, min_size: Vector2, marg
 	for state in ["normal", "hover", "pressed"]:
 		var box := StyleBoxFlat.new()
 		box.bg_color = color.lightened(0.15) if state == "hover" else color.darkened(0.2) if state == "pressed" else color
-		box.set_corner_radius_all(12)
+		box.set_corner_radius_all(18)
+		box.border_color = BonStyle.RIM
+		box.set_border_width_all(4)
+		box.anti_aliasing = true
 		box.set_content_margin_all(margin)
 		button.add_theme_stylebox_override(state, box)
-	button.add_theme_color_override("font_color", Color.WHITE)
-	button.add_theme_color_override("font_hover_color", Color.WHITE)
+	# White words on blue, dark teal on soft blue (UI art style, 18 Nov 2026).
+	var ink: Color = Color.WHITE if color.get_luminance() < 0.6 else BonStyle.INK
+	for name in ["font_color", "font_hover_color", "font_pressed_color", "icon_normal_color", "icon_hover_color", "icon_pressed_color"]:
+		button.add_theme_color_override(name, ink)
 	button.add_theme_font_size_override("font_size", roundi(font_size * _factor))
 	button.custom_minimum_size = min_size * _factor
 	button.text = text
@@ -420,7 +437,7 @@ func _build_win_offer(action: Dictionary) -> void:
 	button.pressed.connect(func() -> void: action_pressed.emit("win", -1))
 	win_offer.add_child(button)
 	if action.has("worth"):
-		var worth := _label(24, GOLD)
+		var worth := _label(24, Color.WHITE)
 		worth.autowrap_mode = TextServer.AUTOWRAP_OFF
 		worth.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		worth.add_theme_color_override("font_outline_color", Color("0b1a24"))
@@ -465,7 +482,7 @@ func _build_actions() -> void:
 			var text := Label.new()
 			text.text = button.text
 			text.add_theme_font_size_override("font_size", roundi(24 * _factor))
-			text.add_theme_color_override("font_color", Color.WHITE)
+			text.add_theme_color_override("font_color", button.get_theme_color("font_color"))
 			box.add_child(text)
 			box.add_child(row)
 			button.text = ""
@@ -487,7 +504,19 @@ func _build_result() -> void:
 	title.autowrap_mode = TextServer.AUTOWRAP_OFF
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.text = settings.inline(data.title, show_native)
-	result_stack.add_child(title)
+	title.add_theme_font_override("font", BonStyle.font(700))
+	# The headline in a cream pill (the money panel's request line).
+	var pill := PanelContainer.new()
+	pill.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	pill.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	var look := BonStyle.flat(TRAY, roundi(40 * _factor), maxi(3, roundi(5 * _factor)))
+	look.content_margin_left = 26 * _factor
+	look.content_margin_right = 26 * _factor
+	look.content_margin_top = 6 * _factor
+	look.content_margin_bottom = 6 * _factor
+	pill.add_theme_stylebox_override("panel", look)
+	pill.add_child(title)
+	result_stack.add_child(pill)
 	for line in data.get("lines", []):
 		var row := _label(23, DIM)
 		row.autowrap_mode = TextServer.AUTOWRAP_OFF
@@ -594,6 +623,11 @@ func _rescale() -> void:
 	var screen := get_viewport_rect().size if is_inside_tree() else DESIGN
 	_factor = minf(screen.y / DESIGN.y, screen.x / DESIGN.x)
 	var grown := _factor * INFO_GROWTH
+	# Lessons, scoreboard and leave: cream round buttons with dark teal icons (money panel's ✕).
+	for button in [lessons_button, score_button, leave_button]:
+		BonStyle.style_button(button, "minor", grown, 22)
+		for name in ["font_color", "font_hover_color", "font_pressed_color", "font_hover_pressed_color", "icon_normal_color", "icon_hover_color", "icon_pressed_color", "icon_hover_pressed_color"]:
+			button.add_theme_color_override(name, GOLD)
 	leave_button.custom_minimum_size = Vector2(56, 56) * grown
 	lessons_button.custom_minimum_size = Vector2(56, 56) * grown
 	score_button.custom_minimum_size = Vector2(56, 56) * grown
@@ -708,7 +742,7 @@ class TileButton extends Control:
 			draw_circle(badge, r, QUEUED)
 			draw_colored_polygon(PackedVector2Array([badge + Vector2(-r * 0.35, -r * 0.5), badge + Vector2(r * 0.55, 0), badge + Vector2(-r * 0.35, r * 0.5)]), Color.WHITE)
 		elif _hover and enabled:
-			draw_rect(face, Color("ffd24a"), false, 3.0)
+			draw_rect(face, BonStyle.GREEN_BOTTOM, false, 3.0)
 
 ## A row of small tiles (on a call button, in the status card). Each keeps a tile's shape
 ## (height 1.22 × width) and the row is centred, however the strip is stretched.
@@ -758,7 +792,7 @@ class Face extends Control:
 				points.append(centre + turn * radius)
 				uvs.append(Vector2(0.5, 0.5 + HEAD_UP) + turn * 0.5 * ZOOM)
 			draw_colored_polygon(points, Color.WHITE, uvs, texture)
-		draw_arc(centre, side * 0.5, 0.0, TAU, 48, Color("aadddc"), maxf(1.5, side * 0.03), true)
+		draw_arc(centre, side * 0.5, 0.0, TAU, 48, BonStyle.RIM, maxf(1.5, side * 0.03), true)
 		if wind >= 0:
 			var tile := Vector2(0.34, 0.34 * 1.3) * side
 			var at := Vector2(size.x * 0.5 + side * 0.5 - tile.x * 0.8, size.y * 0.5 + side * 0.5 - tile.y * 0.85)

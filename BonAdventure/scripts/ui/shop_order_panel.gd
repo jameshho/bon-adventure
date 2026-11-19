@@ -28,6 +28,13 @@ extends Control
 ## holding the HUD's EN button (or L), GameSettings.peeking, shows every open card (dialogue,
 ## cart, quit prompt) in the native language, and letting go shows the language being learned
 ## again. The bubbles still exist (sessions set show_native) but stay hidden.
+##
+## UI art style (user, 18 Nov 2026; docs/guides/UI_STYLE.md, mockup
+## design-references/ui/dialogue-box.webp): the dialogue box and the quit card are cream
+## (BonStyle "dialogue": white rim, soft shadow; the dialogue box has a small tail pointing up to
+## the speaker), the speaker's name sits in a blue pill INSIDE the box's top left, lines are dark
+## teal Fredoka, and every button is a BonStyle pill (first choice green, others cream, Leave
+## coral, ✕ a cream circle). The cart card keeps its dark glass until phase 2 of the restyle.
 const GameSettings := preload("res://scripts/core/game_settings.gd")
 const PinyinText := preload("res://scripts/ui/pinyin_text.gd")
 const UiIcons := preload("res://scripts/ui/ui_icons.gd")
@@ -35,6 +42,7 @@ const TranslateButton := preload("res://scripts/ui/translate_button.gd")
 const PracticeLog := preload("res://scripts/learning/practice_log.gd")
 const ProductPictures := preload("res://scripts/ui/product_pictures.gd")
 const Lexicon := preload("res://scripts/language/lexicon.gd")
+const BonStyle := preload("res://scripts/ui/bon_style.gd")
 
 signal choice_pressed(id: String)
 signal dialogue_closed
@@ -43,21 +51,25 @@ signal remove_pressed(key: String)
 signal quit_requested
 signal quit_answered(leave: bool)
 
-const FILL := Color("142a38")
-const EDGE := Color("7abfb3")
-const GOLD := Color("fff1c5")
-const DIM := Color("aadddc")
-const TOAST := Color("ffd18b")
+# The order list and cart (UI art style, 18 Nov 2026): soft blue card, dark teal text.
+const FILL := BonStyle.SKY
+const EDGE := BonStyle.RIM
+const GOLD := BonStyle.INK
+const DIM := BonStyle.INK_SOFT
+const TOAST := BonStyle.TERM
 ## A shopping list row that is done (its check and text).
-const DONE := Color("8fe3a0")
+const DONE := Color("3f9a35")
 ## Words in the language being learned inside a line (see the top comment).
-const TERM := Color("ffb347")
+const TERM := BonStyle.TERM
+## Dialogue box and quit card text (cream cards, UI_STYLE.md).
+const LINE := BonStyle.INK
+const LINE_SOFT := BonStyle.INK_SOFT
 ## The order list and cart (user, 13 Nov 2026: smaller, see-through, modern): a glass card in the
 ## top right [left, top, right, bottom] of the screen (was 0.56, 0.10, 0.98, 0.90). Since 14 Nov
 ## 2026 the bottom is unused: the card fits its content, hanging from the top (_fit_cards()).
 const CART_RECT := [0.70, 0.18, 0.98, 0.64]
-const CART_FILL := Color(0.05, 0.11, 0.16, 0.66)
-const CART_EDGE := Color(1, 1, 1, 0.22)
+const CART_FILL := Color(0.875, 0.953, 0.957, 0.96)
+const CART_EDGE := BonStyle.RIM
 
 var show_native := false
 ## {"foreign", "native"} text of common.show_translation, set by the sessions (kept for
@@ -75,6 +87,8 @@ var closable := true:
 			dialogue_close.visible = on
 		if cart_quit_button != null:
 			cart_quit_button.visible = on
+## The speaker's blue name pill and its name.
+var speaker_tag: PanelContainer
 var speaker_label: Label
 ## The line itself (rich text: coloured terms, see the top comment).
 var foreign_label: RichTextLabel
@@ -176,8 +190,10 @@ func _rescale() -> void:
 	if compact:
 		for label in [speaker_label, foreign_label, reading_label, native_label]:
 			_size_font(label, roundi(int(label.get_meta("base_font")) * factor * COMPACT_TEXT))
-	var margin := 14.0 * factor * (0.6 if compact else 1.0)
-	(dialogue_card.get_theme_stylebox("panel") as StyleBoxFlat).set_content_margin_all(margin)
+	var margin := 18.0 * factor * (0.6 if compact else 1.0)
+	dialogue_card.add_theme_stylebox_override("panel", _cream_box(factor, margin, true))
+	quit_card.add_theme_stylebox_override("panel", _cream_box(factor, 22.0 * factor, false))
+	speaker_tag.add_theme_stylebox_override("panel", _tag_box(factor))
 	for button in [translate_button, cart_translate_button]:
 		button.refresh(show_native, factor)
 		button.tooltip_text = str(translate_text.get("native", ""))
@@ -229,7 +245,7 @@ func _scale_node(node: Node, factor: float) -> void:
 	if node.has_meta("base_icon") and node is Button:
 		(node as Button).add_theme_constant_override("icon_max_width", roundi(float(node.get_meta("base_icon")) * factor))
 	if node.has_meta("base_margin") and node is PanelContainer:
-		((node as PanelContainer).get_theme_stylebox("panel") as StyleBoxFlat).set_content_margin_all(float(node.get_meta("base_margin")) * factor)
+		(node as PanelContainer).get_theme_stylebox("panel").set_content_margin_all(float(node.get_meta("base_margin")) * factor)
 	for child in node.get_children():
 		_scale_node(child, factor)
 
@@ -255,10 +271,10 @@ func _card(width: float) -> PanelContainer:
 	var style := StyleBoxFlat.new()
 	style.bg_color = FILL
 	style.border_color = EDGE
-	style.set_border_width_all(2)
-	style.set_corner_radius_all(18)
+	style.set_border_width_all(5)
+	style.set_corner_radius_all(24)
 	style.set_content_margin_all(14)
-	style.shadow_color = Color(0, 0, 0, 0.35)
+	style.shadow_color = Color(0.1, 0.27, 0.32, 0.25)
 	style.shadow_size = 10
 	style.shadow_offset = Vector2(0, 4)
 	style.anti_aliasing = true
@@ -270,8 +286,29 @@ func _card(width: float) -> PanelContainer:
 	add_child(card)
 	return card
 
+## The cream dialogue box / quit card at `factor` (BonStyle "dialogue"), `tail` pointing up.
+func _cream_box(factor: float, margin: float, tail: bool) -> StyleBox:
+	var look = BonStyle.box("dialogue", factor)
+	look.set_content_margin_all(margin)
+	look.content_margin_left = margin * 1.4
+	look.content_margin_right = margin * 1.1
+	if tail:
+		look.tail = 34.0 * factor
+		look.tail_at = 0.5
+	return look
+
+## The speaker's blue name pill (inside the box, user 18 Nov 2026).
+func _tag_box(factor: float) -> StyleBox:
+	var look = BonStyle.box("tag", factor)
+	look.content_margin_left = 16.0 * factor
+	look.content_margin_right = 16.0 * factor
+	look.content_margin_top = 3.0 * factor
+	look.content_margin_bottom = 5.0 * factor
+	return look
+
 func _label(font_size: int, color: Color) -> Label:
 	var label := Label.new()
+	BonStyle.use_font(label, 600)
 	_font(label, font_size)
 	label.add_theme_color_override("font_color", color)
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -290,22 +327,16 @@ func _button(text: String, kind: String = "secondary") -> Button:
 	_style_button(button, kind, 1.0)
 	return button
 
-## Button looks (8 Nov 2026): "primary" (the first choice, Stay, Done) teal, "secondary" dark
-## blue, "leave" dark with a coral edge (the quit card's Leave), "quiet" (✕) flat until hovered.
-const BUTTON_COLORS := {
-	"primary": [Color("2b7a70"), Color("8fe0d2"), Color("fffaf0")],
-	"secondary": [Color("1e3b4d"), Color("5f93a3"), Color("e8f6f3")],
-	"leave": [Color("3a2630"), Color("e39190"), Color("ffe9e6")],
-	"quiet": [Color(1, 1, 1, 0.0), Color(1, 1, 1, 0.0), Color("cfe9e6")],
-}
+## Button looks (UI art style, 18 Nov 2026; were teal / dark blue since 8 Nov 2026): "primary"
+## (the first choice, Stay, Done) a green pill, "secondary" a cream pill, "leave" (the quit card's
+## Leave) coral, "quiet" (✕) a small cream circle. BonStyle draws them.
+const BUTTON_KINDS := {"primary": "primary", "secondary": "minor", "leave": "danger", "quiet": "quiet", "soft": "soft_quiet"}
 
-## Rounded, edged styles for every state. With an icon, the right padding matches the icon's
-## room on the left so the words sit in the middle of the button.
+## BonStyle's pill for every state. With an icon, the side padding is wide enough that the icon
+## and the words, as one group, sit in the middle of a button wider than its contents.
 func _style_button(button: Button, kind: String, factor: float) -> void:
-	var colors: Array = BUTTON_COLORS.get(kind, BUTTON_COLORS.secondary)
-	# Equal side padding wide enough that the icon and the words, as one group, sit in the
-	# middle of a button wider than its contents.
-	var pad := 18.0 * factor if button.text != "" else 8.0 * factor
+	BonStyle.style_button(button, str(BUTTON_KINDS.get(kind, "minor")), factor, float(button.get_meta("base_font", 24)))
+	var pad := 22.0 * factor if button.text != "" else 8.0 * factor
 	if button.text != "" and button.has_meta("base_min"):
 		var font := button.get_theme_font("font")
 		var font_size := roundi(float(button.get_meta("base_font", 24)) * factor)
@@ -316,29 +347,13 @@ func _style_button(button: Button, kind: String, factor: float) -> void:
 		if button.icon != null:
 			group += float(button.get_meta("base_icon", 28)) * factor + 10.0   # h_separation (_set_icon)
 		pad = maxf(pad, ((button.get_meta("base_min") as Vector2).x * factor - group) * 0.5)
-	for state in ["normal", "hover", "pressed", "disabled"]:
-		var style := StyleBoxFlat.new()
-		var fill: Color = colors[0]
-		if state == "hover":
-			fill = fill.lightened(0.14) if kind != "quiet" else Color(1, 1, 1, 0.12)
-		elif state == "pressed":
-			fill = fill.darkened(0.2) if kind != "quiet" else Color(1, 1, 1, 0.2)
-		elif state == "disabled":
-			fill = fill.darkened(0.35)
-		style.bg_color = fill
-		style.border_color = colors[1] if state != "disabled" else Color(colors[1], 0.35)
-		style.set_border_width_all(roundi(2 * factor) if kind != "quiet" else 0)
-		style.set_corner_radius_all(roundi(12 * factor))
-		style.anti_aliasing = true
-		style.content_margin_left = pad
-		style.content_margin_right = pad
-		style.content_margin_top = 6.0 * factor
-		style.content_margin_bottom = 6.0 * factor
-		button.add_theme_stylebox_override(state, style)
-	button.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
-	for name in ["font_color", "font_hover_color", "font_pressed_color", "font_hover_pressed_color", "icon_normal_color", "icon_hover_color", "icon_pressed_color"]:
-		button.add_theme_color_override(name, colors[2])
-	button.add_theme_color_override("font_disabled_color", Color(colors[2], 0.45))
+	for state in ["normal", "hover", "pressed", "disabled", "hover_pressed"]:
+		var look := button.get_theme_stylebox(state)
+		look.content_margin_left = pad
+		look.content_margin_right = pad
+		look.content_margin_top = 6.0 * factor
+		look.content_margin_bottom = 8.0 * factor
+	button.add_theme_constant_override("h_separation", 10)
 	button.alignment = HORIZONTAL_ALIGNMENT_CENTER
 
 func _build_dialogue() -> void:
@@ -350,20 +365,14 @@ func _build_dialogue() -> void:
 	stack.add_child(top)
 	# The speaker's name on a small tag at the top left.
 	var tag := PanelContainer.new()
+	speaker_tag = tag
 	tag.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	tag.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	tag.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	var tag_style := StyleBoxFlat.new()
-	tag_style.bg_color = Color("21485a")
-	tag_style.set_corner_radius_all(10)
-	tag_style.content_margin_left = 12
-	tag_style.content_margin_right = 12
-	tag_style.content_margin_top = 2
-	tag_style.content_margin_bottom = 2
-	tag_style.anti_aliasing = true
-	tag.add_theme_stylebox_override("panel", tag_style)
+	tag.add_theme_stylebox_override("panel", _tag_box(1.0))
 	top.add_child(tag)
-	speaker_label = _label(22, Color("bdeee6"))
+	speaker_label = _label(24, Color.WHITE)
+	BonStyle.use_font(speaker_label, 700)
 	speaker_label.autowrap_mode = TextServer.AUTOWRAP_OFF
 	tag.add_child(speaker_label)
 	var spacer := Control.new()
@@ -382,15 +391,16 @@ func _build_dialogue() -> void:
 	foreign_label.scroll_active = false
 	foreign_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	foreign_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	foreign_label.add_theme_color_override("default_color", GOLD)
+	foreign_label.add_theme_color_override("default_color", LINE)
+	BonStyle.use_font(foreign_label, 600)
 	# PASS: a tap on a term is taken (meta_clicked); any other tap goes on to the card.
 	foreign_label.mouse_filter = Control.MOUSE_FILTER_PASS
 	foreign_label.meta_clicked.connect(_on_term_tapped)
 	_font(foreign_label, 32)
 	stack.add_child(foreign_label)
-	reading_label = PinyinText.style(_label(22, GOLD.darkened(0.15)))
+	reading_label = PinyinText.style(_label(22, LINE_SOFT))
 	stack.add_child(reading_label)
-	native_label = _label(26, DIM)
+	native_label = _label(26, LINE_SOFT)
 	stack.add_child(native_label)
 	choice_row = HBoxContainer.new()
 	choice_row.alignment = BoxContainer.ALIGNMENT_CENTER
@@ -400,11 +410,11 @@ func _build_dialogue() -> void:
 ## The ✕ of every card: the shared close icon.
 func _icon_button(icon: String) -> Button:
 	var button := _button("", "quiet")
-	button.icon = UiIcons.texture(icon, 64)
-	button.set_meta("base_icon", 26)
+	button.icon = BonStyle.icon_texture(icon, 96)
+	button.set_meta("base_icon", 22)
 	button.add_theme_constant_override("icon_max_width", 26)
 	button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_min(button, Vector2(56, 46))
+	_min(button, Vector2(52, 52))
 	return button
 
 func _build_cart() -> void:
@@ -412,9 +422,9 @@ func _build_cart() -> void:
 	var glass := cart_card.get_theme_stylebox("panel") as StyleBoxFlat
 	glass.bg_color = CART_FILL
 	glass.border_color = CART_EDGE
-	glass.set_border_width_all(1)
-	glass.set_corner_radius_all(22)
-	glass.shadow_color = Color(0, 0, 0, 0.18)
+	glass.set_border_width_all(5)
+	glass.set_corner_radius_all(26)
+	glass.shadow_color = Color(0.1, 0.27, 0.32, 0.25)
 	glass.shadow_size = 16
 	var stack := VBoxContainer.new()
 	stack.add_theme_constant_override("separation", 10)
@@ -442,7 +452,7 @@ func _build_cart() -> void:
 	stack.add_child(needed_box)
 	var rule := HSeparator.new()
 	var line_style := StyleBoxLine.new()
-	line_style.color = CART_EDGE
+	line_style.color = Color(BonStyle.INK_SOFT, 0.3)
 	line_style.thickness = 1
 	rule.add_theme_stylebox_override("separator", line_style)
 	stack.add_child(rule)
@@ -477,28 +487,28 @@ func _build_quit() -> void:
 	stack.add_theme_constant_override("separation", 10)
 	quit_card.add_child(stack)
 	stack.add_theme_constant_override("separation", 14)
-	quit_label = _label(30, GOLD)
+	quit_label = _label(30, LINE)
 	quit_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	stack.add_child(quit_label)
-	quit_native = _label(24, DIM)
+	quit_native = _label(24, LINE_SOFT)
 	quit_native.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	stack.add_child(quit_native)
 	var row := HBoxContainer.new()
 	row.alignment = BoxContainer.ALIGNMENT_CENTER
 	row.add_theme_constant_override("separation", 18)
 	stack.add_child(row)
-	# Leave: a door with an arrow, coral edge. Stay: a play sign ("keep playing"), teal. Two
-	# different icons and colours (8 Nov 2026: both used to be arrows).
-	quit_yes = _button("", "leave")
-	_min(quit_yes, Vector2(210, 58))
-	_set_icon(quit_yes, "exit")
-	quit_yes.pressed.connect(func() -> void: quit_answered.emit(true))
-	row.add_child(quit_yes)
+	# Stay (a play sign, "keep playing", green) on the left and Leave (a door with an arrow,
+	# coral) on the right (user, 18 Nov 2026; two icons and colours since 8 Nov 2026).
 	quit_no = _button("", "primary")
 	_min(quit_no, Vector2(210, 58))
 	_set_icon(quit_no, "play")
 	quit_no.pressed.connect(func() -> void: quit_answered.emit(false))
 	row.add_child(quit_no)
+	quit_yes = _button("", "leave")
+	_min(quit_yes, Vector2(210, 58))
+	_set_icon(quit_yes, "exit")
+	quit_yes.pressed.connect(func() -> void: quit_answered.emit(true))
+	row.add_child(quit_yes)
 
 # --- Dialogue ---------------------------------------------------------------
 
@@ -557,8 +567,8 @@ func _refresh_dialogue() -> void:
 	for choice in _choices:
 		# Larger than other buttons; the first choice (the "yes" of every question) is teal.
 		var button := _button(GameSettings.shared().stacked(choice.label, show_native), "primary" if choice_row.get_child_count() == 0 else "secondary")
-		_min(button, Vector2(200, 58))
-		_font(button, 26)
+		_min(button, Vector2(220, 64))
+		_font(button, 30)
 		_set_icon(button, str(choice.get("icon", "")))
 		var id: String = choice.id
 		button.pressed.connect(func() -> void: choice_pressed.emit(id))
@@ -596,7 +606,7 @@ func _term_markup(text: String) -> String:
 		out += "[url=term:%d][b][color=#%s]%s[/color][/b][/url]" % [span[2], TERM.to_html(false), _escape(text.substr(span[0], span[1] - span[0]))]
 		if term.get("show", false) or show_native or _open_terms.has(span[2]):
 			var meaning: String = Lexicon.shared().phrase("common.term_meaning", Lexicon.shared().native, {"meaning": str(term.get("gloss", ""))})
-			out += " [color=#%s]%s[/color]" % [DIM.to_html(false), _escape(meaning)]
+			out += " [color=#%s]%s[/color]" % [LINE_SOFT.to_html(false), _escape(meaning)]
 		cursor = span[1]
 	return out + _escape(text.substr(cursor))
 
@@ -622,9 +632,9 @@ func _on_term_tapped(meta: Variant) -> void:
 func _set_icon(button: Button, icon: String) -> void:
 	if icon == "":
 		return
-	button.icon = UiIcons.texture(icon, 64)
-	button.set_meta("base_icon", 28)
-	button.add_theme_constant_override("icon_max_width", roundi(28 * _factor))
+	button.icon = BonStyle.icon_texture(icon, 96)
+	button.set_meta("base_icon", 36)
+	button.add_theme_constant_override("icon_max_width", roundi(36 * _factor))
 	button.add_theme_constant_override("h_separation", 10)
 
 func toggle_translation() -> void:
@@ -679,7 +689,7 @@ func _refresh_cart() -> void:
 	for row in _cart.needed:
 		var item := HBoxContainer.new()
 		_add_picture(item, str(row.get("key", "")))
-		var label := _label(22, Color.WHITE)
+		var label := _label(22, LINE)
 		label.text = _text_of(row)
 		item.add_child(label)
 		# A row may be a shopping list's line (the welcome tutorial, 17 Nov 2026): "done" shows
@@ -705,10 +715,11 @@ func _refresh_cart() -> void:
 	for row in _cart.cart:
 		var line := HBoxContainer.new()
 		_add_picture(line, str(row.get("key", "")))
-		var label := _label(22, Color.WHITE)
+		var label := _label(22, LINE)
 		label.text = _text_of(row)
 		line.add_child(label)
 		var remove := _icon_button("close")
+		remove.set_meta("button_kind", "soft")   # soft blue on the soft blue cart
 		var key: String = row.key
 		remove.pressed.connect(func() -> void: remove_pressed.emit(key))
 		line.add_child(remove)

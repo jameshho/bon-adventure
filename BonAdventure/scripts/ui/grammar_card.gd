@@ -17,18 +17,19 @@ const PinyinText := preload("res://scripts/ui/pinyin_text.gd")
 const UiIcons := preload("res://scripts/ui/ui_icons.gd")
 const TranslateButton := preload("res://scripts/ui/translate_button.gd")
 const ProgressBarRow := preload("res://scripts/ui/progress_bar.gd")
+const BonStyle := preload("res://scripts/ui/bon_style.gd")
 
 signal confirm_pressed
 signal leave_requested
 
-const FILL := Color("142a38")
-const EDGE := Color("7abfb3")
-const GOLD := Color("fff1c5")
-const DIM := Color("aadddc")
-const RIGHT := Color("8fe3a1")
-const WRONG := Color("ffb0a0")
-const CONFIRM := Color("2f9a5b")
-const HURRY := Color("ff6b5a")
+const FILL := BonStyle.SKY
+const EDGE := BonStyle.RIM
+const GOLD := BonStyle.INK
+const DIM := BonStyle.INK_SOFT
+const RIGHT := Color("3f9a35")
+const WRONG := Color("d0523f")
+const CONFIRM := BonStyle.GREEN_BOTTOM
+const HURRY := Color("e0614f")
 const INK := Color("0b1a24")
 ## The countdown's centre, as a share of the screen height: high, over the ceiling, so it never
 ## hides the question on the board or the answer desks (render check, 8 Nov 2026).
@@ -69,6 +70,8 @@ var _hint: Dictionary = {}
 var _seconds_left := 0.0
 
 func _init() -> void:
+	# Fredoka everywhere inside (UI art style, docs/guides/UI_STYLE.md, 18 Nov 2026).
+	theme = BonStyle.theme()
 	name = "Grammar card"
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	anchor_right = 1.0
@@ -78,8 +81,11 @@ func _init() -> void:
 	var style := StyleBoxFlat.new()
 	style.bg_color = Color(FILL, .94)
 	style.border_color = EDGE
-	style.set_border_width_all(2)
-	style.set_corner_radius_all(15)
+	style.set_border_width_all(4)
+	style.set_corner_radius_all(24)
+	style.anti_aliasing = true
+	style.shadow_color = Color(0.1, 0.27, 0.32, 0.22)
+	style.shadow_size = 10
 	style.set_content_margin_all(12)
 	card.add_theme_stylebox_override("panel", style)
 	add_child(card)
@@ -134,11 +140,11 @@ func _init() -> void:
 	countdown.add_theme_constant_override("separation", 0)
 	countdown.visible = false
 	add_child(countdown)
-	count_label = _label(120, GOLD)
+	count_label = _label(120, Color.WHITE)   # over the room: white with an INK edge
 	count_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	count_label.autowrap_mode = TextServer.AUTOWRAP_OFF
 	countdown.add_child(count_label)
-	hint_label = _label(34, GOLD)
+	hint_label = _label(34, Color.WHITE)
 	hint_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	hint_label.autowrap_mode = TextServer.AUTOWRAP_OFF
 	countdown.add_child(hint_label)
@@ -163,13 +169,16 @@ func _label(font_size: int, color: Color) -> Label:
 func _style_confirm() -> void:
 	for state in ["normal", "hover", "pressed", "disabled"]:
 		var box := StyleBoxFlat.new()
-		box.bg_color = CONFIRM.lightened(0.12) if state == "hover" else CONFIRM.darkened(0.15) if state == "pressed" else Color(CONFIRM.darkened(0.55), .7) if state == "disabled" else CONFIRM
-		box.set_corner_radius_all(12)
+		box.bg_color = CONFIRM.lightened(0.12) if state == "hover" else CONFIRM.darkened(0.15) if state == "pressed" else BonStyle.SKY.lerp(Color(0.86, 0.88, 0.88), 0.6) if state == "disabled" else CONFIRM
+		box.set_corner_radius_all(18)
+		box.border_color = BonStyle.RIM
+		box.set_border_width_all(4)
+		box.anti_aliasing = true
 		box.set_content_margin_all(10)
 		confirm_button.add_theme_stylebox_override(state, box)
 	confirm_button.add_theme_color_override("font_color", Color.WHITE)
 	confirm_button.add_theme_color_override("font_hover_color", Color.WHITE)
-	confirm_button.add_theme_color_override("font_disabled_color", Color(1, 1, 1, .45))
+	confirm_button.add_theme_color_override("font_disabled_color", Color(BonStyle.INK, .4))
 
 ## A class is running: `title` "Question 3 of 6", `confirm` the button's line, `translate`
 ## the bubble's tooltip line, `points` of `total` on the progress bar.
@@ -204,7 +213,7 @@ func _update_count() -> void:
 	var whole := ceili(_seconds_left)
 	count_label.text = str(whole)
 	var last := whole <= LAST_SECONDS
-	count_label.add_theme_color_override("font_color", HURRY if last else GOLD)
+	count_label.add_theme_color_override("font_color", HURRY if last else Color.WHITE)
 	var beat := _seconds_left - floorf(_seconds_left)
 	countdown.pivot_offset = countdown.size * .5
 	countdown.scale = Vector2.ONE * (1.0 + (0.18 * beat * beat if last else 0.0))
