@@ -15,29 +15,29 @@ const SATIN := 1
 const METAL := 2
 
 ## Spacing across, spacing deep and height of one unit (market units, before goods_scale).
-## Unchanged from the 2 Nov 2026 refit, so the restocked groups match their pick areas.
+## From the 2 Nov 2026 refit; kinds redrawn on 18 Nov 2026 have the footprint of their new shape.
 const FOOT = {
-	"apple":Vector3(.15,.15,.15), "orange":Vector3(.16,.16,.15), "lemon":Vector3(.15,.13,.12), "lime":Vector3(.11,.11,.1),
-	"pear":Vector3(.14,.14,.2), "peach":Vector3(.14,.14,.14), "cherry":Vector3(.08,.08,.08), "strawberry":Vector3(.08,.08,.09),
+	"apple":Vector3(.15,.15,.15), "orange":Vector3(.16,.16,.15), "lemon":Vector3(.15,.13,.12), "lime":Vector3(.11,.09,.1),
+	"pear":Vector3(.14,.14,.2), "peach":Vector3(.14,.14,.14), "cherry":Vector3(.1,.06,.12), "strawberry":Vector3(.085,.085,.1),
 	"grapes":Vector3(.16,.16,.13), "banana":Vector3(.2,.34,.07), "pineapple":Vector3(.2,.2,.36), "mango":Vector3(.17,.14,.13),
 	"coconut":Vector3(.17,.17,.17), "watermelon":Vector3(.52,.4,.38), "avocado":Vector3(.12,.12,.14),
 	"tomato":Vector3(.14,.14,.13), "carrot":Vector3(.08,.3,.06), "broccoli":Vector3(.14,.14,.16), "potato":Vector3(.16,.12,.1),
-	"lettuce":Vector3(.2,.2,.18), "onion":Vector3(.13,.13,.16), "garlic":Vector3(.1,.1,.1), "corn":Vector3(.1,.3,.08),
-	"chili pepper":Vector3(.06,.2,.045), "mushroom":Vector3(.1,.1,.08), "cucumber":Vector3(.08,.32,.07), "bell pepper":Vector3(.15,.15,.16),
+	"lettuce":Vector3(.2,.2,.18), "onion":Vector3(.13,.13,.16), "garlic":Vector3(.1,.1,.11), "corn":Vector3(.1,.3,.08),
+	"chili pepper":Vector3(.07,.2,.045), "mushroom":Vector3(.11,.11,.09), "cucumber":Vector3(.08,.32,.07), "bell pepper":Vector3(.15,.15,.16),
 	"cereal":Vector3(.22,.1,.3), "rice":Vector3(.18,.1,.22), "beans":Vector3(.17,.09,.18), "flour":Vector3(.18,.11,.24),
 	"sugar":Vector3(.16,.1,.2), "pasta":Vector3(.1,.08,.24), "tortilla":Vector3(.22,.22,.12), "oil":Vector3(.1,.1,.29),
 	"salt":Vector3(.1,.1,.15), "pepper":Vector3(.07,.07,.15), "honey":Vector3(.11,.11,.13), "jam":Vector3(.1,.1,.12),
 	"salsa":Vector3(.11,.11,.13), "olive":Vector3(.1,.1,.14), "jar":Vector3(.12,.12,.15), "can":Vector3(.1,.1,.12),
 	"tuna":Vector3(.11,.11,.05), "soup":Vector3(.1,.1,.12), "coffee":Vector3(.08,.08,.22), "tea":Vector3(.18,.1,.1),
-	"cookie":Vector3(.2,.09,.06), "cracker":Vector3(.15,.07,.19), "snack":Vector3(.17,.09,.23), "chocolate":Vector3(.07,.05,.13), "candy":Vector3(.09,.05,.1),
-	"milk":Vector3(.11,.11,.21), "yogurt":Vector3(.085,.085,.07), "butter":Vector3(.13,.08,.045), "cheese":Vector3(.14,.1,.07),
-	"eggs":Vector3(.22,.12,.09), "ham":Vector3(.18,.14,.05), "sausage":Vector3(.18,.14,.06), "salad":Vector3(.16,.08,.2),
-	"chicken":Vector3(.2,.15,.08), "meat":Vector3(.2,.15,.06), "steak":Vector3(.25,.17,.05), "fish":Vector3(.14,.38,.08),
-	"shrimp":Vector3(.1,.1,.05), "water bottle":Vector3(.08,.08,.25), "juice":Vector3(.1,.1,.22), "soda":Vector3(.08,.08,.23),
-	"soap":Vector3(.11,.08,.04), "sponge":Vector3(.12,.08,.05), "detergent":Vector3(.15,.1,.26), "toothbrush":Vector3(.06,.04,.2),
+	"cookie":Vector3(.2,.09,.06), "cracker":Vector3(.15,.07,.19), "snack":Vector3(.17,.09,.23), "chocolate":Vector3(.08,.04,.13), "candy":Vector3(.12,.06,.13),
+	"milk":Vector3(.11,.11,.21), "yogurt":Vector3(.17,.09,.09), "butter":Vector3(.14,.08,.07), "cheese":Vector3(.15,.13,.08),
+	"eggs":Vector3(.21,.15,.14), "ham":Vector3(.25,.16,.1), "sausage":Vector3(.22,.13,.05), "salad":Vector3(.16,.08,.2),
+	"chicken":Vector3(.2,.15,.1), "meat":Vector3(.22,.14,.09), "steak":Vector3(.25,.17,.05), "fish":Vector3(.14,.36,.06),
+	"shrimp":Vector3(.14,.1,.05), "water bottle":Vector3(.08,.08,.25), "juice":Vector3(.1,.1,.22), "soda":Vector3(.08,.08,.23),
+	"soap":Vector3(.11,.075,.08), "sponge":Vector3(.12,.08,.06), "detergent":Vector3(.15,.1,.26), "toothbrush":Vector3(.07,.04,.2),
 	"toothpaste":Vector3(.18,.06,.05), "shampoo":Vector3(.1,.07,.23), "toilet paper":Vector3(.23,.23,.13),
-	"bread":Vector3(.22,.2,.13), "baguette":Vector3(.5,.08,.06), "croissant":Vector3(.18,.12,.06), "cake":Vector3(.3,.3,.14),
-	"cupcake":Vector3(.1,.1,.08), "donut":Vector3(.12,.12,.05)
+	"bread":Vector3(.22,.2,.13), "baguette":Vector3(.5,.08,.06), "croissant":Vector3(.17,.11,.07), "cake":Vector3(.3,.3,.16),
+	"cupcake":Vector3(.11,.11,.14), "donut":Vector3(.12,.12,.05)
 }
 
 ## Loose produce is piled (layers from the pick height, small random turn, size and offset);
@@ -48,6 +48,11 @@ const PILED := ["apple", "orange", "lemon", "lime", "pear", "peach", "cherry", "
 	"donut", "cupcake"]
 ## Most units in one group (the 2 Nov groups held at most 30).
 const CAP := 30
+## Size rule (18 Nov 2026, goods_scale): smallest longest side of a displayed unit, the coconut's.
+const MIN_SIDE := .3
+const COCONUT_SIDE := .4
+## Tallest pick box restock() grows a group to (as supermarket.gd _fit_pick: under the next shelf).
+const PICK_TOP := .42
 
 ## Shared colours (style guide). Brand colours are saturated mid-tones; labels are cream or
 ## white so the front picture reads; produce keeps natural hues.
@@ -65,6 +70,9 @@ const DARK_TRAY := "3a4044"
 
 var _prims := {}
 var _models := {}
+var _scales := {}
+## Pick boxes restock() has grown (for restock_all's report).
+var _grown := 0
 var _materials: Array[StandardMaterial3D] = []
 ## The mesh being built: per finish, vertices, normals, colours and indices.
 var _v: Array = []
@@ -81,18 +89,31 @@ func _init() -> void:
 		material.metallic = spec[1]
 		_materials.append(material)
 
-## Products are drawn larger than life so they read from across the aisle (3 Nov 2026).
+## Products are drawn larger than life so they read from across the aisle (3 Nov 2026), and no
+## unit is smaller than the coconut was (18 Nov 2026, user: "nothing should be smaller than the
+## current coconut, and the coconut should be bigger"): every variant's longest displayed side is
+## at least MIN_SIDE and the coconut's is COCONUT_SIDE (1.4 x its old .283). Big goods keep the
+## 3 Nov enlargement.
 func goods_scale(kind: String) -> float:
+	if _scales.has(kind):
+		return _scales[kind]
 	var foot: Vector3 = FOOT[kind]
 	var biggest := maxf(foot.x, maxf(foot.y, foot.z))
 	var want := 1.9 if biggest <= .12 else (1.7 if biggest <= .2 else 1.4)
-	return clampf(minf(want, .4 / foot.z), 1.0, want)
+	var grow := clampf(minf(want, .4 / foot.z), 1.0, want)
+	var side := INF
+	for v in variants(kind):
+		var size := model(kind, v).get_aabb().size
+		side = minf(side, maxf(size.x, maxf(size.y, size.z)))
+	grow = maxf(grow, (COCONUT_SIDE if kind == "coconut" else MIN_SIDE) / side)
+	_scales[kind] = grow
+	return grow
 
 func variants(kind: String) -> int:
 	return int({"apple":3, "pear":2, "peach":1, "grapes":2, "banana":2, "mango":2, "coconut":2, "watermelon":2,
 		"avocado":2, "onion":2, "mushroom":2, "bell pepper":3, "cereal":4, "rice":2, "pasta":2, "oil":2, "jam":3,
 		"can":3, "coffee":2, "tea":2, "snack":4, "chocolate":3, "candy":4, "milk":3, "yogurt":3, "cheese":2,
-		"eggs":2, "water bottle":1, "soda":3, "juice":3, "soap":3, "sponge":2, "detergent":3, "toothbrush":3,
+		"eggs":2, "chicken":2, "water bottle":1, "soda":3, "juice":3, "soap":3, "sponge":2, "detergent":3, "toothbrush":3,
 		"toothpaste":2, "shampoo":3, "bread":3, "cake":3, "cupcake":3, "donut":3, "fish":2, "cookie":2, "cracker":2}.get(kind, 1))
 
 ## The cached mesh of one product unit.
@@ -143,8 +164,11 @@ func shelf_tags(length: float, bays: int, levels: int) -> ArrayMesh:
 	return finish("Shelf price tags")
 
 ## Replace the meshes of one goods group (a word root with one pick Area3D) with new units.
-## The root, its name, word_key and pick area stay exactly as they were; the footprint is read
+## The root, its name, word_key and transform stay exactly as they were; the footprint is read
 ## back from the pick area (size = w + .02, h + .02, d + .02 + pad; turned to the goods' yaw).
+## Units bigger than the group was built for (18 Nov 2026 size rule) mean fewer units, spread
+## over the same area; a pick box lower than a unit (or a pile) grows upward from its bottom, at
+## most PICK_TOP, and one narrower or shallower than a single unit grows to hold it.
 ## Returns the number of units placed.
 func restock(root: Node3D) -> int:
 	var kind := str(root.get_meta("word_key"))
@@ -152,7 +176,8 @@ func restock(root: Node3D) -> int:
 	for child in root.get_children():
 		if child is Area3D:
 			area = child
-	var box: Vector3 = ((area.get_child(0) as CollisionShape3D).shape as BoxShape3D).size
+	var shape := area.get_child(0) as CollisionShape3D
+	var box: Vector3 = (shape.shape as BoxShape3D).size
 	var yaw := area.rotation.y
 	var pad := Vector2(area.position.x, area.position.z).length() * 2.0
 	var w := box.x - .02
@@ -166,12 +191,25 @@ func restock(root: Node3D) -> int:
 	rng.seed = hash(str(root.name) + kind)
 	var grow := goods_scale(kind)
 	var foot: Vector3 = FOOT[kind] * grow
+	var piled := kind in PILED
+	var layers := clampi(roundi((h / foot.z - 1.0) / .75) + 1, 1, 2) if piled else 1
+	if layers == 2 and foot.z * 1.75 > maxf(h, PICK_TOP - .02) + .005:
+		layers = 1
+	# Grow the pick box to hold the units: up to PICK_TOP high, and at least one unit wide and deep.
+	var need := Vector3(maxf(w, foot.x), maxf(h, minf(foot.z * (1.0 + .75 * (layers - 1)), PICK_TOP - .02)), maxf(d, foot.y))
+	if not need.is_equal_approx(Vector3(w, h, d)):
+		var bigger := (shape.shape as BoxShape3D).duplicate() as BoxShape3D
+		bigger.size = box + need - Vector3(w, h, d)
+		shape.position.y += (need.y - h) * .5
+		shape.shape = bigger
+		w = need.x
+		h = need.y
+		d = need.z
+		_grown += 1
 	# Never taller than the pick area: shrink the rare unit that would poke out of it.
 	if foot.z > h + .005:
 		grow *= h / foot.z
 		foot = FOOT[kind] * grow
-	var piled := kind in PILED
-	var layers := clampi(roundi((h / foot.z - 1.0) / .75) + 1, 1, 2) if piled else 1
 	var cols := maxi(1, int(w / foot.x))
 	# Shelf goods (gondolas, end caps, racks: no front reach, at most .45 deep) stand one row deep
 	# as before; fridges, the cooler and service counters show two rows; produce fills its bin.
@@ -181,7 +219,8 @@ func restock(root: Node3D) -> int:
 		deep -= 1
 	while cols * deep * layers > CAP and cols > 1:
 		cols -= 1
-	var step := Vector2(w / cols, d / deep)
+	# Piled units get a small random offset and turn: keep them a little inside the edges.
+	var step := Vector2(w / cols, d / deep) if not piled else Vector2(maxf(w - .04, foot.x) / cols, maxf(d - .04, foot.y) / deep)
 	var placed := 0
 	# Small groups (a few cakes) step through the variants so each one shows; larger groups
 	# pick at random like a mixed shelf.
@@ -189,9 +228,9 @@ func restock(root: Node3D) -> int:
 	var first := rng.randi()
 	for layer in range(layers):
 		var row_deep := maxi(1, deep - layer)
-		for i in range(cols - layer):
+		for i in range(maxi(1, cols - layer)):
 			for j in range(row_deep):
-				var o := Vector3((i - (cols - 1 - layer) * .5) * step.x, layer * foot.z * .75, (j - (row_deep - 1) * .5) * step.y)
+				var o := Vector3((i - (maxi(1, cols - layer) - 1) * .5) * step.x, layer * foot.z * .75, (j - (row_deep - 1) * .5) * step.y)
 				var turn := 0.0
 				var size := 1.0
 				if piled:
@@ -205,6 +244,33 @@ func restock(root: Node3D) -> int:
 				root.add_child(unit)
 				placed += 1
 	return placed
+
+## Restock every product group in the market interior with the current models (18 Nov 2026:
+## clay-toy redraw and size rule), for one baked step in supermarket.gd. The groups are those
+## product_models() rebuilds: word roots of a product kind holding only product meshes and one
+## pick Area3D. Candy-rack frames and the tutorial's featured fruit are left alone. Root names,
+## word_key and transforms are kept; pick boxes grow only where a unit needs it (restock()).
+## Returns the number of groups restocked and prints a summary.
+func restock_all(interior: Node3D) -> int:
+	var groups := 0
+	var units := 0
+	var skipped := []
+	_grown = 0
+	for root in interior.get_children():
+		if not root is Node3D or not root.has_meta("word_key") or not FOOT.has(str(root.get_meta("word_key"))):
+			continue
+		var title := str(root.name)
+		if title.begins_with("Candy rack") or title.begins_with("Featured"):
+			continue
+		var areas := root.get_children().filter(func(child): return child is Area3D)
+		var others := root.get_children().filter(func(child): return not child is Area3D and not child is MeshInstance3D)
+		if areas.size() != 1 or not others.is_empty():
+			skipped.append(title)
+			continue
+		units += restock(root)
+		groups += 1
+	print("SUPERMARKET restock_all: %d groups, %d units, %d pick boxes grown, skipped %s" % [groups, units, _grown, skipped])
+	return groups
 
 # ---------------------------------------------------------------------------------------------
 # Primitive building. Every primitive is normalised to a unit bounding box centred on the origin,
@@ -297,6 +363,191 @@ func ring(c: Vector3, s: Vector3, tint: String, f := SATIN, r := Vector3.ZERO, h
 func badge(c: Vector3, diameter: float, tint: String, f := MATTE) -> void:
 	cyl(c, Vector3(diameter, .004, diameter), tint, f, Vector3(PI / 2, 0, 0), 10)
 
+# Soft clay-toy parts (18 Nov 2026): chunkier, rounder goods with soft bevels. Each writes its
+# own vertices (sizes in market units, no stretching of the bevels) into the same merged mesh.
+
+## Appends one triangle list with per-vertex normals, turned by Euler `r` and moved to `c`.
+func _emit(c: Vector3, r: Vector3, verts: PackedVector3Array, norms: PackedVector3Array, ids: PackedInt32Array, tint: String, f: int) -> void:
+	var basis := Basis.from_euler(r)
+	var base: int = _v[f].size()
+	var colour := Color(tint)
+	for k in verts.size():
+		_v[f].append(c + basis * verts[k])
+		_n[f].append((basis * norms[k]).normalized())
+		_c[f].append(colour)
+	for k in ids:
+		_i[f].append(base + k)
+
+## Adds the triangle a, b, c (indices into verts) facing `out`.
+func _face(ids: PackedInt32Array, verts: PackedVector3Array, a: int, b: int, c: int, out: Vector3) -> void:
+	if (verts[b] - verts[a]).cross(verts[c] - verts[a]).dot(out) < 0.0:
+		ids.append_array(PackedInt32Array([a, b, c]))
+	else:
+		ids.append_array(PackedInt32Array([a, c, b]))
+
+## Box with soft rounded edges: one bevel whose vertices take the normals of the faces they
+## touch, so the edges shade like a rounded clay block. `bevel` is a share of the smallest side.
+func soft_box(c: Vector3, s: Vector3, tint: String, f := MATTE, r := Vector3.ZERO, bevel := .35) -> void:
+	var h := s * .5
+	var b := minf(s.x, minf(s.y, s.z)) * .5 * clampf(bevel, .01, .95)
+	var verts := PackedVector3Array()
+	var norms := PackedVector3Array()
+	var ids := PackedInt32Array()
+	for a in 3:
+		var u := (a + 1) % 3
+		var w := (a + 2) % 3
+		for sa in [-1.0, 1.0]:
+			# Face.
+			var q := []
+			for corner in [[-1.0, -1.0], [1.0, -1.0], [1.0, 1.0], [-1.0, 1.0]]:
+				var sg := Vector3.ZERO
+				sg[a] = sa; sg[u] = corner[0]; sg[w] = corner[1]
+				q.append(_bevel_point(verts, norms, h, b, sg, a))
+			var facing := Vector3.ZERO
+			facing[a] = sa
+			_face(ids, verts, q[0], q[1], q[2], facing)
+			_face(ids, verts, q[0], q[2], q[3], facing)
+			# Bevel between this face and the next axis' faces (each edge once).
+			for su in [-1.0, 1.0]:
+				var e := []
+				for sw in [-1.0, 1.0]:
+					var sg := Vector3.ZERO
+					sg[a] = sa; sg[u] = su; sg[w] = sw
+					e.append(_bevel_point(verts, norms, h, b, sg, a))
+					e.append(_bevel_point(verts, norms, h, b, sg, u))
+				var out := Vector3.ZERO
+				out[a] = sa; out[u] = su
+				_face(ids, verts, e[0], e[1], e[3], out)
+				_face(ids, verts, e[0], e[3], e[2], out)
+	for sx in [-1.0, 1.0]:
+		for sy in [-1.0, 1.0]:
+			for sz in [-1.0, 1.0]:
+				var sg := Vector3(sx, sy, sz)
+				_face(ids, verts, _bevel_point(verts, norms, h, b, sg, 0), _bevel_point(verts, norms, h, b, sg, 1), _bevel_point(verts, norms, h, b, sg, 2), sg)
+	_emit(c, r, verts, norms, ids, tint, f)
+
+## The point of soft_box corner `sg` that lies on the face across axis `a`, with that face's normal.
+func _bevel_point(verts: PackedVector3Array, norms: PackedVector3Array, h: Vector3, b: float, sg: Vector3, a: int) -> int:
+	var p := (h - Vector3.ONE * b) * sg
+	p[a] = h[a] * sg[a]
+	var n := Vector3.ZERO
+	n[a] = sg[a]
+	verts.append(p)
+	norms.append(n)
+	return verts.size() - 1
+
+## Solid of revolution about the local y axis from `profile` (Vector2(radius, y), bottom to
+## top). Neighbouring segments within 50 degrees share smooth normals; sharper turns stay
+## creased. `squash` scales x and z after turning (oval soaps, bottles).
+func lathe(c: Vector3, profile: Array, tint: String, f := SATIN, sides := 12, r := Vector3.ZERO, squash := Vector3.ONE) -> void:
+	var verts := PackedVector3Array()
+	var norms := PackedVector3Array()
+	var ids := PackedInt32Array()
+	var seg := []
+	for k in profile.size() - 1:
+		var t: Vector2 = profile[k + 1] - profile[k]
+		seg.append(Vector2(t.y, -t.x).normalized() if t.length() > .00001 else Vector2.ZERO)
+	var scale_basis := Basis.from_scale(squash)
+	var normal_basis := scale_basis.inverse().transposed()
+	# One ring of vertices per profile point, two where the profile creases; each segment joins
+	# the ring that ends it below to the ring that starts it above.
+	var ring_out := []  # ring index used by the segment leaving point k
+	var ring_in := []   # ring index used by the segment arriving at point k
+	var rings := 0
+	for k in profile.size():
+		var below: Vector2 = seg[k - 1] if k > 0 else Vector2.ZERO
+		var above: Vector2 = seg[k] if k < seg.size() else Vector2.ZERO
+		var normals := []
+		if below != Vector2.ZERO and above != Vector2.ZERO and below.dot(above) > .64:
+			normals = [(below + above).normalized()]
+		else:
+			for n in [below, above]:
+				if n != Vector2.ZERO:
+					normals.append(n)
+		var first := rings
+		for n: Vector2 in normals:
+			var p: Vector2 = profile[k]
+			for j in sides + 1:
+				var a := j * TAU / sides
+				var dir := Vector3(cos(a), 0, sin(a))
+				verts.append(scale_basis * (dir * p.x + Vector3.UP * p.y))
+				norms.append((normal_basis * (dir * n.x + Vector3.UP * n.y)).normalized())
+			rings += 1
+		ring_in.append(first)
+		ring_out.append(rings - 1)
+	for k in seg.size():
+		if seg[k] == Vector2.ZERO:
+			continue
+		var lo: int = ring_out[k] * (sides + 1)
+		var hi: int = ring_in[k + 1] * (sides + 1)
+		for j in sides:
+			var out: Vector3 = norms[lo + j] + norms[lo + j + 1] + norms[hi + j] + norms[hi + j + 1]
+			if out.length() < .0001:
+				out = verts[lo + j] + verts[hi + j]
+			_face(ids, verts, lo + j, lo + j + 1, hi + j + 1, out)
+			_face(ids, verts, lo + j, hi + j + 1, hi + j, out)
+	_emit(c, r, verts, norms, ids, tint, f)
+
+## Rounded tube through `points` with per-point radii (float, or Vector2(side, up) for an oval),
+## for sausages, croissants, chillies, fish and shrimp. Ends are closed with a small round cap.
+func tube(points: Array, radii: Array, tint: String, f := SATIN, sides := 8, up := Vector3.UP) -> void:
+	var pts := points.duplicate()
+	var rad := []
+	for value in radii:
+		rad.append(value if value is Vector2 else Vector2(value, value))
+	# Round caps: a ring at half radius just past each end, then the pole.
+	for e in 2:
+		var at: int = 0 if e == 0 else pts.size() - 1
+		var inner: int = 1 if e == 0 else pts.size() - 2
+		var dir: Vector3 = (pts[at] - pts[inner]).normalized()
+		var r0: Vector2 = rad[at]
+		if r0.x < .0015:
+			continue
+		var cap := [pts[at] + dir * minf(r0.x, r0.y) * .55, pts[at] + dir * minf(r0.x, r0.y) * .8]
+		var cap_r := [r0 * .72, r0 * .12]
+		if e == 0:
+			pts = [cap[1], cap[0]] + pts
+			rad = [cap_r[1], cap_r[0]] + rad
+		else:
+			pts = pts + cap
+			rad = rad + cap_r
+	var verts := PackedVector3Array()
+	var norms := PackedVector3Array()
+	var ids := PackedInt32Array()
+	var count := pts.size()
+	for i in count:
+		var t: Vector3 = (pts[mini(i + 1, count - 1)] - pts[maxi(i - 1, 0)]).normalized()
+		var side := up.cross(t)
+		if side.length() < .001:
+			side = Vector3.RIGHT.cross(t)
+		side = side.normalized()
+		var lift := t.cross(side).normalized()
+		var span: float = pts[mini(i + 1, count - 1)].distance_to(pts[maxi(i - 1, 0)])
+		var grow_r: Vector2 = rad[mini(i + 1, count - 1)] - rad[maxi(i - 1, 0)]
+		var slope := (grow_r.x + grow_r.y) * .5 / maxf(span, .0001)
+		var rr: Vector2 = rad[i]
+		for j in sides + 1:
+			var a := j * TAU / sides
+			verts.append(pts[i] + side * cos(a) * rr.x + lift * sin(a) * rr.y)
+			var n := side * cos(a) / maxf(rr.x, .0005) + lift * sin(a) / maxf(rr.y, .0005)
+			norms.append((n.normalized() - t * slope).normalized())
+	for i in count - 1:
+		for j in sides:
+			var a0 := i * (sides + 1) + j
+			var b0 := a0 + sides + 1
+			var out: Vector3 = norms[a0] + norms[a0 + 1] + norms[b0] + norms[b0 + 1]
+			_face(ids, verts, a0, a0 + 1, b0 + 1, out)
+			_face(ids, verts, a0, b0 + 1, b0, out)
+	_emit(Vector3.ZERO, Vector3.ZERO, verts, norms, ids, tint, f)
+
+## Points on an arc in the xz plane (centre `c`, radius x/z, angles a0..a1), for curved tubes.
+func arc(c: Vector3, radius: Vector2, a0: float, a1: float, count: int) -> Array:
+	var out := []
+	for k in count:
+		var a := lerpf(a0, a1, k / float(count - 1))
+		out.append(c + Vector3(sin(a) * radius.x, 0, -cos(a) * radius.y))
+	return out
+
 func pick(variant: int, tints: Array) -> String:
 	return tints[variant % tints.size()]
 
@@ -368,9 +619,11 @@ func _lemon(_v: int) -> void:
 		ball(Vector3(side * .062, .055, 0), Vector3(.03, .028, .028), "e8c22e", SATIN, Vector3.ZERO, 6)
 
 func _lime(_v: int) -> void:
-	ball(Vector3(0, .047, 0), Vector3(.095, .088, .088), "6fb03a", SATIN, Vector3.ZERO, 10)
-	for side in [-1, 1]:
-		ball(Vector3(side * .048, .047, 0), Vector3(.018, .018, .018), "5a9a2e", SATIN, Vector3.ZERO, 6)
+	# Clay-toy lime (18 Nov 2026): a plump oval lying on its side, a nub at each end, a highlight.
+	tube([Vector3(-.052, .045, 0), Vector3(-.04, .045, 0), Vector3(-.02, .045, 0), Vector3(0, .045, 0), Vector3(.02, .045, 0), Vector3(.04, .045, 0), Vector3(.052, .045, 0)],
+		[.007, .03, .042, .045, .042, .03, .007], "5fa833", SATIN, 12)
+	ball(Vector3(-.014, .066, -.02), Vector3(.04, .022, .03), "8cc653", SATIN, Vector3.ZERO, 8)
+	ball(Vector3(.022, .088, .004), Vector3(.04, .008, .02), LEAF, SATIN, Vector3(0, .3, -.3), 6)
 
 func _pear(v: int) -> void:
 	var skin := pick(v, ["c3cf4f", "d9b84a"])
@@ -386,20 +639,27 @@ func _peach(_v: int) -> void:
 	ball(Vector3(.018, .13, 0), Vector3(.04, .008, .02), LEAF, SATIN, Vector3(0, 0, -.3), 6)
 
 func _cherry(_v: int) -> void:
+	# A pair of plump cherries on joined stems with one leaf (clay-toy, 18 Nov 2026).
+	var top := Vector3(.006, .112, 0)
 	for side in [-1, 1]:
-		ball(Vector3(side * .02, .022, 0), Vector3(.044, .042, .044), "9e1b32", SATIN, Vector3.ZERO, 8)
-		cyl(Vector3(side * .011, .062, 0), Vector3(.005, .055, .005), "5d7a2a", MATTE, Vector3(0, 0, side * -.35), 4)
-	ball(Vector3(.012, .09, 0), Vector3(.035, .008, .018), LEAF, SATIN, Vector3(0, 0, -.3), 6)
+		var at := Vector3(side * .026, .026, 0)
+		ball(at, Vector3(.054, .05, .052), "b3162f", SATIN, Vector3.ZERO, 12)
+		ball(at + Vector3(-.01, .01, -.019), Vector3(.016, .012, .008), "e0566b", SATIN, Vector3.ZERO, 6)
+		ball(at + Vector3(0, .024, 0), Vector3(.016, .006, .016), "7a0f22", SATIN, Vector3.ZERO, 6)
+		tube([at + Vector3(0, .022, 0), at + Vector3(side * .006, .06, 0), top], [.0045, .0045, .0045], "5d7a2a", MATTE, 5)
+	ball(top + Vector3(.022, -.004, 0), Vector3(.046, .01, .024), LEAF, SATIN, Vector3(0, 0, -.35), 8)
 
 func _strawberry(_v: int) -> void:
-	cyl(Vector3(0, .027, 0), Vector3(.064, .05, .064), "d7263d", SATIN, Vector3(PI, 0, 0), 8, 0.0)
-	ball(Vector3(0, .055, 0), Vector3(.068, .045, .068), "d7263d", SATIN, Vector3.ZERO, 8)
-	for k in 4:
-		var a := k * TAU / 4 + .4
-		ball(Vector3(cos(a) * .028, .042, sin(a) * .028), Vector3(.007, .007, .007), "f6e27a", MATTE, Vector3.ZERO, 4)
-	for k in 4:
-		bx(Vector3(0, .078, 0), Vector3(.055, .006, .012), "3f7d3a", MATTE, Vector3(0, k * PI / 4, 0))
-	cyl(Vector3(0, .085, 0), Vector3(.008, .014, .008), "3f7d3a", MATTE, Vector3.ZERO, 4)
+	# Clay-toy strawberry (18 Nov 2026): a fat heart-shaped berry, bold seeds, a five-leaf crown.
+	lathe(Vector3.ZERO, [Vector2(0, 0), Vector2(.012, .006), Vector2(.026, .022), Vector2(.037, .043), Vector2(.041, .06), Vector2(.036, .073), Vector2(.02, .08), Vector2(0, .082)], "d7263d", SATIN, 12)
+	for spec in [[.028, .031, [-.75, 0.0, .75]], [.052, .04, [-1.1, -.37, .37, 1.1]]]:
+		for a in spec[2]:
+			var t: float = -PI / 2 + a
+			ball(Vector3(cos(t) * spec[1], spec[0], sin(t) * spec[1]), Vector3(.009, .011, .009), "f6e27a", MATTE, Vector3.ZERO, 5)
+	for k in 5:
+		var a := k * TAU / 5 + .3
+		ball(Vector3(cos(a) * .02, .081, sin(a) * .02), Vector3(.036, .008, .017), "3f8d3a", MATTE, Vector3(0, -a, -.25), 6)
+	cyl(Vector3(0, .091, 0), Vector3(.01, .02, .01), "3f7d3a", MATTE, Vector3.ZERO, 5)
 
 func _grapes(v: int) -> void:
 	var tint := pick(v, ["6b3d8f", "9cc04a"])
@@ -523,11 +783,15 @@ func _onion(v: int) -> void:
 	cyl(Vector3(0, .004, 0), Vector3(.025, .008, .025), "e8d9b5", MATTE, Vector3.ZERO, 5)
 
 func _garlic(_v: int) -> void:
-	ball(Vector3(0, .038, 0), Vector3(.09, .072, .09), "f0ead6", SATIN, Vector3.ZERO, 8)
+	# Clay-toy garlic bulb (18 Nov 2026): a round teardrop with soft clove ridges, a neck and roots.
+	lathe(Vector3.ZERO, [Vector2(0, .002), Vector2(.026, .004), Vector2(.045, .02), Vector2(.05, .04), Vector2(.042, .06), Vector2(.022, .078), Vector2(.008, .092), Vector2(.006, .108), Vector2(0, .11)], "f3ecd9", SATIN, 12)
 	for k in 5:
-		var a := k * TAU / 5
-		ball(Vector3(cos(a) * .022, .04, sin(a) * .022), Vector3(.035, .068, .035), "e6dcc4" if k % 2 else "f5f0e2", SATIN, Vector3.ZERO, 6)
-	cyl(Vector3(0, .085, 0), Vector3(.022, .04, .022), "e0d6bd", MATTE, Vector3.ZERO, 5, .2)
+		var a := -PI / 2 + (k - 2) * .55
+		var d := Vector3(cos(a), 0, sin(a))
+		tube([d * .036 + Vector3(0, .014, 0), d * .05 + Vector3(0, .04, 0), d * .034 + Vector3(0, .068, 0)], [.003, .0042, .003], "dcc6d6", MATTE, 4)
+	for k in 4:
+		var a := k * TAU / 4
+		tube([Vector3(0, .004, 0), Vector3(cos(a) * .014, -.0, sin(a) * .014)], [.0035, .002], "c9b48a", MATTE, 4)
 
 func _corn(_v: int) -> void:
 	cyl(Vector3(0, .036, -.01), Vector3(.062, .22, .062), "f2c94c", SATIN, Vector3(PI / 2, 0, 0), 8, .75)
@@ -538,16 +802,22 @@ func _corn(_v: int) -> void:
 	cyl(Vector3(0, .036, -.13), Vector3(.02, .03, .02), "b58a4a", MATTE, Vector3(PI / 2, 0, 0), 5, .3)
 
 func _chili_pepper(_v: int) -> void:
-	cyl(Vector3(0, .02, -.02), Vector3(.036, .085, .034), "c62828", SATIN, Vector3(PI / 2, .25, 0), 7)
-	cyl(Vector3(.016, .02, .05), Vector3(.034, .075, .03), "c62828", SATIN, Vector3(PI / 2, -.35, 0), 7, .15)
-	ball(Vector3(-.006, .022, -.065), Vector3(.03, .022, .02), "2e7d32", MATTE, Vector3.ZERO, 6)
-	cyl(Vector3(-.01, .025, -.082), Vector3(.008, .025, .008), "2e7d32", MATTE, Vector3(PI / 2, .3, 0), 4)
+	# Clay-toy chilli (18 Nov 2026): a chunky curved red pod tapering to a point, green cap and stem.
+	tube([Vector3(0, .02, -.07), Vector3(.002, .021, -.04), Vector3(.008, .021, -.005), Vector3(.018, .019, .03), Vector3(.033, .015, .062), Vector3(.05, .009, .085)],
+		[.017, .02, .019, .016, .01, .003], "cc2a22", SATIN, 10)
+	ball(Vector3(-.004, .033, -.03), Vector3(.012, .006, .05), "e95a4c", SATIN, Vector3(0, .05, 0), 6)
+	ball(Vector3(-.001, .021, -.077), Vector3(.036, .03, .022), "3d8a35", MATTE, Vector3.ZERO, 8)
+	tube([Vector3(-.002, .025, -.085), Vector3(-.006, .031, -.1), Vector3(-.016, .037, -.108)], [.005, .005, .005], "3d8a35", MATTE, 5)
 
 func _mushroom(v: int) -> void:
+	# Clay-toy mushroom (18 Nov 2026): a fat stalk, beige gills and a plump domed cap.
 	var cap := pick(v, ["a07856", "efe6d8"])
-	cyl(Vector3(0, .02, 0), Vector3(.032, .04, .032), "f2ece0", MATTE, Vector3.ZERO, 7)
-	dome(Vector3(0, .055, 0), Vector3(.095, .045, .095), cap, SATIN, Vector3.ZERO, 10)
-	cyl(Vector3(0, .035, 0), Vector3(.088, .006, .088), "d9ccb6", MATTE, Vector3.ZERO, 10)
+	lathe(Vector3.ZERO, [Vector2(0, 0), Vector2(.022, 0), Vector2(.026, .006), Vector2(.022, .028), Vector2(.02, .05), Vector2(0, .05)], "f4eee2", MATTE, 10)
+	lathe(Vector3.ZERO, [Vector2(.019, .045), Vector2(.044, .04), Vector2(.052, .043)], "d8c8ad", MATTE, 12)
+	lathe(Vector3.ZERO, [Vector2(.052, .043), Vector2(.056, .053), Vector2(.052, .067), Vector2(.038, .081), Vector2(.019, .088), Vector2(0, .09)], cap, SATIN, 12)
+	if v == 0:
+		for o in [Vector3(-.018, .08, -.02), Vector3(.02, .078, -.016), Vector3(0, .087, .004)]:
+			ball(o, Vector3(.014, .005, .012), "c49c78", SATIN, Vector3.ZERO, 6)
 
 func _cucumber(_v: int) -> void:
 	ball(Vector3(0, .033, 0), Vector3(.066, .062, .3), "2e6b30", SATIN, Vector3.ZERO, 8)
@@ -759,25 +1029,29 @@ func _tea(v: int) -> void:
 	bx(Vector3(.035, .058, -.042), Vector3(.002, .025, .002), WHITE, MATTE)
 
 func _cookie(v: int) -> void:
+	# A soft sleeve of cookies lying down, cookies peeking out of its open end, a cookie picture.
 	var brand := pick(v, ["1e88e5", "c62828"])
-	bx(Vector3(0, .03, .01), Vector3(.18, .06, .05), brand, SATIN)
-	for k in 4:
-		cyl(Vector3(-.06 + k * .04, .03, -.018), Vector3(.05, .012, .05), "c08850", MATTE, Vector3(PI / 2, 0, 0), 10)
-		for o in [Vector3(-.01, .008, 0), Vector3(.01, -.006, 0)]:
-			ball(Vector3(-.06 + k * .04, .03, -.025) + o, Vector3(.008, .008, .004), "4a2a18", MATTE, Vector3.ZERO, 4)
-	bx(Vector3(-.085, .03, -.003), Vector3(.012, .06, .03), brand, SATIN)
-
-## A box of crackers (17 Nov 2026, snacks section): an upright box with square salted crackers
-## on its front, so it reads apart from the cookie sleeve.
-func _cracker(v: int) -> void:
-	var box := pick(v, ["d84315", "1565c0"])
-	bx(Vector3(0, .095, 0), Vector3(.14, .19, .06), box, MATTE)
-	bx(Vector3(0, .17, -.0305), Vector3(.12, .03, .001), CREAM, MATTE)
+	lathe(Vector3(-.02, .03, 0), [Vector2(0, -.075), Vector2(.024, -.075), Vector2(.03, -.068), Vector2(.03, .068), Vector2(.026, .075), Vector2(0, .075)], brand, SATIN, 10, Vector3(0, 0, PI / 2))
 	for k in 3:
-		var c := Vector3(-.035 + k * .035, .085 - absf(k - 1) * .012, -.033)
-		bx(c, Vector3(.042, .042, .004), "e3b866", MATTE, Vector3(0, 0, .12 * (k - 1)))
-		for o in [Vector3(-.01, .01, 0), Vector3(.01, .01, 0), Vector3(0, -.01, 0)]:
-			ball(c + o + Vector3(0, 0, -.003), Vector3(.005, .005, .002), "a8743a", MATTE, Vector3.ZERO, 4)
+		cyl(Vector3(.06 + k * .013, .03, 0), Vector3(.054, .011, .054), "c48a4e" if k % 2 == 0 else "b57c42", MATTE, Vector3(0, 0, PI / 2), 10)
+	for o in [Vector3(0, .012, -.008), Vector3(0, -.01, .01), Vector3(0, .004, .014)]:
+		ball(Vector3(.0855, .03, 0) + o, Vector3(.005, .009, .009), "4a2a18", MATTE, Vector3.ZERO, 5)
+	lathe(Vector3(-.02, .03, 0), [Vector2(.0305, -.035), Vector2(.0305, .035)], CREAM, MATTE, 10, Vector3(0, 0, PI / 2))
+	cyl(Vector3(-.02, .03, -.031), Vector3(.034, .004, .034), "c48a4e", MATTE, Vector3(PI / 2, 0, 0), 10)
+	for o in [Vector3(-.008, .006, 0), Vector3(.007, -.004, 0), Vector3(-.002, -.008, 0)]:
+		ball(Vector3(-.02, .03, -.0335) + o, Vector3(.007, .007, .003), "4a2a18", MATTE, Vector3.ZERO, 4)
+
+func _cracker(v: int) -> void:
+	# An upright soft box with two big square salted crackers on its front (17 Nov 2026 kind,
+	# clay-toy redraw 18 Nov 2026).
+	var box := pick(v, ["d84315", "1565c0"])
+	soft_box(Vector3(0, .095, 0), Vector3(.14, .19, .06), box, MATTE, Vector3.ZERO, .4)
+	bx(Vector3(0, .168, -.0305), Vector3(.11, .028, .002), CREAM, MATTE)
+	for k in 2:
+		var c := Vector3(-.026 + k * .052, .08 + k * .006, -.032)
+		bx(c, Vector3(.05, .05, .006), "e3b866", MATTE, Vector3(0, 0, .14 * (k * 2 - 1)))
+		for o in [Vector3(-.012, .012, 0), Vector3(.012, -.012, 0), Vector3(0, 0, 0)]:
+			ball(c + Basis(Vector3.BACK, .14 * (k * 2 - 1)) * o + Vector3(0, 0, -.005), Vector3(.006, .006, .003), "a8743a", MATTE, Vector3.ZERO, 4)
 
 func _snack(v: int) -> void:
 	var bag := pick(v, ["f9a825", "c62828", "43a047", "8e24aa"])
@@ -789,23 +1063,38 @@ func _snack(v: int) -> void:
 	ball(Vector3(.022, .07, -.032), Vector3(.04, .03, .008), "e0b23a", SATIN, Vector3(0, 0, -.4), 7)
 
 func _chocolate(v: int) -> void:
+	# A chunky bar standing up, its wrapper torn back to show soft squares of chocolate.
 	var wrap := pick(v, ["6d2c91", "c62828", "1565c0"])
-	bx(Vector3(0, .065, 0), Vector3(.05, .13, .015), "5d3a1a", SATIN)
-	for k in 2:
-		bx(Vector3(0, .1 + k * .018, -.008), Vector3(.048, .002, .002), "3e2412", SATIN)
-	bx(Vector3(0, .045, 0), Vector3(.053, .09, .018), wrap, SATIN)
-	bx(Vector3(0, .089, 0), Vector3(.054, .006, .019), SILVER, METAL)
-	bx(Vector3(0, .05, -.0095), Vector3(.034, .016, .001), GOLD, METAL)
+	soft_box(Vector3(0, .066, .003), Vector3(.074, .128, .016), "5d3a1a", MATTE, Vector3.ZERO, .5)
+	for i in 2:
+		for j in 2:
+			bx(Vector3(-.017 + i * .034, .096 + j * .024, -.006), Vector3(.028, .019, .006), "6e4526", MATTE)
+	soft_box(Vector3(0, .042, .003), Vector3(.08, .084, .024), wrap, SATIN, Vector3.ZERO, .35)
+	bx(Vector3(0, .085, .003), Vector3(.081, .008, .025), "d9dde0", METAL)
+	bx(Vector3(0, .042, -.0095), Vector3(.052, .024, .003), GOLD, METAL)
 
 func _candy(v: int) -> void:
 	var tint := pick(v, ["ec407a", "fdd835", "26c6da", "ab47bc"])
-	for k in 2:
-		var x := -.022 + k * .044
-		var y := .07 - k * .01
-		cyl(Vector3(x, y * .5 - .005, 0), Vector3(.006, y, .006), WHITE, MATTE, Vector3.ZERO, 4)
-		cyl(Vector3(x, y + .012, 0), Vector3(.045, .012, .045), tint if k == 0 else lighter(tint, .2), SATIN, Vector3(PI / 2, 0, 0), 10)
-		ring(Vector3(x, y + .012, -.007), Vector3(.03, .003, .03), WHITE, SATIN, Vector3(PI / 2, 0, 0), .55, 10)
-	bx(Vector3(0, .008, 0), Vector3(.085, .016, .045), lighter(tint, .4), SATIN)
+	if v % 2 == 0:
+		# A swirl lollipop standing in a gumdrop base.
+		lathe(Vector3.ZERO, [Vector2(0, 0), Vector2(.024, 0), Vector2(.026, .006), Vector2(.017, .021), Vector2(0, .025)], lighter(tint, .3), SATIN, 10)
+		cyl(Vector3(0, .045, 0), Vector3(.007, .05, .007), WHITE, MATTE, Vector3.ZERO, 6)
+		lathe(Vector3(0, .092, 0), [Vector2(0, -.011), Vector2(.031, -.011), Vector2(.037, -.006), Vector2(.038, 0), Vector2(.037, .006), Vector2(.031, .011), Vector2(0, .011)], tint, SATIN, 14, Vector3(PI / 2, 0, 0))
+		var spiral := []
+		var radii := []
+		for k in 11:
+			var a := k * .78
+			var rr := .004 + k * .0027
+			spiral.append(Vector3(cos(a) * rr, .092 + sin(a) * rr, -.0115))
+			radii.append(.0034)
+		tube(spiral, radii, WHITE, SATIN, 5, Vector3.BACK)
+	else:
+		# A wrapped sweet lying down: a fat round candy with twisted paper ends.
+		ball(Vector3(0, .026, 0), Vector3(.064, .052, .052), tint, SATIN, Vector3.ZERO, 12)
+		for side in [-1, 1]:
+			cyl(Vector3(side * .045, .026, 0), Vector3(.034, .028, .034), lighter(tint, .25), SATIN, Vector3(0, 0, side * PI / 2), 6, .25)
+		ring(Vector3(0, .026, 0), Vector3(.054, .014, .054), WHITE, SATIN, Vector3(0, 0, PI / 2), .8, 10)
+		ball(Vector3(-.01, .042, -.014), Vector3(.018, .01, .012), lighter(tint, .45), SATIN, Vector3.ZERO, 6)
 
 # ---------------------------------------------------------------------------------------------
 # Dairy and deli
@@ -820,39 +1109,82 @@ func _milk(v: int) -> void:
 	cyl(Vector3(.022, .178, -.012), Vector3(.022, .014, .022), band, SATIN, Vector3(-.45, 0, 0), 8)
 
 func _yogurt(v: int) -> void:
+	# A two-cup pack (18 Nov 2026): plump white cups on a card base, a fruit band, a fruit
+	# picture on a white label and a foil lid with a pull tab.
 	var fruit := pick(v, ["e91e63", "f9a825", "5e35b1"])
-	cyl(Vector3(0, .03, 0), Vector3(.072, .06, .072), WHITE, SATIN, Vector3.ZERO, 10, 1.18)
-	cyl(Vector3(0, .028, 0), Vector3(.074, .025, .074), fruit, SATIN, Vector3.ZERO, 10, 1.1)
-	cyl(Vector3(0, .062, 0), Vector3(.088, .005, .088), "d0d6da", METAL, Vector3.ZERO, 10)
-	ball(Vector3(0, .045, -.04), Vector3(.016, .016, .006), lighter(fruit, .1), SATIN, Vector3.ZERO, 5)
+	soft_box(Vector3(0, .009, 0), Vector3(.172, .018, .088), CREAM, MATTE, Vector3.ZERO, .4)
+	for side in [-1, 1]:
+		var at := Vector3(side * .043, .004, 0)
+		lathe(at, [Vector2(0, 0), Vector2(.03, 0), Vector2(.032, .004), Vector2(.04, .07), Vector2(.043, .073), Vector2(.043, .077), Vector2(0, .077)], WHITE, SATIN, 10)
+		lathe(at, [Vector2(.0345, .02), Vector2(.0398, .062)], fruit, SATIN, 10)
+		lathe(at, [Vector2(0, .078), Vector2(.045, .078), Vector2(.046, .082), Vector2(0, .083)], "d0d6da", METAL, 10)
+		soft_box(at + Vector3(side * .036, .081, -.03), Vector3(.02, .004, .016), "d0d6da", METAL, Vector3(0, side * .8, 0), .5)
+		ball(at + Vector3(0, .042, -.0385), Vector3(.034, .03, .006), WHITE, MATTE, Vector3.ZERO, 10)
+		match v:
+			0:
+				ball(at + Vector3(0, .039, -.042), Vector3(.016, .019, .005), "d7263d", SATIN, Vector3.ZERO, 6)
+				ball(at + Vector3(0, .05, -.042), Vector3(.014, .005, .004), "3f8d3a", MATTE, Vector3.ZERO, 5)
+			1:
+				tube([at + Vector3(-.012, .048, -.042), at + Vector3(-.002, .036, -.043), at + Vector3(.012, .044, -.042)], [.004, .006, .004], "f6c932", SATIN, 5)
+			_:
+				for o in [Vector3(-.006, .046, 0), Vector3(.006, .046, 0), Vector3(0, .036, 0)]:
+					ball(at + o + Vector3(0, 0, -.042), Vector3(.011, .011, .005), "4a2f8f", SATIN, Vector3.ZERO, 5)
 
 func _butter(_v: int) -> void:
-	bx(Vector3(0, .022, 0), Vector3(.11, .044, .06), "f6d55c", SATIN)
-	for side in [-1, 1]:
-		bx(Vector3(side * .045, .022, 0), Vector3(.022, .046, .062), "d9a640", METAL)
-	bx(Vector3(0, .022, 0), Vector3(.045, .046, .062), WHITE, MATTE)
-	bx(Vector3(0, .026, -.0315), Vector3(.03, .006, .001), NAVY, MATTE)
+	# A chunky butter block half unwrapped: bare butter on the left, gold foil and a label on the right.
+	soft_box(Vector3(-.026, .029, 0), Vector3(.088, .056, .068), "f7dc6f", SATIN, Vector3.ZERO, .5)
+	soft_box(Vector3(.034, .031, 0), Vector3(.072, .062, .074), "d9a640", METAL, Vector3.ZERO, .4)
+	soft_box(Vector3(-.002, .031, 0), Vector3(.01, .066, .078), "ecc56a", METAL, Vector3.ZERO, .4)
+	soft_box(Vector3(.036, .033, -.037), Vector3(.052, .034, .004), CREAM, MATTE, Vector3.ZERO, .4)
+	soft_box(Vector3(.036, .033, -.0395), Vector3(.032, .01, .002), NAVY, MATTE, Vector3.ZERO, .4)
+	tube(arc(Vector3(-.03, .061, 0), Vector2(.014, .012), -1.8, 1.8, 6), [.004, .006, .007, .007, .006, .004], "fbe9a0", SATIN, 6)
 
 func _cheese(v: int) -> void:
-	if v == 0:
-		prism(Vector3(0, .033, 0), Vector3(.13, .09, .062), "f2c14e", SATIN, Vector3(PI / 2, PI, 0))
-		bx(Vector3(0, .033, .044), Vector3(.13, .064, .006), "e3a93a", SATIN)
-		for o in [Vector3(-.022, .065, .022), Vector3(.024, .065, .028), Vector3(.0, .065, .0)]:
-			cyl(o, Vector3(.016, .003, .016), "d9a536", MATTE, Vector3.ZERO, 6)
-	else:
-		# A small wheel in red wax with a wedge-shaped label.
-		cyl(Vector3(0, .032, 0), Vector3(.12, .064, .12), "c62828", SATIN, Vector3.ZERO, 12)
-		cyl(Vector3(0, .065, 0), Vector3(.1, .003, .1), "a91f1f", SATIN, Vector3.ZERO, 12)
-		badge(Vector3(0, .035, -.061), .035, CREAM)
+	# A fat wedge of cheese: holey Swiss (v0), or cheddar with a red wax rind (v1).
+	var top := .08
+	var a := Vector3(-.075, 0, .03)
+	var b := Vector3(.072, 0, -.05)
+	var c := Vector3(.072, 0, .055)
+	var face := pick(v, ["f4c64e", "f2a33a"])
+	var rind := pick(v, ["e3a13a", "c62828"])
+	var lift := Vector3(0, top, 0)
+	tri(a + lift, b + lift, c + lift, face, SATIN, Vector3.UP)
+	tri(a, b, c, darker(face, .1), SATIN, Vector3.DOWN)
+	for side in [[a, b, face], [a, c, face], [b, c, rind]]:
+		var p: Vector3 = side[0]
+		var q: Vector3 = side[1]
+		var out := (q - p).cross(Vector3.UP).normalized()
+		if out.dot((p + q) * .5 - (a + b + c) / 3.0) < 0.0:
+			out = -out
+		tri(p, q, q + lift, darker(side[2], .04), SATIN, out)
+		tri(p, q + lift, p + lift, darker(side[2], .04), SATIN, out)
+	if v == 1:
+		# The wax rind wraps over the top edge at the back.
+		soft_box(Vector3(.069, top - .002, .002), Vector3(.012, .008, .106), rind, SATIN, Vector3.ZERO, .5)
+		return
+	# Holes: dents on the top and on the front face.
+	for o in [Vector3(.02, top, -.01), Vector3(-.02, top, .012), Vector3(.048, top, .02)]:
+		cyl(o + Vector3(0, .001, 0), Vector3(.022 if o.x > 0 else .016, .003, .022 if o.x > 0 else .016), "d9a032", MATTE, Vector3.ZERO, 8)
+	var front := (b - a).cross(Vector3.UP).normalized()
+	if front.z > 0.0:
+		front = -front
+	var yaw := atan2(front.x, front.z)
+	for k in 3:
+		var t: float = [.35, .62, .82][k]
+		var at: Vector3 = a.lerp(b, t) + Vector3(0, [.045, .028, .055][k], 0) + front * .002
+		ball(at, Vector3([.024, .018, .014][k], [.024, .018, .014][k], .006), "d9a032", MATTE, Vector3(0, yaw, 0), 8)
 
 func _eggs(v: int) -> void:
+	# An open egg carton (18 Nov 2026): soft pulp base, six big eggs, the lid open behind.
 	var tray := "d8cbb0" if v == 0 else "9fb7c4"
-	bx(Vector3(0, .022, 0), Vector3(.2, .044, .1), tray, MATTE)
-	bx(Vector3(0, .046, 0), Vector3(.2, .006, .1), darker(tray, .1), MATTE)
-	for i in 4:
+	var shell := "f5efe1" if v == 0 else "e8c9a0"
+	soft_box(Vector3(0, .02, 0), Vector3(.2, .04, .11), tray, MATTE, Vector3.ZERO, .5)
+	for i in 3:
 		for j in 2:
-			ball(Vector3(-.072 + i * .048, .06, -.024 + j * .048), Vector3(.04, .048, .04), "f5efe1" if v == 0 else "e8c9a0", SATIN, Vector3.ZERO, 8)
-	bx(Vector3(0, .028, -.0505), Vector3(.08, .02, .002), "f2c230", MATTE)
+			lathe(Vector3(-.062 + i * .062, .02, -.026 + j * .052), [Vector2(0, 0), Vector2(.016, .003), Vector2(.024, .016), Vector2(.025, .03), Vector2(.02, .046), Vector2(.011, .056), Vector2(0, .059)], shell, SATIN, 8)
+	soft_box(Vector3(0, .09, .07), Vector3(.2, .1, .014), tray, MATTE, Vector3(.3, 0, 0), .5)
+	soft_box(Vector3(0, .022, -.0555), Vector3(.09, .022, .004), "f2c230", MATTE, Vector3.ZERO, .4)
+	ball(Vector3(0, .022, -.058), Vector3(.014, .017, .004), WHITE, SATIN, Vector3.ZERO, 6)
 
 ## Shallow tray for deli and meat goods (white for poultry and ham, dark for red meat).
 func _tray(tint: String, size := Vector2(.17, .13)) -> void:
@@ -860,41 +1192,76 @@ func _tray(tint: String, size := Vector2(.17, .13)) -> void:
 	bx(Vector3(-size.x * .3, .017, -size.y * .5 + .012), Vector3(.04, .003, .018), "7cb342", MATTE)
 
 func _ham(_v: int) -> void:
-	_tray(TRAY)
-	for k in 3:
-		cyl(Vector3(-.04 + k * .04, .022 + k * .004, 0), Vector3(.1, .008, .1), "f0a0a0" if k % 2 else "e88e90", SATIN, Vector3(0, 0, .12), 12)
-		ring(Vector3(-.04 + k * .04, .022 + k * .004, 0), Vector3(.1, .006, .1), "f8d4cc", SATIN, Vector3(0, 0, .12), .86, 12)
+	# A cured ham leg on a wooden board, turned so its pink cut face (ringed with fat) looks to
+	# the front-left; a bone knob at the narrow end.
+	soft_box(Vector3(0, .006, 0), Vector3(.23, .012, .14), "c9a477", MATTE, Vector3.ZERO, .6)
+	var turn := Basis(Vector3.UP, -.5)
+	var body := []
+	for p in [Vector3(-.08, .052, 0), Vector3(-.05, .055, 0), Vector3(-.01, .052, 0), Vector3(.03, .045, 0), Vector3(.06, .037, 0), Vector3(.08, .032, 0)]:
+		body.append(turn * p)
+	tube(body, [Vector2(.04, .039), Vector2(.044, .043), Vector2(.04, .04), Vector2(.03, .031), Vector2(.019, .02), Vector2(.012, .013)], "d8786b", SATIN, 12)
+	cyl(turn * Vector3(-.086, .052, 0), Vector3(.07, .006, .066), "f6e3cf", MATTE, Vector3(0, -.5, PI / 2), 12)
+	cyl(turn * Vector3(-.0895, .052, 0), Vector3(.056, .004, .052), "ee9aa0", SATIN, Vector3(0, -.5, PI / 2), 12)
+	tube([turn * Vector3(.08, .032, 0), turn * Vector3(.112, .03, 0)], [.011, .011], "f8f1e2", MATTE, 6)
+	for dz in [-.011, .011]:
+		ball(turn * Vector3(.118, .03, dz), Vector3(.024, .024, .024), "f8f1e2", MATTE, Vector3.ZERO, 8)
+	ball(turn * Vector3(-.03, .088, -.014), Vector3(.05, .012, .03), "eba293", SATIN, Vector3(0, -.5, 0), 8)
+	ball(turn * Vector3(-.02, .08, .02), Vector3(.07, .016, .04), "b8584a", SATIN, Vector3(0, -.5, 0), 8)
 
 func _sausage(_v: int) -> void:
-	_tray(TRAY)
+	# Three plump linked sausages in a wavy chain on a white tray.
+	_tray(TRAY, Vector2(.22, .12))
+	var centres := [Vector3(-.068, .032, .014), Vector3(0, .032, -.012), Vector3(.068, .032, .014)]
 	for k in 3:
-		ball(Vector3(0, .03, -.04 + k * .04), Vector3(.15, .034, .034), "a0522d" if k != 1 else "8e4526", SATIN, Vector3.ZERO, 8)
-		for side in [-1, 1]:
-			cyl(Vector3(side * .078, .03, -.04 + k * .04), Vector3(.008, .01, .008), "f0e2c8", MATTE, Vector3(0, 0, PI / 2), 4)
+		var dir: Vector3 = (centres[mini(k + 1, 2)] - centres[maxi(k - 1, 0)]).normalized()
+		var c: Vector3 = centres[k]
+		tube([c - dir * .03, c - dir * .015, c, c + dir * .015, c + dir * .03], [.012, .019, .02, .019, .012], "c06a3e" if k != 1 else "b05f36", SATIN, 10)
+		ball(c + Vector3(-.006, .014, -.008), Vector3(.03, .006, .01), "dc8d62", SATIN, Vector3(0, -dir.z * 2.0, 0), 6)
+	for k in 2:
+		ball((centres[k] + centres[k + 1]) * .5, Vector3(.012, .012, .012), "8e4526", SATIN, Vector3.ZERO, 6)
 
-func _chicken(_v: int) -> void:
-	_tray(TRAY, Vector2(.19, .14))
-	for k in 3:
-		var z := -.045 + k * .045
-		var flip := 1.0 if k % 2 == 0 else -1.0
-		ball(Vector3(flip * -.02, .035, z), Vector3(.1, .045, .045), "edc49a", SATIN, Vector3.ZERO, 8)
-		cyl(Vector3(flip * .05, .03, z), Vector3(.012, .05, .012), "f7f0e1", MATTE, Vector3(0, 0, PI / 2), 5)
-		ball(Vector3(flip * .078, .03, z), Vector3(.022, .02, .02), "f7f0e1", MATTE, Vector3.ZERO, 6)
+func _chicken(v: int) -> void:
+	if v == 0:
+		# A whole raw chicken on a white tray: plump body, tucked wings, two drumsticks with bones.
+		soft_box(Vector3(0, .006, 0), Vector3(.2, .012, .15), TRAY, SATIN, Vector3.ZERO, .6)
+		ball(Vector3(-.005, .05, 0), Vector3(.15, .085, .12), "eebd85", SATIN, Vector3.ZERO, 12)
+		ball(Vector3(-.02, .073, -.012), Vector3(.09, .036, .07), "f5d3a6", SATIN, Vector3.ZERO, 10)
+		for side in [-1, 1]:
+			tube([Vector3(.035, .055, side * .038), Vector3(.062, .07, side * .044), Vector3(.083, .08, side * .044)], [.024, .019, .011], "efc08d", SATIN, 8)
+			ball(Vector3(.092, .083, side * .044), Vector3(.02, .02, .02), "f7f0e1", MATTE, Vector3.ZERO, 6)
+			ball(Vector3(-.03, .045, side * .056), Vector3(.06, .032, .026), "eebd8a", SATIN, Vector3(0, 0, .3), 8)
+	else:
+		# Two big drumsticks on a white tray.
+		soft_box(Vector3(0, .006, 0), Vector3(.2, .012, .14), TRAY, SATIN, Vector3.ZERO, .6)
+		for k in 2:
+			var z := -.032 + k * .064
+			var flip := 1.0 if k == 0 else -1.0
+			tube([Vector3(flip * -.06, .034, z), Vector3(flip * -.03, .036, z), Vector3(flip * .01, .032, z), Vector3(flip * .045, .028, z)], [.026, .03, .022, .01], "dfa260", SATIN, 10)
+			tube([Vector3(flip * .045, .028, z), Vector3(flip * .07, .026, z)], [.006, .006], "f7f0e1", MATTE, 5)
+			ball(Vector3(flip * .076, .026, z), Vector3(.018, .018, .02), "f7f0e1", MATTE, Vector3.ZERO, 6)
+			ball(Vector3(flip * -.035, .056, z - .01), Vector3(.04, .01, .02), "ecbd7f", SATIN, Vector3.ZERO, 6)
 
 func _meat(_v: int) -> void:
-	_tray(DARK_TRAY, Vector2(.18, .13))
-	ball(Vector3(0, .028, 0), Vector3(.15, .04, .11), "b0413e", MATTE, Vector3.ZERO, 10)
-	for o in [Vector3(-.03, .045, -.02), Vector3(.03, .045, .015), Vector3(0, .047, -.005), Vector3(-.015, .043, .03)]:
-		ball(o, Vector3(.025, .012, .025), "c55a52" if o.x > 0 else "9a3532", MATTE, Vector3.ZERO, 5)
+	# A chunky raw beef joint with a fat cap and a bone through it, on a dark tray.
+	_tray(DARK_TRAY, Vector2(.2, .13))
+	tube([Vector3(-.098, .045, 0), Vector3(.098, .045, 0)], [.01, .01], "f5ecd8", MATTE, 6)
+	for side in [-1, 1]:
+		for dz in [-.01, .01]:
+			ball(Vector3(side * .104, .045, dz), Vector3(.022, .022, .022), "f5ecd8", MATTE, Vector3.ZERO, 8)
+	ball(Vector3(0, .046, 0), Vector3(.15, .074, .108), "c0443c", MATTE, Vector3.ZERO, 12)
+	ball(Vector3(.0, .058, .012), Vector3(.13, .062, .088), "f3dccb", MATTE, Vector3(0, 0, .05), 12)
+	ball(Vector3(-.006, .05, -.012), Vector3(.13, .066, .09), "b83a35", MATTE, Vector3.ZERO, 12)
+	ball(Vector3(-.03, .07, -.03), Vector3(.05, .016, .03), "d8625a", MATTE, Vector3.ZERO, 8)
 
 func _steak(_v: int) -> void:
+	# A thick T-bone steak on a dark tray: fat rim, red meat, marbling and a white T bone.
 	_tray(DARK_TRAY, Vector2(.23, .16))
-	ball(Vector3(0, .022, 0), Vector3(.205, .022, .135), "f3e5d8", SATIN, Vector3.ZERO, 12)
-	ball(Vector3(-.005, .026, -.004), Vector3(.185, .024, .118), "a83232", SATIN, Vector3.ZERO, 12)
-	for o in [Vector3(.04, .036, .02), Vector3(-.05, .036, -.02)]:
-		bx(o, Vector3(.03, .002, .005), "e8c8b8", MATTE, Vector3(0, .5, 0))
-	bx(Vector3(.015, .032, 0), Vector3(.012, .016, .11), "f7f0e1", MATTE)
-	bx(Vector3(.015, .032, -.05), Vector3(.07, .016, .012), "f7f0e1", MATTE)
+	lathe(Vector3(0, .016, 0), [Vector2(0, 0), Vector2(.1, 0), Vector2(.105, .012), Vector2(.1, .025), Vector2(0, .025)], "f3e2cf", MATTE, 14, Vector3.ZERO, Vector3(1, 1, .66))
+	lathe(Vector3(-.006, .017, 0), [Vector2(0, 0), Vector2(.09, 0), Vector2(.093, .013), Vector2(.087, .027), Vector2(0, .028)], "b53a36", MATTE, 14, Vector3.ZERO, Vector3(1, 1, .64))
+	for o in [Vector3(-.045, .046, -.02), Vector3(.05, .046, .022), Vector3(-.03, .046, .03)]:
+		tube([o + Vector3(-.014, 0, -.004), o + Vector3(.014, 0, .004)], [.003, .003], "e7b9a8", MATTE, 4)
+	soft_box(Vector3(.016, .047, 0), Vector3(.018, .012, .1), "f7f0e1", MATTE, Vector3.ZERO, .6)
+	soft_box(Vector3(.016, .047, -.045), Vector3(.08, .012, .018), "f7f0e1", MATTE, Vector3.ZERO, .6)
 
 func _salad(_v: int) -> void:
 	ball(Vector3(0, .1, 0), Vector3(.14, .19, .055), "dceedd", SATIN, Vector3.ZERO, 10)
@@ -904,23 +1271,45 @@ func _salad(_v: int) -> void:
 	bx(Vector3(0, .04, -.026), Vector3(.08, .02, .004), WHITE, MATTE)
 
 func _fish(v: int) -> void:
-	var skin := pick(v, ["9fb4c0", "c48a7a"])
-	ball(Vector3(0, .03, -.02), Vector3(.1, .05, .26), skin, SATIN, Vector3.ZERO, 10)
-	ball(Vector3(0, .022, -.03), Vector3(.085, .03, .22), "e6edf0", SATIN, Vector3.ZERO, 8)
-	ball(Vector3(0, .046, -.01), Vector3(.03, .02, .2), darker(skin, .25), SATIN, Vector3.ZERO, 6)
-	prism(Vector3(0, .03, .15), Vector3(.1, .06, .012), darker(skin, .1), SATIN, Vector3(-PI / 2, 0, 0))
-	prism(Vector3(0, .055, -.02), Vector3(.05, .025, .006), darker(skin, .2), SATIN, Vector3(0, PI / 2, 0))
+	# Clay-toy fish lying on its side on the ice (18 Nov 2026): a plump body, a pale belly,
+	# a fanned tail, a back fin, a gill line and a big eye on top.
+	var skin := pick(v, ["8fa9b8", "d08a7a"])
+	var pts := []
+	var radii := []
+	for k in 9:
+		var t := k / 8.0
+		pts.append(Vector3(sin(t * PI) * .004, .024, lerpf(-.135, .11, t)))
+		var r := .05 * pow(sin(PI * lerpf(.1, .93, t)), .7) * (1.0 - .45 * t)
+		radii.append(Vector2(maxf(r, .008), maxf(r * .45, .006)))
+	tube(pts, radii, skin, SATIN, 10)
+	ball(Vector3(-.02, .02, -.03), Vector3(.05, .036, .17), "e6edf0", SATIN, Vector3.ZERO, 8)
+	ball(Vector3(.03, .042, -.02), Vector3(.024, .006, .12), darker(skin, .22), SATIN, Vector3.ZERO, 6)
 	for side in [-1, 1]:
-		ball(Vector3(side * .03, .036, -.12), Vector3(.016, .016, .012), WHITE, SATIN, Vector3.ZERO, 6)
-		ball(Vector3(side * .036, .037, -.123), Vector3(.008, .008, .007), "1e1a18", SATIN, Vector3.ZERO, 4)
+		ball(Vector3(side * .024, .02, .142), Vector3(.034, .01, .07), darker(skin, .12), SATIN, Vector3(0, side * .55, 0), 8)
+	ball(Vector3(.052, .02, -.01), Vector3(.03, .01, .09), darker(skin, .15), SATIN, Vector3.ZERO, 8)
+	tube(arc(Vector3(0, .045, -.075), Vector2(.03, .012), -1.2, 1.2, 5), [.003, .003, .003, .003, .003], darker(skin, .3), MATTE, 4)
+	ball(Vector3(.006, .045, -.108), Vector3(.026, .012, .026), WHITE, SATIN, Vector3.ZERO, 8)
+	ball(Vector3(.006, .05, -.11), Vector3(.013, .008, .013), "1e1a18", SATIN, Vector3.ZERO, 6)
 
 func _shrimp(_v: int) -> void:
-	for k in 5:
-		var a := -.4 + k * .7
-		var size := .03 - k * .003
-		ball(Vector3(cos(a) * .028, .02, sin(a) * .028), Vector3(size, .026 - k * .002, size), "f08070" if k % 2 else "f49a84", SATIN, Vector3.ZERO, 6)
-	prism(Vector3(cos(3.0) * .035, .016, sin(3.0) * .035), Vector3(.026, .022, .006), "e86a58", SATIN, Vector3(-PI / 2, 1.2, 0))
-	ball(Vector3(cos(-.4) * .03 + .01, .03, sin(-.4) * .03), Vector3(.005, .005, .005), "1e1a18", SATIN, Vector3.ZERO, 4)
+	# Clay-toy shrimp (18 Nov 2026): a plump curled body of eight bold shell segments lying on its
+	# side, a fanned tail, a round head with a black eye and two long feelers.
+	var pts := arc(Vector3(0, .021, .012), Vector2(.046, .04), -2.2, 1.55, 9)
+	for k in 8:
+		var a: Vector3 = pts[k]
+		var b: Vector3 = pts[k + 1]
+		var r := lerpf(.021, .009, k / 7.0)
+		tube([a, (a + b) * .5, b], [r * .8, r, r * .8], "f28a6b" if k % 2 == 0 else "f8a98c", SATIN, 8)
+	var dir: Vector3 = (pts[8] - pts[7]).normalized()
+	for side in [-1, 1]:
+		ball(pts[8] + dir * .02 + dir.cross(Vector3.UP) * side * .01, Vector3(.022, .008, .042), "e25a40", SATIN, Vector3(0, atan2(dir.x, dir.z) + side * .5, 0), 8)
+	var head: Vector3 = pts[0]
+	var back: Vector3 = (pts[0] - pts[1]).normalized()
+	ball(head + back * .008, Vector3(.034, .032, .036), "f28a6b", SATIN, Vector3.ZERO, 10)
+	ball(head + back * .016 + Vector3(0, .016, 0), Vector3(.011, .011, .011), "1e1a18", SATIN, Vector3.ZERO, 6)
+	for side in [-1, 1]:
+		var tip := head + back * .02
+		tube([tip, tip + Vector3(-.025, .012, -.03 + side * .01), tip + Vector3(-.04, .01, -.065 + side * .02)], [.0028, .0022, .0016], "d9654c", MATTE, 4)
 
 # ---------------------------------------------------------------------------------------------
 # Drinks
@@ -967,117 +1356,172 @@ func _juice(v: int) -> void:
 # Household
 
 func _soap(v: int) -> void:
+	# A plump soap bar with an embossed oval and a cluster of bubbles.
 	var tint := pick(v, ["f8bbd0", "b3e5fc", "dcedc8"])
-	ball(Vector3(0, .014, 0), Vector3(.095, .028, .064), tint, SATIN, Vector3.ZERO, 10)
-	bx(Vector3(0, .012, 0), Vector3(.08, .024, .05), tint, SATIN)
-	ball(Vector3(0, .026, 0), Vector3(.05, .006, .03), darker(tint, .12), SATIN, Vector3.ZERO, 8)
-	for o in [Vector3(.028, .034, .012), Vector3(.036, .03, -.01), Vector3(.018, .031, -.016)]:
-		ball(o, Vector3.ONE * (.014 if o.x > .03 else .01), "ffffff", SATIN, Vector3.ZERO, 6)
+	soft_box(Vector3(0, .025, 0), Vector3(.1, .05, .066), tint, SATIN, Vector3.ZERO, .6)
+	lathe(Vector3(0, .049, 0), [Vector2(0, 0), Vector2(.03, 0), Vector2(.032, .002), Vector2(.028, .004), Vector2(0, .004)], darker(tint, .1), SATIN, 12, Vector3.ZERO, Vector3(1, 1, .58))
+	for spec in [[Vector3(.026, .064, .008), .03], [Vector3(.045, .06, -.016), .022], [Vector3(.006, .06, -.02), .017]]:
+		ball(spec[0], Vector3.ONE * spec[1], lighter(tint, .5), SATIN, Vector3.ZERO, 12)
+		ball(spec[0] + Vector3(-.2, .3, -.25) * spec[1], Vector3.ONE * spec[1] * .3, WHITE, MATTE, Vector3.ZERO, 6)
 
 func _sponge(v: int) -> void:
+	# A soft sponge block with a green scrub layer and bold holes.
 	var body := pick(v, ["f9e04b", "f48fb1"])
-	bx(Vector3(0, .017, 0), Vector3(.1, .034, .065), body, MATTE)
-	bx(Vector3(0, .04, 0), Vector3(.1, .012, .065), "2e7d32", MATTE)
-	for o in [Vector3(-.03, .012, 0), Vector3(.0, .02, 0), Vector3(.03, .01, 0), Vector3(-.012, .026, 0), Vector3(.022, .027, 0)]:
-		badge(o + Vector3(0, 0, -.033), .008, darker(body, .2))
+	soft_box(Vector3(0, .02, 0), Vector3(.12, .04, .075), body, MATTE, Vector3.ZERO, .5)
+	soft_box(Vector3(0, .048, 0), Vector3(.12, .016, .075), "2e8b3e", MATTE, Vector3.ZERO, .6)
+	for o in [Vector3(-.035, .013, 0), Vector3(-.004, .024, 0), Vector3(.03, .012, 0), Vector3(.012, .029, 0), Vector3(.042, .027, 0), Vector3(-.024, .029, 0)]:
+		ball(o + Vector3(0, 0, -.0375), Vector3(.011, .009, .004), darker(body, .22), MATTE, Vector3.ZERO, 6)
 
 func _detergent(v: int) -> void:
+	# A soft jug with a handle loop, a big cap and a bubbly label.
 	var jug := pick(v, ["1e88e5", "ef6c00", "7e57c2"])
-	bx(Vector3(0, .1, 0), Vector3(.13, .2, .08), jug, SATIN)
-	ball(Vector3(-.01, .2, 0), Vector3(.11, .04, .08), jug, SATIN, Vector3.ZERO, 8)
-	bx(Vector3(.048, .205, 0), Vector3(.018, .06, .028), jug, SATIN)
-	bx(Vector3(.03, .232, 0), Vector3(.05, .014, .028), jug, SATIN)
-	cyl(Vector3(-.035, .224, 0), Vector3(.036, .03, .036), "ff7043" if v != 1 else "1e88e5", SATIN, Vector3.ZERO, 8)
-	bx(Vector3(-.005, .095, -.0405), Vector3(.09, .1, .002), WHITE, MATTE)
-	for o in [Vector3(-.02, .1, 0), Vector3(.01, .115, 0), Vector3(.012, .08, 0)]:
-		badge(o + Vector3(0, 0, -.043), .02 if o.x < 0 else .014, "8fd3f5", SATIN)
+	soft_box(Vector3(0, .1, 0), Vector3(.14, .2, .085), jug, SATIN, Vector3.ZERO, .45)
+	ring(Vector3(.03, .2, 0), Vector3(.072, .024, .062), jug, SATIN, Vector3(PI / 2, 0, 0), .5, 10)
+	lathe(Vector3(-.038, .196, 0), [Vector2(0, 0), Vector2(.024, 0), Vector2(.025, .034), Vector2(.021, .039), Vector2(0, .04)], "ff7043" if v != 1 else "1e88e5", SATIN, 10)
+	soft_box(Vector3(-.005, .095, -.043), Vector3(.1, .1, .004), WHITE, MATTE, Vector3.ZERO, .45)
+	for spec in [[Vector3(-.022, .1, 0), .032], [Vector3(.016, .118, 0), .022], [Vector3(.018, .078, 0), .018], [Vector3(-.03, .066, 0), .012]]:
+		ball(spec[0] + Vector3(0, 0, -.046), Vector3(spec[1], spec[1], .007), "8fd3f5", SATIN, Vector3.ZERO, 8)
 
 func _toothbrush(v: int) -> void:
+	# A chunky toothbrush on its card: a fat handle, a white bristle block with a blue tip.
 	var handle := pick(v, ["29b6f6", "66bb6a", "ef5350"])
-	bx(Vector3(0, .1, .006), Vector3(.05, .2, .004), "e3f2fd", MATTE)
-	bx(Vector3(0, .17, .004), Vector3(.05, .05, .004), handle, MATTE)
-	cyl(Vector3(0, .085, -.004), Vector3(.014, .15, .008), handle, SATIN, Vector3.ZERO, 6)
-	bx(Vector3(0, .172, -.003), Vector3(.015, .03, .008), handle, SATIN)
-	bx(Vector3(0, .172, -.011), Vector3(.012, .026, .008), WHITE, MATTE)
-	bx(Vector3(0, .18, -.0115), Vector3(.012, .008, .008), "4fc3f7", MATTE)
-	bx(Vector3(0, .1, -.008), Vector3(.03, .19, .002), "e8f6fd", SATIN)
+	soft_box(Vector3(0, .1, .007), Vector3(.064, .2, .006), "eef6fb", MATTE, Vector3.ZERO, .6)
+	soft_box(Vector3(0, .186, .007), Vector3(.064, .028, .007), handle, MATTE, Vector3.ZERO, .6)
+	tube([Vector3(0, .018, -.006), Vector3(.002, .06, -.007), Vector3(0, .11, -.006), Vector3(-.002, .14, -.006)], [.009, .008, .006, .006], handle, SATIN, 8)
+	soft_box(Vector3(-.002, .158, -.006), Vector3(.02, .04, .012), handle, SATIN, Vector3.ZERO, .6)
+	soft_box(Vector3(-.002, .16, -.016), Vector3(.016, .032, .012), WHITE, MATTE, Vector3.ZERO, .4)
+	soft_box(Vector3(-.002, .17, -.0165), Vector3(.016, .012, .013), "4fc3f7", MATTE, Vector3.ZERO, .4)
 
 func _toothpaste(v: int) -> void:
+	# A plump tube lying down: round at the cap, flattened to a crimped seam, a coloured band.
 	var stripe := pick(v, ["c62828", "1e88e5"])
-	ball(Vector3(-.01, .022, 0), Vector3(.14, .036, .045), WHITE, SATIN, Vector3.ZERO, 8)
-	bx(Vector3(.065, .022, 0), Vector3(.012, .008, .046), WHITE, SATIN)
-	ball(Vector3(-.02, .024, 0), Vector3(.06, .038, .047), stripe, SATIN, Vector3.ZERO, 8)
-	cyl(Vector3(-.085, .022, 0), Vector3(.026, .022, .026), stripe, SATIN, Vector3(0, 0, PI / 2), 8)
-	ball(Vector3(-.02, .025, -.022), Vector3(.03, .01, .004), WHITE, SATIN, Vector3.ZERO, 5)
+	var pts := [Vector3(-.06, .022, 0), Vector3(-.03, .023, 0), Vector3(0, .023, 0), Vector3(.03, .02, 0), Vector3(.058, .016, 0), Vector3(.07, .014, 0)]
+	tube(pts, [Vector2(.022, .021), Vector2(.024, .022), Vector2(.025, .021), Vector2(.026, .017), Vector2(.027, .009), Vector2(.027, .003)], WHITE, SATIN, 10)
+	tube([Vector3(-.035, .023, 0), Vector3(-.015, .023, 0), Vector3(.005, .023, 0)], [Vector2(.0255, .0235), Vector2(.026, .0235), Vector2(.0262, .0228)], stripe, SATIN, 10)
+	soft_box(Vector3(.076, .014, 0), Vector3(.012, .006, .056), WHITE, SATIN, Vector3.ZERO, .5)
+	lathe(Vector3(-.07, .022, 0), [Vector2(0, 0), Vector2(.016, 0), Vector2(.017, .004), Vector2(.016, .022), Vector2(0, .023)], stripe, SATIN, 10, Vector3(0, 0, PI / 2))
+	tube([Vector3(-.03, .03, -.022), Vector3(-.02, .024, -.025), Vector3(-.01, .03, -.0245), Vector3(0, .024, -.025)], [.003, .003, .003, .003], WHITE, SATIN, 4)
 
 func _shampoo(v: int) -> void:
+	# A soft oval bottle with rounded shoulders, a flip cap and a droplet on its label.
 	var bottle := pick(v, ["7e57c2", "26a69a", "ec407a"])
-	cyl(Vector3(0, .09, 0), Vector3(.08, .18, .05), bottle, SATIN, Vector3.ZERO, 10)
-	ball(Vector3(0, .18, 0), Vector3(.08, .03, .05), bottle, SATIN, Vector3.ZERO, 10)
-	cyl(Vector3(0, .205, 0), Vector3(.036, .03, .028), WHITE, SATIN, Vector3.ZERO, 8)
-	cyl(Vector3(0, .085, 0), Vector3(.082, .07, .052), lighter(bottle, .45), MATTE, Vector3.ZERO, 10)
-	ball(Vector3(0, .088, -.026), Vector3(.018, .026, .004), bottle, SATIN, Vector3.ZERO, 6)
+	var squash := Vector3(1, 1, .62)
+	lathe(Vector3.ZERO, [Vector2(0, 0), Vector2(.034, 0), Vector2(.04, .008), Vector2(.042, .03), Vector2(.042, .15), Vector2(.038, .172), Vector2(.026, .186), Vector2(.016, .19), Vector2(0, .19)], bottle, SATIN, 12, Vector3.ZERO, squash)
+	lathe(Vector3.ZERO, [Vector2(.0428, .05), Vector2(.0428, .13)], lighter(bottle, .5), MATTE, 12, Vector3.ZERO, squash)
+	lathe(Vector3(0, .188, 0), [Vector2(0, 0), Vector2(.019, 0), Vector2(.02, .03), Vector2(.016, .035), Vector2(0, .036)], WHITE, SATIN, 10, Vector3.ZERO, Vector3(1, 1, .8))
+	ball(Vector3(0, .085, -.027), Vector3(.026, .028, .006), bottle, SATIN, Vector3.ZERO, 8)
+	cyl(Vector3(0, .104, -.027), Vector3(.018, .016, .005), bottle, SATIN, Vector3(PI / 2, 0, 0), 6, .0)
 
 func _toilet_paper(_v: int) -> void:
+	# Four soft rolls standing in a pack, cardboard cores showing, a blue wrap band with a label.
 	for dx in [-.052, .052]:
 		for dz in [-.052, .052]:
-			cyl(Vector3(dx, .055, dz), Vector3(.1, .11, .1), "fbfbf8", MATTE, Vector3.ZERO, 12)
-			cyl(Vector3(dx, .111, dz), Vector3(.035, .003, .035), "b08a5a", MATTE, Vector3.ZERO, 8)
-	bx(Vector3(0, .055, 0), Vector3(.212, .035, .212), "64b5f6", SATIN)
-	bx(Vector3(0, .056, -.107), Vector3(.08, .018, .002), WHITE, MATTE)
+			lathe(Vector3(dx, 0, dz), [Vector2(.016, 0), Vector2(.044, 0), Vector2(.05, .006), Vector2(.05, .104), Vector2(.044, .11), Vector2(.016, .11)], "fbfbf8", MATTE, 12)
+			lathe(Vector3(dx, 0, dz), [Vector2(.016, .11), Vector2(.016, .0)], "c4a27a", MATTE, 8)
+	soft_box(Vector3(0, .055, 0), Vector3(.21, .045, .21), "64b5f6", SATIN, Vector3.ZERO, .4)
+	soft_box(Vector3(0, .055, -.106), Vector3(.08, .03, .004), WHITE, MATTE, Vector3.ZERO, .4)
+	cyl(Vector3(0, .055, -.109), Vector3(.02, .004, .02), "64b5f6", MATTE, Vector3(PI / 2, 0, 0), 8)
 
 # ---------------------------------------------------------------------------------------------
 # Bakery
 
 func _bread(v: int) -> void:
 	var crust := pick(v, ["c58a4a", "a8683a", "d9a566"])
-	ball(Vector3(0, .04, 0), Vector3(.2, .08, .125), darker(crust, .08), MATTE, Vector3.ZERO, 10)
-	ball(Vector3(0, .072, 0), Vector3(.19, .09, .12), crust, MATTE, Vector3.ZERO, 10)
+	if v == 1:
+		# Round country boule with a cross cut over the dome.
+		lathe(Vector3.ZERO, [Vector2(0, 0), Vector2(.075, 0), Vector2(.09, .015), Vector2(.094, .045), Vector2(.08, .08), Vector2(.05, .1), Vector2(0, .108)], crust, MATTE, 14)
+		for k in 2:
+			var pts := []
+			var heights := [.091, .105, .11, .105, .091]
+			for i in 5:
+				pts.append(Basis(Vector3.UP, PI / 4 + k * PI / 2) * Vector3(-.068 + i * .034, heights[i], 0))
+			tube(pts, [.006, .007, .007, .007, .006], lighter(crust, .4), MATTE, 5)
+		return
+	# Tin loaf (v0) or a long bloomer (v2): a soft block, a domed top and three bold slashes.
+	var length := .2 if v == 0 else .21
+	soft_box(Vector3(0, .035, 0), Vector3(length, .07, .12), darker(crust, .06), MATTE, Vector3.ZERO, .55)
+	ball(Vector3(0, .07, 0), Vector3(length, .1, .12), crust, MATTE, Vector3.ZERO, 12)
 	for k in 3:
-		bx(Vector3(-.05 + k * .05, .114, 0), Vector3(.012, .006, .09), lighter(crust, .35), MATTE, Vector3(0, .5, 0))
+		var x := (k - 1) * .055
+		var top := .07 + .05 * sqrt(maxf(0.0, 1.0 - pow(x / (length * .5), 2.0)))
+		tube([Vector3(x - .012, top - .009, -.032), Vector3(x, top + .001, 0), Vector3(x + .012, top - .009, .032)], [.006, .007, .006], lighter(crust, .38), MATTE, 5)
 
 func _baguette(_v: int) -> void:
-	cyl(Vector3(0, .03, 0), Vector3(.055, .36, .055), "d39b55", MATTE, Vector3(0, 0, PI / 2), 8)
-	for side in [-1, 1]:
-		ball(Vector3(side * .19, .03, 0), Vector3(.12, .05, .05), "c98a45", MATTE, Vector3.ZERO, 8)
+	# A long golden tube with tapered ends and five diagonal slashes (clay-toy, 18 Nov 2026).
+	var pts := []
+	var radii := []
+	for k in 9:
+		var t := k / 8.0
+		pts.append(Vector3(lerpf(-.22, .22, t), .028, sin(t * PI) * .01))
+		var r := .028 * pow(sin(lerpf(.1, .9, t) * PI), .35)
+		radii.append(Vector2(r, r * .95))
+	tube(pts, radii, "d39b55", MATTE, 10)
 	for k in 5:
-		bx(Vector3(-.14 + k * .07, .057, 0), Vector3(.04, .004, .014), "f0cf93", MATTE, Vector3(0, .6, 0))
+		var x := -.16 + k * .08
+		tube([Vector3(x - .02, .053, .01), Vector3(x + .02, .054, -.006)], [.006, .006], "f0cf93", MATTE, 5)
 
 func _croissant(_v: int) -> void:
-	for k in 5:
-		var a := -1.1 + k * .55
-		var size := .07 - absf(k - 2) * .013
-		ball(Vector3(sin(a) * .06, .028 - absf(k - 2) * .004, -cos(a) * .035 + .02), Vector3(size, size * .8, size * .85), "d79a45" if k % 2 == 0 else "c07f2f", SATIN, Vector3(0, a, 0), 8)
+	# A plump crescent of rolled layers (clay-toy, 18 Nov 2026): one bumpy tube, fat in the
+	# middle and tapering to darker tips, glazed.
+	var pts := arc(Vector3(0, .034, .03), Vector2(.075, .06), -1.35, 1.35, 11)
+	var radii := []
+	for k in 11:
+		var t := absf(k - 5) / 5.0
+		var r := lerpf(.037, .012, pow(t, 1.3)) * (1.1 if k % 2 == 0 else .88)
+		radii.append(Vector2(r, r * .95))
+	tube(pts, radii, "d9953f", SATIN, 10)
+	for e in [0, 10]:
+		ball(pts[e], Vector3(.024, .022, .024), "b8742c", SATIN, Vector3.ZERO, 8)
+	ball(Vector3(-.004, .066, -.03), Vector3(.05, .008, .02), "efc06e", SATIN, Vector3.ZERO, 8)
 
 func _cake(v: int) -> void:
+	# Clay-toy cake (18 Nov 2026): soft two-layer cake on a plate, icing that drips over the edge,
+	# cream dollops and a cherry.
 	var sponge := pick(v, ["f8e1e7", "fff3e0", "8d6e63"])
 	var icing := pick(v, ["f48fb1", WHITE, "6d4c41"])
-	cyl(Vector3(0, .004, 0), Vector3(.28, .008, .28), "fafafa", SATIN, Vector3.ZERO, 14)
-	cyl(Vector3(0, .05, 0), Vector3(.24, .088, .24), sponge, MATTE, Vector3.ZERO, 14)
-	cyl(Vector3(0, .05, 0), Vector3(.242, .012, .242), icing, MATTE, Vector3.ZERO, 14)
-	cyl(Vector3(0, .1, 0), Vector3(.245, .016, .245), icing, MATTE, Vector3.ZERO, 14)
+	lathe(Vector3.ZERO, [Vector2(0, 0), Vector2(.136, 0), Vector2(.142, .006), Vector2(.136, .01), Vector2(0, .01)], "fafafa", SATIN, 16)
+	lathe(Vector3.ZERO, [Vector2(0, .01), Vector2(.118, .01), Vector2(.12, .016), Vector2(.12, .09), Vector2(0, .09)], sponge, MATTE, 16)
+	lathe(Vector3.ZERO, [Vector2(.121, .046), Vector2(.123, .05), Vector2(.121, .055)], icing, MATTE, 16)
+	lathe(Vector3.ZERO, [Vector2(.123, .082), Vector2(.126, .094), Vector2(.118, .106), Vector2(.09, .11), Vector2(0, .112)], icing, MATTE, 16)
+	for k in 10:
+		var a := k * TAU / 10 + .2
+		ball(Vector3(cos(a) * .122, .076 - (k % 2) * .008, sin(a) * .122), Vector3(.026, .036 + (k % 2) * .014, .02), icing, MATTE, Vector3(0, -a, 0), 6)
 	for k in 8:
 		var a := k * TAU / 8
-		ball(Vector3(cos(a) * .121, .085, sin(a) * .121), Vector3(.03, .04, .03), icing, MATTE, Vector3.ZERO, 6)
-		ball(Vector3(cos(a) * .095, .115, sin(a) * .095), Vector3(.03, .025, .03), WHITE if v != 1 else "f48fb1", MATTE, Vector3.ZERO, 6)
-	ball(Vector3(0, .122, 0), Vector3(.03, .03, .03), "c62828", SATIN, Vector3.ZERO, 8)
+		ball(Vector3(cos(a) * .088, .118, sin(a) * .088), Vector3(.032, .026, .032), WHITE if v != 1 else "f48fb1", MATTE, Vector3.ZERO, 8)
+	ball(Vector3(0, .126, 0), Vector3(.034, .034, .034), "c62828", SATIN, Vector3.ZERO, 10)
+	cyl(Vector3(.004, .148, 0), Vector3(.005, .02, .005), STEM, MATTE, Vector3(0, 0, -.3), 4)
 
 func _cupcake(v: int) -> void:
+	# Clay-toy cupcake (18 Nov 2026): a pleated paper cup, a muffin top and a tall swirl of
+	# frosting with a cherry.
 	var cream := pick(v, ["fff3e0", "f8bbd0", "6d4c41"])
-	cyl(Vector3(0, .02, 0), Vector3(.05, .04, .05), "4fc3f7" if v != 1 else "f48fb1", MATTE, Vector3.ZERO, 8, 1.25)
-	ball(Vector3(0, .046, 0), Vector3(.066, .026, .066), cream, MATTE, Vector3.ZERO, 8)
-	ball(Vector3(0, .06, 0), Vector3(.048, .022, .048), cream, MATTE, Vector3.ZERO, 8)
-	ball(Vector3(0, .072, 0), Vector3(.026, .018, .026), cream, MATTE, Vector3.ZERO, 6)
-	ball(Vector3(0, .083, 0), Vector3(.016, .016, .016), "c62828", SATIN, Vector3.ZERO, 6)
+	var paper := pick(v, ["4fc3f7", "f48fb1", "ffd54f"])
+	lathe(Vector3.ZERO, [Vector2(0, 0), Vector2(.032, 0), Vector2(.043, .045), Vector2(.046, .047), Vector2(0, .047)], paper, MATTE, 12)
+	for k in 7:
+		var a := -PI / 2 + (k - 3) * .38
+		var d := Vector3(cos(a), 0, sin(a))
+		tube([d * .0335 + Vector3(0, .004, 0), d * .0445 + Vector3(0, .043, 0)], [.0028, .0028], darker(paper, .16), MATTE, 4)
+	lathe(Vector3.ZERO, [Vector2(.046, .045), Vector2(.05, .054), Vector2(.044, .062), Vector2(0, .064)], "c98d4f", MATTE, 12)
+	lathe(Vector3.ZERO, [Vector2(0, .056), Vector2(.044, .059), Vector2(.048, .068), Vector2(.042, .077), Vector2(.034, .081), Vector2(.038, .087), Vector2(.031, .097),
+		Vector2(.022, .101), Vector2(.024, .107), Vector2(.013, .116), Vector2(0, .122)], cream, MATTE, 12)
+	ball(Vector3(0, .128, 0), Vector3(.026, .025, .026), "c62828", SATIN, Vector3.ZERO, 8)
+	for o in [Vector3(-.03, .074, -.022), Vector3(.026, .084, -.018), Vector3(-.006, .1, -.022), Vector3(.034, .07, .01)]:
+		soft_box(o, Vector3(.012, .005, .005), ["fdd835", "4fc3f7", "ef5350", "66bb6a"][int(absf(o.x) * 1000) % 4], SATIN, Vector3(0, o.x * 40.0, 0), .5)
 
 func _donut(v: int) -> void:
-	var icing := pick(v, ["f48fb1", "5d4037", "fff3e0"])
-	ring(Vector3(0, .02, 0), Vector3(.11, .04, .11), "c68642", MATTE, Vector3.ZERO, .4, 12)
-	ring(Vector3(0, .03, 0), Vector3(.104, .024, .104), icing, MATTE, Vector3.ZERO, .45, 12)
+	# Clay-toy donut (18 Nov 2026): a fat ring, thick icing with soft drips and bold sprinkles.
+	var icing := pick(v, ["f48fb1", "6d4c41", "fff3e0"])
+	ring(Vector3(0, .022, 0), Vector3(.116, .044, .116), "d08a45", MATTE, Vector3.ZERO, .34, 14)
+	ring(Vector3(0, .034, 0), Vector3(.108, .026, .108), icing, MATTE, Vector3.ZERO, .4, 14)
+	for k in 5:
+		var a := k * TAU / 5 + .5
+		ball(Vector3(cos(a) * .05, .03, sin(a) * .05), Vector3(.022, .024, .016), icing, MATTE, Vector3(0, -a, 0), 6)
 	var sprinkles := ["fdd835", "4fc3f7", "ef5350", "66bb6a", WHITE]
-	for k in 6:
-		var a := k * TAU / 6 + .3
-		bx(Vector3(cos(a) * .037, .043, sin(a) * .037), Vector3(.012, .004, .004), sprinkles[k % 5], SATIN, Vector3(0, a * 2.0, 0))
+	for k in 7:
+		var a := k * TAU / 7 + .3
+		var rr := .033 if k % 2 else .041
+		soft_box(Vector3(cos(a) * rr, .047, sin(a) * rr), Vector3(.014, .005, .005), sprinkles[k % 5], SATIN, Vector3(0, a * 2.3, 0), .6)
 
 # ---------------------------------------------------------------------------------------------
 # Store fittings (8 Nov 2026): carts, baskets, checkout props and the seafood ice. Each fitting is

@@ -14,7 +14,7 @@ const SignLanguage := preload("res://scripts/world/sign_language.gd")
 const Lexicon := preload("res://scripts/language/lexicon.gd")
 const SUPERMARKET := ["RelocatedSites/Supermarket", "Buildings/MarketDisplays", "Map facades/SUPERMARKET"]
 ## The supermarket's sign labels on 16 Nov 2026 (each interior sign has a back-side twin).
-const SUPERMARKET_SIGNS := 35
+const SUPERMARKET_SIGNS := 37  # 35 on 16 Nov 2026; +HOME sign (front and back) on 18 Nov 2026
 var failures := 0
 var checks := 0
 func _initialize(): run.call_deferred()
@@ -41,7 +41,7 @@ func run():
 		for label: Label3D in town.get_node(part).find_children("*", "Label3D", true, false):
 			market += 1
 			check(label.has_meta("world_sign"), "supermarket label %s is a world sign" % town.get_path_to(label))
-	check(market == SUPERMARKET_SIGNS, "supermarket sign labels: %d (%d on 16 Nov 2026)" % [market, SUPERMARKET_SIGNS])
+	check(market == SUPERMARKET_SIGNS, "supermarket sign labels: %d (%d since 18 Nov 2026)" % [market, SUPERMARKET_SIGNS])
 	# 2. The rule in every language.
 	var shown := SignLanguage.shown_language()
 	var seen := {}

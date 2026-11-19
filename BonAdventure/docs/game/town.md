@@ -35,15 +35,18 @@ BonBon, Leo and Sunny live in the house, and the walkways were cleared.
 
 ## Supermarket
 
-<img src="../evidence/supermarket-snacks-20261117/1-entrance.png" width="480" alt="Supermarket from the door">
+<img src="../evidence/supermarket-layout-20261118/1-entrance.png" width="480" alt="Supermarket from the door">
 
-*Screenshot 17 Nov.*
+*Screenshot 18 Nov.*
 
 One open floor with nine departments (fruit, vegetables, refrigerated, bakery, meat, seafood,
 drinks & home, snacks, checkout); every product is a word with its own product art, and since
 17 Nov each word is in one clearly named section ([sections](../guides/TOWN_DESIGN_BRIEF.md#supermarket-sections--17-november-2026)). A samoyed cashier at the till by the
 door (Pay Up!) and a beagle clerk outside (Grocery Run). Since 16 Nov its signs are sized to be
 read across the hall in every language ([before and after](../evidence/world-signs-20261116/)).
+Since 18 Nov it is more compact: a staff wall shortens the floor, the fridges and drinks line the
+left wall, snacks and home goods are two short aisles, and every product is at least coconut-sized
+with 34 redrawn as clay toys ([compact redesign](../guides/TOWN_DESIGN_BRIEF.md#supermarket-compact-redesign--18-november-2026)).
 [2 Nov refit](../guides/TOWN_DESIGN_BRIEF.md#supermarket-refit-fruit-checkout-by-the-door-and-clerks--2-november-2026) ·
 [product art](../guides/TOWN_DESIGN_BRIEF.md#supermarket-product-art--8-november-2026) ·
 [sign readability](../guides/BUILDING_DESIGN_BLUEPRINT.md#sign-readability)

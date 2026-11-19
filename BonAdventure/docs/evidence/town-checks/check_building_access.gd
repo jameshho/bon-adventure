@@ -90,9 +90,10 @@ func paths_check() -> void:
 	# Supermarket-local coordinates (as the retired market interior check).
 	var market: Node3D = town.get_node("RelocatedSites/Supermarket")
 	route(market, Vector3(-33, .1, 32), Vector3(-33, .1, 42), "market entrance spine")
-	for z in [42, 52.7]: route(market, Vector3(-44.5, .1, z), Vector3(-22, .1, z), "market cross aisle z=%s" % z)
-	for x in [-37.7, -28.3]: route(market, Vector3(x, .1, 42), Vector3(x, .1, 55), "market connecting aisle x=%s" % x)
-	route(market, Vector3(-44.5, .1, 55), Vector3(-21.5, .1, 55), "market fresh counters")
+	# Compact layout since 18 Nov 2026: staff wall at z 53.3, counters 49.67..50.83, fixtures end by z 47.46.
+	for z in [42, 48.5]: route(market, Vector3(-44.5, .1, z), Vector3(-22, .1, z), "market cross aisle z=%s" % z)
+	for x in [-37.7, -28.3]: route(market, Vector3(x, .1, 42), Vector3(x, .1, 48.5), "market connecting aisle x=%s" % x)
+	route(market, Vector3(-44.5, .1, 48.6), Vector3(-21.5, .1, 48.6), "market fresh counters")
 
 ## True when the real controller aims at `node` from some clear spot within 3.5 m (nearest
 ## spots first), looking at its first collision shape.

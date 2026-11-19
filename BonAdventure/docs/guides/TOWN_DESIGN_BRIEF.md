@@ -22,7 +22,7 @@ dated history of rules and implementation.
 | Park terrain | **4 November 2026: Boston Public Garden character with subtle, natural grades; no rolling hills around the monument and no uniformly flat park.** More pronounced but gentle northeast/northwest statue lawns, a quiet plaza and approach, a grass statue island and ring walk, straight cross-paths, narrow lawn-edge flower borders, two tapered entrance beds, clipped bushes and two entrance-side fountains following the user’s latest aerial. Preserve bridge, lagoon footprint and destination connections. | Implemented in the existing runtime terrain, trail-refresh and planting passes; validation is recorded in `FINAL_VERIFICATION.md`. See [current garden grading](public-garden/README.md#boston-inspired-garden--4-november-2026). **5 November 2026 (user request):** monument refined toward the same photographs: paved forecourt around the lens beds, 28 sheared yews, chain fences, layered tropical beds, low granite-sett fountains, classical pedestal moldings ([record](public-garden/README.md#washington-monument-refinement--5-november-2026)). Same day, from the user's trail drawing: walks circle both fountains, the bridge-side x≈−18 bends are removed and overlapping trails are untangled ([trail cleanup](public-garden/README.md#monument-trail-cleanup--5-november-2026)). **8 November 2026 (user reference image):** tulip lens beds with stone curbs and tulip borders, stone baluster fountains with spilling streams and a bronze child, a smooth bronze horse and rider with pedestal panels; layout unchanged ([record](public-garden/README.md#monument-plaza-art--8-november-2026)). Later the same day, from the user's character blueprint: the bronze is re-traced from the blueprint's side view (big rider, high-carried horse head, about 5.2 m hoof to hat) in olive bronze with gilt tack and trim, on a bronze plate and wide stone cap, with a warm cream pedestal ([record](public-garden/README.md#statue-from-the-character-blueprint--8-november-2026-later)). |
 | Town layout | Keep current building positions and entrance locations; preserve pond/statue circles and attractions. Northwest playground retained. | Current layout exists. **One relocation approved and built 28 October 2026: the police station moved to the east side, south of the supermarket** ([record](#restaurants-and-police-relocation--28-october-2026)). **Second relocation approved and built 5 November 2026: the school moved 10 units west, toward the hospital, to make room for the warehouse** ([record](#warehouse-and-warehouse-worker-minigame--5-november-2026)). **New building approved and built 9 November 2026: the Mystery House on the empty plot south of the bank** ([record](#mystery-house-and-mystery-doors--9-november-2026)). No other relocation or map redesign approved. |
 | School | **24 × 18 town units, single story**; general/science teaching areas with **one rear-half center dividing wall and an open front half**. | Shell and elementary-school exterior implemented: 4.6 clear height; single 9-unit rear divider implemented. Previous classroom-front/hall partitions and interior headers removed. Existing teaching furniture/content retained, with four wall displays remounted. Complete future furnishing program remains deferred. |
-| Supermarket | **26 × 26 town units**; one open floor with nine departments and wide aisles. | Shell and supermarket exterior implemented; 5.71 clear height. Exterior color refinement implemented on 26 October: teal fascia, ochre entry and terracotta plinth; **superseded 1 November 2026 by navy fascia, gold entry and a cart icon** ([storefront redesign](#storefront-exterior-redesign--1-november-2026)). Existing learning roots retained in the nine-department fit-out implemented on 26 October. Front axis and delivery access preserved; see the interior review below. **2 November 2026:** refitted inside the same shell: frozen section removed and its words retired, fruit in its place, checkout lanes beside the door, every product a clickable word, a samoyed cashier and a beagle clerk ([record](#supermarket-refit-fruit-checkout-by-the-door-and-clerks--2-november-2026)). **8 November 2026:** every product redrawn in one shared style (recognisable silhouettes, front-of-pack pictures, three shared finishes), lighter fridge backs, shelf price tags and department pictograms; same words and pick areas ([record](#supermarket-product-art--8-november-2026)). **17 November 2026:** one word, one section: PANTRY became SNACKS, the produce stand holds only big fruit, the fridges only dairy and salad, the drinks cooler and home goods traded places and coffee moved to the cooler ([record](#supermarket-sections--17-november-2026)). |
+| Supermarket | **26 × 26 town units**; one open floor with nine departments and wide aisles. | Shell and supermarket exterior implemented; 5.71 clear height. Exterior color refinement implemented on 26 October: teal fascia, ochre entry and terracotta plinth; **superseded 1 November 2026 by navy fascia, gold entry and a cart icon** ([storefront redesign](#storefront-exterior-redesign--1-november-2026)). Existing learning roots retained in the nine-department fit-out implemented on 26 October. Front axis and delivery access preserved; see the interior review below. **2 November 2026:** refitted inside the same shell: frozen section removed and its words retired, fruit in its place, checkout lanes beside the door, every product a clickable word, a samoyed cashier and a beagle clerk ([record](#supermarket-refit-fruit-checkout-by-the-door-and-clerks--2-november-2026)). **8 November 2026:** every product redrawn in one shared style (recognisable silhouettes, front-of-pack pictures, three shared finishes), lighter fridge backs, shelf price tags and department pictograms; same words and pick areas ([record](#supermarket-product-art--8-november-2026)). **17 November 2026:** one word, one section: PANTRY became SNACKS, the produce stand holds only big fruit, the fridges only dairy and salad, the drinks cooler and home goods traded places and coffee moved to the cooler ([record](#supermarket-sections--17-november-2026)). **18 November 2026:** compact redesign: staff wall (shop floor 25.5 × 19.1), cold wall on the left, fruit island, one snack gondola and a home gondola on the right; every product at least the old coconut's size, coconut 1.4×, 34 products redrawn as clay toys ([record](#supermarket-compact-redesign--18-november-2026)). |
 | Furniture store | **24 × 26 town units** (was 17 × 29), same front wall line and entrance, flat roof with parapet (green until 1 November 2026, now slate with a timber band and corner cladding), glass shopfront and sign plaque; showroom with living, bedroom, dining, office and lighting departments (user's isometric design, approved 29 October 2026). | Implemented 29 October 2026 inside zone `furniture` (x 113–139, z 209–259) with no zoning change; eight words added. See [record](#furniture-showroom--29-october-2026). **1 November 2026:** plush staff added ([record](#shop-staff-bank-sports-store-furniture-showroom--1-november-2026)). **9 November 2026:** furniture models replaced with product-art versions, prefabs turned to face the room, every item clickable ([interiors polish](#interiors-polish--9-november-2026)). |
 | Game palette and shop row | **18 November 2026 (user):** one colour palette for the whole game (2D and 3D), drawn from the app icon and the dialogue box: `scripts/core/game_palette.gd`. The five shops (bakery, clothing, electronics, sports, furniture) share one storefront look: cream walls, stone base bands, cream trim, iron lamps, wooden flower boxes, and **one accent family each** (coral, rose, sky, meadow, teal). Supersedes the shops' earlier colours (including the 25 Oct café colours and the furniture store's slate parapet). | Built 18 Nov 2026 (recolour by role, sports awnings added); other buildings not yet on the palette. [Record](#game-palette-and-shop-row--18-november-2026). |
 | Other building dimensions | Retain existing dimensions. | Furniture shortening (the old optional 17 × 24 idea, superseded by the approved 24 × 26 above), airport height reduction and hospital-wing removal are **not approved**. |
@@ -1710,6 +1710,52 @@ fixtures, pick areas and the shell are reused, only goods, two fixtures' places 
   world_signs, shop_basket and building_access all PASS. Not run: the rest of the full suite.
 - Evidence: `docs/evidence/supermarket-snacks-20261117/` (`capture.gd`, nine views); the
   before state is `docs/evidence/supermarket-sections-20261117/` (items by section).
+
+## Supermarket compact redesign — 18 November 2026
+
+User request: the SNACKS section was far too big for its four words, REFRIGERATED stood mid-floor
+instead of at the side, the store could shrink to read more clearly, several products looked
+outdated, and "nothing should be smaller than the current coconut, and the coconut should be
+bigger". **User decisions (18 Nov 2026):** shrink with a staff wall (exterior, lot, door, clerks
+and tutorial spots unchanged); a cold wall on the left side; coconut 1.4×; outdated products
+redrawn in a soft clay-toy look to sit beside the clay animals. Supersedes the floor plan of the
+[17 Nov sections](#supermarket-sections--17-november-2026) (its one-word-one-section rule stays) and
+extends the [product art](#supermarket-product-art--8-november-2026) style guide.
+
+**Layout** (step `compact_layout`, `scripts/buildings/supermarket.gd`; interior-local coordinates, seen from the door):
+
+| Area | Now |
+| --- | --- |
+| Shop floor | x -45.75..-20.25, z 34.2..53.3 (25.5 × 19.1; was 26 × 26). A staff wall with a closed staff door (x -37.7, no interaction) closes the back; the 26 × 26 shell and exterior are unchanged. |
+| Back | Seafood, meat and bakery counters, benches, signs and bands moved 6.45 forward (counters z 49.67..50.83), same order, 1.62 staff gap kept. |
+| Left wall (cold wall) | Drinks cooler (z 35.2..41.2), then the two REFRIGERATED fridges (z 41.3..47.4) against the wall, facing the store. |
+| Middle | Vegetable stand unchanged; the fruit wall is a two-faced island (x -27..-23.5, z 43.4..47); the big-fruit produce stand keeps its two middle bays (z 36.7..40.3). |
+| Right side | One SNACKS gondola (x -40..-38.8, z 43..47.5: chocolate above candy, cookies above crackers) and the HOME gondola with its toilet-paper end cap against the right wall (new HOME sign: HOGAR, 家居). DRINKS & HOME now reads DRINKS. |
+| Front | Checkouts, cashier counter, queue, baskets, entrance and tutorial fruit table unchanged. |
+
+81 duplicate roots were removed (fruit-wall bay 5, the stand's outer bays, the second snack gondola
+and its end caps); all 92 word keys remain.
+
+**Products** (step `clay_products` → `supermarket_products.gd` `restock_all()`): `goods_scale()` now
+gives every kind a displayed longest side of at least 0.30 (51 of 79 were under the old coconut's
+0.283) and the coconut 0.42. 34 kinds redrawn as soft clay toys with three new parts (bevelled box,
+lathe, curved tube), same three materials and one cached mesh per kind and variant: ham, sausage,
+chicken (+drumstick variant), meat, steak, fish, shrimp; bread, baguette, croissant, donut, cupcake,
+cake; butter, cheese, yogurt, eggs; soap, sponge, toothbrush, toothpaste, shampoo, detergent,
+toilet paper; candy, chocolate, cookie, cracker; cherry, strawberry, garlic, lime, mushroom, chili
+pepper. Bigger units mean fewer per group: 115 groups, 962 units; 57 pick boxes grew to hold them.
+Product vertices about +7% for 26% fewer units (measured before the layout trimmed groups).
+The bakery/café reuses the bread model only when it is re-baked; basket and order pictures show
+the new looks at once.
+
+- **Checks** (18 Nov 2026, `tools/run_checks.py --only`, full town): runtime_resources, signs,
+  world_signs, shop_basket, building_access, tutorial and interaction all PASS. building_access's
+  market routes and world_signs' supermarket label count (35 → 37) were updated for this layout.
+  Not run: the rest of the full suite.
+- **Evidence:** layout views `docs/evidence/supermarket-layout-20261118/` (`capture.gd`, plans and
+  nine views, final merged state); product gallery and size table
+  `docs/evidence/supermarket-products-20261118/` (before/after pages, close-ups, `sizes.txt`).
+- **Open:** no pictogram on the cold-wall band (plain blue) or the home band (P3).
 
 ## Airfield roads and school-street vehicles — 2 November 2026
 
@@ -3748,3 +3794,4 @@ one inside view each): `docs/evidence/shop-row-20261118/` (`capture.gd`, `before
 **Not done yet:** the other buildings; `bon_style.gd` still holds its own copies of the UI colours
 (it belongs to the UI restyle in progress) and should read them from `game_palette.gd` once that
 work is committed.
+

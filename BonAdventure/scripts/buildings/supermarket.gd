@@ -4,7 +4,7 @@ extends RefCounted
 ## Bake:  godot --headless --path . --script res://tools/bake_unit.gd -- supermarket
 ## Never rename or remove a baked step (add a new one that undoes it).
 ## Record: docs/guides/TOWN_DESIGN_BRIEF.md "Supermarket product art — 8 November 2026".
-const STEPS := ["product_models", "fixture_finish", "checkout_props", "seafood_ice", "surface_gaps", "coplanar_gaps", "coplanar_gaps_2", "coplanar_envelope", "glass_windows", "tutorial_fruit", "world_signs", "clear_sections"]
+const STEPS := ["product_models", "fixture_finish", "checkout_props", "seafood_ice", "surface_gaps", "coplanar_gaps", "coplanar_gaps_2", "coplanar_envelope", "glass_windows", "tutorial_fruit", "world_signs", "clear_sections", "compact_layout", "clay_products"]
 const Products = preload("res://scripts/buildings/supermarket_products.gd")
 const WorldSign = preload("res://scripts/world/world_sign.gd")
 const INTERIOR := "RelocatedSites/Supermarket/MarketInterior"
@@ -462,3 +462,399 @@ func _fit_pick(root: Node3D, products, kind: String) -> void:
 		shape.position.y += (height - box.size.y) * .5
 		box.size.y = height
 		shape.shape = box
+
+## Compact layout (18 Nov 2026, user-approved "staff wall" and "cold wall on left"; the snacks
+## section was far too big for its four words and the fridges stood mid-floor). Seen from the door
+## (front z 34.2, looking +Z) the left wall is x -20.25 and the right wall x -45.75.
+## - Staff wall: a solid interior wall (store wall finish, a closed staff-only door, no
+##   interaction) across the hall with its shop face at z 53.3; the seafood, meat and bakery
+##   counters (same order), their back benches, signs and wall bands all come 6.45 forward (the old
+##   wall face was z 59.75), keeping the 1.62 staff gap the bread rack is picked from.
+##   The back row of ceiling lights moves to z 50 over the counters.
+## - Cold wall on the left: the drinks cooler goes back against the left wall at the front (the
+##   17 Nov swap undone), the two REFRIGERATED fridges stand turned behind it in one run along the
+##   same wall, facing into the store. Their signs hang turned along the wall, lower (y 3.25) than
+##   the others; DRINKS & HOME reads DRINKS; FRUIT hangs higher (y 4.0) so it never hides them. The left wall band turns cold blue over the run (its apple pictogram goes).
+## - Fruit: the produce stand (big fruit) keeps its two middle bays and stands by the door between
+##   the fruit table and the cooler; the fruit wall becomes a two-sided island behind it (bays 1-2
+##   face the door, bays 3-4 the counters; bay 5 held only second apples, oranges and grapes and
+##   goes). The vegetable stand stays where it was.
+## - Right side behind the checkouts: one SNACKS gondola of three bays (its door-side face holds
+##   chocolate over candy, the other cookies over crackers; the groups keep their pick areas) and the
+##   home goods gondola with its toilet paper end cap against the right wall, under a new HOME sign
+##   (HOGAR, 家居). The second gondola, both pantry end caps and their goods leave the store.
+## - Floor inlays and the right wall band (no pictogram) follow their sections.
+## Shop floor: x -45.75..-20.25, z 34.2..53.3; fixtures stop by z 47.45, 2.2 in front of the counters.
+const STAFF_WALL_Z := 53.3
+const COUNTER_DZ := -6.45
+const BENCH_DZ := -6.45
+const STAFF_DOOR_X := -37.7
+const COOLER_WORDS := ["water bottle", "juice", "soda", "coffee"]
+const HOME_WORDS := ["soap", "sponge", "detergent", "toothbrush", "toothpaste", "shampoo", "toilet paper"]
+const SNACK_WORDS := ["chocolate", "candy", "cookie", "cracker"]
+## Fridge centres: 2 cm off the left wall, the first 3 cm behind the cooler, 2 cm between them.
+const FRIDGE_X := -20.77
+const FRIDGE_FRONT_Z := 42.79
+const FRIDGE_BACK_Z := 45.87
+const PRODUCE_DZ := -8.5
+const FRUIT_ISLAND := Vector2(-25.25, 45.2)
+const SNACK_AT := Vector2(-39.4, 45.22)
+const HOME_AT := Vector2(-45.75 + .02 + .5605, 45.23)
+
+func compact_layout(town: Node3D, game) -> void:
+	var interior: Node3D = town.get_node(INTERIOR)
+	var before := _words(interior)
+	var products := Products.new()
+	var dropped := 0
+	# Every group is gathered from the 17 Nov state before anything moves.
+	var back := _roots(interior, func(n: Node3D) -> bool: return n.position.z >= 55.0)
+	var cooler := _roots(interior, func(n: Node3D) -> bool: return str(n.name) == "Drinks cooler" \
+			or (str(n.name).contains("display") and str(n.get_meta("word_key", "")) in COOLER_WORDS))
+	var home := _roots(interior, func(n: Node3D) -> bool: return str(n.name) in ["Household gondola", "Household endcap"] \
+			or (str(n.name).contains("display") and str(n.get_meta("word_key", "")) in HOME_WORDS))
+	var fridge_front := _roots(interior, func(n: Node3D) -> bool: return _in(n, -32.8, -29.65, 49.4, 50.75, 0, 3))
+	var fridge_back := _roots(interior, func(n: Node3D) -> bool: return _in(n, -35.95, -32.8, 49.4, 50.75, 0, 3))
+	var stand_root: Node3D = interior.get_node("Produce Stand")
+	var stand := _roots(interior, func(n: Node3D) -> bool: return _in(n, -26.5, -24.7, 42.5, 51.5, 0, 3))
+	var wall_root: Node3D = interior.get_node("Fruit wall display")
+	var fruit := _roots(interior, func(n: Node3D) -> bool: return n != wall_root and _in(n, -22.1, -20.4, 42.5, 51.5, 0, 3))
+	var snacks := _roots(interior, func(n: Node3D) -> bool: return str(n.name).contains("display") \
+			and str(n.get_meta("word_key", "")) in SNACK_WORDS and _in(n, -44.0, -38.5, 43.0, 51.2, 0, 3))
+	var cold_sign := _roots(interior, func(n: Node3D) -> bool: return _in(n, -35.6, -30.0, 48.75, 49.05, 3, 5))
+	var drinks_sign := _roots(interior, func(n: Node3D) -> bool: return _in(n, -26.2, -20.6, 38.45, 38.75, 3, 5))
+	var fruit_sign := _roots(interior, func(n: Node3D) -> bool: return _in(n, -25.6, -21.0, 46.85, 47.15, 3, 5))
+	var snack_sign := _roots(interior, func(n: Node3D) -> bool: return _in(n, -43.6, -39.0, 42.45, 42.75, 3, 5))
+	var counts := [back.size(), cooler.size(), home.size(), fridge_front.size(), fridge_back.size(), stand.size(),
+		fruit.size(), snacks.size(), cold_sign.size(), drinks_sign.size(), fruit_sign.size(), snack_sign.size()]
+	print("SUPERMARKET compact_layout gathered: back, cooler, home, fridges, stand, fruit, snacks, signs = %s" % [counts])
+
+	# 1. Staff wall.
+	for node: Node3D in back:
+		node.position.z += COUNTER_DZ if node.position.z < 58.5 else BENCH_DZ
+	for node in interior.get_children():
+		if node is Node3D and (node is Light3D or str(node.get_meta("word_key", "")) == "ceiling light") \
+				and (node as Node3D).position.z > 54.0:
+			(node as Node3D).position.z = 50.0
+	_staff_wall(interior, game)
+	for title in ["SEAFOOD floor inlay", "MEAT floor inlay", "BAKERY floor inlay"]:
+		var inlay: Node3D = interior.get_node(title)
+		var box := _inlay_box(inlay)
+		_resize(inlay, box.position.x, box.end.x, 48.75, STAFF_WALL_Z - .05)
+
+	# 2. Cold wall on the left.
+	for node: Node3D in cooler:
+		node.position -= COOLER_SHIFT
+	_carry(fridge_front, Vector3(-31.25, 0, 50.1), PI / 2, Vector3(FRIDGE_X, 0, FRIDGE_FRONT_Z))
+	_carry(fridge_back, Vector3(-34.35, 0, 50.1), PI / 2, Vector3(FRIDGE_X, 0, FRIDGE_BACK_Z))
+	_carry(cold_sign, Vector3(-32.8, 0, 48.9), PI / 2, Vector3(-21.5, 0, (FRIDGE_FRONT_Z + FRIDGE_BACK_Z) / 2))
+	_carry(drinks_sign, Vector3(-23.4, 0, 38.6), PI / 2, Vector3(-21.5, 0, 38.2))
+	_relabel(drinks_sign, "DRINKS")
+	# The wall signs hang just above the cooler and fridges, FRUIT higher than the others: seen from
+	# eye height the nearer FRUIT sign then always passes above them instead of hiding them.
+	_hang(cold_sign, 3.25)
+	_hang(drinks_sign, 3.25)
+	_hang(fruit_sign, 4.0)
+	interior.get_node("DRINKS & HOME department sign").name = "DRINKS department sign"
+	interior.get_node("DRINKS & HOME label").name = "DRINKS label"
+	var drinks_inlay: Node3D = interior.get_node("DRINKS & HOME floor inlay")
+	drinks_inlay.name = "DRINKS floor inlay"
+	_resize(drinks_inlay, -23.5, -20.4, 34.8, 41.25)
+	_resize(interior.get_node("REFRIGERATED floor inlay"), -23.5, -20.4, 41.25, 47.6)
+	var band: Node3D = interior.get_node("FRUIT wall band")
+	band.name = "COLD wall band"
+	_resize_band(band, 35.4, 47.2)
+	for mesh in band.find_children("*", "MeshInstance3D", true, false):
+		(mesh as MeshInstance3D).material_override = game.material_for(Color("6fa3c7"))
+	dropped += _drop([interior.get_node("FRUIT pictogram"), interior.get_node("SNACKS pictogram")])
+
+	# 3. Fruit: the produce stand by the door, the fruit wall a two-sided island behind it.
+	var stand_z := stand_root.position.z
+	for node: Node3D in stand.duplicate():
+		var rel := node.position.z - stand_z
+		if node != stand_root and absf(rel) > 2.0 and absf(rel) < 3.2:
+			stand.erase(node)
+			dropped += _drop([node])
+		elif rel < -2.0:
+			node.position.z += 1.75
+		elif rel > 2.0:
+			node.position.z -= 1.75
+	_shorten(stand_root, 7.0, -1.75, 1.75)
+	for node: Node3D in stand:
+		node.position.z += PRODUCE_DZ
+	var wall_at := Vector3(wall_root.position.x, 0, wall_root.position.z)
+	var part_b := wall_root.duplicate() as Node3D
+	part_b.name = "Fruit wall display2"
+	interior.add_child(part_b)
+	_shorten(wall_root, 8.75, -4.375, -.875)
+	_shorten(part_b, 8.75, -.875, 2.625)
+	# Back panels (local x .85) 2 cm apart along the island's middle; A faces the door, B the counters.
+	var to_a := Vector3(FRUIT_ISLAND.x - 2.625, 0, FRUIT_ISLAND.y - .86)
+	var to_b := Vector3(FRUIT_ISLAND.x - .875, 0, FRUIT_ISLAND.y + .86)
+	var face_a := [wall_root]
+	var face_b := [part_b]
+	for node: Node3D in fruit:
+		var rel := node.position.z - wall_at.z
+		if rel < -.875:
+			face_a.append(node)
+		elif rel < 2.625:
+			face_b.append(node)
+		else:
+			dropped += _drop([node])
+	_carry(face_a, wall_at, -PI / 2, to_a)
+	_carry(face_b, wall_at, PI / 2, to_b)
+	_carry(fruit_sign, Vector3(-23.3, 0, 47.0), 0.0, Vector3(-25.4, 0, 42.2))
+	_resize(interior.get_node("FRUIT floor inlay"), -28.0, -23.5, 35.4, 47.6)
+
+	# 4. Right side: one three-bay SNACKS gondola, the home goods against the right wall.
+	var gondola: Node3D = interior.get_node("Pantry gondola")
+	var g1 := Vector3(-43.2, 0, 47.3)
+	var g2 := Vector3(-39.4, 0, 47.3)
+	var snack_face := [gondola]
+	for node: Node3D in snacks:
+		var p := node.position
+		var top := p.y > 1.0
+		var keep := absf(p.z - 47.3) < 2.0
+		if keep and top and absf(p.x + 43.5) < .05:          # chocolate stays on the door-side face
+			snack_face.append(node)
+		elif keep and not top and absf(p.x + 42.9) < .05:    # candy turns to under the chocolate
+			_carry([node], g1, PI, g1)
+			snack_face.append(node)
+		elif keep and top and absf(p.x + 39.7) < .05:        # cookies turn onto the other face
+			_carry([node], g2, PI, g1)
+			snack_face.append(node)
+		elif keep and not top and absf(p.x + 39.1) < .05:    # crackers move across under them
+			_carry([node], g2, 0.0, g1)
+			snack_face.append(node)
+		else:
+			dropped += _drop([node])
+	_shorten(gondola, 7.4, -2.22, 2.22, true)
+	(gondola.get_node("Shelf price tags") as MeshInstance3D).mesh = products.shelf_tags(4.44, 3, 4)
+	_carry(snack_face, g1, 0.0, Vector3(SNACK_AT.x, 0, SNACK_AT.y))
+	dropped += _drop([interior.get_node("Pantry gondola2"), interior.get_node("Pantry endcap"), interior.get_node("Pantry endcap2")])
+	var household: Node3D = interior.get_node("Household gondola")
+	_carry(home, Vector3(household.position.x, 0, household.position.z), PI, Vector3(HOME_AT.x, 0, HOME_AT.y))
+	# HOME sign: a copy of the SNACKS sign turned along the right wall over the home goods.
+	var home_sign := []
+	for node: Node3D in snack_sign:
+		var copy := node.duplicate() as Node3D
+		if str(node.name) == "PANTRY department sign":
+			copy.name = "HOME department sign"
+		elif str(node.name) == "SNACKS label":
+			copy.name = "HOME label"
+		interior.add_child(copy, true)
+		home_sign.append(copy)
+	_relabel(home_sign, "HOME")
+	_carry(home_sign, Vector3(-41.3, 0, 42.6), -PI / 2, Vector3(-44.4, 0, 45.0))
+	_carry(snack_sign, Vector3(-41.3, 0, 42.6), 0.0, Vector3(SNACK_AT.x, 0, 43.6))
+	interior.get_node("PANTRY department sign").name = "SNACKS department sign"
+	var snack_inlay: Node3D = interior.get_node("PANTRY floor inlay")
+	snack_inlay.name = "SNACKS floor inlay"
+	_resize(snack_inlay, -45.6, -37.8, 42.3, 47.6)
+	var home_band: Node3D = interior.get_node("PANTRY wall band")
+	home_band.name = "HOME wall band"
+	_resize_band(home_band, 42.5, 47.4)
+
+	preload("res://scripts/buildings/coplanar_gaps.gd").separate(town, "supermarket", 4)
+	var after := _words(interior)
+	for word in before:
+		if not after.has(word):
+			push_error("supermarket compact_layout: word %s left the store" % word)
+	print("SUPERMARKET compact_layout: %d roots removed, %d words before, %d after" % [dropped, before.size(), after.size()])
+	for title in ["Drinks cooler", "Refrigerator2", "Refrigerator", "Produce Stand", "Fruit wall display", "Fruit wall display2",
+			"Vegetable stand", "Pantry gondola", "Household gondola", "Household endcap", "Seafood counter", "Deli Counter",
+			"Bakery counter", "Seafood back bench", "Staff wall"]:
+		var box := _bounds(interior, interior.get_node(title))
+		print("SUPERMARKET compact_layout %s: x %.2f..%.2f z %.2f..%.2f" % [title, box.position.x, box.end.x, box.position.z, box.end.z])
+
+## The new wall across the hall with a closed staff door (decoration: no interaction, one solid body).
+func _staff_wall(interior: Node3D, game) -> void:
+	var wall := Node3D.new()
+	wall.name = "Staff wall"
+	wall.set_meta("market_fitting", true)
+	interior.add_child(wall)
+	wall.position = Vector3(-33.0, 0, STAFF_WALL_Z)
+	var x := STAFF_DOOR_X + 33.0
+	_part(wall, game, "Staff wall panel", Vector3(0, 2.87, .1), Vector3(25.5, 5.74, .2), "eadfcd", true)
+	_part(wall, game, "Staff wall skirting", Vector3(0, .16, -.01), Vector3(25.5, .12, .02), "cdbf9f")
+	_part(wall, game, "Staff door leaf", Vector3(x, 1.21, -.025), Vector3(1.08, 2.22, .05), "c7cdd2")
+	_part(wall, game, "Staff door jamb", Vector3(x - .58, 1.25, -.04), Vector3(.08, 2.3, .08), "2b5a8c")
+	_part(wall, game, "Staff door jamb2", Vector3(x + .58, 1.25, -.04), Vector3(.08, 2.3, .08), "2b5a8c")
+	_part(wall, game, "Staff door head", Vector3(x, 2.36, -.04), Vector3(1.24, .08, .08), "2b5a8c")
+	_part(wall, game, "Staff door kick plate", Vector3(x, .26, -.055), Vector3(.98, .26, .01), "8a949c")
+	_part(wall, game, "Staff door push plate", Vector3(x - .38, 1.15, -.055), Vector3(.12, .3, .01), "b9c0c6")
+	_disc(wall, game, "Staff door window", Vector3(x, 1.62, -.056), .17, "33414c")
+	_disc(wall, game, "Staff only plaque", Vector3(x, 2.07, -.056), .11, "c0392b")
+	_part(wall, game, "Staff only bar", Vector3(x, 2.07, -.064), Vector3(.13, .03, .004), "f6f0e4")
+
+func _part(parent: Node3D, game, title: String, at: Vector3, size: Vector3, colour: String, solid := false) -> void:
+	var mesh := MeshInstance3D.new()
+	mesh.name = title
+	var box := BoxMesh.new()
+	box.size = size
+	mesh.mesh = box
+	mesh.material_override = game.material_for(Color(colour))
+	mesh.position = at
+	parent.add_child(mesh)
+	if solid:
+		var body := StaticBody3D.new()
+		body.name = title + " body"
+		body.position = at
+		parent.add_child(body)
+		var shape := CollisionShape3D.new()
+		var box_shape := BoxShape3D.new()
+		box_shape.size = size
+		shape.shape = box_shape
+		body.add_child(shape)
+
+## A flat disc on the wall's face (its axis along -Z).
+func _disc(parent: Node3D, game, title: String, at: Vector3, radius: float, colour: String) -> void:
+	var mesh := MeshInstance3D.new()
+	mesh.name = title
+	var disc := CylinderMesh.new()
+	disc.top_radius = radius
+	disc.bottom_radius = radius
+	disc.height = .01
+	disc.radial_segments = 24
+	mesh.mesh = disc
+	mesh.material_override = game.material_for(Color(colour))
+	mesh.transform = Transform3D(Basis(Vector3.RIGHT, PI / 2), at)
+	parent.add_child(mesh)
+
+## Interior roots a layout move may carry (not the floor grout, the floor inlays, lights or ceiling).
+func _roots(interior: Node3D, test: Callable) -> Array:
+	var out := []
+	for node in interior.get_children():
+		if not node is Node3D or node is Light3D:
+			continue
+		var title := str(node.name)
+		if title.contains("floor inlay") or title in ["Floor grout", "Interior ceiling finish"]:
+			continue
+		var at: Vector3 = (node as Node3D).position
+		if (at.y < .2 and not node.has_meta("word_key")) or at.y >= 5.0:
+			continue
+		if test.call(node):
+			out.append(node)
+	return out
+
+func _in(node: Node3D, x0: float, x1: float, z0: float, z1: float, y0: float, y1: float) -> bool:
+	var p := node.position
+	return p.x >= x0 and p.x <= x1 and p.z >= z0 and p.z <= z1 and p.y >= y0 and p.y <= y1
+
+## Turns nodes about the vertical through `from` and puts that point at `to` (interior space).
+func _carry(nodes: Array, from: Vector3, turn: float, to: Vector3) -> void:
+	var move := Transform3D(Basis(Vector3.UP, turn), to) * Transform3D(Basis.IDENTITY, -from)
+	for node: Node3D in nodes:
+		node.transform = move * node.transform
+
+## Cuts a fixture built of boxes along its local z down to the part between lo and hi: boxes that
+## run its whole `length` (meshes and collision shapes) are shortened and centred there, shorter
+## pieces outside are removed, or with `ends` its two end panels move to lo and hi.
+func _shorten(root: Node3D, length: float, lo: float, hi: float, ends := false) -> void:
+	var cut := length - (hi - lo)
+	for child in root.get_children():
+		var box: Resource = null
+		if child is MeshInstance3D and (child as MeshInstance3D).mesh is BoxMesh:
+			box = (child as MeshInstance3D).mesh
+		elif child is CollisionObject3D and child.get_child_count() == 1 and child.get_child(0) is CollisionShape3D \
+				and (child.get_child(0) as CollisionShape3D).shape is BoxShape3D:
+			box = (child.get_child(0) as CollisionShape3D).shape
+		if box == null:
+			continue
+		var z: float = (child as Node3D).position.z
+		if box.size.z >= length - .2:
+			box = box.duplicate()
+			box.size.z -= cut
+			if child is MeshInstance3D:
+				(child as MeshInstance3D).mesh = box
+			else:
+				(child.get_child(0) as CollisionShape3D).shape = box
+			(child as Node3D).position.z = (lo + hi) / 2
+		elif z < lo - .02 or z > hi + .02:
+			if ends and absf(absf(z) - length / 2) < .05:
+				(child as Node3D).position.z = hi if z > 0 else lo
+			else:
+				root.remove_child(child)
+				child.free()
+
+## A floor inlay's box in interior space.
+func _inlay_box(inlay: Node3D) -> AABB:
+	var mesh := inlay.find_children("*", "MeshInstance3D", true, false)[0] as MeshInstance3D
+	return _box_in(inlay.get_parent(), mesh)
+
+## Floor inlay to the interior rectangle x0..x1, z0..z1 (its height and colour kept).
+func _resize(inlay: Node3D, x0: float, x1: float, z0: float, z1: float) -> void:
+	var mesh := inlay.find_children("*", "MeshInstance3D", true, false)[0] as MeshInstance3D
+	var box := (mesh.mesh as BoxMesh).duplicate() as BoxMesh
+	box.size.x = absf(x1 - x0)
+	box.size.z = absf(z1 - z0)
+	mesh.mesh = box
+	inlay.position.x = (x0 + x1) / 2 - mesh.position.x
+	inlay.position.z = (z0 + z1) / 2 - mesh.position.z
+
+## Side wall band to run from z0 to z1 (its height and wall plane kept).
+func _resize_band(band: Node3D, z0: float, z1: float) -> void:
+	var mesh := band.find_children("*", "MeshInstance3D", true, false)[0] as MeshInstance3D
+	var box := (mesh.mesh as BoxMesh).duplicate() as BoxMesh
+	box.size.z = z1 - z0
+	mesh.mesh = box
+	band.position.z = (z0 + z1) / 2 - mesh.position.z
+
+## Hangs a sign (board, labels, rods; boards 0.65 high at y 3.65) at board centre height `y`; its
+## rods (centres above 4.3) are cut or lengthened to still reach the ceiling at y 5.545.
+func _hang(nodes: Array, y: float) -> void:
+	var dy := y - 3.65
+	for node: Node3D in nodes:
+		if node.position.y < 4.3:
+			node.position.y += dy
+			continue
+		var bottom := y + .325
+		for mesh: MeshInstance3D in node.find_children("*", "MeshInstance3D", true, false):
+			var shape := mesh.mesh.duplicate()
+			if shape is BoxMesh:
+				(shape as BoxMesh).size.y = 5.545 - bottom
+			elif shape is CylinderMesh:
+				(shape as CylinderMesh).height = 5.545 - bottom
+			mesh.mesh = shape
+			mesh.position.y = 0.0
+		node.position.y = (bottom + 5.545) / 2
+
+func _relabel(nodes: Array, english: String) -> void:
+	for label in nodes:
+		if not label is Label3D:
+			continue
+		label.text = english
+		for meta in ["sign_source", "sign_english"]:
+			if label.has_meta(meta):
+				label.set_meta(meta, english)
+		if label.has_meta("sign_spanish"):
+			label.set_meta("sign_spanish", WorldSign.SignLanguage.say(english, "es"))
+
+func _drop(nodes: Array) -> int:
+	for node: Node in nodes:
+		node.get_parent().remove_child(node)
+		node.free()
+	return nodes.size()
+
+func _words(interior: Node3D) -> Dictionary:
+	var words := {}
+	for node in interior.get_children():
+		if node.has_meta("word_key"):
+			words[str(node.get_meta("word_key"))] = true
+	return words
+
+## A root's meshes' box in interior space.
+func _bounds(interior: Node3D, root: Node3D) -> AABB:
+	var box := AABB()
+	var first := true
+	for mesh: MeshInstance3D in root.find_children("*", "MeshInstance3D", true, false):
+		if mesh.mesh == null:
+			continue
+		var part := _box_in(interior, mesh)
+		box = part if first else box.merge(part)
+		first = false
+	return box
+
+## Clay-toy products, 18 Nov 2026 (docs/guides/TOWN_DESIGN_BRIEF.md "Supermarket compact redesign"):
+## refills every product group with the redrawn models, each at least the old coconut's size.
+func clay_products(town: Node3D, _game) -> void:
+	Products.new().restock_all(town.get_node(INTERIOR))
