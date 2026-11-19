@@ -669,6 +669,16 @@ session's uncommitted batching/MSAA work was in the shared checkout);
 - 10 MB of byte-identical static copies remain: the base world (garden fountains, map facades,
   vehicles, statue; about 3.5 MB) and the units not re-baked (each about 0.1–0.7 MB; library left
   alone while another session baked it). Copies across different scene files are not shared.
+  **Re-baked 18 Nov 2026** (no steps pending; `compare_scenes.gd` 0 differences each): bank, barn,
+  chapel, clothing, electronics, hospital, playground, sports, supermarket, warehouse; 648 meshes
+  merged, scene files 5.57 → 4.65 MB (chapel 880 → 462 KB, sports 957 → 711 KB). Same probe, full
+  town, Low, 1280×800, one run each: building and other static meshes 39.8 MB in 8,628 → **36.8 MB
+  in 7,980**, their byte-identical copies 6.1 → 3.1 MB (hospital 0.6 MB is the largest left). Total
+  video memory 339.1 → 339.6 MB: plush characters measured 84.5 → 88.2 MB in the second run
+  (first-launch sharing varies between runs, see above), which hides the 3 MB saved. That bake also
+  fixed `tools/bake_unit.gd` `keep_signs()`: it now drops `sign_pixel_base`/`sign_outline_base`
+  (added at load since 17 Nov) and saves the authored pixel/outline size; `base.scn` still holds 26
+  such metas from an earlier bake, harmless (rewritten at load), gone at its next bake.
 - Clay zoo animals, 50 MB (60k–300k triangles each).
 - The whole town is in memory at once; loading only nearby buildings on phones would be the big
   step. Measured and proposed 17 Nov 2026; the user chose the label fix, then option A (built

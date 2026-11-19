@@ -213,7 +213,12 @@ func keep_signs() -> void:
         # World signs (world_sign.gd) keep their base pixel size in the scene.
         if label.has_meta("sign_pixel_size"):
             label.pixel_size = float(label.get_meta("sign_pixel_size"))
-        for meta in ["sign_english", "sign_spanish", "sign_font_size", "sign_source", "sign_kind"]:
+        # Sizes as authored, before the web's shared label sizes (sign_language.gd _set_size()).
+        elif label.has_meta("sign_pixel_base"):
+            label.pixel_size = float(label.get_meta("sign_pixel_base"))
+            label.outline_size = int(label.get_meta("sign_outline_base", label.outline_size))
+        for meta in ["sign_english", "sign_spanish", "sign_font_size", "sign_source", "sign_kind",
+                "sign_pixel_base", "sign_outline_base"]:
             label.remove_meta(meta)
         label.remove_from_group(SignLanguage.GROUP)
         count("signs")
