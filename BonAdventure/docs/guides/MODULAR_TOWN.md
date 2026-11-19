@@ -129,6 +129,9 @@ The unit scenes in `scenes/town/` are the source of truth. Two ways to change on
   Monument plaza art (tulips, fountain centrepieces, bronze statue): `scripts/buildings/monument_plaza.gd`
   (base steps, 8 Nov 2026). A MultiMesh filled in a headless bake is saved empty (the dummy renderer
   keeps no instance data): store the instances with `scripts/objects/baked_multimesh.gd`.
+  Colours: name them from `scripts/core/game_palette.gd` (18 Nov 2026, user: one palette for the
+  whole game); shop storefront recolouring by role and window awnings: `scripts/buildings/shop_row.gd`
+  (step `shop_row_style` of the five shops, [record](TOWN_DESIGN_BRIEF.md#game-palette-and-shop-row--18-november-2026)).
   Grocery products: `scripts/buildings/supermarket_products.gd` (one shared mesh per product
   kind and variant, three shared finishes; `restock()` rebuilds a goods group inside its word root;
   `fitting()` carts, baskets and checkout props; used by `supermarket.gd`, by `bakery.gd` (café

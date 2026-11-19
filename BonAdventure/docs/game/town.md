@@ -84,6 +84,7 @@ Three places to eat in one block:
 
 A pink "Cafe & Cakes" bakery and café with a cake counter and seating, and a samoyed cook.
 [Design record](../guides/TOWN_DESIGN_BRIEF.md#café-and-bakery-interior--28-october-2026)
+Since 18 Nov its storefront is in the shared [shop-row look](../guides/TOWN_DESIGN_BRIEF.md#game-palette-and-shop-row--18-november-2026) (cream walls, coral accents; [outside view](../evidence/shop-row-20261118/after-bakery.png)).
 
 ## Sports store
 
@@ -94,6 +95,7 @@ A pink "Cafe & Cakes" bakery and café with a cake counter and seating, and a sa
 Zoned departments, including winter sports, a running track and a checkout feature wall; every
 sports item is clickable. Plush salespeople.
 [Design record](../guides/TOWN_DESIGN_BRIEF.md#sports-store-interior--28-october-2026)
+Since 18 Nov its storefront is in the shared [shop-row look](../guides/TOWN_DESIGN_BRIEF.md#game-palette-and-shop-row--18-november-2026) (cream walls, meadow green, with new striped window awnings accents; [outside view](../evidence/shop-row-20261118/after-sports.png)).
 
 ## Clothing store
 
@@ -105,6 +107,7 @@ Racks, a checkout with a plush clerk, and fitting rooms where BonBon tries on ou
 doctor, chef, pilot…) and keeps one.
 [Design record](../guides/TOWN_DESIGN_BRIEF.md#clothing-store-clerk-and-refresh--1-november-2026) ·
 [fitting room](../guides/TOWN_DESIGN_BRIEF.md#fitting-room-outfit-picker--9-november-2026)
+Since 18 Nov its storefront is in the shared [shop-row look](../guides/TOWN_DESIGN_BRIEF.md#game-palette-and-shop-row--18-november-2026) (cream walls, rose pink accents; [outside view](../evidence/shop-row-20261118/after-clothing.png)).
 
 ## Electronics store
 
@@ -114,6 +117,7 @@ doctor, chef, pilot…) and keeps one.
 
 A real electronics shop: phones, audio and cameras, gaming and appliances.
 [Design record](../guides/TOWN_DESIGN_BRIEF.md#electronics-store-refresh--1-november-2026)
+Since 18 Nov its storefront is in the shared [shop-row look](../guides/TOWN_DESIGN_BRIEF.md#game-palette-and-shop-row--18-november-2026) (cream walls, sky blue accents; [outside view](../evidence/shop-row-20261118/after-electronics.png)).
 
 ## Furniture store
 
@@ -124,6 +128,7 @@ A real electronics shop: phones, audio and cameras, gaming and appliances.
 A showroom with living-room, bedroom, dining, office and lighting departments; cushions, pillows
 and blankets are clickable too.
 [Design record](../guides/TOWN_DESIGN_BRIEF.md#furniture-showroom--29-october-2026)
+Since 18 Nov its storefront is in the shared [shop-row look](../guides/TOWN_DESIGN_BRIEF.md#game-palette-and-shop-row--18-november-2026) (cream walls, teal accents; [outside view](../evidence/shop-row-20261118/after-furniture.png)).
 
 ## Bank
 

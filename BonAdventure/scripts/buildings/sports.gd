@@ -9,7 +9,7 @@ extends RefCounted
 ## with its own pick area; repeated items reuse the vocabulary prefabs (scenes/props/vocabulary,
 ## models in sports_props.gd); shelving and table blockers are on FIGURE_LAYER (they stop the
 ## player but not the pointer), so goods on and in fixtures can all be clicked.
-const STEPS := ["interior_refit", "second_pass", "coplanar_gaps", "coplanar_gaps_2", "glass_windows"]
+const STEPS := ["interior_refit", "second_pass", "coplanar_gaps", "coplanar_gaps_2", "glass_windows", "shop_row_style"]
 
 const Art := preload("res://scripts/buildings/supermarket_products.gd")
 const Props := preload("res://scripts/buildings/sports_props.gd")
@@ -880,3 +880,12 @@ func coplanar_gaps_2(town: Node3D, _game) -> void:
 ## Window glass as the shared window component (12 Nov 2026, docs/guides/WINDOWS.md).
 func glass_windows(town: Node3D, _game) -> void:
 	preload("res://scripts/buildings/glass_windows.gd").migrate(town, "sports")
+
+
+## Game palette and shop row (user, 18 Nov 2026; docs/guides/TOWN_DESIGN_BRIEF.md "Game palette and
+## shop row"): the storefront recoloured by role from scripts/core/game_palette.gd, accent "meadow".
+## Also striped awnings over the two shop windows, like the other storefronts.
+func shop_row_style(town: Node3D, game) -> void:
+	var ShopRow := preload("res://scripts/buildings/shop_row.gd")
+	print("shop_row sports: ", ShopRow.restyle(town, game, "sports"))
+	print("shop_row sports awning pieces: ", ShopRow.add_awnings(town, game, "sports"))

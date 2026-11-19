@@ -4,7 +4,7 @@ extends RefCounted
 ## Bake:  godot --headless --path . --script res://tools/bake_unit.gd -- bakery
 ## Never rename or remove a baked step (add a new one that undoes it).
 ## Record: docs/guides/TOWN_DESIGN_BRIEF.md "Supermarket product art — 8 November 2026" (reuse).
-const STEPS := ["shop_products", "coplanar_gaps", "coplanar_gaps_2", "glass_windows"]
+const STEPS := ["shop_products", "coplanar_gaps", "coplanar_gaps_2", "glass_windows", "shop_row_style"]
 const Products = preload("res://scripts/buildings/supermarket_products.gd")
 const INTERIOR := "Buildings/BakeryCafe/Interior"
 ## Plain bottles in the drinks fridge by colour, and the three drink words, as product models.
@@ -62,3 +62,10 @@ func coplanar_gaps_2(town: Node3D, _game) -> void:
 ## Window glass as the shared window component (12 Nov 2026, docs/guides/WINDOWS.md).
 func glass_windows(town: Node3D, _game) -> void:
 	preload("res://scripts/buildings/glass_windows.gd").migrate(town, "bakery")
+
+
+## Game palette and shop row (user, 18 Nov 2026; docs/guides/TOWN_DESIGN_BRIEF.md "Game palette and
+## shop row"): the storefront recoloured by role from scripts/core/game_palette.gd, accent "coral".
+func shop_row_style(town: Node3D, game) -> void:
+	var ShopRow := preload("res://scripts/buildings/shop_row.gd")
+	print("shop_row bakery: ", ShopRow.restyle(town, game, "bakery"))

@@ -7,7 +7,7 @@ extends RefCounted
 ## islands and the salesperson.
 ## Bake:  godot --headless --path . --script res://tools/bake_unit.gd -- furniture
 ## Never rename or remove a baked step (add a new one that undoes it).
-const STEPS := ["showroom_tidy", "coplanar_gaps", "coplanar_gaps_2"]
+const STEPS := ["showroom_tidy", "coplanar_gaps", "coplanar_gaps_2", "shop_row_style"]
 
 const Y0 := .03
 const FIGURE_LAYER: int = preload("res://scripts/characters/house_characters.gd").FIGURE_LAYER
@@ -135,3 +135,10 @@ func coplanar_gaps(town: Node3D, _game) -> void:
 ## text (10 Nov 2026, scripts/buildings/coplanar_gaps.gd).
 func coplanar_gaps_2(town: Node3D, _game) -> void:
 	preload("res://scripts/buildings/coplanar_gaps.gd").separate(town, "furniture", 2)
+
+
+## Game palette and shop row (user, 18 Nov 2026; docs/guides/TOWN_DESIGN_BRIEF.md "Game palette and
+## shop row"): the storefront recoloured by role from scripts/core/game_palette.gd, accent "teal".
+func shop_row_style(town: Node3D, game) -> void:
+	var ShopRow := preload("res://scripts/buildings/shop_row.gd")
+	print("shop_row furniture: ", ShopRow.restyle(town, game, "furniture"))

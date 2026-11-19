@@ -24,10 +24,10 @@ The following categories are prompts for inspection, not an asset inventory:
 | Shopfront fascia and signs | Name panel, smaller hours/direction signs | Legibility, localization, interaction ownership | Lettering: [world sign component](COMPONENTS.md#world-signs) (16 Nov 2026; supermarket migrated, other buildings not yet). Panels not audited |
 | Roof-edge details | Eaves, fascia, parapet, coping | Camera visibility, landing/helipad behavior | Not audited |
 | Plinths and wall bands | Stone bands, trim, pilasters | Clean corners and door/ramp cuts | Not audited |
-| Awnings and canopies | Fabric, rigid, supported posts | Physical support and approach clearance | Not audited |
+| Awnings and canopies | Fabric, rigid, supported posts | Physical support and approach clearance | Striped shop awning: `shop_row.gd` `add_awnings()` (clothing-store pattern, 18 Nov 2026; sports store) |
 | Exterior fixtures | Lamps, planters, benches, bins | Player collision, decorative batching | Not audited |
 | Shop interior display groups | Shelf/counter/display backing | Word-root ownership and separate picking | Not audited |
-| Shared material resources | Plaster, wood, stone, glass, metals | Shared instance mutation, batching, renderer compatibility | Not audited |
+| Shared material resources | Plaster, wood, stone, glass, metals | Shared instance mutation, batching, renderer compatibility | Colours: [game palette](TOWN_DESIGN_BRIEF.md#game-palette-and-shop-row--18-november-2026) `scripts/core/game_palette.gd` (18 Nov 2026; shop row uses it, other buildings not yet). Materials shared by the bake palette ([MODULAR_TOWN](MODULAR_TOWN.md#material-palette)) |
 | Landscape/approach connections | Paving paths, planting boundaries | Road and pedestrian continuity, global ownership | Not audited |
 
 For each relevant family, inspect the project's actual scenes, helpers, runtime builders, and rendering behavior before proposing a new prefab or code helper.

@@ -24,6 +24,7 @@ dated history of rules and implementation.
 | School | **24 × 18 town units, single story**; general/science teaching areas with **one rear-half center dividing wall and an open front half**. | Shell and elementary-school exterior implemented: 4.6 clear height; single 9-unit rear divider implemented. Previous classroom-front/hall partitions and interior headers removed. Existing teaching furniture/content retained, with four wall displays remounted. Complete future furnishing program remains deferred. |
 | Supermarket | **26 × 26 town units**; one open floor with nine departments and wide aisles. | Shell and supermarket exterior implemented; 5.71 clear height. Exterior color refinement implemented on 26 October: teal fascia, ochre entry and terracotta plinth; **superseded 1 November 2026 by navy fascia, gold entry and a cart icon** ([storefront redesign](#storefront-exterior-redesign--1-november-2026)). Existing learning roots retained in the nine-department fit-out implemented on 26 October. Front axis and delivery access preserved; see the interior review below. **2 November 2026:** refitted inside the same shell: frozen section removed and its words retired, fruit in its place, checkout lanes beside the door, every product a clickable word, a samoyed cashier and a beagle clerk ([record](#supermarket-refit-fruit-checkout-by-the-door-and-clerks--2-november-2026)). **8 November 2026:** every product redrawn in one shared style (recognisable silhouettes, front-of-pack pictures, three shared finishes), lighter fridge backs, shelf price tags and department pictograms; same words and pick areas ([record](#supermarket-product-art--8-november-2026)). **17 November 2026:** one word, one section: PANTRY became SNACKS, the produce stand holds only big fruit, the fridges only dairy and salad, the drinks cooler and home goods traded places and coffee moved to the cooler ([record](#supermarket-sections--17-november-2026)). |
 | Furniture store | **24 × 26 town units** (was 17 × 29), same front wall line and entrance, flat roof with parapet (green until 1 November 2026, now slate with a timber band and corner cladding), glass shopfront and sign plaque; showroom with living, bedroom, dining, office and lighting departments (user's isometric design, approved 29 October 2026). | Implemented 29 October 2026 inside zone `furniture` (x 113–139, z 209–259) with no zoning change; eight words added. See [record](#furniture-showroom--29-october-2026). **1 November 2026:** plush staff added ([record](#shop-staff-bank-sports-store-furniture-showroom--1-november-2026)). **9 November 2026:** furniture models replaced with product-art versions, prefabs turned to face the room, every item clickable ([interiors polish](#interiors-polish--9-november-2026)). |
+| Game palette and shop row | **18 November 2026 (user):** one colour palette for the whole game (2D and 3D), drawn from the app icon and the dialogue box: `scripts/core/game_palette.gd`. The five shops (bakery, clothing, electronics, sports, furniture) share one storefront look: cream walls, stone base bands, cream trim, iron lamps, wooden flower boxes, and **one accent family each** (coral, rose, sky, meadow, teal). Supersedes the shops' earlier colours (including the 25 Oct café colours and the furniture store's slate parapet). | Built 18 Nov 2026 (recolour by role, sports awnings added); other buildings not yet on the palette. [Record](#game-palette-and-shop-row--18-november-2026). |
 | Other building dimensions | Retain existing dimensions. | Furniture shortening (the old optional 17 × 24 idea, superseded by the approved 24 × 26 above), airport height reduction and hospital-wing removal are **not approved**. |
 | Hospital program | Three stories, approximately four rooms per floor, using the floor organization in the building-program table below. Preserve helicopter/helipad, bed design and complicated working features. | Interior remodel implemented 26 October: requested first-floor quadrants, compact left stairs and working right elevator. Rear learning wing, bed design and heli systems retained. 31 October: pharmacy enlarged on floor 1; the elevator moved to a side tower with a roof stop; the stairs reach the roof. See the current hospital guide. **1 November 2026:** three more plush doctors (pig, cat, beagle) on the three floors ([record](#hospital-ward-doctors--1-november-2026)). |
 | Food venues | BakeryCafe remains combined bakery/café. **Fine dining** (merged old Pizza + Burger shells) and **Pizza and Burger** (the former Burger/pizza place, now L-shaped in the former police lot); restaurant Cafe shell → **Mexican restaurant (TAQUERÍA)**, replacing the earlier Chinese seafood plan (user decisions, 28 October 2026). | Taquería ([record](#mexican-restaurant-taquería--28-october-2026)), fine dining and Pizza and Burger ([record](#restaurants-and-police-relocation--28-october-2026)) all built 28 October 2026. Node names (`Restaurants/Pizza`, `/Burger`, `/Cafe`) remain unchanged. **1 November 2026:** fine dining became the Italian **Alta Cocina** with a rear kitchen wing and front terrace, and every cook-model figure became a plush character ([record](#alta-cocina-italian-remodel-and-plush-staff--1-november-2026)). Same day, revised from the user's isometric reference: clear entrance, reference booths, quatrefoil floor, 6.5 ceiling, hipped roof, motorcycle in a car stall ([revision](#alta-cocina-revision-entrance-booths-floor-ceiling-roof--1-november-2026)). **9 November 2026:** Pizza and Burger dining room refurnished (tables, booths, drinks fridge), every food and seat clickable ([interiors polish](#interiors-polish--9-november-2026)). |
@@ -3698,3 +3699,52 @@ cream lettering lacks 4.5 contrast on its colour. Word keys, the header pick are
 new plate) and Library Helper are unchanged. Owner: step `readable_signs` in
 `scripts/buildings/library.gd`. Views at 1280 × 720:
 `docs/evidence/library-signs-20261117/` (`capture.gd`); not checked on a real phone.
+
+## Game palette and shop row — 18 November 2026
+
+**User request:** a colour palette shared by the whole game, taken from the app icon or the dialogue
+box, then the shop row restyled with it (following the 18 Nov building review: about 14 near-identical
+off-whites, 2,212 material colours that merge into 659 within ±0.04, and accents of uneven
+strength, such as a grey furniture store and near-identical school maroon and clothing wine).
+
+**Palette** (`scripts/core/game_palette.gd`, names only, never new hex values):
+
+- From the icon: `PIG` f9c6cf, `BLUSH` f99aa2, `MINT` b2ecdf, `OUTLINE` 6b2a10.
+- From the UI (same values as `scripts/ui/bon_style.gd`): `INK` 16536a, `INK_SOFT`, `BROWN`, `CREAM`
+  fdf4e3, `CREAM_DEEP`, `RIM`, `SKY`, `GREEN`, `BLUE`, `CORAL` (with their light tops), `SUN`, `LEAF`,
+  `TERM`.
+- Building surfaces: `WALL_CREAM` f2e6cf (a little deeper than the UI cream so sunlit walls do not
+  glare), `TRIM` fbf5ea, `STONE` c9b79c, `IRON` 33454d (dark teal-grey, not black), `WOOD` b97f4a,
+  `WOOD_DARK` 7a4a22, `ROOF` 5b6670.
+- Accent families (light / main / deep, matched in strength): coral ffc2b5 / e0614f / b8463a
+  (UI coral), rose f9c6cf / e07a96 / b44a6a (BonBon's pink), sky a9d8f5 / 3d93d6 / 2a6aa8 (UI blue),
+  meadow bfe6a3 / 52b046 / 2f8a3a (UI green), teal b2ecdf / 3a8f9e / 16536a (icon mint, UI ink).
+
+**Rule for buildings:** walls `WALL_CREAM`; base bands, door steps and planters `STONE`; sills, door
+jambs, sign boards, copings and the light awning stripes `TRIM`; lamps `IRON`; flower boxes and
+cladding `WOOD`. Each building takes one accent family: *main* for awnings, canopies and gables,
+*deep* for window frames, mullions, pillars, sign bands, parapets, roof edges and fascias, *light*
+for emblems on a deep ground. `game.material_for(colour)` as usual (the bake shares the materials).
+
+**Shop row (built):** bakery coral, clothing rose, electronics sky, sports meadow, furniture teal.
+Owner: `scripts/buildings/shop_row.gd` (`restyle()`: exterior roles by piece name, unnamed copies
+named after their twin with the same mesh and colour, gables and logos by their old colour;
+`add_awnings()`), step `shop_row_style` in the five own scripts. Geometry, doors, windows, signs'
+text, interiors' own finishes, word keys and positions are unchanged, except:
+
+- the sports store's two shop windows got striped awnings like the clothing store's (0.4 stripes,
+  16° tilt, valance; meadow / trim), 82 nodes, no collision;
+- the shell walls are single boxes, so their inner faces changed too (cream inside the clothing and
+  electronics stores instead of pale pink and pale blue); the clothing store, which has no ceiling of
+  its own, shows its flat roof's underside, now deep rose instead of wine;
+- one-sided pieces (the bakery and clothing gables) keep their culling setting.
+
+Recoloured pieces: bakery 104, clothing 94, electronics 93, sports 54, furniture 72; 19 new palette
+files. `compare_scenes.gd` against the units before the step: only material changes (one per
+recoloured piece) and the step, plus the sports awnings. Views (noon, front and three-quarter, and
+one inside view each): `docs/evidence/shop-row-20261118/` (`capture.gd`, `before-*.png`,
+`after-*.png`). Not checked: night views, a phone.
+
+**Not done yet:** the other buildings; `bon_style.gd` still holds its own copies of the UI colours
+(it belongs to the UI restyle in progress) and should read them from `game_palette.gd` once that
+work is committed.

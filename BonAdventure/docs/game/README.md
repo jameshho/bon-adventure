@@ -74,11 +74,11 @@ and wrong answers per word in the journal.
 | [Supermarket](town.md#supermarket) | Nine departments, every product a word, cashier and clerk | 18 Nov (pickup truck moved to the warehouse lot, white car one bay clear of the entrance) |
 | [Library](town.md#library) | Six category shelves (3 books each), NEW BOOKS display at the rear wall, return cart, cosy reading corner | 17 Nov (new categories, desks removed, interior refresh, readable signs) |
 | [Restaurants](town.md#restaurants) | Alta Cocina, Pizza and Burger, Taquería | 12 Nov (Alta Cocina glass) |
-| [Bakery / Café](town.md#bakery--café) | Cake counter and seating | 28 Oct |
-| [Sports store](town.md#sports-store) | Departments incl. winter sports, plush staff | 9 Nov |
-| [Clothing store](town.md#clothing-store) | Racks, checkout, fitting rooms with outfits | 9 Nov (fitting room) |
-| [Electronics store](town.md#electronics-store) | Phones, gaming, appliances | 1 Nov |
-| [Furniture store](town.md#furniture-store) | Living, bedroom, dining, office and lighting showrooms | 9 Nov |
+| [Bakery / Café](town.md#bakery--café) | Cake counter and seating | 18 Nov (shop-row storefront: coral) |
+| [Sports store](town.md#sports-store) | Departments incl. winter sports, plush staff | 18 Nov (shop-row storefront: meadow green) |
+| [Clothing store](town.md#clothing-store) | Racks, checkout, fitting rooms with outfits | 18 Nov (shop-row storefront: rose pink) |
+| [Electronics store](town.md#electronics-store) | Phones, gaming, appliances | 18 Nov (shop-row storefront: sky blue) |
+| [Furniture store](town.md#furniture-store) | Living, bedroom, dining, office and lighting showrooms | 18 Nov (shop-row storefront: teal) |
 | [Bank](town.md#bank) | Tellers, vault, office, ATMs, bear banker | 1 Nov |
 | [Police station](town.md#police-station) | Lobby, lineup room, evidence room, cell | 8 Nov |
 | [Airport and control tower](town.md#airport-and-control-tower) | Terminal, restrooms, walkable tower with deck, airfield | 12 Nov (tower deck) |
