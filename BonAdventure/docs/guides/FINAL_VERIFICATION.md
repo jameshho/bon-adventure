@@ -7700,3 +7700,22 @@ close-up cuts, the market act, the basket, base step `tutorial_lot_clear` (`bake
 | PASS | `shop_basket`, `app_flow`, `day_night`, `interaction`, `vehicle_boarding`, `runtime_resources`, `language` (after adding the missing pinyin for 豚, from the capybara commit) |
 
 Not run: the full suite. Not checked on a real phone.
+
+## Bank interior refresh — 18 November 2026
+
+[Record](TOWN_DESIGN_BRIEF.md#bank-interior-refresh--18-november-2026). Bake: `tools/bake_unit.gd -- bank`
+(5 steps; 8 door parts stripped; 6 palette material files written), then once more for the sixth step `chair_backs`. Checks, run once each on the baked unit:
+
+- `docs/evidence/bank-refresh-20261118/verify.gd` (on the first bake; `chair_backs` only recolours
+  four meshes and was not re-checked; headless, `VT_FOCUS=all`, isolated `HOME`):
+  144 checks, **1 failure: "mascot pig behind the reception desk"**: `Animals/PigBank` does not
+  exist in the town (it is also absent from the before views), so the 28 Oct mascot check no longer
+  applies; not caused by this change. Everything else passed, including doors registered, closed
+  doors blocking and opened doors passable, rooms behind reachable, no "•" door labels, and the
+  teller line, window-2 monitor and BearBanker unmoved.
+  (A first run had two errors in the new check itself, door leaves measured in their own frame
+  and an un-awaited coroutine; fixed and run once more.)
+- The 28 Oct `bank-interior-20261028/verify.gd` is superseded by the new check (it looks for the
+  word on the door roots, which are now the components). It is not in `tools/run_checks.py`.
+- Views: `capture.gd` with `VT_FOCUS=bank` (only the bank loaded), noon, eye level: before and after
+  sheets in the folder. Not checked: night, a phone, the full suite.

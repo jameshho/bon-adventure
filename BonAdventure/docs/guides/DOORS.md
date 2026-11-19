@@ -7,8 +7,11 @@ door** (same design everywhere, colours may differ), three separate reusable com
 (non-opening) doors**.
 
 **Status: paused part-way (13 Nov 2026).** The three components exist and render correctly on
-their own. **No building has been migrated yet**: every door in town is still the old
-hand-built one, and no unit scene was baked. Nothing is committed.
+their own. **First building migrated 18 Nov 2026: the bank** (step `shared_doors` in
+`scripts/buildings/bank.gd`, [record](TOWN_DESIGN_BRIEF.md#bank-interior-refresh--18-november-2026)):
+office = `sliding_door.tscn`, vault = `door.tscn`, both baked, opened and walked through in
+`docs/evidence/bank-refresh-20261118/verify.gd`. This was the first bake that stripped door parts.
+Every other door in town is still the old hand-built one.
 
 ## Files
 
@@ -56,7 +59,7 @@ World-unit measurements of each door are in `docs/evidence/doors-20261113/measur
 | Door(s) | Old build | Gap / issue | Planned component |
 | --- | --- | --- | --- |
 | Home, 11 (Front, Terrace, Hall, Study, 3 bedrooms, 3 bathrooms, Garage access) | frame mount `<X> door frame` with leaf `<X> door`; mount at scale 1 again since home step `door_heights` (13 Nov 2026; the house raise had scaled it ×1.8 in Y, when these measurements were taken: heights in `measure.json` are now 1.8× too big for the home) | opening 2.236 wide (world), leaf 2.06: about 0.09 each side; 0.03 at the head | `door.tscn`, root keeps the mount name, `leaf_name` = old leaf name (keeps paths); oak `bba381`, frame `f0e7d7`, brass `b79258` |
-| Bank Manager office, Vault entrance | flat sliding slab | slab vs walls unclear (right side ray hit 0.75 past the leaf) — check in `before.png` | `sliding_door.tscn` |
+| Bank Manager office, Vault entrance | flat sliding slab | slabs covered only part of each opening | **done 18 Nov 2026**: office `sliding_door.tscn`, vault `door.tscn` (steel, hinged), new wall pieces close the openings |
 | Police Interview room, Holding cell | flat sliding slab | as bank | `sliding_door.tscn` |
 | Police Lineup room door | pivot + leaf, built by `police.gd` | 0.02 each side | `door.tscn` |
 | Airport restrooms (2) | pivot + leaf + icon, `airport.gd` `_restroom_door` | 0.02 each side | `door.tscn`, `sign` WOMEN/MEN; remove `Restroom door jamb/head` parts (keep the wall lintel if structural) |

@@ -79,7 +79,7 @@ and wrong answers per word in the journal.
 | [Clothing store](town.md#clothing-store) | Racks, checkout, fitting rooms with outfits | 18 Nov (shop-row storefront: rose pink) |
 | [Electronics store](town.md#electronics-store) | Phones, gaming, appliances | 18 Nov (shop-row storefront: sky blue) |
 | [Furniture store](town.md#furniture-store) | Living, bedroom, dining, office and lighting showrooms | 18 Nov (shop-row storefront: teal) |
-| [Bank](town.md#bank) | Tellers, vault, office, ATMs, bear banker | 1 Nov |
+| [Bank](town.md#bank) | Tellers, vault, office, ATMs, bear banker | 18 Nov (interior refresh: palette, shared doors, ATMs, round vault door) |
 | [Police station](town.md#police-station) | Lobby, lineup room, evidence room, cell | 8 Nov |
 | [Airport and control tower](town.md#airport-and-control-tower) | Terminal, restrooms, walkable tower with deck, airfield | 12 Nov (tower deck) |
 | [School](town.md#school) | Grammar classroom and teaching areas | 14 Nov (bigger board) |
