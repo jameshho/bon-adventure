@@ -7788,6 +7788,7 @@ After merging `main` (f7b8c24, electronics makeover and docs cleanup): runner `b
 `runtime_resources` PASS, `language` the same NEW 便 逛; `docs/game/words.md` regenerated to resolve
 its conflict (`vocabulary_report.gd -- --write`, `VT_FOCUS=all`: 5451 checks, 0 failures).
 
-Not run: the full suite. Not done: `tools/build_cjk_font.py` (it downloads the full Noto Sans TC
-from google/fonts; waiting for the user's go-ahead), so until it runs, 23 new Chinese characters
-of the teller lines are missing from the web build's font subset (`--check` lists them).
+Then (user, 18 Nov): the name was approved, and `tools/build_cjk_font.py` rebuilt
+`fonts/NotoSansTC-SemiBold-subset.ttf` (1391 characters, 439 KB); `--check`: 1396 needed, 0 missing.
+
+Not run: the full suite.

@@ -337,7 +337,7 @@ few minutes later the books are borrowed and a new cart arrives. Tracked: each b
 
 ## Next, Please!
 
-*下一位！ · ¡El siguiente!* (proposed name, 18 Nov; awaiting the user's choice) — **Bear banker,
+*下一位！ · ¡El siguiente!* (name approved by the user, 18 Nov) — **Bear banker,
 bank reception; played at teller window 2**
 
 <img src="../evidence/bank-teller-20261118/customer-asks.png" width="480" alt="Next, Please! customer at the teller window">
