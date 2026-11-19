@@ -18,65 +18,95 @@ moved with `git mv`, and every reference was rewritten, so git history follows e
 | --- | --- | --- |
 | [`game/`](game/README.md) | The game guide: what is built, minigame learning cards (purpose, progression), the generated word list | Update when a change is visible to players; `words.md` is generated, never edited |
 | [`guides/`](guides/) | Current reference documents listed in the table below, with their own folders (performance, public garden, helicopter, signs, licenses, vocabulary report) and [`design-references/`](guides/design-references/) for images the user supplied as designs | Update the existing guide; add a new one only for a distinct ongoing topic, and link it below |
-| [`evidence/`](evidence/) | One folder per dated piece of work (`<topic>-<yyyymmdd>/`): its checks (`verify.gd`), capture scripts and screenshots. [`town-checks/`](evidence/town-checks/) holds the October town-wide checks and captures | Put each new check, capture script and screenshot set in a new `evidence/<topic>-<yyyymmdd>/` folder; never write files to the top of `docs/` |
+| [`evidence/`](evidence/) | One folder per dated piece of work (`<topic>-<yyyymmdd>/`): its checks (`verify.gd`), capture scripts and screenshots. [`town-checks/`](evidence/town-checks/) holds the October town-wide checks and captures. The 26 folders without a date (`part2`, `pig-options`, `town_upgrade`, …) are mostly from before 27 Oct 2026, where git history starts, so their dates are unknown; check scripts write to them by path, so they keep their names | Put each new check, capture script and screenshot set in a new `evidence/<topic>-<yyyymmdd>/` folder; never write files to the top of `docs/` |
 | [`archive/`](archive/) | Superseded one-off reports kept as history | Move a guide here when a newer guide replaces it, and update links |
+
+After moving, renaming or deleting a doc or screenshot, check the links (no Godot needed; exits 1
+if any relative link or `#anchor` is broken): `python3 tools/check_doc_links.py` (a path such as
+`docs/game` limits it). A link to a capture that was never kept reads "(capture not kept)".
 
 ## Current guides: where to make decisions
 
-| Task | Authoritative document | How to use it |
+One line per task (tightened 18 Nov 2026; the README links here for everything past its entry
+points). The linked guide holds the details, ownership and checks; the dated design records in
+the [master blueprint](guides/TOWN_DESIGN_BRIEF.md#start-here-current-approved-design) are history
+once a newer record or guide covers the same thing. Add a line here, not a paragraph.
+
+### Rules, structure and shared systems
+
+| Task | Read | Key files |
 | --- | --- | --- |
-| Code ownership, world coordinates, assets or vocabulary | [Architecture and editing rules](guides/ARCHITECTURE_REVIEW_PART1.md#current-editing-rules-parts-23) | Follow the current editing rules; the opening assessment is dated history. |
-| World structure: base world, building units, focus mode, changing a building | [Modular town guide](guides/MODULAR_TOWN.md), [changing a building](guides/MODULAR_TOWN.md#changing-a-building) | Since 6 Nov 2026 the town loads from `scenes/town/` (one scene per building); change a building in its unit scene or with `scripts/buildings/<unit>.gd` + `tools/bake_unit.gd`. The old startup passes, full bake and old saved worlds were deleted that day (git history). |
-| **Start here for all town/building design** | [**Master design blueprint**](guides/TOWN_DESIGN_BRIEF.md#start-here-current-approved-design) | Approved decision summary, detailed programs, boundaries and next-agent workflow. Other design documents support this entry point. |
-| Building dimensions before exterior work | [Measured capacity review](guides/BUILDING_DIMENSION_REVIEW.md) | Implemented school/market dimensions, preservation and verification; historical capacity budgets and unapproved options. |
-| Building design and town map | [Design blueprint](guides/BUILDING_DESIGN_BLUEPRINT.md) | Use the design goals and priorities; confirm implementation in source. Current coordinates belong to the architecture guide. |
-| Reusing building parts | [Component catalog](guides/BUILDING_COMPONENT_CATALOG.md) | Find inspected components and ownership before creating geometry. |
-| Planning a building change | [Building brief template](guides/BUILDING_SPEC_TEMPLATE.md) | Fill out only the relevant brief; it is not an implementation report. |
-| School floor plan | [Single rear-half divider](guides/TOWN_DESIGN_BRIEF.md#school-single-divider-layout--26-october-2026) | Current partition layout, ownership and checks. |
-| Hospital interior | [Current hospital guide](guides/HOSPITAL_THREE_FLOORS.md) | Floor programs, colours and floor signs, generator, elevator controls/source license, wide stairs, department displays and cutaway checks. |
-| Supermarket interior | [Implemented nine-department layout](guides/TOWN_DESIGN_BRIEF.md#supermarket-interior-review--26-october-2026) | Runtime ownership, fixtures, circulation, verification and scope. |
-| Home interior | [Reference home](guides/REFERENCE_HOME.md) | Use the original design reference and current runtime ownership. |
-| Animal movement and size | [Animal system](guides/ANIMAL_SYSTEM.md) | Measured BonBon/snake reference, all species scales, wandering profiles, boundaries and checks. |
-| Player model and movement | [BonBon](guides/BONBON_VALIDATION.md) | Find implementation and focused checks; results describe the recorded run. |
-| Road vehicles | [Road physics and boarding](guides/ZOO_VEHICLE_IMPLEMENTATION.md) | Use current controls, physics ownership and checks. |
-| Helicopter | [Rotor physics](guides/helicopter_inertia/README.md) | Use the replacement controller guide; older motion tests are historical. |
-| Airplane | [Turboprop](guides/aircraft.md) | Use controls, boarding, physics and attribution. |
-| Taquería, home pool, raised sidewalks | [Design brief records](guides/TOWN_DESIGN_BRIEF.md#mexican-restaurant-taquería--28-october-2026), check `docs/evidence/town-polish-20261028/verify.gd` | Mexican restaurant program and new words; sunken pool and curbed sidewalk ownership. |
-| All minigames | [Minigame index](guides/MINIGAMES.md), [Building a minigame](guides/MINIGAMES.md#building-a-minigame) | One table of every minigame: NPC, place, learning goals, words and shared systems; links to each design record. How to build one on the shared NPC host and in-world zone. |
-| Warehouse and Warehouse Worker minigame | [Warehouse guide](guides/WAREHOUSE.md), checks `docs/evidence/warehouse-20261114/verify.gd`, `verify_game.gd` (14 Nov 2026 redesign) | Building between the moved school and the airport, its words, posters and hall equipment, the Warehouse Worker game (frame, physics goods, trolleys, task generator and checks); phases and status. |
-| Grammar Classroom minigame | [Grammar Classroom guide](guides/GRAMMAR_CLASS.md), check `docs/evidence/grammar-class-20261106/verify.gd`; deferred shared component [future_minigame_zone.md](guides/future_minigame_zone.md) | Lana's class in the remodelled general classroom: question banks per language, desks as answers, board, countdown, feedback, leave question. |
-| Radar Patrol | [Radar Patrol guide](guides/RADAR_PATROL.md), check `docs/evidence/radar-patrol-20261109/rules.gd` | Arcade pastime on the control-tower radars: rules, scoring, files, restyled radars. |
-| **Any 2D UI: screens, cards, dialogue box, buttons** | [UI art style](guides/UI_STYLE.md), mockups in [`design-references/ui/`](guides/design-references/ui/), views `docs/evidence/ui-style-20261118/capture.gd` | The one cream-and-meadow look (user, 18 Nov 2026): palette, Fredoka, parts and rules; build with `scripts/ui/bon_style.gd`. Phase 1 (start screens, loading, dialogue box) approved 18 Nov 2026; phase 2 (Settings, journal, HUD, minigame panels) follows. |
-| **Anything interactive or any character behaviour** | [Reusable components](guides/COMPONENTS.md), check `docs/evidence/plush-rig-20261113/verify.gd` | One index of the shared components (interaction, doors and drawers, holding, sitting, eyes / blinking / gestures) with examples, the plush rig and the ownership table. Read before writing a new one. |
-| Holding and inspecting items | [Holding and inspecting guide](guides/HAND_HOLD.md), check `docs/evidence/hand-hold-20261113/verify.gd` | Left-hand holder for the player with per-object hold profiles; the Inspect button and the reusable close-up inspector. |
-| Doors (in progress) | [Doors guide](guides/DOORS.md), views `docs/evidence/doors-20261113/` | Shared door, double door and sliding door components (13 Nov 2026); building migration paused, steps listed. |
-| Windows and glass | [Windows guide](guides/WINDOWS.md), views `docs/evidence/windows-20261112/capture.gd` | One shared window component and glass material for every building; which panes are see-through; the opaque fallback mode. |
-| Electrical boxes | [Electrical box guide](guides/ELECTRICAL_BOX.md), check `docs/evidence/electrical-box-20261109/verify.gd` | Reusable wall box with a 3D wire-repair puzzle: placing more boxes, exports, files, verification. |
-| Hong Kong mahjong | [Mahjong guide](guides/MAHJONG.md), checks `docs/evidence/mahjong-20261109/verify.gd` (rules), `play.gd` (table) | Mei's table in front of the home: user decisions, fan table, flow, ownership, NPC strength, open issues. |
-| Cashier money minigame | [Design record](guides/TOWN_DESIGN_BRIEF.md#cashier-money-minigame--4-november-2026), checks `docs/evidence/cashier-money-20261104/verify.gd` and `verify_town.gd` | Samoyed cashier asks for an amount in Spanish; the player clicks bills and coins into a tray; reusable for the bank. |
-| Customer order minigame | [Design record](guides/TOWN_DESIGN_BRIEF.md#customer-order-minigame--3-november-2026), checks `docs/evidence/customer-order-20261103/verify.gd` and `verify_town.gd` | Supermarket clerk asks the player to fetch a random list; order and cart rows show product pictures (8 Nov 2026); replaces missions. |
-| Furniture showroom | [Design record](guides/TOWN_DESIGN_BRIEF.md#furniture-showroom--29-october-2026), check `docs/evidence/furniture-interior-20261029/verify.gd` | Enlarged to 24 × 26 with approval; flat green-trim exterior; eight new words; zone `furniture` unchanged. |
-| Coast, deserted island, boulders, crabs | [Design record](guides/TOWN_DESIGN_BRIEF.md#coast-deserted-island-boulders-and-crabs--29-october-2026), check `docs/evidence/coast-20261029/verify.gd` | East-coast island, wavier sand edge with new sand shader, 14 boulders, 10 crabs; word *crab* added with approval. |
-| Sports store interior | [Design record](guides/TOWN_DESIGN_BRIEF.md#sports-store-interior--28-october-2026), check `docs/evidence/sports-interior-20261028/verify.gd` | Fitted into the unchanged 14 × 24 shell; no zoning change. |
-| Clothing store interior | [Design record](guides/TOWN_DESIGN_BRIEF.md#clothing-store-interior--28-october-2026), check `docs/evidence/clothing-interior-20261028/verify.gd` | Fitted into the unchanged shell; no zoning change. |
-| Electronics store interior | [Design record](guides/TOWN_DESIGN_BRIEF.md#electronics-store-refresh--1-november-2026), check `docs/evidence/electronics-interior-20261101/verify.gd` | Refitted 1 Nov 2026 as a real electronics shop in the unchanged shell; no new words. |
-| Bank interior | [Design record](guides/TOWN_DESIGN_BRIEF.md#bank-interior--28-october-2026), check `docs/evidence/bank-interior-20261028/verify.gd` | Unchanged 12 × 15 shell; vault, office, doors and inside ATMs kept. |
-| Shop staff (bank, sports, furniture) | [Design record](guides/TOWN_DESIGN_BRIEF.md#shop-staff-bank-sports-store-furniture-showroom--1-november-2026), check `docs/evidence/shop-staff-20261101/verify.gd` | Costumed bear banker and golden/sheep salespeople; apron variants in `plush_costumes.json`; words *banker*, *salesperson*. |
-| Hospital ward doctors | [Design record](guides/TOWN_DESIGN_BRIEF.md#hospital-ward-doctors--1-november-2026), check `docs/evidence/hospital-doctors-20261101/verify.gd` | Pig (BonBon), cat and beagle in the existing `doctor` outfit on floors 1–3; word *doctor*; no new keys. |
-| Police officer at the station | [Design record](guides/TOWN_DESIGN_BRIEF.md#police-officer-crocodile-plush-at-the-station-entrance--1-november-2026), check `docs/evidence/police-officer-20261101/verify.gd` | Blocky `police_officer.tscn` retired at runtime; crocodile plush in the `police` outfit beside the entrance; word *police officer*; no new keys. |
-| Farm barn | [Design record](guides/TOWN_DESIGN_BRIEF.md#farm-barn-gambrel-roof-hayloft-and-supplies-interior--1-november-2026), check `docs/evidence/barn-20261101/verify.gd`, views `capture.gd` | Gambrel roof (ridge 10.5), hayloft with climbable ladder, tools / hay / supplies; nine new words. |
-| Police station interior | [Design record](guides/TOWN_DESIGN_BRIEF.md#police-station-interior--28-october-2026), check `docs/evidence/police-interior-20261028/verify.gd` | Unchanged 12 × 15 shell; interview room, cell and doors kept. |
-| Airport terminal interior | [Design record](guides/TOWN_DESIGN_BRIEF.md#airport-terminal-interior--28-october-2026), check `docs/evidence/airport-interior-20261028/verify.gd` | Unchanged terminal; new Travel word category. |
-| Airport control tower | [Design record](guides/TOWN_DESIGN_BRIEF.md#airport-control-tower--29-october-2026), check `docs/evidence/control-tower-20261029/verify.gd` | Walkable 22-high tower (lift + stair, open shaft, hidden radar room, discreet door), narrow shaft with wide glass control room; four new words (stairs, elevator, radar, headset); lift is the shared hospital elevator script. Roof, wrap-around observation deck and west sliding deck door: [record](guides/TOWN_DESIGN_BRIEF.md#control-tower-roof-and-observation-deck--12-november-2026), check `docs/evidence/tower-deck-20261112/verify.gd`. |
-| Tower ladder/walls, lift doors, swivel seats, bridge perches | [Design record](guides/TOWN_DESIGN_BRIEF.md#tower-stair-walls-and-ladder-flush-lift-doors-swivel-seats-standable-bridge--30-october-2026), check `docs/evidence/tower-bridge-seats-20261030/verify.gd` | Stair now ends at 16.5 (walled), ladder + hatch to the control room, empty level 16.5; ladder climbing and A/D swivel are new player/seat controls. |
-| Café and bakery interior | [Design record](guides/TOWN_DESIGN_BRIEF.md#café-and-bakery-interior--28-october-2026), check `docs/evidence/bakery-cafe-interior-20261028/verify.gd` | Fitted into the unchanged 14 × 22 shell; no zoning change. |
-| Fine dining, Pizza and Burger, police relocation | [Restaurant and police record](guides/TOWN_DESIGN_BRIEF.md#restaurants-and-police-relocation--28-october-2026), check `docs/evidence/restaurants-20261028/verify.gd` | Merged fine-dining room, L-shaped Pizza and Burger, police moved south of the supermarket; zones and signs. |
-| Roads, sidewalks, streetlights, driving feel | [Streets polish](guides/TOWN_DESIGN_BRIEF.md#streets-polish--28-october-2026), check `docs/evidence/streets-20261028/verify.gd` | Road-edge drives/walks, curb ramps, road/paving shaders, street furniture, vehicle tuning. |
-| Words: add, edit, delete | [Vocabulary data procedure](guides/ARCHITECTURE_REVIEW_PART1.md#vocabulary-data-procedure) and [vocabulary usage report](guides/ARCHITECTURE_REVIEW_PART1.md#vocabulary-usage-report) ([current result](guides/vocabulary-report/summary.md)) | `data/words.json` is the only word source; the report lists where each word is placed, which games test or show it, unplaced words, unknown keys and duplicates. |
-| World signs | [Spanish signs](guides/spanish-signs-20261027/README.md) | Translation table, language toggle, fit rule and how to add a sign. |
-| Garden construction | [Public garden](guides/public-garden/README.md) | Find source/bake boundaries; use architecture rules for subsequent layout changes. |
-| Rendering, lighting and sky | [Performance](guides/performance/README.md) | Find batching, sun/sky/environment ownership, tuning notes and benchmark/check scripts. |
-| Checks and unresolved issues | [Verification record](guides/FINAL_VERIFICATION.md) | Read the latest relevant dated section, including limitations; earlier pass counts do not certify today's project. |
+| Code ownership, coordinates, assets, data | [Architecture and editing rules](guides/ARCHITECTURE_REVIEW_PART1.md#current-editing-rules-parts-23) (the opening assessment is dated history) | |
+| World structure, focus mode, changing a building | [Modular town](guides/MODULAR_TOWN.md), [changing a building](guides/MODULAR_TOWN.md#changing-a-building) | `scenes/town/`, `scripts/buildings/<unit>.gd`, `tools/bake_unit.gd`, `dev_focus.txt` |
+| Main entry point: minigame panels, vehicles, gates, doors, room names | [Ownership](guides/ARCHITECTURE_REVIEW_PART1.md#architecture-and-ownership) | `scripts/core/main.gd`, `minigame_wiring.gd`, `vehicle_controls.gd`, `scripts/world/room_names.gd` |
+| Words, languages, phrases, grammar, numbers | [Vocabulary data procedure](guides/ARCHITECTURE_REVIEW_PART1.md#vocabulary-data-procedure), [usage report](guides/vocabulary-report/summary.md), [word list](game/words.md) | `data/words.json` (only word source), `data/phrases.json`, `data/languages.json`, `scripts/language/`, `tools/language_check.gd` |
+| Any 2D UI: screens, cards, dialogue box, buttons | [UI art style](guides/UI_STYLE.md), [mockups](guides/design-references/ui/) | `scripts/ui/bon_style.gd` |
+| Dialogue box, translate bubble, Esc / popup stack, Settings, offers | [Shared dialogue, popups and settings](guides/ARCHITECTURE_REVIEW_PART1.md#shared-dialogue-popups-and-settings--4-november-2026) | `scripts/core/game_settings.gd`, `scripts/ui/popup_stack.gd`, `scripts/language/ui_text.gd`, `data/activities.json` |
+| **Anything interactive or any character behaviour** (use, open, hold, sit, eyes) | [Reusable components](guides/COMPONENTS.md) (read before writing a new one) | `interactable.gd`, `door_animator.gd`, `hand_hold.gd`, `seating_controller.gd`, `plush_life.gd` |
+| Holding and inspecting items | [Holding and inspecting](guides/HAND_HOLD.md) | `scripts/player/hand_hold.gd`, `object_inspector.gd` |
+| Doors (migration paused) | [Doors](guides/DOORS.md) | door, double door and sliding door scenes |
+| Windows and glass | [Windows](guides/WINDOWS.md) | `scenes/props/window.tscn`, `scripts/world/glass_window.gd`, step `glass_windows` |
+| World signs and translations | [Spanish signs](guides/spanish-signs-20261027/README.md), [readability rule](guides/BUILDING_DESIGN_BLUEPRINT.md#sign-readability), [component](guides/COMPONENTS.md#world-signs) | `scripts/world/world_sign.gd`, `sign_language.gd`, `data/sign_translations.json` |
+| Rendering, lighting, sky, day-night, web performance | [Performance](guides/performance/README.md), [day-night cycle](guides/performance/README.md#day-night-cycle--9-november-2026) | `scripts/world/day_night.gd`, `data/day_night.json`, `scripts/ui/day_clock.gd` |
+| Web app (PWA), touch, export | [Web app](../README.md#web-app-pwa) | `export_presets.cfg` (preset **Web**), `tools/deploy_web.py` |
+| Checks, known failures, unresolved issues | [Verification: current state](guides/FINAL_VERIFICATION.md#current-state--18-november-2026), [how to run](../README.md#verification) | `tools/run_checks.py`, `data/expected_check_failures.json`, `tools/check_doc_links.py` |
+
+### Town and building design
+
+| Task | Read | Key files |
+| --- | --- | --- |
+| **Start here for all town/building design** | [**Master design blueprint**](guides/TOWN_DESIGN_BRIEF.md#start-here-current-approved-design) | |
+| Building size and interior capacity | [Measured dimension review](guides/BUILDING_DIMENSION_REVIEW.md) | |
+| Building appearance, town map, new-building briefs | [Design blueprint](guides/BUILDING_DESIGN_BLUEPRINT.md), [saved user map](guides/design-references/town-map-blueprint.png), [brief template](guides/BUILDING_SPEC_TEMPLATE.md) | |
+| Reusing building parts | [Component catalog](guides/BUILDING_COMPONENT_CATALOG.md) | |
+| Home layout, doors, house plushes and outfits | [Reference home](guides/REFERENCE_HOME.md) | `scripts/buildings/home.gd`, `data/house_characters.json`, `data/plush_costumes.json` |
+| School floor plan, Grammar Classroom room | [Single rear-half divider](guides/TOWN_DESIGN_BRIEF.md#school-single-divider-layout--26-october-2026), [classroom](guides/GRAMMAR_CLASS.md) | `scripts/buildings/school.gd` |
+| Hospital | [Three floors, stairs and elevator](guides/HOSPITAL_THREE_FLOORS.md), [ward doctors](guides/TOWN_DESIGN_BRIEF.md#hospital-ward-doctors--1-november-2026) | `scripts/buildings/hospital.gd` |
+| Supermarket | [2 Nov refit](guides/TOWN_DESIGN_BRIEF.md#supermarket-refit-fruit-checkout-by-the-door-and-clerks--2-november-2026), [product art](guides/TOWN_DESIGN_BRIEF.md#supermarket-product-art--8-november-2026), [original fit-out](guides/TOWN_DESIGN_BRIEF.md#supermarket-interior-review--26-october-2026) | `scripts/buildings/supermarket.gd` |
+| Warehouse | [Warehouse](guides/WAREHOUSE.md) | `scripts/buildings/warehouse.gd`, `scripts/world/warehouse.gd` |
+| Police station | [Interior](guides/TOWN_DESIGN_BRIEF.md#police-station-interior--28-october-2026), [enlargement](guides/TOWN_DESIGN_BRIEF.md#police-station-enlargement-and-detective-games--6-november-2026), [officer](guides/TOWN_DESIGN_BRIEF.md#police-officer-crocodile-plush-at-the-station-entrance--1-november-2026) | `scripts/buildings/police.gd` |
+| Airport terminal and control tower | [Terminal](guides/TOWN_DESIGN_BRIEF.md#airport-terminal-interior--28-october-2026), [tower](guides/TOWN_DESIGN_BRIEF.md#airport-control-tower--29-october-2026), [ladder, lift doors, swivel seats](guides/TOWN_DESIGN_BRIEF.md#tower-stair-walls-and-ladder-flush-lift-doors-swivel-seats-standable-bridge--30-october-2026), [roof deck](guides/TOWN_DESIGN_BRIEF.md#control-tower-roof-and-observation-deck--12-november-2026) | `scripts/buildings/airport.gd` |
+| Restaurants (fine dining, Pizza, Burger, taquería, Alta Cocina) | [Relocation](guides/TOWN_DESIGN_BRIEF.md#restaurants-and-police-relocation--28-october-2026), [taquería, pool, sidewalks](guides/TOWN_DESIGN_BRIEF.md#mexican-restaurant-taquería--28-october-2026), [Alta Cocina and plush staff](guides/TOWN_DESIGN_BRIEF.md#alta-cocina-italian-remodel-and-plush-staff--1-november-2026) | `scripts/buildings/restaurants.gd` |
+| Shops: sports, clothing, electronics, café and bakery, bank, furniture | [Sports](guides/TOWN_DESIGN_BRIEF.md#sports-store-interior--28-october-2026), [clothing](guides/TOWN_DESIGN_BRIEF.md#clothing-store-interior--28-october-2026), [electronics](guides/TOWN_DESIGN_BRIEF.md#electronics-store-refresh--1-november-2026), [café](guides/TOWN_DESIGN_BRIEF.md#café-and-bakery-interior--28-october-2026), [bank](guides/TOWN_DESIGN_BRIEF.md#bank-interior--28-october-2026), [furniture](guides/TOWN_DESIGN_BRIEF.md#furniture-showroom--29-october-2026), [staff](guides/TOWN_DESIGN_BRIEF.md#shop-staff-bank-sports-store-furniture-showroom--1-november-2026) | `scripts/buildings/<unit>.gd` |
+| Storefronts and the shop-row look | [Exterior redesign](guides/TOWN_DESIGN_BRIEF.md#storefront-exterior-redesign--1-november-2026), [game palette and shop row](guides/TOWN_DESIGN_BRIEF.md#game-palette-and-shop-row--18-november-2026) | `scripts/buildings/shop_row.gd` |
+| Farm barn | [Record](guides/TOWN_DESIGN_BRIEF.md#farm-barn-gambrel-roof-hayloft-and-supplies-interior--1-november-2026) | `scripts/buildings/barn.gd` |
+| Playground and rideable swings | [Record and swing controls](guides/TOWN_DESIGN_BRIEF.md#playground-rebuild-and-rideable-swings--1-november-2026) | `scripts/buildings/playground.gd`, `scripts/world/playground_swing.gd` |
+| Mystery House | [Record](guides/TOWN_DESIGN_BRIEF.md#mystery-house-and-mystery-doors--9-november-2026) | `scripts/buildings/mystery.gd` |
+| Toilets, faucets and their sounds | [Bathroom fixtures](guides/TOWN_DESIGN_BRIEF.md#bathroom-fixtures--8-november-2026) | `scripts/world/bath_fixtures.gd`, `toilet.gd`, `faucet.gd`, `data/sounds.json` |
+| Electrical boxes | [Electrical box](guides/ELECTRICAL_BOX.md) | `scripts/world/electrical_box.gd` |
+| Coast, island, boulders, crabs | [Record](guides/TOWN_DESIGN_BRIEF.md#coast-deserted-island-boulders-and-crabs--29-october-2026) | `scenes/town/base.scn`, `scripts/buildings/base.gd`, `shaders/sand.gdshader` |
+| Roads, sidewalks, streetlights | [Streets polish](guides/TOWN_DESIGN_BRIEF.md#streets-polish--28-october-2026) | `scripts/buildings/base.gd` |
+| Garden (history before the modular town) | [Public garden](guides/public-garden/README.md) | `scenes/town/base.scn` |
+
+### Minigames
+
+| Task | Read | Key files |
+| --- | --- | --- |
+| **Any minigame: index, building or changing one** | [Minigame index](guides/MINIGAMES.md), [building a minigame](guides/MINIGAMES.md#building-a-minigame), [purpose and progression](game/minigames.md) | `scripts/learning/minigame_host.gd`, `minigame_zone.gd`, `scripts/ui/game_launcher.gd` |
+| Customer order (supermarket) | [Record](guides/TOWN_DESIGN_BRIEF.md#customer-order-minigame--3-november-2026) | `data/shops.json`, `scripts/learning/shop_*.gd` |
+| Cashier money, Spanish amounts | [Record](guides/TOWN_DESIGN_BRIEF.md#cashier-money-minigame--4-november-2026) | `scripts/learning/currency.gd`, `cashier_session.gd`, `scripts/ui/money_panel.gd` |
+| Hospital family game | [Record](guides/TOWN_DESIGN_BRIEF.md#hospital-family-game--4-november-2026), [ownership](guides/ARCHITECTURE_REVIEW_PART1.md#hospital-family-game-ownership--4-november-2026) | `data/family_game.json`, `scripts/learning/family_session.gd` |
+| Airport flight game | [Record](guides/TOWN_DESIGN_BRIEF.md#airport-flight-game--5-november-2026), [ownership](guides/ARCHITECTURE_REVIEW_PART1.md#airport-flight-game-ownership--5-november-2026) | `data/flight_game.json`, `scripts/learning/flight_*.gd`, `game_clock.gd` |
+| Alta Cocina restaurant game | [Record](guides/TOWN_DESIGN_BRIEF.md#alta-cocina-restaurant-game--6-november-2026), [11 Nov flow](guides/TOWN_DESIGN_BRIEF.md#restaurant-game-reception-tables-and-order-tablet--11-november-2026), [ownership](guides/ARCHITECTURE_REVIEW_PART1.md#restaurant-game-ownership--6-november-2026) | `data/restaurant_game.json`, `scripts/learning/restaurant_*.gd` |
+| Police detective games | [Record](guides/TOWN_DESIGN_BRIEF.md#police-station-enlargement-and-detective-games--6-november-2026), [ownership](guides/ARCHITECTURE_REVIEW_PART1.md#police-detective-games-ownership--6-november-2026) | `data/detective_game.json`, `scripts/learning/police_detective_session.gd` |
+| Warehouse Worker | [Warehouse](guides/WAREHOUSE.md) | `scripts/learning/warehouse_session.gd` |
+| Grammar Classroom | [Grammar Classroom](guides/GRAMMAR_CLASS.md) | `scripts/learning/grammar_session.gd`, `data/grammar_class/` |
+| Hong Kong mahjong | [Mahjong](guides/MAHJONG.md) | `scripts/learning/mahjong_session.gd`, `data/mahjong.json` |
+| Mystery Doors | [Record](guides/TOWN_DESIGN_BRIEF.md#mystery-house-and-mystery-doors--9-november-2026) | `scripts/learning/mystery_session.gd` |
+| Radar Patrol | [Radar Patrol](guides/RADAR_PATROL.md) | |
+| Library Helper | [Index row](guides/MINIGAMES.md), [record](guides/TOWN_DESIGN_BRIEF.md#library-return-cart-and-book-sorting-game--13-november-2026) | `scripts/learning/library_session.gd`, `scripts/buildings/library.gd` |
+| Welcome tutorial | [Welcome tutorial](guides/ARCHITECTURE_REVIEW_PART1.md#welcome-tutorial) | `data/tutorial.json`, `scripts/learning/tutorial.gd` |
+
+### Characters, animals and vehicles
+
+| Task | Read | Key files |
+| --- | --- | --- |
+| Animals: movement, sizes, clay models, adding species | [Animal system](guides/ANIMAL_SYSTEM.md) | `scenes/animals/`, `scripts/world/park_animals.gd` |
+| Player BonBon | [BonBon](guides/BONBON_VALIDATION.md) | |
+| Plush characters and sculpts | [Reference home](guides/REFERENCE_HOME.md), [components](guides/COMPONENTS.md) | `scripts/characters/plush_sculpt.gd`, `house_characters.gd`, `plush_costume.gd` |
+| Road vehicles | [Road physics and boarding](guides/ZOO_VEHICLE_IMPLEMENTATION.md) | |
+| Helicopter | [Rotor physics](guides/helicopter_inertia/README.md) (older motion tests are historical) | |
+| Airplane | [Turboprop](guides/aircraft.md) | |
 
 For vocabulary, use the architecture guide's
 [data procedure](guides/ARCHITECTURE_REVIEW_PART1.md#vocabulary-data-procedure).

@@ -717,6 +717,9 @@ const SVG := {
 	"bills": '<g stroke="#16536a" stroke-width="4" stroke-linejoin="round"><rect x="14" y="10" width="40" height="22" rx="4" transform="rotate(-14 34 21)" fill="#bfe6dc"/><rect x="10" y="22" width="42" height="24" rx="4" transform="rotate(-6 31 34)" fill="#d6f0e6"/><rect x="8" y="32" width="44" height="24" rx="4" fill="#e9f8f1"/></g><circle cx="30" cy="44" r="6" fill="none" stroke="#16536a" stroke-width="3.5"/>',
 	"coins": '<g stroke="#16536a" stroke-width="4"><ellipse cx="32" cy="48" rx="20" ry="8" fill="#cfe9ec"/><path d="M12 48v-8M52 48v-8" /><ellipse cx="32" cy="40" rx="20" ry="8" fill="#dff2f4"/><path d="M12 40v-8M52 40v-8"/><ellipse cx="32" cy="32" rx="20" ry="8" fill="#cfe9ec"/><path d="M14 32v-9M50 32v-9"/><ellipse cx="32" cy="22" rx="18" ry="7" fill="#eef9fa"/></g>',
 	"basket": '<path d="M22 26l8-14M42 26l-8-14" stroke="#2f87cf" stroke-width="5" stroke-linecap="round"/><path d="M8 26h48l-5 26c-.5 2.4-2.5 4-5 4H18c-2.5 0-4.5-1.6-5-4z" fill="#8fd0f2" stroke="#2f87cf" stroke-width="4.5" stroke-linejoin="round"/><path d="M24 34v14M32 34v14M40 34v14" stroke="#2f87cf" stroke-width="4" stroke-linecap="round"/><rect x="5" y="22" width="54" height="9" rx="4.5" fill="#bfe6fa" stroke="#2f87cf" stroke-width="4.5"/>',
+	# Minigame stars (progression, game_progress.gd, 18 Nov 2026): earned gold, missing pale.
+	"star_on": '<path d="M32 7L39.3 23.9L57.7 25.7L43.9 37.9L47.9 55.8L32 46.5L16.1 55.8L20.1 37.9L6.3 25.7L24.7 23.9z" fill="#f7cf3f" stroke="#d9661c" stroke-width="4" stroke-linejoin="round"/>',
+	"star_off": '<path d="M32 7L39.3 23.9L57.7 25.7L43.9 37.9L47.9 55.8L32 46.5L16.1 55.8L20.1 37.9L6.3 25.7L24.7 23.9z" fill="#f0fafb" stroke="#9fcfd5" stroke-width="4" stroke-linejoin="round"/>',
 	"chevron_ink": '<path d="M16 24l16 16 16-16" fill="none" stroke="#16536a" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>',
 	"tick_ink": '<path d="M14 33l11 11 25-26" fill="none" stroke="#16536a" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>',
 	"tick_brown": '<path d="M14 33l11 11 25-26" fill="none" stroke="#7a4a22" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>',
@@ -726,6 +729,23 @@ const SVG := {
 	"flag_es": '<defs><clipPath id="c"><circle cx="32" cy="32" r="28"/></clipPath></defs><g clip-path="url(#c)"><rect width="64" height="64" fill="#d6262f"/><rect y="18" width="64" height="28" fill="#f7c53a"/><rect x="15" y="25" width="9" height="13" rx="2" fill="#c0282d"/><rect x="16.5" y="27" width="6" height="4" fill="#e9a23a"/></g><circle cx="32" cy="32" r="28.5" fill="none" stroke="#fff" stroke-width="3.5"/>',
 	"flag_hk": '<defs><clipPath id="c"><circle cx="32" cy="32" r="28"/></clipPath></defs><g clip-path="url(#c)"><rect width="64" height="64" fill="#e2333a"/><g fill="#fff"><path d="M32 31c-6-3-8-10-4-16 1 5 5 6 7 9 2 3 0 6-3 7z" transform="rotate(0 32 32)"/><path d="M32 31c-6-3-8-10-4-16 1 5 5 6 7 9 2 3 0 6-3 7z" transform="rotate(72 32 32)"/><path d="M32 31c-6-3-8-10-4-16 1 5 5 6 7 9 2 3 0 6-3 7z" transform="rotate(144 32 32)"/><path d="M32 31c-6-3-8-10-4-16 1 5 5 6 7 9 2 3 0 6-3 7z" transform="rotate(216 32 32)"/><path d="M32 31c-6-3-8-10-4-16 1 5 5 6 7 9 2 3 0 6-3 7z" transform="rotate(288 32 32)"/></g></g><circle cx="32" cy="32" r="28.5" fill="none" stroke="#fff" stroke-width="3.5"/>',
 }
+
+## A row of three stars, `earned` of them gold (minigame progression, game_progress.gd), each
+## `px` pixels; the row ignores the pointer.
+static func stars(earned: int, px: float) -> HBoxContainer:
+	var row := HBoxContainer.new()
+	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	row.add_theme_constant_override("separation", roundi(px * 0.08))
+	for i in 3:
+		var star := TextureRect.new()
+		star.name = "Star %d" % (i + 1)
+		star.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		star.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		star.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		star.custom_minimum_size = Vector2(px, px)
+		star.texture = icon_texture("star_on" if i < earned else "star_off", 96)
+		row.add_child(star)
+	return row
 
 ## A picture by name: a BonStyle SVG, else a ui_icons.gd icon; `px` the raster size.
 static func icon_texture(name: String, px := 96) -> Texture2D:

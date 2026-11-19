@@ -1,5 +1,15 @@
 # Garden performance and reference polish — 2026-10-19
 
+> **Current sections (18 Nov 2026):** [graphics tiers](#graphics-tiers-low-default-high-kept--14-november-2026),
+> [GPU memory on the web](#gpu-memory-on-the-web--14-november-2026),
+> [nearby buildings on phones](#built--17-november-2026),
+> [indoor visibility](#indoor-visibility-hide-far-keep-near--14-november-2026),
+> [low anti-aliasing and indoor batching](#low-anti-aliasing-and-indoor-batching--17-november-2026),
+> [day-night cycle](#day-night-cycle--9-november-2026) and [lighting and sky](#lighting-and-sky).
+> Sections dated before 6 Nov 2026 describe the old saved world (`town_public_garden.tscn`,
+> startup passes), deleted when the [modular town](../MODULAR_TOWN.md) replaced it; their
+> owners and counts are history. Newer sections are appended at the end.
+
 The saved public garden scene now includes taller coursed stone towers, stepped pier capitals, cornices, and fine suspension hangers. At runtime the pond receives an opaque animated water shader with green depth tones, gentle ripples and a view-dependent sky tint. It does not render a second camera or use screen-space reflections.
 
 Performance changes:
@@ -159,6 +169,7 @@ The scope is visual variety and vocabulary reference, not new gameplay.
 
 ### Ownership audit
 
+*Historical:* `town_public_garden.tscn` was deleted on 6 Nov 2026; its contents now live in `scenes/town/base.scn` and the unit scenes ([modular town](../MODULAR_TOWN.md)).
 “Baked” below means present in `town_public_garden.tscn`, not reconstructed on normal
 Main startup. Its `reference_layout_baked` and `home_refined` guards matter.
 

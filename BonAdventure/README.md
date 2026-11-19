@@ -26,68 +26,20 @@ note moved from `vt-resume` to `bon-resume`.
 
 ## Start here
 
-| Task | Read / edit |
+| Task | Read |
 | --- | --- |
-| AI development | [Workspace instructions](../AGENTS.md) |
+| AI development (rules, git, verification budget) | [Workspace instructions](../AGENTS.md) |
 | What is in the game now (playing, town, minigames, status) | [Game guide](docs/game/README.md) |
-| Documentation guide, tool purposes and historical records | [Documentation map](docs/README.md) |
-| Town layout and future development blueprint | [Saved user map](docs/guides/design-references/town-map-blueprint.png), [implementation guidance](docs/guides/BUILDING_DESIGN_BLUEPRINT.md#town-map-blueprint) |
-| Shop minigame (customer order), phrases, `sold_in` | [Design record](docs/guides/TOWN_DESIGN_BRIEF.md#customer-order-minigame--3-november-2026), `data/shops.json`, `data/phrases.json`, `scripts/learning/shop_*.gd` |
-| Hospital family game (Dr. Li, school family/month posters) | [Design record](docs/guides/TOWN_DESIGN_BRIEF.md#hospital-family-game--4-november-2026), [ownership](docs/guides/ARCHITECTURE_REVIEW_PART1.md#hospital-family-game-ownership--4-november-2026), `data/family_game.json`, `scripts/learning/family_session.gd`, `scripts/world/school_posters.gd` |
-| Languages, words, phrases, grammar, numbers (single source; adding a language) | [Vocabulary data procedure](docs/guides/ARCHITECTURE_REVIEW_PART1.md#vocabulary-data-procedure), `data/languages.json`, `scripts/language/`, `tools/language_check.gd` |
-| Dialogue box, translate bubble, icons, Esc / popup stack, Settings (Native mode checkbox, languages), minigame offers and progress bars, interface text in the native language (`scripts/language/ui_text.gd`) | [Shared dialogue, popups and settings](docs/guides/ARCHITECTURE_REVIEW_PART1.md#shared-dialogue-popups-and-settings--4-november-2026), `scripts/core/game_settings.gd`, `scripts/ui/popup_stack.gd`, `data/activities.json` |
-| Airport flight game (Capitán Bruno, departure board; time expressions, redesigned 7 Nov 2026), shared "today" | [Design record](docs/guides/TOWN_DESIGN_BRIEF.md#airport-flight-game--5-november-2026), [ownership](docs/guides/ARCHITECTURE_REVIEW_PART1.md#airport-flight-game-ownership--5-november-2026), `data/flight_game.json`, `scripts/learning/flight_*.gd`, `game_clock.gd`, `scripts/ui/flight_panel.gd` |
-| Alta Cocina restaurant game (Twinkle sends you to two seated customers, order tablet, menu book on the table by the host stand) | [Design record](docs/guides/TOWN_DESIGN_BRIEF.md#alta-cocina-restaurant-game--6-november-2026), [11 Nov flow](docs/guides/TOWN_DESIGN_BRIEF.md#restaurant-game-reception-tables-and-order-tablet--11-november-2026), [ownership](docs/guides/ARCHITECTURE_REVIEW_PART1.md#restaurant-game-ownership--6-november-2026), `data/restaurant_game.json`, `scripts/learning/restaurant_*.gd`, `scripts/ui/restaurant_panel.gd` (tablet), `restaurant_menu_book.gd`, `food_icons.gd`; check `docs/evidence/restaurant-flow-20261111/capture.gd` |
-| Welcome tutorial "Welcome to Bon Adventure" (new profile: bed, house tour, hiding friends, fruit shopping, the statue, the journal; Skip, Replay in Settings) | [Guide](docs/guides/ARCHITECTURE_REVIEW_PART1.md#welcome-tutorial), `data/tutorial.json`, `scripts/learning/tutorial.gd`, check `tutorial` |
-| All minigames (index: NPC, place, goals, words, shared systems); **building or changing one** | [Minigame index](docs/guides/MINIGAMES.md), [Building a minigame](docs/guides/MINIGAMES.md#building-a-minigame): `scripts/learning/minigame_host.gd` (NPC host), `minigame_zone.gd` (in-world fade, placing, doorway); [minigame picker](docs/guides/MINIGAMES.md#minigame-picker) (▶ / F9): `scripts/ui/game_launcher.gd` |
-| Police station (20 × 22) and its two detective games (Officer Rocco's lineup, Officer Mimi's evidence table) | [Design record](docs/guides/TOWN_DESIGN_BRIEF.md#police-station-enlargement-and-detective-games--6-november-2026), [ownership](docs/guides/ARCHITECTURE_REVIEW_PART1.md#police-detective-games-ownership--6-november-2026), `data/detective_game.json`, `scripts/world/police_interior.gd`, `scripts/learning/police_detective_session.gd`, `detective_clues.gd`, `suspect_builder.gd`, `evidence_props.gd`, `scripts/ui/detective_card.gd` |
-| Warehouse (between school and airport), Warehouse Worker minigame | [Warehouse guide](docs/guides/WAREHOUSE.md), `scripts/world/warehouse.gd`, `scripts/learning/warehouse_session.gd` (game), `warehouse_goods.gd` (goods, carrying, trolleys), `warehouse_tasks.gd` (tasks and checks) |
-| Grammar Classroom minigame (Lana in the school; sit at the desk with the answer) | [Grammar Classroom guide](docs/guides/GRAMMAR_CLASS.md), `scripts/buildings/school.gd` (classroom), `scripts/learning/grammar_session.gd` (game), `grammar_questions.gd`, `data/grammar_class/` (questions per language) |
-| Hong Kong mahjong with Mei (table in front of the home; player vs 3 NPCs) | [Mahjong guide](docs/guides/MAHJONG.md), `scripts/buildings/home.gd` (table step), `scripts/learning/mahjong_session.gd` (game), `mahjong_rules.gd` (scoring), `mahjong_game.gd` (one hand), `mahjong_ai.gd` (NPCs), `data/mahjong.json` |
-| Mystery House (Casa de las Estrellas, south of the bank) and Madame Luna's Mystery Doors minigame (colours and shapes; wrong door: toad) | [Design record](docs/guides/TOWN_DESIGN_BRIEF.md#mystery-house-and-mystery-doors--9-november-2026), `scripts/buildings/mystery.gd`, `scripts/learning/mystery_session.gd`, `scripts/ui/mystery_card.gd` |
-| Electrical boxes (wall box outside the home garage; E nearby or a click: door opens, camera zooms, connect the 3D wires by colour; reusable, configurable wires) | [Electrical box guide](docs/guides/ELECTRICAL_BOX.md), `scripts/world/electrical_box.gd` (box, prefab `scenes/props/electrical_box.tscn`), `scripts/learning/electrical_box_session.gd` (sequence), `scripts/ui/electrical_box_panel.gd` (input and bar), step `home.gd` `electrical_box`, check `docs/evidence/electrical-box-20261109/verify.gd` |
-| Cashier money minigame (counting out bills and coins), Spanish amounts | [Design record](docs/guides/TOWN_DESIGN_BRIEF.md#cashier-money-minigame--4-november-2026), `scripts/learning/currency.gd`, `cashier_session.gd`, `scripts/ui/money_panel.gd` |
-| **Master design reference for future AI work** | [**Approved town blueprint**](docs/guides/TOWN_DESIGN_BRIEF.md#start-here-current-approved-design) |
-| Building size and interior capacity | [Measured dimension review](docs/guides/BUILDING_DIMENSION_REVIEW.md) |
-| Building appearance, new-building briefs and improvement priorities | [Building design blueprint](docs/guides/BUILDING_DESIGN_BLUEPRINT.md) |
-| Architecture, world coordinates, adding assets/data | [Architecture and editing rules](docs/guides/ARCHITECTURE_REVIEW_PART1.md) |
-| Main entry point and its helpers: adding a minigame panel/session, vehicles and gates, doors, room names | `scripts/core/main.gd` (public methods and fields), `scripts/core/minigame_wiring.gd`, `vehicle_controls.gd`, `door_animator.gd`, `scripts/world/room_names.gd` ([ownership](docs/guides/ARCHITECTURE_REVIEW_PART1.md#architecture-and-ownership)) |
-| Current refinements and rendered views | [Part 2 handoff](docs/evidence/part2/HANDOFF.md) |
-| Current checks, known issues, priorities | [Final verification](docs/guides/FINAL_VERIFICATION.md) |
-| Garden source and regeneration | [Public garden](docs/guides/public-garden/README.md) |
-| School floor plan | [Single rear-half divider](docs/guides/TOWN_DESIGN_BRIEF.md#school-single-divider-layout--26-october-2026) |
-| Hospital interior | [Three floors, accessible stairs and elevator](docs/guides/HOSPITAL_THREE_FLOORS.md) |
-| Supermarket interior (fruit, checkout by the door, every product a word, samoyed cashier and beagle clerk) | [2 Nov 2026 refit](docs/guides/TOWN_DESIGN_BRIEF.md#supermarket-refit-fruit-checkout-by-the-door-and-clerks--2-november-2026), check `supermarket-20261102/verify.gd`; [original nine-department fit-out](docs/guides/TOWN_DESIGN_BRIEF.md#supermarket-interior-review--26-october-2026); [product art and style guide](docs/guides/TOWN_DESIGN_BRIEF.md#supermarket-product-art--8-november-2026) (8 Nov 2026, own script `scripts/buildings/supermarket.gd`) |
-| Current home layout and doors | [Reference home](docs/guides/REFERENCE_HOME.md) |
-| Working toilets and faucets (E sits on a toilet, E or a click on its lever / push plate flushes; E turns a faucet on and off), their sounds (`scripts/core/sound.gd`, `data/sounds.json`, `audio/`), airport restrooms, adding one to another building | [Design record](docs/guides/TOWN_DESIGN_BRIEF.md#bathroom-fixtures--8-november-2026), `scripts/world/bath_fixtures.gd` (models, styles, `add_toilet()` / `add_faucet()`), `toilet.gd`, `faucet.gd`, prefabs `scenes/props/fixtures/`, steps `home.gd` `bath_fixtures` and `airport.gd` `restrooms`, check `docs/evidence/bath-fixtures-20261108/verify.gd` |
-| Animal movement, scale and adding species | [Animal system](docs/guides/ANIMAL_SYSTEM.md) |
-| Player model/effects | [BonBon validation](docs/guides/BONBON_VALIDATION.md) |
-| Plush characters and house NPCs | Models extend `scripts/characters/plush_sculpt.gd` (see `lion_sculpt.gd`; `_furry_body` for fur/wool, `_color_fn` for markings); render with `godot --path . --script res://docs/evidence/town-checks/capture_character.gd -- <scene>`. Built sculpts and costumes are cached between launches by `scripts/characters/sculpt_cache.gd` (edits rebuild automatically). Names, poses and spots (`facing` may be `[x, z]`) of the nine house characters (BonBon, Leo, Bruno, Awoo, Cocodrilo, Sunny, Twinkle, Miso, Poppy) are in `data/house_characters.json` (each with a permanent unique `id`; `name` is display only; every id is also a profile avatar). Since 14 Nov 2026 (user) only the welcome tutorial's BonBon, Leo and Sunny sit in the house: the others carry `"in_house": false` and are kept for avatars and tutorial stand-ins ([record](docs/guides/REFERENCE_HOME.md#fewer-plushes-and-clear-walkways--14-november-2026)). They are placed by `scripts/characters/house_characters.gd`; clicking one shows its name and does not count as study. A tenth plush, a sheep in the doctor outfit, works at hospital reception (`Floor1/Room1/SheepDoctor`) and teaches *doctor* (`remodel_hospital_displays()`). Restaurant, bakery and clothing-store staff (waiters, cooks, cashiers) are costumed plushes placed by `house_characters.gd::worker()`; the old cook and cashier models are deleted ([restaurants](docs/guides/TOWN_DESIGN_BRIEF.md#alta-cocina-italian-remodel-and-plush-staff--1-november-2026), [clothing store](docs/guides/TOWN_DESIGN_BRIEF.md#clothing-store-clerk-and-refresh--1-november-2026)). Outfits (shopkeeper, police, doctor, waiter, driver, teacher, gardener, pilot, businessman, chef) for any plush: `data/plush_costumes.json`, `scripts/characters/plush_costume.gd`, optional `"costume"` per character ([guide](docs/guides/REFERENCE_HOME.md#plush-outfits--31-october-2026-user-request)). BonBon tries them on in the clothing store's fitting rooms and keeps one (saved in `user://settings.json`; [fitting room picker](docs/guides/TOWN_DESIGN_BRIEF.md#fitting-room-outfit-picker--9-november-2026)) |
-| Cars, road vehicles and helicopter | [Current road physics](docs/guides/ZOO_VEHICLE_IMPLEMENTATION.md), [current rotor physics](docs/guides/helicopter_inertia/README.md) |
-| Flyable turboprop and pig boarding | [Aircraft controls, physics and source attribution](docs/guides/aircraft.md) |
-| Rendering, lighting and sky | [Performance and lighting](docs/guides/performance/README.md) |
-| Interactive objects and character behaviour (use, open, hold, sit, blink, gestures): which shared component to reuse | [Reusable components](docs/guides/COMPONENTS.md) |
-| Holding items in BonBon's left hand (books, baskets, any object; `player.hand.hold()`), Inspect button and close-up (reusable inspector) | [Holding and inspecting guide](docs/guides/HAND_HOLD.md), `scripts/player/hand_hold.gd`, `scripts/player/object_inspector.gd`, `scripts/ui/hold_inspect_ui.gd`, `scenes/props/shopping_basket.tscn`, check `docs/evidence/hand-hold-20261113/verify.gd` |
-| Windows: shared glass component (see-through or opaque, arch, optional frame), cheap glass mode, which windows are see-through | [Windows guide](docs/guides/WINDOWS.md), `scenes/props/window.tscn`, `scripts/world/glass_window.gd`, `materials/glass/`, migration `scripts/buildings/glass_windows.gd` (step `glass_windows`), views `docs/evidence/windows-20261112/capture.gd` |
-| Day-night cycle (20-minute day, sun/moon, sky, lamps, indoor light) and the HUD clock (top centre: − / + one hour, Resume) | [Day-night cycle](docs/guides/performance/README.md#day-night-cycle--9-november-2026), `data/day_night.json`, `scripts/world/day_night.gd`, `scripts/ui/day_clock.gd`, check `docs/evidence/day-night-20261109/verify.gd`; web export: `export_presets.cfg` preset **Web** ([how and measurements](docs/guides/performance/README.md#day-night-cycle--9-november-2026)) |
-| Mexican restaurant (taquería), home pool, raised sidewalks | [Design brief](docs/guides/TOWN_DESIGN_BRIEF.md#mexican-restaurant-taquería--28-october-2026) |
-| Fine dining, Pizza and Burger, police relocation | [Restaurant and police record](docs/guides/TOWN_DESIGN_BRIEF.md#restaurants-and-police-relocation--28-october-2026), check `restaurants-20261028/verify.gd` |
-| Alta Cocina (Italian fine dining: kitchen wing, terrace, food words) and plush restaurant staff | [Record](docs/guides/TOWN_DESIGN_BRIEF.md#alta-cocina-italian-remodel-and-plush-staff--1-november-2026), check `alta-cocina-20261101/verify.gd` |
-| Playground (towers, rope bridge, slide, seesaw, monkey bars, merry-go-round) and rideable swings | [Record and swing controls](docs/guides/TOWN_DESIGN_BRIEF.md#playground-rebuild-and-rideable-swings--1-november-2026), check `playground-20261101/verify.gd` |
-| Farm barn (gambrel roof, hayloft with climbable ladder, tools / hay / supplies and their words) | [Record](docs/guides/TOWN_DESIGN_BRIEF.md#farm-barn-gambrel-roof-hayloft-and-supplies-interior--1-november-2026), check `barn-20261101/verify.gd` |
-| Storefront exteriors (clothing, electronics, café, furniture, sports, school, supermarket, police) | [Record](docs/guides/TOWN_DESIGN_BRIEF.md#storefront-exterior-redesign--1-november-2026), check `exterior-redesign-20261101/verify.gd` |
-| Furniture showroom | [Record](docs/guides/TOWN_DESIGN_BRIEF.md#furniture-showroom--29-october-2026), check `furniture-interior-20261029/verify.gd` |
-| Coast, island, boulders and crabs | [Record](docs/guides/TOWN_DESIGN_BRIEF.md#coast-deserted-island-boulders-and-crabs--29-october-2026), `scripts/world/coast.gd`, `shaders/sand.gdshader`, `scenes/animals/crab.tscn`, check `coast-20261029/verify.gd` |
-| Sports store interior | [Record](docs/guides/TOWN_DESIGN_BRIEF.md#sports-store-interior--28-october-2026), check `sports-interior-20261028/verify.gd` |
-| Clothing store interior | [Record](docs/guides/TOWN_DESIGN_BRIEF.md#clothing-store-interior--28-october-2026), check `clothing-interior-20261028/verify.gd` |
-| Electronics store interior | [Record](docs/guides/TOWN_DESIGN_BRIEF.md#electronics-store-refresh--1-november-2026), check `electronics-interior-20261101/verify.gd` |
-| Bank interior | [Record](docs/guides/TOWN_DESIGN_BRIEF.md#bank-interior--28-october-2026), check `bank-interior-20261028/verify.gd` |
-| Police station interior | [Record](docs/guides/TOWN_DESIGN_BRIEF.md#police-station-interior--28-october-2026), check `police-interior-20261028/verify.gd` |
-| Airport terminal interior | [Record](docs/guides/TOWN_DESIGN_BRIEF.md#airport-terminal-interior--28-october-2026), check `airport-interior-20261028/verify.gd` |
-| Airport control tower | [Record](docs/guides/TOWN_DESIGN_BRIEF.md#airport-control-tower--29-october-2026), check `control-tower-20261029/verify.gd` |
-| Tower stair walls/ladder, lift doors, swivel seats, standable bridge | [Record](docs/guides/TOWN_DESIGN_BRIEF.md#tower-stair-walls-and-ladder-flush-lift-doors-swivel-seats-standable-bridge--30-october-2026), check `tower-bridge-seats-20261030/verify.gd` |
-| Café and bakery interior | [Record](docs/guides/TOWN_DESIGN_BRIEF.md#café-and-bakery-interior--28-october-2026), check `bakery-cafe-interior-20261028/verify.gd` |
-| Spanish world signs and their translations | [Spanish signs](docs/guides/spanish-signs-20261027/README.md) |
+| **Find the guide and key files for any task** | [Documentation map: current guides](docs/README.md#current-guides-where-to-make-decisions) (one line per task) |
+| Town and building design | [**Master design blueprint**](docs/guides/TOWN_DESIGN_BRIEF.md#start-here-current-approved-design) |
+| Architecture, ownership, coordinates, adding data | [Architecture and editing rules](docs/guides/ARCHITECTURE_REVIEW_PART1.md) |
+| World structure, changing a building | [Modular town](docs/guides/MODULAR_TOWN.md#changing-a-building) |
+| Words, languages, phrases | [Vocabulary data procedure](docs/guides/ARCHITECTURE_REVIEW_PART1.md#vocabulary-data-procedure) |
+| Minigames | [Minigame index](docs/guides/MINIGAMES.md), [building a minigame](docs/guides/MINIGAMES.md#building-a-minigame) |
+| 2D UI | [UI art style](docs/guides/UI_STYLE.md) |
+| Anything interactive or any character behaviour | [Reusable components](docs/guides/COMPONENTS.md) |
+| Checks, known failures, priorities | [Verification: current state](docs/guides/FINAL_VERIFICATION.md#current-state--18-november-2026), [running checks](#verification) |
+| Running, controls, web app | [What runs](#what-runs), [controls](#controls-and-learning), [web app](#web-app-pwa) |
 
 The [documentation map](docs/README.md) separates current guides, verification
 tools and historical evidence. Use current guides for editing decisions and the
@@ -178,7 +130,7 @@ as a routine edit: regeneration can overwrite authored scene overrides. See the
 | Helicopter (expert) ascent / descent / hover assist | Space / Shift / hold R |
 | Turboprop (expert) throttle / pitch / bank | Space–Shift / S–W / A–D |
 | Turboprop (expert) rudder / flaps / brakes / level assist | Z–X / F / B / hold R |
-| Help guide / journal / map (map [hidden](#hidden-features) since 14 Nov 2026); the F1 guide also has a finger-sized ✕ top right (since 14 Nov 2026, for touch). The journal's book button sits top right under the gear; the ? help button is hidden since 14 Nov 2026 (user) | F1 / J / M |
+| Help guide / journal / town map (the map was [hidden](#hidden-features) 14–18 Nov 2026; since 18 Nov 2026 a baked picture: tap a place, Go there starts a guide arrow, also Go there in the minigame picker; the map button sits top right, left of ▶; [guide](docs/guides/MINIGAMES.md#town-map-and-guide-arrow)); the F1 guide also has a finger-sized ✕ top right (since 14 Nov 2026, for touch). The journal's book button sits top right under the gear; the ? help button is hidden since 14 Nov 2026 (user) | F1 / J / M |
 | FPS counter (Native mode, "Show everything in my language", is a checkbox in Settings) | F3 |
 | See the town's signs, building names and posters in the native language while held (not saved; also the badge button, e.g. "EN", left of the gear for touch; hidden in Native mode). Since 9 Nov 2026; the old L mode cycle was removed 7 Nov 2026 | hold L |
 | Minigame picker (every game, chosen rounds; a player feature since 10 Nov 2026, it was a debug-only test launcher; [guide](docs/guides/MINIGAMES.md#minigame-picker)); also the ▶ button top right, under the peek badge (bottom-right cluster until 14 Nov 2026) | F9 |
@@ -192,7 +144,7 @@ as a routine edit: regeneration can overwrite authored scene overrides. See the
 
 The F1 guide (`build_help_content` in `scripts/ui/vocabulary_hud.gd`) lists every key above
 in grouped cards. Its TOGGLES card shows live ON/OFF pills for sprint, hyper speed, infinite jump,
-noclip, zone walls and FPS; defaults are all off (infinite jump was on until 14 Nov 2026; the hyper speed and map rows are left out while [hidden](#hidden-features)). Native mode is off
+noclip, zone walls and FPS; defaults are all off (infinite jump was on until 14 Nov 2026; the hyper speed row is left out while [hidden](#hidden-features); the M row is back since 18 Nov 2026 with the baked town map). Native mode is off
 by default (the player's choice is saved in `user://settings.json`, see
 [Shared dialogue, popups and settings](docs/guides/ARCHITECTURE_REVIEW_PART1.md#shared-dialogue-popups-and-settings--4-november-2026)).
 Since 12 Nov 2026 (PWA phase 2) the player and Main keys are InputMap actions in `project.godot`
@@ -274,6 +226,8 @@ atomic writes (temporary file + rename). With no profile the files stay directly
 the first profile created adopts copies of them and the originals stay as a backup. Main uses
 the selected profile, else the last used one. `tools/bake_unit.gd` bakes with saves read-only.
 Device-wide settings belong in `user://device.json`. Check: `profiles` (quick suite).
+Since 18 Nov 2026 each profile also keeps its minigame levels and stars in `game_progress.json`
+([progression](docs/guides/MINIGAMES.md#progression); no file means level 1 everywhere, so older saves need no migration).
 Since 14 Nov 2026 (user) each profile also keeps the player's last place in `player_place.json`:
 reopening a game that finished the welcome tutorial puts the player outside the entrance of the
 building they were in, or at the nearest safe spot near where they stood outdoors (vehicles are
@@ -421,7 +375,7 @@ deleted after review. Every place that reads a switch says `Features.` in the co
 | Switch | What is gone while it is `false` | Where the code lives | Why / measured |
 |---|---|---|---|
 | `MINIMAP` | The minimap in the top-left corner (and tapping it to open the map); the place line and words found move up into its spot | `main.gd` `make_ui()`, `scripts/ui/town_minimap.gd`, `vocabulary_hud.gd` `minimap_side` | It rebuilt the town outline from every mesh (~0.1 s each time, several times while loading) and redrew it while the player moved: on an M-series Mac 8.4 ms → 64 ms per frame while turning (native probe, 14 Nov 2026) |
-| `FULL_MAP` | The full-screen map: the M key, the map button in the bottom-right cluster (its slot stays empty; since 14 Nov 2026 the touch jump button sits there), the F1 guide's M row, the drawn map (a second `town_minimap.gd`) and `assets/maps/town_map.png` (not loaded) | `main.gd` (`make_ui()`, the `map` action, `popups.watch`), `vocabulary_hud.gd` (map overlay, `map_button`, help rows) | Same drawing code as the minimap; the overlay node is kept empty and never opens, so the code that closes it still works |
+| `FULL_MAP` (**on again since 18 Nov 2026**) | While `false`: the town map (M, the map button, the F1 guide's M row). Since 18 Nov 2026 (wayfinding, user) it is `true` and the map is a picture baked by `tools/bake_town_map.gd` (`assets/maps/town_map.png`, loaded only while open, and `data/town_map.json`), not the live drawing; the map button moved to the second top-right row, left of ▶. The guide arrow is built either way | `main.gd` (`make_ui()`, the `map` action, `popups.watch`), `vocabulary_hud.gd` (map overlay, `map_button`, help rows), `scripts/ui/town_map_panel.gd`, `guide_arrow.gd` ([guide](docs/guides/MINIGAMES.md#town-map-and-guide-arrow)) | The old drawing shared the minimap's code (8.4 → 64 ms a frame while turning). The baked map measured on 18 Nov 2026: [evidence](docs/evidence/wayfinding-20261118/README.md) |
 | `HYPER_SPEED` | Hyper speed: the H key, the touch lightning button, the F1 guide's H row and the blue HUD line | `player_controller.gd` (`debug_hyper`), `touch_controls.gd` (`_hyper_rect`), `vocabulary_hud.gd` (help rows) | Trim; no measurable speed effect (a flag). Development checks that set `player.hyper_enabled` directly still move fast |
 | `INFINITE_JUMP_AT_START` | Infinite jump is off when a game starts (it was on); the I key still turns it on | `player_controller.gd` `infinite_jump_enabled` | User decision; no speed effect |
 
@@ -432,8 +386,9 @@ minimap (expect those labels to fail while hidden):
 `docs/evidence/ui-settings-20261104/verify_town.gd`,
 `docs/evidence/minigame-launcher-20261109/verify.gd`, `docs/evidence/mahjong-20261109/play.gd` and the language
 captures (`docs/evidence/language-ui-20261104`, `docs/evidence/chinese-ui-20261104`, `docs/evidence/grammar-class-20261106`).
-The map phrases (`map.*`, `hud.map_hint`, `help.map`, `help.hyper`, `hud.move_hyper*`) stay in
-`data/phrases.json`.
+The map phrases (`map.*`, `help.map`) are used again by the baked map since 18 Nov 2026;
+`hud.map_hint`, `map.legend`, `help.hyper` and `hud.move_hyper*` stay in `data/phrases.json` unused.
+The minimap (`town_minimap.gd`) is still off; the full map no longer uses it.
 
 ## Verification
 

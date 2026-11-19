@@ -16,9 +16,32 @@ in the game's learning card, and keep the details of rules and code in the linke
 Word lists are **not** written here: [words.md](words.md) is generated from the game data by
 `tools/vocabulary_report.gd -- --write`, and `data/words.json` stays the only word source.
 
-**Progression today:** none. A game has a fixed length per session (`data/activities.json`),
-and the journal shows right and wrong answers per word, but no game uses that history yet: no
-levels, no harder questions, no review of weak words, no unlocks.
+## How games get harder
+
+*Approved by the user on 18 Nov 2026; built for Pay Up! and Grocery Run, the other games are
+designed but not built.* One shared system for every learning game; the code and data are
+described in [MINIGAMES.md → Progression](../guides/MINIGAMES.md#progression).
+
+- **Levels.** Each learning game has up to four levels. Level 1 is the easiest, often today's
+  game. Each card's Progression row lists what changes from level to level.
+- **Stars.** A finished session earns 1–3 stars from the share of rounds right the first time:
+  every round right gives ★★★, at least 60% gives ★★, anything else ★. Grocery Run (one order)
+  counts retries instead: right at the first Done ★★★, after one retry ★★, after two ★. A session
+  left before the end earns nothing.
+- **Unlocks.** ★★★ at your highest level unlocks the next one, and the next session uses it. You can
+  go back to any unlocked level in the ▶ picker. A level never goes down by itself. A session
+  with rounds changed in the picker still earns stars but unlocks nothing.
+- **Where you see it.** The picker's tiles show the level and best stars at it, and its detail bar
+  has a Level stepper. The NPC's greeting shows "Level 2 ☆☆☆" beside the speaker's name. A short star
+  card at the top of the screen ends each session ("Level up! Level 3 unlocked").
+- **Saved** per profile and per learned language; older saves start at level 1.
+- **Not yet decided:** bringing weak words from the journal back more often; showing stars in the
+  journal.
+
+<img src="../evidence/minigame-progression-20261118/star-card.png" width="420" alt="Star card after a Pay Up! session">
+<img src="../evidence/minigame-progression-20261118/greeting.png" width="420" alt="Level badge on the grocery clerk's greeting">
+
+*Screenshots 18 Nov: the star card after a clean Pay Up! session; the level badge on a greeting.*
 
 ## Grocery Run
 
@@ -39,7 +62,7 @@ in the shop and bring them back. Teaches product names and quantities. Tracked.
 | Words | [Generated list](words.md#grocery-run) |
 | Tracked in the journal | Yes: each item ordered |
 | Session | One order of 2 items, no progress bar |
-| Progression | Not designed yet |
+| Progression | **Built 18 Nov.** L1 two fruit or vegetables, 1–2 each (today's game) · L2 three items, 1–3 each · L3 three items from all 80 supermarket products · L4 four items, 1–3 each, only one retry. Stars count retries |
 
 ## Pay Up!
 
@@ -49,7 +72,7 @@ in the shop and bring them back. Teaches product names and quantities. Tracked.
 
 *Screenshot 4 Nov.*
 
-The cashier says an amount ($0.25 to $300) in the language being learned; count it out from
+The cashier says an amount (whole dollars up to $20 at level 1, up to $300 at level 4) in the language being learned; count it out from
 bills and coins. Five rounds; a wrong answer can be retried or explained. Not tracked.
 [Design](../guides/TOWN_DESIGN_BRIEF.md#cashier-money-minigame--4-november-2026)
 
@@ -59,7 +82,7 @@ bills and coins. Five rounds; a wrong answer can be retried or explained. Not tr
 | Words | [Generated list](words.md#pay-up) |
 | Tracked in the journal | No (amounts are generated language, not words) |
 | Session | 5 amounts, first try counts |
-| Progression | Not designed yet |
+| Progression | **Built 18 Nov.** L1 whole dollars up to $20 · L2 up to $50 in quarters · L3 up to $100, any cents · L4 up to $300 (the game before 18 Nov). A round paid wrong once is a miss |
 
 ## Who's Who?
 
@@ -79,7 +102,7 @@ older and younger, before and after. The school's posters teach the words first.
 | Words | [Generated list](words.md#whos-who) |
 | Tracked in the journal | Yes: the relative in each relation question |
 | Session | 20 questions, first try counts |
-| Progression | Not designed yet |
+| Progression | Designed 18 Nov, not built: L1 relation questions only, 10 questions · L2 + ages, older and younger · L3 + birthdays, months, before and after, 20 questions (today) · L4 more yes/no traps |
 
 ## Flight Finder
 
@@ -100,7 +123,7 @@ clock times and countries. Tracked.
 | Words | [Generated list](words.md#flight-finder) |
 | Tracked in the journal | Yes: the time word and the destination country |
 | Session | 5 flights, first try counts |
-| Progression | Not designed yet |
+| Progression | Designed 18 Nov, not built: L1 yesterday, today, tomorrow and weekdays, no near miss · L2 + clock times and a near miss (today) · L3 + anteayer, pasado mañana, hace / dentro de · L4 departures and arrivals mixed, more decoys |
 
 ## Stack & Pack
 
@@ -122,7 +145,7 @@ Tracked. Simplified on 14 Nov (it used to have trolleys, weighing and measuring)
 | Words | [Generated list](words.md#stack--pack) |
 | Tracked in the journal | Yes: the box named in each task |
 | Session | 5 tasks, a task counts when done |
-| Progression | Not designed yet |
+| Progression | Designed 18 Nov, not built: L1 *on* and the top shelf · L2 + next to · L3 + to the right of (today) · L4 hints only after a wrong try |
 
 ## On the Menu
 
@@ -145,7 +168,7 @@ Four fully right orders win. Tracked.
 | Words | [Generated list](words.md#on-the-menu) |
 | Tracked in the journal | Yes: the dish served |
 | Session | One meal of 4 courses, a course counts when right |
-| Progression | Not designed yet |
+| Progression | Designed 18 Nov, not built: L1 two courses, one need each · L2 + *un poco* / *muy* (today) · L3 three courses with a *no* / *sin* · L4 three needs per course |
 
 ## Spot the Suspect
 
@@ -166,7 +189,7 @@ Not tracked yet.
 | Words | [Generated list](words.md#spot-the-suspect) |
 | Tracked in the journal | No: each round has two clue words and the answer is a suspect, so no single tested word (user decision, 7 Nov) |
 | Session | 4 rounds, a round counts when solved |
-| Progression | Not designed yet |
+| Progression | Designed 18 Nov, not built: L1 four suspects, two clues, no negation · L2 five suspects (today) · L3 + negation · L4 six suspects, three clues |
 
 ## Feel the Clues
 
@@ -187,7 +210,7 @@ heavy/light with ten everyday objects. Tracked.
 | Words | [Generated list](words.md#feel-the-clues) |
 | Tracked in the journal | Yes: the property word deciding each round |
 | Session | 4 rounds, a round counts when solved |
-| Progression | Not designed yet |
+| Progression | Designed 18 Nov, not built: L1 *find* rounds with three objects · L2 four objects (today) · L3 + *report* rounds with agreement · L4 mixed, more objects |
 
 ## Desk Dash
 
@@ -209,7 +232,7 @@ agreement and prepositions. Points only; Chinese measure words are tracked.
 | Words | [Generated list](words.md#desk-dash) |
 | Tracked in the journal | Points only; the noun of Chinese measure-word questions is tracked |
 | Session | 5 questions plus each miss once more (at most 10) |
-| Progression | Not designed yet |
+| Progression | Designed 18 Nov, not built: L1 15 s per question · L2 10 s (today) · L3 harder questions (needs difficulty tags in the question bank) · L4 7 s |
 
 ## Mystery Doors
 
@@ -227,7 +250,7 @@ for three seconds. Six doors, then a treasure chest. Teaches colours and shapes.
 | Words | [Generated list](words.md#mystery-doors) |
 | Tracked in the journal | Yes: the colour or shape a door's clue names |
 | Session | 6 doors, first try counts |
-| Progression | Not designed yet |
+| Progression | Designed 18 Nov, not built: L1 one clue type, 4 doors · L2 shape, colour and both (today) · L3 more colours · L4 8 doors, combined clues only |
 
 ## Mahjong Club
 
@@ -248,7 +271,7 @@ tracked.
 | Words | [Generated list](words.md#mahjong-club) |
 | Tracked in the journal | No |
 | Session | One hand |
-| Progression | Not designed yet |
+| Progression | None (pastime; user approval 18 Nov) |
 
 ## Radar Patrol
 
@@ -268,7 +291,7 @@ no words to learn.
 | Words | [Generated list](words.md#radar-patrol) |
 | Tracked in the journal | No |
 | Session | Endless; best score saved |
-| Progression | Not designed yet |
+| Progression | None (pastime; it keeps its best score) |
 
 ## Wire It Up!
 
@@ -287,7 +310,7 @@ Open the box and connect the wires by colour. A pastime; the box itself teaches 
 | Words | [Generated list](words.md#wire-it-up) |
 | Tracked in the journal | No |
 | Session | One puzzle per opening |
-| Progression | Not designed yet |
+| Progression | Designed 18 Nov, not built: L1 fewer wires · L2 today · L3 more wires |
 
 ## Library Helper
 
@@ -307,7 +330,7 @@ few minutes later the books are borrowed and a new cart arrives. Tracked: each b
 | Learning card | |
 | --- | --- |
 | Purpose | Book topics (dogs, pizza, guitar…) and the six category words (animal, sport, music, food, vehicle, plant; 3 books each) by sorting returned books. |
-| Words | [Generated list](words.md#shelf-mission) |
+| Words | [Generated list](words.md#library-helper) |
 | Tracked in the journal | Yes (17 Nov): a book's first placement in a cart tests its topic word and its category word |
 | Session | One cart of 3–6 books; the next cart about 5 minutes after a perfect one |
-| Progression | Not designed yet. Planned (user, 17 Nov 2026): a level with plain spines, so the colours no longer match the shelves |
+| Progression | Designed 18 Nov, not built: L1 3 books · L2 4–5 books · L3 6 books · L4 plain spines, so the colours no longer match the shelves (user idea, 17 Nov 2026) |

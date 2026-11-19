@@ -21,6 +21,8 @@ extends Node
 const Currency := preload("res://scripts/learning/currency.gd")
 const Board := preload("res://scripts/learning/activity_board.gd")
 const Host := preload("res://scripts/learning/minigame_host.gd")
+## Levels and stars (18 Nov 2026): the level sets the amount range; a round paid wrong once is a miss.
+const Progress := preload("res://scripts/learning/game_progress.gd")
 
 const REQUEST_VARIANTS := 5
 const WALK_AWAY_DISTANCE := 14.0
@@ -154,9 +156,12 @@ func _money_lines() -> Dictionary:
 func start_game() -> void:
 	Board.shared().begin(activity_id)
 	_new_round()
+	host.show_level()   # the level badge on the first amount (no greeting question here)
 
 func _new_round() -> void:
-	request_cents = Currency.random_cents(_rng)
+	# The amount's range follows the player's level (game_progress.gd, data/activities.json).
+	var level: Dictionary = Progress.shared().params(activity_id)
+	request_cents = Currency.random_cents(_rng, int(level.get("max_cents", Currency.MAX_CENTS)), int(level.get("step", 1)))
 	_request_variant = _rng.randi_range(1, REQUEST_VARIANTS)
 	round_active = true
 	_missed = false
@@ -209,6 +214,8 @@ func _on_submitted(cents: int) -> void:
 			return
 		host.say("cashier.correct", [host.choice("another", "cashier.another", "next"), host.choice("bye", "cashier.bye", "exit")], 0.0)
 	else:
+		if not _missed:
+			Board.shared().add_miss(activity_id)   # stars: one miss per round (game_progress.gd)
 		_missed = true
 		host.say("cashier.wrong", [host.choice("retry", "cashier.try_again", "retry"), host.choice("why", "cashier.what_wrong", "question")], 0.0)
 

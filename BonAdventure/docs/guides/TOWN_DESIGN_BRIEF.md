@@ -25,6 +25,7 @@ dated history of rules and implementation.
 | Supermarket | **26 × 26 town units**; one open floor with nine departments and wide aisles. | Shell and supermarket exterior implemented; 5.71 clear height. Exterior color refinement implemented on 26 October: teal fascia, ochre entry and terracotta plinth; **superseded 1 November 2026 by navy fascia, gold entry and a cart icon** ([storefront redesign](#storefront-exterior-redesign--1-november-2026)). Existing learning roots retained in the nine-department fit-out implemented on 26 October. Front axis and delivery access preserved; see the interior review below. **2 November 2026:** refitted inside the same shell: frozen section removed and its words retired, fruit in its place, checkout lanes beside the door, every product a clickable word, a samoyed cashier and a beagle clerk ([record](#supermarket-refit-fruit-checkout-by-the-door-and-clerks--2-november-2026)). **8 November 2026:** every product redrawn in one shared style (recognisable silhouettes, front-of-pack pictures, three shared finishes), lighter fridge backs, shelf price tags and department pictograms; same words and pick areas ([record](#supermarket-product-art--8-november-2026)). **17 November 2026:** one word, one section: PANTRY became SNACKS, the produce stand holds only big fruit, the fridges only dairy and salad, the drinks cooler and home goods traded places and coffee moved to the cooler ([record](#supermarket-sections--17-november-2026)). |
 | Furniture store | **24 × 26 town units** (was 17 × 29), same front wall line and entrance, flat roof with parapet (green until 1 November 2026, now slate with a timber band and corner cladding), glass shopfront and sign plaque; showroom with living, bedroom, dining, office and lighting departments (user's isometric design, approved 29 October 2026). | Implemented 29 October 2026 inside zone `furniture` (x 113–139, z 209–259) with no zoning change; eight words added. See [record](#furniture-showroom--29-october-2026). **1 November 2026:** plush staff added ([record](#shop-staff-bank-sports-store-furniture-showroom--1-november-2026)). **9 November 2026:** furniture models replaced with product-art versions, prefabs turned to face the room, every item clickable ([interiors polish](#interiors-polish--9-november-2026)). |
 | Game palette and shop row | **18 November 2026 (user):** one colour palette for the whole game (2D and 3D), drawn from the app icon and the dialogue box: `scripts/core/game_palette.gd`. The five shops (bakery, clothing, electronics, sports, furniture) share one storefront look: cream walls, stone base bands, cream trim, iron lamps, wooden flower boxes, and **one accent family each** (coral, rose, sky, meadow, teal). Supersedes the shops' earlier colours (including the 25 Oct café colours and the furniture store's slate parapet). | Built 18 Nov 2026 (recolour by role, sports awnings added); other buildings not yet on the palette. [Record](#game-palette-and-shop-row--18-november-2026). |
+| Real windows | **18 November 2026 (user):** the supermarket and police station get real windows (see-through both ways, the wall opened behind the glass) with the shared window component; frame presets (house, shopfront, civic, arched) in the building's accent or trim, with a sill. Accents for the windows: police `sky`, supermarket `meadow`. | Police built 18 Nov 2026 (two civic windows); supermarket step written, baked once its 18 Nov layout is committed. Hospital, home, chapel and Mystery House still have hand-built windows (not approved for change). [Record](#real-windows--18-november-2026), [windows guide](WINDOWS.md#real-windows--18-november-2026). |
 | Other building dimensions | Retain existing dimensions. | Furniture shortening (the old optional 17 × 24 idea, superseded by the approved 24 × 26 above), airport height reduction and hospital-wing removal are **not approved**. |
 | Hospital program | Three stories, approximately four rooms per floor, using the floor organization in the building-program table below. Preserve helicopter/helipad, bed design and complicated working features. | Interior remodel implemented 26 October: requested first-floor quadrants, compact left stairs and working right elevator. Rear learning wing, bed design and heli systems retained. 31 October: pharmacy enlarged on floor 1; the elevator moved to a side tower with a roof stop; the stairs reach the roof. See the current hospital guide. **1 November 2026:** three more plush doctors (pig, cat, beagle) on the three floors ([record](#hospital-ward-doctors--1-november-2026)). |
 | Food venues | BakeryCafe remains combined bakery/café. **Fine dining** (merged old Pizza + Burger shells) and **Pizza and Burger** (the former Burger/pizza place, now L-shaped in the former police lot); restaurant Cafe shell → **Mexican restaurant (TAQUERÍA)**, replacing the earlier Chinese seafood plan (user decisions, 28 October 2026). | Taquería ([record](#mexican-restaurant-taquería--28-october-2026)), fine dining and Pizza and Burger ([record](#restaurants-and-police-relocation--28-october-2026)) all built 28 October 2026. Node names (`Restaurants/Pizza`, `/Burger`, `/Cafe`) remain unchanged. **1 November 2026:** fine dining became the Italian **Alta Cocina** with a rear kitchen wing and front terrace, and every cook-model figure became a plush character ([record](#alta-cocina-italian-remodel-and-plush-staff--1-november-2026)). Same day, revised from the user's isometric reference: clear entrance, reference booths, quatrefoil floor, 6.5 ceiling, hipped roof, motorcycle in a car stall ([revision](#alta-cocina-revision-entrance-booths-floor-ceiling-roof--1-november-2026)). **9 November 2026:** Pizza and Burger dining room refurnished (tables, booths, drinks fridge), every food and seat clickable ([interiors polish](#interiors-polish--9-november-2026)). |
@@ -32,7 +33,7 @@ dated history of rules and implementation.
 | Clothing store interior | Built from the user's isometric design **inside the unchanged shell** (11 × 15 interior; no resize, zoning unchanged). | Implemented 28 October 2026; see [record](#clothing-store-interior--28-october-2026). Electronics follows after approval. **1 November 2026:** cashier.tscn deleted, plush clerk and shopper, checkout moved, refresh ([record](#clothing-store-clerk-and-refresh--1-november-2026)). |
 | Electronics store interior | Built from the user's isometric design **inside the unchanged shell** (11.3 × 15.2 interior; no resize, zoning unchanged). | Implemented 28 October 2026; see [record](#electronics-store-interior--28-october-2026). Completes the three user-supplied interiors. **1 November 2026:** refitted as a real electronics shop in the same shell, no new words ([record](#electronics-store-refresh--1-november-2026)). **18 November 2026 (user):** clay makeover in the game palette, same shell and words, plush clerk, no prices; supersedes the 1 Nov fixtures ([record](#electronics-store-makeover--18-november-2026)). |
 | Café and bakery interior | Built from the user's pink "Cafe & Cakes" isometric design **inside the unchanged 14 × 22 shell** (no resize, exterior unchanged). | Implemented 28 October 2026; see [record](#café-and-bakery-interior--28-october-2026). |
-| Bank interior | Built from the user's isometric bank design **inside the unchanged 12 × 15 shell** (no resize, zoning unchanged); vault, manager office, their doors and the interior ATMs kept. | Implemented 28 October 2026; see [record](#bank-interior--28-october-2026). Outdoor ATMs from the design are not built (exterior work). **1 November 2026:** plush staff added ([record](#shop-staff-bank-sports-store-furniture-showroom--1-november-2026)). |
+| Bank interior | Built from the user's isometric bank design **inside the unchanged 12 × 15 shell** (no resize, zoning unchanged); vault, manager office, their doors and the interior ATMs kept. | Implemented 28 October 2026; see [record](#bank-interior--28-october-2026). Outdoor ATMs from the design are not built (exterior work). **1 November 2026:** plush staff added ([record](#shop-staff-bank-sports-store-furniture-showroom--1-november-2026)). **18 November 2026:** interior refresh in the game palette (sky accent), shared doors for the office and vault, door labels removed, new ATM and vault art ([record](#bank-interior-refresh--18-november-2026)). |
 | Police station interior | Built from the user's isometric police design **inside the unchanged 12 × 15 shell** at its relocated site; interview room, holding cell and both doors kept. **6 November 2026 (user decision): shell enlarged to 20 × 22, front fixed, with a suspect lineup room and an evidence room for two detective minigames** ([record](#police-station-enlargement-and-detective-games--6-november-2026)). | Implemented 28 October 2026; see [record](#police-station-interior--28-october-2026). **1 November 2026:** the blocky officer was retired and a crocodile plush police officer stands beside the entrance ([record](#police-officer-crocodile-plush-at-the-station-entrance--1-november-2026)). **6 November 2026:** enlarged and refitted; the crocodile works inside (lineup game) and a cat officer works the evidence counter. **8 November 2026:** the evidence game was redesigned (one property word a round, Apretar / Tocar / Levantar) and its poster changed ([record](#police-evidence-game-redesign--8-november-2026)). **9 November 2026:** light pass: evidence exhibits, riot helmets and lobby look-alikes clickable ([interiors polish](#interiors-polish--9-november-2026)). |
 | Airport terminal interior | Built from the user's isometric airport design **inside the unchanged 34 × 18 terminal** (no resize; exterior, tower, airfield and aircraft untouched). | Implemented 28 October 2026; see [record](#airport-terminal-interior--28-october-2026). Adds a Travel word category. **8 November 2026 (user decision, built the same day):** the painted restroom doors became two real restrooms with working toilets and faucets, **inside the unchanged terminal from the baggage-claim area** (not an annex); the carousel moved 1.2 toward the front wall ([record](#bathroom-fixtures--8-november-2026)). |
 | Airport control tower | **Redesigned and made walkable (user-approved: lift + stair, three levels, narrow shaft flaring only at the cabin).** Shaft 8.4 × 8.4 and 22 high, 360° glass control room 11.2 × 11.2 at the top, discreet side door; site, zone `control_tower` and terminal untouched. | Implemented 29 October 2026; see [record](#airport-control-tower--29-october-2026). No new words. Roof, wrap-around observation deck and west deck door added 12 November 2026 ([record](#control-tower-roof-and-observation-deck--12-november-2026)). |
@@ -492,7 +493,7 @@ Evidence: [current overview](../evidence/exterior-audit-20261025/overview.png), 
 
 | Owner | Actual implementation and editing implication |
 | --- | --- |
-| Entry | `scenes/main.tscn` → `scripts/core/main.gd`; saved `town_public_garden.tscn` under Apartment ×1.3. Preserve application/save identity. |
+| Entry | `scenes/main.tscn` → `scripts/core/main.gd`; since 6 Nov 2026 the [modular town](MODULAR_TOWN.md) (`scenes/town/base.scn` plus one scene per building; before that the saved `town_public_garden.tscn`) under Apartment ×1.3. Preserve application/save identity. |
 | Active construction | Baked reference branch restores doors and binds layout; garden/home and guarded `world_refinements.gd` follow, then UI/vehicle registration/batching. Do not run older town builders or bakers to change a front. |
 | Prefab-backed buildings | School, hospital, furniture, sports, bakery, clothing and electronics live in `scenes/buildings/`; saved instance overrides matter. School/hospital include floor/wing scenes. Supermarket displays also have a prefab, separate from its baked shell. |
 | Baked procedural sites | Bank, library, police, chapel, gazebo and supermarket shell are stored under `RelocatedSites` in the active snapshot. Earlier construction belongs to TownBuilder and related passes; editing those generators alone need not change Main. |
@@ -745,7 +746,7 @@ road like the supermarket). Footprint X −154.3…−135.3, Z 73.7…86.3; pad 
 interior (144 child nodes), signs, police car, parking pad, drive and entrance walk travel
 with the site; only the pose changed. Sign remains ESTACIÓN DE POLICÍA.
 
-**Fine dining** (`Restaurants/Pizza`; built by `scripts/world/restaurant_venues.gd`;
+**Fine dining** (`Restaurants/Pizza`; built by `scripts/world/restaurant_venues.gd`, deleted 6 Nov 2026, now `scripts/buildings/restaurants.gd`;
 facade in `building_exteriors.gd` style `finedining`): group-local x −8, 30 × 16, door at
 x 0 (3.6 wide), cream plaster, teal cornice and pilasters, wood door leaves, two 4 × 4.3
 dark-teal arched grid windows with painted park/bridge views inside, sconces, patterned
@@ -1038,7 +1039,7 @@ Owner: `scripts/world/bank_interior.gd::build()`, called by `world_refinements.g
 
 No vocabulary or sign text was added; new props reuse existing words (map, coffee maker, cup, shelf, toilet). Locker props are untagged because "locker" is a removed word.
 
-Owner: `scripts/world/police_interior.gd::build()`, called by `world_refinements.gd` after the bank interior; guarded by the `Interior` node. Check: `docs/evidence/police-interior-20261028/verify.gd`. Renders: [plan](../evidence/police-interior-20261028/top.png), [doorway](../evidence/police-interior-20261028/door.png), [left](../evidence/police-interior-20261028/left.png), [right](../evidence/police-interior-20261028/right.png), [rear rooms](../evidence/police-interior-20261028/back.png), [from the rear](../evidence/police-interior-20261028/rear.png), [cutaway](../evidence/police-interior-20261028/iso.png).
+Owner (deleted 6 Nov 2026; now baked in `scenes/town/police.scn`, changed by steps in `scripts/buildings/police.gd`): formerly `scripts/world/police_interior.gd::build()`, called by `world_refinements.gd` after the bank interior; guarded by the `Interior` node. Check: `docs/evidence/police-interior-20261028/verify.gd`. Renders: [plan](../evidence/police-interior-20261028/top.png), [doorway](../evidence/police-interior-20261028/door.png), [left](../evidence/police-interior-20261028/left.png), [right](../evidence/police-interior-20261028/right.png), [rear rooms](../evidence/police-interior-20261028/back.png), [from the rear](../evidence/police-interior-20261028/rear.png), [cutaway](../evidence/police-interior-20261028/iso.png).
 
 ## Airport terminal interior — 28 October 2026
 
@@ -1057,7 +1058,7 @@ Built from the user's isometric airport design, following this brief's airport p
 
 New words (`data/words.json`, user request "build the airport" with this brief's program): a **Travel** category ("Trips and airports: travel documents, luggage, and the counters, checkpoints and displays of an airport") with passport, boarding pass, suitcase, luggage cart, check-in counter, metal detector and flight board; airport and baggage claim in Places & Rooms. The existing hospital word x ray machine is reused for the scanner (same Spanish). Seven sign texts were added (DOCUMENTACIÓN, SEGURIDAD, SALA A1, RECLAMO DE EQUIPAJE, TIENDA DE VIAJE, BAÑOS, SALIDAS).
 
-Owner: `scripts/world/airport_interior.gd::build()`, called by `world_refinements.gd` after the police interior; guarded by the `Interior` node. Check: `docs/evidence/airport-interior-20261028/verify.gd`. Renders: [plan](../evidence/airport-interior-20261028/top.png), [doorway](../evidence/airport-interior-20261028/door.png), [check-in](../evidence/airport-interior-20261028/checkin.png), [security](../evidence/airport-interior-20261028/security.png), [gate](../evidence/airport-interior-20261028/gate.png), [baggage claim](../evidence/airport-interior-20261028/claim.png), [shop and café](../evidence/airport-interior-20261028/shop_cafe.png), [cutaway](../evidence/airport-interior-20261028/iso.png).
+Owner (deleted 6 Nov 2026; now baked in `scenes/town/airport.scn`, changed by steps in `scripts/buildings/airport.gd`): formerly `scripts/world/airport_interior.gd::build()`, called by `world_refinements.gd` after the police interior; guarded by the `Interior` node. Check: `docs/evidence/airport-interior-20261028/verify.gd`. Renders: [plan](../evidence/airport-interior-20261028/top.png), [doorway](../evidence/airport-interior-20261028/door.png), [check-in](../evidence/airport-interior-20261028/checkin.png), [security](../evidence/airport-interior-20261028/security.png), [gate](../evidence/airport-interior-20261028/gate.png), [baggage claim](../evidence/airport-interior-20261028/claim.png), [shop and café](../evidence/airport-interior-20261028/shop_cafe.png), [cutaway](../evidence/airport-interior-20261028/iso.png).
 
 ## Furniture showroom — 29 October 2026
 
@@ -1139,7 +1140,7 @@ The user asked for a small deserted island off the right-side coast, a better be
 | Crabs | `scenes/animals/crab.tscn` + `scripts/world/crab.gd`: a new word root `crab` (el cangrejo), one shared vertex-coloured mesh (carapace, eye stalks, two claws, six legs) so each costs one draw call, about 0.6 m across, one picking Area3D. It scuttles sideways along the shoreline on a ±0.7 m run around its `home`, like the other wandering animals. 8 on the beaches (at least 28 m apart) and 2 on the island. |
 | Island | Centre about 16 m beyond the east shallows (data-driven from the shoreline sample nearest z = 130), roughly 13 m of sand with a 4.5 m shallow halo, peak +0.42, wobbly outline, two coconut palms (the existing `palm tree` species at 5.8 and 5.0 height), three boulders, two crabs, foam ring. It has trimesh collision so a landed helicopter or plane can stand on it; there is no walkable route from the mainland (the sea has no floor collision) — a causeway, boat or swimming is not designed and was not asked for. |
 
-Owner: `scripts/world/coast.gd::build()`, called by `world_refinements.gd` after `ground_openings` and before `apply_word_list`/`standable_tree_crowns`; guarded by the `coast_pass` metadata and the `Coast` node (holder of boulders, crabs, island and shore metadata). Tunables are constants at the top of the script. The minimap and atlas do not draw the island: it lies outside `reference_map_bounds` (x ≥ −204). Check: `docs/evidence/coast-20261029/verify.gd`; renders: `docs/evidence/coast-20261029/`. Not designed or approved: swimming, boats for the island, shell/starfish/driftwood words, coconut as a word.
+Owner (deleted 6 Nov 2026; now baked in `scenes/town/base.scn`, changed by steps in `scripts/buildings/base.gd`): formerly `scripts/world/coast.gd::build()`, called by `world_refinements.gd` after `ground_openings` and before `apply_word_list`/`standable_tree_crowns`; guarded by the `coast_pass` metadata and the `Coast` node (holder of boulders, crabs, island and shore metadata). Tunables are constants at the top of the script. The minimap and atlas do not draw the island: it lies outside `reference_map_bounds` (x ≥ −204). Check: `docs/evidence/coast-20261029/verify.gd`; renders: `docs/evidence/coast-20261029/`. Not designed or approved: swimming, boats for the island, shell/starfish/driftwood words, coconut as a word.
 
 ## Tower stair walls and ladder, flush lift doors, swivel seats, standable bridge — 30 October 2026
 
@@ -1190,7 +1191,7 @@ and out, keeping the bar and booth design; put basic food on the tables with voc
 (`scenes/characters/cook.tscn`) and replace **every** figure built from it with a main
 character in costume. Sign text unchanged (FINE DINING / ALTA COCINA).
 
-| Area | Built (owner `scripts/world/restaurant_venues.gd` unless noted) |
+| Area | Built (owner `scripts/world/restaurant_venues.gd` unless noted; deleted 6 Nov 2026, now `scripts/buildings/restaurants.gd`) |
 | --- | --- |
 | Dining room | Same 30 × 16 room and layout (U-bar, three booths, round table, five square tables, slat dividers, host stand). Cream marble floor with small black diamonds and brass dots; walnut wainscot with brass rail; walnut beams; **black leather** booth seats and bar stools (brass posts); walnut chairs with black seats; black window frames; walnut bottle cabinet whose bottles are now visible (they were hidden inside the cabinet); four brass chandeliers; gilt Tuscan landscape paintings; potted olive trees; dessert case (tiramisu, cake, gelato). |
 | Food | Every place setting has an Italian course (pasta, spaghetti and meatballs, lasagna, pizza, steak, salad, soup, tiramisu, gelato), water glass and red wine; tables carry candle, bread basket, olives and a wine bottle; cheese board and grapes on the bar. |
@@ -1216,7 +1217,7 @@ height, flat roof and motorcycle position above were replaced.*
 User request with an isometric reference image (bar and bottle wall, cream booths, sand
 quatrefoil tiles, tall arched windows). Answers in chat: keep **black leather / walnut**
 upholstery (no green, as before); ceiling **6.5**; **low hipped dark-tile roof**; motorcycle in
-a **regular car stall**. Owner `scripts/world/restaurant_venues.gd` unless noted.
+a **regular car stall**. Owner `scripts/world/restaurant_venues.gd` unless noted (deleted 6 Nov 2026, now `scripts/buildings/restaurants.gd`).
 
 | Area | Built |
 | --- | --- |
@@ -1917,7 +1918,7 @@ title shows the shown language first. See
 **Stages.** 1, the language framework, is [built](ARCHITECTURE_REVIEW_PART1.md#vocabulary-data-procedure).
 2, built 4 Nov 2026: 35 words (new **Family** category; months and before/after in Time &
 Directions) with Spanish grammar forms, `data/names.json`, the posters
-(`scripts/world/school_posters.gd`, called from `world_refinements.gd::resize_school()`), and
+(`scripts/world/school_posters.gd`, deleted 6 Nov 2026 (posters saved in the school unit), called from `world_refinements.gd::resize_school()`), and
 Dr. Li (`world_refinements.gd::remodel_hospital_displays()`, node `Buildings/Hospital/DrLi`,
 hospital-local (−3.7, 0, −13.9), id `dr_li`, name from `hospital.dr_li`); a click shows her
 name card. 3, built 4 Nov 2026 (see below).
@@ -2970,8 +2971,7 @@ picking, vocabulary, animation or collision; it is a visual comparison object.
 Rendered with the game's soft plush shading: layered mane lobes, rounded four-legged stance,
 cream face/muzzle, pink ear insets, eyes, whiskers and curved tufted tail. This is a handmade
 approximation, not an exact reconstruction of the reference's sculpt or studio lighting.
-See [in-game close-up](../evidence/lion-blueprint-20261110/zoo-close.png),
-[placement](../evidence/lion-blueprint-20261110/zoo-location.png), and
+See the verification (the in-game close-up and placement captures were not kept):
 [verification](FINAL_VERIFICATION.md#static-lion-blueprint-display--10-november-2026).
 
 ## Clay lion display (second build for comparison) — 10 November 2026
@@ -3152,12 +3152,12 @@ reaches the zoo only through a later swap step (as for the clay lion).
   tuft; wider, rounder face, calmer eyes, ears set back into the mane; fuller lobed tail tuft
   hanging lower; smooth round mane top; paws as **one rounded mitten with three broad toes and
   two shallow grooves** (visible from the side on hind paws too).
-- Views: sheet beside model [bodies](../evidence/lion-crawl-20261111/compare-bodies.png),
-  [three-quarter](../evidence/lion-crawl-20261111/compare-quarters.png),
-  [faces](../evidence/lion-crawl-20261111/compare-faces.png); paws
-  [front](../evidence/lion-crawl-20261111/paws-front.png), [side](../evidence/lion-crawl-20261111/paws-side.png); in
-  the zoo [close](../evidence/lion-crawl-20261111/zoo-close.png), [face](../evidence/lion-crawl-20261111/zoo-face.png),
-  [location](../evidence/lion-crawl-20261111/zoo-location.png);
+- Views (captures not kept): sheet beside model bodies,
+  three-quarter,
+  faces; paws
+  front, side; in
+  the zoo close, face,
+  location;
   [verification](FINAL_VERIFICATION.md#lion-relax-crawl-display--11-november-2026).
 - Colours darkened for town sunlight the same day (user: "yes tone color"; cream, muzzle, mane,
   mane seams and ear pink; base step `lion_crawl_colours` swaps the saved display). The user
@@ -3189,9 +3189,9 @@ Static, one box collision, no word, picking, wandering or animation; ~94k triang
 - Mane and tail tuft keep the crawl lion's toned orange (the user specified only the cream).
 - One fit change: the clay head's forehead is ~7 px further forward, so the mane's short V is
   repeated that much further forward; the mane is otherwise the crawl lion's.
-- Views: [bodies](../evidence/lion-mix-20261111/compare-bodies.png),
-  [faces](../evidence/lion-mix-20261111/compare-faces.png), in the zoo
-  [close](../evidence/lion-mix-20261111/zoo-close.png), [all four lions](../evidence/lion-mix-20261111/zoo-all-lions.png);
+- Views (captures not kept): bodies,
+  faces, in the zoo
+  close, all four lions;
   [verification](FINAL_VERIFICATION.md#combined-lion-display-and-temporary-lion-marks--11-november-2026).
 
 **Temporary lion marks (user: "a temporary mark on each lion so I can more easily tell and
@@ -3807,3 +3807,45 @@ one inside view each): `docs/evidence/shop-row-20261118/` (`capture.gd`, `before
 **Not done yet:** the other buildings; `bon_style.gd` still holds its own copies of the UI colours
 (it belongs to the UI restyle in progress) and should read them from `game_palette.gd` once that
 work is committed.
+
+## Bank interior refresh — 18 November 2026
+
+**User request** (18 Nov 2026 audit: the bank, last changed 28 Oct, was the oldest-looking room).
+Approved by the user the same day with the **sky** accent family. Interior only: the exterior,
+shell, 12 × 15 footprint, positions of the teller line, BearBanker and every word and interior
+root are unchanged. Own script `scripts/buildings/bank.gd`, six new steps:
+
+| Step | What changed |
+| --- | --- |
+| `palette_interior` | 160 interior surfaces from the October colours to the [game palette](#game-palette-and-shop-row--18-november-2026): walls and partitions `WALL_CREAM`, ceiling `TRIM`, bands, panels, signs and sofa cushions sky main, runner, sofa bases, teller chairs and queue ropes sky deep, consultation chairs sky light, counters and desks `WOOD`, skirting and mullions `WOOD_DARK`, monitors and queue posts `IRON`, planters and runner border `STONE`. Prefabs (desk, chair, computer), the bear and the lobby floor texture keep theirs. The teller line is recoloured only (the teller game uses its positions). |
+| `shared_doors` | The manager office and vault are the first building doors on the [shared door components](DOORS.md): office = `sliding_door.tscn` (wood leaf with vision glass, 1.2 × 2.4, pocket slide into a new wall piece), vault = `door.tscn` (steel `ROOF` leaf 0.12 thick, iron frame, 1.3 × 2.4, swings into the vault). The October slabs covered only part of each opening; new wall pieces (`Office door wall`, `Vault front wall`, `… right`, door heads) close the rest. Roots keep the names `Manager office` / `Vault entrance`; the word roots are their leaves `… door`. |
+| `door_labels` | The floating "Manager office • E" / "Vault entrance • E" labels are gone (the prompt is a bare "E", 12 Nov rule). The ATM sign, which stood edge-on and read backwards from the tellers, faces the lobby on a board. |
+| `atm_art` | Both ATMs: deep-sky cabinet, cream front, iron bezel round a glowing screen, keypad with keys, sky top band; one sky-deep sign board over both. Words (atm, screen, card reader, cash) unchanged. |
+| `vault_art` | Back wall: a round steel vault door (`Vault door`, word vault) with an iron ring, hinges, the brass-coloured wheel (`Vault wheel`) and the four bolts round it. The three `Deposit safe` roots are safe-deposit lockers (3 × 3 doors with keyholes) along the vault's left wall, clear of the door swing; their handles sit on top of the front. |
+| `chair_backs` | The consultation chair backs (a second green the palette step missed) in sky light like their seats. |
+
+Not done from the proposal: the round wheel and bolts are on the back-wall vault door, not on the
+entrance leaf (the shared door rebuilds its leaf at load, so extra parts cannot hang on it); the
+teller number plates stay sky deep (no brass in the palette).
+
+Check: `docs/evidence/bank-refresh-20261118/verify.gd` (the 28 Oct check with door paths moved to
+the leaves, plus labels, doors open and passable, palette, art and the teller line). Views:
+`capture.gd` → `before-*.png`, `after-*.png` and the two sheets (noon, eye level, VT_FOCUS=bank).
+Results in [Final verification](FINAL_VERIFICATION.md#bank-interior-refresh--18-november-2026).
+
+## Real windows — 18 November 2026
+
+**User request:** real windows in the supermarket and the police station, using the reusable window
+component and improving it where needed; the proposal was approved as made.
+
+- **Police station:** the lobby window (above the waiting chairs) and the evidence-room window are
+  each one `CIVIC` window, 6.6 × 2.1 (sky frame, transom bar, stone sill), in an opening through the
+  front pier, the facade skin and the painted lining. The stacked fake panes and the evidence room's
+  painted "Window light" are gone. The lineup's one-way glass and the cell window are unchanged.
+- **Supermarket:** the two storefront windows beside the door are each one `SHOPFRONT` window,
+  8.85 × 2.92 (meadow frame, three glazing bars, cream sill), in an opening through the front pier.
+  The facade's stone base, end piers and pilasters, the doors, interior, signs and word roots are
+  unchanged.
+- Both stay the clickable word "window". Geometry, decisions and checks:
+  [windows guide](WINDOWS.md#real-windows--18-november-2026); owners: step `real_windows` in
+  `scripts/buildings/police.gd` and `scripts/buildings/supermarket.gd`.

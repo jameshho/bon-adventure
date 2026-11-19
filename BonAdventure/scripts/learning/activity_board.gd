@@ -16,6 +16,9 @@ extends RefCounted
 ## emits started(id) when one begins and ended(id, summary) when it stops, however it stopped
 ## (target reached, walked away, language change, quit). summary = {"rounds": rounds right the
 ## first time, "target": rounds needed (0 = none), "completed": the target was reached}.
+## Progression (game_progress.gd, 18 Nov 2026) adds to the summary: "misses" (add_miss() calls:
+## a round answered wrong at least once, a retry), "needed" (the rounds the session needed when
+## it began, at least 1) and "custom" (the picker's rounds differed from the data's).
 ## running_id is the activity in progress at the last watch() ("" = none).
 ##
 ## Test launcher (game_launcher.gd, 9 Nov 2026): set_rounds(id, n) overrides the data's
@@ -40,6 +43,10 @@ var _running: Dictionary = {}
 var _done: Dictionary = {}
 ## id -> rounds chosen in the test launcher (replaces the data's progress while set).
 var _rounds: Dictionary = {}
+## id -> misses in the current session (add_miss()).
+var _misses: Dictionary = {}
+## id -> {"needed", "custom"} recorded by begin() for the ended summary.
+var _began: Dictionary = {}
 
 static var _shared
 
@@ -118,13 +125,18 @@ func watch() -> void:
 	var previous := running_id
 	running_id = now
 	if previous != "":
-		ended.emit(previous, {"rounds": done(previous), "target": target(previous), "completed": target(previous) > 0 and done(previous) >= target(previous)})
+		var began: Dictionary = _began.get(previous, {"needed": rounds(previous), "custom": false})
+		ended.emit(previous, {"rounds": done(previous), "target": target(previous), "completed": target(previous) > 0 and done(previous) >= target(previous),
+				"misses": misses(previous), "needed": int(began.needed), "custom": bool(began.custom)})
 	if now != "":
 		started.emit(now)
 
 ## A new session starts at 0.
 func begin(id: String) -> void:
 	_done[id] = 0
+	_misses[id] = 0
+	var data_rounds := maxi(1, int(activities.get(id, {}).get("progress", 0)))
+	_began[id] = {"needed": rounds(id), "custom": rounds(id) != data_rounds}
 
 func done(id: String) -> int:
 	return int(_done.get(id, 0))
@@ -133,3 +145,11 @@ func done(id: String) -> int:
 func add_success(id: String) -> bool:
 	_done[id] = done(id) + 1
 	return target(id) > 0 and done(id) >= target(id)
+
+## A round went wrong at least once (call once per round, or once per retry). Progression
+## (game_progress.gd) turns the misses into stars; it changes nothing else.
+func add_miss(id: String) -> void:
+	_misses[id] = misses(id) + 1
+
+func misses(id: String) -> int:
+	return int(_misses.get(id, 0))

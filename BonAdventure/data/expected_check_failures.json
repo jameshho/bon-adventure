@@ -6,7 +6,7 @@
     "may absorb (default 1); more are NEW. 'flaky': true = not reported as FIXED when it does not fail.",
     "'broken' = the check cannot complete; the runner skips it unless --include-broken.",
     "Update this file only with a dated reason, after the failure is understood or recorded in",
-    "docs/FINAL_VERIFICATION.md. Remove an entry when the runner reports it FIXED."
+    "docs/guides/FINAL_VERIFICATION.md. Remove an entry when the runner reports it FIXED."
   ],
   "checks": {
     "map_facades": {
