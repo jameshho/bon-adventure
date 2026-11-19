@@ -32,6 +32,15 @@ Start at the [README](../../README.md); editing contracts are in the
 [architecture guide](ARCHITECTURE_REVIEW_PART1.md), and implementation details and
 six rendered views are in the [Part 2 handoff](../evidence/part2/HANDOFF.md).
 
+## Supermarket real windows baked — 18 November 2026
+
+The supermarket's `real_windows` step ([windows guide](WINDOWS.md#real-windows--18-november-2026))
+baked after the layout commit: two SHOPFRONT windows, 15 old parts each replaced, front piers cut.
+`dev_focus.txt` = `all`, isolated `HOME`, each run once: `runtime_resources`, `building_access`
+PASS; `real-windows-20261118/capture.gd` (VT_FOCUS=supermarket, so not the full town): both windows
+see-through, outdoors face, meadow frame, word window, nothing across the glass; views
+`before-supermarket*.png` / `after-supermarket*.png`. The full suite and a web phone test were not run.
+
 ## Stale checks updated — 18 November 2026
 
 Checks whose expectations predated recent changes, each run once (`dev_focus.txt` = `all`,

@@ -47,6 +47,8 @@ read across the hall in every language ([before and after](../evidence/world-sig
 Since 18 Nov it is more compact: a staff wall shortens the floor, the fridges and drinks line the
 left wall, snacks and home goods are two short aisles, and every product is at least coconut-sized
 with 34 redrawn as clay toys ([compact redesign](../guides/TOWN_DESIGN_BRIEF.md#supermarket-compact-redesign--18-november-2026)).
+The two front windows are real glass in green frames: you see the aisles from the car park and
+the street from inside ([views](../evidence/real-windows-20261118/after-supermarket.png)).
 [2 Nov refit](../guides/TOWN_DESIGN_BRIEF.md#supermarket-refit-fruit-checkout-by-the-door-and-clerks--2-november-2026) ·
 [product art](../guides/TOWN_DESIGN_BRIEF.md#supermarket-product-art--8-november-2026) ·
 [sign readability](../guides/BUILDING_DESIGN_BLUEPRINT.md#sign-readability)

@@ -178,3 +178,6 @@ Views (street and room, noon and 21:00, a street angle, wide street and room vie
 (each window see-through, outdoors face, preset, word, nothing but the window across the glass):
 `docs/evidence/real-windows-20261118/` (`capture.gd`; `before-*`, `after-*` and `opaque-police` sheets).
 Street view draw calls (police only loaded): before 400, after 398.
+The supermarket step was baked on 18 Nov 2026 after its layout commit (`c580f4f`): both windows
+see-through with nothing across the glass; street view draw calls (supermarket only loaded):
+before 408, after 405 (`before-supermarket*`, `after-supermarket*`).
