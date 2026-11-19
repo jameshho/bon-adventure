@@ -2,7 +2,7 @@
 
 [← Minigames](minigames.md) · [Game guide](README.md)
 
-Generated 2026-11-18 by `tools/vocabulary_report.gd -- --write` from the game data. **Do not edit by hand**: words live in `data/words.json` and each game's data file; rerun the report after changing them. "Tested" words are the ones a question checks and the journal tracks; "shown" words appear in the game without being checked one at a time. Phrases (dialogue) are not listed. Where each word is placed in town: [vocabulary report](../vocabulary-report/summary.md).
+Generated 2026-11-18 by `tools/vocabulary_report.gd -- --write` from the game data. **Do not edit by hand**: words live in `data/words.json` and each game's data file; rerun the report after changing them. "Tested" words are the ones a question checks and the journal tracks; "shown" words appear in the game without being checked one at a time. Phrases (dialogue) are not listed. Where each word is placed in town: [vocabulary report](../guides/vocabulary-report/summary.md).
 
 ## Grocery Run
 

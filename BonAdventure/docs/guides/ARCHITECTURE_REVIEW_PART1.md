@@ -5,6 +5,23 @@ before visual changes. Current additions: [Part 2](../evidence/part2/HANDOFF.md)
 [final checks](FINAL_VERIFICATION.md), and the current editing rules at the end
 of this document. Start with the [README](../../README.md) for the live entry point.
 
+**Current sections (contents added 18 Nov 2026; nothing moved):**
+
+- Rules: [world and asset workflow](#world-and-asset-workflow),
+  [coordinates, roads and visual standards](#coordinates-roads-and-visual-standards),
+  [vocabulary data procedure](#vocabulary-data-procedure),
+  [vocabulary usage report](#vocabulary-usage-report), [maintaining these docs](#maintaining-these-docs).
+- Structure: [architecture and ownership](#architecture-and-ownership) (its "Active world" row;
+  the rest of the opening assessment is dated history),
+  [interaction system](#interaction-system), [clickable word items](#clickable-word-items--9-november-2026),
+  [saved place and respawn](#saved-place-and-respawn), [naming](#naming-16-nov-2026),
+  [welcome tutorial](#welcome-tutorial).
+- Learning: [practice tracker](#practice-tracker), [vocabulary book](#vocabulary-book),
+  [zones](#zone-boundaries--stage-1-inspection-28-october-2026),
+  [category and area journal](#category-and-area-journal--stage-2-28-october-2026).
+- Per-feature ownership sections (dated) are listed with their feature in the
+  [documentation map](../README.md#current-guides-where-to-make-decisions).
+
 ## Assessment and scope
 
 The existing Godot architecture is suitable for targeted world improvements. No
@@ -1152,7 +1169,7 @@ dictionary entries, even if no current object exposes the word.
 | Transport Infrastructure | 12 |
 | Transportation | 17 |
 
-`data/vocabulary_categories.json` is the category authority. Corresponding category
+`data/vocabulary_categories.json` was then the category authority (merged into `data/words.json` `categories` on 28 Oct 2026). Corresponding category
 fields in `learning_catalog.json` and cached category tags in **80 scene files**
 were synchronized. Those scene edits are metadata-only: no transforms, geometry,
 resource references, vocabulary keys, aliases or translations changed. This also
@@ -1669,6 +1686,8 @@ sure the templates together still give every relationship word.
 ### Airport flight game ownership — 5 November 2026
 
 Design record: [Airport flight game](TOWN_DESIGN_BRIEF.md#airport-flight-game--5-november-2026).
+The startup-pass owner `airport_interior.gd` named below was baked into `scenes/town/airport.scn`
+and deleted on 6 Nov 2026; change the terminal with steps in `scripts/buildings/airport.gd`.
 
 | Part | Owner |
 | --- | --- |

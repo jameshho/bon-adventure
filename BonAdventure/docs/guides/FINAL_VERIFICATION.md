@@ -1,5 +1,27 @@
 # Final verification — 20 October 2026
 
+## Current state — 18 November 2026
+
+Read this first; everything below is a dated log, and each entry describes only its own run.
+
+- **Last full suite:** 16 Nov 2026, `run_checks.py full`, `dev_focus.txt` = `all`: PASS 47,
+  NEW 6, TIMEOUT 3 ([record](#docs-reorganised-into-game--guides--evidence--archive--16-november-2026)).
+  All 9 were traced to game changes and their checks fixed; the 9 re-run once: **PASS 7, KNOWN 2,
+  NEW 0** ([triage](#triage-of-the-16-november-full-run-failures--16-november-2026)).
+- **Since then:** only targeted checks per change (each entry lists them and what was not run).
+  No full suite has been run on the 17–18 Nov changes.
+- **Known failures:** [`data/expected_check_failures.json`](../../data/expected_check_failures.json)
+  is the list (each with a date, reason and priority): `map_facades` (a street ray hits the
+  hospital's glass front before its facade, P3) and `rooftops` (the barn's gambrel roof is
+  steeper than walkable, by design). Open low-priority noise: `day_night` logs engine errors from
+  `verify.gd:90` (P4).
+- **How to run:** [README Verification](../../README.md#verification).
+- **Order:** entries from 14–16 Nov are at the top (newest first); entries from 12–18 Nov were
+  also appended at the end, from [Library books 50 % larger](#library-books-50--larger--12-november-2026)
+  onwards. Add new entries at the end; the newest are the last ones.
+
+## Introduction — 20 October 2026
+
 Current vehicle status is in the [road rewrite](#road-vehicle-physics-rewrite--22-october-2026)
 and [helicopter rewrite](#helicopter-physics-rewrite--22-october-2026)
 below. Earlier sections retain their dated baselines; their
@@ -1282,7 +1304,7 @@ supplies and the entrance. Nearby school NPCs/flower bed clear the new walls.
 Pre-edit baseline: resources **309 / 0 failures**, compact layout **706 / 0**.
 An additional pre-resize runtime inventory used the backed-up original three
 world scripts and unchanged Main in the isolated copy; its fingerprints/keys are
-saved in [baseline.json](../evidence/resize-20261025/baseline.json). It is not regenerated from
+saved in `docs/resize-20261025/baseline.json` (deleted 7 Nov 2026 with the retired October snapshot checks; in the old-history bundle). It is not regenerated from
 the new implementation. The dimension check compares other buildings, site
 frames, park/landmarks/vehicles and **301 unchanged supermarket components**
 against that evidence. All **12 registered doors** remain. Geometry fingerprints
@@ -2850,7 +2872,7 @@ Isolated project, headless: `check_reference_home` (8 doors, 191 clearance sampl
 
 ### 2026-10-29 ceiling, roof gap, seating and garage doors
 
-Changes are listed in [REFERENCE_HOME.md](REFERENCE_HOME.md#ceiling-roof-seating-and-garage-doors--29-october-2026). All runs used the isolated user directory.
+Changes are listed in [REFERENCE_HOME.md](REFERENCE_HOME.md#ceiling-roof-seating-and-garage-doors--29-october-2026-user-request). All runs used the isolated user directory.
 
 - `check_reference_home` (headless): 8 doors open and close, including the reversed access door; 191 clearance samples; roof visibility and taxi driver all passed. One intermediate layout, with the north end chair pulled out, failed the z 4.25 walkway route and was reverted.
 - Scratch garage script (graphical): 14 checks, 0 failures:
@@ -6301,7 +6323,7 @@ sharp; the 3D is slightly softer; shadow edges show stair-steps on the road.
 
 ## Minigame test launcher and the older games on the shared host — 9 November 2026
 
-What changed ([guide](MINIGAMES.md#test-launcher)): an F9 / corner-button test launcher (debug
+What changed ([guide](MINIGAMES.md#minigame-picker)): an F9 / corner-button test launcher (debug
 builds) starts any game with a chosen number of rounds and records no practice; the shop,
 cashier and warehouse sessions now use `minigame_host.gd` (and the warehouse `minigame_zone.gd`),
 which gives the cashier the gold "!" it lacked; grammar and mahjong read their rounds from the
@@ -7761,6 +7783,10 @@ same NEW 便 逛 as above.
 After merging `main` (2a2da89, the bank interior refresh): `verify.gd` graphics,
 `VT_FOCUS=bank VT_SPAWN=none`: **93 checks, 0 failures**; the four views above were re-rendered
 on the recoloured bank (window 2, the monitor, BearBanker and the customer paths unchanged).
+
+After merging `main` (f7b8c24, electronics makeover and docs cleanup): runner `bank_teller` and
+`runtime_resources` PASS, `language` the same NEW 便 逛; `docs/game/words.md` regenerated to resolve
+its conflict (`vocabulary_report.gd -- --write`, `VT_FOCUS=all`: 5451 checks, 0 failures).
 
 Not run: the full suite. Not done: `tools/build_cjk_font.py` (it downloads the full Noto Sans TC
 from google/fonts; waiting for the user's go-ahead), so until it runs, 23 new Chinese characters

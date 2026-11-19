@@ -271,7 +271,7 @@ below `sign_min_em`. `tools/bake_unit.gd` keeps the base pixel size in the scene
 added only when the lettering lacks contrast against its board.
 
 Users: the supermarket (`supermarket.gd` step `world_signs`, 16 Nov 2026: department bands,
-lane numbers and OPEN tags, PRODUCE, price board, MARKET, facades). Not yet migrated, with their
+lane numbers and OPEN tags, PRODUCE, price board, MARKET, facades). The electronics store (`electronics_makeover.gd`, 18 Nov 2026: its six signs). Not yet migrated, with their
 own sign code: `base.gd` (`_zz_sign`), `sports.gd`, `home_expansion.gd`, `restaurants.gd`,
 `library.gd`, `chapel.gd`, `mystery.gd`, `warehouse.gd`, `town_zones.gd`,
 `hospital_elevator.gd`, `coplanar_gaps.gd` and the door scenes' signs. The check

@@ -76,11 +76,11 @@ this repair does not certify or repair that whole-project checker.
 
 | View | Before | After |
 | --- | --- | --- |
-| Exterior | [Before](hospital-front-left-before.png) | [After](hospital-front-left-after.png) |
-| Stair enclosure | [Before](hospital-stair-room-before.png) | [After](hospital-stair-room-after.png) |
-| Player landing | [Before](hospital-player-landing-before.png) | [After](hospital-player-landing-after.png) |
+| Exterior | [Before](hospital-front-left-before.png) | After (capture not kept) |
+| Stair enclosure | [Before](hospital-stair-room-before.png) | After (capture not kept) |
+| Player landing | [Before](hospital-player-landing-before.png) | After (capture not kept) |
 
-[Normal ascent](hospital-player-ascent1-after.png) · [Upper arrival](hospital-player-arrival3-after.png)
+Normal ascent · Upper arrival (captures not kept)
 
 Updated floor cutaways: [Floor 1](floor1.png) · [Floor 2](floor2.png) · [Floor 3](floor3.png).
 Cutaways hide upper geometry and use English annotations for review; game signs remain Spanish.
