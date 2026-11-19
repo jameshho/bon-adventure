@@ -151,6 +151,6 @@ common/physics_interpolation=true
 
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
-limits/opengl/max_renderable_lights=256
 reflections/reflection_atlas/reflection_size=16
 reflections/reflection_atlas/reflection_count=1
+limits/opengl/max_renderable_lights=256

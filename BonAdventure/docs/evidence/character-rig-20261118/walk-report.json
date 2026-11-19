@@ -1,0 +1,15 @@
+{
+  "fps": 30.0,
+  "frames": 32,
+  "mean_pixel_difference_original_vs_experiment": {
+    "BonBon": 0.0002,
+    "Leo": 0.0009,
+    "Leo-run": 0.0013,
+    "Miso dressed+turning": 0.0098,
+    "Poppy": 0.0109
+  },
+  "panel": [
+    420,
+    460
+  ]
+}

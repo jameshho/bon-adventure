@@ -807,8 +807,13 @@ comes back (B only). Answered 17 Nov: the label fix, then A (buildings arrive in
   in the world, the way `share_label_sizes()` does; `translate_all()` records the label's authored
   pixel and outline sizes. Natively with that path forced and every unit added one by one
   (`results_signs_fixed.json`): **video memory 341 MB instead of 660 MB, font atlases 53 MB instead
-  of 303 MB** (textures 117 instead of 430). Library book titles are sized by `library_book.gd` and
-  still get their own sizes (a few glyph caches; left to the library's owner).
+  of 303 MB** (textures 117 instead of 430). Library book titles are sized by `library_book.gd`;
+  since 18 Nov 2026 it fits them at the authored pixel size and, on the web, draws the fitted size
+  at the next `LABEL_SIZES` step with a smaller pixel size (same world size), so the titles share
+  the shared atlases too (sample: native 52/58/64, web all 64). Only books with a cover title
+  process (to refit after a translation; plain books never do), and the check no longer formats a
+  string per book per frame
+  ([evidence](../../evidence/ui-perf-polish-20261118/verify.gd), 43/43, glyph memory not measured).
 - **Stage 1, in part** (`scripts/core/main.gd` `add_unit()`): the hook-up after a unit is placed
   is spread over four frames (signs, reference layout and vehicles; word areas; seats, solid
   figures, interactables and lamps; batching). Timed before the split (`time_add_unit.gd`):

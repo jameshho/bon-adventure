@@ -76,6 +76,7 @@ const RenderCulling := preload("res://scripts/world/render_culling.gd")
 const TutorialCue := preload("res://scripts/ui/tutorial_cue.gd")
 const InstructionStrip := preload("res://scripts/ui/instruction_strip.gd")
 const ShoppingBasket := preload("res://scripts/world/shopping_basket.gd")
+const BonStyle := preload("res://scripts/ui/bon_style.gd")
 ## Dialogue pacing (user, 17 Nov 2026): a bubble stays READ_BASE + READ_PER_CHAR per character
 ## (clamped to READ_MIN..READ_MAX seconds), then LINE_GAP seconds before the next one.
 const LINE_GAP := 0.6
@@ -95,9 +96,6 @@ const START_MINUTES := 720.0
 const CUTSCENE_SKIP_AFTER := 1.0
 ## The title cutscene's bar: the buildings coming in fill it to here, the later acts' views the rest.
 const CUTSCENE_UNITS_SHARE := 0.8
-const GOLD := Color("fff1c5")
-const FILL := Color(0.08, 0.16, 0.22, 0.88)
-const EDGE := Color("7abfb3")
 
 signal finished(skipped: bool)
 
@@ -128,6 +126,8 @@ var _faces: Dictionary = {}
 var _hidden: Array = []
 var _skip_layer: CanvasLayer
 var _skip_button: Button
+## The window scale the Skip button was last styled for.
+var _skip_scale := 0.0
 var _cutscene: CanvasLayer
 ## "confine" step: the player stays inside these world XZ rects (none = free); `_confine_line`
 ## flashes when the player is held back (at most every CONFINE_FLASH_MS).
@@ -1562,20 +1562,9 @@ func _make_skip_button() -> void:
 	_skip_layer.layer = 60
 	_skip_layer.visible = false
 	add_child(_skip_layer)
-	_skip_button = Button.new()
-	_skip_button.focus_mode = Control.FOCUS_NONE
-	_skip_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	for state in ["normal", "hover", "pressed"]:
-		var box := StyleBoxFlat.new()
-		box.bg_color = FILL.lightened(0.12) if state != "normal" else FILL
-		box.border_color = EDGE
-		box.set_border_width_all(2)
-		box.set_corner_radius_all(14)
-		box.content_margin_left = 22
-		box.content_margin_right = 22
-		_skip_button.add_theme_stylebox_override(state, box)
-	for color_name in ["font_color", "font_hover_color", "font_pressed_color"]:
-		_skip_button.add_theme_color_override(color_name, GOLD)
+	# The in-game soft blue pill (docs/guides/UI_STYLE.md, kind "soft"); restyled in _process
+	# only when the window scale changes.
+	_skip_button = BonStyle.button("", "soft", "", 1.0, 24.0, Vector2(150, 56))
 	_skip_button.pressed.connect(skip)
 	_skip_layer.add_child(_skip_button)
 
@@ -1595,9 +1584,12 @@ func _process(_delta: float) -> void:
 	# Finger sized and scaled with the window (money_panel.gd's rule), top centre.
 	var screen := get_viewport().get_visible_rect().size
 	var f := clampf(minf(screen.y / 800.0, screen.x / 1100.0), 0.6, 3.0)
-	_skip_button.text = lexicon.phrase("tutorial.skip", lexicon.native)
-	_skip_button.add_theme_font_size_override("font_size", roundi(24 * f))
-	_skip_button.custom_minimum_size = Vector2(150, 56) * f
+	var text: String = lexicon.phrase("tutorial.skip", lexicon.native)
+	if _skip_button.text != text or not is_equal_approx(_skip_scale, f):
+		_skip_button.text = text
+		_skip_scale = f
+		BonStyle.style_button(_skip_button, "soft", f, 24.0)
+		_skip_button.custom_minimum_size = Vector2(150, 56) * f
 	_skip_button.size = _skip_button.get_minimum_size()
 	# Top centre where the HUD clock is (hidden meanwhile); out of the way of the journal, map, help
 	# and Settings, and of an instruction strip (user, 18 Nov 2026: hidden while one shows).

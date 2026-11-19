@@ -20,7 +20,8 @@ bar and "E" badge followed on 18 Nov 2026 (views `panel_*.png`, waiting for the 
 The money panel follows the user's mockup exactly. The mahjong table, the elevator floor picker
 and the electrical box then took on its pattern: cream pills and trays on the soft blue card, a
 green main action and a cream ✕ (views `panel_mahjong*.png`, `panel_electrical*.png`,
-`elevator/`). Mahjong's gold "¡Mahjong!" win button and the gold "!" over NPCs stay gold.
+`elevator/`). The welcome tutorial's Skip button is a soft pill too (18 Nov 2026,
+`docs/evidence/ui-perf-polish-20261118/skip.png`). Mahjong's gold "¡Mahjong!" win button and the gold "!" over NPCs stay gold.
 Kept on purpose, as part of a game's own look: the radar arcade screen, the flight departures
 board, the restaurant ordering tablet and menu book, the mahjong lesson's pink cards and the
 minimap's map drawing.

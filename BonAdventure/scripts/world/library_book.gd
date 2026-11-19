@@ -20,6 +20,8 @@ extends Node3D
 const Art := preload("res://scripts/buildings/supermarket_products.gd")
 const Interactable := preload("res://scripts/core/interactable.gd")
 const HandHold := preload("res://scripts/player/hand_hold.gd")
+const RenderCulling := preload("res://scripts/world/render_culling.gd")
+const SignLanguage := preload("res://scripts/world/sign_language.gd")
 ## Shelved books (user, 12 Nov 2026: 50 % taller and proportionately wider than the 11 Nov books,
 ## which were 0.11-0.15 thick, 0.33-0.40 tall and 0.3 deep; a first pass the same day used 40 %).
 const THICKNESS_RANGE := Vector2(.165, .225)
@@ -81,7 +83,10 @@ static var _meshes := {}
 var art
 ## The cover title (rebuilt with the model) and the text and size it was last fitted to.
 var _title_label: Label3D
-var _fitted := ""
+var _fitted_text := ""
+var _fitted_size := -1
+## The title's authored outline (2 or 14 at TITLE_FONT), before any shared-size scaling.
+var _title_outline := 0
 
 func _ready() -> void:
 	if not has_meta("word_key"):
@@ -133,9 +138,12 @@ static func _bold_font() -> Font:
 	return _bold
 
 ## Signs are translated (and re-translated on a language change) after the book is built, so
-## the title is fitted again whenever its text or size was changed from outside.
+## the title is fitted again whenever its text or size was changed from outside. Only a book with
+## a cover title processes (set in _rebuild()); plain books never do.
 func _process(_delta: float) -> void:
-	if _title_label != null and is_instance_valid(_title_label) and _fitted != "%s|%d" % [_title_label.text, _title_label.font_size]:
+	if _title_label == null or not is_instance_valid(_title_label):
+		set_process(false)
+	elif _title_label.font_size != _fitted_size or _title_label.text != _fitted_text:
 		_fit_title()
 
 ## The largest font size (down to TITLE_MIN_FONT) at which every word fits the band's width and
@@ -143,7 +151,12 @@ func _process(_delta: float) -> void:
 func _fit_title() -> void:
 	var label := _title_label
 	var font: Font = label.font if label.font != null else ThemeDB.fallback_font
-	var room := TITLE_BAND.x / label.pixel_size
+	# Fitted at the authored pixel size and outline (sign_language.gd and render_culling.gd may
+	# have rescaled both since).
+	var pixel := TITLE_EM / TITLE_FONT
+	label.pixel_size = pixel
+	label.outline_size = _title_outline
+	var room := TITLE_BAND.x / pixel
 	# A long word is first set a little narrower (down to TITLE_SQUEEZE), then smaller.
 	var widest := 1.0
 	for word in label.text.split(" ", false):
@@ -163,12 +176,25 @@ func _fit_title() -> void:
 		if fits:
 			var lines := roundi(font.get_multiline_string_size(label.text, HORIZONTAL_ALIGNMENT_CENTER, room, size).y / font.get_height(size))
 			var tall := lines * font.get_height(size) + (lines - 1) * label.line_spacing + label.outline_size
-			fits = tall * label.pixel_size <= TITLE_BAND.y
+			fits = tall * pixel <= TITLE_BAND.y
 		if fits:
 			break
 		size -= 2
 	label.font_size = size
-	_fitted = "%s|%d" % [label.text, size]
+	# Web: drawn at the next shared size with a smaller pixel size (same size in the world), so
+	# titles share the town's glyph atlases instead of one per fitted size (sign_language.gd
+	# _set_size(), performance guide "Stage 0").
+	if SignLanguage.share_sizes:
+		for step in RenderCulling.LABEL_SIZES:
+			if step >= size:
+				var ratio := float(step) / float(size)
+				label.font_size = step
+				label.pixel_size = pixel / ratio
+				label.width = room * ratio
+				label.outline_size = maxi(RenderCulling.LABEL_OUTLINE_STEP, roundi(_title_outline * ratio / RenderCulling.LABEL_OUTLINE_STEP) * RenderCulling.LABEL_OUTLINE_STEP)
+				break
+	_fitted_text = label.text
+	_fitted_size = label.font_size
 
 ## Thickness of the book (what a shelf gap must fit).
 func thickness() -> float:
@@ -181,6 +207,8 @@ func _rebuild() -> void:
 		if child.has_meta(PART_META):
 			remove_child(child)
 			child.free()
+	_title_label = null
+	set_process(false)
 	var model := MeshInstance3D.new()
 	model.name = "Model"
 	model.set_meta(PART_META, true)
@@ -217,7 +245,10 @@ func _rebuild() -> void:
 		cover.position = Vector3(BAND.x, TITLE_Y, -size.z / k * .5 - .005)
 		cover.rotation.y = PI
 		_title_label = cover
-		_fitted = ""
+		_title_outline = cover.outline_size
+		_fitted_text = ""
+		_fitted_size = -1
+		set_process(true)
 		model.add_child(cover)
 	else:
 		# draw_plain's frame has the spine at -Z; turned -90 deg so it lies at +X.
