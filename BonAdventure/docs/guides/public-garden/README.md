@@ -1,5 +1,11 @@
 # Expanded Public Garden
 
+> **Historical before 6 Nov 2026:** the garden is now baked in `scenes/town/base.scn` and changed
+> with steps in `scripts/buildings/base.gd` and `monument_plaza.gd`
+> ([changing a building](../MODULAR_TOWN.md#changing-a-building)). "Editing and regenerating"
+> and the saved-snapshot, `public_garden.gd` and bake instructions below describe the deleted
+> old world. The design records (layout, bridge, willows, monument) still describe what was built.
+
 **Current monument layout and terrain:** [4 November photographic revision](#boston-inspired-garden--4-november-2026), with the [5 November monument refinement](#washington-monument-refinement--5-november-2026) superseding its bushes, beds and fountain design and the [5 November trail cleanup](#monument-trail-cleanup--5-november-2026) superseding its trail network. Earlier dated layouts below are historical.
 
 *Historical (until 6 Nov 2026):* the main scene then opened `scenes/world/town_public_garden.tscn`, an editable snapshot; it was deleted when the [modular town](../MODULAR_TOWN.md) (`scenes/town/base.scn`) replaced it. The original `town_reference.tscn` and its buildings remain available. All work stays in the existing low-poly style; no downloaded assets are required.

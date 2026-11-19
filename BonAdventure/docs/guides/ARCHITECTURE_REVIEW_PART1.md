@@ -5,6 +5,23 @@ before visual changes. Current additions: [Part 2](../evidence/part2/HANDOFF.md)
 [final checks](FINAL_VERIFICATION.md), and the current editing rules at the end
 of this document. Start with the [README](../../README.md) for the live entry point.
 
+**Current sections (contents added 18 Nov 2026; nothing moved):**
+
+- Rules: [world and asset workflow](#world-and-asset-workflow),
+  [coordinates, roads and visual standards](#coordinates-roads-and-visual-standards),
+  [vocabulary data procedure](#vocabulary-data-procedure),
+  [vocabulary usage report](#vocabulary-usage-report), [maintaining these docs](#maintaining-these-docs).
+- Structure: [architecture and ownership](#architecture-and-ownership) (its "Active world" row;
+  the rest of the opening assessment is dated history),
+  [interaction system](#interaction-system), [clickable word items](#clickable-word-items--9-november-2026),
+  [saved place and respawn](#saved-place-and-respawn), [naming](#naming-16-nov-2026),
+  [welcome tutorial](#welcome-tutorial).
+- Learning: [practice tracker](#practice-tracker), [vocabulary book](#vocabulary-book),
+  [zones](#zone-boundaries--stage-1-inspection-28-october-2026),
+  [category and area journal](#category-and-area-journal--stage-2-28-october-2026).
+- Per-feature ownership sections (dated) are listed with their feature in the
+  [documentation map](../README.md#current-guides-where-to-make-decisions).
+
 ## Assessment and scope
 
 The existing Godot architecture is suitable for targeted world improvements. No
