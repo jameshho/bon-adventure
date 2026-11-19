@@ -32,6 +32,8 @@ const Board := preload("res://scripts/learning/activity_board.gd")
 const Presence := preload("res://scripts/learning/npc_presence.gd")
 const PracticeLog := preload("res://scripts/learning/practice_log.gd")
 const Interactable := preload("res://scripts/core/interactable.gd")
+const Progress := preload("res://scripts/learning/game_progress.gd")
+const UiText := preload("res://scripts/language/ui_text.gd")
 const InteractIcons := preload("res://scripts/ui/interact_badge.gd")
 ## Metres within which E (or a click / tap) talks to the NPC or another talker.
 const TALK_DISTANCE := 3.5
@@ -166,6 +168,16 @@ func offer(id: String = "", play_label: String = "") -> void:
 	say(id if id != "" else text("greeting"), [
 		{"id": choice_prefix() + "play", "label": lexicon.line(play_label if play_label != "" else text("play")), "icon": "check"},
 		{"id": choice_prefix() + "no", "label": lexicon.line("common.reply_no"), "icon": "no"}], 0.0)
+	show_level()
+
+## The player's level and best stars at it on the line on screen, for a game with levels
+## (progression, game_progress.gd, 18 Nov 2026). offer() calls it; a game that starts without a
+## greeting (the cashier) calls it on its first line.
+func show_level() -> void:
+	var progress = Progress.shared()
+	var id := str(spec.get("activity", ""))
+	if progress.has_levels(id) and dialogue_panel.has_method("show_level"):
+		dialogue_panel.show_level(UiText.t("progress.level", {"n": progress.level(id)}), progress.best(id, progress.level(id)))
 
 ## A choice for say() with this game's prefix (its press arrives as choice_made(id)).
 func choice(id: String, label_id: String, icon: String = "") -> Dictionary:

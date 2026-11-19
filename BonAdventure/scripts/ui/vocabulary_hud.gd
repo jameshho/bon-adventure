@@ -12,6 +12,8 @@ signal settings_requested
 signal journal_toggle_requested
 ## The F1 guide opened or closed (its ✕, the ? button, F1 or Esc): Main re-checks the player lock.
 signal help_toggled
+## The town map opened or closed (M, its corner button, its ✕): Main re-checks the controls.
+signal map_toggled
 const GameSettings := preload("res://scripts/core/game_settings.gd")
 const PinyinText := preload("res://scripts/ui/pinyin_text.gd")
 const PracticeLog := preload("res://scripts/learning/practice_log.gd")
@@ -70,7 +72,6 @@ var fps_label: Label
 var movement_label: Label
 var noclip_label: Label
 var map_overlay: ColorRect
-var map_image: TextureRect
 var help_overlay: PanelContainer
 var help_scroll: ScrollContainer
 ## The F1 guide's ✕ (14 Nov 2026, user: touch had no way to close it), as big as a corner button.
@@ -363,29 +364,14 @@ func _ready() -> void:
     noclip_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
     noclip_label.visible = false
     ui_root.add_child(noclip_label)
-    # Optional on-screen version of the included master map.
+    # The town map's full-screen layer (wayfinding, 18 Nov 2026): Main puts the baked map
+    # (town_map_panel.gd) in it; it shows while the map is open.
     map_overlay = ColorRect.new()
-    map_overlay.color = Color(0.03, 0.07, 0.10, 0.92)
-    map_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    map_overlay.name = "Map overlay"
+    map_overlay.color = BonStyle.SHADE
+    map_overlay.mouse_filter = Control.MOUSE_FILTER_STOP
     map_overlay.visible = false
     ui_root.add_child(map_overlay)
-    map_image = TextureRect.new()
-    map_image.name = "Neighborhood map"
-    # The full map is switched off for now (Features.FULL_MAP): its picture is not loaded and the
-    # overlay (kept empty, never shown) has no way to open.
-    if Features.FULL_MAP:
-        map_image.texture = load("res://assets/maps/town_map.png")
-    map_image.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-    map_image.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-    map_image.mouse_filter = Control.MOUSE_FILTER_IGNORE
-    map_overlay.add_child(map_image)
-    var close_note := Label.new()
-    close_note.name = "Map hint"
-    phrase_label(close_note, "hud.map_hint")
-    close_note.add_theme_font_size_override("font_size", 18)
-    close_note.add_theme_color_override("font_color", Color("fff3d4"))
-    close_note.position = Vector2(20, 18)
-    map_overlay.add_child(close_note)
     # Compact always-visible discovery challenge: pointer-friendly but does not
     # absorb input from the third-person view.
     quest_toast = Label.new()
@@ -579,7 +565,9 @@ func _layout_hud() -> void:
     for button in [settings_button, peek_button]:
         size_corner_button(button, Rect2(button.position, Vector2(corner, corner)))
     size_corner_button(bookmark_button, top_slot(0))
-    size_corner_button(map_button, bottom_slot(1))
+    # The second top-right row, left of the minigame picker (wayfinding, 18 Nov 2026; it was in
+    # the bottom-right cluster, where the touch jump button sits since 14 Nov 2026).
+    size_corner_button(map_button, top_slot(2))
     size_corner_button(help_button, bottom_slot(3))
     peek_button.add_theme_font_size_override("font_size", roundi(corner * 0.36))
     settings_button.position = Vector2(viewport_size.x - corner - 12.0, 10.0)
@@ -624,15 +612,13 @@ func _layout_hud() -> void:
     _size_help_close()
     map_overlay.position = Vector2.ZERO
     map_overlay.size = viewport_size
-    map_image.position = Vector2(30, 50)
-    map_image.size = Vector2(maxf(1.0, viewport_size.x - 60.0), maxf(1.0, viewport_size.y - 90.0))
 
 func _process(delta: float) -> void:
     reticle_group.visible = Input.mouse_mode == Input.MOUSE_MODE_CAPTURED and not is_card_visible()
     # Full-screen windows cover the top-right buttons (the journal has its own ✕).
     var covered: bool = is_map_open() or is_journal_open() or is_help_open()
     bookmark_button.visible = not covered and not cluster_hidden(bookmark_button) and not tutorial_hidden.get("journal", false)
-    map_button.visible = Features.FULL_MAP and not covered and not cluster_hidden(map_button)
+    map_button.visible = Features.FULL_MAP and not covered and not cluster_hidden(map_button) and not tutorial_hidden.get("map", false)
     # Hidden (14 Nov 2026, user): F1 opens the guide; its ✕ closes it.
     help_button.visible = false
     settings_button.visible = not covered
@@ -765,6 +751,7 @@ func toggle_map() -> void:
     if is_instance_valid(map_overlay):
         map_overlay.visible = not map_overlay.visible
         quest_toast.visible = not map_overlay.visible and quest_toast_time > 0.0
+        map_toggled.emit()
 
 func is_map_open() -> bool:
     return is_instance_valid(map_overlay) and map_overlay.visible

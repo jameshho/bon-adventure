@@ -1,0 +1,325 @@
+{
+	"_comment": "Written by tools/bake_town_map.gd (do not edit by hand). frame: the picture assets/maps/town_map.png covers town x from west (left edge) to east and z from north (top edge) to south; places: each building's standing point outside its entrance (at) and its door, in town coordinates (Main's Apartment frame, +X west / +Z north); games: where each minigame's NPC (or box) stands. Used by scripts/ui/town_map_panel.gd and guide_arrow.gd.",
+	"frame": {
+		"east": -195.3,
+		"north": 290.5,
+		"pixels": [
+			1400,
+			1138
+		],
+		"south": -20.3,
+		"west": 187.1
+	},
+	"games": {
+		"cashier_supermarket": [
+			-135.9,
+			120.6
+		],
+		"electrical_box": [
+			5.9,
+			49.6
+		],
+		"evidence_mimi": [
+			-145.0,
+			84.7
+		],
+		"family_dr_li": [
+			52.3,
+			219.3
+		],
+		"flight_bruno": [
+			-100.1,
+			239.4
+		],
+		"grammar_lana": [
+			7.4,
+			237.4
+		],
+		"library_rosa": [
+			50.5,
+			28.1
+		],
+		"lineup_rocco": [
+			-152.0,
+			77.8
+		],
+		"mahjong_mei": [
+			-3.6,
+			52.4
+		],
+		"mystery_luna": [
+			128.4,
+			73.4
+		],
+		"radar_patrol": [
+			-74.1,
+			244.8
+		],
+		"restaurant_twinkle": [
+			-33.3,
+			36.7
+		],
+		"shop_supermarket": [
+			-130.0,
+			121.4
+		],
+		"warehouse_ramon": [
+			-43.9,
+			218.5
+		]
+	},
+	"places": [
+		{
+			"at": [
+				1.0,
+				51.0
+			],
+			"door": [
+				1.0,
+				46.0
+			],
+			"name": "home",
+			"unit": "home"
+		},
+		{
+			"at": [
+				-126.5,
+				126.0
+			],
+			"door": [
+				-133.2,
+				126.0
+			],
+			"name": "supermarket",
+			"unit": "supermarket"
+		},
+		{
+			"at": [
+				51.0,
+				44.5
+			],
+			"door": [
+				51.0,
+				40.5
+			],
+			"name": "library",
+			"unit": "library"
+		},
+		{
+			"at": [
+				122.5,
+				108.0
+			],
+			"door": [
+				126.5,
+				108.0
+			],
+			"name": "bank",
+			"unit": "bank"
+		},
+		{
+			"at": [
+				-135.0,
+				80.0
+			],
+			"door": [
+				-139.0,
+				80.0
+			],
+			"name": "police_station",
+			"unit": "police"
+		},
+		{
+			"at": [
+				-37.0,
+				45.5
+			],
+			"door": [
+				-37.0,
+				42.0
+			],
+			"name": "restaurants",
+			"unit": "restaurants"
+		},
+		{
+			"at": [
+				-61.0,
+				46.5
+			],
+			"door": [
+				-61.0,
+				42.0
+			],
+			"name": "taqueria",
+			"unit": "restaurants"
+		},
+		{
+			"at": [
+				-96.0,
+				224.0
+			],
+			"door": [
+				-96.0,
+				236.0
+			],
+			"name": "airport",
+			"unit": "airport"
+		},
+		{
+			"at": [
+				-74.1,
+				241.3
+			],
+			"door": [
+				-74.1,
+				244.8
+			],
+			"name": "control_tower",
+			"unit": "airport"
+		},
+		{
+			"at": [
+				-47.2,
+				216.3
+			],
+			"door": [
+				-47.2,
+				221.0
+			],
+			"name": "warehouse",
+			"unit": "warehouse"
+		},
+		{
+			"at": [
+				66.0,
+				93.0
+			],
+			"door": [
+				66.0,
+				84.7
+			],
+			"name": "farm_barn",
+			"unit": "barn"
+		},
+		{
+			"at": [
+				10.0,
+				216.0
+			],
+			"door": [
+				10.0,
+				220.9
+			],
+			"name": "school",
+			"unit": "school"
+		},
+		{
+			"at": [
+				56.0,
+				216.5
+			],
+			"door": [
+				56.0,
+				221.0
+			],
+			"name": "hospital",
+			"unit": "hospital"
+		},
+		{
+			"at": [
+				96.0,
+				225.5
+			],
+			"door": [
+				96.0,
+				230.0
+			],
+			"name": "sports_store",
+			"unit": "sports"
+		},
+		{
+			"at": [
+				-124.5,
+				164.0
+			],
+			"door": [
+				-129.0,
+				164.0
+			],
+			"name": "clothing_store",
+			"unit": "clothing"
+		},
+		{
+			"at": [
+				120.5,
+				137.0
+			],
+			"door": [
+				125.0,
+				137.0
+			],
+			"name": "electronics_store",
+			"unit": "electronics"
+		},
+		{
+			"at": [
+				126.0,
+				223.0
+			],
+			"door": [
+				126.0,
+				227.5
+			],
+			"name": "furniture_store",
+			"unit": "furniture"
+		},
+		{
+			"at": [
+				121.0,
+				166.0
+			],
+			"door": [
+				125.7,
+				166.0
+			],
+			"name": "bakery_cafe",
+			"unit": "bakery"
+		},
+		{
+			"at": [
+				-79.0,
+				163.5
+			],
+			"door": [
+				-79.0,
+				168.5
+			],
+			"name": "chapel",
+			"unit": "chapel"
+		},
+		{
+			"at": [
+				62.2,
+				165.5
+			],
+			"door": [
+				62.2,
+				170.7
+			],
+			"name": "playground",
+			"unit": "playground"
+		},
+		{
+			"at": [
+				111.0,
+				82.0
+			],
+			"door": [
+				116.0,
+				82.0
+			],
+			"name": "mystery_house",
+			"unit": "mystery"
+		}
+	]
+}

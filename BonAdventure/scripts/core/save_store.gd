@@ -26,6 +26,8 @@ const PROFILE_FILES: Array[String] = [
 	"radar_patrol.json",
 	# The player's last place (player_place.gd, 14 Nov 2026).
 	"player_place.json",
+	# Minigame levels and stars (game_progress.gd, 18 Nov 2026).
+	"game_progress.json",
 ]
 
 ## The active profile's folder ("user://profiles/p1"), or "" for the old flat layout.

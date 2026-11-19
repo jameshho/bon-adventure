@@ -132,21 +132,27 @@ Since 18 Nov its storefront is in the shared [shop-row look](../guides/TOWN_DESI
 
 ## Bank
 
-<img src="../evidence/shop-staff-20261101/bank-lobby.png" width="480" alt="Bank lobby">
+<img src="../evidence/bank-refresh-20261118/after-doorway.png" width="480" alt="Bank lobby">
 
-*Screenshot 1 Nov.*
+*Screenshot 18 Nov.*
 
 Tellers, a waiting area, a consultation office, the vault and indoor ATMs; a bear banker.
-[Design record](../guides/TOWN_DESIGN_BRIEF.md#bank-interior--28-october-2026)
+Since 18 Nov the interior is in the game palette (cream walls, sky-blue accents), the office and
+vault have the shared doors (no floating labels), and the ATMs and vault (round steel door,
+safe-deposit lockers) were redrawn ([before/after views](../evidence/bank-refresh-20261118/)).
+[Design record](../guides/TOWN_DESIGN_BRIEF.md#bank-interior--28-october-2026),
+[refresh](../guides/TOWN_DESIGN_BRIEF.md#bank-interior-refresh--18-november-2026)
 
 ## Police station
 
-<img src="../evidence/interiors-polish-20261109/after-police-lobby-right.png" width="480" alt="Police station lobby">
+<img src="../evidence/real-windows-20261118/after-police-room.png" width="480" alt="Police station lobby with its real front windows">
 
-*Screenshot 9 Nov.*
+*Screenshot 18 Nov.*
 
 A lobby, an office, an interview room, a holding cell, a suspect lineup room (Spot the Suspect)
 and an evidence room (Feel the Clues). A crocodile officer by the entrance and a police car.
+Since 18 Nov the lobby and the evidence room have real front windows: you see the street from
+inside and the rooms from outside ([windows](../guides/WINDOWS.md#real-windows--18-november-2026)).
 [Enlargement and games](../guides/TOWN_DESIGN_BRIEF.md#police-station-enlargement-and-detective-games--6-november-2026)
 
 ## Airport and control tower

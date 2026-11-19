@@ -32,6 +32,25 @@ Start at the [README](../../README.md); editing contracts are in the
 [architecture guide](ARCHITECTURE_REVIEW_PART1.md), and implementation details and
 six rendered views are in the [Part 2 handoff](../evidence/part2/HANDOFF.md).
 
+## Minigame progression: levels and stars — 18 November 2026
+
+Shared levels, stars and unlocks (`game_progress.gd`; [progression](MINIGAMES.md#progression)),
+wired into Pay Up! and Grocery Run; the other games are designed only. `dev_focus.txt` = `all`,
+isolated `HOME` (`tools/run_checks.py`), each run once: `minigame_progression` (new, 41 checks)
+PASS; `runtime_resources`, `profiles`, `shop_basket`, `minigame_launcher`, `tutorial`, `app_flow`
+PASS; `activity_lifecycle` PASS after updating its summary comparison for the three new keys
+(`misses`, `needed`, `custom`). Not from this change, recorded as found: `language` NEW
+(`zh` readings missing for 便 逛, already in `data/phrases.json` at b4af467), `compact_layout` NEW
+(the known vehicle count, "all forty-four road/air vehicles registered"), `practice_log` NEW
+("shop bubble: … translated": the check presses `toggle_translation()`, which no longer records a
+translation since the EN button took that over, `shop_order_panel.gd` `_on_peek()`). One windowed
+run at 1280 × 720 rendered [picker, greeting badge and star card](../evidence/minigame-progression-20261118/).
+After merging `main` (e23ecff, wayfinding: the picker's Go there button) `minigame_progression`,
+`minigame_launcher`, `activity_lifecycle`, `runtime_resources` PASS, and the picker re-rendered
+(Rounds, Level, Go there and Play fit at 1280 × 720).
+The full suite, a web export and a phone were not run. `tools/build_cjk_font.py --check` could not
+run (no fontTools); the new Chinese text uses only characters already in the data at b4af467.
+
 ## All clay zoo animals walk — 16 November 2026
 
 Walking rigs for the other 16 clay zoo animals (four parallel sessions, merged; base step
@@ -7722,3 +7741,22 @@ close-up cuts, the market act, the basket, base step `tutorial_lot_clear` (`bake
 | PASS | `shop_basket`, `app_flow`, `day_night`, `interaction`, `vehicle_boarding`, `runtime_resources`, `language` (after adding the missing pinyin for 豚, from the capybara commit) |
 
 Not run: the full suite. Not checked on a real phone.
+
+## Bank interior refresh — 18 November 2026
+
+[Record](TOWN_DESIGN_BRIEF.md#bank-interior-refresh--18-november-2026). Bake: `tools/bake_unit.gd -- bank`
+(5 steps; 8 door parts stripped; 6 palette material files written), then once more for the sixth step `chair_backs`. Checks, run once each on the baked unit:
+
+- `docs/evidence/bank-refresh-20261118/verify.gd` (on the first bake; `chair_backs` only recolours
+  four meshes and was not re-checked; headless, `VT_FOCUS=all`, isolated `HOME`):
+  144 checks, **1 failure: "mascot pig behind the reception desk"**: `Animals/PigBank` does not
+  exist in the town (it is also absent from the before views), so the 28 Oct mascot check no longer
+  applies; not caused by this change. Everything else passed, including doors registered, closed
+  doors blocking and opened doors passable, rooms behind reachable, no "•" door labels, and the
+  teller line, window-2 monitor and BearBanker unmoved.
+  (A first run had two errors in the new check itself, door leaves measured in their own frame
+  and an un-awaited coroutine; fixed and run once more.)
+- The 28 Oct `bank-interior-20261028/verify.gd` is superseded by the new check (it looks for the
+  word on the door roots, which are now the components). It is not in `tools/run_checks.py`.
+- Views: `capture.gd` with `VT_FOCUS=bank` (only the bank loaded), noon, eye level: before and after
+  sheets in the folder. Not checked: night, a phone, the full suite.
