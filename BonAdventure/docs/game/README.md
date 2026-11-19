@@ -77,7 +77,7 @@ and wrong answers per word in the journal.
 | [Bakery / Café](town.md#bakery--café) | Cake counter and seating | 18 Nov (shop-row storefront: coral) |
 | [Sports store](town.md#sports-store) | Departments incl. winter sports, plush staff | 18 Nov (shop-row storefront: meadow green) |
 | [Clothing store](town.md#clothing-store) | Racks, checkout, fitting rooms with outfits | 18 Nov (shop-row storefront: rose pink) |
-| [Electronics store](town.md#electronics-store) | Phones, gaming, appliances | 18 Nov (shop-row storefront: sky blue) |
+| [Electronics store](town.md#electronics-store) | Computers, phones, cameras, audio, TV wall, gaming corner, appliances, plush clerk | 18 Nov (clay makeover inside; shop-row storefront: sky blue) |
 | [Furniture store](town.md#furniture-store) | Living, bedroom, dining, office and lighting showrooms | 18 Nov (shop-row storefront: teal) |
 | [Bank](town.md#bank) | Tellers, vault, office, ATMs, bear banker | 1 Nov |
 | [Police station](town.md#police-station) | Lobby, lineup room, evidence room, cell | 8 Nov |

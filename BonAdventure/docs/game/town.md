@@ -111,12 +111,16 @@ Since 18 Nov its storefront is in the shared [shop-row look](../guides/TOWN_DESI
 
 ## Electronics store
 
-<img src="../evidence/electronics-interior-20261101/overview.png" width="480" alt="Electronics store">
+<img src="../evidence/electronics-makeover-20261118/after-overview.png" width="480" alt="Electronics store">
 
-*Screenshot 1 Nov.*
+*Screenshot 18 Nov.*
 
-A real electronics shop: phones, audio and cameras, gaming and appliances.
-[Design record](../guides/TOWN_DESIGN_BRIEF.md#electronics-store-refresh--1-november-2026)
+A clay-toy electronics shop in cream and sky blue: computers, phones, cameras and audio on four
+islands, a TV wall, a gaming corner, appliances, lit screens everywhere and a plush clerk at the
+checkout (*salesperson*). Six signs, no prices; a clear spot in front of the counter is kept for a
+future clerk game.
+[Design record](../guides/TOWN_DESIGN_BRIEF.md#electronics-store-makeover--18-november-2026) ·
+[before](../evidence/electronics-makeover-20261118/before-overview.png)
 Since 18 Nov its storefront is in the shared [shop-row look](../guides/TOWN_DESIGN_BRIEF.md#game-palette-and-shop-row--18-november-2026) (cream walls, sky blue accents; [outside view](../evidence/shop-row-20261118/after-electronics.png)).
 
 ## Furniture store

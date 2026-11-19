@@ -30,7 +30,7 @@ dated history of rules and implementation.
 | Food venues | BakeryCafe remains combined bakery/café. **Fine dining** (merged old Pizza + Burger shells) and **Pizza and Burger** (the former Burger/pizza place, now L-shaped in the former police lot); restaurant Cafe shell → **Mexican restaurant (TAQUERÍA)**, replacing the earlier Chinese seafood plan (user decisions, 28 October 2026). | Taquería ([record](#mexican-restaurant-taquería--28-october-2026)), fine dining and Pizza and Burger ([record](#restaurants-and-police-relocation--28-october-2026)) all built 28 October 2026. Node names (`Restaurants/Pizza`, `/Burger`, `/Cafe`) remain unchanged. **1 November 2026:** fine dining became the Italian **Alta Cocina** with a rear kitchen wing and front terrace, and every cook-model figure became a plush character ([record](#alta-cocina-italian-remodel-and-plush-staff--1-november-2026)). Same day, revised from the user's isometric reference: clear entrance, reference booths, quatrefoil floor, 6.5 ceiling, hipped roof, motorcycle in a car stall ([revision](#alta-cocina-revision-entrance-booths-floor-ceiling-roof--1-november-2026)). **9 November 2026:** Pizza and Burger dining room refurnished (tables, booths, drinks fridge), every food and seat clickable ([interiors polish](#interiors-polish--9-november-2026)). |
 | Sports store interior | Built from the user's isometric design, **inside the unchanged 14 × 24 shell** (no resize, zoning unchanged); revised the same day with a winter sports department and eight new words (user request). | Implemented 28 October 2026; see [record](#sports-store-interior--28-october-2026) and its [winter revision](#winter-sports-revision--28-october-2026). Clothing and electronics interiors follow one at a time, each awaiting approval. **1 November 2026:** plush staff added ([record](#shop-staff-bank-sports-store-furniture-showroom--1-november-2026)). **9 November 2026:** interior refitted into zoned fixtures, every sports item clickable; the 28 October layout is superseded ([interiors polish](#interiors-polish--9-november-2026)). |
 | Clothing store interior | Built from the user's isometric design **inside the unchanged shell** (11 × 15 interior; no resize, zoning unchanged). | Implemented 28 October 2026; see [record](#clothing-store-interior--28-october-2026). Electronics follows after approval. **1 November 2026:** cashier.tscn deleted, plush clerk and shopper, checkout moved, refresh ([record](#clothing-store-clerk-and-refresh--1-november-2026)). |
-| Electronics store interior | Built from the user's isometric design **inside the unchanged shell** (11.3 × 15.2 interior; no resize, zoning unchanged). | Implemented 28 October 2026; see [record](#electronics-store-interior--28-october-2026). Completes the three user-supplied interiors. **1 November 2026:** refitted as a real electronics shop in the same shell, no new words ([record](#electronics-store-refresh--1-november-2026)). |
+| Electronics store interior | Built from the user's isometric design **inside the unchanged shell** (11.3 × 15.2 interior; no resize, zoning unchanged). | Implemented 28 October 2026; see [record](#electronics-store-interior--28-october-2026). Completes the three user-supplied interiors. **1 November 2026:** refitted as a real electronics shop in the same shell, no new words ([record](#electronics-store-refresh--1-november-2026)). **18 November 2026 (user):** clay makeover in the game palette, same shell and words, plush clerk, no prices; supersedes the 1 Nov fixtures ([record](#electronics-store-makeover--18-november-2026)). |
 | Café and bakery interior | Built from the user's pink "Cafe & Cakes" isometric design **inside the unchanged 14 × 22 shell** (no resize, exterior unchanged). | Implemented 28 October 2026; see [record](#café-and-bakery-interior--28-october-2026). |
 | Bank interior | Built from the user's isometric bank design **inside the unchanged 12 × 15 shell** (no resize, zoning unchanged); vault, manager office, their doors and the interior ATMs kept. | Implemented 28 October 2026; see [record](#bank-interior--28-october-2026). Outdoor ATMs from the design are not built (exterior work). **1 November 2026:** plush staff added ([record](#shop-staff-bank-sports-store-furniture-showroom--1-november-2026)). |
 | Police station interior | Built from the user's isometric police design **inside the unchanged 12 × 15 shell** at its relocated site; interview room, holding cell and both doors kept. **6 November 2026 (user decision): shell enlarged to 20 × 22, front fixed, with a suspect lineup room and an evidence room for two detective minigames** ([record](#police-station-enlargement-and-detective-games--6-november-2026)). | Implemented 28 October 2026; see [record](#police-station-interior--28-october-2026). **1 November 2026:** the blocky officer was retired and a crocodile plush police officer stands beside the entrance ([record](#police-officer-crocodile-plush-at-the-station-entrance--1-november-2026)). **6 November 2026:** enlarged and refitted; the crocodile works inside (lineup game) and a cat officer works the evidence counter. **8 November 2026:** the evidence game was redesigned (one property word a round, Apretar / Tocar / Levantar) and its poster changed ([record](#police-evidence-game-redesign--8-november-2026)). **9 November 2026:** light pass: evidence exhibits, riot helmets and lobby look-alikes clickable ([interiors polish](#interiors-polish--9-november-2026)). |
@@ -928,6 +928,65 @@ All numbers are store-local town units (scale 1.3 in town; BonBon's 0.76 m capsu
 Word roots: the 16 prefab roots are the same nodes, turned to face the aisle and set on the new fixtures by their mesh bounds. The three plaques, *smartwatch* and *game console* keep their nodes, keys and pick areas under `RelocatedSites/Electronics`; their meshes are rebuilt (framed signs with a plug, microchip and controller icon; a display-sized watch on a stand; a low console with a light strip) and each Area3D is refitted to the new model. The plaques' existing labels move with them. No decor imitates a word object any more except TVs/screens, which were already decor here. Price tags are numeric labels (`$…`) and are not translated. Three sign texts added to `data/sign_translations.json`: COMPUTERS (COMPUTADORAS), PHONES AND TABLETS (CELULARES Y TABLETS), CAMERAS (CÁMARAS); HOME THEATRE, SMALL APPLIANCES and the other earlier texts are reused or retired.
 
 Owner: `scripts/world/electronics_interior.gd` (`build()`, `place_roots()`, `site_roots()`), same call and `Interior` guard. Check: `docs/evidence/electronics-interior-20261101/verify.gd` (flood-fills BonBon-sized standing spots from the door; every root must be resting/mounted, inside, reachable within 1.3 units and resolved by `vocabulary_target` from a reachable eye ray). Renders and `capture.gd` in the same folder: [entrance](../evidence/electronics-interior-20261101/entrance.png), [front](../evidence/electronics-interior-20261101/front.png), [overview](../evidence/electronics-interior-20261101/overview.png), [from the rear](../evidence/electronics-interior-20261101/overview-rear.png), [left](../evidence/electronics-interior-20261101/left.png), [right](../evidence/electronics-interior-20261101/right.png), [gaming bay](../evidence/electronics-interior-20261101/gaming.png), [phones](../evidence/electronics-interior-20261101/phones.png), [appliances](../evidence/electronics-interior-20261101/appliances.png), [checkout](../evidence/electronics-interior-20261101/counter.png); `before-*.png` show the previous state. Verification: [final verification](FINAL_VERIFICATION.md#electronics-store-refresh--1-november-2026).
+
+*Superseded 18 November 2026 by the [makeover](#electronics-store-makeover--18-november-2026): the fixtures, signs and price tags above are gone; the word roots are the same nodes.*
+
+## Electronics store makeover — 18 November 2026
+
+**User request:** the electronics interior "needs a huge makeover" (18 Nov audit: grey and navy slabs
+out of step with the cream/meadow clay-toy look, a bare floor and low tables, blocky products with
+dark screens, ELECTRÓNICA three times, a sign on the laptop table and one in front of the TV wall,
+English-comma prices such as $8,999, no staff). Design proposed in chat and approved by the user.
+
+**Kept:** shell, door, windows, footprint, zone and the exterior (the 18 Nov shop-row storefront);
+all 24 word roots as the same nodes with the same names and keys (16 `LearningDisplays`, checkout
+counter, cash register and shopping bag under `Interior`, and the *electronics*, *tech*, *gaming*
+plaques, *smartwatch* and *game console* under `RelocatedSites/Electronics`); the shell's
+`RoomPlaque` (*sign*). No words added, renamed or removed.
+
+**Built** (store-local units, scale 1.3; +X is on the left on entering):
+
+| Area | Contents |
+| --- | --- |
+| Room | Cream checker floor (`CREAM_DEEP` / `WALL_CREAM`), a sky walkway with sky edges and a deep-sky mat from the door, sky band at 3.95, wood skirting, cream ceiling, six sky pendant lamps with six omni lights (no shadows, as before) |
+| Centre | Four rounded cream islands (1.1 wide, top 0.99, wood tops, sky band on the aisle face, a raised sky step on the wall side): computers (computer, keyboard, mouse, laptop; the TECNOLOGÍA plaque stands on its step), phones (smartphone, tablet, smartwatch; phone cases, chargers), cameras (camera, lenses, tripod, boxes), audio (headphones, speaker, earbud cases, boxes) |
+| Right wall (−X) | TV wall: sky panel, console with the television, two lit screens, TELEVISORES board; soundbar bench; accessories pegboard (24 cards) over a cabinet with a router; two plants; gaming corner: deep-sky panel, lit game screen, cabinet with the game console and controller, VIDEOJUEGOS plaque |
+| Left wall (+X) | Refrigerator, washing machine and dryer on a stone plinth under ELECTRODOMÉSTICOS; microwave counter; open small-appliances unit (toasters, kettles, blenders, air fryers); fan and a plant |
+| Rear | Home theatre (sky panel, big screen with BonBon in a meadow, cabinet, soundbar) under the ELECTRÓNICA plaque; checkout: lower rounded counter (top 0.905) with register and shopping bag, the plush clerk behind it, back counter and two shelves of boxed products, CAJA sign (the `RoomPlaque`) |
+
+- **Products:** rounded clay-like models (`scripts/buildings/electronics_products.gd`, which extends the
+  supermarket's product builder with `rbox()` and an unshaded GLOW finish for screens), palette
+  colours by name, sensible sizes (small devices drawn 1.15–1.3× so they read from the aisle).
+  Each word root has one `Model` mesh; its pick area is refitted to it (the checkout counter's solid
+  body exactly). Screens are lit pictures (landscape, apps, a platform game, BonBon).
+- **Signs:** six world signs (`world_sign.gd`), cream on deep sky: ELECTRÓNICA, TECNOLOGÍA,
+  VIDEOJUEGOS (the three plaques), TELEVISORES, ELECTRODOMÉSTICOS and CAJA (the `RoomPlaque`; its
+  old ELECTRÓNICA label is gone). No new sign texts. **No prices** (the 20 `$…` tags are gone).
+- **Clerk:** a golden retriever plush (`house_characters.worker()`, word *salesperson*, new outfit
+  `electronics_shopkeeper`: sky apron, sun name-tag stripe, ink pen) behind the counter, facing the room.
+- **Kept for a clerk minigame** (not built here; another session designs shop games): `Interior/ClerkGameSpot`
+  (Marker3D at (3.7, 0.085, 4.3), metas `clear_size` 2 × 2, `clerk`, `counter`): clear, reachable
+  floor in front of the counter.
+- **Weight:** 57k vertices in the unit's meshes (rounding drops to one step on small parts and is
+  skipped on thin ones); `electronics.scn` 211 KB → 1.4 MB, mostly the plush clerk's sculpt.
+
+Owner: `scripts/buildings/electronics_makeover.gd`, run by the step `clay_makeover` in
+`electronics.gd` and baked with `tools/bake_unit.gd -- electronics`. Check:
+`docs/evidence/electronics-makeover-20261118/verify.gd` (adapted from the 1 Nov check: every root
+kept, inside, supported, reachable within 1.3 and pickable; routes; solid fixtures; the clerk; the
+clear game spot; no prices; six translated world signs; no old navy/graphite): 332 checks, 0
+failures (full town). `run_checks.py` quick suite: runtime resources, part2, public garden, profiles,
+activity lifecycle PASS; `language` (zh readings for 便 逛) and `compact_layout` (vehicle count) NEW,
+in data this change does not touch; `world_signs` PASS. Views (noon; `capture.gd`, `before-*.png`,
+`after-*.png`): [entrance](../evidence/electronics-makeover-20261118/after-entrance.png),
+[overview](../evidence/electronics-makeover-20261118/after-overview.png),
+[from the rear](../evidence/electronics-makeover-20261118/after-overview-rear.png),
+[left](../evidence/electronics-makeover-20261118/after-left.png),
+[right](../evidence/electronics-makeover-20261118/after-right.png),
+[checkout](../evidence/electronics-makeover-20261118/after-counter.png),
+[phones](../evidence/electronics-makeover-20261118/after-phones.png),
+[rear](../evidence/electronics-makeover-20261118/after-rear.png). Not checked: night views, a phone
+or the web build.
 
 ## Café and bakery interior — 28 October 2026
 
