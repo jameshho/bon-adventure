@@ -178,7 +178,7 @@ as a routine edit: regeneration can overwrite authored scene overrides. See the
 | Helicopter (expert) ascent / descent / hover assist | Space / Shift / hold R |
 | Turboprop (expert) throttle / pitch / bank | Space–Shift / S–W / A–D |
 | Turboprop (expert) rudder / flaps / brakes / level assist | Z–X / F / B / hold R |
-| Help guide / journal / map (map [hidden](#hidden-features) since 14 Nov 2026); the F1 guide also has a finger-sized ✕ top right (since 14 Nov 2026, for touch). The journal's book button sits top right under the gear; the ? help button is hidden since 14 Nov 2026 (user) | F1 / J / M |
+| Help guide / journal / town map (the map was [hidden](#hidden-features) 14–18 Nov 2026; since 18 Nov 2026 a baked picture: tap a place, Go there starts a guide arrow, also Go there in the minigame picker; the map button sits top right, left of ▶; [guide](docs/guides/MINIGAMES.md#town-map-and-guide-arrow)); the F1 guide also has a finger-sized ✕ top right (since 14 Nov 2026, for touch). The journal's book button sits top right under the gear; the ? help button is hidden since 14 Nov 2026 (user) | F1 / J / M |
 | FPS counter (Native mode, "Show everything in my language", is a checkbox in Settings) | F3 |
 | See the town's signs, building names and posters in the native language while held (not saved; also the badge button, e.g. "EN", left of the gear for touch; hidden in Native mode). Since 9 Nov 2026; the old L mode cycle was removed 7 Nov 2026 | hold L |
 | Minigame picker (every game, chosen rounds; a player feature since 10 Nov 2026, it was a debug-only test launcher; [guide](docs/guides/MINIGAMES.md#minigame-picker)); also the ▶ button top right, under the peek badge (bottom-right cluster until 14 Nov 2026) | F9 |
@@ -192,7 +192,7 @@ as a routine edit: regeneration can overwrite authored scene overrides. See the
 
 The F1 guide (`build_help_content` in `scripts/ui/vocabulary_hud.gd`) lists every key above
 in grouped cards. Its TOGGLES card shows live ON/OFF pills for sprint, hyper speed, infinite jump,
-noclip, zone walls and FPS; defaults are all off (infinite jump was on until 14 Nov 2026; the hyper speed and map rows are left out while [hidden](#hidden-features)). Native mode is off
+noclip, zone walls and FPS; defaults are all off (infinite jump was on until 14 Nov 2026; the hyper speed row is left out while [hidden](#hidden-features); the M row is back since 18 Nov 2026 with the baked town map). Native mode is off
 by default (the player's choice is saved in `user://settings.json`, see
 [Shared dialogue, popups and settings](docs/guides/ARCHITECTURE_REVIEW_PART1.md#shared-dialogue-popups-and-settings--4-november-2026)).
 Since 12 Nov 2026 (PWA phase 2) the player and Main keys are InputMap actions in `project.godot`
@@ -423,7 +423,7 @@ deleted after review. Every place that reads a switch says `Features.` in the co
 | Switch | What is gone while it is `false` | Where the code lives | Why / measured |
 |---|---|---|---|
 | `MINIMAP` | The minimap in the top-left corner (and tapping it to open the map); the place line and words found move up into its spot | `main.gd` `make_ui()`, `scripts/ui/town_minimap.gd`, `vocabulary_hud.gd` `minimap_side` | It rebuilt the town outline from every mesh (~0.1 s each time, several times while loading) and redrew it while the player moved: on an M-series Mac 8.4 ms → 64 ms per frame while turning (native probe, 14 Nov 2026) |
-| `FULL_MAP` | The full-screen map: the M key, the map button in the bottom-right cluster (its slot stays empty; since 14 Nov 2026 the touch jump button sits there), the F1 guide's M row, the drawn map (a second `town_minimap.gd`) and `assets/maps/town_map.png` (not loaded) | `main.gd` (`make_ui()`, the `map` action, `popups.watch`), `vocabulary_hud.gd` (map overlay, `map_button`, help rows) | Same drawing code as the minimap; the overlay node is kept empty and never opens, so the code that closes it still works |
+| `FULL_MAP` (**on again since 18 Nov 2026**) | While `false`: the town map (M, the map button, the F1 guide's M row). Since 18 Nov 2026 (wayfinding, user) it is `true` and the map is a picture baked by `tools/bake_town_map.gd` (`assets/maps/town_map.png`, loaded only while open, and `data/town_map.json`), not the live drawing; the map button moved to the second top-right row, left of ▶. The guide arrow is built either way | `main.gd` (`make_ui()`, the `map` action, `popups.watch`), `vocabulary_hud.gd` (map overlay, `map_button`, help rows), `scripts/ui/town_map_panel.gd`, `guide_arrow.gd` ([guide](docs/guides/MINIGAMES.md#town-map-and-guide-arrow)) | The old drawing shared the minimap's code (8.4 → 64 ms a frame while turning). The baked map measured on 18 Nov 2026: [evidence](docs/evidence/wayfinding-20261118/README.md) |
 | `HYPER_SPEED` | Hyper speed: the H key, the touch lightning button, the F1 guide's H row and the blue HUD line | `player_controller.gd` (`debug_hyper`), `touch_controls.gd` (`_hyper_rect`), `vocabulary_hud.gd` (help rows) | Trim; no measurable speed effect (a flag). Development checks that set `player.hyper_enabled` directly still move fast |
 | `INFINITE_JUMP_AT_START` | Infinite jump is off when a game starts (it was on); the I key still turns it on | `player_controller.gd` `infinite_jump_enabled` | User decision; no speed effect |
 
@@ -434,8 +434,9 @@ minimap (expect those labels to fail while hidden):
 `docs/evidence/ui-settings-20261104/verify_town.gd`,
 `docs/evidence/minigame-launcher-20261109/verify.gd`, `docs/evidence/mahjong-20261109/play.gd` and the language
 captures (`docs/evidence/language-ui-20261104`, `docs/evidence/chinese-ui-20261104`, `docs/evidence/grammar-class-20261106`).
-The map phrases (`map.*`, `hud.map_hint`, `help.map`, `help.hyper`, `hud.move_hyper*`) stay in
-`data/phrases.json`.
+The map phrases (`map.*`, `help.map`) are used again by the baked map since 18 Nov 2026;
+`hud.map_hint`, `map.legend`, `help.hyper` and `hud.move_hyper*` stay in `data/phrases.json` unused.
+The minimap (`town_minimap.gd`) is still off; the full map no longer uses it.
 
 ## Verification
 

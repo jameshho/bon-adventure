@@ -617,7 +617,13 @@
     "map": {
       "title": {"es": "Bon Adventure", "en": "Bon Adventure", "zh": "Bon Adventure", "note": "The full town map's title: the game's name, never translated (user, 16 Nov 2026)."},
       "legend": {"es": "Flecha: tú   |   Arena: playas   |   Líneas claras: caminos", "en": "Arrow: you   |   Sand: beaches   |   Pale lines: walking paths", "zh": "箭咀：你   |   沙色：沙灘   |   淺色線：行人路"},
-      "north": {"es": "N", "en": "N", "zh": "北", "note": "North on the compass."}
+      "north": {"es": "N", "en": "N", "zh": "北", "note": "North on the compass."},
+      "go": {"es": "Ir allí", "en": "Go there", "zh": "去那裡", "note": "Wayfinding (18 Nov 2026): the town map's and the minigame picker's button that starts the guide arrow."},
+      "stop": {"es": "Dejar de guiar", "en": "Stop guiding", "zh": "停止導航", "note": "The town map's button that clears the guide arrow."},
+      "pick": {"es": "Toca un lugar del mapa", "en": "Tap a place on the map", "zh": "點選地圖上的地方"},
+      "games_here": {"es": "Juegos aquí:", "en": "Games here:", "zh": "這裡的遊戲："},
+      "arrived": {"es": "Has llegado: {place}", "en": "You're there: {place}", "zh": "已到達：{place}", "note": "Toast when the guide arrow reaches its place."},
+      "metres": {"es": "{n} m", "en": "{n} m", "zh": "{n} 米", "note": "Distance left to the guide arrow's place, in metres."}
     },
     "places": {
       "floor_n": {"es": "Planta {n}", "en": "Floor {n}", "zh": "{n}樓", "note": "A building floor; {n} counts from 1 at ground level."},

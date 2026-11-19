@@ -231,6 +231,39 @@ while any game runs or the player is in a vehicle. Owner: `scripts/ui/game_launc
 language). Check:
 `docs/evidence/minigame-launcher-20261109/verify.gd` (`minigame_launcher` in `tools/run_checks.py`).
 
+**Go there** (18 Nov 2026, user): next to Play, it closes the window and starts the
+[guide arrow](#town-map-and-guide-arrow) to the selected game's NPC (or box) instead of starting
+the game; off while a game runs and hidden for a building left out by `dev_focus.txt`.
+
+## Town map and guide arrow
+
+Wayfinding (user, 18 Nov 2026). The live minimap and full map were switched off on 14 Nov 2026
+because they redrew the town from its meshes (8.4 → 64 ms a frame while turning,
+[hidden features](../../README.md#hidden-features)); the user chose a baked map plus a guide arrow.
+
+- **Baked picture:** `tools/bake_town_map.gd` (needs a window) renders the whole town once from
+  straight above (orthographic, noon, no fog, sun disc and clouds hidden) into
+  `assets/maps/town_map.png` (1400 × 1138, imported lossy) and writes `data/town_map.json`:
+  the picture's frame in town coordinates (north up, +X west on the left), each building's
+  entrance (`at`, `door`, from `Main.ENTRANCES`) and each minigame's NPC (or box) spot. **Run it
+  again after a building, an entrance or a minigame NPC moves**, then reimport
+  (`godot --headless --path . --import`) so the game loads the new picture.
+- **Map** (`scripts/ui/town_map_panel.gd`, in `hud.map_overlay`; M, the map button in the
+  second top-right row left of ▶, its ✕, Esc or moving close it): the picture, a name pill per
+  building (placed once on open, no overlaps), a "you are here" dot with the view direction
+  (moved 5 times a second, only while open). A tap picks the place whose pill or entrance is
+  nearest; the side column lists its games (tap: guide to that game) and a green **Go there**;
+  **Stop guiding** while a guide runs. The picture is loaded on open and let go on close.
+  Hidden during minigames and the welcome tutorial (`tutorial_hidden.map`).
+- **Guide arrow** (`scripts/ui/guide_arrow.gd`, under the place line in the top left, below every
+  window): a green dial whose arrow points to the target relative to the camera, the name, the
+  metres left and a ✕. It follows a live NPC node when its building is loaded, otherwise the baked
+  spot; clears itself within 7 m (toast `map.arrived`) or when the target game starts; hidden,
+  not cleared, while a minigame hides the HUD. Not processing while no target is set.
+- Text: `map.*` and `help.map` in `data/phrases.json`; place names `places.*`.
+- Check and views: `docs/evidence/wayfinding-20261118/verify.gd` (graphics; not in
+  `run_checks.py`, it overwrites its PNGs) and its [README](../evidence/wayfinding-20261118/README.md).
+
 ## Progression
 
 Levels and stars for the minigames (user approval, 18 Nov 2026). The player-facing design, the
