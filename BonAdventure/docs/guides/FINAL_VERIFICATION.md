@@ -10,6 +10,25 @@ Start at the [README](../../README.md); editing contracts are in the
 [architecture guide](ARCHITECTURE_REVIEW_PART1.md), and implementation details and
 six rendered views are in the [Part 2 handoff](../evidence/part2/HANDOFF.md).
 
+## Minigame progression: levels and stars — 18 November 2026
+
+Shared levels, stars and unlocks (`game_progress.gd`; [progression](MINIGAMES.md#progression)),
+wired into Pay Up! and Grocery Run; the other games are designed only. `dev_focus.txt` = `all`,
+isolated `HOME` (`tools/run_checks.py`), each run once: `minigame_progression` (new, 41 checks)
+PASS; `runtime_resources`, `profiles`, `shop_basket`, `minigame_launcher`, `tutorial`, `app_flow`
+PASS; `activity_lifecycle` PASS after updating its summary comparison for the three new keys
+(`misses`, `needed`, `custom`). Not from this change, recorded as found: `language` NEW
+(`zh` readings missing for 便 逛, already in `data/phrases.json` at b4af467), `compact_layout` NEW
+(the known vehicle count, "all forty-four road/air vehicles registered"), `practice_log` NEW
+("shop bubble: … translated": the check presses `toggle_translation()`, which no longer records a
+translation since the EN button took that over, `shop_order_panel.gd` `_on_peek()`). One windowed
+run at 1280 × 720 rendered [picker, greeting badge and star card](../evidence/minigame-progression-20261118/).
+After merging `main` (e23ecff, wayfinding: the picker's Go there button) `minigame_progression`,
+`minigame_launcher`, `activity_lifecycle`, `runtime_resources` PASS, and the picker re-rendered
+(Rounds, Level, Go there and Play fit at 1280 × 720).
+The full suite, a web export and a phone were not run. `tools/build_cjk_font.py --check` could not
+run (no fontTools); the new Chinese text uses only characters already in the data at b4af467.
+
 ## All clay zoo animals walk — 16 November 2026
 
 Walking rigs for the other 16 clay zoo animals (four parallel sessions, merged; base step

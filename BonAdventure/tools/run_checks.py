@@ -169,6 +169,9 @@ CHECKS = [
     # host (9 Nov 2026, docs/guides/MINIGAMES.md#test-launcher); starts every game, so needs the full town.
     dict(id="minigame_launcher", script="res://docs/evidence/minigame-launcher-20261109/verify.gd", suites=["full"],
          summary=r"MINIGAME LAUNCHER: \d+ checks, (?P<n>\d+) failures"),
+    # Minigame progression: levels, stars, unlocks, Pay Up! and Grocery Run, picker (18 Nov 2026).
+    dict(id="minigame_progression", script="res://docs/evidence/minigame-progression-20261118/verify.gd", suites=["full"],
+         summary=r"MINIGAME PROGRESSION: \d+ checks, (?P<n>\d+) failures"),
     # Every world sign in every taught language; every visible Label3D covered (9 Nov 2026).
     dict(id="signs", script="res://docs/evidence/signs-20261109/verify.gd", suites=["full"],
          summary=r"SIGNS: \d+ checks, (?P<n>\d+) failures"),

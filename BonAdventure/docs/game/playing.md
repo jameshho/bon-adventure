@@ -125,6 +125,21 @@ within about 150 m; a game in the ▶ picker whose building is not there yet bui
 [nearby loading](../guides/performance/README.md#built--17-november-2026)).
 [Web app](../../README.md#web-app-pwa)
 
+## Finding places
+
+<img src="../evidence/wayfinding-20261118/map_picked.png" width="480" alt="Town map with the library picked">
+
+*Screenshot 18 Nov; also [guide arrow](../evidence/wayfinding-20261118/guide.png),
+[picker](../evidence/wayfinding-20261118/picker_go.png) and [phone](../evidence/wayfinding-20261118/map_phone.png).*
+
+**M** or the map button (top right, left of ▶) opens a picture of the whole town, north up, with
+every building's name and a coral "you are here" dot showing where you look. Tap a place: its
+minigames are listed (tap one to be guided to that game) and **Go there** closes the map and shows
+a small arrow card in the top left that points the way, with the metres left; it clears itself
+when you arrive or with its ✕. The ▶ game picker has **Go there** next to Play, to walk to a game
+instead of jumping to it. The picture is made once by a tool, not drawn live, so it costs nothing
+while closed (18 Nov; [how it works](../guides/MINIGAMES.md#town-map-and-guide-arrow)).
+
 ## Getting around
 
 <img src="../evidence/vehicle-boarding-20261029/5-driven-out.png" width="480" alt="Driving a car">
