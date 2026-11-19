@@ -7720,6 +7720,25 @@ close-up cuts, the market act, the basket, base step `tutorial_lot_clear` (`bake
 
 Not run: the full suite. Not checked on a real phone.
 
+## Bank interior refresh — 18 November 2026
+
+[Record](TOWN_DESIGN_BRIEF.md#bank-interior-refresh--18-november-2026). Bake: `tools/bake_unit.gd -- bank`
+(5 steps; 8 door parts stripped; 6 palette material files written), then once more for the sixth step `chair_backs`. Checks, run once each on the baked unit:
+
+- `docs/evidence/bank-refresh-20261118/verify.gd` (on the first bake; `chair_backs` only recolours
+  four meshes and was not re-checked; headless, `VT_FOCUS=all`, isolated `HOME`):
+  144 checks, **1 failure: "mascot pig behind the reception desk"**: `Animals/PigBank` does not
+  exist in the town (it is also absent from the before views), so the 28 Oct mascot check no longer
+  applies; not caused by this change. Everything else passed, including doors registered, closed
+  doors blocking and opened doors passable, rooms behind reachable, no "•" door labels, and the
+  teller line, window-2 monitor and BearBanker unmoved.
+  (A first run had two errors in the new check itself, door leaves measured in their own frame
+  and an un-awaited coroutine; fixed and run once more.)
+- The 28 Oct `bank-interior-20261028/verify.gd` is superseded by the new check (it looks for the
+  word on the door roots, which are now the components). It is not in `tools/run_checks.py`.
+- Views: `capture.gd` with `VT_FOCUS=bank` (only the bank loaded), noon, eye level: before and after
+  sheets in the folder. Not checked: night, a phone, the full suite.
+
 ## Bank teller game — 18 November 2026
 
 New minigame **Next, Please!** (name proposed) at the bank's teller window 2
@@ -7738,6 +7757,10 @@ isolated `HOME`:
 After merging `main` (1519cbd, the shared progression system) and adding `Board.add_miss` once
 per missed customer: runner `bank_teller` PASS (headless), `runtime_resources` PASS, `language` the
 same NEW 便 逛 as above.
+
+After merging `main` (2a2da89, the bank interior refresh): `verify.gd` graphics,
+`VT_FOCUS=bank VT_SPAWN=none`: **93 checks, 0 failures**; the four views above were re-rendered
+on the recoloured bank (window 2, the monitor, BearBanker and the customer paths unchanged).
 
 Not run: the full suite. Not done: `tools/build_cjk_font.py` (it downloads the full Noto Sans TC
 from google/fonts; waiting for the user's go-ahead), so until it runs, 23 new Chinese characters

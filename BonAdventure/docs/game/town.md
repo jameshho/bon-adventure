@@ -132,13 +132,17 @@ Since 18 Nov its storefront is in the shared [shop-row look](../guides/TOWN_DESI
 
 ## Bank
 
-<img src="../evidence/shop-staff-20261101/bank-lobby.png" width="480" alt="Bank lobby">
+<img src="../evidence/bank-refresh-20261118/after-doorway.png" width="480" alt="Bank lobby">
 
-*Screenshot 1 Nov.*
+*Screenshot 18 Nov.*
 
 Tellers, a waiting area, a consultation office, the vault and indoor ATMs; a bear banker, who
 runs the teller game [Next, Please!](minigames.md#next-please) (18 Nov) at window 2.
-[Design record](../guides/TOWN_DESIGN_BRIEF.md#bank-interior--28-october-2026)
+Since 18 Nov the interior is in the game palette (cream walls, sky-blue accents), the office and
+vault have the shared doors (no floating labels), and the ATMs and vault (round steel door,
+safe-deposit lockers) were redrawn ([before/after views](../evidence/bank-refresh-20261118/)).
+[Design record](../guides/TOWN_DESIGN_BRIEF.md#bank-interior--28-october-2026),
+[refresh](../guides/TOWN_DESIGN_BRIEF.md#bank-interior-refresh--18-november-2026)
 
 ## Police station
 
