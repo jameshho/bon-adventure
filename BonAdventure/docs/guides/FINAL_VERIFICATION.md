@@ -23,6 +23,9 @@ PASS; `activity_lifecycle` PASS after updating its summary comparison for the th
 ("shop bubble: … translated": the check presses `toggle_translation()`, which no longer records a
 translation since the EN button took that over, `shop_order_panel.gd` `_on_peek()`). One windowed
 run at 1280 × 720 rendered [picker, greeting badge and star card](../evidence/minigame-progression-20261118/).
+After merging `main` (e23ecff, wayfinding: the picker's Go there button) `minigame_progression`,
+`minigame_launcher`, `activity_lifecycle`, `runtime_resources` PASS, and the picker re-rendered
+(Rounds, Level, Go there and Play fit at 1280 × 720).
 The full suite, a web export and a phone were not run. `tools/build_cjk_font.py --check` could not
 run (no fontTools); the new Chinese text uses only characters already in the data at b4af467.
 
