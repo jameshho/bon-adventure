@@ -330,7 +330,7 @@ func _on_choice(id: String) -> void:
 		"count":
 			if current.kind == "withdraw" and current.balance < current.dollars:
 				# Counting out more than the account holds.
-				current.missed = true
+				_miss()
 				_mistake("teller.pay_wrong", {"amount": _amount(current.dollars)}, "again", "teller.look_again")
 			else:
 				_open_money()
@@ -344,11 +344,18 @@ func _on_choice(id: String) -> void:
 ## "Sorry, not enough": right when the account is short, otherwise the customer protests.
 func _decline() -> void:
 	if current.balance >= current.dollars:
-		current.missed = true
+		_miss()
 		_mistake("teller.decline_wrong", {}, "again", "teller.look_again")
 		return
 	PlushLife.play(self, current.node, "shake")
 	_served("teller.%s_sad" % current.persona)
+
+## A mistake with this customer: the customer no longer counts, and the session reports one
+## miss per customer (Board.add_miss, read by game_progress.gd for a game with levels).
+func _miss() -> void:
+	if not current.missed:
+		current.missed = true
+		Board.shared().add_miss(ACTIVITY)
 
 func _mistake(id: String, values: Dictionary, retry: String, label: String) -> void:
 	step = "fix"
@@ -388,7 +395,7 @@ func _on_submitted(cents: int) -> void:
 		PlushLife.play(self, current.node, "hop")
 		_served("teller.change_thanks" if change else "teller.%s_thanks" % current.persona)
 		return
-	current.missed = true
+	_miss()
 	if change and Currency.is_exact(money.counts, int(current.dollars) * 100):
 		_mistake("teller.change_hundred", {}, "retry", "teller.try_again")
 	else:

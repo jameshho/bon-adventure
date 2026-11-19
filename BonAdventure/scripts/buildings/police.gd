@@ -13,7 +13,7 @@ extends RefCounted
 ## the checks in docs/police-*/ use them.
 const STEPS := ["solid_roofs", "evidence_poster_words", "evidence_shelf_objects", "lobby_layout", "reception_officer_chairs",
 	"interiors_polish",
-	"coplanar_gaps", "coplanar_gaps_2", "glass_windows"]
+	"coplanar_gaps", "coplanar_gaps_2", "glass_windows", "real_windows"]
 
 const LEFT := 33.12
 const RIGHT := 52.88
@@ -526,3 +526,30 @@ func coplanar_gaps_2(town: Node3D, _game) -> void:
 ## Window glass as the shared window component (12 Nov 2026, docs/guides/WINDOWS.md).
 func glass_windows(town: Node3D, _game) -> void:
 	preload("res://scripts/buildings/glass_windows.gd").migrate(town, "police")
+
+
+## Real windows (user, 18 Nov 2026; docs/guides/WINDOWS.md "Real windows"): the two front windows
+## were stacked panes (facade glazing, storefront panel and pane, pier window) in front of the
+## solid pier and painted lining, and the evidence room had a painted "Window light". Each becomes
+## one see-through CIVIC window (sky frame, stone sill) in an opening through the pier, the facade
+## skin and the lining. Town coordinates (+X west; the station's front faces +X, the room lies
+## toward -X): wall layers from x -139.14 (lining) to -138.63 (skin). The window's local x runs
+## along town -Z; the evidence window's first glazing bar lines up with the evidence room's
+## partition (z 83.6). The lineup's one-way glass and the cell window stay.
+const REAL_WINDOWS := [
+	{"name": "Lobby window", "z": 74.01, "width": 6.58, "bars": []},
+	{"name": "Evidence room window", "z": 85.985, "width": 6.57, "bars": [2.385, -0.45]},
+]
+
+func real_windows(town: Node3D, _game) -> void:
+	var GlassWindows := preload("res://scripts/buildings/glass_windows.gd")
+	var GlassWindow := preload("res://scripts/world/glass_window.gd")
+	var site: Node3D = town.get_node("RelocatedSites/Police")
+	for spec in REAL_WINDOWS:
+		var done: Dictionary = GlassWindows.real_window(town, "police", site, Vector3(-138.885, 2.15, spec.z), Vector3(1, 0, 0), {
+			"name": spec.name, "width": spec.width, "height": 2.1, "wall_depth": 0.51,
+			"frame_style": GlassWindow.FrameStyle.CIVIC, "frame_accent": "sky",
+			"bars": PackedFloat32Array(spec.bars)}, 0.5)
+		print("police %s (word '%s'): cut %s, removed %s, left %s" % [spec.name, done.word, done.cut, done.removed, done.partial])
+		if done.cut.size() != 3:
+			push_error("police: %s expected 3 wall layers cut, got %d" % [spec.name, done.cut.size()])

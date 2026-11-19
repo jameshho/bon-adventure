@@ -17,6 +17,9 @@ extends Control
 ## it first (a short freeze), then starts the game as usual. Only one
 ## game at a time: Play is off while any minigame runs or the player is in a vehicle.
 const Board := preload("res://scripts/learning/activity_board.gd")
+## Levels and stars (18 Nov 2026): a tile shows the level and its best stars; the detail bar has a
+## level stepper over the unlocked levels (docs/guides/MINIGAMES.md#progression).
+const Progress := preload("res://scripts/learning/game_progress.gd")
 const NearbyUnits := preload("res://scripts/world/nearby_units.gd")
 const UiText := preload("res://scripts/language/ui_text.gd")
 const UiIcons := preload("res://scripts/ui/ui_icons.gd")
@@ -88,7 +91,15 @@ var _d_endless: Label
 var minus: Button
 var plus: Button
 var count: Label
+var _d_level: VBoxContainer
+var _d_level_label: Label
+var level_minus: Button
+var level_plus: Button
+var level_count: Label
 var play: Button
+## "Go there" (wayfinding, 18 Nov 2026): guides the player to the selected game on foot with the
+## guide arrow (guide_arrow.gd) instead of starting it here.
+var go: Button
 
 func setup(game) -> void:
 	main = game
@@ -180,10 +191,30 @@ func _build_detail() -> void:
 	stepper.add_child(minus)
 	stepper.add_child(count)
 	stepper.add_child(plus)
+	_d_level = VBoxContainer.new()
+	_d_level.name = "Level"
+	_d_level.alignment = BoxContainer.ALIGNMENT_CENTER
+	line.add_child(_d_level)
+	_d_level_label = _label(MUTED)
+	_d_level_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_d_level.add_child(_d_level_label)
+	var level_stepper := HBoxContainer.new()
+	level_stepper.add_theme_constant_override("separation", 6)
+	_d_level.add_child(level_stepper)
+	level_minus = _button("", "minus", func() -> void: _step_level(_selected(), -1))
+	level_count = _label(TEXT)
+	level_count.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	level_plus = _button("", "plus", func() -> void: _step_level(_selected(), 1))
+	level_stepper.add_child(level_minus)
+	level_stepper.add_child(level_count)
+	level_stepper.add_child(level_plus)
 	_d_endless = _label(MUTED)
 	_d_endless.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_d_endless.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	line.add_child(_d_endless)
+	go = _button("", "next", func() -> void: go_there(_selected()))
+	go.name = "Go there"
+	line.add_child(go)
 	play = _button("", "play", func() -> void: launch(_selected()))
 	play.name = "Play"
 	play.add_theme_stylebox_override("normal", _card(BonStyle.GREEN_BOTTOM, LINE, 18))
@@ -219,8 +250,10 @@ func refresh_display() -> void:
 	_close.tooltip_text = UiText.t("launcher.open")
 	corner_button.tooltip_text = UiText.t("launcher.open") + " (F9)"
 	_d_rounds_label.text = UiText.t("launcher.rounds")
+	_d_level_label.text = UiText.t("launcher.level")
 	_d_endless.text = UiText.t("launcher.endless")
 	play.text = UiText.t("launcher.play")
+	go.text = UiText.t("map.go")
 	_tabs["learning"].text = UiText.t("launcher.learning")
 	_tabs["pastime"].text = UiText.t("launcher.pastimes")
 	for grid in _grids.values():
@@ -268,8 +301,47 @@ func _tile(id: String, kind: String) -> Button:
 	host.text = UiText.t("games_host." + id) if UiText.has("games_host." + id) else ""
 	host.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	names.add_child(host)
-	_rows.append({"id": id, "kind": kind, "tile": tile, "line": line, "icon": icon, "title": title, "host": host})
+	var row := {"id": id, "kind": kind, "tile": tile, "line": line, "icon": icon, "title": title, "host": host}
+	# The level and its best stars (games with levels only).
+	if Progress.shared().has_levels(id):
+		var badge := VBoxContainer.new()
+		badge.name = "Progress"
+		badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		badge.alignment = BoxContainer.ALIGNMENT_CENTER
+		badge.add_theme_constant_override("separation", 0)
+		line.add_child(badge)
+		row["level"] = _label(GOLD)
+		row.level.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		badge.add_child(row.level)
+		row["badge"] = badge
+		_fill_badge(row)
+	_rows.append(row)
 	return tile
+
+## A tile's level pill and stars (after a level change; sized by _layout()).
+func _fill_badge(row: Dictionary) -> void:
+	if not row.has("badge"):
+		return
+	var progress = Progress.shared()
+	var at: int = progress.level(row.id)
+	row.level.text = UiText.t("progress.level_short", {"n": at})
+	if row.has("stars") and is_instance_valid(row.stars):
+		row.badge.remove_child(row.stars)
+		row.stars.queue_free()
+	row["stars"] = BonStyle.stars(progress.best(row.id, at), 18.0 * _factor)
+	row.stars.name = "Stars"
+	row.badge.add_child(row.stars)
+
+## The picker's level stepper: any unlocked level of `id`.
+func _step_level(id: String, by: int) -> void:
+	if id == "":
+		return
+	var progress = Progress.shared()
+	progress.set_level(id, progress.level(id) + by)
+	for row in _rows:
+		if row.id == id:
+			_fill_badge(row)
+	_update()
 
 func _show_tab(kind: String) -> void:
 	_tab = kind
@@ -338,7 +410,15 @@ func _update() -> void:
 	_d_rounds.visible = not endless
 	_d_endless.visible = endless
 	count.text = str(rounds(id))
+	var progress = Progress.shared()
+	_d_level.visible = progress.has_levels(id)
+	if _d_level.visible:
+		level_count.text = str(progress.level(id))
+		level_minus.disabled = progress.level(id) <= 1
+		level_plus.disabled = progress.level(id) >= progress.unlocked(id)
 	play.disabled = why != ""
+	go.visible = main.guide != null and why != "launcher.absent"
+	go.disabled = why == "launcher.running" or (main.guide != null and main.guide.target_game == id)
 	minus.disabled = rounds(id) <= 1
 	plus.disabled = rounds(id) >= MAX_ROUNDS
 
@@ -387,6 +467,14 @@ func _start(id: String) -> bool:
 	else:
 		session.launch()
 	return true
+
+## Closes the window and points the guide arrow at game `id`'s NPC (or its spot on the map when
+## its building is not built yet).
+func go_there(id: String) -> void:
+	if id == "" or main.guide == null:
+		return
+	close()
+	main.guide.go_to_game(id)
 
 ## The game started here is over (its session neither talks nor plays): the data's rounds
 ## count again.
@@ -448,19 +536,29 @@ func _layout() -> void:
 		row.icon.custom_minimum_size = Vector2(40, 40) * f
 		row.title.add_theme_font_size_override("font_size", roundi(21 * f))
 		row.host.add_theme_font_size_override("font_size", roundi(15 * f))
+		if row.has("badge"):
+			row.level.add_theme_font_size_override("font_size", roundi(15 * f))
+			for star in row.stars.get_children():
+				star.custom_minimum_size = Vector2(18, 18) * f
 	_d_icon.custom_minimum_size = Vector2(64, 64) * f
 	_d_name.add_theme_font_size_override("font_size", roundi(26 * f))
 	_d_host.add_theme_font_size_override("font_size", roundi(16 * f))
 	_d_learn.add_theme_font_size_override("font_size", roundi(18 * f))
 	_d_status.add_theme_font_size_override("font_size", roundi(16 * f))
 	_d_rounds_label.add_theme_font_size_override("font_size", roundi(15 * f))
+	_d_level_label.add_theme_font_size_override("font_size", roundi(15 * f))
+	level_count.add_theme_font_size_override("font_size", roundi(26 * f))
+	level_count.custom_minimum_size = Vector2(44 * f, 0)
 	_d_endless.add_theme_font_size_override("font_size", roundi(16 * f))
 	_d_endless.custom_minimum_size = Vector2(200 * f, 0)
 	count.add_theme_font_size_override("font_size", roundi(26 * f))
 	count.custom_minimum_size = Vector2(44 * f, 0)
-	for button in [minus, plus]:
+	for button in [minus, plus, level_minus, level_plus]:
 		button.custom_minimum_size = Vector2(tap.call(56.0), tap.call(56.0))
 	play.custom_minimum_size = Vector2(170 * f, tap.call(72.0))
+	go.custom_minimum_size = Vector2(0, tap.call(72.0))
+	go.add_theme_font_size_override("font_size", roundi(20 * f))
+	go.add_theme_constant_override("icon_max_width", roundi(26 * f))
 	play.add_theme_font_size_override("font_size", roundi(24 * f))
 	play.add_theme_constant_override("icon_max_width", roundi(30 * f))
 	_place.call_deferred()

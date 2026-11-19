@@ -12,6 +12,12 @@ extends Node3D
 ## Origin: the centre of the rectangular pane; the glass lies in the local XY plane, thickness on Z.
 ## shape ARCH adds a half disc of radius width / 2 on top of the rectangle.
 ##
+## Frame presets (18 Nov 2026): `frame_style` HOUSE, SHOPFRONT, CIVIC or ARCHED builds a frame,
+## glazing bars and a sill in the game palette (scripts/core/game_palette.gd): the frame in the
+## deep tone of `frame_accent` (a palette accent family; "" = TRIM), the sill in TRIM (STONE for
+## CIVIC). With `wall_depth` set the frame runs through the whole wall, lining a real opening cut by
+## scripts/buildings/glass_windows.gd `open_wall()`. CUSTOM keeps the hand-set frame_* exports.
+##
 ## Cheaper glass: the project setting `vocabulary_town/rendering/glass_mode` = "opaque" (read at
 ## load) draws every window with materials/glass/window_glass_opaque.tres instead: no
 ## transparency pass, the old tinted look. `see_through = false` does the same for one window
@@ -35,8 +41,19 @@ const ROOM_DARK := Color(0.16, 0.2, 0.24)
 const ARCH_SEGMENTS := 16
 ## Marks the nodes this script builds (rebuilt on every load, never saved).
 const PART_META := "glass_window_part"
+const Palette := preload("res://scripts/core/game_palette.gd")
+## Per preset: frame bar width, glazing bar width, widest pane between upright bars (0 = none),
+## a cross bar at this fraction of the height (0 = none), sill height and how far it sticks out.
+const PRESETS := {
+	FrameStyle.HOUSE: {"frame": 0.08, "bar": 0.05, "span": 0.9, "cross": 0.5, "sill": 0.06, "sill_out": 0.08},
+	FrameStyle.SHOPFRONT: {"frame": 0.08, "bar": 0.07, "span": 2.3, "cross": 0.0, "sill": 0.06, "sill_out": 0.06},
+	FrameStyle.CIVIC: {"frame": 0.12, "bar": 0.08, "span": 2.4, "cross": 0.74, "sill": 0.09, "sill_out": 0.12},
+	FrameStyle.ARCHED: {"frame": 0.1, "bar": 0.06, "span": 1.6, "cross": 0.0, "sill": 0.07, "sill_out": 0.1},
+}
 
 enum Shape { RECT, ARCH }
+## CUSTOM: the frame_* exports below (off by default). The others are the presets above.
+enum FrameStyle { CUSTOM, HOUSE, SHOPFRONT, CIVIC, ARCHED }
 ## Which face of the glass looks outdoors: NONE = both faces look the same (tint, transparency).
 enum Outside { NONE, FRONT, BACK }
 
@@ -87,6 +104,27 @@ enum Outside { NONE, FRONT, BACK }
 		outside_transparency = value
 		_rebuild()
 @export_group("Frame")
+@export var frame_style := FrameStyle.CUSTOM:
+	set(value):
+		frame_style = value
+		_rebuild()
+## A palette accent family (coral, rose, sky, meadow, teal): the preset frame takes its deep
+## tone. "" = TRIM (cream).
+@export var frame_accent := "":
+	set(value):
+		frame_accent = value
+		_rebuild()
+## Thickness of the wall the window sits in (0 = on its own). A preset frame then runs 2 cm past
+## both wall faces, so it lines the opening and covers the cut edges.
+@export var wall_depth := 0.0:
+	set(value):
+		wall_depth = maxf(value, 0.0)
+		_rebuild()
+## Upright glazing bars at these local x positions; empty = evenly spaced by the preset.
+@export var bars := PackedFloat32Array():
+	set(value):
+		bars = value
+		_rebuild()
 @export var frame_visible := false:
 	set(value):
 		frame_visible = value
@@ -149,8 +187,59 @@ func _build() -> void:
 		_part("Glass", "glass", unit_box(), Transform3D(Basis.from_scale(Vector3(width, height, thickness)), Vector3.ZERO), glass, false)
 		if shape == Shape.ARCH:
 			_part("Glass arch", "glass", unit_half_disc(), Transform3D(Basis.from_scale(Vector3(r, r, thickness)), Vector3(0, height * 0.5, 0)), glass, false)
-	if frame_visible:
+	if frame_style != FrameStyle.CUSTOM:
+		_build_preset()
+	elif frame_visible:
 		_build_frame()
+
+
+## The size of the wall opening a preset window fills (glass plus its frame), local XY.
+func opening_size() -> Vector2:
+	var fw: float = PRESETS[frame_style].frame if frame_style != FrameStyle.CUSTOM else (frame_width if frame_visible else 0.0)
+	var top := width * 0.5 if shape == Shape.ARCH else 0.0
+	return Vector2(width + fw * 2.0, height + top + fw * 2.0)
+
+
+## Preset frame: four bars (eight along an arch), glazing bars and a sill, as deep as the wall.
+func _build_preset() -> void:
+	var p: Dictionary = PRESETS[frame_style]
+	var mat := _colour_material(Palette.accent(frame_accent, 2) if Palette.ACCENTS.has(frame_accent) else Palette.TRIM)
+	var fw: float = p.frame
+	var fd := maxf(wall_depth + 0.04, 0.12)
+	var hw := width * 0.5
+	var hh := height * 0.5
+	_bar(Vector3(0, -hh - fw * 0.5, 0), Vector3(width + fw * 2.0, fw, fd), 0.0, mat)
+	_bar(Vector3(-hw - fw * 0.5, 0, 0), Vector3(fw, height, fd), 0.0, mat)
+	_bar(Vector3(hw + fw * 0.5, 0, 0), Vector3(fw, height, fd), 0.0, mat)
+	if shape == Shape.RECT:
+		_bar(Vector3(0, hh + fw * 0.5, 0), Vector3(width + fw * 2.0, fw, fd), 0.0, mat)
+	else:
+		var r := hw + fw * 0.5
+		var step := PI / 8.0
+		var length := 2.0 * r * tan(step * 0.5) + fw * 0.2
+		for i in range(8):
+			var a := step * (i + 0.5)
+			_bar(Vector3(cos(a) * r, hh + sin(a) * r, 0), Vector3(fw, length, fd), a, mat)
+	# Glazing bars: thinner and shallower than the frame, through the glass sheet.
+	var bw: float = p.bar
+	var bd := minf(fd, 0.1)
+	var xs: Array = Array(bars)
+	if xs.is_empty() and p.span > 0.0:
+		var count := int(ceil(width / p.span)) - 1
+		for i in range(count):
+			xs.append(-hw + width * (i + 1) / (count + 1))
+	var top := hh + (hw if shape == Shape.ARCH else 0.0)
+	for x in xs:
+		var half := sqrt(maxf(hw * hw - x * x, 0.0)) if shape == Shape.ARCH else 0.0
+		var up := hh + half if shape == Shape.ARCH else top
+		_bar(Vector3(x, (up - hh) * 0.5, 0), Vector3(bw, up + hh, bd), 0.0, mat)
+	if p.cross > 0.0:
+		_bar(Vector3(0, -hh + height * p.cross, 0), Vector3(width, bw, bd), 0.0, mat)
+	# Sill under the frame, sticking out past both wall faces.
+	var sill_mat := _colour_material(Palette.STONE if frame_style == FrameStyle.CIVIC else Palette.TRIM)
+	var sh: float = p.sill
+	_part("Sill", "frame", unit_box(), Transform3D(Basis.from_scale(Vector3(width + fw * 2.0 + 0.12, sh, fd + p.sill_out * 2.0)),
+		Vector3(0, -hh - fw - sh * 0.5, 0)), sill_mat, true)
 
 
 func _build_frame() -> void:
@@ -226,12 +315,17 @@ func glass_material() -> Material:
 
 
 func frame_material() -> Material:
-	if frame_color.is_equal_approx(DEFAULT_FRAME_COLOR):
+	return _colour_material(frame_color)
+
+
+## The shared frame material in one colour (cached: one material per colour, never per window).
+static func _colour_material(colour: Color) -> Material:
+	if colour.is_equal_approx(DEFAULT_FRAME_COLOR):
 		return FRAME
-	var key := ["frame", frame_color.to_html(false)]
+	var key := ["frame", colour.to_html(false)]
 	if not _materials.has(key):
 		var mat: StandardMaterial3D = FRAME.duplicate()
-		mat.albedo_color = frame_color
+		mat.albedo_color = colour
 		_materials[key] = mat
 	return _materials[key]
 

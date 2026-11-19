@@ -142,12 +142,14 @@ runs the teller game [Next, Please!](minigames.md#next-please) (18 Nov) at windo
 
 ## Police station
 
-<img src="../evidence/interiors-polish-20261109/after-police-lobby-right.png" width="480" alt="Police station lobby">
+<img src="../evidence/real-windows-20261118/after-police-room.png" width="480" alt="Police station lobby with its real front windows">
 
-*Screenshot 9 Nov.*
+*Screenshot 18 Nov.*
 
 A lobby, an office, an interview room, a holding cell, a suspect lineup room (Spot the Suspect)
 and an evidence room (Feel the Clues). A crocodile officer by the entrance and a police car.
+Since 18 Nov the lobby and the evidence room have real front windows: you see the street from
+inside and the rooms from outside ([windows](../guides/WINDOWS.md#real-windows--18-november-2026)).
 [Enlargement and games](../guides/TOWN_DESIGN_BRIEF.md#police-station-enlargement-and-detective-games--6-november-2026)
 
 ## Airport and control tower

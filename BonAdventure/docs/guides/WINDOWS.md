@@ -33,7 +33,11 @@ the glass lies in the local XY plane and its thickness runs along Z. Sizes are i
 | `outside` | `NONE` | which face looks outdoors: `FRONT` (+Z) or `BACK` (−Z). That face is drawn darker and more reflective |
 | `outside_tint`, `outside_transparency` | `(0.17, 0.20, 0.22)`, 0.2 | the outdoors look. With `see_through` false or the opaque mode, an opaque window uses this tint when `outside` is set |
 | `see_through` | true | false = this pane uses the shared opaque glass (its glass sits on a wall) |
-| `frame_visible`, `frame_width`, `frame_depth`, `frame_color` | false, 0.08, 0.1, white | optional frame of four bars (eight short bars along an arch). Migrated windows keep their existing frames, so theirs stays off |
+| `frame_style` | `CUSTOM` | a frame preset (18 Nov 2026, [below](#real-windows--18-november-2026)): `HOUSE`, `SHOPFRONT`, `CIVIC`, `ARCHED`. `CUSTOM` uses the `frame_*` exports below |
+| `frame_accent` | `""` | preset frames: a palette accent family (`coral`, `rose`, `sky`, `meadow`, `teal`, `scripts/core/game_palette.gd`), drawn in its deep tone; `""` = `TRIM` cream |
+| `wall_depth` | 0 | thickness of the wall the window sits in: a preset frame then runs 2 cm past both wall faces, lining the opening |
+| `bars` | empty | preset upright glazing bars at these local x positions (empty = evenly spaced by the preset) |
+| `frame_visible`, `frame_width`, `frame_depth`, `frame_color` | false, 0.08, 0.1, white | `CUSTOM` only: optional frame of four bars (eight short bars along an arch). Migrated windows keep their existing frames, so theirs stays off |
 
 The window has no collision. Put a `StaticBody3D` beside it, or under it as the migration does,
 when the opening must block. It joins the group `glass_windows`. In a building script step, use
@@ -79,7 +83,8 @@ door leaves.
 **Opaque (46): the glass sits on a solid surface.** Every storefront facade (`Map facades/*`:
 airport, school, sports, café, electronics, bank, library, Alta Cocina, taquería, police,
 supermarket, clothing) stands in front of the building's front wall. The old bank, library,
-police and supermarket windows sit in front of interior wall linings. The 14 barn windows sit on
+police and supermarket windows sit in front of interior wall linings. (Police and supermarket:
+replaced by real windows on 18 Nov 2026, [below](#real-windows--18-november-2026).) The 14 barn windows sit on
 the barn walls. The Alta Cocina kitchen window, the burger back-door window, the airport
 boarding-door window and the warehouse hall-door window sit on walls or door leaves. Made
 see-through, these showed a blank wall, so they use the shared opaque glass. They still use the
@@ -111,7 +116,65 @@ Left as they were (not window glass): emissive "Window light" and cell-window li
 wall), the police lineup's one-way glass (a game element), display-case and fridge glass,
 vehicles and products.
 
-**Open issue (needs a user decision, not done):** seeing into the bank, library, police,
-supermarket, school, sports, café, barn and the restaurant facades would need openings cut in
-the walls and linings behind those panes. That changes building structures and interiors, so
-it is a separate design task.
+**Open issue (needs a user decision, not done):** seeing into the bank, library, school, sports,
+café, barn and the restaurant facades would need openings cut in the walls and linings behind
+those panes. That changes building structures and interiors, so it is a separate design task.
+The police station and the supermarket were done on 18 Nov 2026 (next section), with the helper
+any of these can reuse.
+
+## Real windows — 18 November 2026
+
+User request (18 Nov 2026): real windows in the supermarket and the police station with the
+shared component, improving it where a review shows it needs it; proposal approved as made
+(frame colours: police `sky`, supermarket `meadow`).
+
+**Why they were not real.** Both units were migrated on 12 Nov, but every pane got
+`see_through = false`: each front opening was three or four stacked layers (facade glazing;
+storefront panel with its own pane, mullion and sill; a window inside the front pier; the
+painted interior lining, and in the police evidence room a painted, lit "Window light") in front
+of the solid 5.8 m pier. One facade glazing per building was auto-named (`@Node3D@…`) and was
+not migrated at all.
+
+**Component changes** (`scripts/world/glass_window.gd`):
+- **Frame presets** (`frame_style`). Frame and bars in `frame_accent`'s deep tone or `TRIM`; sill in
+  `TRIM` (`STONE` for `CIVIC`). Glazing bars are thinner and at most 0.1 deep, through the glass sheet.
+
+  | Preset | Frame | Glazing bars | Cross bar | Sill (height, sticks out) |
+  | --- | --- | --- | --- | --- |
+  | `HOUSE` | 0.08 | panes up to 0.9 wide | half height | 0.06, 0.08 |
+  | `SHOPFRONT` | 0.08 | panes up to 2.3 wide | — | 0.06, 0.06 |
+  | `CIVIC` | 0.12 | panes up to 2.4 wide | at 74 % (transom) | 0.09, 0.12, stone |
+  | `ARCHED` | 0.1 | panes up to 1.6 wide, up into the arch | — | 0.07, 0.1 |
+- **`wall_depth`**: the preset frame runs through the wall and 2 cm past both faces, so it lines
+  the opening and hides the cut edges. `opening_size()` gives the hole a window fills.
+- Frame and sill colours share one cached material per colour (never one per window); they are
+  opaque boxes that batch with the town. The glass is unchanged (one sheet, `outside = FRONT`).
+  The cheap `glass_mode = "opaque"` still works: solid dark panes, no transparency pass.
+
+**Opening helper** (`scripts/buildings/glass_windows.gd`, `real_window(town, unit, parent, centre,
+outward, look, reach)`), for a building step:
+- adds the window (`outside = FRONT`, its +Z toward `outward`) at `centre`, the middle of the
+  wall's depth;
+- **cuts** every box wall layer that reaches at least 0.2 past the opening on every side (pier,
+  facade skin, painted lining): its mesh becomes up to four boxes around the hole, one
+  `ArrayMesh` on the same node with the same material, so collision, metas and owners stay. The
+  wall's collision is unchanged, so the glass still blocks the player;
+- **removes** the parts lying inside the opening (within 0.25 along the wall, `reach` in front of
+  or behind it): old panes, panels, frames, sills, mullions, painted views. If one was a clickable
+  word ("window" in both buildings), the new window takes the word and gets a thin click body;
+- **reports** parts that only partly overlap (planters, bases, posters, partitions) and leaves them.
+
+**Per building** (steps `real_windows`; positions in town coordinates, the fronts face +X):
+
+| Building | Windows | Look | Cut | Removed |
+| --- | --- | --- | --- | --- |
+| Police station | Lobby window (above the waiting chairs) and evidence room window, 6.6 × 2.1 each, glass centre y 2.15 | `CIVIC`, `sky`; the evidence window's bar lines up with the evidence-room partition (z 83.6) | front pier, facade skin, painted lining (3 per window) | 12 parts per window, including the evidence room's painted "Window light" |
+| Supermarket | Two storefront windows beside the door, 8.85 × 2.92 each, glass centre y 2.12 | `SHOPFRONT`, `meadow`, three glazing bars | front pier | 15 parts per window (facade glazing, mullions, reflection band, horizontal frame, storefront panel and pane, pier window) |
+
+Left as they were: the police lineup's one-way glass and the cell window; the supermarket's
+facade stone base, end piers, pilasters and the door-side mullions.
+
+Views (street and room, noon and 21:00, a street angle, wide street and room views) and checks
+(each window see-through, outdoors face, preset, word, nothing but the window across the glass):
+`docs/evidence/real-windows-20261118/` (`capture.gd`; `before-*`, `after-*` and `opaque-police` sheets).
+Street view draw calls (police only loaded): before 400, after 398.

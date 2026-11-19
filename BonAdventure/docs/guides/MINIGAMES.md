@@ -31,8 +31,8 @@ summary here. Each game's purpose and progression design is owned by its learnin
 
 | Minigame | NPC and place | Learning goals | Words and phrases | Status | Design / ownership |
 | --- | --- | --- | --- | --- | --- |
-| **Grocery Run** (customer order) | Beagle clerk (Twinkle's species), outside the supermarket door, left | Recognise product names and quantities; find the objects | 80 supermarket products (`sold_in`), `shop.*` phrases | Built 3 Nov 2026; one round, no progress bar | [Design](TOWN_DESIGN_BRIEF.md#customer-order-minigame--3-november-2026), [ownership](ARCHITECTURE_REVIEW_PART1.md#customer-order-ownership--3-november-2026) |
-| **Pay Up!** (cashier money) | Samoyed cashier at the supermarket till | Understand spoken amounts ($0.25–$300); count out bills and coins | Generated money amounts (`money_words()`), `cashier.*`, `money.*` | Built 4 Nov 2026; 5 rounds per session; on the shared host with the gold "!" since 9 Nov 2026 (it had none) | [Design](TOWN_DESIGN_BRIEF.md#cashier-money-minigame--4-november-2026), [ownership](ARCHITECTURE_REVIEW_PART1.md#cashier-money-minigame-ownership--4-november-2026) |
+| **Grocery Run** (customer order) | Beagle clerk (Twinkle's species), outside the supermarket door, left | Recognise product names and quantities; find the objects | 80 supermarket products (`sold_in`), `shop.*` phrases | Built 3 Nov 2026; one round, no progress bar; 4 levels and stars since 18 Nov 2026 ([progression](#progression)) | [Design](TOWN_DESIGN_BRIEF.md#customer-order-minigame--3-november-2026), [ownership](ARCHITECTURE_REVIEW_PART1.md#customer-order-ownership--3-november-2026) |
+| **Pay Up!** (cashier money) | Samoyed cashier at the supermarket till | Understand spoken amounts ($0.25–$300); count out bills and coins | Generated money amounts (`money_words()`), `cashier.*`, `money.*` | Built 4 Nov 2026; 5 rounds per session; 4 levels (amount range) and stars since 18 Nov 2026 ([progression](#progression)); on the shared host with the gold "!" since 9 Nov 2026 (it had none) | [Design](TOWN_DESIGN_BRIEF.md#cashier-money-minigame--4-november-2026), [ownership](ARCHITECTURE_REVIEW_PART1.md#cashier-money-minigame-ownership--4-november-2026) |
 | **Who's Who?** (hospital family game) | Dr. Li (pig plush, doctor), outside the hospital, right of the entrance | Family relationships, ages, birthdays, months, older/younger, before/after | Family category, months, `family.*`; taught by four school posters | Built 4 Nov 2026; 20 questions per session | [Design](TOWN_DESIGN_BRIEF.md#hospital-family-game--4-november-2026), [ownership](ARCHITECTURE_REVIEW_PART1.md#hospital-family-game-ownership--4-november-2026) |
 | **Flight Finder** (airport flight game) | Capitán Bruno (bear plush, pilot), information desk just right of the airport terminal door | Time expressions within two days of today (anteayer…pasado mañana, esta mañana / anoche, weekdays, a day with a clock time, hace / dentro de 1–3 horas), 4 countries by flag (from 8), past vs future, departures vs arrivals | 66 words (relative time, weekdays, clock, airport, salir/llegar/despegar, new Countries category), `flight.*`; taught by four terminal posters (countries with flags) | Built 5 Nov 2026; 5 questions per session, first-try progress; layout, flags and bilingual rows revised 6 Nov 2026; board-only redesign with near-miss flights 7 Nov 2026; calendar and digital clock, 12-hour times, one day column (weekdays, or dates for weekday questions), 3 of 8 countries × 4 flights, weekday tracking and a play-again question 8 Nov 2026; later that day arrivals (*llegar*) on separate *Salidas* / *Llegadas* tabs (4 countries, 8 flights each), no day names on the calendar, questions of at most 12 words, no flights 7–9 p.m., missed questions first in the summary; that night a board built for each question (6 departures and 6 arrivals, countries mixed, at most 3 a tab, the answer with near misses, country and verb traps) and no scroll bar | [Design](TOWN_DESIGN_BRIEF.md#airport-flight-game--5-november-2026), [ownership](ARCHITECTURE_REVIEW_PART1.md#airport-flight-game-ownership--5-november-2026) |
 | **On the Menu** (Alta Cocina restaurant game) | Twinkle (beagle plush, waiter) at the Alta Cocina host stand; two seated house-character customers at two tables; a menu book on a table by the host stand | Taste, temperature, ingredients, intensity (*un poco*, *muy*); dish names; course names | Tastes, temperatures, ingredients and 23 dishes, `restaurant.*`; taught by three dining-room posters and the menu book | Built 6 Nov 2026; **walk-around flow since 11 Nov 2026**: Twinkle sends the player to a customer, who orders 2–3 courses; the dishes are chosen and sent from a tablet, the customer reacts, Twinkle reports back; the entrance asks before leaving mid-game; 4 fully right orders; textures and extras removed; negation built but off | [Design](TOWN_DESIGN_BRIEF.md#alta-cocina-restaurant-game--6-november-2026), [ownership](ARCHITECTURE_REVIEW_PART1.md#restaurant-game-ownership--6-november-2026) |
@@ -59,6 +59,7 @@ Reuse these for any new minigame instead of building parallel ones.
 | **HUD during any minigame** (user, 12 Nov 2026): while any game's `activity_running()` is true, the full map and minimap, the journal / map / games / help corner buttons, the day clock and the other `GAME_HIDDEN_GROUP` parts are off, and M, J and F1 do nothing; open map, journal, help or picker windows close. Only the Settings gear and the peek badge stay. Nothing to do per game: register on the activity board | `main.gd` `sync_minigame_hud()` (activity board `blocker("")`), `vocabulary_hud.gd` `in_minigame` and `hide_for_game(hide, reason)`; check `docs/evidence/electrical-box-20261109/verify.gd` | all registered games |
 | **A word popping up in the world** (grows in, stays, fades; same size on screen at any distance): `PopWord3D.new()`, add it, place it, `pop(text, outline_colour, seconds, camera)` | `scripts/ui/pop_word_3d.gd` (9 Nov 2026) | mahjong (call words) |
 | **Lively NPC plushes** (a blink every 4-10 s each; one small hop, body shake, bow or lean every 10-20 s across the group; always back to rest; `blink_gap`, `gestures`, `gesture_gap` are settings): `PlushLife.new()`, add it, `setup([plushes], rng)`; one move on demand: `PlushLife.play(self, figure, kind)`. Moves turn the whole figure, never its `Head` node ([why](COMPONENTS.md#plush-characters)) | `scripts/characters/plush_life.gd` (9 Nov 2026; the one owner of plush eyes and gestures since 13 Nov 2026) | mahjong players, lineup suspects; every other plush NPC blinks through `main.plush_life` |
+| **Levels and stars** ([progression](#progression), 18 Nov 2026): a level's settings from `data/activities.json` `"levels"`, 1–3 stars per finished session, unlocks, saved per profile; the picker's level pills and stepper, the greeting's level badge, the end-of-session star card | `scripts/learning/game_progress.gd`, `Board.add_miss()`; UI: `game_launcher.gd`, `minigame_host.gd` `show_level()`, `shop_order_panel.gd` `show_level()`, `scripts/ui/star_card.gd`, `BonStyle.stars()` | Pay Up!, Grocery Run (the rest designed, not built) |
 | Offer chance, progress target, one activity at a time; `hold` keeps every game quiet while the welcome tutorial runs ([guide](ARCHITECTURE_REVIEW_PART1.md#welcome-tutorial)) | `scripts/learning/activity_board.gd`, `data/activities.json` (the host registers and rolls) | all |
 | Started / ended signals (12 Nov 2026): `started(id)`, `ended(id, summary)` with `rounds`, `target`, `completed`; `running_id` | `activity_board.gd` `watch()`, called once a frame by Main; a game needs nothing extra (it only has to report `activity_running()`) | all |
 | Hop, face camera (avoids walls, hides the player in the shot); the "!" since 12 Nov 2026 is drawn by the shared interaction icons from the NPC interactable's `calling` | `scripts/learning/npc_presence.gd` (made by the host), `scripts/ui/interact_badge.gd` | all |
@@ -76,7 +77,7 @@ Reuse these for any new minigame instead of building parallel ones.
 | Practice tracking: one outcome (positive, negative, translated) per tested word per question, per learned language ([interface](ARCHITECTURE_REVIEW_PART1.md#practice-tracker)) | `scripts/learning/practice_log.gd` (`user://practice_log.json`) | shop, family (relation questions), restaurant, warehouse, flight (destination country), grammar (Chinese measure-word nouns) |
 | Try again / tell me what went wrong | cashier (`cashier_session.gd`), warehouse (`warehouse_session.gd` `_wrong()`) | cashier, warehouse, flight (`flight_questions.gd` `explain()`) |
 
-Not available yet: coins or rewards (none exist). Physics goods exist only in the warehouse
+Not available yet: coins or rewards (none exist; stars and levels since 18 Nov 2026, [progression](#progression)). Physics goods exist only in the warehouse
 copy (`warehouse_goods.gd`).
 
 ## Building a minigame
@@ -184,6 +185,10 @@ player is inside and has not paid, and its zone shows a toast (`tutorial_shop.gd
   row in the table above.
 - Rounds: read `Board.shared().target(id)` (progress bar) or `rounds(id)` (at least 1) rather
   than a constant, so the [minigame picker](#minigame-picker) can change them.
+- Levels ([progression](#progression)): a `"levels"` list in `data/activities.json`, read once per
+  session with `GameProgress.shared().params(id)`, and `Board.shared().add_miss(id)` for a round
+  that went wrong. The design (what each level changes) goes on the game's learning card in
+  [game/minigames.md](../game/minigames.md).
 
 ## Minigame picker
 
@@ -199,7 +204,9 @@ started from it **record practice** like any other (the practice log is no longe
 - The detail bar under the tiles: the selected game's name, host line, what it practises
   (`games_learn.<id>`), the rounds stepper (1–30, starting at the data's number; "No rounds"
   for Radar Patrol, the electrical box, the library cart and, since 15 Nov 2026, mahjong:
-  `ENDLESS`, which also sets no rounds on Play) and a large **Play**.
+  `ENDLESS`, which also sets no rounds on Play), for a game with levels a **Level** stepper over the
+  unlocked levels (18 Nov 2026; it sets the current level, [progression](#progression)) and a large
+  **Play**. A tile of a game with levels shows its level ("Lv 2") and best stars at it.
 
 Play closes the window, stands a seated player up, puts them about 2 m in front of the game's
 NPC and starts the game through `minigame_host.gd` `launch()` (no offer roll or greeting).
@@ -225,3 +232,92 @@ while any game runs or the player is in a vehicle. Owner: `scripts/ui/game_launc
 `launcher`, `games`, `games_host` and `games_learn` groups of `data/phrases.json` (native
 language). Check:
 `docs/evidence/minigame-launcher-20261109/verify.gd` (`minigame_launcher` in `tools/run_checks.py`).
+
+**Go there** (18 Nov 2026, user): next to Play, it closes the window and starts the
+[guide arrow](#town-map-and-guide-arrow) to the selected game's NPC (or box) instead of starting
+the game; off while a game runs and hidden for a building left out by `dev_focus.txt`.
+
+## Town map and guide arrow
+
+Wayfinding (user, 18 Nov 2026). The live minimap and full map were switched off on 14 Nov 2026
+because they redrew the town from its meshes (8.4 → 64 ms a frame while turning,
+[hidden features](../../README.md#hidden-features)); the user chose a baked map plus a guide arrow.
+
+- **Baked picture:** `tools/bake_town_map.gd` (needs a window) renders the whole town once from
+  straight above (orthographic, noon, no fog, sun disc and clouds hidden) into
+  `assets/maps/town_map.png` (1400 × 1138, imported lossy) and writes `data/town_map.json`:
+  the picture's frame in town coordinates (north up, +X west on the left), each building's
+  entrance (`at`, `door`, from `Main.ENTRANCES`) and each minigame's NPC (or box) spot. **Run it
+  again after a building, an entrance or a minigame NPC moves**, then reimport
+  (`godot --headless --path . --import`) so the game loads the new picture.
+- **Map** (`scripts/ui/town_map_panel.gd`, in `hud.map_overlay`; M, the map button in the
+  second top-right row left of ▶, its ✕, Esc or moving close it): the picture, a name pill per
+  building (placed once on open, no overlaps), a "you are here" dot with the view direction
+  (moved 5 times a second, only while open). A tap picks the place whose pill or entrance is
+  nearest; the side column lists its games (tap: guide to that game) and a green **Go there**;
+  **Stop guiding** while a guide runs. The picture is loaded on open and let go on close.
+  Hidden during minigames and the welcome tutorial (`tutorial_hidden.map`).
+- **Guide arrow** (`scripts/ui/guide_arrow.gd`, under the place line in the top left, below every
+  window): a green dial whose arrow points to the target relative to the camera, the name, the
+  metres left and a ✕. It follows a live NPC node when its building is loaded, otherwise the baked
+  spot; clears itself within 7 m (toast `map.arrived`) or when the target game starts; hidden,
+  not cleared, while a minigame hides the HUD. Not processing while no target is set.
+- Text: `map.*` and `help.map` in `data/phrases.json`; place names `places.*`.
+- Check and views: `docs/evidence/wayfinding-20261118/verify.gd` (graphics; not in
+  `run_checks.py`, it overwrites its PNGs) and its [README](../evidence/wayfinding-20261118/README.md).
+
+## Progression
+
+Levels and stars for the minigames (user approval, 18 Nov 2026). The player-facing design, the
+star rule and each game's level ladder are owned by the [game guide](../game/minigames.md#how-games-get-harder);
+this section is the code. Built for Pay Up! and Grocery Run; the other learning games are
+designed (their learning cards) but not wired yet.
+
+**Data.** `data/activities.json`, per game:
+- `"levels"`: a list of settings dictionaries, level 1 first. The keys belong to the game:
+  Pay Up! reads `max_cents` and `step` (the amount's smallest unit in cents: 100 whole dollars,
+  25 quarters; `Currency.random_cents(rng, max_cents, step)`); Grocery Run's are its
+  `data/shops.json` order rules, merged over the store's (`unique_items`, `quantity_each`,
+  `retries`, and `order_words`, where `[]` means every product sold in the store). An empty `{}`
+  is the game as it is in the data.
+- `"stars_at"` (optional, default `[1.0, 0.6]`): the share of rounds right first time for ★★★ and ★★.
+  Grocery Run uses `[1.0, 0.5]` so one retry is ★★.
+
+A game without `"levels"` has no progression and nothing changes for it.
+
+**API** (`scripts/learning/game_progress.gd`, `GameProgress.shared()`):
+
+| Call | Use |
+| --- | --- |
+| `params(id)` | the current level's settings, read when a session starts (`{}` without levels) |
+| `level(id)`, `unlocked(id)`, `count(id)`, `has_levels(id)`, `best(id, level)` | for UI |
+| `set_level(id, n)` | the picker's stepper (capped at `unlocked`) |
+| `recorded(id, result)` signal | a scored session: `stars`, `level`, `best`, `level_up`, `new_level`, `count` |
+| `record(id, needed, misses, custom)` | scores a session by hand (checks); the game never calls it |
+
+A game itself only calls `params()` and, once per round that went wrong (or per retry),
+`Board.shared().add_miss(id)`. Scoring is automatic: the activity board's `ended(id, summary)`
+now carries `misses`, `needed` (the rounds the session needed when `begin()` ran, at least 1) and
+`custom` (the picker changed the rounds). A session with at least `needed` rounds done scores
+`needed / (needed + misses)` against `stars_at`; ★★★ at the highest unlocked level unlocks the next and
+makes it current, except for `custom` sessions. Unfinished sessions record nothing.
+
+**Shown in:** the picker (tile pill and stars, Level stepper), the greeting (`minigame_host.gd`
+`offer()` calls `show_level()`; a game with no greeting calls `host.show_level()` on its first
+line, as the cashier does), and the star card at the top centre after each scored session
+(`scripts/ui/star_card.gd`, built by `minigame_wiring.gd`, 4.5 s or a tap). Text: the `progress`
+group and `launcher.level` in `data/phrases.json` (native language). Stars are `BonStyle.stars()`
+(`star_on` / `star_off` SVGs).
+
+**Save:** `game_progress.json` per profile (`save_store.gd` `PROFILE_FILES`; reset with the other
+singletons on a profile switch), keyed by learned language then activity id:
+`{"es": {"cashier_supermarket": {"level", "unlocked", "best": {"1": 3}, "plays"}}}`. Saves without
+the file start at level 1; nothing to migrate.
+
+**Check:** `docs/evidence/minigame-progression-20261118/verify.gd` (`minigame_progression`, full suite).
+With graphics it saves `picker.png`, `greeting.png` and `star-card.png` there.
+
+**Rolling it out to another game:** add its `"levels"` from its learning card, read `params()` in
+its session's start, call `add_miss()` where a round goes wrong (the restaurant, police and
+warehouse games count a round "when done", so they need it most), add checks to the progression
+check, and mark the card's Progression row as built.

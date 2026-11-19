@@ -4,7 +4,7 @@ extends RefCounted
 ## Bake:  godot --headless --path . --script res://tools/bake_unit.gd -- supermarket
 ## Never rename or remove a baked step (add a new one that undoes it).
 ## Record: docs/guides/TOWN_DESIGN_BRIEF.md "Supermarket product art — 8 November 2026".
-const STEPS := ["product_models", "fixture_finish", "checkout_props", "seafood_ice", "surface_gaps", "coplanar_gaps", "coplanar_gaps_2", "coplanar_envelope", "glass_windows", "tutorial_fruit", "world_signs", "clear_sections"]
+const STEPS := ["product_models", "fixture_finish", "checkout_props", "seafood_ice", "surface_gaps", "coplanar_gaps", "coplanar_gaps_2", "coplanar_envelope", "glass_windows", "tutorial_fruit", "world_signs", "clear_sections", "real_windows"]
 const Products = preload("res://scripts/buildings/supermarket_products.gd")
 const WorldSign = preload("res://scripts/world/world_sign.gd")
 const INTERIOR := "RelocatedSites/Supermarket/MarketInterior"
@@ -217,6 +217,31 @@ func coplanar_envelope(town: Node3D, _game) -> void:
 ## Window glass as the shared window component (12 Nov 2026, docs/guides/WINDOWS.md).
 func glass_windows(town: Node3D, _game) -> void:
 	preload("res://scripts/buildings/glass_windows.gd").migrate(town, "supermarket")
+
+
+## Real windows (user, 18 Nov 2026; docs/guides/WINDOWS.md "Real windows"): the two storefront
+## windows beside the door were stacked panes (facade glazing with its mullion and reflection band,
+## storefront panel and pane, pier window) in front of the solid front pier. Each becomes one
+## see-through SHOPFRONT window (meadow frame, three glazing bars, cream sill) in an opening
+## through the pier. Town coordinates (+X west; the front faces +X, the shop lies toward -X): the
+## pier runs from x -133.25 to -133.0; the glass keeps the old facade glazing's size and height.
+## The facade glazing stood 0.6 in front of the pier, so parts that far out are cleared (reach 0.7).
+const REAL_WINDOWS := [
+	{"name": "Storefront window", "z": 118.055},
+	{"name": "Storefront window 2", "z": 133.955},
+]
+
+func real_windows(town: Node3D, _game) -> void:
+	var GlassWindows := preload("res://scripts/buildings/glass_windows.gd")
+	var GlassWindow := preload("res://scripts/world/glass_window.gd")
+	var site: Node3D = town.get_node("RelocatedSites/Supermarket")
+	for spec in REAL_WINDOWS:
+		var done: Dictionary = GlassWindows.real_window(town, "supermarket", site, Vector3(-133.125, 2.12, spec.z), Vector3(1, 0, 0), {
+			"name": spec.name, "width": 8.85, "height": 2.92, "wall_depth": 0.25,
+			"frame_style": GlassWindow.FrameStyle.SHOPFRONT, "frame_accent": "meadow"}, 0.7)
+		print("supermarket %s (word '%s'): cut %s, removed %s, left %s" % [spec.name, done.word, done.cut, done.removed, done.partial])
+		if done.cut.is_empty():
+			push_error("supermarket: %s cut no wall" % spec.name)
 
 ## The welcome tutorial's fruit (user, 13 Nov 2026: "move the apple and banana to spots where
 ## they're really easy to see, make them a bit bigger, and make them look better"): a round table
