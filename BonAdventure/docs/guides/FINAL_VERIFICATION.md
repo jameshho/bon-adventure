@@ -1263,7 +1263,7 @@ supplies and the entrance. Nearby school NPCs/flower bed clear the new walls.
 Pre-edit baseline: resources **309 / 0 failures**, compact layout **706 / 0**.
 An additional pre-resize runtime inventory used the backed-up original three
 world scripts and unchanged Main in the isolated copy; its fingerprints/keys are
-saved in [baseline.json](../evidence/resize-20261025/baseline.json). It is not regenerated from
+saved in `docs/resize-20261025/baseline.json` (deleted 7 Nov 2026 with the retired October snapshot checks; in the old-history bundle). It is not regenerated from
 the new implementation. The dimension check compares other buildings, site
 frames, park/landmarks/vehicles and **301 unchanged supermarket components**
 against that evidence. All **12 registered doors** remain. Geometry fingerprints
@@ -2831,7 +2831,7 @@ Isolated project, headless: `check_reference_home` (8 doors, 191 clearance sampl
 
 ### 2026-10-29 ceiling, roof gap, seating and garage doors
 
-Changes are listed in [REFERENCE_HOME.md](REFERENCE_HOME.md#ceiling-roof-seating-and-garage-doors--29-october-2026). All runs used the isolated user directory.
+Changes are listed in [REFERENCE_HOME.md](REFERENCE_HOME.md#ceiling-roof-seating-and-garage-doors--29-october-2026-user-request). All runs used the isolated user directory.
 
 - `check_reference_home` (headless): 8 doors open and close, including the reversed access door; 191 clearance samples; roof visibility and taxi driver all passed. One intermediate layout, with the north end chair pulled out, failed the z 4.25 walkway route and was reverted.
 - Scratch garage script (graphical): 14 checks, 0 failures:
@@ -6282,7 +6282,7 @@ sharp; the 3D is slightly softer; shadow edges show stair-steps on the road.
 
 ## Minigame test launcher and the older games on the shared host — 9 November 2026
 
-What changed ([guide](MINIGAMES.md#test-launcher)): an F9 / corner-button test launcher (debug
+What changed ([guide](MINIGAMES.md#minigame-picker)): an F9 / corner-button test launcher (debug
 builds) starts any game with a chosen number of rounds and records no practice; the shop,
 cashier and warehouse sessions now use `minigame_host.gd` (and the warehouse `minigame_zone.gd`),
 which gives the cashier the gold "!" it lacked; grammar and mahjong read their rounds from the

@@ -2,7 +2,7 @@
 
 **Current monument layout and terrain:** [4 November photographic revision](#boston-inspired-garden--4-november-2026), with the [5 November monument refinement](#washington-monument-refinement--5-november-2026) superseding its bushes, beds and fountain design and the [5 November trail cleanup](#monument-trail-cleanup--5-november-2026) superseding its trail network. Earlier dated layouts below are historical.
 
-The main scene now opens `scenes/world/town_public_garden.tscn`, an editable snapshot. The original `town_reference.tscn` and its buildings remain available. All work stays in the existing low-poly style; no downloaded assets are required.
+*Historical (until 6 Nov 2026):* the main scene then opened `scenes/world/town_public_garden.tscn`, an editable snapshot; it was deleted when the [modular town](../MODULAR_TOWN.md) (`scenes/town/base.scn`) replaced it. The original `town_reference.tscn` and its buildings remain available. All work stays in the existing low-poly style; no downloaded assets are required.
 
 The lagoon has a larger irregular southern basin, a narrow bridge crossing, a smaller northern basin, and a wooded island. The pale arched pedestrian bridge has granite piers/towers, globe lamps, suspension sweeps, diamond lattice railings, a continuous collision deck, and side barriers. Its ends meet the ground without steps. A shoreline loop joins the statue promenade, northern wildlife and playground district, southern library district, gazebo, chapel, and existing neighborhood paths.
 

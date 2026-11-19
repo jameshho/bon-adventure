@@ -1152,7 +1152,7 @@ dictionary entries, even if no current object exposes the word.
 | Transport Infrastructure | 12 |
 | Transportation | 17 |
 
-`data/vocabulary_categories.json` is the category authority. Corresponding category
+`data/vocabulary_categories.json` was then the category authority (merged into `data/words.json` `categories` on 28 Oct 2026). Corresponding category
 fields in `learning_catalog.json` and cached category tags in **80 scene files**
 were synchronized. Those scene edits are metadata-only: no transforms, geometry,
 resource references, vocabulary keys, aliases or translations changed. This also
@@ -1669,6 +1669,8 @@ sure the templates together still give every relationship word.
 ### Airport flight game ownership — 5 November 2026
 
 Design record: [Airport flight game](TOWN_DESIGN_BRIEF.md#airport-flight-game--5-november-2026).
+The startup-pass owner `airport_interior.gd` named below was baked into `scenes/town/airport.scn`
+and deleted on 6 Nov 2026; change the terminal with steps in `scripts/buildings/airport.gd`.
 
 | Part | Owner |
 | --- | --- |

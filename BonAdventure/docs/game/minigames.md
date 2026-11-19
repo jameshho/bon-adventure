@@ -307,7 +307,7 @@ few minutes later the books are borrowed and a new cart arrives. Tracked: each b
 | Learning card | |
 | --- | --- |
 | Purpose | Book topics (dogs, pizza, guitar…) and the six category words (animal, sport, music, food, vehicle, plant; 3 books each) by sorting returned books. |
-| Words | [Generated list](words.md#shelf-mission) |
+| Words | [Generated list](words.md#library-helper) |
 | Tracked in the journal | Yes (17 Nov): a book's first placement in a cart tests its topic word and its category word |
 | Session | One cart of 3–6 books; the next cart about 5 minutes after a perfect one |
 | Progression | Not designed yet. Planned (user, 17 Nov 2026): a level with plain spines, so the colours no longer match the shelves |

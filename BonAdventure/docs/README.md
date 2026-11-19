@@ -21,6 +21,10 @@ moved with `git mv`, and every reference was rewritten, so git history follows e
 | [`evidence/`](evidence/) | One folder per dated piece of work (`<topic>-<yyyymmdd>/`): its checks (`verify.gd`), capture scripts and screenshots. [`town-checks/`](evidence/town-checks/) holds the October town-wide checks and captures | Put each new check, capture script and screenshot set in a new `evidence/<topic>-<yyyymmdd>/` folder; never write files to the top of `docs/` |
 | [`archive/`](archive/) | Superseded one-off reports kept as history | Move a guide here when a newer guide replaces it, and update links |
 
+After moving, renaming or deleting a doc or screenshot, check the links (no Godot needed; exits 1
+if any relative link or `#anchor` is broken): `python3 tools/check_doc_links.py` (a path such as
+`docs/game` limits it). A link to a capture that was never kept reads "(capture not kept)".
+
 ## Current guides: where to make decisions
 
 | Task | Authoritative document | How to use it |

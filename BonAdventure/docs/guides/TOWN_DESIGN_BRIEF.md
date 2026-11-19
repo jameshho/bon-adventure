@@ -492,7 +492,7 @@ Evidence: [current overview](../evidence/exterior-audit-20261025/overview.png), 
 
 | Owner | Actual implementation and editing implication |
 | --- | --- |
-| Entry | `scenes/main.tscn` → `scripts/core/main.gd`; saved `town_public_garden.tscn` under Apartment ×1.3. Preserve application/save identity. |
+| Entry | `scenes/main.tscn` → `scripts/core/main.gd`; since 6 Nov 2026 the [modular town](MODULAR_TOWN.md) (`scenes/town/base.scn` plus one scene per building; before that the saved `town_public_garden.tscn`) under Apartment ×1.3. Preserve application/save identity. |
 | Active construction | Baked reference branch restores doors and binds layout; garden/home and guarded `world_refinements.gd` follow, then UI/vehicle registration/batching. Do not run older town builders or bakers to change a front. |
 | Prefab-backed buildings | School, hospital, furniture, sports, bakery, clothing and electronics live in `scenes/buildings/`; saved instance overrides matter. School/hospital include floor/wing scenes. Supermarket displays also have a prefab, separate from its baked shell. |
 | Baked procedural sites | Bank, library, police, chapel, gazebo and supermarket shell are stored under `RelocatedSites` in the active snapshot. Earlier construction belongs to TownBuilder and related passes; editing those generators alone need not change Main. |
@@ -745,7 +745,7 @@ road like the supermarket). Footprint X −154.3…−135.3, Z 73.7…86.3; pad 
 interior (144 child nodes), signs, police car, parking pad, drive and entrance walk travel
 with the site; only the pose changed. Sign remains ESTACIÓN DE POLICÍA.
 
-**Fine dining** (`Restaurants/Pizza`; built by `scripts/world/restaurant_venues.gd`;
+**Fine dining** (`Restaurants/Pizza`; built by `scripts/world/restaurant_venues.gd`, deleted 6 Nov 2026, now `scripts/buildings/restaurants.gd`;
 facade in `building_exteriors.gd` style `finedining`): group-local x −8, 30 × 16, door at
 x 0 (3.6 wide), cream plaster, teal cornice and pilasters, wood door leaves, two 4 × 4.3
 dark-teal arched grid windows with painted park/bridge views inside, sconces, patterned
@@ -979,7 +979,7 @@ Owner: `scripts/world/bank_interior.gd::build()`, called by `world_refinements.g
 
 No vocabulary or sign text was added; new props reuse existing words (map, coffee maker, cup, shelf, toilet). Locker props are untagged because "locker" is a removed word.
 
-Owner: `scripts/world/police_interior.gd::build()`, called by `world_refinements.gd` after the bank interior; guarded by the `Interior` node. Check: `docs/evidence/police-interior-20261028/verify.gd`. Renders: [plan](../evidence/police-interior-20261028/top.png), [doorway](../evidence/police-interior-20261028/door.png), [left](../evidence/police-interior-20261028/left.png), [right](../evidence/police-interior-20261028/right.png), [rear rooms](../evidence/police-interior-20261028/back.png), [from the rear](../evidence/police-interior-20261028/rear.png), [cutaway](../evidence/police-interior-20261028/iso.png).
+Owner (deleted 6 Nov 2026; now baked in `scenes/town/police.scn`, changed by steps in `scripts/buildings/police.gd`): formerly `scripts/world/police_interior.gd::build()`, called by `world_refinements.gd` after the bank interior; guarded by the `Interior` node. Check: `docs/evidence/police-interior-20261028/verify.gd`. Renders: [plan](../evidence/police-interior-20261028/top.png), [doorway](../evidence/police-interior-20261028/door.png), [left](../evidence/police-interior-20261028/left.png), [right](../evidence/police-interior-20261028/right.png), [rear rooms](../evidence/police-interior-20261028/back.png), [from the rear](../evidence/police-interior-20261028/rear.png), [cutaway](../evidence/police-interior-20261028/iso.png).
 
 ## Airport terminal interior — 28 October 2026
 
@@ -998,7 +998,7 @@ Built from the user's isometric airport design, following this brief's airport p
 
 New words (`data/words.json`, user request "build the airport" with this brief's program): a **Travel** category ("Trips and airports: travel documents, luggage, and the counters, checkpoints and displays of an airport") with passport, boarding pass, suitcase, luggage cart, check-in counter, metal detector and flight board; airport and baggage claim in Places & Rooms. The existing hospital word x ray machine is reused for the scanner (same Spanish). Seven sign texts were added (DOCUMENTACIÓN, SEGURIDAD, SALA A1, RECLAMO DE EQUIPAJE, TIENDA DE VIAJE, BAÑOS, SALIDAS).
 
-Owner: `scripts/world/airport_interior.gd::build()`, called by `world_refinements.gd` after the police interior; guarded by the `Interior` node. Check: `docs/evidence/airport-interior-20261028/verify.gd`. Renders: [plan](../evidence/airport-interior-20261028/top.png), [doorway](../evidence/airport-interior-20261028/door.png), [check-in](../evidence/airport-interior-20261028/checkin.png), [security](../evidence/airport-interior-20261028/security.png), [gate](../evidence/airport-interior-20261028/gate.png), [baggage claim](../evidence/airport-interior-20261028/claim.png), [shop and café](../evidence/airport-interior-20261028/shop_cafe.png), [cutaway](../evidence/airport-interior-20261028/iso.png).
+Owner (deleted 6 Nov 2026; now baked in `scenes/town/airport.scn`, changed by steps in `scripts/buildings/airport.gd`): formerly `scripts/world/airport_interior.gd::build()`, called by `world_refinements.gd` after the police interior; guarded by the `Interior` node. Check: `docs/evidence/airport-interior-20261028/verify.gd`. Renders: [plan](../evidence/airport-interior-20261028/top.png), [doorway](../evidence/airport-interior-20261028/door.png), [check-in](../evidence/airport-interior-20261028/checkin.png), [security](../evidence/airport-interior-20261028/security.png), [gate](../evidence/airport-interior-20261028/gate.png), [baggage claim](../evidence/airport-interior-20261028/claim.png), [shop and café](../evidence/airport-interior-20261028/shop_cafe.png), [cutaway](../evidence/airport-interior-20261028/iso.png).
 
 ## Furniture showroom — 29 October 2026
 
@@ -1080,7 +1080,7 @@ The user asked for a small deserted island off the right-side coast, a better be
 | Crabs | `scenes/animals/crab.tscn` + `scripts/world/crab.gd`: a new word root `crab` (el cangrejo), one shared vertex-coloured mesh (carapace, eye stalks, two claws, six legs) so each costs one draw call, about 0.6 m across, one picking Area3D. It scuttles sideways along the shoreline on a ±0.7 m run around its `home`, like the other wandering animals. 8 on the beaches (at least 28 m apart) and 2 on the island. |
 | Island | Centre about 16 m beyond the east shallows (data-driven from the shoreline sample nearest z = 130), roughly 13 m of sand with a 4.5 m shallow halo, peak +0.42, wobbly outline, two coconut palms (the existing `palm tree` species at 5.8 and 5.0 height), three boulders, two crabs, foam ring. It has trimesh collision so a landed helicopter or plane can stand on it; there is no walkable route from the mainland (the sea has no floor collision) — a causeway, boat or swimming is not designed and was not asked for. |
 
-Owner: `scripts/world/coast.gd::build()`, called by `world_refinements.gd` after `ground_openings` and before `apply_word_list`/`standable_tree_crowns`; guarded by the `coast_pass` metadata and the `Coast` node (holder of boulders, crabs, island and shore metadata). Tunables are constants at the top of the script. The minimap and atlas do not draw the island: it lies outside `reference_map_bounds` (x ≥ −204). Check: `docs/evidence/coast-20261029/verify.gd`; renders: `docs/evidence/coast-20261029/`. Not designed or approved: swimming, boats for the island, shell/starfish/driftwood words, coconut as a word.
+Owner (deleted 6 Nov 2026; now baked in `scenes/town/base.scn`, changed by steps in `scripts/buildings/base.gd`): formerly `scripts/world/coast.gd::build()`, called by `world_refinements.gd` after `ground_openings` and before `apply_word_list`/`standable_tree_crowns`; guarded by the `coast_pass` metadata and the `Coast` node (holder of boulders, crabs, island and shore metadata). Tunables are constants at the top of the script. The minimap and atlas do not draw the island: it lies outside `reference_map_bounds` (x ≥ −204). Check: `docs/evidence/coast-20261029/verify.gd`; renders: `docs/evidence/coast-20261029/`. Not designed or approved: swimming, boats for the island, shell/starfish/driftwood words, coconut as a word.
 
 ## Tower stair walls and ladder, flush lift doors, swivel seats, standable bridge — 30 October 2026
 
@@ -1131,7 +1131,7 @@ and out, keeping the bar and booth design; put basic food on the tables with voc
 (`scenes/characters/cook.tscn`) and replace **every** figure built from it with a main
 character in costume. Sign text unchanged (FINE DINING / ALTA COCINA).
 
-| Area | Built (owner `scripts/world/restaurant_venues.gd` unless noted) |
+| Area | Built (owner `scripts/world/restaurant_venues.gd` unless noted; deleted 6 Nov 2026, now `scripts/buildings/restaurants.gd`) |
 | --- | --- |
 | Dining room | Same 30 × 16 room and layout (U-bar, three booths, round table, five square tables, slat dividers, host stand). Cream marble floor with small black diamonds and brass dots; walnut wainscot with brass rail; walnut beams; **black leather** booth seats and bar stools (brass posts); walnut chairs with black seats; black window frames; walnut bottle cabinet whose bottles are now visible (they were hidden inside the cabinet); four brass chandeliers; gilt Tuscan landscape paintings; potted olive trees; dessert case (tiramisu, cake, gelato). |
 | Food | Every place setting has an Italian course (pasta, spaghetti and meatballs, lasagna, pizza, steak, salad, soup, tiramisu, gelato), water glass and red wine; tables carry candle, bread basket, olives and a wine bottle; cheese board and grapes on the bar. |
@@ -1157,7 +1157,7 @@ height, flat roof and motorcycle position above were replaced.*
 User request with an isometric reference image (bar and bottle wall, cream booths, sand
 quatrefoil tiles, tall arched windows). Answers in chat: keep **black leather / walnut**
 upholstery (no green, as before); ceiling **6.5**; **low hipped dark-tile roof**; motorcycle in
-a **regular car stall**. Owner `scripts/world/restaurant_venues.gd` unless noted.
+a **regular car stall**. Owner `scripts/world/restaurant_venues.gd` unless noted (deleted 6 Nov 2026, now `scripts/buildings/restaurants.gd`).
 
 | Area | Built |
 | --- | --- |
@@ -1858,7 +1858,7 @@ title shows the shown language first. See
 **Stages.** 1, the language framework, is [built](ARCHITECTURE_REVIEW_PART1.md#vocabulary-data-procedure).
 2, built 4 Nov 2026: 35 words (new **Family** category; months and before/after in Time &
 Directions) with Spanish grammar forms, `data/names.json`, the posters
-(`scripts/world/school_posters.gd`, called from `world_refinements.gd::resize_school()`), and
+(`scripts/world/school_posters.gd`, deleted 6 Nov 2026 (posters saved in the school unit), called from `world_refinements.gd::resize_school()`), and
 Dr. Li (`world_refinements.gd::remodel_hospital_displays()`, node `Buildings/Hospital/DrLi`,
 hospital-local (−3.7, 0, −13.9), id `dr_li`, name from `hospital.dr_li`); a click shows her
 name card. 3, built 4 Nov 2026 (see below).
@@ -2911,8 +2911,7 @@ picking, vocabulary, animation or collision; it is a visual comparison object.
 Rendered with the game's soft plush shading: layered mane lobes, rounded four-legged stance,
 cream face/muzzle, pink ear insets, eyes, whiskers and curved tufted tail. This is a handmade
 approximation, not an exact reconstruction of the reference's sculpt or studio lighting.
-See [in-game close-up](../evidence/lion-blueprint-20261110/zoo-close.png),
-[placement](../evidence/lion-blueprint-20261110/zoo-location.png), and
+See the verification (the in-game close-up and placement captures were not kept):
 [verification](FINAL_VERIFICATION.md#static-lion-blueprint-display--10-november-2026).
 
 ## Clay lion display (second build for comparison) — 10 November 2026
@@ -3093,12 +3092,12 @@ reaches the zoo only through a later swap step (as for the clay lion).
   tuft; wider, rounder face, calmer eyes, ears set back into the mane; fuller lobed tail tuft
   hanging lower; smooth round mane top; paws as **one rounded mitten with three broad toes and
   two shallow grooves** (visible from the side on hind paws too).
-- Views: sheet beside model [bodies](../evidence/lion-crawl-20261111/compare-bodies.png),
-  [three-quarter](../evidence/lion-crawl-20261111/compare-quarters.png),
-  [faces](../evidence/lion-crawl-20261111/compare-faces.png); paws
-  [front](../evidence/lion-crawl-20261111/paws-front.png), [side](../evidence/lion-crawl-20261111/paws-side.png); in
-  the zoo [close](../evidence/lion-crawl-20261111/zoo-close.png), [face](../evidence/lion-crawl-20261111/zoo-face.png),
-  [location](../evidence/lion-crawl-20261111/zoo-location.png);
+- Views (captures not kept): sheet beside model bodies,
+  three-quarter,
+  faces; paws
+  front, side; in
+  the zoo close, face,
+  location;
   [verification](FINAL_VERIFICATION.md#lion-relax-crawl-display--11-november-2026).
 - Colours darkened for town sunlight the same day (user: "yes tone color"; cream, muzzle, mane,
   mane seams and ear pink; base step `lion_crawl_colours` swaps the saved display). The user
@@ -3130,9 +3129,9 @@ Static, one box collision, no word, picking, wandering or animation; ~94k triang
 - Mane and tail tuft keep the crawl lion's toned orange (the user specified only the cream).
 - One fit change: the clay head's forehead is ~7 px further forward, so the mane's short V is
   repeated that much further forward; the mane is otherwise the crawl lion's.
-- Views: [bodies](../evidence/lion-mix-20261111/compare-bodies.png),
-  [faces](../evidence/lion-mix-20261111/compare-faces.png), in the zoo
-  [close](../evidence/lion-mix-20261111/zoo-close.png), [all four lions](../evidence/lion-mix-20261111/zoo-all-lions.png);
+- Views (captures not kept): bodies,
+  faces, in the zoo
+  close, all four lions;
   [verification](FINAL_VERIFICATION.md#combined-lion-display-and-temporary-lion-marks--11-november-2026).
 
 **Temporary lion marks (user: "a temporary mark on each lion so I can more easily tell and

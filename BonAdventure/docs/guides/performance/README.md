@@ -159,6 +159,7 @@ The scope is visual variety and vocabulary reference, not new gameplay.
 
 ### Ownership audit
 
+*Historical:* `town_public_garden.tscn` was deleted on 6 Nov 2026; its contents now live in `scenes/town/base.scn` and the unit scenes ([modular town](../MODULAR_TOWN.md)).
 “Baked” below means present in `town_public_garden.tscn`, not reconstructed on normal
 Main startup. Its `reference_layout_baked` and `home_refined` guards matter.
 
