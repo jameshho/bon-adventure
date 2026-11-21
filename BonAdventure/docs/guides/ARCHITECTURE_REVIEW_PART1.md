@@ -1423,6 +1423,78 @@ see it.
 | Start behind the loading screen (17 Nov 2026, user: the first dialogue boxes in the house lagged on the web; a longer first load is fine if the bar shows real progress) | `app.gd` `_on_town_ready()` starts the tutorial with `Tutorial.begin(main, false, true)` (`covered`) while the loading screen is still up: the cast is built one plush per frame (`cast_built` / `cast_total` move the bar), the act's first `place` step puts the player and the cast in place without a fade and the director holds there (`prepared`; only `place`, `door`, `lock`, `confine`, `words` steps run while covered). The warm-up then looks round from the bed and draws every view the act shows up to its cutscene (`warm_views()`: each cast member's face close-up, then four headings from each spot of the act's place, walk and wait steps, 1.8 m up, spots closer than 1.5 m merged) and the dialogue box once (`warm_dialogue()`), so their shaders compile behind the screen; then `release()` and the `open_on` close-up starts. The loading bar: scene file 0–15 % (read in the background where threads exist), town build steps to 55 % (weighted, `main.gd` `LOADING_STEP_WEIGHTS`), cast to 70 %, one share per warm-up view to 100 %. Measured: [tutorial-lag-20261117](../evidence/tutorial-lag-20261117/README.md) |
 | Cutscene | The loading screen's town pictures with the title (`loading_screen.gd` `show_title()`). Since 16 Nov 2026 (user: the house act lagged) it is also the loading screen for the buildings not loaded yet: `app.gd` `_load_rest()` adds none during the house act and all of them, one after another, while the cutscene is up; it stays at least `cutscene_seconds` (7 s) and until they are in, at most `cutscene_max_seconds` (60 s), with the progress bar under the title ([staged loading](MODULAR_TOWN.md#units-added-while-the-game-runs-home-first--13-november-2026)) |
 
+**Review 2, 21 Nov 2026 (user).** Where this disagrees with the notes below, this wins. Checked
+from the market act on (64 checks, 0 failures, with views):
+[tutorial-review2-20261121](../evidence/tutorial-review2-20261121/README.md); the house act is
+not re-run.
+- **Price:** the fruit costs $1.25 (`shop.price_cents` 125: one $1 bill and one quarter; the
+  money panel still offers only $1 bills and quarters). The dated check
+  `tutorial-polish-20261118/verify.gd` still expects $1.50 (historical; it will fail there).
+- **Cashier:** she asks for the money in her face close-up (`tutorial_shop.gd`
+  `_hold_cashier_face()`, held by the director as `_held_face`), which stays while the money
+  panel is up and through "Perfect! Thank you!"; the shopping list is hidden from the request on
+  (`panel.hide_cart()`). The camera then pans to BonBon's close-up (always, wherever she is) for
+  "Great job! Let's meet outside!".
+- **Leaving the store:** two lines before the park: BonBon's "Everyone ready? Let's go to the
+  park!" (`everyone_ready`, `to_park` merged in and removed) and Leo's (`friend_2`) "Yay! Picnic
+  time!", the camera panning between them.
+- **Faces:** a say step's `"face": "always"` on BonBon's lines keeps the close-up chain whatever
+  her distance, so the camera pans from Sunny's "what's that?" to her "Let's take a closer look!"
+  and between every picnic line (Sunny and Leo have `"face": true`).
+- **Statue:** a `wait` step `"for": "card"` waits until the word card is closed (by itself after
+  `card_seconds` or by a click; `hud.is_card_visible()`), then `after` seconds: "It's a statue of
+  George Washington!" comes 0.2 s after the card closes.
+- **Journal:** `journal_intro` and `take_a_look` are one line ("Every word you find goes into
+  your journal. Let's have a look!"; `take_a_look` removed).
+- **Last line:** "The whole town is now yours to explore. Have fun!" (`goodbye`, es/en/zh).
+- **Box after a pan:** when the close-up pans to the next speaker, that line's box waits for the
+  pan (`npc_presence.gd` `PAN_SECONDS` 0.7) and `tutorial.gd` `PAN_BOX_DELAY` (0.25 s) before it
+  shows.
+- **Picnic blanket:** 6 x 4.75 m, 2.5 times the first 2.4 x 1.9 m (`tutorial.gd` `PICNIC_SIZE`,
+  same check size: `PICNIC_CHECKS`), so everyone fits round it; the picnic moved 1.6 m east to
+  (77.0, 184.6) to clear the statue's plinth (x up to 72.3), with the standing cast and the
+  player on its edges.
+- **Produce price tag:** the supermarket's "$1.50" tag reads "$1.25" like the tutorial's price
+  (`supermarket.gd` step `price_sign`, baked).
+- **After the tutorial:** played to the end (not skipped), the guide and both friends sit round
+  the picnic blanket behind a fade, on its edges (`tutorial.json` `after`: `seats` per role and `lines`;
+  `tutorial.gd` `_leave_party()`, `house_characters.gd` `seated()` with the house characters'
+  seated pose, dressed afterwards, solid with `fit_blocker()`). Each is a TALK
+  [interactable](#interaction-system) (E, click or tap) that says its next line in a bubble that
+  closes by itself, three per character in turn (`tutorial.after_guide_*`, `after_sunny_*`,
+  `after_leo_*`; the seat is `PARTY_SEAT_LIFT` 0.16 m up, on the blanket's top). They are not saved: a reload of a finished profile does not show them, a replay
+  removes them at its start (`start()` `_clear_party()`), and a skip never makes them. The house
+  twins of the same characters are back at home meanwhile (the same character in two places;
+  unresolved, low priority). No face close-up when talking to them.
+
+**Review, 20 Nov 2026 (user).** Where this disagrees with the notes below, this wins. Not
+verified in the game yet (parse check only; no tutorial check run, no screenshots).
+- **Timings:** the `pause` after the view step is 1 s and after the walk step 0.5 s.
+- **Living room:** BonBon says `join_me` in her close-up, a 0.6 s `pause`, then walks to the
+  living room at 80 % of the walking speed (a `walk` step's `speed`, a factor; `tutorial.gd`
+  `_walk()`).
+- **Going outside:** `more_to_show` and `lets_go_outside` are one line, "Let's go outside! There's
+  so much more I want to show you!" (3.5 s); the front door opens just before it.
+- **Close-ups and box:** the tutorial's close-ups are closer and lower (`tutorial.gd`
+  `FACE_DISTANCE` 2.8 m, `FACE_ELEVATION` 8°, set on each `npc_presence.gd` instance's
+  `face_distance` / `face_elevation`; minigames keep 3.6 m and 18°); the dialogue box has no tail
+  while the tutorial runs (`shop_order_panel.gd` `tail`).
+- **Market:** BonBon's "What a beautiful day! Let's have a picnic!", the friend's "Yay! Let's pick
+  up some fruit for our picnic!" (`need_food`), then straight to the clerk's "Hello! Welcome to the
+  supermarket!" and "Here's a basket for you!" (`to_supermarket`, `get_list` and the
+  `click_item` bubble are gone from the script). The first time the player comes within 3 m of the
+  fruit table's apples (`tutorial_shop.gd` `_apple_close_up()`), the camera eases in on them and
+  BonBon's `click_apple` line shows until something is picked; the player holds still meanwhile
+  and clicks aim from the camera on screen (`interaction_controller.gd` `aimed_hit()`).
+- **21 Nov 2026 additions (user):** back-to-back close-ups now PAN from face to face
+  (`npc_presence.gd` `cut_from()`, `PAN_SECONDS` 0.7; was a cut); the clerk's two lines keep one
+  close-up; the close-up hides the player's model when any part of the body (not only its centre
+  line) is in the picture or the camera is inside it (`_hide_player_if_in_view()`,
+  `PLAYER_RADIUS` 0.6; Leo greeted from in front); a right item picked hops with gold sparks
+  (`success_burst.gd`, the library game's, now shared); 3 s in the apple close-up without a click
+  shows a pulsing ring and a mouse pointer or fingertip on the apple (`tap_hint.gd`). Parse check
+  only; not played.
+
 **Polish, 18 Nov 2026 (user's list).** Where this disagrees with the notes below, this wins.
 Check: [`tutorial-polish-20261118/verify.gd`](../evidence/tutorial-polish-20261118/README.md)
 (the `tutorial` check).

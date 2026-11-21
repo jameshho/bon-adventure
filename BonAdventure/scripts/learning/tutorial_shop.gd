@@ -32,6 +32,7 @@ const Currency := preload("res://scripts/learning/currency.gd")
 const Interactable := preload("res://scripts/core/interactable.gd")
 const Basket := preload("res://scripts/world/shopping_basket.gd")
 const HouseCharacters := preload("res://scripts/characters/house_characters.gd")
+const SuccessBurst := preload("res://scripts/world/success_burst.gd")
 ## Seconds the cashier's thanks stays up after paying (user, 14 Nov 2026: no tap needed).
 const THANKS_SECONDS := 3.0
 ## Seconds BonBon's "Great! We got everything! Let's go pay!" stays (user, 18 Nov 2026).
@@ -39,6 +40,20 @@ const GO_PAY_SECONDS := 2.0
 const PAY := "tutorial_pay"
 ## Metres from the cashier's front within which the player is "at the till".
 const TILL_RADIUS := 2.6
+## The apple close-up (user, 20 Nov 2026): the first time the player comes within APPLE_NEAR metres
+## of the fruit table's apples (supermarket.gd tutorial_fruit, "Featured apples"), the camera eases
+## in on them from the player's side, APPLE_VIEW_DISTANCE metres away and APPLE_VIEW_ELEVATION
+## degrees above, and BonBon's "click the apple" line shows like any line until something is
+## picked; the player stands still meanwhile and clicks aim from the close-up.
+const APPLE_NODE := "Featured apples"
+const APPLE_NEAR := 3.0
+const APPLE_VIEW_DISTANCE := 1.4
+const APPLE_VIEW_ELEVATION := 28.0
+const APPLE_VIEW_FOV := 50.0
+const APPLE_ZOOM_SECONDS := 0.5
+## Seconds in the apple close-up without a click before the "click here" pointer shows on the
+## apple (tap_hint.gd; user, 21 Nov 2026).
+const TAP_HINT_AFTER := 3.0
 ## Fruit keys: while any of them is still on the list, BonBon's hints point to the fruit.
 const FRUIT := ["apple", "banana"]
 
@@ -74,6 +89,8 @@ var basket: Node3D
 ## The store door's guard (minigame_zone.gd DoorGuard): stands while the player is inside and
 ## has not paid.
 var door
+## The apple close-up's camera while it shows (null otherwise).
+var _apple_camera: Camera3D
 
 func setup(director, shop_settings: Dictionary) -> void:
 	name = "TutorialShop"
@@ -152,7 +169,9 @@ func play() -> void:
 	var guide: String = tutorial._speaker("guide")
 	var clerk_name: Variant = _speakers.get(clerk, "")
 	var cashier_name: Variant = _speakers.get(cashier, "")
-	# The clerk welcomes the player and hands over a basket, in the native language.
+	# The clerk welcomes the player and hands over a basket, in the native language; the close-up
+	# stays on her between the two lines (user, 21 Nov 2026).
+	tutorial._keep_face = true
 	await tutorial.say(clerk_name, tutorial.narration("tutorial.clerk_hello"), "", clerk)
 	await tutorial.say(clerk_name, tutorial.narration("tutorial.clerk_basket"), "", clerk)
 	if not tutorial.running:
@@ -161,12 +180,12 @@ func play() -> void:
 	# The shopping list stays up until paid (clicks on products go to it: pick_hook).
 	interaction.clear_card()
 	panel.show_cart(_cart_data())
-	await tutorial.say(guide, tutorial.narration("tutorial.get_list"))
-	await tutorial.say(guide, tutorial.narration("tutorial.click_item_touch" if tutorial.is_touch() else "tutorial.click_item"))
-	if not tutorial.running:
-		return
 	phase = "pick"
 	interaction.pick_hook = _on_pick
+	# No "get the list" lines any more (user, 20 Nov 2026): the apple close-up shows what to do.
+	await _apple_close_up(guide)
+	if not tutorial.running:
+		return
 	var picked: bool = await tutorial.until(func() -> bool: return remaining.is_empty())
 	if not picked:
 		return
@@ -181,12 +200,19 @@ func play() -> void:
 	if not at_till:
 		return
 	# Paying: the cashier asks for the price in the native language, the amount in the language
-	# being learned without its digits (user, 18 Nov 2026: "un dólar con cincuenta centavos"; the
-	# strip reminds the player that holding EN shows it in their language).
+	# being learned without its digits (user, 18 Nov 2026: "un dólar con veinticinco centavos" since
+	# the price became $1.25 on 21 Nov 2026; the strip reminds the player that holding EN shows it in
+	# their language). Since 21 Nov 2026 (user) she asks in her close-up, which stays while the money
+	# panel is up and through her next lines, and the shopping list is hidden from here on (the
+	# list is complete; _close_cart() after paying).
 	phase = "pay"
+	panel.hide_cart()
 	var request: Dictionary = tutorial.narration("tutorial.cashier_hello", {"amount": {"learn": dialogue.money_values(int(settings.price_cents))}})
 	while not paid:
 		_pay_pressed = false
+		await _hold_cashier_face()
+		if not tutorial.running:
+			return
 		panel.show_dialogue(cashier_name, request, [{"id": PAY, "label": tutorial.narration("tutorial.pay_cash"), "icon": "money"}])
 		tutorial.show_peek_strip()
 		var pressed: bool = await tutorial.until(func() -> bool: return _pay_pressed)
@@ -199,10 +225,14 @@ func play() -> void:
 			return
 		if not paid and _wrong:
 			_wrong = false
+			tutorial._keep_face = true
 			await tutorial.say(cashier_name, tutorial.narration("tutorial.cashier_wrong"), "", cashier)
 	_close_cart()
+	# The camera pans from the cashier's face to BonBon's for "meet outside", always in her
+	# close-up (user, 21 Nov 2026).
+	tutorial._keep_face = true
 	await tutorial.say(cashier_name, tutorial.narration("tutorial.cashier_thanks"), "", cashier)
-	await tutorial.say(guide, tutorial.narration("tutorial.meet_outside"))
+	await tutorial.say(guide, tutorial.narration("tutorial.meet_outside"), "guide", null, {}, true)
 	phase = "leave"
 	await tutorial.until(_walked_out)
 	phase = "done"
@@ -210,6 +240,100 @@ func play() -> void:
 	_remove_door()
 	Basket.take_back(main)
 	basket = null
+
+## Waits until the player comes near the featured apples (or picked something on the way), then
+## shows the apple close-up with BonBon's "click the apple" line until something is picked.
+func _apple_close_up(guide: String) -> void:
+	var line_id := "tutorial.click_apple_touch" if tutorial.is_touch() else "tutorial.click_apple"
+	var apples := main.apartment.find_child(APPLE_NODE, true, false) as Node3D
+	if apples == null:
+		push_error("tutorial_shop: no %s; the click line shows without the close-up" % APPLE_NODE)
+		await tutorial.say(guide, tutorial.narration(line_id))
+		return
+	var near: bool = await tutorial.until(func() -> bool:
+		return not cart.is_empty() or tutorial._flat(main.player.global_position, apples.global_position) <= APPLE_NEAR)
+	if not near or not cart.is_empty():
+		return
+	# The player holds still (the view and walking) but can click.
+	var gate: Dictionary = tutorial._gate.duplicate()
+	tutorial._gate = {"look": false, "move": false, "use": true}
+	tutorial._apply_gate()
+	var back: Camera3D = get_viewport().get_camera_3d()
+	_zoom_apple(apples, back, true)
+	var line: Dictionary = tutorial.narration(line_id)
+	tutorial.hint(guide, line)
+	var shown: Dictionary = panel.current_line()
+	var hint_at := Time.get_ticks_msec() + int(TAP_HINT_AFTER * 1000.0)
+	await tutorial.until(func() -> bool:
+		if not tutorial.tap_hint.is_showing() and Time.get_ticks_msec() >= hint_at:
+			tutorial.tap_hint.point_at(apples, tutorial.is_touch(), 0.15)
+		return not cart.is_empty())
+	tutorial.tap_hint.clear()
+	if panel.is_dialogue_visible() and panel.current_line() == shown:
+		panel.hide_dialogue()
+	_zoom_apple(apples, back, false)
+	if tutorial.running:
+		tutorial._gate = gate
+		tutorial._apply_gate()
+
+## Shows the cashier's face close-up (npc_presence.gd, through the director) and leaves it held
+## (tutorial._held_face), so her next line keeps it and the line after pans on from it; the
+## director's _stop() releases it if the tutorial ends meanwhile.
+func _hold_cashier_face() -> void:
+	if cashier == null:
+		return
+	var face: Node = tutorial._face("", cashier)
+	if face == null or (face == tutorial._held_face and face.is_zoomed()):
+		return
+	tutorial._release_face()
+	# As in say(): a close-up still easing back first returns to the player's camera.
+	var ends := Time.get_ticks_msec() + 800
+	await tutorial.until(func() -> bool: return get_viewport().get_camera_3d() == main.camera or Time.get_ticks_msec() > ends)
+	if not tutorial.running:
+		return
+	if get_viewport().get_camera_3d() == main.camera:
+		face.zoom_to_face(true)
+	tutorial._held_face = face
+
+## Eases the camera in on the apples from `back` (the camera on screen), or back to it.
+func _zoom_apple(apples: Node3D, back: Camera3D, on: bool) -> void:
+	if on:
+		var focus := apples.global_position + Vector3.UP * 0.15
+		var toward: Vector3 = (main.player.global_position as Vector3) - focus
+		toward.y = 0.0
+		if toward.length() < 0.1:
+			toward = back.global_basis.z
+			toward.y = 0.0
+		var lift := deg_to_rad(APPLE_VIEW_ELEVATION)
+		var eye := focus + (toward.normalized() * cos(lift) + Vector3.UP * sin(lift)) * APPLE_VIEW_DISTANCE
+		var goal := Transform3D(Basis.looking_at(focus - eye, Vector3.UP), eye)
+		_apple_camera = Camera3D.new()
+		_apple_camera.name = "TutorialAppleCamera"
+		_apple_camera.fov = APPLE_VIEW_FOV
+		_apple_camera.near = 0.05
+		_apple_camera.far = back.far
+		add_child(_apple_camera)
+		var start := back.global_transform
+		_apple_camera.global_transform = start
+		_apple_camera.make_current()
+		_apple_camera.create_tween().tween_method(func(t: float) -> void:
+			_apple_camera.global_transform = start.interpolate_with(goal, t), 0.0, 1.0, APPLE_ZOOM_SECONDS).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+		return
+	if not is_instance_valid(_apple_camera):
+		return
+	var camera := _apple_camera
+	_apple_camera = null
+	if not is_instance_valid(back):
+		camera.queue_free()
+		return
+	var from := camera.global_transform
+	var tween := camera.create_tween()
+	tween.tween_method(func(t: float) -> void:
+		camera.global_transform = from.interpolate_with(back.global_transform, t), 0.0, 1.0, APPLE_ZOOM_SECONDS * 0.75).set_trans(Tween.TRANS_SINE)
+	tween.tween_callback(func() -> void:
+		if is_instance_valid(back) and camera.current:
+			back.make_current()
+		camera.queue_free())
 
 ## The player is out of the store: past its doorway (settings "door") or near "outside" (user,
 ## 18 Nov 2026: one who walked out anywhere was still told to walk out).
@@ -290,6 +414,11 @@ func _on_pick(obj: Node3D) -> void:
 		_popped = key
 		_asks = 0
 	cart[key] = int(cart.get(key, 0)) + 1
+	# Right item: it hops and gold sparks puff out (the library game's, success_burst.gd; user,
+	# 21 Nov 2026).
+	var view := get_viewport().get_camera_3d()
+	if view != null:
+		SuccessBurst.celebrate(obj, obj.global_position + Vector3.UP * 0.15, view.global_position)
 	interaction.word_studied.emit(key)
 	panel.update_cart(_cart_data())
 	_popped = ""
@@ -372,6 +501,11 @@ func _restore() -> void:
 
 ## The tutorial stopped mid-trip (skip): close what this trip opened.
 func stop() -> void:
+	if is_instance_valid(_apple_camera):
+		if _apple_camera.current and is_instance_valid(main.camera):
+			main.camera.make_current()
+		_apple_camera.queue_free()
+	_apple_camera = null
 	_close_cart()
 	Basket.take_back(main)
 	basket = null

@@ -62,6 +62,7 @@ const Lexicon := preload("res://scripts/language/lexicon.gd")
 const GameSettings := preload("res://scripts/core/game_settings.gd")
 const Board := preload("res://scripts/learning/activity_board.gd")
 const HouseCharacters := preload("res://scripts/characters/house_characters.gd")
+const PlushCostume := preload("res://scripts/characters/plush_costume.gd")
 const ModularTown := preload("res://scripts/world/modular_town.gd")
 const DoorAnimator := preload("res://scripts/core/door_animator.gd")
 const NpcPresence := preload("res://scripts/learning/npc_presence.gd")
@@ -74,12 +75,16 @@ const InteractIcons := preload("res://scripts/ui/interact_badge.gd")
 const MinigameHost := preload("res://scripts/learning/minigame_host.gd")
 const RenderCulling := preload("res://scripts/world/render_culling.gd")
 const TutorialCue := preload("res://scripts/ui/tutorial_cue.gd")
+const TapHint := preload("res://scripts/ui/tap_hint.gd")
 const InstructionStrip := preload("res://scripts/ui/instruction_strip.gd")
 const ShoppingBasket := preload("res://scripts/world/shopping_basket.gd")
 const BonStyle := preload("res://scripts/ui/bon_style.gd")
 ## Dialogue pacing (user, 17 Nov 2026): a bubble stays READ_BASE + READ_PER_CHAR per character
 ## (clamped to READ_MIN..READ_MAX seconds), then LINE_GAP seconds before the next one.
 const LINE_GAP := 0.6
+## Seconds after a close-up's pan to the next speaker before that speaker's box shows (user, 21 Nov
+## 2026: "a slight delay after the camera pan").
+const PAN_BOX_DELAY := 0.25
 const READ_BASE := 1.4
 const READ_PER_CHAR := 0.055
 const READ_MIN := 2.2
@@ -88,6 +93,10 @@ const READ_MAX := 8.0
 const REMARK_EXTRA := 1.5
 ## BonBon's lines are in a close-up only when she is this near the player (metres) and not walking.
 const GUIDE_FACE_RANGE := 8.0
+## The tutorial's close-ups are closer and lower than a minigame's (user, 20 Nov 2026; npc_presence.gd
+## FACE_DISTANCE 3.6 m and FACE_ELEVATION 18 degrees there).
+const FACE_DISTANCE := 2.8
+const FACE_ELEVATION := 8.0
 ## The choice id of a say step's "reply" button (the player's answer moves the line on).
 const REPLY := "tutorial_reply"
 ## The time the tutorial starts at (minutes after midnight; user 17 Nov 2026: always noon).
@@ -142,6 +151,8 @@ var _opened: Array = []
 ## A wait step's "cue" (the control that pulses) and the hint step whose line it shows, kept to
 ## switch the wording when the device turns out to be a touch screen (the first touch).
 var cue: Control
+## "Click this" on a 3D object (tap_hint.gd; the shop's apple, 21 Nov 2026).
+var tap_hint: Control
 var _cue_layer: CanvasLayer
 var _hint_spec: Dictionary = {}
 var _hint_touch := false
@@ -182,6 +193,19 @@ var _lock_spec: Dictionary = {}
 var _lock_seen := 0
 ## The picnic (blanket and basket) of a place step's "picnic"; removed when the tutorial ends.
 var _picnic: Node3D
+## After the last step (tutorial.json "after"): the blanket with the guide and friends seated round
+## it (_leave_party()), and how often each role was talked to (its next line).
+var _party: Node3D
+var _party_turns: Dictionary = {}
+## Seated party members: their seat this far above the ground's collider (on the blanket's top,
+## 0.13 m up plus its 3 cm) and their back this far behind the seat point.
+const PARTY_SEAT_LIFT := 0.16
+const PARTY_BACK := 0.25
+## The picnic blanket (metres, across x by along z before turning): 2.5 times the first one's
+## 2.4 x 1.9 m (user, 21 Nov 2026: room for everyone round it), and its checks per side, so each
+## check stays the same size.
+const PICNIC_SIZE := Vector2(6.0, 4.75)
+const PICNIC_CHECKS := Vector2(67.5, 35.0)
 ## actor -> its walk's Tween (_walk(); put() stops it).
 var _walks: Dictionary = {}
 const CONFINE_FLASH_MS := 2500
@@ -257,6 +281,8 @@ func setup(game) -> void:
 	add_child(_cue_layer)
 	cue = TutorialCue.new()
 	_cue_layer.add_child(cue)
+	tap_hint = TapHint.new()
+	_cue_layer.add_child(tap_hint)
 	strip = InstructionStrip.new()
 	# Below the Skip button (74 + 56 px at scale 1).
 	strip.top = 142.0
@@ -269,6 +295,8 @@ func setup(game) -> void:
 func start(from_act: int) -> void:
 	if running:
 		_stop()
+	# A replay starts without the picnic party of the last run (_leave_party()).
+	_clear_party()
 	running = true
 	_run += 1
 	prepared = false
@@ -295,6 +323,8 @@ func start(from_act: int) -> void:
 	main.hud.tutorial_pulse = {}
 	# No ✕ on the dialogue box (its lines move on by themselves) and no clock (user, 18 Nov 2026).
 	panel.closable = false
+	# Nor the box's tail (user, 20 Nov 2026).
+	panel.tail = false
 	_hide_clock(true)
 	# The shower curtain stays shut until the hunt (_find()).
 	_lock_curtain(act == 0)
@@ -348,6 +378,10 @@ func _play(run: int) -> void:
 			if run != _run:
 				return
 		act += 1
+	# Played to the end (not skipped): the guide and friends stay at the picnic (_leave_party()).
+	await _leave_party(run)
+	if run != _run:
+		return
 	_stop()
 	_save({"act": 0, "done": true})
 	finished.emit(false)
@@ -499,12 +533,16 @@ func say(speaker: Variant, line: Dictionary, face := "", node: Node3D = null, re
 	# The reply waits for the EN introduction (_introduce_peek()); EN may be held while the camera
 	# still eases to the face, so the button comes back below whenever it was held back here.
 	var withheld := _need_peek and not choices.is_empty()
-	_show(speaker, line, [] if _need_peek else choices)
-	_advance = false
 	var presence := _face(face, node)
 	if presence != null and presence != _held_face and is_instance_valid(_held_face) and _held_face.is_zoomed():
 		presence.cut_from(_held_face)
 		_held_face = null
+		# The box comes once the pan has ended and a short beat after (user, 21 Nov 2026).
+		await _pause(NpcPresence.PAN_SECONDS + PAN_BOX_DELAY, false)
+		if run != _run:
+			return
+	_show(speaker, line, [] if _need_peek else choices)
+	_advance = false
 	if presence != _held_face:
 		_release_face()
 	if presence != null and not presence.is_zoomed():
@@ -671,6 +709,8 @@ func _face(role: String, node: Node3D) -> Node:
 		var presence := NpcPresence.new()
 		add_child(presence)
 		presence.setup(target, main.player)
+		presence.face_distance = FACE_DISTANCE
+		presence.face_elevation = FACE_ELEVATION
 		_faces[target] = presence
 	return _faces[target]
 
@@ -705,6 +745,11 @@ func _wait(spec: Dictionary) -> void:
 				main.interaction.word_studied.emit(str(spec.study))
 		"study":
 			await until(func() -> bool: return studied.has(str(spec.word)))
+		"card":
+			# Until the word card is closed (by itself after card_seconds, or a click), then "after"
+			# seconds (user, 21 Nov 2026: the statue's name comes 0.2 s after its card closes).
+			await until(func() -> bool: return not main.hud.is_card_visible())
+			await _pause(float(spec.get("after", 0.0)), false)
 		"view", "move":
 			await _try_control(spec)
 		"journal":
@@ -1122,7 +1167,7 @@ func _make_picnic(space: Node3D, spec: Dictionary) -> void:
 	cloth.name = "Picnic blanket"
 	# A thin slab above the ground's collider: the park lawn is drawn 5 to 10 cm higher.
 	var slab := BoxMesh.new()
-	slab.size = Vector3(2.4, 0.03, 1.9)
+	slab.size = Vector3(PICNIC_SIZE.x, 0.03, PICNIC_SIZE.y)
 	cloth.mesh = slab
 	cloth.position.y = 0.13
 	cloth.material_override = _gingham()
@@ -1146,7 +1191,7 @@ func _gingham() -> StandardMaterial3D:
 	material.albedo_texture = ImageTexture.create_from_image(image)
 	material.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
 	# BoxMesh UVs put each face in a third of the texture across: 3 x 9 checks along the top.
-	material.uv1_scale = Vector3(27, 14, 1)
+	material.uv1_scale = Vector3(PICNIC_CHECKS.x, PICNIC_CHECKS.y, 1)
 	material.roughness = 0.95
 	return material
 
@@ -1154,6 +1199,78 @@ func _clear_picnic() -> void:
 	if is_instance_valid(_picnic):
 		_picnic.queue_free()
 	_picnic = null
+
+## The tutorial played to its end (user, 21 Nov 2026): behind a fade, the guide and the friends sit
+## down round the picnic blanket (tutorial.json "after" "seats"; house_characters.gd seated(), the
+## house characters' seated pose) and stay there after the tutorial, each a TALK interactable
+## (interactable.gd: E, a click or a tap) saying its next "lines" phrase in turn. Not saved: a
+## reload does not bring them back, and a replay (start()) clears them first. Nothing when the
+## act had no picnic or "after" is missing.
+func _leave_party(run: int) -> void:
+	var spec: Dictionary = data.get("after", {})
+	if spec.is_empty() or not is_instance_valid(_picnic):
+		return
+	await zone.fade_through(func() -> void:
+		if run == _run:
+			_make_party(spec))
+
+func _make_party(spec: Dictionary) -> void:
+	_clear_party()
+	_party = Node3D.new()
+	_party.name = "TutorialPicnicParty"
+	_world.add_child(_party)
+	# The blanket stays: it moves to the party, out of _clear_picnic()'s reach.
+	_picnic.reparent(_party)
+	_picnic = null
+	if is_instance_valid(_cast_root):
+		_cast_root.visible = false
+	var space := _space(str(spec.get("space", "world")))
+	var maker := HouseCharacters.new()
+	var seats: Dictionary = spec.get("seats", {})
+	for role in seats:
+		var id := str(cast.get(role, ""))
+		if id == "":
+			continue
+		var info: Dictionary = HouseCharacters.spec_of(id)
+		var where: Dictionary = seats[role]
+		var seat: Vector3 = _ground(space.to_global(_vec(where.at))) + Vector3.UP * PARTY_SEAT_LIFT
+		var facing: Vector3 = space.global_basis * _look(where.look)
+		facing.y = 0.0
+		var back := seat - facing.normalized() * PARTY_BACK
+		var npc: Node3D = maker.seated(str(info.scene), _party, str(role), seat, facing, back)
+		# Dressed after seating, as the house characters are (house_characters.gd build()).
+		if str(info.get("costume", "")) != "":
+			PlushCostume.dress(npc, str(info.costume))
+		npc.set_meta("character_name", str(info.name))
+		npc.set_meta("character_species", str(info.get("species", "")))
+		HouseCharacters.fit_blocker(npc)
+		var talker := str(role)
+		Interactable.attach(npc, {
+			"kind": Interactable.Kind.TALK,
+			"prompt_distance": MinigameHost.TALK_DISTANCE,
+			"priority": 1.0,
+			"badge_offset": Vector3(0, InteractIcons.head_height(npc), 0),
+			"on_point": func(_from: Vector3) -> Vector3: return npc.global_position,
+			"on_check": func() -> Variant: return not running,
+			"on_use": func() -> void: _party_talk(talker),
+		})
+
+## A party member's next friendly line (tutorial.json "after" "lines", in turn), a bubble that
+## closes by itself.
+func _party_talk(role: String) -> void:
+	var lines: Array = data.get("after", {}).get("lines", {}).get(role, [])
+	if lines.is_empty() or running or panel.has_choices():
+		return
+	var turn := int(_party_turns.get(role, 0))
+	_party_turns[role] = turn + 1
+	var line: Dictionary = narration(str(lines[turn % lines.size()]))
+	panel.show_dialogue(_speaker(role), line, [], reading_seconds(line) + REMARK_EXTRA)
+
+func _clear_party() -> void:
+	if is_instance_valid(_party):
+		_party.queue_free()
+	_party = null
+	_party_turns.clear()
 
 ## "open_on": the screen comes up already zooming in on that cast member's face (the opening:
 ## BonBon talking, not the player in bed; user, 14 Nov 2026). The next "say" step with "face" on
@@ -1293,6 +1410,9 @@ func _walk(actor: Node3D, spec: Dictionary) -> void:
 	var tween := actor.create_tween()
 	_walks[actor] = tween
 	var from := actor.global_position
+	# "speed": a factor of the walking speed (user, 20 Nov 2026: BonBon walks to the living room
+	# at 0.8).
+	var speed := _walk_speed() * float(spec.get("speed", 1.0))
 	for point in spec.path:
 		var to := _ground(space.to_global(Vector3(float(point[0]), 0.0, float(point[1])))) + Vector3.UP * lift
 		var a := from
@@ -1300,7 +1420,7 @@ func _walk(actor: Node3D, spec: Dictionary) -> void:
 			var way := Vector3(to.x - a.x, 0, to.z - a.z)
 			if way.length() > 0.01:
 				actor.global_basis = Basis.looking_at(way.normalized(), Vector3.UP))
-		tween.tween_property(actor, "global_position", to, maxf(_flat(a, to) / _walk_speed(), 0.05))
+		tween.tween_property(actor, "global_position", to, maxf(_flat(a, to) / speed, 0.05))
 		from = to
 	# "look": the way the walker turns once there (the whole body; a plush's Head is never turned).
 	if spec.has("look"):
@@ -1613,6 +1733,8 @@ func _stop() -> void:
 	_line = {}
 	_hint_spec = {}
 	_show_cue("")
+	if is_instance_valid(tap_hint):
+		tap_hint.clear()
 	clear_strip()
 	_gate = {}
 	_speaking = false
@@ -1626,6 +1748,7 @@ func _stop() -> void:
 	main.hud.tutorial_hidden = {}
 	main.hud.tutorial_pulse = {}
 	panel.closable = true
+	panel.tail = true
 	_hide_clock(false)
 	_apply_gate()
 	_clear_picnic()

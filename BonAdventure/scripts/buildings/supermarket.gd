@@ -4,7 +4,7 @@ extends RefCounted
 ## Bake:  godot --headless --path . --script res://tools/bake_unit.gd -- supermarket
 ## Never rename or remove a baked step (add a new one that undoes it).
 ## Record: docs/guides/TOWN_DESIGN_BRIEF.md "Supermarket product art — 8 November 2026".
-const STEPS := ["product_models", "fixture_finish", "checkout_props", "seafood_ice", "surface_gaps", "coplanar_gaps", "coplanar_gaps_2", "coplanar_envelope", "glass_windows", "tutorial_fruit", "world_signs", "clear_sections", "compact_layout", "clay_products", "real_windows"]
+const STEPS := ["product_models", "fixture_finish", "checkout_props", "seafood_ice", "surface_gaps", "coplanar_gaps", "coplanar_gaps_2", "coplanar_envelope", "glass_windows", "tutorial_fruit", "world_signs", "clear_sections", "compact_layout", "clay_products", "real_windows", "price_sign"]
 const Products = preload("res://scripts/buildings/supermarket_products.gd")
 const WorldSign = preload("res://scripts/world/world_sign.gd")
 const INTERIOR := "RelocatedSites/Supermarket/MarketInterior"
@@ -883,3 +883,18 @@ func _bounds(interior: Node3D, root: Node3D) -> AABB:
 ## refills every product group with the redrawn models, each at least the old coconut's size.
 func clay_products(town: Node3D, _game) -> void:
 	Products.new().restock_all(town.get_node(INTERIOR))
+
+## The produce price tag (user, 21 Nov 2026): "$1.50" becomes "$1.25", the welcome tutorial's
+## price for its apple and two bananas (data/tutorial.json shop price_cents). Same tag, same style.
+func price_sign(town: Node3D, _game) -> void:
+	var tags: Array = []
+	for part in ["RelocatedSites/Supermarket", "Buildings/MarketDisplays", "Map facades/SUPERMARKET"]:
+		if not town.has_node(part):
+			continue
+		for label: Label3D in town.get_node(part).find_children("*", "Label3D", true, false):
+			if str(label.get_meta("sign_english", label.text)) == "$1.50":
+				tags.append(label)
+	_relabel(tags, "$1.25")
+	print("SUPERMARKET price_sign: %d tag(s) now $1.25" % tags.size())
+	if tags.is_empty():
+		push_error("supermarket price_sign: no $1.50 tag")

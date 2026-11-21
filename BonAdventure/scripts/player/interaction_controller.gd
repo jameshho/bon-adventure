@@ -123,8 +123,12 @@ func aimed_hit() -> Dictionary:
     var pointer := pointer_position
     if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
         pointer = get_viewport().get_visible_rect().size * 0.5
-    var origin := camera.project_ray_origin(pointer)
-    var ray := PhysicsRayQueryParameters3D.create(origin, origin + camera.project_ray_normal(pointer) * (EXTERIOR_DISTANCE + origin.distance_to(player.global_position)))
+    # The camera on screen: a close-up (the tutorial's apple, 20 Nov 2026) aims from where it looks.
+    var view: Camera3D = get_viewport().get_camera_3d()
+    if view == null:
+        view = camera
+    var origin := view.project_ray_origin(pointer)
+    var ray := PhysicsRayQueryParameters3D.create(origin, origin + view.project_ray_normal(pointer) * (EXTERIOR_DISTANCE + origin.distance_to(player.global_position)))
     ray.exclude = [player.get_rid()]
     ray.collide_with_areas = true
     # Figure blockers (house_characters.gd) only stop the player; words keep their own areas.

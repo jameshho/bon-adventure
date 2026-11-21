@@ -26,7 +26,16 @@ const FACE_SCREEN_Y := 0.34
 const FACE_YAW_TRIES := [0.0, 30.0, -30.0, 60.0, -60.0, 90.0, -90.0]
 const FACE_MIN_DISTANCE := 1.6
 const ZOOM_SECONDS := 0.4
+## The player's body reaches about this far (metres) round its centre line
+## (_hide_player_if_in_view()).
+const PLAYER_RADIUS := 0.6
+## Seconds a pan from one face to the next takes (cut_from()).
+const PAN_SECONDS := 0.7
 
+## This close-up's distance and angle (FACE_DISTANCE, FACE_ELEVATION unless its owner changes
+## them; the welcome tutorial frames closer and lower, user 20 Nov 2026).
+var face_distance := FACE_DISTANCE
+var face_elevation := FACE_ELEVATION
 var npc: Node3D
 var player: Node3D
 const Interactable := preload("res://scripts/core/interactable.gd")
@@ -107,12 +116,16 @@ func zoom_to_face(on: bool) -> void:
 			if is_instance_valid(back) and _talk_camera.current:
 				back.make_current())
 
-## Cuts straight from `other`'s face close-up to this NPC's (no easing, never through the
-## player's view; the welcome tutorial's back-to-back speakers, user 18 Nov 2026). Easing back
+## Moves straight from `other`'s face close-up to this NPC's, never through the player's view (the
+## welcome tutorial's back-to-back speakers, user 18 Nov 2026); since 21 Nov 2026 (user) it pans
+## there over PAN_SECONDS instead of cutting. Easing back
 ## later returns to the camera `other` would have returned to. Nothing when `other` shows none.
 func cut_from(other: Node) -> void:
 	if other == null or other == self or not other.is_zoomed():
 		return
+	# Where the other close-up's camera is now: the pan starts there (user, 21 Nov 2026).
+	var view: Camera3D = get_viewport().get_camera_3d() if is_inside_tree() else null
+	var start: Transform3D = view.global_transform if view != null else Transform3D()
 	var back: Camera3D = other.drop_close_up()
 	if back == null:
 		return
@@ -128,8 +141,15 @@ func cut_from(other: Node) -> void:
 		add_child(_talk_camera)
 	var goal := face_transform()
 	_hide_player_if_in_view(goal)
-	_talk_camera.global_transform = goal
+	if view == null:
+		_talk_camera.global_transform = goal
+		_talk_camera.make_current()
+		return
+	# Pans from face to face (user, 21 Nov 2026: one continuous conversation, not a jump cut).
+	_talk_camera.global_transform = start
 	_talk_camera.make_current()
+	_zoom_tween = create_tween()
+	_zoom_tween.tween_method(func(t: float) -> void: _talk_camera.global_transform = start.interpolate_with(goal, t), 0.0, 1.0, PAN_SECONDS).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 
 ## Ends this close-up at once, without easing back or switching cameras (cut_from() takes over);
 ## returns the camera it would have returned to.
@@ -148,7 +168,7 @@ func face_point() -> Vector3:
 	var drop := float(npc.get_meta("talk_face_drop", 0.0))
 	return npc.global_position + Vector3(0, maxf((marker_rest_y - drop) * npc.global_basis.get_scale().y - 0.45, 0.6) - 0.3, 0)
 
-## In front of the NPC (turned a little towards the player), FACE_ELEVATION degrees above its
+## In front of the NPC (turned a little towards the player), face_elevation degrees above its
 ## face and looking down, with the face high on the screen so the dialogue box at the bottom
 ## does not cover it. Walls and furniture between the face and the camera move the camera
 ## round the NPC, or in closer (FACE_YAW_TRIES); the player's model is handled separately
@@ -167,14 +187,14 @@ func face_transform() -> Transform3D:
 	if direction.length() < 0.1:
 		direction = forward
 	direction = direction.normalized()
-	var lift := deg_to_rad(FACE_ELEVATION)
+	var lift := deg_to_rad(face_elevation)
 	var excluded := _bodies_of(npc) + _bodies_of(player)
 	var best_eye := Vector3.ZERO
 	var best_clear := -1.0
 	for yaw in FACE_YAW_TRIES:
-		var eye := face + (direction.rotated(Vector3.UP, deg_to_rad(yaw)) * cos(lift) + Vector3.UP * sin(lift)) * FACE_DISTANCE
+		var eye := face + (direction.rotated(Vector3.UP, deg_to_rad(yaw)) * cos(lift) + Vector3.UP * sin(lift)) * face_distance
 		var clear := _clear_distance(face, eye, excluded)
-		if clear >= FACE_DISTANCE:
+		if clear >= face_distance:
 			return _looking_at_face(face, eye)
 		if clear > best_clear:
 			best_clear = clear
@@ -190,13 +210,13 @@ func _looking_at_face(face: Vector3, eye: Vector3) -> Transform3D:
 	var tilt := atan((0.5 - FACE_SCREEN_Y) * 2.0 * tan(deg_to_rad(FACE_FOV) * 0.5))
 	return Transform3D(Basis(basis.x, -tilt) * basis, eye)
 
-## How far from the face the line to `eye` stays clear (FACE_DISTANCE when nothing is in the
+## How far from the face the line to `eye` stays clear (face_distance when nothing is in the
 ## way). Two rays, from the face and from just under it, ignoring the NPC and the player.
 func _clear_distance(face: Vector3, eye: Vector3, excluded: Array[RID]) -> float:
 	if not npc.is_inside_tree():
-		return FACE_DISTANCE
+		return face_distance
 	var space := npc.get_world_3d().direct_space_state
-	var clear := FACE_DISTANCE
+	var clear := face_distance
 	for start in [face, face - Vector3(0, 0.3, 0)]:
 		var query := PhysicsRayQueryParameters3D.create(start, eye + (start - face))
 		query.exclude = excluded
@@ -226,13 +246,29 @@ func _hide_player_if_in_view(view: Transform3D) -> void:
 		var screen := get_viewport().get_visible_rect().size
 		aspect = screen.x / maxf(screen.y, 1.0)
 	var half_v := tan(deg_to_rad(FACE_FOV) * 0.5)
-	for height in [0.4, 1.2, 2.0]:
-		var local := view.basis.inverse() * (player.global_position + Vector3(0, height, 0) - view.origin)
-		var depth := -local.z
-		if depth > 0.05 and depth < face_depth and absf(local.y / depth) < half_v * 1.1 and absf(local.x / depth) < half_v * aspect * 1.1:
-			(model as Node3D).visible = false
-			_hid_player = true
-			return
+	# The whole body, not only its centre line (user, 21 Nov 2026: a player who greeted Leo from
+	# in front of him still blocked the close-up): points round the body's sides too, and a
+	# camera inside or just behind the body hides it as well.
+	var flat_eye := Vector3(view.origin.x, 0, view.origin.z)
+	var flat_player := Vector3(player.global_position.x, 0, player.global_position.z)
+	if flat_eye.distance_to(flat_player) < PLAYER_RADIUS + 0.4 and view.origin.y < player.global_position.y + 2.4:
+		(model as Node3D).visible = false
+		_hid_player = true
+		return
+	var across := view.basis.x
+	across.y = 0.0
+	across = across.normalized() * PLAYER_RADIUS
+	var toward := -view.basis.z
+	toward.y = 0.0
+	toward = toward.normalized() * PLAYER_RADIUS
+	for height: float in [0.4, 1.2, 2.0]:
+		for side: Vector3 in [Vector3.ZERO, across, -across, toward, -toward]:
+			var local := view.basis.inverse() * (player.global_position + Vector3(0, height, 0) + side - view.origin)
+			var depth := -local.z
+			if depth > 0.05 and depth < face_depth and absf(local.y / depth) < half_v * 1.1 and absf(local.x / depth) < half_v * aspect * 1.1:
+				(model as Node3D).visible = false
+				_hid_player = true
+				return
 
 func _show_player() -> void:
 	if _hid_player:

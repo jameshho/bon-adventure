@@ -44,6 +44,7 @@ const Board := preload("res://scripts/learning/activity_board.gd")
 const Library := preload("res://scripts/buildings/library.gd")
 const Book := preload("res://scripts/world/library_book.gd")
 const BOOK_SCENE := preload("res://scenes/props/book.tscn")
+const SuccessBurst := preload("res://scripts/world/success_burst.gd")
 const NPC := "Librarian"
 const ACTIVITY := "library_rosa"
 const BOOKS_MIN := 3
@@ -53,10 +54,10 @@ const SORT_META := "sort_book"
 ## Where a book stands in a gap (gap frame: on the shelf, spine side -Z): spine out, its cover
 ## width across the shelf depth.
 const SHELVED := Transform3D(Basis(Vector3.UP, PI / 2), Vector3(0, 0, Book.PICTURE.x * .5))
-## The right-shelf flourish: slide in from this far out, hop this high, this many sparks.
+## The right-shelf flourish: slide in from this far out, hop this high (the sparks:
+## success_burst.gd).
 const SLIDE := .14
 const HOP := .07
-const SPARKS := 10
 ## The wrong-shelf wobble: this far to each side, this many swings, seconds per swing.
 const WOBBLE := .035
 const WOBBLES := 3
@@ -86,7 +87,6 @@ var resting := 0.0
 var _asked: Array = []
 var _asking: Node3D
 var _hand: Node3D
-var _spark_mesh: SphereMesh
 
 func setup(lexicon, dialogue_panel, interaction, player: Node3D, world: Node3D) -> void:
 	name = "LibrarySession"
@@ -414,29 +414,9 @@ func _celebrate(book: Node3D) -> void:
 	_sparks(book.get_parent() as Node3D)
 
 func _sparks(gap: Node3D) -> void:
-	if _spark_mesh == null:
-		_spark_mesh = SphereMesh.new()
-		_spark_mesh.radius = .035
-		_spark_mesh.height = .07
-		_spark_mesh.radial_segments = 8
-		_spark_mesh.rings = 4
-		var glow := StandardMaterial3D.new()
-		glow.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-		glow.albedo_color = Color("ffd34d")
-		_spark_mesh.material = glow
+	# The shared burst (success_burst.gd, moved out of here 21 Nov 2026), in the gap's frame and size.
 	var centre := Vector3(0, Book.PICTURE.y * .6, -.02)
-	for i in SPARKS:
-		var spark := MeshInstance3D.new()
-		spark.mesh = _spark_mesh
-		spark.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-		gap.add_child(spark)
-		spark.position = centre
-		var angle := TAU * i / SPARKS + rng.randf_range(-.25, .25)
-		var to := centre + Vector3(cos(angle) * .42, sin(angle) * .38 + .1, -.16)
-		var tween := spark.create_tween().set_parallel()
-		tween.tween_property(spark, "position", to, .5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-		tween.tween_property(spark, "scale", Vector3.ONE * .01, .45).set_delay(.2)
-		tween.chain().tween_callback(spark.queue_free)
+	SuccessBurst.sparks(gap, gap.global_transform * Transform3D(Basis(), centre), gap.global_basis.get_scale().x)
 
 ## Removes this game's books (from the cart, the shelves and the hand).
 func _clear_books() -> void:

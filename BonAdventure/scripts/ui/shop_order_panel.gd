@@ -87,6 +87,14 @@ var closable := true:
 			dialogue_close.visible = on
 		if cart_quit_button != null:
 			cart_quit_button.visible = on
+## The dialogue box's small tail pointing up to the speaker (the welcome tutorial turns it off,
+## user 20 Nov 2026).
+var tail := true:
+	set(on):
+		if tail != on:
+			tail = on
+			if dialogue_card != null:
+				_rescale()
 ## The speaker's blue name pill and its name.
 var speaker_tag: PanelContainer
 var speaker_label: Label
@@ -108,6 +116,8 @@ var cart_title: Label
 var needed_box: VBoxContainer
 var cart_box: VBoxContainer
 var toast_label: Label
+## The line between the list and the cart (hidden with the list).
+var _list_rule: HSeparator
 var done_button: Button
 var cart_translate_button: Button
 ## The cart's (large) ✕: asks to quit the order.
@@ -116,8 +126,6 @@ var quit_card: PanelContainer
 var quit_label: Label
 var quit_native: Label
 var quit_yes: Button
-## The line between the list and the cart (hidden with the list).
-var _list_rule: HSeparator
 var quit_no: Button
 ## Draws and keeps the product pictures of the order and cart rows.
 var pictures: Node
@@ -198,7 +206,7 @@ func _rescale() -> void:
 		for label in [speaker_label, foreign_label, reading_label, native_label]:
 			_size_font(label, roundi(int(label.get_meta("base_font")) * factor * COMPACT_TEXT))
 	var margin := 18.0 * factor * (0.6 if compact else 1.0)
-	dialogue_card.add_theme_stylebox_override("panel", _cream_box(factor, margin, true))
+	dialogue_card.add_theme_stylebox_override("panel", _cream_box(factor, margin, tail))
 	quit_card.add_theme_stylebox_override("panel", _cream_box(factor, 22.0 * factor, false))
 	speaker_tag.add_theme_stylebox_override("panel", _tag_box(factor))
 	level_badge.add_theme_stylebox_override("panel", _level_box(factor))
@@ -294,13 +302,13 @@ func _card(width: float) -> PanelContainer:
 	add_child(card)
 	return card
 
-## The cream dialogue box / quit card at `factor` (BonStyle "dialogue"), `tail` pointing up.
-func _cream_box(factor: float, margin: float, tail: bool) -> StyleBox:
+## The cream dialogue box / quit card at `factor` (BonStyle "dialogue"), `with_tail`: its tail pointing up.
+func _cream_box(factor: float, margin: float, with_tail: bool) -> StyleBox:
 	var look = BonStyle.box("dialogue", factor)
 	look.set_content_margin_all(margin)
 	look.content_margin_left = margin * 1.4
 	look.content_margin_right = margin * 1.1
-	if tail:
+	if with_tail:
 		look.tail = 34.0 * factor
 		look.tail_at = 0.5
 	return look
@@ -500,6 +508,7 @@ func _build_cart() -> void:
 	line_style.thickness = 1
 	rule.add_theme_stylebox_override("separator", line_style)
 	stack.add_child(rule)
+	_list_rule = rule
 	cart_title = _label(24, GOLD)
 	stack.add_child(cart_title)
 	# No scroll bar (14 Nov 2026, user): an order has 2 items, so the rows fit and the card is
@@ -508,7 +517,6 @@ func _build_cart() -> void:
 	cart_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	cart_box.add_theme_constant_override("separation", 6)
 	stack.add_child(cart_box)
-	_list_rule = rule
 	toast_label = _label(22, TOAST)
 	toast_label.visible = false
 	stack.add_child(toast_label)

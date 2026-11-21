@@ -30,9 +30,9 @@ player with "Show everything in my language" on.
 
 ## Welcome tutorial
 
-<img src="../evidence/tutorial-polish-20261118/market-cast.png" width="480" alt="Welcome tutorial at the supermarket">
+<img src="../evidence/tutorial-review2-20261121/party-talk-leo.png" width="480" alt="BonBon, Sunny and Leo seated round the picnic blanket after the welcome tutorial">
 
-*Screenshot 18 Nov (the friends wait behind you at the supermarket).*
+*Screenshot 21 Nov (after the tour the friends stay at the picnic to chat).*
 
 "Welcome to Bon Adventure" runs once for a new profile: wake up in bed, a tour of the house, find
 the hiding friends, buy fruit at the supermarket, visit the statue, then open the journal. It
@@ -68,7 +68,25 @@ after 2 s ("not on our shopping list" 1.5 s), the camera cuts straight from one 
 next, the friends wait behind you at the supermarket without walking, the clerk and cashier are
 named in your language and the cashier's price shows no digits (hold EN if unsure), "Let's go
 pay!" is one line, the basket has no gaps and its handles vanish when you inspect it, and
-walking out of the store anywhere ends the shop.
+walking out of the store anywhere ends the shop. Since 20 Nov (user's review; not yet checked in
+the game): 1 s after the drag and 0.5 s after the walk; BonBon says "join me in the living room"
+close up, pauses, then walks there a little slower; one line "Let's go outside! There's so much
+more I want to show you!"; close-ups are closer and lower and the dialogue box has no tail; at
+the market the friend's "Let's pick up some fruit for our picnic!" leads straight to the clerk,
+and walking up to the fruit table zooms in on the apple with "Click on the apple to put it in
+your basket!" until you pick something. Since 21 Nov: the camera pans between speakers, the
+clerk stays in one close-up, your character no longer blocks a friend's close-up, a right item
+hops with gold sparks (as in the library game), and a pointer shows on the apple if you don't
+click it. Long sleeves now fit every plush's arm (the pig's paw showed through). Second review of 21 Nov (checked from the
+market on, [views](../evidence/tutorial-review2-20261121/README.md)): the fruit costs $1.25 (the
+produce price tag too); the cashier asks close up with the shopping list hidden, then
+BonBon says "Let's meet outside!" close up; outside only "Everyone ready? Let's go to the park!"
+and Leo's "Yay! Picnic time!"; the camera pans from Sunny to BonBon at the statue and between
+every picnic line; BonBon names the statue 0.2 s after its card closes; one journal line; the
+last line is "The whole town is now yours to explore. Have fun!"; after each camera pan the
+box shows a moment later; and after a tour played to the
+end, BonBon, Sunny and Leo stay seated round the picnic blanket (now 2.5 times bigger), each with a few friendly lines
+when you talk to them (until you reload or replay).
 [Tutorial guide](../guides/ARCHITECTURE_REVIEW_PART1.md#welcome-tutorial)
 
 ## Languages
