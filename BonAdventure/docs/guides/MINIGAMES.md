@@ -7,7 +7,6 @@ change (they key the practice log):
 | Activity id | English | Chinese | Spanish |
 | --- | --- | --- | --- |
 | `shop_supermarket` | Grocery Run | 買餸啦！ | ¡Al súper! |
-| `cashier_supermarket` | Pay Up! | 找數高手 | Cuentas claras |
 | `family_dr_li` | Who's Who? | 誰是誰？ | ¿Quién es quién? |
 | `warehouse_ramon` | Stack & Pack | 搬搬抬抬 | Carga y descarga |
 | `flight_bruno` | Flight Finder | 搵航班 | Busca tu vuelo |
@@ -31,8 +30,8 @@ summary here. Each game's purpose and progression design is owned by its learnin
 
 | Minigame | NPC and place | Learning goals | Words and phrases | Status | Design / ownership |
 | --- | --- | --- | --- | --- | --- |
-| **Grocery Run** (customer order) | Beagle clerk (Twinkle's species), outside the supermarket door, left | Recognise product names and quantities; find the objects | 80 supermarket products (`sold_in`), `shop.*` phrases | Built 3 Nov 2026; one round, no progress bar; 4 levels and stars since 18 Nov 2026 ([progression](#progression)) | [Design](TOWN_DESIGN_BRIEF.md#customer-order-minigame--3-november-2026), [ownership](ARCHITECTURE_REVIEW_PART1.md#customer-order-ownership--3-november-2026) |
-| **Pay Up!** (cashier money) | Samoyed cashier at the supermarket till | Understand spoken amounts ($0.25–$300); count out bills and coins | Generated money amounts (`money_words()`), `cashier.*`, `money.*` | Built 4 Nov 2026; 5 rounds per session; 4 levels (amount range) and stars since 18 Nov 2026 ([progression](#progression)); on the shared host with the gold "!" since 9 Nov 2026 (it had none) | [Design](TOWN_DESIGN_BRIEF.md#cashier-money-minigame--4-november-2026), [ownership](ARCHITECTURE_REVIEW_PART1.md#cashier-money-minigame-ownership--4-november-2026) |
+| **Grocery Run** (customer order) | Beagle clerk (Twinkle's species), outside the supermarket door, left; paid at the samoyed cashier's till | Recognise product names and quantities; find the objects; understand the spoken total and count it out | Supermarket products (`sold_in`) with prices (`data/shops.json` `prices`), `shop.*`, `cashier.*`, `money.*` phrases | Built 3 Nov 2026; one round, no progress bar; 4 levels and stars since 18 Nov 2026 ([progression](#progression)); paid at the till, levels by price tier and free shopping with a basket since 21 Nov 2026 | [Design](TOWN_DESIGN_BRIEF.md#customer-order-minigame--3-november-2026), [ownership](ARCHITECTURE_REVIEW_PART1.md#customer-order-ownership--3-november-2026) |
+| **Pay Up!** (cashier money) — *retired 21 Nov 2026, now Grocery Run's checkout ([record](TOWN_DESIGN_BRIEF.md#grocery-checkout-and-free-shopping--21-november-2026))* | Samoyed cashier at the supermarket till | Understand spoken amounts ($0.25–$300); count out bills and coins | Generated money amounts (`money_words()`), `cashier.*`, `money.*` | Built 4 Nov 2026; 5 rounds per session; 4 levels (amount range) and stars since 18 Nov 2026; on the shared host with the gold "!" since 9 Nov 2026 (it had none) | [Design](TOWN_DESIGN_BRIEF.md#cashier-money-minigame--4-november-2026), [ownership](ARCHITECTURE_REVIEW_PART1.md#cashier-money-minigame-ownership--4-november-2026) |
 | **Who's Who?** (hospital family game) | Dr. Li (pig plush, doctor), outside the hospital, right of the entrance | Family relationships, ages, birthdays, months, older/younger, before/after | Family category, months, `family.*`; taught by four school posters | Built 4 Nov 2026; 20 questions per session | [Design](TOWN_DESIGN_BRIEF.md#hospital-family-game--4-november-2026), [ownership](ARCHITECTURE_REVIEW_PART1.md#hospital-family-game-ownership--4-november-2026) |
 | **Flight Finder** (airport flight game) | Capitán Bruno (bear plush, pilot), information desk just right of the airport terminal door | Time expressions within two days of today (anteayer…pasado mañana, esta mañana / anoche, weekdays, a day with a clock time, hace / dentro de 1–3 horas), 4 countries by flag (from 8), past vs future, departures vs arrivals | 66 words (relative time, weekdays, clock, airport, salir/llegar/despegar, new Countries category), `flight.*`; taught by four terminal posters (countries with flags) | Built 5 Nov 2026; 5 questions per session, first-try progress; layout, flags and bilingual rows revised 6 Nov 2026; board-only redesign with near-miss flights 7 Nov 2026; calendar and digital clock, 12-hour times, one day column (weekdays, or dates for weekday questions), 3 of 8 countries × 4 flights, weekday tracking and a play-again question 8 Nov 2026; later that day arrivals (*llegar*) on separate *Salidas* / *Llegadas* tabs (4 countries, 8 flights each), no day names on the calendar, questions of at most 12 words, no flights 7–9 p.m., missed questions first in the summary; that night a board built for each question (6 departures and 6 arrivals, countries mixed, at most 3 a tab, the answer with near misses, country and verb traps) and no scroll bar | [Design](TOWN_DESIGN_BRIEF.md#airport-flight-game--5-november-2026), [ownership](ARCHITECTURE_REVIEW_PART1.md#airport-flight-game-ownership--5-november-2026) |
 | **On the Menu** (Alta Cocina restaurant game) | Twinkle (beagle plush, waiter) at the Alta Cocina host stand; two seated house-character customers at two tables; a menu book on a table by the host stand | Taste, temperature, ingredients, intensity (*un poco*, *muy*); dish names; course names | Tastes, temperatures, ingredients and 23 dishes, `restaurant.*`; taught by three dining-room posters and the menu book | Built 6 Nov 2026; **walk-around flow since 11 Nov 2026**: Twinkle sends the player to a customer, who orders 2–3 courses; the dishes are chosen and sent from a tablet, the customer reacts, Twinkle reports back; the entrance asks before leaving mid-game; 4 fully right orders; textures and extras removed; negation built but off | [Design](TOWN_DESIGN_BRIEF.md#alta-cocina-restaurant-game--6-november-2026), [ownership](ARCHITECTURE_REVIEW_PART1.md#restaurant-game-ownership--6-november-2026) |
@@ -270,15 +269,16 @@ because they redrew the town from its meshes (8.4 → 64 ms a frame while turnin
 
 Levels and stars for the minigames (user approval, 18 Nov 2026). The player-facing design, the
 star rule and each game's level ladder are owned by the [game guide](../game/minigames.md#how-games-get-harder);
-this section is the code. Built for Pay Up! and Grocery Run; the other learning games are
-designed (their learning cards) but not wired yet.
+this section is the code. Built for Grocery Run (and Pay Up! until it was retired into Grocery
+Run's checkout on 21 Nov 2026); the other learning games are designed (their learning cards) but
+not wired yet.
 
 **Data.** `data/activities.json`, per game:
 - `"levels"`: a list of settings dictionaries, level 1 first. The keys belong to the game:
-  Pay Up! reads `max_cents` and `step` (the amount's smallest unit in cents: 100 whole dollars,
-  25 quarters; `Currency.random_cents(rng, max_cents, step)`); Grocery Run's are its
-  `data/shops.json` order rules, merged over the store's (`unique_items`, `quantity_each`,
-  `retries`, and `order_words`, where `[]` means every product sold in the store). An empty `{}`
+  Grocery Run's are its `data/shops.json` order rules, merged over the store's (`unique_items`,
+  `quantity_each`, `order_words`, where `[]` means every product sold in the store, and since
+  21 Nov 2026 `order_tiers` n, the products of the store's first n price tiers; `retries` is gone).
+  Pay Up! read `max_cents` and `step` until it was retired. An empty `{}`
   is the game as it is in the data.
 - `"stars_at"` (optional, default `[1.0, 0.6]`): the share of rounds right first time for ★★★ and ★★.
   Grocery Run uses `[1.0, 0.5]` so one retry is ★★.
@@ -311,7 +311,8 @@ group and `launcher.level` in `data/phrases.json` (native language). Stars are `
 
 **Save:** `game_progress.json` per profile (`save_store.gd` `PROFILE_FILES`; reset with the other
 singletons on a profile switch), keyed by learned language then activity id:
-`{"es": {"cashier_supermarket": {"level", "unlocked", "best": {"1": 3}, "plays"}}}`. Saves without
+`{"es": {"shop_supermarket": {"level", "unlocked", "best": {"1": 3}, "plays"}}}` (an old
+`cashier_supermarket` record from Pay Up! stays in the file, unused). Saves without
 the file start at level 1; nothing to migrate.
 
 **Check:** `docs/evidence/minigame-progression-20261118/verify.gd` (`minigame_progression`, full suite).

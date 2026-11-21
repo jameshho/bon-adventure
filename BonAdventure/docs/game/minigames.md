@@ -18,15 +18,16 @@ Word lists are **not** written here: [words.md](words.md) is generated from the 
 
 ## How games get harder
 
-*Approved by the user on 18 Nov 2026; built for Pay Up! and Grocery Run, the other games are
-designed but not built.* One shared system for every learning game; the code and data are
+*Approved by the user on 18 Nov 2026; built for Grocery Run (and Pay Up! until it became Grocery
+Run's checkout on 21 Nov), the other games are designed but not built.* One shared system for every learning game; the code and data are
 described in [MINIGAMES.md → Progression](../guides/MINIGAMES.md#progression).
 
 - **Levels.** Each learning game has up to four levels. Level 1 is the easiest, often today's
   game. Each card's Progression row lists what changes from level to level.
 - **Stars.** A finished session earns 1–3 stars from the share of rounds right the first time:
   every round right gives ★★★, at least 60% gives ★★, anything else ★. Grocery Run (one order)
-  counts retries instead: right at the first Done ★★★, after one retry ★★, after two ★. A session
+  counts mistakes instead (since 21 Nov: a basket the till turns down or a wrong payment): none
+  ★★★, one ★★, two or more ★. A session
   left before the end earns nothing.
 - **Unlocks.** ★★★ at your highest level unlocks the next one, and the next session uses it. You can
   go back to any unlocked level in the ▶ picker. A level never goes down by itself. A session
@@ -45,44 +46,45 @@ described in [MINIGAMES.md → Progression](../guides/MINIGAMES.md#progression).
 
 ## Grocery Run
 
-*買餸啦！ · ¡Al súper!* — **Beagle clerk, outside the supermarket door**
+*買餸啦！ · ¡Al súper!* — **Beagle clerk, outside the supermarket door; paid at the samoyed cashier's till**
 
-<img src="../evidence/customer-order-20261103/cart.png" width="480" alt="Grocery Run order list and cart">
+<img src="../evidence/grocery-checkout-20261121/order-cart.png" width="480" alt="Grocery Run order list with prices">
+<img src="../evidence/grocery-checkout-20261121/till-check.png" width="480" alt="The cashier turns down a basket that is not the list">
 
-*Screenshot 3 Nov; orders shortened 14 Nov.*
+*Screenshots 21 Nov: the order with prices; the till turning down a wrong basket.*
 
-The clerk asks for help and lists two basic fruits or vegetables (one or two of each). Find them
-in the shop and bring them back. Teaches product names and quantities. Tracked.
+The clerk asks for help, lists what he needs and hands you a basket. Find the products, pay for
+them at the till, then bring the basket back to him. The cashier checks the basket against the
+list first: a wrong basket is not charged ("please check your list"; the second time the cashier
+says what is missing and what is not on the list). Then the cashier says the total in the language you are
+learning and you count out exactly that. The shop door won't let you out with an unpaid basket.
+Give the basket back to the cashier, or put it back empty on the stack by the door, to stop.
+Teaches product names, quantities and prices. Tracked.
 [Design](../guides/TOWN_DESIGN_BRIEF.md#customer-order-minigame--3-november-2026) ·
-[14 Nov update](../guides/TOWN_DESIGN_BRIEF.md#quicker-orders--14-november-2026)
+[14 Nov update](../guides/TOWN_DESIGN_BRIEF.md#quicker-orders--14-november-2026) ·
+[21 Nov checkout](../guides/TOWN_DESIGN_BRIEF.md#grocery-checkout-and-free-shopping--21-november-2026)
+
+**Free shopping** (21 Nov, not a game: no stars, nothing saved). Take a basket from the stack by the
+door, click any product into it, and pay at the till. Same rules for the door and for stopping.
+
+<img src="../evidence/grocery-checkout-20261121/free-basket.png" width="480" alt="Free shopping basket with prices">
 
 | Learning card | |
 | --- | --- |
-| Purpose | Recognise fruit and vegetable names and simple quantities when someone asks for them, and find the real thing. |
+| Purpose | Recognise product names and simple quantities when someone asks for them, find the real thing, and pay for it: understand a spoken total and count it out (Pay Up!'s purpose, merged in on 21 Nov). |
 | Words | [Generated list](words.md#grocery-run) |
-| Tracked in the journal | Yes: each item ordered |
-| Session | One order of 2 items, no progress bar |
-| Progression | **Built 18 Nov.** L1 two fruit or vegetables, 1–2 each (today's game) · L2 three items, 1–3 each · L3 three items from all 80 supermarket products · L4 four items, 1–3 each, only one retry. Stars count retries |
+| Tracked in the journal | Yes: each item ordered (right when the first basket at the till had none of it missing or extra) |
+| Session | One order, paid and brought back; no progress bar |
+| Prices | One price per product, by how hard its word is (user, 21 Nov): easiest words whole dollars, then .25/.50/.75, then quarters with dimes (such as $3.35), hardest any cents (such as $0.79). The list is in [data/shops.json](../../data/shops.json) `prices` |
+| Progression | **Built 18 Nov; levels follow the price tiers since 21 Nov.** L1 two basic fruit or vegetables, 1–2 each (whole dollars) · L2 three items, 1–3 each, from the first two price tiers · L3 three items from the first three tiers · L4 four items, 1–3 each, from all products. Stars count mistakes at the till |
 
 ## Pay Up!
 
-*找數高手 · Cuentas claras* — **Samoyed cashier, at the supermarket till**
+*找數高手 · Cuentas claras* — **Retired 21 Nov 2026 (user): it became Grocery Run's checkout.**
 
-<img src="../evidence/cashier-money-20261104/money-selected-desktop.png" width="480" alt="Pay Up! money screen">
-
-*Screenshot 4 Nov.*
-
-The cashier says an amount (whole dollars up to $20 at level 1, up to $300 at level 4) in the language being learned; count it out from
-bills and coins. Five rounds; a wrong answer can be retried or explained. Not tracked.
-[Design](../guides/TOWN_DESIGN_BRIEF.md#cashier-money-minigame--4-november-2026)
-
-| Learning card | |
-| --- | --- |
-| Purpose | Understand spoken prices and count out money. |
-| Words | [Generated list](words.md#pay-up) |
-| Tracked in the journal | No (amounts are generated language, not words) |
-| Session | 5 amounts, first try counts |
-| Progression | **Built 18 Nov.** L1 whole dollars up to $20 · L2 up to $50 in quarters · L3 up to $100, any cents · L4 up to $300 (the game before 18 Nov). A round paid wrong once is a miss |
+The cashier used to ask for random amounts (up to $300) to count out. Now the cashier charges what your
+basket costs, with the same money screen, "Try again" and "What went wrong?". Its levels and stars
+went with it. [Old design](../guides/TOWN_DESIGN_BRIEF.md#cashier-money-minigame--4-november-2026)
 
 ## Who's Who?
 

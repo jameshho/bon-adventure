@@ -331,7 +331,6 @@
 	"activities": {
 		"mahjong_mei": "home",
 		"shop_supermarket": "supermarket",
-		"cashier_supermarket": "supermarket",
 		"library_rosa": "library",
 		"teller_bank": "bank",
 		"restaurant_twinkle": "restaurants",

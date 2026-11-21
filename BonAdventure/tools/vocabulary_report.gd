@@ -25,14 +25,15 @@ extends SceneTree
 ## (NPC roles, generated props). Labels: world Label3Ds bound to a word (live_labels.gd).
 ## Tests: games whose question has one clear tested word (user decision, 7 Nov 2026):
 ## shop orders (the item; only the store's `order_words` when data/shops.json lists them,
-## as shop_order.gd build_pool() does since 14 Nov 2026), family (the relative), restaurant (the dish), warehouse (the item,
+## as shop_order.gd build_pool() does since 14 Nov 2026, plus every word of its price tiers, which
+## the levels order from since 21 Nov 2026), family (the relative), restaurant (the dish), warehouse (the item,
 ## and since 8 Nov 2026 the colour and size its sentence names),
 ## flight (the time expression's word and the destination country; redesign of 7 Nov 2026),
 ## grammar class (the noun of Chinese measure-word questions), Library Helper (the book's topic and
 ## its category, 17 Nov 2026). Shows: words a game displays
 ## without testing them one at a time (restaurant properties, police clues and objects — two
 ## clue words per round, so not tracked — the month and weekday words of the family game and
-## the weekday words of the flight board). Cashier money amounts and flight clock times and
+## the weekday words of the flight board). Till money amounts and flight clock times and
 ## dates are generated language, not words.
 ## Dialogue: only words that fill a {slot:form} ('slots' in data/phrases.json) are reported;
 ## words written as plain text inside sentences are not matched.
@@ -142,8 +143,13 @@ func _game_words() -> void:
 	for key in words:
 		for store in words[key].get("sold_in", []):
 			check(stores.has(str(store)), "word %s is sold_in an unknown store %s" % [key, store])
-			# Only the words the clerk can order (shop_order.gd build_pool(), 14 Nov 2026).
-			var allowed: Array = stores.get(str(store), {}).get("order_words", [])
+			# Only the words the clerk can order (shop_order.gd build_pool(), 14 Nov 2026). Since
+			# 21 Nov 2026 the levels order from the store's price tiers, the last level from all of
+			# them: every priced word can be ordered.
+			var rules: Dictionary = stores.get(str(store), {})
+			var allowed: Array = rules.get("order_words", [])
+			for tier in rules.get("prices", []):
+				allowed = allowed + (tier as Dictionary).keys()
 			if allowed.is_empty() or allowed.has(key):
 				use(tests, "shop_" + str(store), key)
 	for pair in FamilyTree.WORDS.values():

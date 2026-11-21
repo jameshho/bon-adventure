@@ -97,8 +97,10 @@ func session(id: String) -> Object:
 	var found: Object = ref.get_ref() if ref != null else null
 	return found if is_instance_valid(found) else null
 
-func register(id: String, session: Object) -> void:
-	if not has(id):
+## `quiet`: an id that is not in the data on purpose (the supermarket till's free shopping,
+## 21 Nov 2026: it blocks other games and hides the HUD like one, but is no game).
+func register(id: String, session: Object, quiet := false) -> void:
+	if not has(id) and not quiet:
 		push_warning("activity_board: '%s' is not in %s" % [id, PATH])
 	_running[id] = weakref(session)
 

@@ -22,7 +22,8 @@ const Host := preload("res://scripts/learning/minigame_host.gd")
 const PracticeLog := preload("res://scripts/learning/practice_log.gd")
 ## Levels and stars (game_progress.gd, 18 Nov 2026): the player's level replaces some of the
 ## store's order rules (data/activities.json "levels"; an empty "order_words" opens every product
-## sold in the store); every wrong Done and a declined retry is a miss.
+## sold in the store, "order_tiers" the first n price tiers); every basket the till turns down and
+## every wrong payment is a miss (21 Nov 2026).
 const Progress := preload("res://scripts/learning/game_progress.gd")
 ## A store with "basket": true in data/shops.json hands the player a shopping basket while the
 ## order is shopped (user, 14 Nov 2026; the same basket as the welcome tutorial's shop):
@@ -31,6 +32,15 @@ const Progress := preload("res://scripts/learning/game_progress.gd")
 ## starts: the clerk's order line (shop.order_intro) shows in the dialogue box beside the cart
 ## (it closes by itself, on ✕ or on the first pick); there is no wait for it to close.
 const Basket := preload("res://scripts/world/shopping_basket.gd")
+const Currency := preload("res://scripts/learning/currency.gd")
+## Checkout (user, 21 Nov 2026; Pay Up! retired into it): the order is "prompt, pick, pay, bring
+## it back". There is no Done button: the cashier (cashier_session.gd, the till) checks the basket
+## against the list (check_cart(); a basket that is not exactly the list is a miss and is not
+## charged), says the total of the products' prices (data/shops.json "prices") and takes the exact
+## money; paid() then finishes the order and the clerk outside takes the basket and thanks the
+## player. The shop door holds back an unpaid basket. Giving the basket back to the cashier,
+## putting it back empty on the basket rack or the cart's ✕ calls the order off (abort()).
+## Stars: every basket the till turns down and every wrong payment is a miss.
 
 const ZONE_CHECK_INTERVAL := 0.25
 const WALK_AWAY_DISTANCE := 14.0
@@ -65,7 +75,7 @@ var needs_help: bool:
 	set(value):
 		if host != null:
 			host.offered = value
-## The order is checked, but the clerk only reports it when the player comes back to him.
+## The order is paid, but the clerk only reports it when the player comes back to him.
 var awaiting_return := false
 var _result: Dictionary = {}
 
@@ -97,7 +107,6 @@ func setup(for_store: String, shop_dialogue, shop_panel, interaction_controller,
 	host.choice_made.connect(_on_choice)
 	host.talk_closed.connect(_on_talk_closed)
 	host.leave_answered.connect(_on_leave_answered)
-	panel.done_pressed.connect(_on_done)
 	panel.remove_pressed.connect(_on_remove)
 	panel.quit_requested.connect(_ask_quit)
 
@@ -154,6 +163,9 @@ func _join(parts: Array) -> Dictionary:
 
 ## Yes on the greeting (or the test launcher): a new session of orders.
 func start_game() -> void:
+	var till := _till()
+	if till != null:
+		till.drop_free_basket()   # a free-shopping basket gives way to the order's basket
 	Board.shared().begin(activity_id())
 	_apply_level()
 	_start_order()
@@ -161,7 +173,9 @@ func start_game() -> void:
 ## The store's order rules with the player's level on top; the pool follows "order_words".
 func _apply_level() -> void:
 	rules = _store_rules.merged(Progress.shared().params(activity_id()), true)
-	pool = Order.build_pool(store_id, _sold_in, rules.get("order_words", []))
+	# "order_tiers" n: the products of the first n price tiers (easy words first, 21 Nov 2026).
+	var words: Array = Order.tier_words(rules, int(rules.order_tiers)) if rules.has("order_tiers") else rules.get("order_words", [])
+	pool = Order.build_pool(store_id, _sold_in, words)
 
 func _start_order() -> void:
 	order = Order.new(store_id, pool, rules)
@@ -170,7 +184,7 @@ func _start_order() -> void:
 	_open_cart()
 	_say("shop.order_intro")
 
-## An order is over (complete, revealed or retry declined). True when the session goes on
+## An order is over (paid and brought back). True when the session goes on
 ## with another order (more rounds on the activity board).
 func _finish_order() -> bool:
 	Board.shared().add_success(activity_id())
@@ -188,28 +202,10 @@ func _on_choice(id: String) -> void:
 		"another":
 			host.close_dialogue()
 			_start_order()
-		"retry_yes":
-			if order != null and order.accept_retry():
-				host.close_dialogue()
-				_open_cart()
-		"retry_no":
-			if order != null:
-				order.decline_retry()
-				_practice_done()
-			Board.shared().add_miss(activity_id())
-			_finish_order()
-			needs_help = false
-			_say("shop.decline_goodbye")
 
-## ✕, auto-close or walking away ended the clerk's line.
+## ✕, auto-close or walking away ended the clerk's line (nothing to do since the till checks).
 func _on_talk_closed(_line_id: String) -> void:
-	# Closing a pending retry question counts as saying no.
-	if order != null and order.state == Order.State.RETRY_OFFER and not awaiting_return:
-		order.decline_retry()
-		_practice_done()
-		Board.shared().add_miss(activity_id())
-		_finish_order()
-		needs_help = false
+	pass
 
 # --- Cart -----------------------------------------------------------------------------
 
@@ -236,20 +232,29 @@ func _close_cart() -> void:
 	interaction.pick_hook = Callable()
 	panel.hide_cart()
 
-func _rows(items: Dictionary) -> Array:
+## Order or cart rows; each shows the product's price ("$1.25 each"; the till says the total).
+static func price_rows(shop_dialogue, store_rules: Dictionary, items: Dictionary) -> Array:
 	var rows: Array = []
 	for key in items:
 		var single := {key: items[key]}
-		rows.append({"key": key, "foreign": dialogue.items_text(single, dialogue.foreign), "native": dialogue.items_text(single, dialogue.native)})
+		var price := Order.price_of(store_rules, str(key))
+		var row := {"key": key}
+		for slot in ["foreign", "native"]:
+			var lang: String = shop_dialogue.foreign if slot == "foreign" else shop_dialogue.native
+			# The price wraps as one piece ("$3.00 c/u" never splits).
+			var tag: String = "   " + shop_dialogue.phrase("shop.price_each", lang, {"price": Currency.usd(price)}).replace(" ", "\u00a0") if price > 0 else ""
+			# "/" is a line-break chance: a word joiner keeps "c/u" whole.
+			row[slot] = shop_dialogue.items_text(single, lang) + tag.replace("/", "/\u2060")
+		rows.append(row)
 	return rows
 
+## No "done": the cart has no Done button since the till checks it (21 Nov 2026).
 func _cart_data() -> Dictionary:
 	return {
 		"list_title": dialogue.line("shop.list_header"),
 		"cart_title": dialogue.line("shop.cart_header"),
-		"done": dialogue.line("shop.done_button"),
-		"needed": _rows(order.remaining),
-		"cart": _rows(order.cart),
+		"needed": price_rows(dialogue, rules, order.remaining),
+		"cart": price_rows(dialogue, rules, order.cart),
 	}
 
 func _on_pick(obj: Node3D) -> void:
@@ -274,52 +279,78 @@ func _on_remove(key: String) -> void:
 		panel.update_cart(_cart_data())
 		_fill_basket()
 
-func _on_done() -> void:
-	if order == null or order.state != Order.State.SHOPPING or order.cart.is_empty():
+# --- Checkout (the till, cashier_session.gd) -------------------------------------------------
+
+## The till session of this store (null when its cashier is left out).
+func _till() -> Node:
+	return get_parent().get_node_or_null("CashierSession_" + store_id) if get_parent() != null else null
+
+## An order is being shopped and not yet paid (the till checks it; the door holds it back).
+func shopping() -> bool:
+	return order != null and order.state == Order.State.SHOPPING and not awaiting_return
+
+## The order's cart, for the till.
+func cart() -> Dictionary:
+	return order.cart if order != null else {}
+
+## The till's check of the basket against the list ({"match", "missing", "extra"}). The first
+## check is the practice answer: an item is right when nothing of it was missing or extra; every
+## basket turned down is a miss.
+func check_cart() -> Dictionary:
+	var result: Dictionary = order.compare()
+	if order.checks_done == 0:
+		var first: Dictionary = {}
+		for key in order.order:
+			first[key] = not result.missing.has(key) and not result.extra.has(key)
+		PracticeLog.shared().first_answer(first)
+	order.checks_done += 1
+	if not result.match:
+		Board.shared().add_miss(activity_id())
+	return result
+
+## A wrong payment at the till.
+func pay_missed() -> void:
+	Board.shared().add_miss(activity_id())
+
+## What the order's basket costs.
+func total() -> int:
+	return Order.total_of(rules, order.cart) if order != null else 0
+
+## The till took the exact money: the order is done; the player brings the basket to the clerk.
+func paid() -> void:
+	if not shopping():
 		return
 	_result = order.finish_shopping()
-	var first: Dictionary = {}
-	for key in order.order:
-		first[key] = not _result.missing.has(key)
-	PracticeLog.shared().first_answer(first)
-	if _result.state != Order.State.RETRY_OFFER:
-		_practice_done()
-	if _result.state != Order.State.COMPLETE:
-		Board.shared().add_miss(activity_id())
+	_practice_done()
 	_close_cart()
 	awaiting_return = true
-	_say("shop.return_to_clerk", {"clerk": dialogue.role(str(clerk.get_meta("word_key", "")), str(rules.get("clerk_gender", "")))})
 
-## The clerk's verdict, given when the player returns to him after pressing Done.
-func _report(result: Dictionary) -> void:
-	# The clerk takes the basket (a retry hands it back with the kept items: _open_cart()).
+## The clerk's line for the till ("please return to the clerk").
+func return_line() -> Dictionary:
+	return dialogue.line("shop.return_to_clerk", {"clerk": dialogue.role(str(clerk.get_meta("word_key", "")), str(rules.get("clerk_gender", "")))})
+
+## The order is called off: the basket given back to the cashier or put back empty on the rack.
+## The basket goes; the caller says the line.
+func abort() -> void:
+	if not shopping():
+		return
+	order.cancel()
+	host.abandon_practice()
+	host.cancel_leave()
+	_close_cart()
 	Basket.take_back(player)
-	match result.state:
-		Order.State.COMPLETE:
-			var parts: Array = []
-			for key in result.extra:
-				parts.append(dialogue.line("shop.extra_item", {"item": dialogue.items_values({key: result.extra[key]})}))
-			parts.append(dialogue.line("shop.success"))
-			var more := _finish_order()
-			if more:
-				parts.append(dialogue.line("shop.another_order"))
-			host.show_line("shop.success", _join(parts), _after_order(more), 0.0 if more else -1.0)
-		Order.State.RETRY_OFFER:
-			var parts: Array = []
-			if not result.correct.is_empty():
-				parts.append(dialogue.line("shop.retry_keep", {"correct": dialogue.items_values(result.correct)}))
-			for key in result.extra:
-				parts.append(dialogue.line("shop.extra_item", {"item": dialogue.items_values({key: result.extra[key]})}))
-			parts.append(dialogue.line("shop.retry_missing", {"missing": dialogue.items_values(result.missing)}))
-			host.show_line("shop.retry", _join(parts), [host.choice("retry_yes", "shop.retry_yes", "retry"), host.choice("retry_no", "shop.retry_no", "exit")], 0.0)
-		Order.State.REVEALED:
-			var more := _finish_order()
-			var parts: Array = [dialogue.line("shop.final_reveal", {"pairs": dialogue.pairs_text(result.pairs)})]
-			if more:
-				parts.append(dialogue.line("shop.another_order"))
-			host.show_line("shop.final_reveal", _join(parts), _after_order(more), 0.0 if more else -1.0)
+	needs_help = false
 
-## The order's result is final (complete, revealed or retry declined): record it.
+## The clerk's thanks when the player brings the paid basket back; he takes the basket.
+func _report(_result_unused: Dictionary) -> void:
+	Basket.take_back(player)
+	var parts: Array = [dialogue.line("shop.success")]
+	var more := _finish_order()
+	if more:
+		parts.append(dialogue.line("shop.another_order"))
+	host.show_line("shop.success", _join(parts), _after_order(more), 0.0 if more else -1.0)
+
+## The order's result is final (paid): record it.
 func _practice_done() -> void:
 	if PracticeLog.shared().game_id() == activity_id():
 		PracticeLog.shared().complete()

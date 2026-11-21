@@ -3,6 +3,7 @@ extends SceneTree
 ## shop_session.gd with data/shops.json "basket", shopping_basket.gd give() / show_items() /
 ## take_back(), held through hand_hold.gd): given when the cart opens, picked goods show in it,
 ## a removed item leaves it, and it is taken back when the order is handed in or the player quits.
+## Since 21 Nov 2026 the order is paid at the till before it is handed in.
 ## Main saves study progress: run with an isolated HOME. Needs the supermarket unit:
 ## HOME=<scratch>/home VT_FOCUS=supermarket VT_SPAWN=none godot --headless --path . --script res://docs/evidence/shop-basket-20261114/verify.gd
 ## Prints "SHOP BASKET: N checks, M failures".
@@ -76,9 +77,15 @@ func run() -> void:
 					session._on_pick(p)
 		await frames(2)
 		check(Basket.carried(main) != null and Basket.carried(main).item_count() > 0, "the order's goods are in the basket")
-	session._on_done()
+	# Paid at the till since 21 Nov 2026 (cashier_session.gd; the cart had a Done button before).
+	var till = main.get_node("CashierSession_supermarket")
+	till._talk()
+	till._open_money()
+	main.money_panel.counts = {"coin_1": till.due_cents}
+	till._on_submitted(till.due_cents)
+	till.host.close_dialogue()
 	await frames(2)
-	check(Basket.carried(main) != null, "the player carries the basket back to the clerk")
+	check(session.awaiting_return and Basket.carried(main) != null, "paid at the till, the player carries the basket back to the clerk")
 	session._report(session._result)
 	await frames(3)
 	check(not hand.is_holding(), "the clerk takes the basket with the order")

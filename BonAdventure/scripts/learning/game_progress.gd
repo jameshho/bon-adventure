@@ -23,7 +23,7 @@ extends RefCounted
 ## ("custom") still records its stars but unlocks nothing.
 ##
 ## Saved per profile in game_progress.json (save_store.gd), per learned language like the
-## practice log: {"es": {"cashier_supermarket": {"level": 2, "unlocked": 2, "best": {"1": 3},
+## practice log: {"es": {"shop_supermarket": {"level": 2, "unlocked": 2, "best": {"1": 3},
 ## "plays": 4}}}. Saves from before 18 Nov 2026 have no file: every game starts at level 1.
 const Board := preload("res://scripts/learning/activity_board.gd")
 const SaveStore := preload("res://scripts/core/save_store.gd")

@@ -1,7 +1,9 @@
 extends RefCounted
 ## Rules and state of one "customer order" (no UI, no nodes). A clerk asks for a random
 ## list of products from a store's `sold_in` pool; the player fills a cart and presses
-## Done; the clerk checks it. Wrong carts get up to `retries` second chances, after
+## Done; the clerk checks it. Since 21 Nov 2026 (user) the cart is checked at the till instead
+## (compare(); cashier_session.gd) and only an exact cart is paid and finished (finish_shopping()
+## then always COMPLETEs); the retry and reveal states are kept for the order's own checks. Wrong carts get up to `retries` second chances, after
 ## which the answers are revealed. Phrases live in shop_dialogue.gd; the cart panel and
 ## clerk talk to this class and never decide correctness themselves.
 ##
@@ -37,6 +39,30 @@ static func build_pool(for_store: String, sold_in: Dictionary, allowed: Array = 
 			push_warning("shop_order: order word '%s' is not sold in %s" % [key, for_store])
 	found.sort()
 	return found
+
+## Prices (user, 21 Nov 2026: the checkout): a store's "prices" in data/shops.json are tiers of
+## word -> cents, from easy words to hard ones (whole dollars, then quarters, then quarters with
+## dimes, then any cents). 0 for a word with no price.
+static func price_of(store_rules: Dictionary, key: String) -> int:
+	for tier in store_rules.get("prices", []):
+		if (tier as Dictionary).has(key):
+			return int(tier[key])
+	return 0
+
+## What `counts` (word key -> how many) costs, in cents.
+static func total_of(store_rules: Dictionary, counts: Dictionary) -> int:
+	var cents := 0
+	for key in counts:
+		cents += price_of(store_rules, str(key)) * int(counts[key])
+	return cents
+
+## The words of the first `n` price tiers (a level's "order_tiers", data/activities.json).
+static func tier_words(store_rules: Dictionary, n: int) -> Array:
+	var words: Array = []
+	var tiers: Array = store_rules.get("prices", [])
+	for i in mini(n, tiers.size()):
+		words.append_array((tiers[i] as Dictionary).keys())
+	return words
 
 func _init(for_store: String, store_pool: Array, store_rules: Dictionary, seed_value: int = -1) -> void:
 	store_id = for_store
@@ -132,6 +158,21 @@ func finish_shopping() -> Dictionary:
 		state = State.RETRY_OFFER
 	last_check = {"state": state, "correct": correct, "missing": missing, "extra": extra, "pairs": pairs}
 	return last_check
+
+## The till's check (21 Nov 2026): the cart against what is still needed, changing nothing.
+## {"match": the cart is exactly the list, "missing", "extra"} (word key -> how many).
+func compare() -> Dictionary:
+	var missing := {}
+	var extra := {}
+	for key in remaining:
+		var short := int(remaining[key]) - int(cart.get(key, 0))
+		if short > 0:
+			missing[key] = short
+	for key in cart:
+		var surplus := int(cart[key]) - int(remaining.get(key, 0))
+		if surplus > 0:
+			extra[key] = surplus
+	return {"match": missing.is_empty() and extra.is_empty(), "missing": missing, "extra": extra}
 
 func _take(items: Dictionary) -> void:
 	for key in items:

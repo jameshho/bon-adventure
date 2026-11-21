@@ -77,7 +77,8 @@ var _asking_leave := false
 ## <group>.greeting, .play, .not_now, .goodbye, .leave_confirm, .leave_yes, .leave_no),
 ## "speaker" (phrase id of the NPC's name), optional "choice_prefix" (default "<group>_"),
 ## any text id override ("greeting", "play", "not_now", "goodbye", "leave_confirm", ...),
-## "call_distance", "walk_away", "message_seconds". Returns false (and leaves the game
+## "call_distance", "walk_away", "message_seconds", "board" (false: not on the activity
+## board). Returns false (and leaves the game
 ## inert) when `for_npc` is null, e.g. its building is left out by dev_focus.txt.
 func setup(owner_session: Node, game_spec: Dictionary, shared_lexicon, shared_dialogue_panel, interaction_controller, explorer: Node3D, for_npc: Node3D) -> bool:
 	name = "MinigameHost"
@@ -98,8 +99,13 @@ func setup(owner_session: Node, game_spec: Dictionary, shared_lexicon, shared_di
 	presence.setup(npc, player)
 	add_talker(npc)
 	refresh_name()
-	Board.shared().register(activity, session)
-	offered = Board.shared().roll(activity, _rng)
+	# "board": false (the supermarket till, 21 Nov 2026): an NPC that talks through the host but
+	# is no activity of its own: not registered, never offers a game.
+	if bool(spec.get("board", true)):
+		Board.shared().register(activity, session)
+		offered = Board.shared().roll(activity, _rng)
+	else:
+		offered = false
 	dialogue_panel.choice_pressed.connect(_on_choice)
 	dialogue_panel.dialogue_closed.connect(_on_dialogue_closed)
 	dialogue_panel.quit_answered.connect(_on_quit_answered)

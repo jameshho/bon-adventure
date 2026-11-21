@@ -50,7 +50,8 @@ static func build(main) -> void:
 			var session = preload("res://scripts/learning/shop_session.gd").new()
 			main.add_child(session)
 			session.setup(store_id, shop_dialogue, shop_panel, main.interaction, main.zones, main.player, main.apartment, main.vocabulary_sold_in))
-	# Cashier counters (money-selection minigame): same dialogue box, plus the money screen.
+	# Cashier counters (the till: checkout of the Grocery Run and of free shopping with a basket,
+	# 21 Nov 2026): same dialogue box, plus the money screen.
 	main.money_panel = preload("res://scripts/ui/money_panel.gd").new()
 	hud.ui_root.add_child(main.money_panel)
 	main.money_panel.visibility_changed.connect(main.sync_player_controls)
@@ -58,7 +59,7 @@ static func build(main) -> void:
 		_when(main, cashier_id, func() -> void:
 			var cashier_session = preload("res://scripts/learning/cashier_session.gd").new()
 			main.add_child(cashier_session)
-			cashier_session.setup(cashier_id, shop_dialogue, shop_panel, main.money_panel, main.interaction, main.zones, main.player, main.apartment))
+			cashier_session.setup(cashier_id, shop_dialogue, shop_panel, main.money_panel, main.interaction, main.zones, main.player, main.apartment, main.vocabulary_sold_in))
 	# The bank teller game (bear banker, teller window 2; 18 Nov 2026): same dialogue box and
 	# money screen, played behind the bank's teller counter.
 	_when(main, "bank", func() -> void:

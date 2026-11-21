@@ -44,7 +44,7 @@ const MUTED := BonStyle.INK_SOFT
 const GOLD := BonStyle.GREEN_BOTTOM
 ## Each game's tile icon (ui_icons.gd); "play" for a game not listed.
 const ICONS := {
-	"shop_supermarket": "cart", "cashier_supermarket": "money", "family_dr_li": "family",
+	"shop_supermarket": "cart", "family_dr_li": "family",
 	"warehouse_ramon": "lift", "flight_bruno": "takeoff", "restaurant_twinkle": "cloche",
 	"grammar_lana": "pencil", "lineup_rocco": "look", "evidence_mimi": "squeeze",
 	"mystery_luna": "door", "library_rosa": "book", "teller_bank": "money", "mahjong_mei": "tiles", "radar_patrol": "radar", "electrical_box": "bolt",

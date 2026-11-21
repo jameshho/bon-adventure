@@ -65,6 +65,31 @@ isolated `HOME`, working tree with the uncommitted supermarket layout work prese
 | `check_vehicle_collision.gd` (run alone) | "Vehicle remains selectable" failed for all 39 | 0 failures: since 12 Nov a vehicle is an Interactable, which never opens a word card, so the check now aims at it as a player does and requires its Interactable to be aimed and clickable |
 | `food_shopping_vocab` (new in the full suite) | hard-coded 500 words, pre-6 Nov store paths, SCRIPT ERROR and hang | rewritten for the modular town with a watchdog: PASS, 105 checks, all 13 words placed and picked |
 
+## Grocery checkout and free shopping — 21 November 2026
+
+Pay Up! retired into the Grocery Run checkout; prices, free shopping with a basket, the shop door
+([record](TOWN_DESIGN_BRIEF.md#grocery-checkout-and-free-shopping--21-november-2026)). Working tree
+with other uncommitted work present (the 21 Nov tutorial review, car driving, outfits). Isolated
+`HOME`, each run once unless noted:
+
+| Check | Result |
+| --- | --- |
+| `grocery_checkout` (new, `grocery-checkout-20261121/verify.gd`) | PASS, 45 checks (run twice: again after free shopping became a quiet board activity) |
+| `minigame_progression` | PASS (rewritten from Pay Up! to Grocery Run at the till) |
+| `minigame_launcher` | PASS, run twice (updated: the till asks for a basket; orders paid at the till) |
+| `shop_basket` | PASS, run twice (updated: paid at the till before handing in) |
+| `activity_lifecycle` | PASS |
+| `tutorial-review2-20261121/verify.gd` (not in the runner) | PASS, 64 checks: the tutorial's shop still pays at the borrowed till |
+| `tutorial` (`tutorial-polish-20261118`) | TIMEOUT, 20 failures from "more to show you" on: stale against the uncommitted 21 Nov tutorial review, which removed `tutorial.more_to_show`, `to_supermarket` and others before this work; not caused by the checkout. **P2:** update or retire this check with that review |
+| `vocabulary_report -- --write` | 0 failures; `words.md` and the report refreshed (every priced product now counts as ordered) |
+| The commit alone (HEAD plus only these changes, in a temporary worktree) | `grocery_checkout`, `shop_basket`, `minigame_progression`, `activity_lifecycle` PASS; the vocabulary report was written there, so it leaves out the other uncommitted work |
+
+Views (`VT_FOCUS=supermarket`, not the full town): `order-cart.png`, `till-check.png`,
+`till-pay.png`, `free-basket.png` in `docs/evidence/grocery-checkout-20261121/`.
+`data/town_map.json` and `data/nearby_units.json` lost their `cashier_supermarket` entry by hand
+(the same as a re-bake; the map picture was not re-rendered). Not run: the full suite, a web or
+phone test, walking into the door barrier by hand (checked through `DoorGuard.blocks()` only).
+
 Not run: the full suite.
 
 ## Minigame progression: levels and stars — 18 November 2026

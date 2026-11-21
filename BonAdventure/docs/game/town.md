@@ -42,7 +42,9 @@ BonBon, Leo and Sunny live in the house, and the walkways were cleared.
 One open floor with nine departments (fruit, vegetables, refrigerated, bakery, meat, seafood,
 drinks & home, snacks, checkout); every product is a word with its own product art, and since
 17 Nov each word is in one clearly named section ([sections](../guides/TOWN_DESIGN_BRIEF.md#supermarket-sections--17-november-2026)). A samoyed cashier at the till by the
-door (Pay Up!) and a beagle clerk outside (Grocery Run). Since 16 Nov its signs are sized to be
+door and a beagle clerk outside (Grocery Run, paid at the till). Since 21 Nov you can also take a
+basket from the stack by the door, shop and pay; the door holds you back until you pay
+([Grocery Run](minigames.md#grocery-run)). Since 16 Nov its signs are sized to be
 read across the hall in every language ([before and after](../evidence/world-signs-20261116/)).
 Since 18 Nov it is more compact: a staff wall shortens the floor, the fridges and drinks line the
 left wall, snacks and home goods are two short aisles, and every product is at least coconut-sized

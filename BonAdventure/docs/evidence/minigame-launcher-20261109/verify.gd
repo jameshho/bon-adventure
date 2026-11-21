@@ -2,9 +2,10 @@ extends SceneTree
 ## Minigame picker (built as a test launcher 9 Nov 2026, a player feature since 10 Nov 2026)
 ## and the older games on the shared NPC host (guide docs/guides/MINIGAMES.md#minigame-picker).
 ## Checks: the picker has a tile per activity (mahjong under
-## pastimes); the cashier and grocery clerk show the gold "!" in the store (the cashier had
-## none before); the cashier's money panel asks the shared leave question and Esc on it keeps
-## the round; two grocery orders in a row with 2 rounds; and every game starts from the
+## pastimes); the grocery clerk shows the gold "!" in the store; the cashier (the till since
+## 21 Nov 2026, when Pay Up! was retired into the Grocery Run checkout) shows none without a basket
+## and asks the player to take one; two grocery orders in a row with 2 rounds, each paid at the
+## till; and every game starts from the
 ## picker with the chosen rounds, undone when it is over; practice records as usual (10 Nov 2026).
 ## Uses Main, which saves progress: run with an isolated HOME (README). Needs the full town
 ## (VT_FOCUS=all) for every game; a focused run reports the missing games as failures.
@@ -67,7 +68,7 @@ func launcher_window() -> void:
 	check(launcher.visible and not game.player.controls_enabled, "open window locks the player")
 	var ids: Array = launcher._rows.map(func(r): return r.id)
 	check(ids.size() == Board.shared().activities.size(), "one tile per activity (%d)" % ids.size())
-	check(Board.shared().kind("mahjong_mei") == "pastime" and Board.shared().kind("cashier_supermarket") == "learning", "mahjong is a pastime")
+	check(Board.shared().kind("mahjong_mei") == "pastime" and Board.shared().kind("shop_supermarket") == "learning", "mahjong is a pastime")
 	for r in launcher._rows:
 		check(r.title.text != r.id and r.host.text != "", "tile has a game name and a host line: " + r.id)
 	launcher._show_tab("learning")
@@ -121,30 +122,16 @@ func launcher_window() -> void:
 	check(slots.all(func(v): return v == slots[0]) and game.hud.bottom_slot(0).size.x > game.hud.top_button_size(), "cluster buttons share one size, larger than the top-right ones")
 
 func cashier() -> void:
-	var s = session("cashier_supermarket")
+	var s = game.get_node_or_null("CashierSession_supermarket")
 	check(s != null and s.host != null, "cashier on the shared host")
 	if s == null:
 		return
-	s.offered = true
 	await stand_by(s.cashier)
 	check(s._in_zone, "player in the store zone")
 	await frames(3)
-	check(calls(s.host.npc), "cashier shows the gold !")
+	check(not calls(s.host.npc), "no ! at the till without a basket")
 	talk_to(s.cashier)
-	check(s.round_active and game.shop_panel.has_choices(), "talking asks for an amount with choices")
-	game.shop_panel.choice_pressed.emit("cashier_count")
-	check(game.money_panel.visible, "count opens the money panel")
-	check(not calls(s.host.npc) or true, "")
-	game.money_panel.close_requested.emit()
-	check(game.shop_panel.is_quit_open() and not game.money_panel.visible, "closing the money panel asks the leave question")
-	game.shop_panel.hide_quit()
-	await frames(2)
-	check(game.money_panel.visible and s.round_active, "Esc on the question keeps the round (money panel back)")
-	game.money_panel.close_requested.emit()
-	game.shop_panel.quit_answered.emit(true)
-	await frames(2)
-	check(not s.round_active and not game.money_panel.visible, "yes ends the round")
-	game.shop_panel.hide_dialogue()
+	check(s.host.line_id == "cashier.grab_basket" and s.paying_for == "", "without a basket the cashier says to take one")
 	s.host.close_dialogue()
 	await frames(2)
 
@@ -177,8 +164,13 @@ func grocery_orders() -> void:
 		for key in s.order.order:
 			for i in int(s.order.order[key]):
 				s.order.add_to_cart(key)
-		s._on_done()
-		check(s.awaiting_return, "Done: the clerk waits for the player")
+		var till = game.get_node("CashierSession_supermarket")
+		till._talk()
+		till._open_money()
+		game.money_panel.counts = {"coin_1": till.due_cents}
+		till._on_submitted(till.due_cents)
+		check(s.awaiting_return, "paid at the till: the clerk waits for the player")
+		till.host.close_dialogue()
 		s.host.close_dialogue()
 		await frames(2)
 		check(calls(s.host.npc), "the ! shows while the clerk waits")

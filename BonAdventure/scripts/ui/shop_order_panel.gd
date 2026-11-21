@@ -116,6 +116,8 @@ var quit_card: PanelContainer
 var quit_label: Label
 var quit_native: Label
 var quit_yes: Button
+## The line between the list and the cart (hidden with the list).
+var _list_rule: HSeparator
 var quit_no: Button
 ## Draws and keeps the product pictures of the order and cart rows.
 var pictures: Node
@@ -506,6 +508,7 @@ func _build_cart() -> void:
 	cart_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	cart_box.add_theme_constant_override("separation", 6)
 	stack.add_child(cart_box)
+	_list_rule = rule
 	toast_label = _label(22, TOAST)
 	toast_label.visible = false
 	stack.add_child(toast_label)
@@ -696,7 +699,8 @@ func refresh_display() -> void:
 # --- Cart ------------------------------------------------------------------
 
 ## data: {"list_title", "cart_title", "done" (lines), "needed": [{"foreign","native"}],
-## "cart": [{"key", "foreign", "native"}]}
+## "cart": [{"key", "foreign", "native"}]}. Without "done" there is no Done button; without
+## "list_title" only the cart shows (free shopping with a basket; both 21 Nov 2026).
 func show_cart(data: Dictionary) -> void:
 	_cart = data
 	cart_card.visible = true
@@ -726,10 +730,16 @@ func _text_of(row: Dictionary) -> String:
 func _refresh_cart() -> void:
 	if _cart.is_empty():
 		return
-	list_title.text = GameSettings.shared().inline(_cart.list_title, show_native)
+	# No list (free shopping with a basket, 21 Nov 2026): only the basket shows.
+	# The cart's title then takes the list's place in the head row, beside the ✕.
+	var has_list: bool = _cart.has("list_title")
+	needed_box.visible = has_list
+	_list_rule.visible = has_list
+	cart_title.visible = has_list
+	list_title.text = GameSettings.shared().inline(_cart.list_title if has_list else _cart.cart_title, show_native)
 	cart_title.text = GameSettings.shared().inline(_cart.cart_title, show_native)
 	_fill_rows(needed_box)
-	for row in _cart.needed:
+	for row in _cart.get("needed", []):
 		var item := HBoxContainer.new()
 		_add_picture(item, str(row.get("key", "")))
 		var label := _label(22, LINE)
@@ -767,8 +777,11 @@ func _refresh_cart() -> void:
 		remove.pressed.connect(func() -> void: remove_pressed.emit(key))
 		line.add_child(remove)
 		cart_box.add_child(line)
-	done_button.text = _text_of(_cart.done)
-	done_button.disabled = _cart.cart.is_empty()
+	# No "done": no Done button (the supermarket's cart is checked at the till, 21 Nov 2026).
+	done_button.visible = _cart.has("done")
+	if _cart.has("done"):
+		done_button.text = _text_of(_cart.done)
+		done_button.disabled = _cart.cart.is_empty()
 	_rescale()
 
 ## The product's picture at the start of an order or cart row (nothing for other keys). It is

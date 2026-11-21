@@ -1656,7 +1656,7 @@ Design record: [Cashier money minigame](TOWN_DESIGN_BRIEF.md#cashier-money-minig
 | Denominations, weighted random cents, validation, `usd()` digit form (pure, no scene) | `scripts/learning/currency.gd` |
 | Amounts in words | each language's `money_words()` (`scripts/language/rules_es.gd`; moved from `currency.gd::spanish_amount()` on 4 Nov 2026), paired with `usd()` by `shop_dialogue.gd::money_values()` |
 | Money screen (modal, key lock, tray, scaling) and drawn bills/coins | `scripts/ui/money_panel.gd`, `money_piece.gd` |
-| Flow per cashier (request → count → verdict → retry/explain/quit) | `scripts/learning/cashier_session.gd`, created per `cashiers` entry by `Main.make_shops()` |
+| Flow per cashier (request → count → verdict → retry/explain/quit) | `scripts/learning/cashier_session.gd`, created per `cashiers` entry by `Main.make_shops()`. Since 21 Nov 2026 the till: it charges the Grocery Run basket and free-shopping baskets, owns the basket racks and the shop door ([checkout](TOWN_DESIGN_BRIEF.md#grocery-checkout-and-free-shopping--21-november-2026)) |
 | Phrases (`cashier.*`, `money.*`) and `cashiers` {zone, npc, npc_gender} | `data/phrases.json` (Lexicon) and `data/shops.json` (`shop_dialogue.gd`) |
 | Dialogue box (shared with the clerk) | `scripts/ui/shop_order_panel.gd`; both sessions listen to its signals and each acts only while it owns the box (`cashier_*` choice ids never clash with the clerk's) |
 | Player lock while the screen is open | `Main.sync_player_controls()` (also driven by the panel's `visibility_changed`) |

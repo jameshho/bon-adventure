@@ -1908,7 +1908,44 @@ User decisions (supersede steps 2, 3 and 6 above where they differ):
 Evidence: `docs/evidence/run-button-shop-20261114/` (`order_start.png`, `order_phone.png`,
 `basket_inspect.png`); results in [Final verification](FINAL_VERIFICATION.md).
 
+### Grocery checkout and free shopping — 21 November 2026
+
+User decisions (supersede the Done button and retries above, and retire the
+[cashier money minigame](#cashier-money-minigame--4-november-2026) as a game of its own):
+
+- **One mission: prompt, pick, pay, bring it back.** The clerk's order line says to pay at the till
+  and bring the items back. The cart has no Done button. At the till the cashier checks the basket:
+  only a basket that is exactly the list is charged; otherwise "please check your list" (from the
+  second wrong basket on, what is missing and what is not on the list), with "I'll check" and "Give
+  back the basket". Paid, the clerk outside takes the basket and thanks the player.
+- **Prices.** One price per product (`data/shops.json` `stores.supermarket.prices`), in four tiers
+  of words ordered easy to hard: whole dollars; .25/.50/.75; quarters with dimes (5-cent steps
+  other than .05 and .15); any cents. The list and the basket show each price ("$1.75 c/u"); the
+  cashier says the total in the language being learned and takes only the exact amount ("Try
+  again", "What went wrong?"). No change is given.
+- **Levels follow the tiers** (`order_tiers` in `data/activities.json`): L1 the 16 basic fruit and
+  vegetables (all whole dollars), L2 the first two tiers, L3 three, L4 all products. `retries` is
+  gone. Stars count mistakes: each basket turned down (the same basket again is not counted twice)
+  and each wrong payment.
+- **Free shopping.** The basket stacks by the door (`basket_racks`) are Interactables: E takes a
+  basket; any priced product of the store goes into it (3 of one, 12 in all), and the till charges
+  it. Paid, the cashier keeps the basket. Nothing is saved or scored.
+- **Calling it off.** "Give back the basket" at the till, putting the basket back EMPTY on a stack
+  (a full one must be emptied first with the cart's ✕ buttons) or the cart's ✕ end the shopping
+  unpaid.
+- **The door.** While the player carries an unpaid basket, an invisible wall fills the shop door
+  (`door`, the same doorway as the welcome tutorial's) and the cashier calls "please pay at the
+  till" ("please put the basket back" for an empty one); the cashier's "!" shows while a basket with
+  items waits to be paid.
+
+Owner: `scripts/learning/cashier_session.gd` (the till, free shopping, the door, the racks),
+`shop_session.gd` (the order: `check_cart()`, `paid()`, `abort()`), `shop_order.gd` (prices,
+`compare()`). Evidence: `docs/evidence/grocery-checkout-20261121/`.
+
 ## Cashier money minigame — 4 November 2026
+
+*Retired 21 Nov 2026 (user): the cashier no longer asks for random amounts; the money screen is the
+[Grocery Run checkout](#grocery-checkout-and-free-shopping--21-november-2026). Kept as a record.*
 
 **Approved decisions (user).** A cashier asks for a random amount in Spanish (usted register, five random phrasings such as "Son…", "Serían…", "Su total es…", "Me debe…"); the player counts it out from bills and coins. The request shows Spanish only, with the same translate toggle as the clerk (the English line shows the amount in dollars). Range **$0.25–$300.00** for now, weighted: 10% up to $10, 30% $10–30, 30% $30–50, 20% $50–100, 10% $100–300 (`REQUEST_BUCKETS` in `currency.gd`; raise `MAX_CENTS` and the last bucket for more). Ten denominations: bills $1, $5, $10, $20, $50, $100 and coins 1¢, 5¢, 10¢, 25¢ (the $500 note was dropped: nothing needs it at $300). Any exact combination is accepted, not only the fewest pieces. No rewards or difficulty levels. Money screen: full-screen, mouse/touch only (every key is swallowed while open and the player's controls are off), request on top, payment tray (one stack per denomination with a ×N badge; click a stack to remove one piece), bills and coins to click, bottom bar with the live total, Entregar (submit), Borrar todo, Cerrar; ✕ or Cerrar asks "¿Seguro?" in the dialogue (yes ends the round with a goodbye, no returns to the screen with the tray intact). Submit returns to the dialogue: correct → "Otro cobro" / "Adiós"; wrong → "Intentar de nuevo" (selection kept) or "¿Qué salió mal?" (what was given, then short or over, both spoken as Spanish amounts). **The UI should be easy to click** (large targets, scales with the window). The target is a laptop window; smaller screens come later, and a vertical (portrait) layout is not needed. The narrow 800 × 1400 renders in this record were an over-reading of "mobile", kept only as evidence. Project rule in `AGENTS.md`.
 

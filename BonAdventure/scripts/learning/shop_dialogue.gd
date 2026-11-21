@@ -13,7 +13,7 @@ var native: String:
 var foreign: String:
 	get: return lexicon.foreign
 var stores: Dictionary = {}
-## Cashier counters (money-selection minigame): store id -> {zone, npc, npc_gender}.
+## Cashier counters (the till where shopping is paid, cashier_session.gd): store id -> {zone, npc, npc_gender}.
 var cashiers: Dictionary = {}
 
 func _init(shared_lexicon = null) -> void:

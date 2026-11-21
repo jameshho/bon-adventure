@@ -6,34 +6,73 @@ Generated 2026-11-21 by `tools/vocabulary_report.gd -- --write` from the game da
 
 ## Grocery Run
 
-Activity id `shop_supermarket`. Tested: 16 · shown only: 0.
+Activity id `shop_supermarket`. Tested: 61 · shown only: 0.
 
 **Tested**
 
 | English | Spanish | Chinese |
 | --- | --- | --- |
 | apple | la manzana | 蘋果 |
+| avocado | el aguacate | 牛油果 |
+| baguette | la baguette | 法包 |
 | banana | el plátano | 香蕉 |
+| bell pepper | el pimiento | 燈籠椒 |
+| bread | el pan | 麵包 |
 | broccoli | el brócoli | 西蘭花 |
+| butter | la mantequilla | 牛油 |
+| cake | el pastel | 蛋糕 |
+| candy | el dulce | 糖果 |
 | carrot | la zanahoria | 紅蘿蔔 |
+| cheese | el queso | 芝士 |
+| cherry | la cereza | 車厘子 |
+| chicken | el pollo | 雞肉 |
+| chili pepper | el chile | 辣椒 |
+| chocolate | el chocolate | 朱古力 |
+| coconut | el coco | 椰子 |
+| coffee | el café | 咖啡 |
+| cookie | la galleta | 曲奇 |
 | corn | el maíz | 粟米 |
+| cracker | la galleta salada | 梳打餅 |
+| croissant | el croissant | 牛角包 |
 | cucumber | el pepino | 青瓜 |
+| cupcake | el cupcake | 紙杯蛋糕 |
+| detergent | el detergente | 清潔劑 |
+| donut | la dona | 冬甩 |
+| eggs | los huevos | 雞蛋 |
+| fish | el pez (animal) / el pescado (comida) | 魚 |
+| garlic | el ajo | 蒜頭 |
 | grapes | las uvas | 提子 |
+| ham | el jamón | 火腿 |
+| juice | el jugo | 果汁 |
 | lemon | el limón | 檸檬 |
 | lettuce | la lechuga | 生菜 |
+| lime | el limón verde | 青檸 |
+| mango | el mango | 芒果 |
+| meat | la carne | 肉 |
+| milk | la leche | 牛奶 |
+| mushroom | el champiñón | 蘑菇 |
 | onion | la cebolla | 洋蔥 |
 | orange | la naranja | 橙 |
+| peach | el durazno | 桃 |
 | pear | la pera | 梨 |
+| pineapple | la piña | 菠蘿 |
 | potato | la papa | 薯仔 |
+| salad | la ensalada | 沙律 |
+| sausage | la salchicha | 香腸 |
+| shampoo | el champú | 洗頭水 |
+| shrimp | el camarón | 蝦 |
+| soap | el jabón | 肥皂 |
+| soda | el refresco | 汽水 |
+| sponge | la esponja | 海綿 |
+| steak | el bistec | 牛扒 |
 | strawberry | la fresa | 士多啤梨 |
+| toilet paper | el papel higiénico | 廁紙 |
 | tomato | el tomate | 番茄 |
+| toothbrush | el cepillo de dientes | 牙刷 |
+| toothpaste | la pasta de dientes | 牙膏 |
+| water bottle | la botella de agua | 水樽 |
 | watermelon | la sandía | 西瓜 |
-
-## Pay Up!
-
-Activity id `cashier_supermarket`. Tested: 0 · shown only: 0.
-
-No words from `data/words.json` (phrases or generated language only, or a pastime).
+| yogurt | el yogur | 乳酪 |
 
 ## Who's Who?
 

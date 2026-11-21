@@ -29,8 +29,9 @@ You play BonBon, a plush pig, in a small 3D town. Every object you click shows i
 language you are learning (Spanish, Chinese or English) and your own language. Plush characters
 around town run short minigames that practise words and phrases in context: shopping, paying,
 family, flights, ordering food, grammar, describing people, colours and shapes. A journal keeps
-every word you have studied and how you did in the games. Pay Up! and Grocery Run have levels
-and 1–3 stars per session (18 Nov); the other games will follow. It runs on a laptop and as a landscape
+every word you have studied and how you did in the games. Grocery Run has levels and 1–3 stars
+per session (18 Nov; Pay Up! had them too until it became Grocery Run's checkout on 21 Nov); the
+other games will follow. It runs on a laptop and as a landscape
 web app on phones and tablets.
 
 ## Status at a glance
@@ -38,14 +39,14 @@ web app on phones and tablets.
 "Last change" is the most recent dated record or commit for that feature (all 2026). A screenshot can be
 older than that change; each page dates its screenshot. "Tracked" means the game records right
 and wrong answers per word in the journal. **Levels** ([how games get harder](minigames.md#how-games-get-harder),
-18 Nov): built for Pay Up! and Grocery Run; designed, not built, for the other learning games.
+18 Nov): built for Grocery Run (and Pay Up! until 21 Nov); designed, not built, for the other learning games.
 
 ### Minigames
 
 | Minigame | Where | Tracked | Built | Last change |
 | --- | --- | --- | --- | --- |
-| [Grocery Run](minigames.md#grocery-run) | Supermarket door | Yes | 3 Nov | 18 Nov (4 levels, stars) |
-| [Pay Up!](minigames.md#pay-up) | Supermarket till | No | 4 Nov | 18 Nov (4 levels, stars) |
+| [Grocery Run](minigames.md#grocery-run) | Supermarket door and till | Yes | 3 Nov | 21 Nov (paid at the till; prices; free shopping with a basket) |
+| [Pay Up!](minigames.md#pay-up) (retired) | Supermarket till | No | 4 Nov | 21 Nov (became Grocery Run's checkout) |
 | [Who's Who?](minigames.md#whos-who) | Hospital entrance | Yes | 4 Nov | 4 Nov |
 | [Flight Finder](minigames.md#flight-finder) | Airport information desk | Yes | 5 Nov | 8 Nov |
 | [Stack & Pack](minigames.md#stack--pack) | Warehouse | Yes | 5 Nov | 21 Nov (two-level shelf, tap to place; no cardboard box) |

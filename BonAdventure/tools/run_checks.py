@@ -173,7 +173,10 @@ CHECKS = [
     # host (9 Nov 2026, docs/guides/MINIGAMES.md#test-launcher); starts every game, so needs the full town.
     dict(id="minigame_launcher", script="res://docs/evidence/minigame-launcher-20261109/verify.gd", suites=["full"],
          summary=r"MINIGAME LAUNCHER: \d+ checks, (?P<n>\d+) failures"),
-    # Minigame progression: levels, stars, unlocks, Pay Up! and Grocery Run, picker (18 Nov 2026).
+    # Grocery Run checkout and free shopping at the supermarket till (21 Nov 2026; Pay Up! retired into it).
+    dict(id="grocery_checkout", script="res://docs/evidence/grocery-checkout-20261121/verify.gd", suites=["full"],
+         summary=r"GROCERY CHECKOUT: \d+ checks, (?P<n>\d+) failures"),
+    # Minigame progression: levels, stars, unlocks, Grocery Run (Pay Up! until 21 Nov 2026), picker (18 Nov 2026).
     dict(id="minigame_progression", script="res://docs/evidence/minigame-progression-20261118/verify.gd", suites=["full"],
          summary=r"MINIGAME PROGRESSION: \d+ checks, (?P<n>\d+) failures"),
     # Every world sign in every taught language; every visible Label3D covered (9 Nov 2026).

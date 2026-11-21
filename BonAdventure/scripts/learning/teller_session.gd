@@ -13,7 +13,7 @@ extends Node
 ## data/bank_teller.json). A customer counts when served right the first time; at the
 ## progress target the window closes, the screen fades back to the lobby and the banker thanks
 ## the player. Nothing is saved and no word is tracked (amounts are generated language, like
-## Pay Up!).
+## the supermarket till).
 ##
 ## Shared parts (docs/guides/MINIGAMES.md#building-a-minigame): minigame_host.gd (the banker, the
 ## "!", talking, the leave question), minigame_zone.gd (the fade and placing the player), the
