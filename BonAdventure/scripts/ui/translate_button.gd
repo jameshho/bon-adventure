@@ -5,7 +5,7 @@ extends Button
 ## top right, left of the ✕. It is hidden in Display Modes without a translation toggle
 ## (GameSettings.shows_translate_button()). Connect `pressed` as any Button.
 ## While it shows the translation on screen it tells the practice tracker (practice_log.gd
-## translation_shown: "" = the open question's words, or `word_key` for the word card).
+## translation_shown: "" = the open question's words, or a word's `word_key`).
 const GameSettings := preload("res://scripts/core/game_settings.gd")
 const PracticeLog := preload("res://scripts/learning/practice_log.gd")
 const BonStyle := preload("res://scripts/ui/bon_style.gd")
@@ -19,7 +19,7 @@ var factor := 1.0
 ## The badge drawn inside the bubble (the Button's own text stays empty: a script _draw runs
 ## after the Button's, so the box would cover it).
 var badge := ""
-## The word whose translation this bubble shows ("" = the whole question; the word card sets it).
+## The word whose translation this bubble shows ("" = the whole question).
 var word_key := ""
 
 func _init() -> void:

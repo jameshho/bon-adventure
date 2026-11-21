@@ -350,7 +350,7 @@ func click() -> void:
     if not enabled or not interact_allowed or player.get("controls_enabled") == false:
         return
     # An open word card closes on any click or tap, wherever it lands (user, 14 Nov 2026: easy
-    # to exit on a phone); that click does nothing else. The card's star and translate button
+    # to exit on a phone); that click does nothing else. The card's star and the peek badge
     # take their own presses before this.
     if hud.is_card_visible():
         clear_card()

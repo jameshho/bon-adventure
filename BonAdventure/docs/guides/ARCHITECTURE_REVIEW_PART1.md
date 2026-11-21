@@ -648,8 +648,9 @@ Old saves start at zero. Read it with `games_for(language, key)` / `totals(langu
 **Rules.** *Translated* = the native meaning of a tested word was shown before `complete()`:
 the translate bubble on screen (`translate_button.gd` emits `translation_shown("")` for
 every word of the question, deferred and only while the bubble is visible, so a panel that
-keeps its bubble on marks the next question too), the word card of that word opening or its
-bubble (`translation_shown(key)`), or Native mode switched on mid-question. Otherwise the
+keeps its bubble on marks the next question too), the word card of that word opening
+(`translation_shown(key)`; since 21 Nov 2026 the card has no bubble of its own, holding the HUD's
+peek badge or L adds the native word to it), or Native mode switched on mid-question. Otherwise the
 first answer decides positive / negative; `complete()` without an answer records nothing.
 A question begun in Native mode records nothing. Games never call `mark_translated()`.
 

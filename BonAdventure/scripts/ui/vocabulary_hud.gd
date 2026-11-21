@@ -24,13 +24,9 @@ const BonStyle := preload("res://scripts/ui/bon_style.gd")
 const Features := preload("res://scripts/core/features.gd")
 ## Interface text in the native language (data/phrases.json; UI Stage 3, 4 Nov 2026).
 const UiText := preload("res://scripts/language/ui_text.gd")
-const TranslateButton := preload("res://scripts/ui/translate_button.gd")
 var settings_button: Button
 ## Labels whose text is one phrase, re-set by refresh_language(): label -> phrase id.
 var phrase_labels: Dictionary = {}
-## The card's translate bubble (Foreign only: reveals the native word).
-var card_translate: Button
-var card_revealed := false
 var room_english := ""
 var room_count := 0
 var move_sprinting := false
@@ -480,15 +476,11 @@ func _ready() -> void:
     ui_root.add_child(help_overlay)
     build_help_content()
 
-    card_translate = TranslateButton.new()
-    card_translate.name = "Card translate"
-    card_translate.mouse_filter = Control.MOUSE_FILTER_STOP
-    card_translate.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-    card_translate.visible = false
-    card_translate.pressed.connect(func() -> void:
-        card_revealed = not card_revealed
-        update_card())
-    ui_root.add_child(card_translate)
+    # The word card has no translate bubble of its own (user, 21 Nov 2026): holding the top-right
+    # peek badge (or L) shows the native word on it, like every other open card.
+    GameSettings.shared().peek_changed.connect(func() -> void:
+        if is_card_visible():
+            update_card())
 
     get_viewport().size_changed.connect(_layout_hud)
     refresh_language()
@@ -558,9 +550,6 @@ func _layout_hud() -> void:
     popup_panel.position = (viewport_size - popup_panel.size) * 0.5
     bookmark_star.custom_minimum_size = Vector2(72, 72) * f
     bookmark_star.size = bookmark_star.custom_minimum_size
-    card_translate.factor = 1.3 * f
-    card_translate.custom_minimum_size = Vector2(74, 52) * 1.3 * f
-    card_translate.size = card_translate.custom_minimum_size
     var corner: float = top_button_size()
     for button in [settings_button, peek_button]:
         size_corner_button(button, Rect2(button.position, Vector2(corner, corner)))
@@ -574,7 +563,6 @@ func _layout_hud() -> void:
     peek_button.position = Vector2(settings_button.position.x - corner - 10.0, 10.0)
     fps_label.position = Vector2(peek_button.position.x - 120.0, 16)
     bookmark_star.position = popup_panel.position + Vector2(popup_panel.size.x - bookmark_star.size.x - 12.0 * f, 12.0 * f)
-    card_translate.position = popup_panel.position + Vector2(14.0, 12.0) * f
     # The place and words found sit under the minimap (10 Nov 2026; were bottom right).
     minimap_side = preload("res://scripts/ui/town_minimap.gd").side_for(viewport_size) if Features.MINIMAP else 0.0
     room_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
@@ -662,14 +650,12 @@ func set_pointer_active(active: bool) -> void:
 ## (update_card() takes both from words.json when `word_key` is known).
 func show_card(english: String, spanish: String, category: String = "Everyday", word_key: String = "") -> void:
     current_character = ""
-    card_revealed = false
     current_english = english
     current_spanish = spanish
     current_category = category
     current_word_key = word_key if word_key != "" else card_word_key(english, spanish)
     update_card()
     popup_panel.visible = true
-    card_translate.visible = current_character == "" and GameSettings.shared().shows_translate_button()
     # The click popup of a word reveals its meaning: a question testing it counts as translated.
     if current_word_key != "":
         PracticeLog.shared().translation_shown.emit(current_word_key)
@@ -689,22 +675,21 @@ func show_name_card(character_name: String, species: String) -> void:
 func hide_card() -> void:
     popup_panel.visible = false
     bookmark_star.visible = false
-    card_translate.visible = false
     overlay.visible = false
     reticle_group.visible = true
 
 ## The card follows the Display Mode like the dialogue (user decision, 4 Nov 2026): Foreign
-## only shows the foreign word and its translate bubble reveals the native word; Native mode
-## shows the native word (Both was removed 7 Nov 2026). Words come from data/words.json.
+## only shows the foreign word, and holding the top-right peek badge (or L) adds the native word
+## under it (since 21 Nov 2026; it had its own translate bubble); Native mode shows the native
+## word (Both was removed 7 Nov 2026). Words come from data/words.json.
 func update_card() -> void:
     var lexicon = Lexicon.shared()
     var language_name := func(code: String) -> String: return UiText.t("language." + code)
     if current_word_key != "":
         current_english = UiText.word(current_word_key, lexicon.native)
         current_spanish = UiText.word(current_word_key, lexicon.foreign)
-    var view: Array = GameSettings.shared().view({"foreign": current_spanish, "native": current_english}, card_revealed)
+    var view: Array = GameSettings.shared().view({"foreign": current_spanish, "native": current_english}, GameSettings.shared().peeking)
     category_label.text = UiText.t("card.category_word", {"category": UiText.named("categories", current_category)}).to_upper()
-    card_translate.visible = false
     if current_character != "":
         category_label.text = UiText.t("card.category_character", {"species": UiText.named("species", current_category)}).to_upper()
         title_label.text = UiText.t("card.meet").to_upper()
@@ -719,9 +704,6 @@ func update_card() -> void:
         primary_label.text = view[0]
         PinyinText.show(reading_label, {"foreign": current_spanish})
         secondary_label.text = view[1]
-        card_translate.word_key = current_word_key if current_word_key != "" else "-"
-        card_translate.refresh(card_revealed, card_translate.factor)
-        card_translate.visible = popup_panel.visible and GameSettings.shared().shows_translate_button()
     # Only dictionary words (not character introductions) can be saved.
     bookmark_star.visible = current_character == "" and current_word_key != ""
     bookmark_star.tooltip_text = UiText.t("card.unsave") if bookmarks.has(current_word_key) else UiText.t("card.save")

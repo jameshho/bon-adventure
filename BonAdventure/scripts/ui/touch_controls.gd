@@ -82,7 +82,7 @@ extends Control
 ##   Reset (vehicle.reset_plane)  red, left of E above the ▼ slot, only while flying the plane
 ##                           (fixed_wing): calls active_vehicle.reset_to_start() when it has one.
 ## A finger on any real Button in the HUD (these two, the corner buttons, the word card's star
-## and translate bubble: _gui_button_at()) is the GUI's and not tracked here, whichever finger
+## and the peek badge: _gui_button_at()) is the GUI's and not tracked here, whichever finger
 ## it is: the Button takes the touch itself, so Run works with a second finger while the first
 ## holds the stick (16 Nov 2026, user: it did nothing, as this layer used to take that touch as a
 ## view drag; only the first finger has an emulated click). A mouse click never reaches this layer.
@@ -422,7 +422,7 @@ func _on_card(at: Vector2) -> bool:
 	return hud.is_card_visible() and hud.popup_panel.get_global_rect().has_point(at)
 
 ## The visible, enabled real Button (Run, Reset, the corner buttons, the word card's star and
-## translate bubble: anything in the HUD's ui_root) under a point, or null. A finger there is the
+## the peek badge: anything in the HUD's ui_root) under a point, or null. A finger there is the
 ## GUI's, the first or any later one (user, 16 Nov 2026: Run did nothing while the stick was
 ## held, because this layer took the second finger's touch as a view drag).
 func _gui_button_at(at: Vector2) -> BaseButton:

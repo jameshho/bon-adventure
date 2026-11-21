@@ -95,8 +95,9 @@ Three languages: **English**, **Spanish** and **Chinese (Hong Kong)**. A player 
 language and a language being learned, chosen for each profile and changeable in Settings.
 Chinese shows pinyin under the text.
 - **Native mode** (Settings checkbox) shows everything in the player's own language.
-- **Hold L** (or tap the language badge) to see signs, building names and posters in the
-  native language for a moment.
+- **Hold L** (or hold the language badge, top right) to see signs, building names, posters and
+  the open word card in the native language for a moment. The word card has no button of its
+  own for this (21 Nov).
 - The **translate bubble** in the dialogue box shows a line in the native language.
 
 [Languages and words](../guides/ARCHITECTURE_REVIEW_PART1.md#vocabulary-data-procedure)
