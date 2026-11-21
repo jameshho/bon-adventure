@@ -7,7 +7,7 @@ extends RefCounted
 ##   "on"         Pon la caja azul sobre la mesa.
 ##   "next_to"    Pon la caja roja al lado de la caja verde.
 ##   "right"      Pon la caja roja a la derecha de la caja verde.
-##   "top_shelf"  Pon la caja de cartón en el estante de arriba.
+##   "top_shelf"  Pon la caja amarilla en el estante de arriba.
 ## The reference for "next to" and "to the right of" is the box standing in the wall bay (the
 ## green one). Right is as seen by the player standing in front of it and facing it and the
 ## wall behind it (warehouse_goods.gd side_axis(); the bay is on the west wall, so right is
@@ -288,8 +288,8 @@ func backup(list: Array, index: int) -> Dictionary:
 					return task
 	return {}
 
-## The words a task practises (practice_log.gd): its thing's word (cardboard box), plus the
-## colour its sentence names. [] when no thing is named.
+## The words a task practises (practice_log.gd): its thing's word, if it has one (the boxes
+## have none since 21 Nov 2026), plus the colour its sentence names. [] when no thing is named.
 func words(task: Dictionary) -> Array:
 	var item := str(task.get("item", ""))
 	if item == "" or not goods.items.has(item):
@@ -342,11 +342,9 @@ func area_of(p: Vector3) -> String:
 
 # --- Language references ---------------------------------------------------------------------
 
-## A thing's noun phrase: "box_<colour>" is *la caja roja*, "box_plain" *la caja de cartón*;
-## anything else (the table) has its own phrase.
+## A thing's noun phrase: "box_<colour>" is *la caja roja*; anything else (the table) has its
+## own phrase.
 static func thing(id: String) -> Dictionary:
-	if id == "box_plain":
-		return {"phrase": "warehouse.thing_box_cardboard"}
 	if id.begins_with("box_"):
 		return {"phrase": "warehouse.thing_box_plain", "values": {"color": {"phrase": "warehouse.color_f_" + id.trim_prefix("box_")}}}
 	return {"phrase": "warehouse.thing_" + id}

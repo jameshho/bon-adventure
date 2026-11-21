@@ -2,8 +2,9 @@ extends SceneTree
 ## Warehouse Worker after the redesign (user, 14 Nov 2026; docs/guides/WAREHOUSE.md#minigame-14-nov-2026):
 ## five placing tasks of four kinds (on the table, next to / to the right of the green box in
 ## the wall bay, on the top shelf). Starts a game through Ramón (as "Sure!" does) and checks the
-## copy, the station, the card (Task n of 5), the goods (five boxes: green in the bay, red,
-## blue, yellow and a plain one), the shelf's 2 x 3 places, the cabinet (opens and shuts, no
+## copy, the station, the card (Task n of 5), the goods (four boxes: green in the bay, red,
+## blue and yellow; the plain one was removed 21 Nov 2026), the shelf's 2 x 3 places and its
+## put-down aim (21 Nov 2026: a tap anywhere at a level's front), the cabinet (opens and shuts, no
 ## task), the plan (rules, replay, 30 more plans), every kind written in three languages and
 ## solved as a player would, "right" seen from in front of the bay, a finished task counted
 ## once settled, a wrong box (try again / show me), both hint levels, the practice words, the
@@ -140,15 +141,15 @@ func run():
 	print("warehouse game: %d checks, %d failures" % [checks, failures])
 	quit(1 if failures > 0 else 0)
 
-## The goods: five boxes of one size; the green one in the wall bay; the shelf takes three on
+## The goods: four boxes of one size; the green one in the wall bay; the shelf takes three on
 ## each level; the cabinet opens and shuts on E.
 func goods_checks(game, session, copy: Node3D) -> void:
 	var goods = session.goods
 	check(goods != null and session.writer != null, "goods and task writer exist")
 	var ids: Array = goods.items.keys()
 	ids.sort()
-	check(ids == ["box_blue", "box_green", "box_plain", "box_red", "box_yellow"], "five boxes: " + str(ids))
-	check(goods.items.values().all(func(b): return b is RigidBody3D and b.axis_lock_angular_x and b.axis_lock_angular_z and str(b.get_meta("word_key", "")) == "cardboard box"), "rigid bodies turning only about the vertical, word cardboard box")
+	check(ids == ["box_blue", "box_green", "box_red", "box_yellow"], "four boxes, no plain one: " + str(ids))
+	check(goods.items.values().all(func(b): return b is RigidBody3D and b.axis_lock_angular_x and b.axis_lock_angular_z and not b.has_meta("word_key")), "rigid bodies turning only about the vertical, no word (no cardboard box)")
 	check(goods.bay_of("box_green") == 0 and goods.BAYS.size() == 1, "the green box stands in the one wall bay")
 	check(goods.side_axis("box_green", "right") == Vector2(0, 1), "right of the bay box (facing it and the west wall) is north, +z")
 	check(goods.items.keys().all(func(id): return goods.center(id).x > Warehouse.DIVIDER_X), "every box starts in the left section")
@@ -162,9 +163,24 @@ func goods_checks(game, session, copy: Node3D) -> void:
 	for level in Warehouse.RACK_LEVELS.size():
 		for i in 3:
 			var id: String = placed[i]
-			goods.place_at(id, Vector3(shelf.x + Warehouse.SHELF_SLOTS[i], Warehouse.FLOOR + Warehouse.RACK_LEVELS[level] + .02 + goods.half(id).y + .02, shelf.z))
+			goods.place_at(id, goods.shelf_spot(level, Warehouse.SHELF_SLOTS[i], goods.half(id).y) + Vector3(0, .02, 0))
 		await frames(40)
 		check(goods.on_level(level) == 3 and placed.all(func(id): return goods.rack_spot(id) == [0, level]), "shelf level %d holds 3 boxes (%d)" % [level, goods.on_level(level)])
+	# The put-down aim (21 Nov 2026): the top level is full now, so aiming at it finds no place.
+	game.player.global_position = copy.to_global(Vector3(shelf.x, Warehouse.FLOOR + .1, 10.6))
+	await frames(2)
+	var top_y: float = Warehouse.FLOOR + Warehouse.RACK_LEVELS[1]
+	check(shelf_aim(goods, copy, Vector3(shelf.x + 1.3, top_y + .3, 12.7)) == Vector3.INF, "aim: a full top level offers no place")
+	for id in placed:
+		goods.place_at(id, Vector3(goods.FLOOR_SPOTS[placed.find(id)].x, Warehouse.FLOOR + goods.half(id).y + .01, goods.FLOOR_SPOTS[placed.find(id)].y))
+	await frames(40)
+	var aimed := shelf_aim(goods, copy, Vector3(shelf.x + 1.3, top_y + .3, 12.7))
+	check(aimed.is_equal_approx(goods.shelf_spot(1, 1.3, goods.BOX_SIZE.y * .5)), "aim above the top deck: its nearest place %s" % [aimed])
+	aimed = shelf_aim(goods, copy, Vector3(shelf.x - 1.1, top_y - .06, 12.7))
+	check(aimed.is_equal_approx(goods.shelf_spot(1, -1.3, goods.BOX_SIZE.y * .5)), "aim at the top deck's front beam: the top level %s" % [aimed])
+	aimed = shelf_aim(goods, copy, Vector3(shelf.x + .2, Warehouse.FLOOR + Warehouse.RACK_LEVELS[0] + .4, 12.7))
+	check(aimed.is_equal_approx(goods.shelf_spot(0, 0.0, goods.BOX_SIZE.y * .5)), "aim between the decks: the bottom level %s" % [aimed])
+	check(shelf_aim(goods, copy, Vector3(shelf.x, Warehouse.FLOOR, 11.4)) == Vector3.INF, "aim at the floor in front: not the shelf")
 	for id in keep:
 		goods.place_at(id, keep[id] + Vector3(0, .02, 0))
 	await frames(40)
@@ -178,6 +194,15 @@ func goods_checks(game, session, copy: Node3D) -> void:
 	check(goods.cabinet_open == was, "and back")
 	game.player.global_position = copy.to_global(Warehouse.STATION + Vector3(0, .1, 0))
 	await frames(2)
+
+## Where a put-down aimed from a camera behind the player at a hall-local point would go
+## (warehouse_goods.gd _shelf_place(); Vector3.INF when not on the shelf).
+func shelf_aim(goods, copy: Node3D, at: Vector3) -> Vector3:
+	var cam: Camera3D = goods.interaction.camera
+	cam.global_position = copy.to_global(Vector3(at.x * .3 + Warehouse.SHELF_AT.x * .7, 2.5, 8.6))
+	cam.look_at(copy.to_global(at), Vector3.UP)
+	goods.interaction.pointer_position = cam.get_viewport().get_visible_rect().size * .5
+	return goods._shelf_place(goods.BOX_SIZE, goods._aim_hit())
 
 func plan_checks(session) -> void:
 	var writer = session.writer
@@ -212,10 +237,9 @@ func plan_checks(session) -> void:
 	check(broken.is_empty(), "30 more plans keep every rule: %s" % [broken.slice(0, 2)])
 	check(different.size() >= 20, "plans differ (%d different of 30)" % different.size())
 	check(entry_counts.size() == 4, "plans use all four kinds: %s" % [entry_counts])
-	# Practice words: the box and the colour its name says; the plain box only "cardboard box".
-	check(writer.words({"kind": "place", "item": "box_red"}) == ["cardboard box", "red"], "a red box task practises box and red")
-	check(writer.words({"kind": "place", "item": "box_plain"}) == ["cardboard box"], "the plain box practises the box only")
-	check(lexicon.text(Tasks.thing("box_plain"), "es") == "la caja de cartón" and lexicon.text(Tasks.thing("box_red"), "es") == "la caja roja", "box names: la caja de cartón, la caja roja")
+	# Practice words: the colour the box's name says (no cardboard box since 21 Nov 2026).
+	check(writer.words({"kind": "place", "item": "box_red"}) == ["red"], "a red box task practises red")
+	check(lexicon.text(Tasks.thing("box_red"), "es") == "la caja roja", "box name: la caja roja")
 
 ## Each kind written, rendered in three languages and solved by moving the box as a player
 ## would; "right" is also not met on the left side, where "next to" is.
@@ -279,7 +303,7 @@ func spot_for(goods, id: String, goal: Dictionary) -> Vector3:
 			for slot in Warehouse.SHELF_SLOTS:
 				var x: float = Warehouse.SHELF_AT.x + slot
 				if not goods.items.keys().any(func(other): return other != id and goods.rack_spot(other) == [0, top] and absf(goods.center(other).x - x) < .9):
-					return Vector3(x, Warehouse.FLOOR + Warehouse.RACK_LEVELS[top] + .02 + h.y + .02, Warehouse.SHELF_AT.z)
+					return goods.shelf_spot(top, slot, h.y) + Vector3(0, .02, 0)
 	return Vector3(5.0, ground, 1.7)
 
 ## The live session: a placed task counts once let go and settled; a wrong box asks "try again

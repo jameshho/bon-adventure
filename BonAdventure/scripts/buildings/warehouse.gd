@@ -2,7 +2,7 @@ extends RefCounted
 ## Warehouse own script (docs/guides/MODULAR_TOWN.md, "Changing a building"); saved in scenes/town/warehouse.scn.
 ## The hall and reception are built by scripts/world/warehouse.gd and the minigame scripts; this
 ## file only holds baked steps.
-const STEPS := ["drivable_truck", "coplanar_gaps", "coplanar_gaps_2", "entrance_ramp", "glass_windows", "glass_windows_2", "half_depth_redesign"]
+const STEPS := ["drivable_truck", "coplanar_gaps", "coplanar_gaps_2", "entrance_ramp", "glass_windows", "glass_windows_2", "half_depth_redesign", "two_level_shelf"]
 const W := preload("res://scripts/world/warehouse.gd")
 
 ## The delivery truck (box_truck.tscn) became a DriveableVehicle on 8 Nov 2026. Its scene root now
@@ -330,3 +330,24 @@ func _trolley(w, p: Node3D, at: Vector3) -> void:
 	var bin: Node3D = w.part(p, "Container", base + Vector3(0, .02, 0), Vector3(size.x, .04, size.z), tint, false, "container")
 	for spec in [[Vector3(0, size.y * .5, size.z * .5 - .015), Vector3(size.x, size.y, .03)], [Vector3(0, size.y * .5, -size.z * .5 + .015), Vector3(size.x, size.y, .03)], [Vector3(size.x * .5 - .015, size.y * .5, 0), Vector3(.03, size.y, size.z)], [Vector3(-size.x * .5 + .015, size.y * .5, 0), Vector3(.03, size.y, size.z)]]:
 		w.part(bin, "Container wall", spec[0], spec[1], tint)
+
+## The shelf rebuilt with two clear levels (21 Nov 2026, user: "the shelf should have clear two
+## levels"): W.shelf() now ends at the top deck, with a back panel and painted places. The old
+## shelf's parts are the Hall children inside its footprint.
+func two_level_shelf(town: Node3D, game) -> void:
+	var hall := town.get_node("Warehouse/Hall") as Node3D
+	for child in hall.get_children():
+		var at := (child as Node3D).position
+		if absf(at.x - W.SHELF_AT.x) < W.RACK_LENGTH * .5 + .2 and absf(at.z - W.SHELF_AT.z) < W.RACK_DEPTH * .5 + .2:
+			child.free()
+	var w = W.new()
+	w.game = game
+	w.town = town
+	w.materials()
+	var before := hall.get_child_count()
+	w.shelf(hall, W.SHELF_AT, W.RACK_LENGTH)
+	for i in range(before, hall.get_child_count()):
+		var node := hall.get_child(i)
+		node.owner = town
+		for inner in node.find_children("*", "", true, false):
+			inner.owner = town

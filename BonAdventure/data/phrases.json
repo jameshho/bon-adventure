@@ -296,7 +296,6 @@
       "area_bay": {"es": "junto a la pared, cerca del recuadro pintado", "en": "by the wall, near the painted square", "zh": "牆邊的方格附近"},
       "area_front": {"es": "cerca de la pared de delante", "en": "by the front wall", "zh": "前面的牆邊"},
       "area_right_section": {"es": "al otro lado de la pared baja", "en": "on the other side of the low wall", "zh": "矮牆另一邊"},
-      "thing_box_cardboard": {"es": "la caja de cartón", "en": "the cardboard box", "zh": "紙箱", "note": "The plain (uncoloured) box of the minigame."},
       "cart_help": {"es": "Carrito: W empujar · S jalar · E soltar", "en": "Trolley: W push · S pull · E let go", "zh": "推車：W 推 · S 拉 · E 放手", "note": "Toast while holding a trolley."},
       "carry_help": {"es": "Haz clic donde quieras dejarlo (o pulsa E)", "en": "Click where you want to put it down (or press E)", "zh": "點擊要放下的位置（或按 E）", "note": "Toast when picking something up."},
       "too_heavy": {"es": "¡Es muy pesada! Muévela con el carrito.", "en": "It's too heavy! Move it with the trolley.", "zh": "太重了！用推車搬。", "note": "Toast on E at the big box (trolley-only, 8 Nov 2026)."}

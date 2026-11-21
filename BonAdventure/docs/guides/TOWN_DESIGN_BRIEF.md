@@ -2149,6 +2149,10 @@ it does not approve other building resizes.
 - **Lot:** one parked car and one motorcycle as DriveableVehicles, clear of the bays and the
   drive (the lot belongs to the base world; not built by the warehouse change).
 
+**Change (user, 21 Nov 2026):** the plain box (*la caja de cartón*) leaves the minigame to avoid
+confusion; the shelf must read as two clear levels and be easy to place on from a phone
+([as built](WAREHOUSE.md#shelf-and-placing-21-nov-2026)).
+
 As built (14 Nov 2026, uncommitted): [warehouse guide](WAREHOUSE.md#redesign-14-nov-2026),
 [minigame](WAREHOUSE.md#minigame-14-nov-2026), checks in
 [the verification record](FINAL_VERIFICATION.md#warehouse-redesign--14-november-2026).

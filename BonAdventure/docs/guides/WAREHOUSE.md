@@ -21,6 +21,38 @@ building, the minigame design or their ownership changes.
 | — | Goods and equipment resize in the minigame copy | **Built 8 Nov 2026** ([what changed](#goods-resize-8-nov-2026)) |
 | — | Rack C out, task plan, hints, exits, drop rules, task card, *brown* / *medium* | **Built 8 Nov 2026** ([what changed](#task-plan-8-nov-2026)) |
 | — | Half-depth redesign (30 × 14.5), reception at the east end, two loading bays, one shelf / table / cabinet; five placing tasks | **Built 14 Nov 2026, user-approved** ([redesign](#redesign-14-nov-2026), [minigame](#minigame-14-nov-2026)); not committed |
+| — | Plain cardboard box out of the game; shelf with two clear levels; tap a level to place a box | **Built 21 Nov 2026** ([what changed](#shelf-and-placing-21-nov-2026)); not committed |
+
+## Shelf and placing (21 Nov 2026)
+
+User request, 21 Nov 2026: take *la caja de cartón* out of the game to avoid confusion; the top
+shelf was hard to hit on a phone; "the shelf should have clear two levels".
+
+- **Goods:** four boxes, green (the reference in the wall bay), red, blue and yellow. The plain
+  box and its phrase `warehouse.thing_box_cardboard` are gone, and the boxes no longer carry
+  the word *cardboard box*: a task practises only its colour (Stack & Pack now tests 4 words:
+  [words](../game/words.md#stack--pack)). The town's own cardboard boxes (the pallet outside)
+  keep the word. With three movable boxes the 2-of-5 share rule still plans 5 tasks.
+- **Shelf look** (`warehouse.gd` `shelf()`, town warehouse rebaked by step `two_level_shelf`):
+  decks at 0.3 and 1.1 (were 0.25 and 1.05), 0.05 thick; the uprights end just above the top
+  deck with yellow caps (the frame and top beam that rose to 2.0 and read as a third level are
+  gone); a dark blue-grey back panel between the decks; three light painted places on each deck
+  (`SHELF_SLOTS`); yellow beams under each deck.
+- **Placing** (`warehouse_goods.gd` `_shelf_place()`): while carrying, a click or tap anywhere
+  on the shelf's front counts, from the floor up to a box's height above the top deck and a
+  little past each end. At or above the top deck's front beam means the top level, lower the
+  bottom level; the box goes on the free painted place of that level nearest the aim. Before,
+  only the thin top of a deck counted, and a tap on a deck's edge or on a box there dropped the
+  box on the floor in front. Something well in front of the shelf (the table, a box on the
+  floor) still takes the aim; a full level falls back to the old rules. The put-down ghost is
+  light blue (white was lost on the light places).
+
+Checks: `verify_game.gd` (four boxes, no word, aiming at each level, a full level, the floor);
+`verify.gd` unchanged. Renders: [town shelf](../evidence/warehouse-shelf-20261121/town-shelf.png),
+[copy, both levels](../evidence/warehouse-shelf-20261121/copy-shelf-both-levels.png),
+[carrying, ghost on a top place](../evidence/warehouse-shelf-20261121/carry-ghost-top.png)
+(`docs/evidence/warehouse-shelf-20261121/capture.gd`). Record:
+[FINAL_VERIFICATION](FINAL_VERIFICATION.md#warehouse-shelf-and-placing--21-november-2026).
 
 ## Redesign (14 Nov 2026)
 
@@ -65,12 +97,12 @@ restricted to `POSITIONS`) and checked by the existing goal checks:
 | `on` | *Pon la caja azul sobre la mesa.* | on the table (at most 3 there) |
 | `next_to` | *Pon la caja roja al lado de la caja verde.* | on the floor within about 1.2 of the green box, any side |
 | `right` | *Pon la caja roja a la derecha de la caja verde.* | on its right **as seen standing in front of the wall bay facing the box and the west wall**, i.e. north (+z) (`warehouse_goods.gd` `side_axis()`) |
-| `top_shelf` | *Pon la caja de cartón en el estante de arriba.* | on the upper shelf level (at most 3) |
+| `top_shelf` | *Pon la caja amarilla en el estante de arriba.* | on the upper shelf level (at most 3) |
 
-Goods: five boxes of one size: **green** (the reference, standing in the one painted wall bay
-on the west wall, never moved by a task), **red**, **blue**, **yellow** and a **plain**
-cardboard one (*la caja de cartón*); the other four start in random places (floor, table, a
-shelf level). The cabinet still opens and shuts on E / click (no task). Ramón's flow is kept:
+Goods: four boxes of one size since 21 Nov 2026 ([the plain one was removed](#shelf-and-placing-21-nov-2026)):
+**green** (the reference, standing in the one painted wall bay on the west wall, never moved by
+a task), **red**, **blue** and **yellow**; the other three start in random places (floor,
+table, a shelf level). The cabinet still opens and shuts on E / click (no task). Ramón's flow is kept:
 the offer, the task card, "try again / tell me" when a different box is picked up (tell me
 marks the right box), two hint levels (card "?" and *¿Me das una pista?*), the leave question,
 E on the ways out (hall door, entrance, both roll-up doors) and *¿Me ayudas otra vez?* at the

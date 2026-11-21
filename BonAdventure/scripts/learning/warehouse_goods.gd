@@ -3,14 +3,17 @@ extends Node
 ## guide: docs/guides/WAREHOUSE.md#minigame-14-nov-2026). Built into the minigame copy when a game
 ## starts and freed with it; nothing here touches the town warehouse.
 ##
-##  - Goods (user, 14 Nov 2026: basic spatial words): five boxes of one size (word *cardboard
-##    box*), red, green, blue, yellow and a plain cardboard one. The green box stands in the
+##  - Goods (user, 14 Nov 2026: basic spatial words): four boxes of one size, red, green, blue
+##    and yellow (21 Nov 2026, user: the plain *caja de cartón* was taken out to avoid confusion,
+##    and the boxes no longer carry the word *cardboard box*). The green box stands in the
 ##    wall bay as the reference for "beside" and "to the right of"; the others start on the
 ##    floor, the table and the shelf of the left section. Each is a RigidBody3D whose rotation
 ##    is locked except about the vertical axis, so it slides and turns but never tumbles.
 ##    Walking into one nudges it. E (a click, a tap) on one within reach picks it up; it floats
 ##    in front of the player, a faint ghost shows where it will land, and E puts it down there
-##    (or in front of the player when the aim is not a surface).
+##    (or in front of the player when the aim is not a surface). Aiming (a click, a tap)
+##    anywhere at the shelf's front puts it on a free painted place of the level aimed at
+##    (21 Nov 2026, user: the top shelf was hard to hit on a phone; `_shelf_place()`).
 ##  - The wall bay (one, on the west wall of the left section): a painted floor rectangle. A
 ##    thing in the bay has a front (away from the wall) and left / right as seen by the player
 ##    standing in front of it, facing it and the wall (`side_axis()`).
@@ -54,10 +57,10 @@ const WORK_TABLE := Warehouse.WORK_TABLE
 const WORK_TABLE_SIZE := Warehouse.WORK_TABLE_SIZE
 const TABLE_HEIGHT := Warehouse.TABLE_HEIGHT
 
-## Goods (user, 14 Nov 2026). Item ids name their phrase: "box_<colour>" (warehouse_tasks.gd
-## thing()), "box_plain" is the plain cardboard box. One size for all, in hall units (length ×
+## Goods (user, 14 Nov 2026; the plain box was removed 21 Nov 2026). Item ids name their
+## phrase: "box_<colour>" (warehouse_tasks.gd thing()). One size for all, in hall units (length ×
 ## height × depth; the pig is 1.71 tall, 1.10 wide); it fits three to a shelf level.
-const BOX_COLORS := ["red", "blue", "yellow", "plain"]
+const BOX_COLORS := ["red", "blue", "yellow"]
 ## The reference box in the wall bay.
 const REFERENCE := "box_green"
 const BOX_SIZE := Vector3(.92, .66, .68)
@@ -158,8 +161,8 @@ func _arrange() -> void:
 	for tint in [REFERENCE.trim_prefix("box_")] + BOX_COLORS:
 		var id: String = "box_" + tint
 		boxes.append(id)
-		var paint: String = Warehouse.CARDBOARD if tint == "plain" else Warehouse.BOX_COLORS[tint]
-		_item(id, BOX_SIZE, paint, "cardboard box", weights.pop_back())
+		# No word of their own (21 Nov 2026): the task practises the colour.
+		_item(id, BOX_SIZE, Warehouse.BOX_COLORS[tint], "", weights.pop_back())
 	_place_in_bay(REFERENCE, 0)
 	var spots: Array = FLOOR_SPOTS.duplicate()
 	spots.shuffle()
@@ -175,12 +178,18 @@ func _arrange() -> void:
 			"shelf_0", "shelf_1":
 				var level := int(str(places[i]).get_slice("_", 1))
 				var slot: float = Warehouse.SHELF_SLOTS[rng.randi() % Warehouse.SHELF_SLOTS.size()]
-				place_at(id, Vector3(Warehouse.SHELF_AT.x + slot, Warehouse.FLOOR + Warehouse.RACK_LEVELS[level] + .02 + half(id).y, Warehouse.SHELF_AT.z))
+				place_at(id, shelf_spot(level, slot, half(id).y))
 			_:
 				var spot: Vector2 = spots.pop_back()
 				place_at(id, Vector3(spot.x, Warehouse.FLOOR + half(id).y + .01, spot.y))
 	if rng.randf() < .5:
 		set_cabinet(true)
+
+## The hall-local centre of a thing of half height `half_y` on a shelf level's place (hall x
+## offset from the shelf centre, one of Warehouse.SHELF_SLOTS), resting on the deck.
+static func shelf_spot(level: int, slot: float, half_y: float) -> Vector3:
+	var deck: float = Warehouse.FLOOR + Warehouse.RACK_LEVELS[level] + Warehouse.RACK_DECK_THICK * .5
+	return Vector3(Warehouse.SHELF_AT.x + slot, deck + half_y + .01, Warehouse.SHELF_AT.z)
 
 ## Every thing's place is known here (the task planner's view, warehouse_plan.gd, says "no"
 ## for a thing whose place after a planned task cannot be predicted).
@@ -232,7 +241,8 @@ func _visual_box(parent: Node3D, title: String, center_at: Vector3, size: Vector
 func _item(id: String, size: Vector3, tint: String, word: String, weight: int) -> void:
 	var body := RigidBody3D.new()
 	body.name = id
-	body.set_meta("word_key", word)
+	if word != "":
+		body.set_meta("word_key", word)
 	body.set_meta("warehouse_item", id)
 	body.set_meta("size", size)
 	body.set_meta("weight", weight)
@@ -498,24 +508,83 @@ func drop_carried() -> void:
 ## past the player AND the carried thing (the floating thing used to catch the click, so the
 ## put-down fell back to "in front of the player"). Bodies only, not word areas.
 func _aim_hit() -> Dictionary:
-	var camera: Camera3D = interaction.camera
-	if not is_instance_valid(camera):
+	var aim := _aim_ray()
+	if aim.is_empty():
 		return {}
-	var pointer: Vector2 = interaction.pointer_position
-	if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-		pointer = camera.get_viewport().get_visible_rect().size * .5
-	var origin := camera.project_ray_origin(pointer)
-	var ray := PhysicsRayQueryParameters3D.create(origin, origin + camera.project_ray_normal(pointer) * 60.0)
+	var camera: Camera3D = interaction.camera
+	var ray := PhysicsRayQueryParameters3D.create(aim[0], aim[0] + aim[1] * 60.0)
 	ray.exclude = [player.get_rid()] + ([carried.get_rid()] if is_instance_valid(carried) else [])
 	ray.collision_mask = 0xFFFFFFFF & ~Interaction.FIGURE_LAYER
 	return camera.get_world_3d().direct_space_state.intersect_ray(ray)
 
-## Where a put-down lands (hall-local centre): where the pointer is, within PLACE_REACH: on a
-## level surface there, or on the floor in front of an aimed side (a wall, a box's side);
-## else on the floor in front of the player.
+## The pointer's ray in world space: [origin, direction], or [] without a camera.
+func _aim_ray() -> Array:
+	var camera: Camera3D = interaction.camera
+	if not is_instance_valid(camera):
+		return []
+	var pointer: Vector2 = interaction.pointer_position
+	if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+		pointer = camera.get_viewport().get_visible_rect().size * .5
+	return [camera.project_ray_origin(pointer), camera.project_ray_normal(pointer)]
+
+## A put-down aimed at the shelf (21 Nov 2026, user: on a phone the top shelf was hard to hit,
+## as only the thin top of its deck counted and a tap on its front edge or on a box there put
+## the box on the floor). The pointer's ray is met with the shelf's front: anywhere from the
+## floor to a box's height above the top deck, and a little past each end, counts. At or above
+## the top deck's front beam is the top level, lower is the bottom level; the box goes on the
+## free painted place of that level nearest the aim. `hit` is the ray's physics hit: something
+## well in front of the shelf (the table, a box on the floor) keeps the aim. Returns the
+## hall-local centre, or Vector3.INF when the shelf is not aimed at or that level is full.
+func _shelf_place(size: Vector3, hit: Dictionary) -> Vector3:
+	var aim := _aim_ray()
+	if aim.is_empty():
+		return Vector3.INF
+	var from := to_hall(aim[0])
+	var dir := to_hall(aim[0] + aim[1]) - from
+	var front: float = Warehouse.SHELF_AT.z - Warehouse.RACK_DEPTH * .5
+	if dir.z < .01:
+		return Vector3.INF
+	var t := (front - from.z) / dir.z
+	if t <= 0.0:
+		return Vector3.INF
+	var at := from + dir * t
+	var top_deck: float = Warehouse.FLOOR + Warehouse.RACK_LEVELS[-1]
+	if absf(at.x - Warehouse.SHELF_AT.x) > Warehouse.RACK_LENGTH * .5 + .3 or at.y < Warehouse.FLOOR - .05 or at.y > top_deck + size.y + .4:
+		return Vector3.INF
+	if not hit.is_empty() and from.distance_to(to_hall(hit.position)) < from.distance_to(at) - .4:
+		return Vector3.INF
+	var feet := to_hall(player.global_position)
+	if Vector2(at.x - feet.x, at.z - feet.z).length() > PLACE_REACH:
+		return Vector3.INF
+	var level: int = Warehouse.RACK_LEVELS.size() - 1 if at.y > top_deck - Warehouse.RACK_DECK_THICK * .5 - .15 else 0
+	var best := Vector3.INF
+	var best_gap := INF
+	for slot in Warehouse.SHELF_SLOTS:
+		if not _place_free(level, slot):
+			continue
+		var gap := absf(Warehouse.SHELF_AT.x + slot - at.x)
+		if gap < best_gap:
+			best_gap = gap
+			best = shelf_spot(level, slot, size.y * .5)
+	return best
+
+## No other thing stands on this painted place of a shelf level.
+func _place_free(level: int, slot: float) -> bool:
+	for id in items:
+		if items[id] != carried and rack_spot(id) == [0, level] and absf(center(id).x - Warehouse.SHELF_AT.x - slot) < .7:
+			return false
+	return true
+
+## Where a put-down lands (hall-local centre): a free place on the shelf level aimed at
+## (_shelf_place()); else where the pointer is, within PLACE_REACH: on a level surface there,
+## or on the floor in front of an aimed side (a wall, a box's side); else on the floor in front
+## of the player.
 func _drop_point(body: RigidBody3D) -> Vector3:
 	var size: Vector3 = body.get_meta("size")
 	var hit: Dictionary = _aim_hit()
+	var on_shelf := _shelf_place(size, hit)
+	if on_shelf != Vector3.INF:
+		return on_shelf
 	var feet := to_hall(player.global_position)
 	if not hit.is_empty() and (hit.normal as Vector3).dot(copy_root.global_basis.y.normalized()) <= .6:
 		# A side: stand the thing on the floor just off it.
@@ -547,7 +616,8 @@ func _show_ghost(size: Vector3) -> void:
 		var ghost_material := StandardMaterial3D.new()
 		ghost_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 		ghost_material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-		ghost_material.albedo_color = Color(1, 1, 1, .22)
+		# Light blue (21 Nov 2026): plain white was lost on the shelf's light painted places.
+		ghost_material.albedo_color = Color(.45, .75, 1.0, .4)
 		_ghost.material_override = ghost_material
 		_ghost.mesh = BoxMesh.new()
 		hall.add_child(_ghost)

@@ -48,7 +48,7 @@ and wrong answers per word in the journal. **Levels** ([how games get harder](mi
 | [Pay Up!](minigames.md#pay-up) | Supermarket till | No | 4 Nov | 18 Nov (4 levels, stars) |
 | [Who's Who?](minigames.md#whos-who) | Hospital entrance | Yes | 4 Nov | 4 Nov |
 | [Flight Finder](minigames.md#flight-finder) | Airport information desk | Yes | 5 Nov | 8 Nov |
-| [Stack & Pack](minigames.md#stack--pack) | Warehouse | Yes | 5 Nov | 14 Nov (five spatial tasks) |
+| [Stack & Pack](minigames.md#stack--pack) | Warehouse | Yes | 5 Nov | 21 Nov (two-level shelf, tap to place; no cardboard box) |
 | [On the Menu](minigames.md#on-the-menu) | Alta Cocina | Yes | 6 Nov | 11 Nov (walk-around flow) |
 | [Spot the Suspect](minigames.md#spot-the-suspect) | Police station lobby | No | 6 Nov | 6 Nov |
 | [Feel the Clues](minigames.md#feel-the-clues) | Police evidence room | Yes | 6 Nov | 8 Nov (redesign) |

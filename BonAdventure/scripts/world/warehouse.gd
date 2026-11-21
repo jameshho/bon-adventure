@@ -372,9 +372,15 @@ func divider(p: Node3D) -> void:
 ## six) against the rear wall, one table, and the two-door supply cabinet. The right (east)
 ## section by the loading doors stays empty. Every surface goods rest on is solid.
 const RACK_UPRIGHT := "4b525a"
-const RACK_DECK := "c9ced3"
+const RACK_DECK := "b7bfc7"
+## The painted places on each deck and the back panel (21 Nov 2026).
+const RACK_PAD := "eef1f3"
+const RACK_BACK := "5d7186"
 ## Shelf deck heights (bottom, top) above the floor; the player pig is 1.71 hall units tall.
-const RACK_LEVELS := [.25, 1.05]
+## 21 Nov 2026 (user: "the shelf should have clear two levels"): the bottom deck stands clear
+## of the floor and the frame ends at the top deck, so the top deck is the top of the shelf.
+const RACK_LEVELS := [.3, 1.1]
+const RACK_DECK_THICK := .05
 const SHELF_AT := Vector3(9.5, 0, 13.2)
 const RACK_LENGTH := 4.0
 const RACK_DEPTH := 1.0
@@ -387,7 +393,6 @@ const WORK_TABLE := Vector3(8.5, 0, 6.0)
 const WORK_TABLE_SIZE := Vector2(3.0, 1.4)
 ## Goods colours (warehouse_goods.gd, the town's exterior container).
 const BOX_COLORS := {"red": "d9534a", "blue": "3f74b5", "green": "4f9a4c", "yellow": "f2c230", "brown": "7a4b2c", "orange": "ec8a2e", "purple": "7d4fa8", "pink": "e88fb4", "black": "33363b"}
-const CARDBOARD := "c79a5b"
 
 func hall_equipment(p: Node3D) -> void:
 	materials()
@@ -395,19 +400,28 @@ func hall_equipment(p: Node3D) -> void:
 	work_table(p, "Work table", WORK_TABLE, WORK_TABLE_SIZE)
 	supply_cabinet(p, CABINET_AT)
 
-## A pallet shelf: four uprights, yellow beams and two galvanised decks (each a "shelf").
-## Front faces -z, toward the hall.
+## A two-level shelf (21 Nov 2026, user: "clear two levels"): four uprights that end just
+## above the top deck (no frame above it, so the top deck reads as the top of the shelf), a
+## dark back panel between the decks, a yellow beam under each deck's front and back, and on
+## each deck three light painted places (SHELF_SLOTS), one per box. Front faces -z, toward
+## the hall. Each deck is a "shelf".
 func shelf(p: Node3D, at: Vector3, length: float) -> void:
 	var depth := RACK_DEPTH
-	var tall: float = RACK_LEVELS[-1] + .95
+	var tall: float = RACK_LEVELS[-1] + RACK_DECK_THICK * .5 + .06
 	for corner in [Vector2(-1, -1), Vector2(1, -1), Vector2(-1, 1), Vector2(1, 1)]:
 		part(p, "Rack upright", at + Vector3(corner.x * (length * .5 - .04), FLOOR + tall * .5, corner.y * (depth * .5 - .04)), Vector3(.08, tall, .08), RACK_UPRIGHT, true)
+		part(p, "Rack upright cap", at + Vector3(corner.x * (length * .5 - .04), FLOOR + tall + .015, corner.y * (depth * .5 - .04)), Vector3(.1, .03, .1), YELLOW)
+	# The back panel fills the space between the decks (just in front of the rear uprights).
+	var low: float = FLOOR + RACK_LEVELS[0] + RACK_DECK_THICK * .5
+	var high: float = FLOOR + RACK_LEVELS[-1] - RACK_DECK_THICK * .5
+	part(p, "Rack back panel", at + Vector3(0, (low + high) * .5, depth * .5 - .1), Vector3(length - .18, high - low - .004, .03), RACK_BACK, true)
 	for i in RACK_LEVELS.size():
 		var y: float = FLOOR + RACK_LEVELS[i]
-		part(p, "Shelf level " + str(i), at + Vector3(0, y, 0), Vector3(length - .1, .04, depth - .06), RACK_DECK, true, "shelf")
+		part(p, "Shelf level " + str(i), at + Vector3(0, y, 0), Vector3(length - .1, RACK_DECK_THICK, depth - .06), RACK_DECK, true, "shelf")
 		for side in [-1, 1]:
-			part(p, "Rack beam", at + Vector3(0, y - .06, side * (depth * .5 - .04)), Vector3(length - .1, .1, .05), YELLOW)
-	part(p, "Rack top beam", at + Vector3(0, FLOOR + tall - .04, -depth * .5 + .04), Vector3(length - .1, .08, .05), YELLOW)
+			part(p, "Rack beam", at + Vector3(0, y - RACK_DECK_THICK * .5 - .055, side * (depth * .5 - .04)), Vector3(length - .1, .11, .05), YELLOW)
+		for slot in SHELF_SLOTS:
+			part(p, "Shelf place", at + Vector3(slot, y + RACK_DECK_THICK * .5 + .003, -.02), Vector3(1.08, .004, depth - .26), RACK_PAD)
 
 ## A steel-legged table; the top is the word "table", legs leave the space under it open.
 func work_table(p: Node3D, title: String, at: Vector3, size: Vector2) -> void:

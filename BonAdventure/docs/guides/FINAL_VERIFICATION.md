@@ -32,6 +32,16 @@ Start at the [README](../../README.md); editing contracts are in the
 [architecture guide](ARCHITECTURE_REVIEW_PART1.md), and implementation details and
 six rendered views are in the [Part 2 handoff](../evidence/part2/HANDOFF.md).
 
+## Warehouse shelf and placing — 21 November 2026
+
+[What changed](WAREHOUSE.md#shelf-and-placing-21-nov-2026): plain box removed, two-level shelf
+(warehouse unit rebaked, step `two_level_shelf`), tap-a-level placing. Isolated `HOME`,
+`dev_focus.txt` = `all`, each run once: `python3 tools/run_checks.py --only warehouse,warehouse_game`:
+both PASS (105 and 108 checks, 0 failures; the game check gained the aim checks). Vocabulary
+report `--write`: 5368 checks, 0 failures. Renders in `docs/evidence/warehouse-shelf-20261121/`
+(windowed, `VT_FOCUS=warehouse`). Not run: the full suite; no real phone or web export test (the
+aim was checked with a camera ray, and in a window with the pointer on the top deck's beam).
+
 ## Supermarket real windows baked — 18 November 2026
 
 The supermarket's `real_windows` step ([windows guide](WINDOWS.md#real-windows--18-november-2026))

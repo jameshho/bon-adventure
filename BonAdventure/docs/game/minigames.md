@@ -129,21 +129,23 @@ clock times and countries. Tracked.
 
 *搬搬抬抬 · Carga y descarga* — **Ramón (lion boss), at the warehouse**
 
-<img src="../evidence/warehouse-20261114/minigame-mid-task.png" width="480" alt="Stack & Pack mid-task">
+<img src="../evidence/warehouse-shelf-20261121/carry-ghost-top.png" width="480" alt="Stack & Pack: carrying a box to the top shelf">
 
-*Screenshot 14 Nov.*
+*Screenshot 21 Nov.*
 
 Five placing tasks in the warehouse hall: "Put the blue box on the table", "next to the green
 box", "to the right of", "on the top shelf". Pick up the right coloured box and put it in the
 right place; hints and "tell me" help when stuck. Teaches positions, colours and placing verbs.
-Tracked. Simplified on 14 Nov (it used to have trolleys, weighing and measuring).
+Tracked. Simplified on 14 Nov (it used to have trolleys, weighing and measuring). 21 Nov: four
+coloured boxes (no cardboard box), a shelf with two clear levels, and a tap anywhere on a level
+puts the box there ([details](../guides/WAREHOUSE.md#shelf-and-placing-21-nov-2026)).
 [Warehouse guide](../guides/WAREHOUSE.md#minigame-14-nov-2026)
 
 | Learning card | |
 | --- | --- |
 | Purpose | Follow placing instructions: positions, colours, placing verbs. |
 | Words | [Generated list](words.md#stack--pack) |
-| Tracked in the journal | Yes: the box named in each task |
+| Tracked in the journal | Yes: the colour of the box named in each task |
 | Session | 5 tasks, a task counts when done |
 | Progression | Designed 18 Nov, not built: L1 *on* and the top shelf · L2 + next to · L3 + to the right of (today) · L4 hints only after a wrong try |
 

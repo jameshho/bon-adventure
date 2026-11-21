@@ -119,7 +119,7 @@ candy,Food & Drink,24,24,supermarket/supermarket:24,0,,0,,,,,
 capybara,Animals,1,1,base/zoo:1,0,,0,,,,,
 car,Vehicles,0,19,base/bakery:1; base/bank:1; base/clothing:1; base/electronics:1; base/fine_dining:1; base/furniture:1; base/home:1; base/hospital:1; base/library:1; base/school:1; base/sports:1; base/supermarket:1; base/town_road:4; base/warehouse:1; home/home:1; library/library:1,1,library/library:1,0,,library_rosa,,,not_clickable
 card reader,Shopping & Money,4,4,bank/bank:2; supermarket/supermarket:2,0,,0,,,,,
-cardboard box,Around the House,3,3,warehouse/warehouse:3,0,,0,,warehouse_ramon,,,
+cardboard box,Around the House,3,3,warehouse/warehouse:3,0,,0,,,,,
 carrot,Food & Drink,1,1,supermarket/supermarket:1,0,,0,,shop_supermarket,,,
 cash,Shopping & Money,2,2,bank/bank:2,0,,0,,,,,
 cash register,Shopping & Money,8,8,airport/airport:1; bakery/bakery:1; clothing/clothing:1; electronics/electronics:1; restaurants/burger:1; sports/sports:1; supermarket/supermarket:2,0,,0,,,,,

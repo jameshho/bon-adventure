@@ -160,11 +160,11 @@ func _game_words() -> void:
 		for entry in group.values():
 			if entry is Dictionary and entry.has("word"):
 				use(shows, "restaurant_twinkle", str(entry.word))
-	# Warehouse goods: the word of each _item(...) call (the items are built in code).
+	# Warehouse goods: the word of each _item(...) call (the items are built in code). Since
+	# 21 Nov 2026 the boxes pass "" (no word of their own), so none may be found.
 	var source := FileAccess.get_file_as_string(WAREHOUSE_GOODS)
 	var item := RegEx.create_from_string("\\n\\t+_item\\([^\\n]*?, \"([^\"]+)\", weights")
 	var found := item.search_all(source)
-	check(not found.is_empty(), "warehouse items found in " + WAREHOUSE_GOODS)
 	for match in found:
 		use(tests, "warehouse_ramon", match.get_string(1))
 	# The colours and sizes task sentences name (8 Nov 2026: brown and medium are words; the

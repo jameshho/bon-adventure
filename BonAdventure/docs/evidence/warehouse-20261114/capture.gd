@@ -63,7 +63,7 @@ func run():
 	var keep: Dictionary = session.tasks[session.current]
 	session.tasks[session.current] = {"kind": "none"}
 	var shelf := Warehouse.SHELF_AT
-	var spots := [["box_red", 1, -1.3], ["box_blue", 1, 0.0], ["box_yellow", 0, -1.3], ["box_plain", 0, 1.3]]
+	var spots := [["box_red", 1, -1.3], ["box_blue", 1, 0.0], ["box_yellow", 0, -1.3]]
 	for spec in spots:
 		var id: String = spec[0]
 		goods.place_at(id, Vector3(shelf.x + spec[2], Warehouse.FLOOR + Warehouse.RACK_LEVELS[spec[1]] + .02 + goods.half(id).y + .02, shelf.z))
