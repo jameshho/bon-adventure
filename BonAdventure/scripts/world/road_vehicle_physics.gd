@@ -1,6 +1,7 @@
 extends RefCounted
-## Tire grip, raycast spring/damper and steering adapted from Dechode's MIT
-## Godot-Simple-Vehicle. Copyright (c) 2022 Dechode; local adaptation 2026.
+## Raycast spring/damper suspension adapted from Dechode's MIT Godot-Simple-Vehicle.
+## Copyright (c) 2022 Dechode; local adaptation 2026. Steering is arcade path steering
+## (steer_curvature(), 21 Nov 2026), not the upstream tyre model.
 ## See docs/guides/ZOO_VEHICLE_IMPLEMENTATION.md for pinned source and retained license.
 ## Existing road models face -X; this is an assisted upright-body vehicle solver.
 const GRAVITY := 9.81
@@ -20,16 +21,14 @@ const STEP_HEIGHT := .3
 var velocity := Vector3.ZERO
 var yaw_velocity := 0.0
 var steering_angle := 0.0
+## Cars: the eased steering input (-1 left .. 1 right) behind steering_angle.
+var steer_input := 0.0
 var throttle := 0.0
 var brake_level := 0.0
 var gear := 1
 var mass := 1250.0
 var engine_acceleration := 3.8
 var wheelbase := 2.7
-## Model-unit x midway between the axles. Tire yaw arms are measured from here, so
-## bodies with unequal overhangs (Subi: front axle 1.24, rear 1.01) stay neutral.
-var axle_center := 0.0
-var yaw_inertia := 1200.0
 var body_bottom := 0.0
 var supported := false
 var wheels: Array[Dictionary] = []
@@ -59,6 +58,14 @@ const LEAN_YAW_MAX := 2.6    # rad/s
 const SLIP_DAMPING := 14.0   # 1/s; how quickly sideways slip dies away
 const CORNER_DRAG := 2.0     # m/s^2 at full grip: a deep lean scrubs a little speed
 const LEAN_COAST := .35      # m/s^2 rolling off the throttle (cars: vehicle.coast_deceleration)
+## Cars (21 Nov 2026): front-wheel lock at walking pace (rad, scaled by vehicle.steering_rate/1.55;
+## the car's tightest circle is about wheelbase/tan(lock), ~6 m), how fast the yaw rate follows
+## the steered path, how quickly sideways slip dies on asphalt (less on grass and sand), and the
+## speed at which the steering wheel turns half as fast.
+const STEER_LOCK := .6
+const YAW_RESPONSE := 10.0
+const CAR_GRIP := 9.0
+const STEER_SLOWDOWN_SPEED := 25.0
 ## Arcade wall contact (user, 14 Nov 2026): a blocked move slides along what blocks it instead of
 ## stopping dead. The into-wall speed is removed (a little bounces back), the speed along the wall
 ## keeps SLIDE_KEEP_* (scaled by how hard the hit was, so a long scrape does not bleed speed every
@@ -77,6 +84,7 @@ const YAW_NUDGE := 2.0             # 1/s per radian between the nose and the wal
 const YAW_NUDGE_MAX := .6          # rad/s
 const SLIDE_PASSES := 3
 const BIKE_ALIGN := .8             # share of the angle to the wall line a motorcycle turns at a hit
+const CAR_ALIGN := .5              # the same for cars (path steering has no tyre torque to swing them)
 ## Into-wall speed (m/s) of the latest hit, for checks and future sound.
 var last_impact := 0.0
 
@@ -98,8 +106,6 @@ func configure(vehicle) -> void:
         max_x=maxf(max_x,child.position.x)
     var scale_factor: Vector3=vehicle.global_basis.get_scale().abs()
     wheelbase=maxf(1,(max_x-min_x)*scale_factor.x)
-    axle_center=(min_x+max_x)*.5 if wheels.size()>0 else 0.0
-    yaw_inertia=mass*(wheelbase*wheelbase+2)/12
     lean_steer=wheels.size()<=2
     var bounds:=AABB()
     var first:=true
@@ -124,6 +130,7 @@ func reset() -> void:
     velocity=Vector3.ZERO
     yaw_velocity=0
     steering_angle=0
+    steer_input=0
     lean_angle=0
     throttle=0
     brake_level=0
@@ -191,32 +198,13 @@ func sample_ground(vehicle,dt: float) -> void:
     # A two-wheeler is still on the road with one tyre over a kerb edge.
     supported=contacts.size()>=(1 if lean_steer else 2)
 
-func tire_force(slip_angle: float,normal_load: float,mu: float) -> float:
-    # Upstream's normal-load-scaled curve, with an analytic peak instead of a resource.
-    var slip:=absf(slip_angle)
-    var curve:=minf(slip/.12,1.0)*lerpf(1.0,.85,clampf((slip-.25)/.75,0,1))
-    return -signf(slip_angle)*curve*normal_load*mu
-
-func integrate(vehicle,dt: float,gas: float,steering: float,brake: bool) -> void:
-    sample_ground(vehicle,dt)
-    var forward: Vector3=vehicle.travel_forward()
-    forward.y=0
-    forward=forward.normalized()
-    var speed:=velocity.dot(forward)
-    var planar_speed:=Vector2(velocity.x,velocity.z).length()
-    var braking: bool=brake or (gas*speed<-.4)
-    if absf(speed)<.4 and absf(gas)>.01 and not brake: gear=1 if gas>0 else -1
-    var target_throttle: float=absf(gas) if not braking else 0.0
-    # Pedals ease in (smooth launches and brake bite) and release twice as fast.
-    throttle=move_toward(throttle,target_throttle,dt*vehicle.throttle_response*(1.0 if target_throttle>throttle else 2.0))
-    brake_level=move_toward(brake_level,1.0 if braking else 0.0,dt*vehicle.brake_response*(1.0 if braking else 2.0))
-    # Steering lock shrinks with speed and is capped so the requested turn stays
-    # within max_lateral_acceleration (v^2 * steer / wheelbase): stable at high speed.
-    var max_steer: float=.55*(vehicle.steering_rate/1.55)/(1+pow(planar_speed/vehicle.steering_falloff_speed,2))
-    if planar_speed>1: max_steer=minf(max_steer,atan(vehicle.max_lateral_acceleration*wheelbase/(planar_speed*planar_speed)))
-    var steer_rate: float=vehicle.steering_speed/(1+planar_speed/20) if absf(steering)>.01 else vehicle.steering_return
-    steering_angle=move_toward(steering_angle,steering*max_steer,dt*steer_rate)
-    var curvature:=0.0
+## Path steering (rebuilt 21 Nov 2026; the scooter's lean model since 9 Nov). Every road vehicle
+## turns the way its front wheels point: the steering sets the path curvature, the body follows
+## its nose (sideways slip dies away, faster on asphalt than on grass) and the yaw rate is
+## speed * curvature. The curvature is capped so the cornering stays within the lateral grip at
+## speed, so a held key always turns the car (before: per-tyre forces understeered and the
+## speed-based yaw damping cancelled the turn; a taxi at 16 m/s turned on a ~90 m circle).
+func steer_curvature(vehicle,dt: float,steering: float,speed: float,planar_speed: float,mu: float) -> float:
     if lean_steer:
         # Lean toward the held side (positive leans left, as A gives steering -1); easing back
         # (released or reversed) is faster than leaning in.
@@ -226,63 +214,74 @@ func integrate(vehicle,dt: float,gas: float,steering: float,brake: bool) -> void
         if leaning_in: lean_rate=LEAN_SNAP if absf(lean_angle)<LEAN_START else LEAN_IN
         lean_angle=move_toward(lean_angle,target_lean,dt*lean_rate)
         var balanced:=LEAN_GRIP*GRAVITY*tan(absf(lean_angle))/maxf(speed*speed,.01)
-        curvature=signf(lean_angle)*minf(balanced,tan(LEAN_LOCK*absf(lean_angle)/LEAN_MAX)/wheelbase)
-        # The front wheel and bars show the geometric angle of that path.
-        steering_angle=-atan(curvature*wheelbase)
-    var speed_limit: float=vehicle.top_speed if gear>0 else vehicle.reverse_speed
-    var power: float=1.0 if gear>0 else vehicle.reverse_power
-    var engine_force: float=mass*engine_acceleration*power*throttle*gear*clampf(1-pow(absf(speed)/maxf(speed_limit,1),3),0,1)
+        return signf(lean_angle)*minf(balanced,tan(LEAN_LOCK*absf(lean_angle)/LEAN_MAX)/wheelbase)
+    # The steering wheel eases toward the key (a little slower at speed) and back to centre.
+    var toward: bool=absf(steering)>.01 and (steer_input==0 or signf(steering)==signf(steer_input))
+    var rate: float=vehicle.steering_speed/(1+planar_speed/STEER_SLOWDOWN_SPEED) if toward else vehicle.steering_return
+    steer_input=move_toward(steer_input,steering,dt*rate)
+    var lock: float=STEER_LOCK*vehicle.steering_rate/1.55
+    var reach:=tan(lock)/wheelbase
+    if planar_speed>.5: reach=minf(reach,vehicle.max_lateral_acceleration*mu/.95/(planar_speed*planar_speed))
+    return -steer_input*reach
+
+func integrate(vehicle,dt: float,gas: float,steering: float,brake: bool) -> void:
+    sample_ground(vehicle,dt)
+    var forward: Vector3=vehicle.travel_forward()
+    forward.y=0
+    forward=forward.normalized()
+    var speed:=velocity.dot(forward)
+    var planar_speed:=Vector2(velocity.x,velocity.z).length()
+    var mu:=.95
+    if not contacts.is_empty():
+        mu=0.0
+        for contact in contacts: mu+=contact.mu
+        mu/=contacts.size()
+    var braking: bool=brake or (gas*speed<-.4)
+    if absf(speed)<.4 and absf(gas)>.01 and not brake: gear=1 if gas>0 else -1
+    var target_throttle: float=absf(gas) if not braking else 0.0
+    # Pedals ease in (smooth launches and brake bite) and release twice as fast.
+    throttle=move_toward(throttle,target_throttle,dt*vehicle.throttle_response*(1.0 if target_throttle>throttle else 2.0))
+    brake_level=move_toward(brake_level,1.0 if braking else 0.0,dt*vehicle.brake_response*(1.0 if braking else 2.0))
+    var curvature:=steer_curvature(vehicle,dt,steering,speed,planar_speed,mu)
+    # The front wheels (and the scooter's bars) show the geometric angle of that path.
+    steering_angle=-atan(curvature*wheelbase)
+    # Suspension: each supported wheel pushes along its ground normal (slopes included).
     var total_force:=Vector3.DOWN*mass*GRAVITY
-    var torque:=0.0
-    grip_usage=0
-    for contact in contacts:
-        var p: Vector3=contact.wheel.rest.origin
-        var front: bool=p.x<axle_center
-        var wheel_forward: Vector3=forward.rotated(Vector3.UP,-steering_angle if front else 0.0)
-        var wheel_right: Vector3=wheel_forward.cross(Vector3.UP)
-        var arm: Vector3=vehicle.global_basis*Vector3(p.x-axle_center,0,p.z)
-        var point_velocity: Vector3=velocity+Vector3.UP.cross(arm)*yaw_velocity
-        var along:=point_velocity.dot(wheel_forward)
-        var side:=point_velocity.dot(wheel_right)
-        var slip:=atan2(side,maxf(absf(along),.7))
-        var lateral: float=0.0 if lean_steer else tire_force(slip,contact.load,contact.mu)
-        var longitudinal: float=engine_force/wheels.size()
-        if braking or (brake_level>.01 and absf(gas)<.01):
-            var decel: float=maxf(vehicle.brake_deceleration*brake_level,vehicle.coast_deceleration)
-            longitudinal=-signf(along)*minf(mass*decel/wheels.size(),absf(along)*mass/(dt*wheels.size()))
-        elif absf(gas)<.01:
-            var coast: float=LEAN_COAST if lean_steer else vehicle.coast_deceleration
-            longitudinal=-signf(along)*minf(mass*coast/wheels.size(),absf(along)*mass/(dt*wheels.size()))
-        else:
-            longitudinal-=signf(along)*mass*.15/wheels.size()
-        # Adapted upstream combined slip: acceleration/braking and cornering share grip.
-        var demand:=Vector2(lateral,longitudinal)
-        var available: float=contact.load*contact.mu
-        grip_usage=maxf(grip_usage,demand.length()/maxf(available,1))
-        demand=demand.limit_length(available)
-        var tire_force_world: Vector3=wheel_right*demand.x+wheel_forward*demand.y
-        total_force+=tire_force_world+contact.normal*contact.load
-        torque+=arm.cross(tire_force_world).y
+    for contact in contacts: total_force+=contact.normal*contact.load
     total_force-=Vector3(velocity.x,0,velocity.z)*planar_speed*.45
     velocity+=total_force/mass*dt
-    if lean_steer:
-        if supported:
-            # Follow the nose: sideways slip dies away; the yaw follows the leaned path.
-            var side_axis: Vector3=forward.cross(Vector3.UP)
-            velocity-=side_axis*velocity.dot(side_axis)*(1-exp(-SLIP_DAMPING*dt))
-            var along:=velocity.dot(forward)
-            yaw_velocity=lerpf(yaw_velocity,along*curvature,1-exp(-10*dt))
-            # Carry the speed round the bend with the nose (damping alone would bleed it away).
-            velocity=velocity.rotated(Vector3.UP,yaw_velocity*dt)
-            grip_usage=absf(along*yaw_velocity)/(GRAVITY*LEAN_GRIP*tan(LEAN_MAX))
-            velocity-=forward*signf(along)*minf(absf(along),CORNER_DRAG*grip_usage*grip_usage*dt)
-        else:
-            yaw_velocity*=exp(-dt*.15)
+    # Drive, brakes and coasting act along the nose through the wheels that touch the ground,
+    # limited by the surface grip.
+    var traction:=float(contacts.size())/maxf(wheels.size(),1)
+    var along:=velocity.dot(forward)
+    var accel:=0.0
+    if braking or (brake_level>.01 and absf(gas)<.01):
+        accel=-signf(along)*maxf(vehicle.brake_deceleration*brake_level,vehicle.coast_deceleration)
+    elif absf(gas)<.01:
+        accel=-signf(along)*(LEAN_COAST if lean_steer else vehicle.coast_deceleration)
     else:
-        yaw_velocity+=torque/yaw_inertia*dt
-        yaw_velocity*=exp(-dt*((.8+planar_speed*vehicle.high_speed_yaw_damping) if supported else .15))
-    var yaw_max:=LEAN_YAW_MAX if lean_steer else 1.8
-    yaw_velocity=clampf(yaw_velocity,-yaw_max,yaw_max)
+        var speed_limit: float=vehicle.top_speed if gear>0 else vehicle.reverse_speed
+        var power: float=1.0 if gear>0 else vehicle.reverse_power
+        accel=engine_acceleration*power*throttle*gear*clampf(1-pow(absf(speed)/maxf(speed_limit,1),3),0,1)-signf(along)*.15
+    accel=clampf(accel,-GRAVITY*mu,GRAVITY*mu)*traction
+    if accel*along<0: accel=-signf(along)*minf(absf(accel),absf(along)/dt) # slowing never reverses
+    velocity+=forward*accel*dt
+    grip_usage=0
+    if supported:
+        # Follow the nose: sideways slip dies away; the yaw follows the steered path.
+        var side_axis: Vector3=forward.cross(Vector3.UP)
+        var grip: float=(SLIP_DAMPING if lean_steer else CAR_GRIP)*mu/.95
+        velocity-=side_axis*velocity.dot(side_axis)*(1-exp(-grip*dt))
+        along=velocity.dot(forward)
+        yaw_velocity=lerpf(yaw_velocity,along*curvature,1-exp(-YAW_RESPONSE*dt))
+        # Carry the speed round the bend with the nose (damping alone would bleed it away).
+        velocity=velocity.rotated(Vector3.UP,yaw_velocity*dt)
+        var lateral_limit: float=GRAVITY*LEAN_GRIP*tan(LEAN_MAX) if lean_steer else vehicle.max_lateral_acceleration
+        grip_usage=absf(along*yaw_velocity)/lateral_limit
+        velocity-=forward*signf(along)*minf(absf(along),CORNER_DRAG*grip_usage*grip_usage*dt)
+    else:
+        yaw_velocity*=exp(-dt*.15)
+    yaw_velocity=clampf(yaw_velocity,-LEAN_YAW_MAX,LEAN_YAW_MAX)
     if supported and braking and planar_speed<.15:
         velocity.x=0
         velocity.z=0
@@ -349,9 +348,9 @@ func wall_contact(vehicle,normal: Vector3) -> void:
         # Line the nose (or the tail, when reversing) up with the wall.
         var heading:=tangent.normalized()*(1.0 if forward.dot(tangent)>=0 else -1.0)
         var turn:=forward.normalized().signed_angle_to(heading,Vector3.UP)
-        # A bike follows its nose (no tyre forces swing it round): it turns most of the way to the
-        # wall line at once, as far as it can without touching anything, and rides along it.
-        if lean_steer: rotate_clear(vehicle,turn*BIKE_ALIGN)
+        # Every road vehicle follows its nose (no tyre forces swing it round): it turns part of the
+        # way to the wall line at once, as far as it can without touching anything, and rides along it.
+        rotate_clear(vehicle,turn*(BIKE_ALIGN if lean_steer else CAR_ALIGN))
         yaw_velocity+=clampf(turn*YAW_NUDGE,-YAW_NUDGE_MAX,YAW_NUDGE_MAX)
 
 ## Turns the body by `angle` (rad) in small steps, stopping where the next step would touch something.

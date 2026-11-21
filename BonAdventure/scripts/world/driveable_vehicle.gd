@@ -59,15 +59,13 @@ var exit_point := Vector3.ZERO
 @export_range(0.0, 3.0) var coast_deceleration := .8
 @export_range(1.0, 15.0) var reverse_speed := 6.5
 @export_range(.2, 1.0) var reverse_power := .6
-## Steering wheel speed toward the input at rest (rad/s) and the return-to-centre speed.
-@export_range(.5, 8.0) var steering_speed := 3.8
-@export_range(.5, 10.0) var steering_return := 5.5
-## Speed (m/s) at which the steering lock is halved.
-@export_range(4.0, 40.0) var steering_falloff_speed := 13.0
-## Lateral acceleration the steering lock is limited to at speed (m/s^2).
-@export_range(2.0, 12.0) var max_lateral_acceleration := 8.0
-## Extra yaw damping per m/s, which keeps fast driving from fishtailing.
-@export_range(0.0, .2) var high_speed_yaw_damping := .05
+## Steering (21 Nov 2026, road_vehicle_physics.gd steer_curvature()): full steering input per
+## second toward a held key at rest (slower at speed), and per second back to centre.
+@export_range(.5, 12.0) var steering_speed := 4.5
+@export_range(.5, 12.0) var steering_return := 6.0
+## Cornering grip (m/s^2 on asphalt): at speed a held key turns as tight as this allows,
+## e.g. 11 gives a 23 m circle at 16 m/s (58 km/h) and a 57 m circle at 25 m/s.
+@export_range(2.0, 20.0) var max_lateral_acceleration := 11.0
 @export_group("Helicopter attitude")
 @export_range(0.0, 30.0) var maximum_pitch_degrees := 20.0
 @export_range(0.0, 35.0) var maximum_bank_degrees := 24.0

@@ -18,8 +18,10 @@ player collision restoration and camera remain in use.
 | Recover while falling/airborne | R, then release |
 
 Release the accelerator to coast with drag/engine braking. Use Space to stop
-before exiting. Steering eases toward the input and becomes gentler at speed;
-turning comes from front/rear tire forces and yaw inertia. Front wheels steer and
+before exiting. Steering eases toward the input; since 21 Nov 2026 a held key sets the
+path curvature and the car follows its nose
+([path steering](#path-steering-and-chase-camera--21-november-2026); before: tyre forces and
+yaw inertia, which barely turned at speed). The camera swings round behind a moving car. Front wheels steer and
 all wheels spin and respond to suspension compression. Reverse steering follows
 the vehicle's direction of travel. The HUD shows speed in km/h and D/R selection.
 Opening a blocking overlay suspends motion without discarding momentum.
@@ -76,7 +78,9 @@ animation like the airplane's):
   `brake_response` 6, `coast_deceleration` .8, `reverse_speed` 6.5,
   `reverse_power` .6, `steering_speed` 3.8, `steering_return` 5.5,
   `steering_falloff_speed` 13, `max_lateral_acceleration` 8 and
-  `high_speed_yaw_damping` .05. Throttle and brake pressure ease in at their
+  `high_speed_yaw_damping` .05 (*stale since 21 Nov 2026:* steering exports are now
+  `steering_speed` 4.5, `steering_return` 6 and `max_lateral_acceleration` 11; the falloff
+  and yaw damping were removed, see [path steering](#path-steering-and-chase-camera--21-november-2026)). Throttle and brake pressure ease in at their
   response rates and release twice as fast. The steering lock shrinks with
   `1/(1+(v/falloff)²)` and is capped so the lateral acceleration stays under the
   limit. The steering rate slows as speed rises, and yaw damping grows with speed.
@@ -115,7 +119,8 @@ sets the forward speed range via engine-force falloff; reverse is limited by
 `reverse_speed`. Existing `steering_rate` scales the steering-angle range. Dry paved
 surfaces use friction coefficient .95, lawn/meadow/terrain .65, beach .45. Spring
 normal loads scale available tire force; longitudinal and lateral demands share
-one friction budget. Throttle/steering ease in, brakes oppose current motion, and
+one friction budget (*stale since 21 Nov 2026:* the tyre model is gone; the surface grip now
+scales the cornering limit, the sideways-slip damping and the drive/brake limit). Throttle/steering ease in, brakes oppose current motion, and
 reverse engages only after slowing. Physics substeps are at most 1/120 second,
 consuming up to .25 seconds per call.
 
@@ -131,6 +136,41 @@ rollovers, full suspension pitch/roll, gearbox/clutch internals, independent whe
 spin/burnouts, engine audio, damage or vehicle-to-vehicle momentum exchange. The
 town has gentle park slopes and 0.17-high curbs (climbed by `step_up`); steep
 ramps and real off-road simulation are not validated.
+
+## Path steering and chase camera — 21 November 2026
+
+User request: driving did not feel good and the cars were not turning. Measured on the real
+parked cars before the change: holding D at speed gave a front-wheel angle of about 0.09 rad and
+the yaw rate fell while the key was held (taxi 0.83 → 0.17 rad/s, a ~90 m circle at 16 m/s);
+the tyre model understeered and the speed-scaled yaw damping cancelled the rest.
+
+- **Path steering** (`road_vehicle_physics.gd` `steer_curvature()` and `integrate()`): cars
+  now use the same "follow the path" model as the scooter. A/D ease a steering input in at
+  `steering_speed` 4.5/s (slower at speed: halved at `STEER_SLOWDOWN_SPEED` 25 m/s) and back
+  at `steering_return` 6/s. The input sets the path curvature: up to `tan(STEER_LOCK 0.6)` /
+  wheelbase at low speed, capped at speed by `max_lateral_acceleration` 11 m/s² (scaled by
+  the surface grip). The yaw rate follows speed × curvature (`YAW_RESPONSE` 10/s), sideways
+  slip dies away (`CAR_GRIP` 9/s on asphalt, less on grass and sand) and the speed is carried
+  round the bend. Reversing turns the other way, as before. Engine, brakes and coasting act
+  along the nose through the wheels on the ground; suspension, kerb step-up and wall slides are
+  unchanged, except that a car now also turns `CAR_ALIGN` 0.5 of the way to the wall line at a
+  hit (the motorcycle keeps 0.8). The scooter's lean steering is unchanged.
+- **Measured** (flat pad, D held, `docs/evidence/car-driving-20261121/diagnose.gd`): car
+  circles 3.9 m at 4 m/s, 5.8 m at 8 m/s, 23 m at 16 m/s, 44 m at 22 m/s, steady while held;
+  the turn starts within 0.08–0.2 s. Bus 7.8 m at low speed, 21 m at 15 m/s.
+- **Chase camera** (`player_controller.gd` `chase_view()`): in a car or on the scooter the
+  view eases round behind the nose (`CHASE_RATE` 2.2/s from 8 m/s, gentler when slower;
+  also while reversing). Dragging the view pauses it for `follow_pause_seconds`, as on foot.
+- **Removed:** `tire_force()`, per-tyre lateral forces and yaw torque, `yaw_inertia`,
+  `axle_center`, and the `steering_falloff_speed` and `high_speed_yaw_damping` exports
+  (no scene overrode them).
+- Check: `check_road_physics.gd` replaces its two tyre-force checks with a 15–30 m circle at
+  16 m/s, the grip limit, a tight circle at low speed and less cornering on grass. Results in
+  [Final verification](FINAL_VERIFICATION.md#car-path-steering-and-chase-camera--21-november-2026).
+  Views: [straight](../evidence/car-driving-20261121/turn-2-straight.png) ·
+  [turning](../evidence/car-driving-20261121/turn-3-turning.png) ·
+  [turned, camera behind](../evidence/car-driving-20261121/turn-4-turned.png).
+- Not done: no hands-on play-test with keyboard or touch; the tuning numbers are a first pass.
 
 ## Arcade collisions, exit while moving and resets — 14 November 2026
 

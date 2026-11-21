@@ -78,8 +78,21 @@ func run():
     advance(car,.1,-1)
     check(car.current_speed>0 and car.current_speed<speed_before,"S brakes before changing from drive to reverse")
     var physics=car.road_physics
-    check(absf(physics.tire_force(.3,1000,.6))<=600.01,"tire forces obey normal-load friction limit")
-    check(absf(physics.tire_force(.1,1000,.65))<absf(physics.tire_force(.1,1000,.95)),"lower-grip surfaces reduce cornering force")
+    # Path steering (21 Nov 2026): a held key keeps turning at speed, within the grip limit.
+    physics.steer_input=1
+    check(absf(physics.steer_curvature(car,0,1,16,16,.65))<absf(physics.steer_curvature(car,0,1,16,16,.95)),"lower-grip surfaces reduce cornering")
+    physics.steer_input=0
+    reset(car)
+    while car.current_speed<16: advance(car,1.0/60,1)
+    advance(car,2,.3,1)
+    var turn_radius: float=absf(car.current_speed/physics.yaw_velocity) if absf(physics.yaw_velocity)>.001 else INF
+    check(turn_radius<30 and turn_radius>15,"held D at 16 m/s keeps turning on a 15-30 m circle (%.1f m)"%turn_radius)
+    check(absf(car.current_speed*physics.yaw_velocity)<=car.max_lateral_acceleration+.3,"cornering stays within max_lateral_acceleration")
+    reset(car)
+    advance(car,1.5,.4)
+    advance(car,2,.4,1)
+    turn_radius=absf(car.current_speed/physics.yaw_velocity) if absf(physics.yaw_velocity)>.001 else INF
+    check(turn_radius<8,"full lock at low speed turns on a tight circle (%.1f m)"%turn_radius)
     var positions: Array[Vector3]=[]
     for hz in [30,60,120]:
         reset(car)

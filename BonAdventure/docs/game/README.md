@@ -69,6 +69,7 @@ and wrong answers per word in the journal. **Levels** ([how games get harder](mi
 | [Welcome tutorial](playing.md#welcome-tutorial) | Wake up, find the friends, buy fruit, the statue, the journal, a picnic | 18 Nov (tighter timings, no ✕ or clock, face-to-face cuts, cast behind you at the market, gapless basket) |
 | In-game screens | Settings, journal, F1 guide, HUD buttons, word card, clock, cart, game picker and minigame cards | 18 Nov (same art style in soft blue: soft blue cards and buttons with white rims, dark teal Fredoka text; [views](../evidence/ui-style-20261118/), [style guide](../guides/UI_STYLE.md)) |
 | [Town map and guide arrow](playing.md#finding-places) | M or the map button: a picture of the town with every building's name and a "you are here" dot; tap a place, then Go there for an arrow that points the way; Go there in the ▶ picker too | 18 Nov (new; the old live map stays off) |
+| [Vehicles](playing.md#getting-around) | Cars, trucks, buses, the scooter, the helicopter and the plane; E to get in | 21 Nov (cars keep turning while A/D is held, camera swings behind; [views](../evidence/car-driving-20261121/); no hands-on play-test yet) |
 | App name and icon | "Bon Adventure: Little Town of Words" ("Bon Adventure" under the icon); icon is the pig's head on mint (the user's picture) | 16 Nov (renamed, new icon, [evidence](../evidence/bon-adventure-logo-20261116/README.md)) |
 
 ### Buildings and areas

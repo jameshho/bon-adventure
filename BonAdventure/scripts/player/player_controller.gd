@@ -57,6 +57,8 @@ var follow_camera := true
 ## so the follow turns at FOLLOW_INDOOR of its speed inside.
 var follow_indoor: Callable
 const FOLLOW_INDOOR := 0.55
+## Chase camera turn rate (1/s at 8 m/s and above) behind a road vehicle's nose.
+const CHASE_RATE := 2.2
 var follow_pause := 0.0
 ## Left-button drag-look (desktop): armed by a press on the world, turns after this many pixels.
 const LEFT_LOOK_PIXELS := 8.0
@@ -349,6 +351,20 @@ func follow_view(direction: Vector3, delta: float) -> void:
     var rate := follow_turn_speed * lerpf(1.0, FOLLOW_INDOOR, clampf(float(follow_indoor.call()), 0.0, 1.0) if follow_indoor.is_valid() else 0.0)
     camera_yaw -= local.x * clampf(1.0 - local.z, 0.0, 1.0) * rate * delta
 
+## Road vehicles (21 Nov 2026): once moving, the view eases round behind the nose (also while
+## reversing), faster with speed, so a turn reads as a turn. A held drag and the pause after one
+## leave the view alone, as on foot.
+func chase_view(delta: float) -> void:
+    follow_pause = maxf(follow_pause - delta, 0.0)
+    if not follow_camera or follow_pause > 0.0 or orbiting or not controls_enabled or riding_vehicle.boarding_busy():
+        return
+    var forward := riding_vehicle.travel_forward()
+    var speed := absf(riding_vehicle.current_speed)
+    if speed < 1.0 or Vector2(forward.x, forward.z).length() < .1:
+        return
+    var heading := atan2(-forward.x, -forward.z)
+    camera_yaw = lerp_angle(camera_yaw, heading, 1.0 - exp(-CHASE_RATE * clampf(speed / 8.0, 0.0, 1.0) * delta))
+
 ## Moves the camera nearer (negative) or farther (the wheel, a pinch: touch_controls.gd).
 func zoom_by(step: float) -> void:
     camera_distance = clampf(camera_distance + step, min_camera_distance, 38.0 if is_instance_valid(riding_vehicle) and riding_vehicle.fixed_wing else max_camera_distance)
@@ -463,6 +479,8 @@ func _physics_process(delta: float) -> void:
         if riding_vehicle.fixed_wing:
             if not orbiting:
                 camera_yaw=lerp_angle(camera_yaw,riding_vehicle.global_basis.orthonormalized().get_euler().y,1-exp(-2*delta))
+        elif not riding_vehicle.helicopter:
+            chase_view(delta)
         camera_rig.global_position = camera_rig.global_position.lerp(riding_vehicle.global_position + Vector3.UP * camera_height, 1.0-exp(-5.0*delta))
         camera_rig.rotation.y = lerp_angle(camera_rig.rotation.y, camera_yaw, 1.0 - exp(-camera_response * delta))
         camera_rig.rotation.x = lerpf(camera_rig.rotation.x, camera_pitch, 1.0 - exp(-camera_response * delta))

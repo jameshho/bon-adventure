@@ -42,6 +42,20 @@ report `--write`: 5368 checks, 0 failures. Renders in `docs/evidence/warehouse-s
 (windowed, `VT_FOCUS=warehouse`). Not run: the full suite; no real phone or web export test (the
 aim was checked with a camera ray, and in a window with the pointer on the top deck's beam).
 
+## Car path steering and chase camera — 21 November 2026
+
+[Path steering and chase camera](ZOO_VEHICLE_IMPLEMENTATION.md#path-steering-and-chase-camera--21-november-2026).
+`dev_focus.txt` read `all`. One `run_checks.py --only` run when the code was complete:
+
+| Check | Result |
+| --- | --- |
+| runtime_resources, vehicle_arcade (104 checks), zoo_vehicles, vehicle_boarding, vehicle_doors, touch_controls | PASS |
+| road_physics (393 checks, with the new steering checks) | PASS |
+
+Views (looked at): `docs/evidence/car-driving-20261121/turn-*.png` (`capture.gd`: the
+north-east road-side car, camera starting side-on; it swings behind and the car turns).
+Not run: the full suite; no hands-on keyboard/touch play-test.
+
 ## Supermarket real windows baked — 18 November 2026
 
 The supermarket's `real_windows` step ([windows guide](WINDOWS.md#real-windows--18-november-2026))
@@ -50,20 +64,6 @@ baked after the layout commit: two SHOPFRONT windows, 15 old parts each replaced
 PASS; `real-windows-20261118/capture.gd` (VT_FOCUS=supermarket, so not the full town): both windows
 see-through, outdoors face, meadow frame, word window, nothing across the glass; views
 `before-supermarket*.png` / `after-supermarket*.png`. The full suite and a web phone test were not run.
-
-## Stale checks updated — 18 November 2026
-
-Checks whose expectations predated recent changes, each run once (`dev_focus.txt` = `all`,
-isolated `HOME`, working tree with the uncommitted supermarket layout work present):
-
-| Check | Before | Now |
-| --- | --- | --- |
-| `day_night`, `bath_fixtures` | NEW / TIMEOUT on 13 Nov (lamp and fixture counts) | PASS with no change: already fixed since |
-| `rooftops` | KNOWN | KNOWN, only the 2 barn roof labels |
-| `electrical_box` | TIMEOUT (minimap Nil, 14 Nov) | PASS, 55 checks, no change: the minimap is already optional in its `verify.gd` |
-| `compact_layout` | NEW: 44 vehicles expected | PASS: expects 29, since `tutorial_lot_clear` (`26cf153`) removed the 15 parked motorcycles |
-| `check_vehicle_collision.gd` (run alone) | "Vehicle remains selectable" failed for all 39 | 0 failures: since 12 Nov a vehicle is an Interactable, which never opens a word card, so the check now aims at it as a player does and requires its Interactable to be aimed and clickable |
-| `food_shopping_vocab` (new in the full suite) | hard-coded 500 words, pre-6 Nov store paths, SCRIPT ERROR and hang | rewritten for the modular town with a watchdog: PASS, 105 checks, all 13 words placed and picked |
 
 ## Grocery checkout and free shopping — 21 November 2026
 
@@ -89,6 +89,20 @@ Views (`VT_FOCUS=supermarket`, not the full town): `order-cart.png`, `till-check
 `data/town_map.json` and `data/nearby_units.json` lost their `cashier_supermarket` entry by hand
 (the same as a re-bake; the map picture was not re-rendered). Not run: the full suite, a web or
 phone test, walking into the door barrier by hand (checked through `DoorGuard.blocks()` only).
+
+## Stale checks updated — 18 November 2026
+
+Checks whose expectations predated recent changes, each run once (`dev_focus.txt` = `all`,
+isolated `HOME`, working tree with the uncommitted supermarket layout work present):
+
+| Check | Before | Now |
+| --- | --- | --- |
+| `day_night`, `bath_fixtures` | NEW / TIMEOUT on 13 Nov (lamp and fixture counts) | PASS with no change: already fixed since |
+| `rooftops` | KNOWN | KNOWN, only the 2 barn roof labels |
+| `electrical_box` | TIMEOUT (minimap Nil, 14 Nov) | PASS, 55 checks, no change: the minimap is already optional in its `verify.gd` |
+| `compact_layout` | NEW: 44 vehicles expected | PASS: expects 29, since `tutorial_lot_clear` (`26cf153`) removed the 15 parked motorcycles |
+| `check_vehicle_collision.gd` (run alone) | "Vehicle remains selectable" failed for all 39 | 0 failures: since 12 Nov a vehicle is an Interactable, which never opens a word card, so the check now aims at it as a player does and requires its Interactable to be aimed and clickable |
+| `food_shopping_vocab` (new in the full suite) | hard-coded 500 words, pre-6 Nov store paths, SCRIPT ERROR and hang | rewritten for the modular town with a watchdog: PASS, 105 checks, all 13 words placed and picked |
 
 Not run: the full suite.
 
