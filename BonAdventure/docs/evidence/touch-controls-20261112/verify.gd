@@ -109,7 +109,11 @@ func run():
 	# Floating stick: it starts under a finger anywhere in the left 40%, is pulled along one
 	# radius behind a finger that passes the ring's edge, and goes home on release. The headless
 	# window is smaller than the jump button (bottom right since 14 Nov 2026): park the buttons
-	# meanwhile.
+	# meanwhile. A phone-sized window (21 Nov 2026) leaves room for the ring to be pulled.
+	var window_size := root.size
+	root.size = Vector2i(844, 390)
+	await frames(1)
+	r = controls._stick_radius
 	park_buttons(true)
 	var view: Vector2 = controls.get_viewport_rect().size
 	var start := Vector2(view.x * 0.3, view.y * 0.6)
@@ -125,7 +129,12 @@ func run():
 	touch(1, far, false)
 	await frames(1)
 	check(not Input.is_action_pressed("move_right") and controls._stick_center == controls._stick_home, "released: the stick goes home")
+	await stick_on_screen(r, view)
 	park_buttons(false)
+	root.size = window_size
+	await frames(1)
+	r = controls._stick_radius
+	view = controls.get_viewport_rect().size
 	await frames(1)
 	var use_at: Vector2 = controls._use_rect.get_center()
 	touch(2, use_at, true)
@@ -446,3 +455,27 @@ func dialogue_and_help(game: Node, view: Vector2) -> void:
 	close.pressed.emit()
 	await frames(2)
 	check(not game.hud.is_help_open() and player.controls_enabled, "the ✕ closes the guide and frees the player")
+
+## 21 Nov 2026 (user: dragged left on a phone the joystick went off the edge): the pulled ring
+## stays on screen, a start near an edge is never moved in, and the knob stays inside the ring.
+func stick_on_screen(r: float, view: Vector2) -> void:
+	check(view.x > 4.0 * r, "phone-sized window for the edge checks (%s, r %.0f)" % [view, r])
+	var inset: float = r + controls.STICK_EDGE
+	var start := Vector2(view.x * 0.3, view.y * 0.5)
+	touch(1, start, true)
+	drag(1, start, Vector2(-200, start.y))
+	check(absf(controls._stick_center.x - inset) < 0.01 and Input.get_action_strength("move_left") > 0.95, "dragged off the left edge: the ring stops %d px inside it, still walking left (x %.1f)" % [controls.STICK_EDGE, controls._stick_center.x])
+	drag(1, Vector2(-200, start.y), Vector2(-200, view.y + 300))
+	check(controls._stick_center.y <= view.y - inset + 0.01 and controls._stick_center.x >= inset - 0.01, "dragged off the bottom corner: the ring stays on screen (%s)" % controls._stick_center)
+	await frames(1)
+	check(controls._drawn_knob.length() <= r + 0.01, "the knob is drawn inside the ring (%.1f of %.1f)" % [controls._drawn_knob.length(), r])
+	touch(1, Vector2(-200, view.y + 300), false)
+	await frames(1)
+	var edge := Vector2(r * 0.4, view.y * 0.5)
+	touch(2, edge, true)
+	check(controls._stick_center == edge, "a start near the edge stays under the finger")
+	drag(2, edge, Vector2(-300, edge.y))
+	check(controls._stick_center.x == edge.x and Input.get_action_strength("move_left") > 0.95, "dragged left from there: the ring goes no further out (x %.1f)" % controls._stick_center.x)
+	touch(2, Vector2(-300, edge.y), false)
+	await frames(1)
+	check(not Input.is_action_pressed("move_left") and controls._stick_center == controls._stick_home, "released at the edge: the stick goes home")

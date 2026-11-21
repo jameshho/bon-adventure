@@ -19,7 +19,11 @@ extends Control
 ##                           better), a finger that goes past the ring's edge pulls the
 ##                           stick along behind it, so turning round never takes more than
 ##                           one ring of travel; inside the ring the stick stays put. The
-##                           knob is drawn under the finger. On release the stick glides
+##                           pull stops at the screen edges (21 Nov 2026, user: dragged left
+##                           it went off the phone's edge): the ring is never pulled past
+##                           STICK_EDGE from an edge, or past where the finger first landed if
+##                           that was nearer (the start is never moved, so a touch never walks).
+##                           The knob is drawn under the finger, but never past the ring. On release the stick glides
 ##                           back to its resting place bottom left (dimmed). A finger that
 ##                           lifts without having moved (_tap_slop()) clicks there, like a
 ##                           tap on the world.
@@ -105,6 +109,8 @@ const STICK_SIZE := 0.6
 const DEAD_ZONE := 0.06
 const FULL_SPEED := 0.7
 const STICK_RETURN := 10.0
+## How close to a screen edge the pulled ring may come (pixels).
+const STICK_EDGE := 6.0
 ## Finger travel below which a touch is a tap, not a drag: at least this many pixels, and
 ## TAP_SHARE of the stick's radius (about 10 points on a phone; 14 raw pixels were under 5).
 const TAP_PIXELS := 14.0
@@ -132,6 +138,8 @@ var _stick_vector := Vector2.ZERO
 ## Where the stick finger is and how far it has travelled (under TAP_PIXELS: a tap).
 var _stick_at := Vector2.ZERO
 var _stick_travel := 0.0
+## Where the stick finger landed (the pulled ring stays on screen, or no further out than this).
+var _stick_start := Vector2.ZERO
 var _use_rect := Rect2()
 var _jump_rect := Rect2()
 var _hyper_rect := Rect2()
@@ -200,7 +208,7 @@ func _process(delta: float) -> void:
 		# it glides home.
 		var follow := 1.0 if _stick_finger >= 0 else 1.0 - exp(-STICK_RETURN * delta)
 		_drawn_center = _drawn_center.lerp(_stick_center, follow)
-		_drawn_knob = _drawn_knob.lerp(_stick_vector * _stick_radius, follow)
+		_drawn_knob = _drawn_knob.lerp(_stick_vector.limit_length(1.0) * _stick_radius, follow)
 		if _stick_finger < 0 and _drawn_center.distance_to(_stick_center) < 0.5 and _drawn_knob.length() < 0.5:
 			_drawn_center = _stick_center
 			_drawn_knob = Vector2.ZERO
@@ -463,6 +471,7 @@ func _touch(event: InputEventScreenTouch) -> void:
 			_stick_center = event.position
 			_drawn_center = _stick_center
 			_stick_at = event.position
+			_stick_start = event.position
 			_stick_travel = 0.0
 			_move_stick(_stick_center)
 		elif _button_at(event.position) != "":
@@ -522,7 +531,7 @@ func _drag(event: InputEventScreenDrag) -> void:
 		# Past the ring's edge the stick is pulled along, one radius behind the finger.
 		var offset: Vector2 = event.position - _stick_center
 		if offset.length() > _stick_radius:
-			_stick_center = event.position - offset.normalized() * _stick_radius
+			_stick_center = _on_screen(event.position - offset.normalized() * _stick_radius)
 		_move_stick(event.position)
 	elif _world.has(index):
 		# Not event.relative: see the header (wrong on the web with two fingers down).
@@ -572,6 +581,15 @@ func _pinch_distance() -> float:
 
 ## The joystick: the four move actions with strength, from where the finger is relative to
 ## where it started: 0 inside the dead zone, rising evenly to 1 at FULL_SPEED of the radius.
+## A pulled stick centre kept on screen: its ring STICK_EDGE inside every edge, or no further
+## out than where the finger landed (a start near the edge is never moved in).
+func _on_screen(center: Vector2) -> Vector2:
+	var view := get_viewport_rect().size
+	var inset := _stick_radius + STICK_EDGE
+	var low := Vector2(minf(inset, _stick_start.x), minf(inset, _stick_start.y))
+	var high := Vector2(maxf(view.x - inset, _stick_start.x), maxf(view.y - inset, _stick_start.y))
+	return center.clamp(low, high.max(low))
+
 func _move_stick(at: Vector2) -> void:
 	_stick_vector = (at - _stick_center) / _stick_radius
 	var reach := clampf((_stick_vector.length() - DEAD_ZONE) / (FULL_SPEED - DEAD_ZONE), 0.0, 1.0)
