@@ -181,3 +181,5 @@ static func reset_singletons() -> void:
 	preload("res://scripts/learning/activity_board.gd")._shared = null
 	preload("res://scripts/learning/game_clock.gd")._shared = null
 	preload("res://scripts/learning/game_progress.gd")._shared = null
+	preload("res://scripts/learning/achievements.gd")._shared = null
+	preload("res://scripts/learning/missions.gd")._shared = null

@@ -37,6 +37,10 @@ const PANELS := [
 	["elevator_floor_picker", "close_requested", true],
 	# The minigame test launcher (debug builds; docs/guides/MINIGAMES.md#test-launcher).
 	["game_launcher", "close_requested", true],
+	# The Passport (scripts/ui/passport_panel.gd): Esc closes it.
+	["passport", "close_requested", true],
+	# The results screen after a minigame (docs/guides/MINIGAMES.md#results-screen): Esc continues.
+	["results_screen", "close_requested", true],
 ]
 static func build(main) -> void:
 	var hud = main.hud
@@ -164,10 +168,22 @@ static func build(main) -> void:
 	main.game_launcher = preload("res://scripts/ui/game_launcher.gd").new()
 	main.hud.ui_root.add_child(main.game_launcher)
 	main.game_launcher.setup(main)
+	# The Passport (missions, town stamps, the achievement log; 21 Nov 2026, docs/guides/ACHIEVEMENTS.md).
+	main.passport = preload("res://scripts/ui/passport_panel.gd").new()
+	main.hud.ui_root.add_child(main.passport)
+	main.passport.setup(main)
 	# The stars card at the end of a session of a game with levels (progression, 18 Nov 2026).
 	main.star_card = preload("res://scripts/ui/star_card.gd").new()
 	main.hud.ui_root.add_child(main.star_card)
 	main.star_card.setup()
+	# The results screen after a minigame (21 Nov 2026): sessions call show_results().
+	main.results_screen = preload("res://scripts/ui/results_screen.gd").new()
+	main.hud.ui_root.add_child(main.results_screen)
+	main.results_screen.setup()
+	main.results_screen.visibility_changed.connect(main.sync_player_controls)
+	main.results_flow = preload("res://scripts/learning/results_flow.gd").new()
+	main.add_child(main.results_flow)
+	main.results_flow.setup(main)
 	# The dialogue box reaches over the bottom-right cluster: buttons under it hide (10 Nov 2026).
 	main.hud.cluster_cover = func() -> Rect2:
 		var card: Control = main.shop_panel.dialogue_card

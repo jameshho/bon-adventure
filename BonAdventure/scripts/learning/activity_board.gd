@@ -15,7 +15,8 @@ extends RefCounted
 ## Main calls watch() once a frame; it finds the activity in progress (as blocker("") does) and
 ## emits started(id) when one begins and ended(id, summary) when it stops, however it stopped
 ## (target reached, walked away, language change, quit). summary = {"rounds": rounds right the
-## first time, "target": rounds needed (0 = none), "completed": the target was reached}.
+## first time, "target": rounds needed (0 = none), "completed": every round played (rounds(),
+## at least 1) or complete() called; never for a pastime with no target}.
 ## Progression (game_progress.gd, 18 Nov 2026) adds to the summary: "misses" (add_miss() calls:
 ## a round answered wrong at least once, a retry), "needed" (the rounds the session needed when
 ## it began, at least 1) and "custom" (the picker's rounds differed from the data's).
@@ -128,7 +129,7 @@ func watch() -> void:
 	running_id = now
 	if previous != "":
 		var began: Dictionary = _began.get(previous, {"needed": rounds(previous), "custom": false})
-		ended.emit(previous, {"rounds": done(previous), "target": target(previous), "completed": target(previous) > 0 and done(previous) >= target(previous),
+		ended.emit(previous, {"rounds": done(previous), "target": target(previous), "completed": _completed(previous),
 				"misses": misses(previous), "needed": int(began.needed), "custom": bool(began.custom)})
 	if now != "":
 		started.emit(now)
@@ -139,6 +140,19 @@ func begin(id: String) -> void:
 	_misses[id] = 0
 	var data_rounds := maxi(1, int(activities.get(id, {}).get("progress", 0)))
 	_began[id] = {"needed": rounds(id), "custom": rounds(id) != data_rounds}
+
+## The session reached its end: all its rounds (a game with no target plays one, e.g. Grocery
+## Run; since 21 Nov 2026, it was target > 0 only, so such games never completed), or the game
+## said so with complete(). Pastimes with no target stay never completed, as before.
+func _completed(id: String) -> bool:
+	if target(id) <= 0 and kind(id) == "pastime":
+		return false
+	return done(id) >= rounds(id)
+
+## A game whose end is not a count of rounds (Library Helper: a cart of 3-6 books; Desk Dash:
+## its final question) marks its session finished (21 Nov 2026).
+func complete(id: String) -> void:
+	_done[id] = maxi(done(id), rounds(id))
 
 func done(id: String) -> int:
 	return int(_done.get(id, 0))

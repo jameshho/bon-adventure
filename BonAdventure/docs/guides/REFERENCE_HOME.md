@@ -145,6 +145,15 @@ Awoo.
 
 ## Plush outfits — 31 October 2026 (user request)
 
+**Sleeve fit, 21 Nov 2026 (user: the pig avatar's arm showed through the waiter's black
+sleeves).** `plush_costume.gd` `_sleeve()` measured each ring round the species' shoulder→hand
+line, but the pig's paw sits about 0.1 m above BonBon's line, and the oval missed a flat paw's
+corners. Each ring is now centred on the arm's own cross-section and grown until every point of
+it is inside. This changes every long-sleeved outfit on every plush (cached garments rebuild by
+themselves: the cache key hashes the script). Before/after renders of the pig avatar:
+[outfit-sleeves-20261121](../evidence/outfit-sleeves-20261121/) (`render.gd`; the "after" waiter
+back view framed only the head, use the chef and police ones). Other species were not re-rendered.
+
 Ten outfits that any of the nine plushes can wear, with no plush resized or re-sculpted. The driver, teacher, gardener, pilot and businessman were added the same day from the user's reference sheet, simplified to the plush style; the chef was added after them:
 
 | Outfit | Pieces |

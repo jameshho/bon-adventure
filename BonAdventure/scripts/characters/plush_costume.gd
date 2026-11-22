@@ -412,16 +412,36 @@ func _sleeve(side: float, share: float, gap: float, material: Material, stripes:
 	var points := _vertices(arm)
 	var rings := 8
 	var sizes: Array[Vector2] = []
+	# Each ring is centred on the arm's own cross-section, not on the shoulder-hand line: a
+	# plush whose arm sits off that line (the pig avatar's, higher up) showed through the
+	# sleeve (user, 21 Nov 2026).
+	var offsets: Array[Vector2] = []
 	var last := Vector2(0.12, 0.12)
+	var last_offset := Vector2.ZERO
 	for j in range(rings + 1):
 		var t := lerpf(-0.15, share, float(j) / float(rings)) * length
-		var size := Vector2.ZERO
+		var low := Vector2(INF, INF)
+		var high := Vector2(-INF, -INF)
+		var band: Array[Vector2] = []
 		for p in points:
 			var d := p - shoulder
 			if absf(d.dot(axis) - t) < 0.04:
-				size = Vector2(maxf(size.x, absf(d.dot(across))), maxf(size.y, absf(d.dot(depth))))
-		last = size if size != Vector2.ZERO else last
+				var at := Vector2(d.dot(across), d.dot(depth))
+				band.append(at)
+				low = low.min(at)
+				high = high.max(at)
+		if not band.is_empty():
+			last_offset = (high + low) * 0.5
+			var half := ((high - low) * 0.5).max(Vector2(0.01, 0.01))
+			# An oval through the box's sides misses a squarish paw's corners: grow it until
+			# every point of the band is inside.
+			var reach := 1.0
+			for at in band:
+				var q := (at - last_offset) / half
+				reach = maxf(reach, q.length())
+			last = half * reach
 		sizes.append(last + Vector2(gap, gap) * 0.8)
+		offsets.append(last_offset)
 	var sides := 24
 	var verts := PackedVector3Array()
 	var tris := PackedInt32Array()
@@ -429,7 +449,8 @@ func _sleeve(side: float, share: float, gap: float, material: Material, stripes:
 	for j in range(rings + 1):
 		# Neighbour averaging keeps the cloth from following every bump of the paw.
 		var size := (sizes[maxi(j - 1, 0)] + sizes[j] * 2.0 + sizes[mini(j + 1, rings)]) * 0.25
-		var center := shoulder + axis * lerpf(-0.15, share, float(j) / float(rings)) * length
+		var offset := (offsets[maxi(j - 1, 0)] + offsets[j] * 2.0 + offsets[mini(j + 1, rings)]) * 0.25
+		var center := shoulder + axis * lerpf(-0.15, share, float(j) / float(rings)) * length + across * offset.x + depth * offset.y
 		for i in range(sides):
 			var theta := TAU * float(i) / float(sides)
 			verts.append(center + across * cos(theta) * size.x + depth * sin(theta) * size.y)

@@ -36,6 +36,8 @@ static func toggle(main, node: Node3D) -> void:
 	var state: Dictionary = main.doors[node]
 	state["open"] = not bool(state["open"])
 	main.doors[node] = state
+	if state["open"]:
+		preload("res://scripts/learning/achievements.gd").shared().note("open_door")
 	# A double door's leaves move together (scripts/world/double_door.gd).
 	for partner in node.get_meta("door_partners", []):
 		if is_instance_valid(partner) and main.doors.has(partner):
@@ -63,6 +65,10 @@ static func animate(main, delta: float) -> void:
 		var state: Dictionary = doors[obj]
 		var alpha: float = minf(1.0, 8.0 * delta)
 		if str(state["type"]) == "hinge":
+			# A safe (21 Nov 2026, bank.gd vault_safe): "spin" names a child wheel that turns
+			# "spin_angle" about its own Z when opening; the door waits until it has nearly done.
+			if str(state.get("spin", "")) != "" and _spin(obj, state, delta):
+				continue
 			var target: float = float(state.get("angle", -1.75)) if bool(state["open"]) else 0.0
 			if absf(angle_difference(obj.rotation.y, target)) < 0.001:
 				if obj.rotation.y != target: obj.rotation.y = target
@@ -98,3 +104,14 @@ static func animate(main, delta: float) -> void:
 						break
 				if state["open"]: continue
 			obj.position = next_position
+
+## Turns a hinged door's "spin" wheel toward its state; true while an opening door must wait.
+static func _spin(obj: Node3D, state: Dictionary, delta: float) -> bool:
+	var wheel := obj.get_node_or_null(NodePath(str(state.spin))) as Node3D
+	if wheel == null:
+		return false
+	var opening := bool(state["open"])
+	var turn: float = float(state.get("spin_angle", TAU)) if opening else 0.0
+	if absf(wheel.rotation.z - turn) > 0.001:
+		wheel.rotation.z = lerpf(wheel.rotation.z, turn, minf(1.0, 7.0 * delta))
+	return opening and absf(wheel.rotation.z - turn) > 0.6

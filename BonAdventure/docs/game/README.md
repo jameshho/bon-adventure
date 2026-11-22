@@ -58,7 +58,7 @@ and wrong answers per word in the journal. **Levels** ([how games get harder](mi
 | [Mahjong Club](minigames.md#mahjong-club) | Table in front of the home | No | 9 Nov | 16 Nov (camera shows Awoo, bigger pinwheel discards) |
 | [Radar Patrol](minigames.md#radar-patrol) | Airport control tower | No (pastime) | 9 Nov | 15 Nov (easier taps) |
 | [Wire It Up!](minigames.md#wire-it-up) | Electrical box at the home | No (pastime) | 9 Nov | 9 Nov |
-| [Library Helper](minigames.md#library-helper) | Library | Yes | 13 Nov | 17 Nov (new categories and titles, tracked words, replenishing cart, cosy library) |
+| [Library Helper](minigames.md#library-helper) | Library | Yes | 13 Nov | 21 Nov (book close-up on pick-up, bigger right-shelf burst, thanks with a zoom on Rosa, results card, new cart after walking away) |
 | [Next, Please!](minigames.md#next-please) | Bank teller window 2 | No | 18 Nov | 21 Nov (account photo on the monitor, screen/customer camera toggle, impostors escorted out by the police, easier and more natural dialogue) |
 
 ### Start screens and app
@@ -68,6 +68,7 @@ and wrong answers per word in the journal. **Levels** ([how games get harder](mi
 | [Title page and profiles](playing.md#starting-up) | The Bon Adventure logo and Play, then up to three profiles, the character grid and the language page; loading bar; dialogue box | 18 Nov (new cream-and-meadow art style from the user's mockups: candy buttons, cloud titles, Fredoka font, cream dialogue box; [style guide](../guides/UI_STYLE.md)) |
 | [Welcome tutorial](playing.md#welcome-tutorial) | Wake up, find the friends, buy fruit, the statue, the journal, a picnic | 21 Nov (camera pans between speakers with the box after the pan, $1.25 price and tag, cashier close-up, shorter market and journal lines, new last line, bigger picnic blanket where the friends stay to chat; checked from the market on, the house act's 20 Nov changes not re-checked) |
 | In-game screens | Settings, journal, F1 guide, HUD buttons, word card, clock, cart, game picker and minigame cards | 18 Nov (same art style in soft blue: soft blue cards and buttons with white rims, dark teal Fredoka text; [views](../evidence/ui-style-20261118/), [style guide](../guides/UI_STYLE.md)) |
+| [Passport](playing.md#passport-missions-stamps-and-achievements) | Missions (3 at a time, 10-minute refresh, Go there, stars on the map), town stamps page, Exploration log of every activity, XP | 21 Nov (new; 18 stamp coins placed in the town, one per building; the bank safe opens, the chapel is bigger with a bell tower to climb and a bell to ring) |
 | [Town map and guide arrow](playing.md#finding-places) | M or the map button: a picture of the town with every building's name and a "you are here" dot; tap a place, then Go there for an arrow that points the way; Go there in the ▶ picker too | 18 Nov (new; the old live map stays off) |
 | [Vehicles](playing.md#getting-around) | Cars, trucks, buses, the scooter, the helicopter and the plane; E to get in | 21 Nov (headlights for every road vehicle, siren and flashing lights for the police car, ambulance and fire truck; [night view](../evidence/vehicle-lights-20261121/night-red.png); earlier 21 Nov: cars keep turning while A/D is held, camera swings behind, [views](../evidence/car-driving-20261121/); no hands-on play-test yet) |
 | App name and icon | "Bon Adventure: Little Town of Words" ("Bon Adventure" under the icon); icon is the pig's head on mint (the user's picture) | 16 Nov (renamed, new icon, [evidence](../evidence/bon-adventure-logo-20261116/README.md)) |
@@ -99,7 +100,8 @@ and wrong answers per word in the journal. **Levels** ([how games get harder](mi
 
 ## Open items worth knowing while reviewing
 
-- **Library Helper** (named 17 Nov) has open assumptions (Cake, the 300 s rest) listed in
+
+- **Library Helper** (named 17 Nov) has an open assumption (Cake) listed in
   its [design record](../guides/TOWN_DESIGN_BRIEF.md#library-return-cart-and-book-sorting-game--13-november-2026).
 - **Hidden for now** (14 Nov, trimming for phones): the minimap and hyper speed are switched off,
   not deleted ([hidden features](../../README.md#hidden-features)). The map (M) is back since 18 Nov

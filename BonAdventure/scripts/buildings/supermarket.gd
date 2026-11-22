@@ -4,7 +4,7 @@ extends RefCounted
 ## Bake:  godot --headless --path . --script res://tools/bake_unit.gd -- supermarket
 ## Never rename or remove a baked step (add a new one that undoes it).
 ## Record: docs/guides/TOWN_DESIGN_BRIEF.md "Supermarket product art — 8 November 2026".
-const STEPS := ["product_models", "fixture_finish", "checkout_props", "seafood_ice", "surface_gaps", "coplanar_gaps", "coplanar_gaps_2", "coplanar_envelope", "glass_windows", "tutorial_fruit", "world_signs", "clear_sections", "compact_layout", "clay_products", "real_windows", "price_sign"]
+const STEPS := ["product_models", "fixture_finish", "checkout_props", "seafood_ice", "surface_gaps", "coplanar_gaps", "coplanar_gaps_2", "coplanar_envelope", "glass_windows", "tutorial_fruit", "world_signs", "clear_sections", "compact_layout", "clay_products", "real_windows", "price_sign", "storage_room"]
 const Products = preload("res://scripts/buildings/supermarket_products.gd")
 const WorldSign = preload("res://scripts/world/world_sign.gd")
 const INTERIOR := "RelocatedSites/Supermarket/MarketInterior"
@@ -898,3 +898,152 @@ func price_sign(town: Node3D, _game) -> void:
 	print("SUPERMARKET price_sign: %d tag(s) now $1.25" % tags.size())
 	if tags.is_empty():
 		push_error("supermarket price_sign: no $1.50 tag")
+
+# --- Storage room (user, 21 Nov 2026: "add some interior to the storage room in the back and make
+# the door openable"; the Supermarket's town stamp coin is in its far corner, data/achievements.json).
+# Interior coordinates: the room runs behind the Staff wall (z 53.5) to the back wall (z 59.65),
+# x -45.75..-20.25; floor y 0.1. Decoration only: no words, so the store's vocabulary is unchanged.
+const STORE_FLOOR := 0.1
+const STORE_BACK_Z := 59.6
+const RACK_X := Vector2(-44.9, -28.7)
+const RACK_Z := Vector2(58.45, 59.45)
+const RACK_LEVELS := [0.18, 1.25, 2.32]
+const KRAFT := ["c89b5e", "b8864d", "d4ad74", "a9794a"]
+
+func storage_room(town: Node3D, game) -> void:
+	var interior: Node3D = town.get_node(INTERIOR)
+	var wall: Node3D = interior.get_node("Staff wall")
+	# 1. The staff door becomes the shared hinged door (docs/guides/DOORS.md), opening into the room.
+	for title in ["Staff wall panel", "Staff wall panel body", "Staff wall skirting", "Staff door leaf", "Staff door jamb",
+			"Staff door jamb2", "Staff door head", "Staff door kick plate", "Staff door push plate", "Staff door window"]:
+		var old := wall.get_node_or_null(title)
+		if old != null:
+			wall.remove_child(old)
+			old.free()
+	var x := STAFF_DOOR_X + 33.0
+	# 1.3 wide (was 1.08): BonBon is 1.52 m = 1.17 units wide.
+	var w := 1.3
+	var h := 2.3
+	var left := Vector2(-12.75, x - w * 0.5)
+	var right := Vector2(x + w * 0.5, 12.75)
+	for span in [left, right]:
+		var mid: float = (span.x + span.y) * 0.5
+		var length: float = span.y - span.x
+		_part(wall, game, "Staff wall panel", Vector3(mid, 2.87, .1), Vector3(length, 5.74, .2), "eadfcd", true)
+		_part(wall, game, "Staff wall skirting", Vector3(mid, .16, -.01), Vector3(length, .12, .02), "cdbf9f")
+	var head_h := 5.74 - (STORE_FLOOR + h)
+	_part(wall, game, "Staff wall header", Vector3(x, STORE_FLOOR + h + head_h * 0.5, .1), Vector3(w, head_h, .2), "eadfcd", true)
+	for title in ["Staff only plaque", "Staff only bar"]:
+		var sign := wall.get_node_or_null(title) as Node3D
+		if sign != null:
+			sign.position.y = 2.66
+	var door: Node3D = preload("res://scenes/props/door.tscn").instantiate()
+	door.name = "Staff door"
+	door.width = w
+	door.height = h
+	door.wall_thickness = 0.2
+	door.leaf_name = "Staff door leaf"
+	door.leaf_color = Color("c7cdd2")
+	door.frame_color = Color("2b5a8c")
+	door.handle_color = Color("b9c0c6")
+	door.vision_glass = true
+	door.swing_to_front = true   # +z: into the storage room
+	door.position = Vector3(x, STORE_FLOOR, .1)
+	wall.add_child(door, true)
+	door.owner = wall.owner
+	# 2. The room: pallet racking along the back wall with boxes, two loaded pallets, a hand truck,
+	# a yellow aisle line and ceiling lamp panels.
+	var room := Node3D.new()
+	room.name = "Storage room"
+	room.set_meta("market_fitting", true)
+	interior.add_child(room, true)
+	room.owner = interior.owner
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 2111
+	var bays := 6
+	var bay := (RACK_X.y - RACK_X.x) / bays
+	var depth := RACK_Z.y - RACK_Z.x
+	var zc := (RACK_Z.x + RACK_Z.y) * 0.5
+	for i in bays + 1:
+		var ux := RACK_X.x + bay * i
+		for z in [RACK_Z.x + .05, RACK_Z.y - .05]:
+			_part(room, game, "Rack upright", Vector3(ux, STORE_FLOOR + 1.65, z), Vector3(.09, 3.3, .09), "e07b39")
+	for level in RACK_LEVELS:
+		var y: float = STORE_FLOOR + level
+		for z in [RACK_Z.x + .05, RACK_Z.y - .05]:
+			_part(room, game, "Rack beam", Vector3((RACK_X.x + RACK_X.y) * 0.5, y + .05, z), Vector3(RACK_X.y - RACK_X.x, .1, .07), "2f6fb0")
+		_part(room, game, "Rack deck", Vector3((RACK_X.x + RACK_X.y) * 0.5, y + .11, zc), Vector3(RACK_X.y - RACK_X.x, .03, depth - .1), "b9c0c6")
+		for i in bays:
+			var cursor := RACK_X.x + bay * i + .12
+			var end := RACK_X.x + bay * (i + 1) - .1
+			while cursor < end - .35:
+				var bw := minf(rng.randf_range(.38, .72), end - cursor)
+				var bh := rng.randf_range(.32, .62) if level < 2.0 else rng.randf_range(.3, .5)
+				var bd := rng.randf_range(.55, .85)
+				if rng.randf() < .85:
+					var at := Vector3(cursor + bw * 0.5, y + .125 + bh * 0.5, zc + rng.randf_range(-.04, .04))
+					_part(room, game, "Stock box", at, Vector3(bw, bh, bd), KRAFT[rng.randi() % KRAFT.size()])
+					_part(room, game, "Box tape", at + Vector3(0, bh * 0.5 + .003, 0), Vector3(.07, .006, bd + .004), "e8d3a8")
+				cursor += bw + .05
+	_part(room, game, "Rack body", Vector3((RACK_X.x + RACK_X.y) * 0.5, STORE_FLOOR + 1.65, zc), Vector3(RACK_X.y - RACK_X.x, 3.3, depth), "e07b39", true)
+	room.get_node("Rack body").free()
+	_part(room, game, "Aisle line", Vector3((RACK_X.x + RACK_X.y) * 0.5, STORE_FLOOR + .004, RACK_Z.x - .3), Vector3(RACK_X.y - RACK_X.x, .008, .07), "f2c230")
+	# Pallets: wooden deck on three runners, one with a box stack, one with flour sacks.
+	for spec in [[-26.6, "boxes"], [-24.0, "sacks"]]:
+		var px: float = spec[0]
+		var pz := STORE_BACK_Z - .7
+		_part(room, game, "Pallet", Vector3(px, STORE_FLOOR + .13, pz), Vector3(1.2, .05, 1.0), "b5884f", true)
+		for k in 3:
+			_part(room, game, "Pallet runner", Vector3(px, STORE_FLOOR + .055, pz - .4 + .4 * k), Vector3(1.2, .11, .1), "9c7140")
+		if spec[1] == "boxes":
+			for layer in 3:
+				for col in 2:
+					for row in 2:
+						var at := Vector3(px - .28 + .56 * col, STORE_FLOOR + .155 + .22 + .44 * layer, pz - .23 + .46 * row)
+						_part(room, game, "Stock box", at, Vector3(.54, .42, .44), KRAFT[(layer + col + row) % KRAFT.size()])
+			_part(room, game, "Stack body", Vector3(px, STORE_FLOOR + .8, pz), Vector3(1.12, 1.3, .92), "c89b5e", true)
+			room.get_node("Stack body").free()
+		else:
+			for layer in 2:
+				for col in 2:
+					var at := Vector3(px - .27 + .54 * col, STORE_FLOOR + .155 + .14 + .28 * layer, pz + (.12 if layer == 1 else 0.0))
+					var sack := MeshInstance3D.new()
+					sack.name = "Flour sack"
+					var capsule := CapsuleMesh.new()
+					capsule.radius = .18
+					capsule.height = .9
+					sack.mesh = capsule
+					sack.material_override = game.material_for(Color("ece2cb"))
+					sack.transform = Transform3D(Basis(Vector3.RIGHT, PI / 2).scaled(Vector3(1.4, 1.0, .75)), at)
+					room.add_child(sack)
+	# A hand truck parked by the door.
+	var truck := Node3D.new()
+	truck.name = "Hand truck"
+	room.add_child(truck)
+	truck.position = Vector3(STAFF_DOOR_X + 2.7, STORE_FLOOR, 53.95)
+	truck.rotation.x = -.18
+	_part(truck, game, "Truck plate", Vector3(0, .02, .12), Vector3(.5, .03, .26), "8a949c")
+	for side in [-1.0, 1.0]:
+		_part(truck, game, "Truck rail", Vector3(side * .21, .7, 0), Vector3(.04, 1.4, .04), "c0392b")
+	_part(truck, game, "Truck grip", Vector3(0, 1.38, 0), Vector3(.46, .04, .04), "2b2f33")
+	for side in [-1.0, 1.0]:
+		var wheel := MeshInstance3D.new()
+		wheel.name = "Truck wheel"
+		var tyre := CylinderMesh.new()
+		tyre.top_radius = .1
+		tyre.bottom_radius = .1
+		tyre.height = .06
+		wheel.mesh = tyre
+		wheel.material_override = game.material_for(Color("2b2f33"))
+		wheel.transform = Transform3D(Basis(Vector3.BACK, PI / 2), Vector3(side * .27, .1, -.06))
+		truck.add_child(wheel)
+	# Lamp panels (emissive, no lights: performance first).
+	var glow := StandardMaterial3D.new()
+	glow.albedo_color = Color("fffaf0")
+	glow.emission_enabled = true
+	glow.emission = Color("fff4dc")
+	glow.emission_energy_multiplier = 0.8
+	for lx in [-40.0, -32.0, -24.0]:
+		_part(room, game, "Lamp panel", Vector3(lx, 5.5, 56.5), Vector3(1.4, .04, .45), "fffaf0")
+		(room.get_child(room.get_child_count() - 1) as MeshInstance3D).material_override = glow
+	print("SUPERMARKET storage_room: door at x %.2f, %d parts in the room" % [STAFF_DOOR_X, room.get_child_count()])

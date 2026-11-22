@@ -41,6 +41,7 @@ const SHAPES := {
 	"takeoff": '<path d="M3 20.5h18"/><path d="M5 16.5L18 5"/><path d="M11 5h7v7"/>',
 	"landing": '<path d="M3 20.5h18"/><path d="M5 4.5l12 11"/><path d="M17 9v6.5h-6.5"/>',
 	"down": '<path d="M6 9.5l6 6 6-6"/>',
+	"bell": '<path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.6 2.2H4.4z"/><path d="M10 20.6a2 2 0 0 0 4 0"/><path d="M12 3.2V5"/>',
 	"star": '<path d="M12 3.2l2.7 5.5 6.1.9-4.4 4.3 1 6.1L12 17.1l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/>',
 	"book": '<path d="M12 6.5C10 5 7 4.6 3.5 5v13.2c3.5-.4 6.5.1 8.5 1.6 2-1.5 5-2 8.5-1.6V5C17 4.6 14 5 12 6.5z"/><path d="M12 6.5v13.3"/>',
 	"gear": '<circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/><circle cx="12" cy="12" r="6.3"/>',
@@ -58,19 +59,21 @@ const SHAPES := {
 	"cloche": '<path d="M3 17.5h18"/><path d="M4.5 17.5a7.5 7.5 0 0 1 15 0"/><path d="M12 10V7.5M10.5 7.5h3"/><path d="M5 20.5h14"/>',
 	"pencil": '<path d="M4 20l1.2-4.8L15.5 4.9a2 2 0 0 1 2.8 0l.8.8a2 2 0 0 1 0 2.8L8.8 18.8z"/><path d="M13.5 7l3.5 3.5"/>',
 	"door": '<path d="M5.5 21V4a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v17"/><path d="M3 21h18"/><circle cx="15" cy="12.5" r=".9" fill="#ffffff"/>',
+	# The Passport corner button (passport_panel.gd, 21 Nov 2026): a booklet with a globe.
+	"passport": '<rect x="5" y="2.5" width="14" height="19" rx="2"/><circle cx="12" cy="10.5" r="3.6"/><path d="M8.4 10.5h7.2M12 6.9c-1.3 1-1.3 6.2 0 7.2M12 6.9c1.3 1 1.3 6.2 0 7.2M9 17.5h6"/>',
 	"tiles": '<rect x="3.5" y="4" width="7.5" height="10.5" rx="1.5"/><rect x="13" y="9.5" width="7.5" height="10.5" rx="1.5"/><path d="M7.2 7.5v3.5M16.7 13v3.5M15 14.8h3.5"/>',
 	"radar": '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><path d="M12 12l6.4-6.4"/><circle cx="15.5" cy="15" r="1" fill="#ffffff"/>',
 	"map": '<path d="M3 6.5l6-2.5 6 2.5 6-2.5v13.5l-6 2.5-6-2.5-6 2.5z"/><path d="M9 4v13.5M15 6.5V20"/>',
 	"bolt": '<path d="M13.5 2.5L5 13.5h6l-1.5 8 8.5-11h-6z"/>',
-}
-
-static var _cache: Dictionary = {}
 	# The bank teller game (teller_session.gd, 21 Nov 2026): police (a badge shield with a star:
 	# "Call the police"), person (a head and shoulders: look at the customer) and screen (a
 	# desk monitor: look at the account).
 	"police": '<path d="M12 2.5l7.5 3v6c0 4.6-3.2 8.3-7.5 10-4.3-1.7-7.5-5.4-7.5-10v-6z"/><path d="M12 7.6l1.3 2.6 2.9.4-2.1 2 .5 2.9L12 14.2l-2.6 1.3.5-2.9-2.1-2 2.9-.4z"/>',
 	"person": '<circle cx="12" cy="8" r="4"/><path d="M4 21v-1.5a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6V21"/>',
 	"screen": '<rect x="2.5" y="4" width="19" height="12.5" rx="1.5"/><path d="M12 16.5v3.5M7.5 20.5h9"/>',
+}
+
+static var _cache: Dictionary = {}
 
 ## The icon `name` as a square texture `pixels` wide (cached per size).
 static func texture(name: String, pixels: int = 28) -> Texture2D:

@@ -10,10 +10,13 @@ extends Control
 ## place. Right: the picked place, its minigames (a tap guides to that game) and a green
 ## "Go there", which starts the guide arrow (guide_arrow.gd) and closes the map; "Stop guide"
 ## while one runs; ✕ (and M, Esc, moving) closes.
+## Missions (21 Nov 2026, missions.gd): a gold star marks each active mission's game on the
+## picture, and its chip in the side column has a star icon.
 const UiText := preload("res://scripts/language/ui_text.gd")
 const BonStyle := preload("res://scripts/ui/bon_style.gd")
 const UiIcons := preload("res://scripts/ui/ui_icons.gd")
 const GuideArrow := preload("res://scripts/ui/guide_arrow.gd")
+const Missions := preload("res://scripts/learning/missions.gd")
 const IMAGE := "res://assets/maps/town_map.png"
 ## How often the "you are here" dot moves while the map is open.
 const DOT_SECONDS := 0.2
@@ -37,6 +40,8 @@ var frame: Dictionary
 var places: Array = []
 ## Place index -> game ids nearest that place.
 var games_at: Dictionary = {}
+## Game id -> its spot [x, z] in town metres (data/town_map.json "games").
+var game_spots: Dictionary = {}
 var picked := -1
 ## Where the picture is drawn in map_view, and each label's pill (map_view pixels).
 var _shown := Rect2()
@@ -59,6 +64,7 @@ func setup(game, arrow) -> void:
 	frame = data.get("frame", {})
 	places = data.get("places", [])
 	var games: Dictionary = data.get("games", {})
+	game_spots = games
 	for id in games:
 		var at := Vector2(float(games[id][0]), float(games[id][1]))
 		var best := -1
@@ -149,6 +155,7 @@ func open() -> void:
 	set_process(true)
 	_timer = 0.0
 	_update_dot()
+	preload("res://scripts/learning/achievements.gd").shared().note("open_map")
 	refresh_display()
 
 func close() -> void:
@@ -238,6 +245,11 @@ func _draw_map() -> void:
 		map_view.draw_style_box(look, pill.rect)
 		var base: Vector2 = pill.rect.position + Vector2((pill.rect.size.x - font.get_string_size(pill.text, HORIZONTAL_ALIGNMENT_LEFT, -1, size).x) * 0.5, (pill.rect.size.y - font.get_height(size)) * 0.5 + font.get_ascent(size))
 		map_view.draw_string(font, base, pill.text, HORIZONTAL_ALIGNMENT_LEFT, -1, size, Color.WHITE if on else BonStyle.INK)
+	# Active missions: a gold star on each game's spot.
+	for id in Missions.shared().active_games():
+		if game_spots.has(id):
+			var spot: Array = game_spots[id]
+			draw_star(map_view, to_view(float(spot[0]), float(spot[1])), maxf(15.0 * _factor, 11.0))
 	if _dot != Vector2.INF and _shown.grow(8).has_point(_dot):
 		var r := maxf(11.0 * _factor, 8.0)
 		var ahead := _heading
@@ -246,6 +258,17 @@ func _draw_map() -> void:
 		map_view.draw_circle(_dot, r, BonStyle.CORAL_BOTTOM)
 		map_view.draw_arc(_dot, r, 0, TAU, 32, Color.WHITE, maxf(2.5 * _factor, 2.0), true)
 		map_view.draw_colored_polygon(PackedVector2Array([_dot + ahead * r * 0.7, _dot - ahead * r * 0.45 + across * r * 0.5, _dot - ahead * r * 0.15, _dot - ahead * r * 0.45 - across * r * 0.5]), Color.WHITE)
+
+## A gold five-point star of outer radius `r` with a white rim (missions on the map).
+static func draw_star(canvas: CanvasItem, at: Vector2, r: float) -> void:
+	var points := PackedVector2Array()
+	for i in 10:
+		var angle := -PI * 0.5 + i * PI / 5.0
+		points.append(at + Vector2(cos(angle), sin(angle)) * (r if i % 2 == 0 else r * 0.45))
+	canvas.draw_circle(at + Vector2(0, r * 0.12), r * 1.15, Color(BonStyle.INK, 0.18))
+	canvas.draw_colored_polygon(points, BonStyle.SUN)
+	points.append(points[0])
+	canvas.draw_polyline(points, Color.WHITE, maxf(r * 0.16, 2.0), true)
 
 ## A tap (a press and release that hardly moved) picks the place nearest it.
 func _map_input(event: InputEvent) -> void:
@@ -312,7 +335,8 @@ func _refresh_side() -> void:
 		chip.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 		chip.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		chip.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-		chip.icon = UiIcons.texture(str(main.game_launcher.ICONS.get(id, "play")) if main.game_launcher != null else "play", 64)
+		var icon := str(main.game_launcher.ICONS.get(id, "play")) if main.game_launcher != null else "play"
+		chip.icon = UiIcons.texture("star" if Missions.shared().active_games().has(str(id)) else icon, 64)
 		chip.expand_icon = true
 		BonStyle.style_button(chip, "soft", f, 20.0)
 		chip.add_theme_constant_override("icon_max_width", roundi(28 * f))

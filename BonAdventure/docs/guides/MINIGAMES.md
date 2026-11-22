@@ -43,7 +43,7 @@ summary here. Each game's purpose and progression design is owned by its learnin
 | **Mahjong Club** (Hong Kong mahjong) | Mei (cat plush, the host) at the table in front of the home; Bao (bear), Awoo (samoyed) and Kiko (golden) play | Game play in the language being learned: calls, wind names, hand names, turn instructions (no tested word) | `mahjong.*` phrases (hand names, winds, calls) | Built 9 Nov 2026: player vs 3 NPCs, one hand per game, 136 tiles (no flowers), mode chosen when sitting down (at least 3 fan or any fan), 3D table with the hand as large tiles at the bottom, corner digits on tiles; not tracked | [Guide](MAHJONG.md) |
 | **Radar Patrol** (control-tower arcade) | No NPC: either radar in the airport control tower (the scope in the hidden radar room, the wall display in the control room) | None (pastime: tap UFOs, protect planes) | None; English arcade text in every language | Built 9 Nov 2026: endless, a click or E on a radar opens the arcade screen; best score saved; not tracked | [Guide](RADAR_PATROL.md) |
 | **Wire It Up!** (electrical box repair) | No NPC: any electrical box (first: outside the home's garage side wall, facing the entry path) | None (pastime: connect the wires by colour) | Interface text only (native language); the box is the word *electrical box* | Built 9 Nov 2026: E nearby or a click opens it, camera close-up, wires played in 3D; repaired until reload; not tracked | [Guide](ELECTRICAL_BOX.md) |
-| **Library Helper** (library; named 17 Nov 2026, was Shelf Mission) | Rosa (samoyed plush librarian) by the NEW BOOKS display, return cart beside her | Book sorting (user design, 13 Nov 2026; reviewed 17 Nov 2026): 3–6 random books on the return cart; take one (E, the hand), put it in any gap of the bookcase for its category (right: slide, hop, sparks; wrong: a wobble, then back in the hand); the game ends by itself when every book is home, with one book recalled; the sorted books rest about 5 minutes, then are borrowed and a new cart fills; talking mid-game says what is left (OK / I'll help later) | `library.*` phrases; the 18 display titles and shelf signs (`data/sign_translations.json`); `BOOK_WORDS` and the category words in `scripts/buildings/library.gd`; gaps as drop targets | Built 13 Nov 2026, reworked 17 Nov 2026 (`scripts/learning/library_session.gd`, shared host); check `docs/evidence/library-refresh-20261117/verify.gd` (`library_sorting`); tracked: a book's first placement tests its topic and category words | [Design](TOWN_DESIGN_BRIEF.md#library-return-cart-and-book-sorting-game--13-november-2026) |
+| **Library Helper** (library; named 17 Nov 2026, was Shelf Mission) | Rosa (samoyed plush librarian) by the NEW BOOKS display, return cart beside her | Book sorting (user design, 13 Nov 2026; reviewed 17 Nov 2026): 3–6 random books on the return cart; take one (E, the hand), put it in any gap of the bookcase for its category (right: slide, hop, sparks; wrong: a wobble, then back in the hand); picking a book up zooms in on its cover (a tap anywhere closes it); the game ends by itself when every book is home, with Rosa's thanks and a zoom on her (21 Nov 2026: no recap); the sorted books stay until the player walks away, then are borrowed and a new cart fills; talking mid-game says what is left (OK / I'll help later) | `library.*` phrases; the 18 display titles and shelf signs (`data/sign_translations.json`); `BOOK_WORDS` and the category words in `scripts/buildings/library.gd`; gaps as drop targets | Built 13 Nov 2026, reworked 17 Nov 2026, polished 21 Nov 2026 (`scripts/learning/library_session.gd`, shared host); check `docs/evidence/library-polish-20261121/verify.gd` (`library_sorting`); tracked: a book's first placement tests its topic and category words | [Design](TOWN_DESIGN_BRIEF.md#library-return-cart-and-book-sorting-game--13-november-2026) |
 | **Next, Please!** (bank teller) | The bear banker at the bank's reception hosts; the player works behind teller window 2, plush customers (house characters) walk up from the queue ropes | Spanish amounts 100–500 in words (multiples of 5) against a balance in digits; counting out $5, $10, $50 and $100 bills; declining a short account; giving change without $100 bills (user, 18 Nov 2026) | Generated amounts (`money_words()`), `teller.*` phrases (8 customer personas in `data/bank_teller.json`), `money.*` | Built 18 Nov 2026 (`scripts/learning/teller_session.gd`; shared host and zone, `money_panel.gd` with `only`, a balance screen on window 2's monitor); 5 customers per session, first-try counts; amounts get harder within the session; check `docs/evidence/bank-teller-20261118/verify.gd` (`bank_teller`); not tracked | [Design](TOWN_DESIGN_BRIEF.md#bank-teller-game--18-november-2026) |
 
 ## Shared systems
@@ -255,7 +255,9 @@ because they redrew the town from its meshes (8.4 → 64 ms a frame while turnin
   (moved 5 times a second, only while open). A tap picks the place whose pill or entrance is
   nearest; the side column lists its games (tap: guide to that game) and a green **Go there**;
   **Stop guiding** while a guide runs. The picture is loaded on open and let go on close.
-  Hidden during minigames and the welcome tutorial (`tutorial_hidden.map`).
+  Hidden during minigames and the welcome tutorial (`tutorial_hidden.map`). Since 21 Nov 2026 a
+  gold star marks each active mission's game spot, and that game's chip has a star icon
+  ([Passport guide](ACHIEVEMENTS.md#missions)).
 - **Guide arrow** (`scripts/ui/guide_arrow.gd`, under the place line in the top left, below every
   window): a green dial whose arrow points to the target relative to the camera, the name, the
   metres left and a ✕. It follows a live NPC node when its building is loaded, otherwise the baked
@@ -264,6 +266,62 @@ because they redrew the town from its meshes (8.4 → 64 ms a frame while turnin
 - Text: `map.*` and `help.map` in `data/phrases.json`; place names `places.*`.
 - Check and views: `docs/evidence/wayfinding-20261118/verify.gd` (graphics; not in
   `run_checks.py`, it overwrites its PNGs) and its [README](../evidence/wayfinding-20261118/README.md).
+
+## Results screen
+
+The card after a minigame (user design, 21 Nov 2026): a sense of accomplishment, vocabulary
+progress and, later, a small reward. **Not a score screen**: no percentages or grades (only a game
+where accuracy is the point may add one), and a player who struggled still finishes on a good
+note. Code: `scripts/ui/results_screen.gd` (`main.results_screen`, built by `minigame_wiring.gd`,
+locks the player while it shows, Esc = Continue) and `scripts/learning/session_words.gd`.
+
+- **Title specific to the game**, never "Minigame completed": `results.title_<activity id>`
+  (`data/phrases.json` group `results`), else "Well done!", and one line of what the player did
+  (`results.line_<activity id>`). The user's titles: Spot the Suspect *Case Closed!*, Stack & Pack
+  *Delivery Complete!*, Library Helper *Books Sorted!*, Desk Dash *Lesson Complete!*, Radar Patrol
+  *Skies Cleared!* (a pastime with no target: not shown today), a pizza game *Orders Delivered!*
+  (no such game). Approved 22 Nov 2026: Grocery Run *Shopping Done!*, Who's Who? *Family
+  Matched!*, Flight Finder *Flights Found!*, On the Menu *Orders Received!*, Feel the Clues *Clues
+  Found!*, Mystery Doors *Treasure Found!*, Next, Please! *Customers Served!*.
+- **Vocabulary progress**, from the practice tracker: the session's words are **new** (their first
+  record ever in the learned language: a first meaningful encounter) or **practiced** (recorded
+  before); **struggled** = a wrong answer or a translation shown this session. Stat bubbles show
+  the counts (a zero is left out). At most **4** words are listed, new first, struggled before the
+  rest; **See all** shows every word as small chips. Mastery is not shown (it waits for a real
+  threshold, e.g. the planned FSRS work).
+- **No new words** (a replay): the card becomes *Great Practice!* "You practiced 12 familiar
+  words!" with one *Vocabulary practice* bubble, never "0 new words".
+- **Rewards**: a town mission done by this game (`missions.gd`, the user's "quests") shows as a
+  *Quest complete* bubble, *Quest updated!* with the mission's text, and its XP. Coins and stars
+  are not designed yet (user: finalize later); the card takes them when they exist:
+  `rewards` = `[{"kind": "quest", "text"}, {"kind": "xp", "amount"}, {"kind": "coins", "amount"}, {"kind": "stars", "amount"}]`.
+- A game that recorded no words (e.g. started from the picker, which pauses the practice tracker)
+  shows no word stats or list, only the accomplishment and any reward.
+- **Buttons**: *Continue exploring* (green) and *Play again* (blue): the same game again, as Yes on
+  its greeting (the host's `launch()`).
+- Word pictures: an optional `picture` callable (word key → Texture2D); none yet (the library
+  shows words only).
+
+**When it shows (every game, no session code):** `scripts/learning/results_flow.gd`
+(`main.results_flow`) follows the activity board. A game starting (any route) starts
+`SessionWords`; a game ending with `completed` (`activity_board.gd`: all its rounds played, or the
+game called `Board.complete(id)`) queues the card, which shows once the game has let go: no
+dialogue box (the NPC's thanks closed), no locking panel, no close-up, then 0.6 s. A game ended
+early (walked away, "later", quit, a language change) and pastimes show nothing. A new game must
+only end `completed` (rounds via `add_success()`, or `Board.complete()` when its end is not a
+count) and add `results.title_<id>` / `results.line_<id>`.
+
+Since 21 Nov 2026 "completed" also covers games with no round target (Grocery Run plays one
+order), and Library Helper (a cart of 3-6 books) and Desk Dash (its final question) call
+`Board.complete()`; before, these three never completed, so their town missions could not be done
+either. Pastimes with no target still never complete.
+
+Fits a landscape phone (two columns, no scrolling; checked at 844 × 390). Check:
+`docs/evidence/results-screen-20261121/verify.gd` (`results_screen`); renders `results-laptop`,
+`results-see-all`, `results-practice`, `results-quest` (Spot the Suspect with its mission),
+`results-phone` in the same folder. The stars card
+(`star_card.gd`, games with levels) still shows on its own; folding it into this card waits for the
+stars and coins design.
 
 ## Progression
 

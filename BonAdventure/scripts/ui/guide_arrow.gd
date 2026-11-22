@@ -152,6 +152,7 @@ func _process(_delta: float) -> void:
 	if to.length() < ARRIVE:
 		main.hud.flash_quest_message(UiText.t("map.arrived", {"place": target_name}))
 		stop()
+		preload("res://scripts/learning/achievements.gd").shared().note("follow_guide")
 		return
 	# Hidden (not stopped) while a minigame or a game panel hides the HUD.
 	card.visible = not main.hud.game_buttons_hidden()

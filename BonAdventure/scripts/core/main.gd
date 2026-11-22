@@ -48,8 +48,14 @@ var electrical_box_session
 var elevator_floor_picker
 ## The minigame picker, F9 or the ▶ corner button (scripts/ui/game_launcher.gd).
 var game_launcher
+## The Passport: missions, town stamps, the achievement log (scripts/ui/passport_panel.gd).
+var passport
 ## The stars card after a session of a game with levels (scripts/ui/star_card.gd).
 var star_card
+## The results screen after a minigame (scripts/ui/results_screen.gd, 21 Nov 2026) and what
+## decides when it shows for every game (scripts/learning/results_flow.gd).
+var results_screen
+var results_flow
 ## Wayfinding (18 Nov 2026): the guide arrow (scripts/ui/guide_arrow.gd) and the town map
 ## (scripts/ui/town_map_panel.gd, in hud.map_overlay; null while Features.FULL_MAP is off).
 var guide
@@ -599,6 +605,9 @@ func make_ui() -> void:
 		hud.map_overlay.add_child(town_map)
 		town_map.setup(self, guide)
 		hud.map_toggled.connect(sync_player_controls)
+	# Achievements, town stamps and missions (21 Nov 2026, docs/guides/ACHIEVEMENTS.md).
+	preload("res://scripts/learning/achievement_hooks.gd").install(self)
+	preload("res://scripts/world/stamp_places.gd").install(self)
 	player.movement_mode_changed.connect(hud.set_movement_mode)
 	player.infinite_jump_changed.connect(hud.set_infinite_jump)
 	hud.set_movement_mode(false, false)
@@ -775,6 +784,8 @@ const MOVE_ACTIONS: Array[String] = ["move_forward", "move_back", "move_left", "
 func close_menus() -> void:
 	if game_launcher != null and game_launcher.visible:
 		game_launcher.close()
+	if passport != null and passport.visible:
+		passport.close()
 	if hud.is_help_open():
 		hud.toggle_help()
 	if hud.is_map_open():
@@ -825,6 +836,7 @@ func _process(delta: float) -> void:
 		hud_status_timer = 0.0
 		hud.set_flight_status(active_vehicle.flight_status() if is_instance_valid(active_vehicle) else "")
 		VehicleControls.update_home(self)
+		preload("res://scripts/learning/achievement_hooks.gd").tick(self)
 	var next_room := current_room()
 	if next_room != room_name:
 		room_name = next_room

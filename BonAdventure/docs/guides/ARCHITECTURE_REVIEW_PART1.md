@@ -2063,7 +2063,9 @@ running minigame with its NPC's goodbye, and everything else re-renders.
 - HUD layout (user, 10 Nov 2026): top left the minimap (`town_minimap.gd` `side_for()`: 268 px
   at 1100 × 800, scaled, never under 208; a click or tap opens the full map), with the place
   and words-found line under it; top centre the clock; top right the peek badge and the gear
-  (`TOP_SCALE` 1.5: 90 px at 1100 × 800); bottom right a 2 × 2 cluster of equal buttons from
+  (`TOP_SCALE` 1.5: 90 px at 1100 × 800; since 21 Nov 2026, user, these two are `TOP_BIG` 1.1 ×
+  that, `top_corner_size()`, and sit `top_right_inset()` (12 + max(20, 30 × scale) px) in from the
+  right edge so a phone's rounded corner does not clip them; the second row lines up under them); bottom right a 2 × 2 cluster of equal buttons from
   `bottom_slot(i)` (`CLUSTER_SCALE` 2.0: 120 px; user, 10 Nov 2026, after trying 2.8): the journal and the full map
   on the bottom row, the ▶ [minigame picker](MINIGAMES.md#minigame-picker) and ? (the F1 help)
   above them. Since 14 Nov 2026 (user) the journal and ▶ are a second top-right row under the

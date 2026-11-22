@@ -82,6 +82,7 @@ once a newer record or guide covers the same thing. Add a line here, not a parag
 
 | Task | Read | Key files |
 | --- | --- | --- |
+| Passport: missions, town stamps, achievements, XP | [Passport guide](guides/ACHIEVEMENTS.md) | `scripts/learning/achievements.gd`, `missions.gd`, `scripts/ui/passport_panel.gd`, `scripts/world/stamp_coin.gd`, `data/achievements.json` |
 | **Any minigame: index, building or changing one** | [Minigame index](guides/MINIGAMES.md), [building a minigame](guides/MINIGAMES.md#building-a-minigame), [purpose and progression](game/minigames.md) | `scripts/learning/minigame_host.gd`, `minigame_zone.gd`, `scripts/ui/game_launcher.gd` |
 | Customer order (supermarket) | [Record](guides/TOWN_DESIGN_BRIEF.md#customer-order-minigame--3-november-2026) | `data/shops.json`, `scripts/learning/shop_*.gd` |
 | Cashier money, Spanish amounts; the supermarket till (checkout, free shopping) | [Record](guides/TOWN_DESIGN_BRIEF.md#cashier-money-minigame--4-november-2026), [checkout 21 Nov](guides/TOWN_DESIGN_BRIEF.md#grocery-checkout-and-free-shopping--21-november-2026) | `scripts/learning/currency.gd`, `cashier_session.gd`, `scripts/ui/money_panel.gd` |

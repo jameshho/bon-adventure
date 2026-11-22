@@ -227,25 +227,31 @@ CHECKS = [
          summary=r"LIBRARY SHELVES: \d+ checks, (?P<n>\d+) failures"),
     # Rosa's book-sorting game: new categories and titles, tracked words, gaps for every book, the
     # display at the rear wall, placing (wrong shelf back to the hand), mid-game talk, the game
-    # ending by itself with a recap, resting and replenishing, "I'll help later" (17 Nov 2026,
-    # replaces the 13 Nov check; headless writes no PNGs; Main saves: isolated HOME).
-    dict(id="library_sorting", script="res://docs/evidence/library-refresh-20261117/verify.gd", suites=["full"],
+    # ending by itself with a zoom on Rosa (no recap), the book close-up on pick-up, the bigger
+    # burst, replenishing once the player walks away, "I'll help later", the bigger top-right
+    # buttons (21 Nov 2026, replaces the 17 Nov check; headless writes no PNGs; isolated HOME).
+    dict(id="library_sorting", script="res://docs/evidence/library-polish-20261121/verify.gd", suites=["full"],
          summary=r"LIBRARY SORTING: \d+ checks, (?P<n>\d+) failures"),
+    # The results screen after a minigame: session words (new / practiced / struggled), the card,
+    # See all, rewards, Great Practice!, Continue / Play again / Esc, Chinese text in the font
+    # subset (21 Nov 2026; headless skips the fit checks and PNGs; isolated HOME).
+    dict(id="results_screen", script="res://docs/evidence/results-screen-20261121/verify.gd", suites=["full"],
+         summary=r"RESULTS SCREEN: \d+ checks, (?P<n>\d+) failures"),
     # The bank teller game "Next, Please!": amount stages, balances, change, the banker on the
     # shared host, window 2, the monitor, mistakes and retries, bills-only money screen, the
     # leave question, the end in the lobby (18 Nov 2026; headless writes no PNGs; isolated HOME).
     dict(id="bank_teller", script="res://docs/evidence/bank-teller-20261118/verify.gd", suites=["full"],
          summary=r"BANK TELLER: \d+ checks, (?P<n>\d+) failures"),
+    # Next, Please! impostors: the account photo, Call the police, the officer's escort out
+    # (21 Nov 2026; headless writes no PNGs; isolated HOME).
+    dict(id="bank_impostor", script="res://docs/evidence/bank-impostor-20261121/verify.gd", suites=["full"],
+         summary=r"BANK IMPOSTOR: \d+ checks, (?P<n>\d+) failures"),
     # Day-night cycle, lamp glow, indoor light and the HUD clock (9 Nov 2026).
     dict(id="day_night", script="res://docs/evidence/day-night-20261109/verify.gd", suites=["full"],
          summary=r"DAY NIGHT: \d+ checks, (?P<n>\d+) failures"),
 ]
 # Not listed on purpose: check_animals.gd (writes docs/evidence/animals-review/measurements.json),
 # capture_*/render_*/feature capture scripts (overwrite PNGs).
-    # Next, Please! impostors: the account photo, Call the police, the officer's escort out
-    # (21 Nov 2026; headless writes no PNGs; isolated HOME).
-    dict(id="bank_impostor", script="res://docs/evidence/bank-impostor-20261121/verify.gd", suites=["full"],
-         summary=r"BANK IMPOSTOR: \d+ checks, (?P<n>\d+) failures"),
 
 SUITES = {
     "quick": [c["id"] for c in CHECKS if "quick" in c["suites"]],

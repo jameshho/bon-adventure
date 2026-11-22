@@ -12,12 +12,13 @@ extends Node
 ##    rotate, open a book's cover);
 ##  - the object may define on_inspect_begin(inspector) / on_inspect_end(inspector).
 ## Options (open): yaw and tilt (degrees, how the object faces the camera; yaw 180 shows its -Z
-## side, its "front"), fill (share of the view height), seconds (glide time).
+## side, its "front"), fill (share of the view height), seconds (glide time), gentle (ease in
+## and out instead of a quick start: a slower, natural lift, e.g. picking up a book to read it).
 
 signal opened(item: Node3D)
 signal closed(item: Node3D)
 
-const DEFAULTS := {"yaw": 180.0, "tilt": 10.0, "fill": .72, "seconds": .35}
+const DEFAULTS := {"yaw": 180.0, "tilt": 10.0, "fill": .72, "seconds": .35, "gentle": false}
 ## How much the backdrop dims the world (material alpha; fades in and out with the glide).
 const BACKDROP_ALPHA := .55
 
@@ -82,6 +83,9 @@ func open(target: Node3D, view: Camera3D, options := {}) -> bool:
 	var goal_basis := Basis.from_scale(scale)
 	var goal := Transform3D(goal_basis, -centre)
 	_tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	if bool(o.gentle):
+		# Eases in and out, like lifting something up to read it (no snap at the start).
+		_tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	_tween.tween_property(target, "transform", goal, float(o.seconds))
 	_tween.parallel().tween_property(_backdrop.mesh.material, "albedo_color:a", BACKDROP_ALPHA, float(o.seconds)).from(0.0)
 	for mode in modes:
@@ -109,6 +113,22 @@ func close(seconds := .3) -> void:
 	_tween.tween_method(_glide_home, 0.0, 1.0, seconds)
 	_tween.parallel().tween_property(_backdrop.mesh.material, "albedo_color:a", 0.0, seconds)
 	_tween.finished.connect(_finish_close)
+
+## Ends the inspection at once (no glide): the object is back where it came from now, e.g.
+## because a game is taking it out of the hand.
+func close_now() -> void:
+	if not is_open():
+		return
+	if not _closing:
+		_closing = true
+		for mode in modes:
+			if mode.has_method("end"):
+				mode.end(self)
+		if item.has_method("on_inspect_end"):
+			item.on_inspect_end(self)
+	if _tween != null and _tween.is_valid():
+		_tween.kill()
+	_finish_close()
 
 ## Where the object was when closing began, to its home (followed live: the hand may move).
 var _start_close := Transform3D.IDENTITY

@@ -498,6 +498,9 @@ func _queue_review(question: Dictionary) -> void:
 
 func _finish_questions() -> void:
 	state = "over"
+	# Every question answered: the session is complete (missions, achievements, the results
+	# screen when the class ends; 21 Nov 2026: before this Desk Dash never completed).
+	Board.shared().complete(ACTIVITY)
 	_clear_world()
 	card.hide_card()
 	_offer_again()

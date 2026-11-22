@@ -18,6 +18,12 @@ extends Node3D
 ## and restored on release. Only a held item that swings (sway > 0) costs any per-frame work.
 
 signal held_changed(item: Node3D)
+## The player took `item` in the hand themselves (toggle(): E, a click or a tap on it), not a
+## game putting it there; hold_inspect_ui.gd zooms in on it when its profile says "auto".
+signal picked_up(item: Node3D)
+## The held item is about to leave the hand (release(), also hold() swapping it): a close-up of it
+## ends at once first (hold_inspect_ui.gd), so the item is back in the hand to be released.
+signal releasing(item: Node3D)
 
 ## BonBon-local point of the left mitten's palm (pig_art_variants.gd _arm(): the mitten spans
 ## x -0.98 ... -0.63, y 0.86 ... 1.22, z -0.16 ... 0.18; BonBon faces -Z, her left is -X).
@@ -27,11 +33,16 @@ const PALM := Vector3(-0.86, 0.95, 0.01)
 ## grip: the point of the item's own bounding box (0..1 per axis) that sits in the palm;
 ## offset: palm to grip, BonBon units; arm: x forward lift (rad), y share of the walking swing,
 ## z outward lift (rad); sway: how freely it swings from the hand (0 = held firmly);
-## inspect: the close-up pose (object_inspector.gd: yaw, tilt in degrees, fill of the view).
+## inspect: the close-up pose (object_inspector.gd: yaw, tilt in degrees, fill of the view,
+## seconds of the glide); "auto": opens by itself `delay` s after the player picks it up;
+## "tap_close": a press anywhere closes it and no ✕ shows (hold_inspect_ui.gd).
 const PROFILES := {
 	# Upright at her side, cover facing out, spine forward; the mitten grips it near its middle.
 	"book": {"rotation": Vector3(0, 90, 0), "grip": Vector3(.5, .42, 1.0), "offset": Vector3(.04, 0, 0),
-		"arm": Vector3(.1, .5, .16), "sway": 0.0, "inspect": {"yaw": 180.0, "tilt": 0.0, "fill": .78}},
+		"arm": Vector3(.1, .5, .16), "sway": 0.0, "inspect": {"yaw": 180.0, "tilt": 0.0, "fill": .78,
+			# Picking a book up zooms in on its cover at a reading pace; a tap anywhere closes
+			# it, no ✕ (user, 21 Nov 2026).
+			"auto": true, "delay": 0.0, "seconds": .75, "gentle": true, "tap_close": true}},
 	# Hanging from its handles, long side along her walking direction. Inspected from nearly
 	# straight above (14 Nov 2026, user: see what is inside), filling the view.
 	"basket": {"rotation": Vector3(0, 90, 0), "grip": Vector3(.5, .96, .5), "offset": Vector3(0, .03, 0),
@@ -114,6 +125,7 @@ func release(target: Node = null, global_xf: Variant = null, put_down := true) -
 		held = null
 		return null
 	var item := held
+	releasing.emit(item)
 	var now := item.global_transform
 	held = null
 	set_process(false)
@@ -164,6 +176,8 @@ static func toggle(item: Node3D) -> void:
 	if hand.is_holding():
 		hand.release()
 	hand.hold(item)
+	if hand.held == item:
+		hand.picked_up.emit(item)
 
 ## The holding arm pose for animate_bonbon(): x forward lift, y walking-swing share, z out lift.
 func arm_pose() -> Vector3:

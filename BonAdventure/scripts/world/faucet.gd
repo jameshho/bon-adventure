@@ -84,6 +84,7 @@ func use() -> bool:
 		tail = 0.0
 		if head >= drop: head = 0.0
 		turned_on.emit()
+		preload("res://scripts/learning/achievements.gd").shared().note("use_faucet")
 	else:
 		turned_off.emit()
 	set_process(true)

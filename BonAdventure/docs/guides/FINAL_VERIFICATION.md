@@ -32,6 +32,22 @@ Start at the [README](../../README.md); editing contracts are in the
 [architecture guide](ARCHITECTURE_REVIEW_PART1.md), and implementation details and
 six rendered views are in the [Part 2 handoff](../evidence/part2/HANDOFF.md).
 
+## Passport, missions, stamp coin and achievement log — 21 November 2026
+
+[What was built](ACHIEVEMENTS.md). Isolated `HOME`, `dev_focus.txt` = `all` (the runs used
+`VT_FOCUS` instead: not the full town), each run on the finished code:
+`docs/evidence/stamp-coin-20261121/verify.gd` (headless, a stage of its own, no town): 15 checks, 0
+failures; `docs/evidence/passport-missions-20261121/verify.gd` (windowed, `VT_FOCUS=library,police,school`):
+77 checks, 0 failures, renders of every Passport page and the map stars in that folder. Coin
+renders in the real town: `stamp-coin-20261121/town_view.gd` (`VT_FOCUS=library`, run before the
+final code; the coin itself has not changed since). Not run: the full suite,
+`tools/language_check.gd`, a real phone or the web export; flying the plane or helicopter and the
+swing were not played (their hooks were checked by reading only; sitting was checked through
+`tick()`). No stamp coin is placed in the town yet (waiting for the user). Later the same day
+the coin got the user's pig face (vtracer trace, `assets/stamps/`): the stamp check again 15 checks,
+0 failures (headless), and new town renders `town-coin-close.png`, `town-coin-angle.png`,
+`town-outside-door.png`, `town-outside-far.png` (`VT_FOCUS=library`).
+
 ## Warehouse shelf and placing — 21 November 2026
 
 [What changed](WAREHOUSE.md#shelf-and-placing-21-nov-2026): plain box removed, two-level shelf
@@ -7867,6 +7883,74 @@ Then (user, 18 Nov): the name was approved, and `tools/build_cjk_font.py` rebuil
 
 Not run: the full suite.
 
+## Library Helper polish — 21 November 2026
+
+User requests: a book zooms in on its cover by itself when picked up (gentle pace, a tap
+anywhere closes, no ✕); the "EN" badge and gear 10 % bigger and held in from the right edge
+(phone corners); the win line zooms in on Rosa and drops the "Remember …" recap; a new random
+cart of 3–6 books once the player has walked away (replaces the 300 s rest); the second start
+line reworded; a bigger right-shelf burst. Design record:
+[third round](TOWN_DESIGN_BRIEF.md#library-return-cart-and-book-sorting-game--13-november-2026).
+
+| Result | Check |
+| --- | --- |
+| PASS | `docs/evidence/library-polish-20261121/verify.gd` (new; runner `library_sorting` now points here), isolated HOME, `VT_FOCUS=library VT_SPAWN=none`, headless: **125 checks, 0 failures**. The same script with graphics (1280 × 800) rendered `talk-left`, `book-zoom`, `wrong-wobble`, `wrong-back-in-hand`, `right-shelf`, `win-zoom`, `cart-new-titles`, `headers`; that run had 4 failures in the walk-away step, from the check's own far spot (15.8 m from Rosa, inside the 16 m call distance), fixed in the check and passed headless |
+
+Not run: the full suite; `docs/evidence/hand-hold-20261113/verify.gd` (books now open the close-up
+on pick-up through `toggle()`; that check's inspect steps were not re-run).
+
+Later the same day (user): the book close-up starts with the E press (0.75 s glide, no delay), a
+game releasing the inspected book ends the close-up at once, and the new
+[results screen](MINIGAMES.md#results-screen) follows Rosa's thanks.
+
+| Result | Check |
+| --- | --- |
+| PASS | `docs/evidence/library-polish-20261121/verify.gd`, graphics, isolated HOME, `VT_FOCUS=library VT_SPAWN=none`: **132 checks, 0 failures** (adds: zoom on the E press, the results screen after the thanks with every word new in a fresh profile, the wrong first try as struggled, Continue, no results after "I'll help later", Play again starts a fresh cart). Render `results` (taken before zero stats were hidden: it still shows "0 Words practiced") |
+| PASS | `docs/evidence/results-screen-20261121/verify.gd` (new, runner `results_screen`), graphics: **21 checks, 0 failures**; after hiding zero stats, headless (fit checks skipped): **18 checks, 0 failures**. Renders `results-laptop`, `results-see-all`, `results-practice`, `results-phone` (844 × 390) |
+
+Three Chinese titles were reworded to characters in the font subset (*Case Closed!* 案子完成了！,
+*Lesson Complete!* 上完課了！); the check fails if a results phrase needs a missing character.
+Not run: the full suite; the hand-hold check. Touch was not tested
+on a device, and the phone-corner inset was judged from the layout numbers, not on an iPhone.
+
+## Results screen for every minigame — 21 November 2026
+
+User: "wire them up". `scripts/learning/results_flow.gd` shows the results card for every learning
+game that ends `completed`, after the NPC's thanks, with the game's title and line and a town
+mission it completed (Quest updated! + XP); Play again relaunches the game through its host. The
+board's `completed` now also covers games with no round target (Grocery Run), and Library Helper
+and Desk Dash call the new `Board.complete()`: before this, these three never completed, so their
+town missions (two of them starting missions) could not be done. Pastimes are unchanged. Seven
+titles were proposals; the user approved them on 22 Nov 2026, changing two (Who's Who? *Family
+Matched!*, On the Menu *Orders Received!*; [list](MINIGAMES.md#results-screen)).
+
+| Result | Check |
+| --- | --- |
+| PASS | `docs/evidence/library-polish-20261121/verify.gd`, headless, isolated HOME, `VT_FOCUS=library VT_SPAWN=none`: **134 checks, 0 failures** (adds: the card waits for the thanks, then shows with the Library Helper mission) |
+| PASS | `docs/evidence/results-screen-20261121/verify.gd`, headless: **22 checks, 0 failures** (adds: a finished Spot the Suspect shows *Case Closed!* with its mission and XP; nothing for a game ended early or a pastime; every learning game has a title and line). The graphics run before it stopped drawing frames after its fourth capture (no error; the known window stall) and was not repeated; it had rendered `results-quest` |
+| PASS | `docs/evidence/activity-lifecycle-20261112/verify.gd`, headless: **6 checks, 0 failures** (the board's completed summary) |
+| 3 FAIL (headless window) | `docs/evidence/passport-missions-20261121/verify.gd`, headless with `VT_FOCUS=library`: **77 checks, 3 failures**, all "page fits the window" against the 64 px headless window (the check is meant to run windowed); mission completion and rewards passed |
+
+Godot exits with code 134 after printing each summary (abort on quit), as in the earlier runs today.
+Not run: the full suite, the windowed missions check, and a real play-through of each game to its
+end (only Library Helper's end was played in a check; the other games rely on the board signal).
+
+## Town stamp places — 21 November 2026
+
+User's list of coin spots, with three building changes: the supermarket storage room and staff
+door, the bank's openable safe, and the enlarged chapel with a bell tower, ladder and ringable bell
+([record](TOWN_DESIGN_BRIEF.md#stamp-places-storage-room-bank-safe-grand-chapel--21-november-2026),
+[coin list](ACHIEVEMENTS.md#where-the-coins-are)). Units re-baked: `supermarket`, `bank`, `chapel`.
+
+| Result | Check |
+| --- | --- |
+| PASS | `docs/evidence/stamp-places-20261121/verify.gd`, windowed, isolated HOME, `VT_FOCUS=all VT_SPAWN=none VT_NEARBY=0`: **132 checks, 0 failures** (18 coins at their spots, scale 1, no body or prop overlap, a real standing place in reach and sight; the safe: wheel turns first, door opens, coin only collectable when open; the staff door opens; a simulated ladder climb reaches the belfry; the bell rings and comes to rest). Pictures in that folder inspected |
+
+Godot exits with code 137 after the summary (crash at quit, as in earlier runs). The log also
+shows parse errors in `scripts/learning/teller_session.gd`, which another session was editing at the
+time (not part of this work). Not run: the full suite, the language check, the web export and a
+phone. The town map image was not re-baked for the bigger chapel.
+
 ## Soft sun and moon — 22 November 2026
 
 Scope: the sky disc in `scripts/world/day_night.gd` and the new `shaders/sky_disc.gdshader`
@@ -7882,3 +7966,29 @@ ball looked outdated and, on Low graphics, sat in front of fogged buildings.
   plaza and raised view at 06:10, 06:40, 12:00, 17:45, 18:20, 18:35, 00:00). Trees and buildings
   now cover the sun; at 18:20 it sinks into the haze, at 18:35 only a faint glow remains; the
   moon has a small halo. Not checked on a phone or in the web build.
+
+## Bigger stamp coins, collect error, Stamps page — 22 November 2026
+
+User: "there's a bug when I obtain the town coin" (`_mover_box: Trying to assign invalid previously
+freed instance`), "make the coin 50% bigger", and a better Town stamps page with the coin's real
+face instead of a star.
+
+- **Error:** `indoor_visibility.gd` tracks nodes that animate (the coin) as movers; after a
+  collected coin freed itself, assigning it to a typed variable failed. It now checks validity
+  before every typed assignment from a chunk.
+- **Coin:** radius 0.3 → 0.45 m. Library, farm barn, furniture and electronics spots moved a
+  little to stay clear of props; the bank coin stands still facing out (`face`) in the safe.
+- **Stamps page:** progress strip and a 6 × 3 grid of coin faces (`passport_panel.gd`).
+- **Chinese font:** `tools/build_cjk_font.py` rebuilt the subset: 34 characters were missing
+  (some from other work), including 印 and 浮 in the Passport. `--check` now: 0 missing.
+- The stamp-places check hung for good when its window was hidden behind others (it waited for
+  `frame_post_draw`); it now uses `RenderingServer.force_draw()`.
+
+| Result | Check |
+| --- | --- |
+| PASS | `docs/evidence/stamp-places-20261121/verify.gd`, windowed, isolated HOME, `VT_FOCUS=all VT_SPAWN=none VT_NEARBY=0`: **133 checks, 0 failures**; the log has no "previously freed" error (the bank coin is collected in the run). Pictures of the moved coins inspected |
+| PASS | `docs/evidence/stamps-page-20261122/verify.gd`, windowed, `VT_FOCUS=library`: **22 checks, 0 failures** (coin faces, faded when not found, bar 5/18, fits 1280 × 800 and 900 × 560); pictures inspected |
+
+Exit codes 137 after the summaries (crash at quit, as before). The other session's
+`teller_session.gd` parse errors still show in the logs. Not run: the full suite, the passport
+missions check, a web export or a phone.

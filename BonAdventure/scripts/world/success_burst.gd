@@ -19,8 +19,9 @@ const HOP := .07
 static var _mesh: SphereMesh
 
 ## Gold sparks puffing out of `frame.origin`: across its X, up its Y and out along its -Z (the
-## viewer's side). Added under `parent`, freed after half a second.
-static func sparks(parent: Node3D, frame: Transform3D, scale := 1.0) -> void:
+## viewer's side). Added under `parent`, freed after `seconds` (half a second by default);
+## `count` sparks (a bigger burst: more, scaled up and slower, e.g. the library's shelved book).
+static func sparks(parent: Node3D, frame: Transform3D, scale := 1.0, count := SPARKS, seconds := .5) -> void:
 	if parent == null or not parent.is_inside_tree():
 		return
 	if _mesh == null:
@@ -34,7 +35,8 @@ static func sparks(parent: Node3D, frame: Transform3D, scale := 1.0) -> void:
 		glow.albedo_color = SPARK_COLOR
 		_mesh.material = glow
 	var basis := frame.basis.orthonormalized()
-	for i in SPARKS:
+	var life := seconds / .5
+	for i in count:
 		var spark := MeshInstance3D.new()
 		spark.mesh = _mesh
 		spark.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
@@ -42,12 +44,12 @@ static func sparks(parent: Node3D, frame: Transform3D, scale := 1.0) -> void:
 		parent.add_child(spark)
 		spark.global_position = frame.origin
 		spark.scale = Vector3.ONE * scale
-		var angle := TAU * i / SPARKS + randf_range(-.25, .25)
+		var angle := TAU * i / count + randf_range(-.25, .25)
 		var local := Vector3(cos(angle) * SPREAD.x, sin(angle) * SPREAD.y + LIFT, -OUT) * scale
 		var to := frame.origin + basis * local
 		var tween := spark.create_tween().set_parallel()
-		tween.tween_property(spark, "global_position", to, .5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-		tween.tween_property(spark, "scale", Vector3.ONE * .01, .45).set_delay(.2)
+		tween.tween_property(spark, "global_position", to, .5 * life).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+		tween.tween_property(spark, "scale", Vector3.ONE * .01, .45 * life).set_delay(.2 * life)
 		tween.chain().tween_callback(spark.queue_free)
 
 ## `node` hops once (HOP * scale up, a bounce down) and sparks puff out of `at` (global) towards

@@ -17,7 +17,7 @@ extends RefCounted
 ## the exterior word "church" and carry no collision except the tower's RoofSolid
 ## (docs/evidence/town-checks/check_map_facades.gd); the front wall's collision is a thin body in the site, behind
 ## the glass, so a street ray still picks the facade.
-const STEPS := ["solid_roofs", "coplanar_gaps", "coplanar_gaps_2", "rebuild"]
+const STEPS := ["solid_roofs", "coplanar_gaps", "coplanar_gaps_2", "rebuild", "grand_chapel"]
 
 const Geo := preload("res://scripts/buildings/mystery.gd")
 const SITE := "RelocatedSites/Chapel"
@@ -25,39 +25,42 @@ const FACADE := "Map facades/CHAPEL"
 const FRONT_HOLDER := "Chapel front"
 
 const CX := 46.5
-const ZC := 75.0
+var ZC := 75.0
 ## Outer half width, wall thickness, front and rear outer faces.
-const W2 := 5.0
+var W2 := 5.0
 const T := 0.3
-const FRONT := 69.0
-const REAR := 81.0
+var FRONT := 69.0
+var REAR := 81.0
 ## Floor top (stone floor on the lawn; a hidden ramp climbs the entrance step).
 const FLOOR := 0.15
 ## Wall top at the eaves; roof pitch 35 degrees (walkable: normal 0.82 > 0.7, check_rooftops).
-const EAVE := 4.7
+var EAVE := 4.7
 const PITCH := 0.6108652
 const ROOF_T := 0.2
 const OVER_X := 0.5
 const OVER_Z := 0.4
+## The sizes above that are `var` (W2, FRONT, REAR, ZC, EAVE, DAIS_Z, PEW_*, SIDE_OPENINGS, TRUSS_Z,
+## TOWER_*) hold the 10 Nov 2026 values; step grand_chapel (21 Nov 2026) sets the bigger chapel's
+## and rebuilds. Other positions are given relative to them.
 ## Door: width, spring of its round head (above the ground).
 const DOOR_W := 2.0
 const DOOR_SPRING := 2.25
 ## Chancel platform: front edge, height; the altar stands on it.
-const DAIS_Z := 77.6
+var DAIS_Z := 77.6
 const DAIS_H := 0.3
 ## Bell tower (belfry and spire) over the front of the ridge.
-const TOWER_Z := 70.45
-const TOWER_W2 := 1.0
+var TOWER_Z := 70.45
+var TOWER_W2 := 1.0
 ## Pew rows (centre z) and the centres of the two pew blocks either side of the aisle.
-const PEW_ROWS := [71.35, 72.75, 74.15, 75.55]
-const PEW_X := [43.9, 49.1]
-const PEW_L := 3.1
+var PEW_ROWS := [71.35, 72.75, 74.15, 75.55]
+var PEW_X := [43.9, 49.1]
+var PEW_L := 3.1
 ## Openings [u along the wall, width, sill, spring] (round heads of radius width / 2).
 const FRONT_OPENINGS := [[0.0, DOOR_W, 0.0, DOOR_SPRING], [-3.1, 0.9, 1.35, 2.75], [3.1, 0.9, 1.35, 2.75]]
-const SIDE_OPENINGS := [[-3.6, 1.0, 1.6, 3.3], [0.0, 1.0, 1.6, 3.3], [3.6, 1.0, 1.6, 3.3]]
+var SIDE_OPENINGS := [[-3.6, 1.0, 1.6, 3.3], [0.0, 1.0, 1.6, 3.3], [3.6, 1.0, 1.6, 3.3]]
 const REAR_OPENINGS := [[-2.9, 0.8, 1.9, 3.55], [2.9, 0.8, 1.9, 3.55]]
 ## Trusses (and the buttresses outside them).
-const TRUSS_Z := [73.2, 76.8]
+var TRUSS_Z := [73.2, 76.8]
 
 const WALL := Color("f3ecdd")
 const TRIM := Color("fbf7ee")
@@ -86,6 +89,10 @@ const GLASS := [Color("d03a3f"), Color("2f5fc4"), Color("2f9a5c"), Color("efb23a
 const BLOSSOMS := [Color("f4f1ea"), Color("ec6fa6"), Color("f4cf3a"), Color("e8506a")]
 const NIGHT_LIGHTS := "night_lights"
 
+## Flagpole (site x, z) and the tower kind: false = the 10 Nov belfry on the roof (_tower), true
+## = the 21 Nov ground tower with its ladder and ringable bell (_bell_tower).
+var flag_at := Vector2(40.3, 67.2)
+var ground_tower := false
 var game
 var geo: Geo
 var site: Node3D
@@ -119,8 +126,11 @@ func rebuild(town: Node3D, main) -> void:
 	geo = Geo.new()
 	site = town.get_node(SITE)
 	facade = town.get_node(FACADE)
-	var lettering := facade.get_node("Facade lettering") as Label3D
-	facade.remove_child(lettering)
+	# The CHAPEL lettering: on the facade before the first rebuild, on the front holder's sign after.
+	var lettering := facade.get_node_or_null("Facade lettering") as Label3D
+	if lettering == null:
+		lettering = facade.get_node(FRONT_HOLDER + "/Facade lettering") as Label3D
+	lettering.get_parent().remove_child(lettering)
 	for parent in [site, facade]:
 		for child in parent.get_children():
 			parent.remove_child(child)
@@ -133,13 +143,57 @@ func rebuild(town: Node3D, main) -> void:
 	_front()
 	_roof()
 	_ceiling()
-	_tower()
+	if ground_tower:
+		_bell_tower()
+	else:
+		_tower()
 	_sign(lettering)
 	_nave()
 	_chancel()
 	_grounds()
 	_exterior_picks(front)
 	preload("res://scripts/buildings/coplanar_gaps.gd").separate(town, "chapel", 3)
+
+## A bigger chapel with a bell tower you can climb (user, 21 Nov 2026: "increase the size of the
+## chapel. add a ladder that user can climb up to the bell area ... make the bell ringable ...
+## redesign the chapel so the top doesn't look overly big but still can fit the user's avatar").
+## Same door position and front line (z 69, the garden path); 12.6 wide (was 10) and 15 deep (was
+## 12, growing north); walls 5.2 high (were 4.7); five side windows, six rows of pews, the chancel
+## moved back with the rear wall. The old belfry on the ridge (2 x 2, no way up) is replaced by a
+## square tower standing on the ground at the front east corner, 3.6 x 3.6: a stone shaft to a
+## belfry floor at 6.2, an open belfry (four arches, parapets 1.2 high, 3.0 high under a low
+## pyramid roof and cross) and an iron ladder on its south face (group "ladders", climbed with
+## W, stepping off forward through a gap in the south parapet). The bell hangs north of the middle
+## (chapel_bell.gd: E, click or tap rings it; it swings and emits `rung` for a sound later). The
+## Chapel's town stamp coin floats in the belfry (data/achievements.json).
+const GRAND_W2 := 6.3
+const GRAND_REAR := 84.0
+const GRAND_EAVE := 5.2
+## Ground tower: outer square [x0, x1] x [z0, z1] (site), belfry floor top, belfry height.
+const BELL_TOWER := Rect2(36.9, 68.7, 3.6, 3.6)
+const BELFRY_FLOOR := 6.2
+const BELFRY_H := 3.0
+const PARAPET_H := 1.2
+const PIER := 0.45
+## The gap in the south parapet over the ladder (BonBon is 1.52 m = 1.17 units wide).
+const LADDER_GAP := 1.7
+
+func grand_chapel(town: Node3D, main) -> void:
+	W2 = GRAND_W2
+	REAR = GRAND_REAR
+	ZC = (FRONT + REAR) * 0.5
+	EAVE = GRAND_EAVE
+	DAIS_Z = REAR - 3.4
+	PEW_L = 3.6
+	PEW_X = [CX - 2.95, CX + 2.95]
+	PEW_ROWS = [71.35, 72.75, 74.15, 75.55, 76.95, 78.35]
+	SIDE_OPENINGS = [[-5.4, 1.0, 1.7, 3.6], [-2.7, 1.0, 1.7, 3.6], [0.0, 1.0, 1.7, 3.6], [2.7, 1.0, 1.7, 3.6], [5.4, 1.0, 1.7, 3.6]]
+	TRUSS_Z = [73.9, 78.8]
+	flag_at = Vector2(35.0, 67.3)
+	ground_tower = true
+	rebuild(town, main)
+	var tower := site.get_node("Bell tower") as Node3D
+	print("CHAPEL grand_chapel: %.1f x %.1f, eave %.1f, tower %s, belfry floor %.1f" % [2 * W2, REAR - FRONT, EAVE, tower.position, BELFRY_FLOOR])
 
 # --- Shell ------------------------------------------------------------------------------------
 
@@ -182,6 +236,8 @@ func _shell() -> void:
 	for side in [-1.0, 1.0]:
 		for z in [FRONT + 0.25] + TRUSS_Z + [REAR - 0.25]:
 			var x: float = CX + side * W2
+			if ground_tower and side < 0 and z < FRONT + 0.5:
+				continue
 			_box(piers, "Buttress", Vector3(x + side * 0.27, 1.1, z), Vector3(0.55, 2.2, 0.5), STONE, true)
 			_box(piers, "Buttress upper", Vector3(x + side * 0.17, 2.9, z), Vector3(0.34, 1.4, 0.42), STONE, true)
 			_box(piers, "Buttress cap", Vector3(x + side * 0.12, 3.68, z), Vector3(0.3, 0.12, 0.46), STONE_DARK, false, "", Basis(Vector3.BACK, -side * 0.6))
@@ -260,7 +316,7 @@ func _front() -> void:
 	var gable := geo._prism([Vector2(-W2, EAVE), Vector2(W2, EAVE), Vector2(0, _roof_under(0))], T)
 	_mesh(front, "Front gable", gable, Transform3D(Basis(), Vector3(CX, 0, FRONT + T * 0.5)), _mat(WALL))
 	_box(front, "String course", Vector3(CX, EAVE + 0.08, FRONT - 0.06), Vector3(2 * W2 + 0.24, 0.16, 0.12), STONE, false)
-	_rose(Vector3(CX, 6.15, FRONT + T * 0.5))
+	_rose(Vector3(CX, EAVE + 1.45, FRONT + T * 0.5))
 	# Door surround: stone jambs, arch and keystone; a fanlight in the round head.
 	var r := DOOR_W * 0.5
 	for side in [-1.0, 1.0]:
@@ -429,6 +485,153 @@ func _tower() -> void:
 	spire_shape.transform = spire_xf
 	solid.add_child(spire_shape)
 
+## The 21 Nov 2026 bell tower (grand_chapel): on the ground at the front east corner, in the site
+## (solid), its own frame centred on the square. Local +z is north; the ladder is on the south (-z)
+## face. Pieces: shaft (solid, with plinth, a string course at the eaves and a slit window),
+## belfry floor, four corner piers, parapets (solid; a gap over the ladder), round arches over the
+## four openings, cornice, ceiling slab (solid), a low slate pyramid with a gold cross, the bell
+## and its rope, the ladder.
+func _bell_tower() -> void:
+	var r := BELL_TOWER
+	var half := r.size.x * 0.5
+	var tower := _group(site, "Bell tower")
+	tower.position = Vector3(r.position.x + half, 0, r.position.y + half)
+	var top := BELFRY_FLOOR + BELFRY_H
+	# Shaft (word "wall") up to the belfry floor.
+	_box(tower, "Tower shaft", Vector3(0, BELFRY_FLOOR * 0.5, 0), Vector3(2 * half, BELFRY_FLOOR, 2 * half), WALL, true, "wall")
+	_box(tower, "Tower plinth", Vector3(0, 0.25, 0), Vector3(2 * half + 0.12, 0.5, 2 * half + 0.12), STONE_DARK, false)
+	_box(tower, "Tower string course", Vector3(0, EAVE + 0.08, 0), Vector3(2 * half + 0.16, 0.16, 2 * half + 0.16), STONE, false)
+	_box(tower, "Tower floor band", Vector3(0, BELFRY_FLOOR - 0.06, 0), Vector3(2 * half + 0.2, 0.14, 2 * half + 0.2), STONE, false)
+	for face in [Vector3(-1, 0, 0), Vector3(0, 0, -1)]:
+		# A narrow round-headed slit window on the east and south faces (dark glass).
+		var at: Vector3 = face * (half + 0.01) + Vector3(0, 3.4, 0)
+		var basis := Basis(Vector3.UP, atan2(face.x, face.z))
+		_mesh(tower, "Tower slit", _bm(Vector3(0.36, 1.1, 0.04)), Transform3D(basis, at), _mat(Color("33414c")))
+		_mesh(tower, "Tower slit head", geo._half_disc(0.18, 0.04), Transform3D(basis, at + Vector3(0, 0.55, 0)), _mat(Color("33414c")))
+		_mesh(tower, "Tower slit stones", geo._half_ring(0.18, 0.3, 0.06), Transform3D(basis, at + Vector3(0, 0.55, 0)), _mat(STONE))
+	# Belfry floor (word "floor": stone flags over the shaft).
+	_box(tower, "Belfry floor", Vector3(0, BELFRY_FLOOR + 0.02, 0), Vector3(2 * half - 0.1, 0.04, 2 * half - 0.1), STONE_DARK, false, "floor")
+	# Corner piers.
+	for sx in [-1.0, 1.0]:
+		for sz in [-1.0, 1.0]:
+			_box(tower, "Belfry pier", Vector3(sx * (half - PIER * 0.5), BELFRY_FLOOR + BELFRY_H * 0.5, sz * (half - PIER * 0.5)), Vector3(PIER, BELFRY_H, PIER), WALL, true)
+	# Parapets between the piers (solid), the south one split by the ladder gap.
+	var span := 2 * half - 2 * PIER
+	var py := BELFRY_FLOOR + PARAPET_H * 0.5
+	var pt := 0.3
+	for k in 4:
+		var basis := Basis(Vector3.UP, PI * k / 2.0)
+		var out: Vector3 = basis * Vector3(0, 0, half - pt * 0.5)
+		if k == 2:
+			# South (-z): two short pieces either side of the gap over the ladder.
+			var piece := (span - LADDER_GAP) * 0.5
+			for side in [-1.0, 1.0]:
+				_box(tower, "Belfry parapet", Vector3(side * (LADDER_GAP + piece) * 0.5, py, out.z), Vector3(piece, PARAPET_H, pt), WALL, true, "", basis)
+				_box(tower, "Parapet coping", Vector3(side * (LADDER_GAP + piece) * 0.5, BELFRY_FLOOR + PARAPET_H + 0.04, out.z), Vector3(piece + 0.04, 0.08, pt + 0.1), STONE, false, "", basis)
+		else:
+			_box(tower, "Belfry parapet", Vector3(out.x, py, out.z), Vector3(span, PARAPET_H, pt), WALL, true, "", basis)
+			_box(tower, "Parapet coping", Vector3(out.x, BELFRY_FLOOR + PARAPET_H + 0.04, out.z), Vector3(span + 0.04, 0.08, pt + 0.1), STONE, false, "", basis)
+		# The round arch over the opening (decoration; the spandrel closes the top corners).
+		var opening := span * 0.5
+		var spring := top - opening - 0.12
+		var face := _group(tower, "Belfry arch")
+		face.transform = Transform3D(basis, Vector3(0, spring, 0)).translated_local(Vector3(0, 0, half - 0.08))
+		_mesh(face, "Belfry spandrel", geo._arch_panel(opening, opening, top - spring, 0.16), Transform3D(), _mat(WALL))
+		_mesh(face, "Belfry arch stones", geo._half_ring(opening, opening + 0.1, 0.2), Transform3D(), _mat(STONE))
+	# Cornice, a solid ceiling slab, the pyramid roof and the cross.
+	_box(tower, "Belfry cornice", Vector3(0, top + 0.11, 0), Vector3(2 * half + 0.4, 0.22, 2 * half + 0.4), STONE, false)
+	_box(tower, "Belfry ceiling", Vector3(0, top - 0.04, 0), Vector3(2 * half - 0.1, 0.08, 2 * half - 0.1), CEILING_WOOD, true, "ceiling")
+	var roof_h := 2.0
+	var spire := CylinderMesh.new()
+	spire.top_radius = 0.03
+	spire.bottom_radius = (half + 0.2) * sqrt(2.0)
+	spire.height = roof_h
+	spire.radial_segments = 4
+	spire.rings = 1
+	var spire_xf := Transform3D(Basis(Vector3.UP, PI / 4), Vector3(0, top + 0.22 + roof_h * 0.5, 0))
+	var spire_mesh := _mesh(tower, "Tower roof", spire, spire_xf, _mat(SLATE))
+	spire_mesh.set_meta("word_key", "roof")
+	var peak := top + 0.22 + roof_h
+	_box(tower, "Tower cross", Vector3(0, peak + 0.45, 0), Vector3(0.12, 1.0, 0.12), GOLD, false)
+	_box(tower, "Tower cross bar", Vector3(0, peak + 0.62, 0), Vector3(0.56, 0.12, 0.12), GOLD, false)
+	var roof_body := _body(tower, "Tower roof body")
+	var roof_shape := CollisionShape3D.new()
+	roof_shape.shape = spire.create_convex_shape()
+	roof_shape.transform = spire_xf
+	roof_body.add_child(roof_shape)
+	# The bell: a headstock beam east-west across the belfry, the bell on a pivot under it.
+	var beam_y := top - 0.42
+	var bell_z := 0.35
+	_box(tower, "Bell headstock", Vector3(0, beam_y, bell_z), Vector3(2 * half - 0.2, 0.16, 0.18), TIMBER, false)
+	var bell := Node3D.new()
+	bell.name = "Chapel bell"
+	bell.set_script(preload("res://scripts/world/chapel_bell.gd"))
+	bell.set_meta("word_key", "bell")
+	tower.add_child(bell, true)
+	bell.position = Vector3(0, beam_y - 0.08, bell_z)
+	var cup := CylinderMesh.new()
+	cup.top_radius = 0.22
+	cup.bottom_radius = 0.44
+	cup.height = 0.56
+	cup.radial_segments = 24
+	_mesh(bell, "Bell", cup, Transform3D(Basis(), Vector3(0, -0.36, 0)), _mat(BRONZE))
+	_mesh(bell, "Bell crown", _sphere_mesh(0.22), Transform3D(Basis(), Vector3(0, -0.1, 0)), _mat(BRONZE))
+	_mesh(bell, "Bell lip", geo._arc_tube(Vector3(0, -0.64, 0), Vector3.RIGHT, Vector3.BACK, 0.44, 0.0, TAU, 0.03, 24), Transform3D(), _mat(GOLD))
+	_mesh(bell, "Bell yoke", _bm(Vector3(0.5, 0.1, 0.12)), Transform3D(Basis(), Vector3(0, 0.02, 0)), _mat(TIMBER))
+	var clapper := _group(bell, "Bell clapper")
+	clapper.position = Vector3(0, -0.2, 0)
+	_mesh(clapper, "Clapper rod", _cyl_mesh(0.02, 0.4), Transform3D(Basis(), Vector3(0, -0.2, 0)), _mat(Color("5a4632")))
+	_mesh(clapper, "Clapper ball", _sphere_mesh(0.07), Transform3D(Basis(), Vector3(0, -0.42, 0)), _mat(Color("5a4632")))
+	# Rope down from the bell's wheel to hand height, with a red and cream sally (the grip).
+	var rope_x := 0.32
+	var rope_top := -0.05
+	var rope_low := BELFRY_FLOOR + 0.75 - bell.position.y
+	_mesh(bell, "Bell wheel", geo._arc_tube(Vector3(rope_x, rope_top, 0), Vector3.BACK, Vector3.UP, 0.16, 0.0, TAU, 0.02, 16), Transform3D(), _mat(TIMBER))
+	_mesh(bell, "Bell rope", _cyl_mesh(0.02, rope_top - 0.16 - rope_low), Transform3D(Basis(), Vector3(rope_x, (rope_top - 0.16 + rope_low) * 0.5, 0)), _mat(Color("d8c49a")))
+	_mesh(bell, "Rope sally", _cyl_mesh(0.045, 0.34), Transform3D(Basis(), Vector3(rope_x, rope_low + 0.4, 0)), _mat(RUNNER))
+	_mesh(bell, "Rope sally band", _cyl_mesh(0.047, 0.06), Transform3D(Basis(), Vector3(rope_x, rope_low + 0.4, 0)), _mat(CLOTH))
+	bell.set("badge_offset", Vector3(rope_x, rope_low + 0.4, 0))
+	# The ladder on the south face (word "ladder"): iron rails and rungs, wall brackets. Its node's
+	# +z points away from the wall (south); it is climbed to the belfry floor and stepped off
+	# forward (north) through the parapet gap (player_controller.gd update_ladder).
+	var ladder := Node3D.new()
+	ladder.name = "Tower ladder"
+	ladder.set_meta("word_key", "ladder")
+	ladder.set_meta("ladder_height", BELFRY_FLOOR)
+	ladder.set_meta("ladder_exit", "forward")
+	tower.add_child(ladder, true)
+	ladder.add_to_group("ladders", true)
+	ladder.transform = Transform3D(Basis(Vector3.UP, PI), Vector3(0, 0, -half - 0.08))
+	var iron := Color("2f3238")
+	var rail_h := BELFRY_FLOOR + 1.0
+	for side in [-1.0, 1.0]:
+		_box(ladder, "Ladder rail", Vector3(side * 0.3, rail_h * 0.5, 0), Vector3(0.06, rail_h, 0.06), iron, false)
+	var rungs := int(BELFRY_FLOOR / 0.3)
+	for k in range(1, rungs + 1):
+		_mesh(ladder, "Ladder rung", _cyl_mesh(0.022, 0.6), Transform3D(Basis(Vector3.BACK, PI / 2), Vector3(0, k * 0.3, 0)), _mat(iron))
+	for k in range(1, 5):
+		for side in [-1.0, 1.0]:
+			_box(ladder, "Ladder bracket", Vector3(side * 0.3, k * BELFRY_FLOOR / 4.0 - 0.2, -0.06), Vector3(0.05, 0.05, 0.14), iron, false)
+	# A pick body so the word card works (clicking the rails), no collision with the player.
+	_word_pick(ladder, Vector3(0, rail_h * 0.5, 0), Vector3(0.7, rail_h, 0.12))
+	_word_pick(bell, Vector3(0, -0.34, 0), Vector3(0.9, 0.62, 0.9))
+
+## A pick-only Area3D for a word root built of plain meshes (layer 1, like _box's word areas).
+func _word_pick(root: Node3D, at: Vector3, size: Vector3) -> void:
+	var area := Area3D.new()
+	area.name = "Word pick"
+	area.collision_mask = 0
+	area.monitoring = false
+	area.set_meta("object_name", str(root.name))
+	area.set_meta("root", root)
+	root.add_child(area)
+	var shape := CollisionShape3D.new()
+	var box := BoxShape3D.new()
+	box.size = size
+	shape.shape = box
+	shape.position = at
+	area.add_child(shape)
+
 # --- Sign -------------------------------------------------------------------------------------
 
 ## The CHAPEL sign over the door: a framed board on the wall face; nothing projects in front of it
@@ -467,10 +670,10 @@ func _nave() -> void:
 			_box(leaf, "Door strap", Vector3(-side * 0.045, y, 0), Vector3(0.025, 0.06, 0.9), Color("2f3238"), false)
 			_box(leaf, "Door strap", Vector3(side * 0.045, y, 0), Vector3(0.025, 0.06, 0.9), Color("2f3238"), false)
 	# Donation box (with its slot) by the left door, votive candles by the right.
-	_box(site, "Donation Box", Vector3(42.45, FLOOR + 0.45, 70.0), Vector3(0.55, 0.9, 0.45), WOOD_DARK, true, "donation box")
-	_box(site, "Donation box lid", Vector3(42.45, FLOOR + 0.92, 70.0), Vector3(0.6, 0.04, 0.5), BRONZE, false)
-	_box(site, "Slot", Vector3(42.45, FLOOR + 0.945, 70.0), Vector3(0.3, 0.012, 0.05), Color("2b2b33"), false, "slot")
-	var votive := _box(site, "Votive candles", Vector3(50.35, FLOOR + 0.4, 70.05), Vector3(1.0, 0.8, 0.5), WOOD_DARK, true, "candle")
+	_box(site, "Donation Box", Vector3(CX - W2 + 0.95, FLOOR + 0.45, FRONT + 1.0), Vector3(0.55, 0.9, 0.45), WOOD_DARK, true, "donation box")
+	_box(site, "Donation box lid", Vector3(CX - W2 + 0.95, FLOOR + 0.92, FRONT + 1.0), Vector3(0.6, 0.04, 0.5), BRONZE, false)
+	_box(site, "Slot", Vector3(CX - W2 + 0.95, FLOOR + 0.945, FRONT + 1.0), Vector3(0.3, 0.012, 0.05), Color("2b2b33"), false, "slot")
+	var votive := _box(site, "Votive candles", Vector3(CX + W2 - 1.15, FLOOR + 0.4, FRONT + 1.05), Vector3(1.0, 0.8, 0.5), WOOD_DARK, true, "candle")
 	for tier in 3:
 		var ty := 0.4 + tier * 0.12
 		var tz := 0.12 - tier * 0.12
@@ -513,7 +716,7 @@ func _chancel() -> void:
 	var cross := _box(site, "Altar cross", Vector3(CX, 3.1, back - 0.11), Vector3(0.2, 2.2, 0.1), GOLD, true, "cross")
 	_box(cross, "Cross bar", Vector3(0, 0.45, 0), Vector3(1.2, 0.2, 0.1), GOLD, true)
 	# Altar: stone table, white cloth, red frontal with a gold cross, two candles.
-	var altar_z := 79.7
+	var altar_z := REAR - 1.3
 	var altar := _box(site, "Altar", Vector3(CX, top + 0.475, altar_z), Vector3(2.2, 0.95, 0.9), DAIS_STONE, true, "altar")
 	_box(altar, "Altar cloth", Vector3(0, 0.495, 0), Vector3(2.4, 0.04, 1.0), CLOTH, false)
 	_box(altar, "Altar cloth drop", Vector3(0, 0.36, -0.505), Vector3(2.4, 0.3, 0.012), CLOTH, false)
@@ -531,7 +734,7 @@ func _chancel() -> void:
 		flame.scale = Vector3(0.6, 1.6, 0.6)
 		_paint(flame, _glow(Color("ffb14f"), 1.4))
 	# Lectern with an open book, front left of the platform.
-	var lectern := _word(site, "Lectern", "lectern", Vector3(43.75, top, 78.45))
+	var lectern := _word(site, "Lectern", "lectern", Vector3(CX - 2.75, top, REAR - 2.55))
 	_box(lectern, "Lectern base", Vector3(0, 0.03, 0), Vector3(0.5, 0.06, 0.42), WOOD_DARK, true)
 	_box(lectern, "Lectern post", Vector3(0, 0.55, 0), Vector3(0.16, 1.0, 0.16), WOOD, true)
 	var tilt := Basis(Vector3.RIGHT, 0.35)
@@ -544,20 +747,20 @@ func _chancel() -> void:
 	# Flowers on stands either side of the altar.
 	var n := 0
 	for x in [CX - 2.3, CX + 2.3]:
-		_cyl(site, "Flower stand", Vector3(x, top + 0.42, 80.05), 0.14, 0.84, WOOD_DARK, "", true)
-		_mesh(site, "Flower vase", _cyl_mesh(0.12, 0.26), Transform3D(Basis(), Vector3(x, top + 0.97, 80.05)), _mat(CLOTH))
-		_bouquet("Altar flowers" + ("" if n == 0 else "2"), Vector3(x, top + 1.26, 80.05), 0.26)
+		_cyl(site, "Flower stand", Vector3(x, top + 0.42, REAR - 0.95), 0.14, 0.84, WOOD_DARK, "", true)
+		_mesh(site, "Flower vase", _cyl_mesh(0.12, 0.26), Transform3D(Basis(), Vector3(x, top + 0.97, REAR - 0.95)), _mat(CLOTH))
+		_bouquet("Altar flowers" + ("" if n == 0 else "2"), Vector3(x, top + 1.26, REAR - 0.95), 0.26)
 		n += 1
 	# Small pipe organ against the west wall, between two windows, with its bench.
 	var ox := CX + inner - 0.38
-	var organ := _box(site, "Chapel pipe organ", Vector3(ox, FLOOR + 0.62, 77.1), Vector3(0.75, 1.24, 1.5), WOOD_DARK, true)
+	var organ := _box(site, "Chapel pipe organ", Vector3(ox, FLOOR + 0.62, REAR - 3.9), Vector3(0.75, 1.24, 1.5), WOOD_DARK, true)
 	_box(organ, "Organ keys", Vector3(-0.5, 0.36, 0), Vector3(0.3, 0.05, 1.25), CLOTH, false)
 	_box(organ, "Organ key shelf", Vector3(-0.47, 0.32, 0), Vector3(0.36, 0.04, 1.3), WOOD, false)
 	_box(organ, "Organ music stand", Vector3(-0.3, 0.75, 0), Vector3(0.04, 0.3, 0.7), WOOD, false)
 	for k in 7:
 		var h := 1.0 + 0.8 * (1.0 - absf(k - 3) / 3.0)
 		_mesh(organ, "Organ pipe", _cyl_mesh(0.06, h), Transform3D(Basis(), Vector3(0.2, 0.62 + h * 0.5, -0.6 + k * 0.2)), _mat(PIPE))
-	_box(site, "Organ bench", Vector3(ox - 0.95, FLOOR + 0.24, 77.1), Vector3(0.35, 0.48, 0.9), WOOD, true)
+	_box(site, "Organ bench", Vector3(ox - 0.95, FLOOR + 0.24, REAR - 3.9), Vector3(0.35, 0.48, 0.9), WOOD, true)
 
 ## A bunch of flowers (word "flower"): a leafy ball with coloured blossoms.
 func _bouquet(title: String, at: Vector3, r: float) -> void:
@@ -582,7 +785,7 @@ func _grounds() -> void:
 		_bouquet("Planter flowers" + suffix, Vector3(x, 0.66, FRONT - 0.6), 0.3)
 		n += 1
 	# Notice board by the path (word "church"; its sign reads CHURCH in the world language).
-	var board := _word(site, "Church notice board", "church", Vector3(53.2, 0, 66.9))
+	var board := _word(site, "Church notice board", "church", Vector3(CX + W2 + 1.7, 0, FRONT - 2.1))
 	for side in [-1.0, 1.0]:
 		_box(board, "Board post", Vector3(side * 0.68, 0.85, 0), Vector3(0.1, 1.7, 0.1), TIMBER, true)
 	_box(board, "Board panel", Vector3(0, 1.3, 0), Vector3(1.5, 0.75, 0.08), SIGN_FRAME, true)
@@ -601,10 +804,12 @@ func _grounds() -> void:
 	board.add_child(label)
 	label.transform = Transform3D(Basis(Vector3.UP, PI), Vector3(0, 1.3, -0.065))
 	# Flag on a white pole on the east lawn.
-	_cyl(site, "Flagpole", Vector3(40.3, 3.0, 67.2), 0.05, 6.0, TRIM, "", true)
-	_mesh(site, "Flagpole finial", _sphere_mesh(0.09), Transform3D(Basis(), Vector3(40.3, 6.05, 67.2)), _mat(GOLD))
-	_box(site, "Flagpole base", Vector3(40.3, 0.05, 67.2), Vector3(0.5, 0.1, 0.5), STONE, false)
-	var flag := _box(site, "Flag", Vector3(40.3 - 0.7, 5.45, 67.2), Vector3(1.3, 0.8, 0.03), Color("82a9bf"), false, "flag")
+	var fx := flag_at.x
+	var fz := flag_at.y
+	_cyl(site, "Flagpole", Vector3(fx, 3.0, fz), 0.05, 6.0, TRIM, "", true)
+	_mesh(site, "Flagpole finial", _sphere_mesh(0.09), Transform3D(Basis(), Vector3(fx, 6.05, fz)), _mat(GOLD))
+	_box(site, "Flagpole base", Vector3(fx, 0.05, fz), Vector3(0.5, 0.1, 0.5), STONE, false)
+	var flag := _box(site, "Flag", Vector3(fx - 0.7, 5.45, fz), Vector3(1.3, 0.8, 0.03), Color("82a9bf"), false, "flag")
 	_box(flag, "Flag band", Vector3(0, 0, 0), Vector3(1.3, 0.2, 0.05), TRIM, false)
 
 # --- Helpers ----------------------------------------------------------------------------------

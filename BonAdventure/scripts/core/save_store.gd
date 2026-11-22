@@ -28,6 +28,10 @@ const PROFILE_FILES: Array[String] = [
 	"player_place.json",
 	# Minigame levels and stars (game_progress.gd, 18 Nov 2026).
 	"game_progress.json",
+	# Achievements, town stamps and XP (achievements.gd, 21 Nov 2026).
+	"achievements.json",
+	# Town missions (missions.gd, 21 Nov 2026).
+	"missions.json",
 ]
 
 ## The active profile's folder ("user://profiles/p1"), or "" for the old flat layout.

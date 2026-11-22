@@ -22,13 +22,17 @@ extends Node
 ##      else how many are left (library.left_one / left_many), with "OK" and "I'll help later"
 ##      (library.later: the books go away, library.stopped). Rosa does not check the shelves.
 ##   5. The game ends by itself once every book is on a gap of its own category (after the last
-##      flourish): library.perfect plus a reminder of one book from this cart ("the book
-##      «Pizza» goes on the Food shelf").
-##   6. Replenish (user, 17 Nov 2026): the sorted books stay on their shelves and the cart stays
-##      empty for REPLENISH_SECONDS of play (an assumption: about 5 real minutes; the game clock
-##      does not advance, game_clock.gd). Meanwhile Rosa shows no "!" and says library.all_back.
-##      Then the shelved books are "borrowed" (they leave the gaps), a new cart fills and Rosa
-##      offers again. Runtime only, nothing saved.
+##      flourish): the camera zooms in on Rosa, who says library.perfect (user, 21 Nov 2026: the
+##      "Remember: the book ... goes on the ... shelf" recap was removed); the zoom goes back when
+##      the line closes. Then the shared results screen (results_flow.gd, for every game):
+##      "Books Sorted!", the words practiced and discovered, Continue exploring / Play again
+##      (the host's launch(): _start() fills a fresh cart, no walking away needed).
+##   6. Replenish (user, 17 Nov 2026; 21 Nov 2026: once the player has walked away, no timer):
+##      the sorted books stay on their shelves and the cart stays empty until the player is
+##      farther than the host's call_distance from Rosa with the cart and the books out of view.
+##      Meanwhile Rosa shows no "!" and says library.all_back. Then the shelved books are
+##      "borrowed" (they leave the gaps), a new cart of 3-6 random books fills and Rosa offers
+##      again when the player comes back. Runtime only, nothing saved.
 ##   7. Practice (user, 17 Nov 2026): a book's first placement in a cart is one question testing
 ##      its topic word and its category's word (BOOK_WORDS and CATEGORIES in library.gd), opened
 ##      when the book is first taken in the hand (practice_log.gd: right shelf positive, wrong
@@ -57,15 +61,19 @@ const SHELVED := Transform3D(Basis(Vector3.UP, PI / 2), Vector3(0, 0, Book.PICTU
 ## The right-shelf flourish: slide in from this far out, hop this high (the sparks:
 ## success_burst.gd).
 const SLIDE := .14
-const HOP := .07
+## Slightly bigger and more obvious than the shared default (user, 21 Nov 2026): a higher hop, a
+## little swell of the book, and more, larger, longer-lived sparks.
+const HOP := .1
+const SWELL := 1.08
+const SPARK_SCALE := 1.35
+const SPARK_COUNT := 16
+const SPARK_SECONDS := .75
 ## The wrong-shelf wobble: this far to each side, this many swings, seconds per swing.
 const WOBBLE := .035
 const WOBBLES := 3
 const WOBBLE_SWING := .07
 ## Seconds from the last right book to Rosa's thanks (the slide and hop take .41 s).
 const FINISH_DELAY := .5
-## Seconds of play after a perfect cart before the shelved books are borrowed and a new cart fills.
-const REPLENISH_SECONDS := 300.0
 
 var host
 var playing := false
@@ -81,8 +89,8 @@ var rng := RandomNumberGenerator.new()
 var met := false
 ## The last book is home and Rosa's thanks are on the way.
 var _finishing := false
-## Seconds left before the sorted books are borrowed (> 0 only after a perfect cart).
-var resting := 0.0
+## After a perfect cart: the sorted books stay until the player walks away (_walked_away()).
+var resting := false
 ## Books whose first placement in this cart has been recorded, and the one with an open question.
 var _asked: Array = []
 var _asking: Node3D
@@ -132,7 +140,7 @@ func activity_running() -> bool:
 
 ## Rosa calls only while she has a cart to offer (none while the sorted books rest on the shelves).
 func _host_near(distance: float) -> bool:
-	return resting <= 0.0 and distance < float(host.spec.call_distance)
+	return not resting and distance < float(host.spec.call_distance)
 
 ## Rosa's line is on screen (the game itself goes on around the library while she is quiet).
 func busy() -> bool:
@@ -149,7 +157,7 @@ func _start() -> void:
 		push_error("library: return cart or collection missing")
 		return
 	met = true
-	resting = 0.0
+	resting = false
 	_asked.clear()
 	playing = true
 	_finishing = false
@@ -175,7 +183,7 @@ func _on_cart(book: Node3D) -> bool:
 
 ## The rest is over: the sorted books are borrowed, a new cart fills and Rosa offers again.
 func replenish() -> void:
-	resting = 0.0
+	resting = false
 	_fill_cart()
 	host.offered = true
 
@@ -183,7 +191,7 @@ func replenish() -> void:
 ## During the game she says what is left (she never checks the shelves).
 func _host_talk(_talker: Node3D) -> bool:
 	if not playing:
-		if resting > 0.0:
+		if resting:
 			host.say("library.all_back")
 		elif not host.gate():
 			host.offer("" if not met else "library.greeting_again")
@@ -219,6 +227,7 @@ func _on_talk_closed(line_id: String) -> void:
 	if line_id == "library.start" and playing:
 		_say_later.call_deferred("library.start_signs")
 
+
 func _say_later(id: String) -> void:
 	if playing and not host.dialogue_panel.is_dialogue_visible():
 		host.say(id)
@@ -239,31 +248,37 @@ func _number(n: int) -> Dictionary:
 	var lexicon = host.lexicon
 	return {lexicon.foreign: lexicon.number(n, lexicon.foreign, true), lexicon.native: lexicon.number(n, lexicon.native, true)}
 
-## Every book is home: after the last flourish, Rosa thanks the player and recalls one book.
+## Every book is home: after the last flourish, the camera zooms in on Rosa and she thanks the
+## player (the zoom goes back when her line closes, minigame_host.gd). A line a session says by
+## itself does not zoom; only the player starting a talk does (minigame_host.gd _on_talk).
 func _finish() -> void:
 	if not playing or _left() > 0:
 		_finishing = false
 		return
 	playing = false
 	_finishing = false
-	resting = REPLENISH_SECONDS
+	resting = true
 	host.offered = false
-	var book: Node3D = books[rng.randi_range(0, books.size() - 1)]
-	var lexicon = host.lexicon
-	var line := {}
-	for slot in ["foreign", "native"]:
-		var lang: String = lexicon.foreign if slot == "foreign" else lexicon.native
-		var values := {"title": SignLanguage.say(str(book.get_meta("book_title")), lang),
-				"shelf": SignLanguage.say(_shelf_sign(str(book.get_meta("library_category"))), lang).capitalize()}
-		line[slot] = lexicon.phrase("library.perfect", lang) + " " + lexicon.phrase("library.recap", lang, values)
-	host.show_line("library.perfect", line)
+	# The board's "completed" (missions, achievements, the results screen; 21 Nov 2026).
+	Board.shared().complete(ACTIVITY)
+	host.zoom(true)
+	host.say("library.perfect")
 
-## The sign (English key) on `category`'s bookcase header.
-func _shelf_sign(category: String) -> String:
-	for entry in Library.CATEGORIES:
-		if entry[0] == category:
-			return str(entry[1])
-	return category.to_upper()
+## The player has left the sorted books behind: farther than Rosa's call distance, with the cart
+## and this game's books off screen, so the new cart never fills in front of them.
+func _walked_away() -> bool:
+	var player: Node3D = host.player
+	if not is_instance_valid(player) or host.npc.global_position.distance_to(player.global_position) <= float(host.spec.call_distance):
+		return false
+	var view := get_viewport().get_camera_3d()
+	if view == null:
+		return true
+	if cart != null and view.is_position_in_frustum(cart.global_position + Vector3.UP * .8):
+		return false
+	for book in books:
+		if is_instance_valid(book) and book.is_inside_tree() and view.is_position_in_frustum(book.global_position):
+			return false
+	return true
 
 ## A language change in Settings: the game ends; Rosa's name follows the new languages.
 func end_activity() -> void:
@@ -282,10 +297,8 @@ func _process(delta: float) -> void:
 	if host == null:
 		return
 	_watch_hand()
-	if resting > 0.0:
-		resting -= delta
-		if resting <= 0.0:
-			replenish()
+	if resting and not busy() and _walked_away():
+		replenish()
 	host.tick(delta)
 
 # --- Practice -------------------------------------------------------------------------------
@@ -411,12 +424,22 @@ func _celebrate(book: Node3D) -> void:
 	tween.tween_property(book, "position", home, .16).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	tween.tween_property(book, "position", home + Vector3(0, HOP, 0), .11).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	tween.tween_property(book, "position", home, .14).set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
+	# The swell stops touching the book once it is taken from the gap again (the hand sets its size).
+	var size := book.scale
+	var gap := book.get_parent()
+	var grow := func(k: float) -> void:
+		if is_instance_valid(book) and book.get_parent() == gap:
+			book.scale = size * k
+	var swell := book.create_tween()
+	swell.tween_interval(.16)
+	swell.tween_method(grow, 1.0, SWELL, .11).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	swell.tween_method(grow, SWELL, 1.0, .18).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
 	_sparks(book.get_parent() as Node3D)
 
 func _sparks(gap: Node3D) -> void:
 	# The shared burst (success_burst.gd, moved out of here 21 Nov 2026), in the gap's frame and size.
 	var centre := Vector3(0, Book.PICTURE.y * .6, -.02)
-	SuccessBurst.sparks(gap, gap.global_transform * Transform3D(Basis(), centre), gap.global_basis.get_scale().x)
+	SuccessBurst.sparks(gap, gap.global_transform * Transform3D(Basis(), centre), gap.global_basis.get_scale().x * SPARK_SCALE, SPARK_COUNT, SPARK_SECONDS)
 
 ## Removes this game's books (from the cart, the shelves and the hand).
 func _clear_books() -> void:

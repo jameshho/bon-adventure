@@ -5,6 +5,9 @@ extends Control
 ## scales with the window). It opens object_inspector.gd on the held item; while inspecting the
 ## same spot shows a close button, and Esc (popup stack), E (input claim) or a tap on it
 ## closes. Player movement and word clicks are off while inspecting (Main.sync_player_controls).
+## An item whose hold profile says "auto" (books, user 21 Nov 2026) opens by itself when the
+## player picks it up (hand_hold.gd picked_up), after the profile's "delay"; with "tap_close" a
+## press anywhere closes it and there is no ✕.
 
 const Inspector := preload("res://scripts/player/object_inspector.gd")
 const UiIcons := preload("res://scripts/ui/ui_icons.gd")
@@ -15,6 +18,8 @@ var hand: Node3D
 var inspector: Node
 var inspect_button: Button
 var close_button: Button
+## The open inspection closes on a press anywhere (its profile's "tap_close"; no ✕ then).
+var tap_close := false
 
 func setup(game: Node) -> void:
 	main = game
@@ -35,6 +40,12 @@ func setup(game: Node) -> void:
 	game.interaction.claim("inspect", inspecting, close_inspection)
 	inspector.closed.connect(func(_item): _refresh(); main.sync_player_controls())
 	hand.held_changed.connect(func(_item): _refresh())
+	hand.picked_up.connect(_on_picked_up)
+	# A game taking the inspected item out of the hand (placing a book, clearing a game) ends the
+	# close-up at once, so the item is in the hand again to be released.
+	hand.releasing.connect(func(item):
+		if inspector.is_open() and inspector.item == item:
+			inspector.close_now())
 	get_viewport().size_changed.connect(_layout)
 	_layout()
 	_refresh()
@@ -45,15 +56,40 @@ func inspecting() -> bool:
 func open_inspection() -> void:
 	if not hand.is_holding() or inspector.is_open():
 		return
-	if inspector.open(hand.held, main.camera, hand.inspect_options()):
+	var options: Dictionary = hand.inspect_options()
+	if inspector.open(hand.held, main.camera, options):
+		tap_close = bool(options.get("tap_close", false))
 		main.sync_player_controls()
 		_refresh()
+
+## The player picked `item` up: an "auto" item opens after its delay, while it is still in the
+## hand and nothing covers the screen.
+func _on_picked_up(item: Node3D) -> void:
+	var options: Dictionary = hand.inspect_options()
+	if not bool(options.get("auto", false)):
+		return
+	var delay := float(options.get("delay", 0.0))
+	if delay > 0.0:
+		await get_tree().create_timer(delay).timeout
+	if is_instance_valid(item) and hand.held == item and not _covered():
+		open_inspection()
 
 func close_inspection() -> void:
 	inspector.close()
 	_refresh()
 
 ## Mouse and keys go to the inspector's modes first (none yet: rotating, opening ... later).
+## A tap_close inspection: any press (mouse button or touch), on a button or not, or Esc closes
+## it and does nothing else.
+func _input(event: InputEvent) -> void:
+	if not tap_close or not inspector.is_open():
+		return
+	var press: bool = (event is InputEventMouseButton and event.pressed) or (event is InputEventScreenTouch and event.pressed)
+	# Esc too: the popup stack only knows the ✕, which is hidden here.
+	if press or event.is_action_pressed("ui_cancel"):
+		close_inspection()
+		get_viewport().set_input_as_handled()
+
 func _unhandled_input(event: InputEvent) -> void:
 	if inspector.is_open() and inspector.handle_input(event):
 		get_viewport().set_input_as_handled()
@@ -63,12 +99,15 @@ func _process(_delta: float) -> void:
 
 func _refresh() -> void:
 	var open: bool = inspector.is_open()
-	# The money panel covers it too (user, 18 Nov 2026: no Inspect while paying).
-	var paying: bool = main.get("money_panel") != null and main.money_panel.visible
-	var covered: bool = hud.is_map_open() or hud.is_journal_open() or hud.is_help_open() or paying
-	inspect_button.visible = hand.is_holding() and not open and not covered and not _under_dialogue(inspect_button)
-	close_button.visible = open
+	inspect_button.visible = hand.is_holding() and not open and not _covered() and not _under_dialogue(inspect_button)
+	close_button.visible = open and not tap_close
 	set_process(hand.is_holding() or open)
+
+## The map, journal, help or money panel is open (the money panel: user, 18 Nov 2026, no
+## Inspect while paying).
+func _covered() -> bool:
+	var paying: bool = main.get("money_panel") != null and main.money_panel.visible
+	return hud.is_map_open() or hud.is_journal_open() or hud.is_help_open() or paying
 
 func _under_dialogue(button: Control) -> bool:
 	if not hud.cluster_cover.is_valid():

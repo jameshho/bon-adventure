@@ -16,6 +16,20 @@ in the game's learning card, and keep the details of rules and code in the linke
 Word lists are **not** written here: [words.md](words.md) is generated from the game data by
 `tools/vocabulary_report.gd -- --write`, and `data/words.json` stays the only word source.
 
+## After a game
+
+*Since 21 Nov 2026 (user design).* When a learning game is finished (not left early), a results
+card follows the character's thanks: a title for that game (*Case Closed!*, *Books Sorted!*…), one
+line of what you did, the words you **practiced** and **discovered for the first time** (up to
+four, new and tricky ones first, "See all" for the rest), and a town mission it completed with its
+XP. No scores or percentages; a replay with no new words says *Great Practice!* instead of "0 new
+words". Buttons: **Continue exploring** and **Play again**. Details:
+[MINIGAMES.md → Results screen](../guides/MINIGAMES.md#results-screen).
+
+<img src="../evidence/results-screen-20261121/results-laptop.png" width="480" alt="Results card">
+
+*Screenshot 21 Nov (a test card with every part shown).*
+
 ## How games get harder
 
 *Approved by the user on 18 Nov 2026; built for Grocery Run (and Pay Up! until it became Grocery
@@ -327,8 +341,10 @@ the NEW BOOKS display**
 
 Three to six books wait on the return cart. Take each one to a gap in the shelf for its category
 (animals, sports, music, food, vehicles, plants): the right shelf sparkles, a wrong one wobbles the
-book back into your hand. When every book is home Rosa thanks you and recalls one book's shelf; a
-few minutes later the books are borrowed and a new cart arrives. Tracked: each book's first try.
+book back into your hand. Picking a book up zooms in on its cover (tap anywhere to close). When
+every book is home the camera turns to Rosa, who thanks you, then the results card shows the words
+practiced and discovered; once you have
+walked away the books are borrowed and a new cart of 3–6 arrives. Tracked: each book's first try.
 [Design](../guides/TOWN_DESIGN_BRIEF.md#library-return-cart-and-book-sorting-game--13-november-2026)
 
 | Learning card | |
@@ -336,7 +352,7 @@ few minutes later the books are borrowed and a new cart arrives. Tracked: each b
 | Purpose | Book topics (dogs, pizza, guitar…) and the six category words (animal, sport, music, food, vehicle, plant; 3 books each) by sorting returned books. |
 | Words | [Generated list](words.md#library-helper) |
 | Tracked in the journal | Yes (17 Nov): a book's first placement in a cart tests its topic word and its category word |
-| Session | One cart of 3–6 books; the next cart about 5 minutes after a perfect one |
+| Session | One cart of 3–6 books; the next cart once the player has walked away from a perfect one (21 Nov) |
 | Progression | Designed 18 Nov, not built: L1 3 books · L2 4–5 books · L3 6 books · L4 plain spines, so the colours no longer match the shelves (user idea, 17 Nov 2026) |
 
 ## Next, Please!

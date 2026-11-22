@@ -19,4 +19,7 @@ func _ready() -> void:
 ## E, a click or a tap: flushes the toilet this control belongs to. Returns true when a flush starts.
 func use() -> bool:
 	var toilet := get_parent().get_parent()
-	return toilet != null and toilet.has_method("flush") and toilet.flush()
+	var flushed: bool = toilet != null and toilet.has_method("flush") and toilet.flush()
+	if flushed:
+		preload("res://scripts/learning/achievements.gd").shared().note("flush_toilet")
+	return flushed

@@ -93,6 +93,12 @@ help is open, or under the dialogue box, and it stays available in minigames.
 - Movement and word clicks are off meanwhile (`Main.sync_player_controls`). The button becomes a
   ✕; the ✕, Esc (popup stack) or E (input claim `inspect`) closes, and the item glides back into
   the hand.
+- Profile options (user, 21 Nov 2026, books): `auto` opens the close-up by itself `delay` s after
+  the player picks the item up (`hand_hold.gd` signal `picked_up`, emitted by `toggle()` only, so
+  a game putting an item into the hand does not zoom); `seconds` and `gentle` (ease in and out)
+  set the glide; `tap_close` hides the ✕ and a press anywhere (mouse or touch, on a button or
+  not), Esc or E closes. When a game takes the inspected item out of the hand (`release()`, signal
+  `releasing`), the close-up ends at once (`object_inspector.gd close_now()`). Books: no delay (the zoom starts with the E press; 21 Nov 2026, user), a 0.75 s gentle glide, tap to close.
 
 ### Extending the inspector
 

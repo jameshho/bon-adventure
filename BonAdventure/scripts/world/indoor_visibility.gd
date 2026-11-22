@@ -232,10 +232,11 @@ func _work() -> void:
 		var job: Array = _jobs[0]
 		if job[0] == "batch":
 			var chunk: Dictionary = _chunks[job[1]]
-			var batch: MultiMeshInstance3D = chunk.node
-			if not is_instance_valid(batch):
+			# Check before the typed assignment: assigning a freed node to a typed variable errors.
+			if not is_instance_valid(chunk.node):
 				_jobs.pop_front()
 				continue
+			var batch: MultiMeshInstance3D = chunk.node
 			var instances := batch.multimesh
 			var end := mini(job[2] + 400, instances.instance_count)
 			var pose := batch.global_transform
@@ -345,9 +346,10 @@ func _touches(box: AABB) -> bool:
 
 
 func _mover_box(chunk: Dictionary) -> AABB:
-	var node: Node3D = chunk.node
-	if not is_instance_valid(node):
+	# A mover may be freed (a collected stamp coin): check before the typed assignment.
+	if not is_instance_valid(chunk.node):
 		return AABB()
+	var node: Node3D = chunk.node
 	return AABB(node.global_position - Vector3.ONE * MOVER_REACH, Vector3.ONE * MOVER_REACH * 2.0)
 
 
@@ -367,8 +369,8 @@ func _decide() -> void:
 			seed = _touches(_mover_box(chunk))
 		elif chunk.batch:
 			# A batch with a piece no object owns (a huge or deep node) is never hidden.
-			var batch: MultiMeshInstance3D = chunk.node
-			seed = not is_instance_valid(batch) or chunk.claimed < batch.multimesh.instance_count
+			seed = not is_instance_valid(chunk.node) \
+				or chunk.claimed < (chunk.node as MultiMeshInstance3D).multimesh.instance_count
 		else:
 			seed = not chunk.ready or _touches(chunk.box)
 		if seed:
@@ -385,9 +387,9 @@ func _decide() -> void:
 
 
 func _apply(chunk: Dictionary) -> void:
-	var node: Node3D = chunk.node
-	if not is_instance_valid(node):
+	if not is_instance_valid(chunk.node):
 		return
+	var node: Node3D = chunk.node
 	var hide: bool = _hiding and chunk.want
 	if hide != chunk.hidden and chunk.toggle:
 		chunk.hidden = hide

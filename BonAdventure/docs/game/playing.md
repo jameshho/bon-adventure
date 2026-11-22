@@ -159,6 +159,26 @@ when you arrive or with its ✕. The ▶ game picker has **Go there** next to Pl
 instead of jumping to it. The picture is made once by a tool, not drawn live, so it costs nothing
 while closed (18 Nov; [how it works](../guides/MINIGAMES.md#town-map-and-guide-arrow)).
 
+## Passport: missions, stamps and achievements
+
+<img src="../evidence/passport-missions-20261121/missions-one-done.png" width="480" alt="Passport missions page with one mission done">
+
+*Screenshot 21 Nov; also [stamps](../evidence/stamps-page-20261122/stamps-1280x800.png) (22 Nov),
+[exploration](../evidence/passport-missions-20261121/exploration.png),
+[diary](../evidence/passport-missions-20261121/exploration-diary.png) and
+[map stars](../evidence/passport-missions-20261121/map-mission-stars.png).*
+
+The Passport button (top right, left of the map) opens three pages. **Missions**: three small jobs,
+each a minigame asked for by its character ("Help Rosa return the missing books!") with its XP and
+**Go there** (the guide arrow); a new player gets Spot the Suspect, Library Helper and Desk Dash. A
+finished one turns grey and a new mission comes 10 minutes later. Active missions have a gold star on
+the town map. Missions are optional and each rewards on its own. **Town stamps**: floating gold coins
+hidden in 18 buildings ([where](../guides/ACHIEVEMENTS.md#where-the-coins-are)): some need a little
+work, like opening the bank's safe, finding the supermarket's storage room or climbing the ladder up the
+chapel's bell tower, where the bell rings when used ([picture](../evidence/stamp-places-20261121/chapel-belfry.png)). **Exploration**: every activity, minigame and mission
+with a tick when done, plus a diary of the latest ones (21 Nov;
+[how it works](../guides/ACHIEVEMENTS.md)).
+
 ## Getting around
 
 <img src="../evidence/vehicle-boarding-20261029/5-driven-out.png" width="480" alt="Driving a car">

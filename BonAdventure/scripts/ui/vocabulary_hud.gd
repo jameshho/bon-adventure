@@ -128,6 +128,12 @@ var _pulse_time := 0.0
 ## the cluster is 2 x the old 60 px corner button, the top-right peek badge and gear 1.5 x.
 const CLUSTER_SCALE := 2.0
 const TOP_SCALE := 1.5
+## The peek badge ("EN") and the gear only (user, 21 Nov 2026): 10 % bigger than the other top
+## buttons, and held further in from the right edge (TOP_INSET px x the HUD factor, at least
+## TOP_INSET_MIN) so a phone's rounded corner does not clip them; the second row lines up with them.
+const TOP_BIG := 1.1
+const TOP_INSET := 30.0
+const TOP_INSET_MIN := 20.0
 var map_button: Button
 var help_button: Button
 ## The minimap's side in px (town_minimap.gd side_for()), for what sits under it.
@@ -550,7 +556,10 @@ func _layout_hud() -> void:
     popup_panel.position = (viewport_size - popup_panel.size) * 0.5
     bookmark_star.custom_minimum_size = Vector2(72, 72) * f
     bookmark_star.size = bookmark_star.custom_minimum_size
-    var corner: float = top_button_size()
+    var corner: float = top_corner_size()
+    var right: float = top_right_inset()
+    settings_button.position = Vector2(viewport_size.x - corner - right, 10.0)
+    peek_button.position = Vector2(settings_button.position.x - corner - 10.0, 10.0)
     for button in [settings_button, peek_button]:
         size_corner_button(button, Rect2(button.position, Vector2(corner, corner)))
     size_corner_button(bookmark_button, top_slot(0))
@@ -559,8 +568,6 @@ func _layout_hud() -> void:
     size_corner_button(map_button, top_slot(2))
     size_corner_button(help_button, bottom_slot(3))
     peek_button.add_theme_font_size_override("font_size", roundi(corner * 0.36))
-    settings_button.position = Vector2(viewport_size.x - corner - 12.0, 10.0)
-    peek_button.position = Vector2(settings_button.position.x - corner - 10.0, 10.0)
     fps_label.position = Vector2(peek_button.position.x - 120.0, 16)
     bookmark_star.position = popup_panel.position + Vector2(popup_panel.size.x - bookmark_star.size.x - 12.0 * f, 12.0 * f)
     # The place and words found sit under the minimap (10 Nov 2026; were bottom right).
@@ -800,6 +807,14 @@ func _hud_factor() -> float:
 func top_button_size() -> float:
     return roundf(clampf(60.0 * TOP_SCALE * _hud_factor(), 52.0, 60.0 * TOP_SCALE * 2.0))
 
+## The peek badge and gear: top_button_size() x TOP_BIG (user, 21 Nov 2026).
+func top_corner_size() -> float:
+    return roundf(top_button_size() * TOP_BIG)
+
+## Gap between the top-right buttons and the window's right edge (a phone's rounded corner).
+func top_right_inset() -> float:
+    return 12.0 + maxf(TOP_INSET_MIN, TOP_INSET * _hud_factor())
+
 ## Slot `index` of the bottom-right 2 x 2 cluster, all one size (120 px at 1100 x 800):
 ## 0 the journal (bottom right), 1 the map (left of it), 2 the minigame picker (above the
 ## journal), 3 help (above the map).
@@ -818,7 +833,9 @@ func bottom_slot(index: int) -> Rect2:
 func top_slot(index: int) -> Rect2:
     var view: Vector2 = get_viewport().get_visible_rect().size
     var corner: float = top_button_size()
-    return Rect2(Vector2(view.x - corner - 12.0 - index * (corner + 10.0), 10.0 + corner + 10.0), Vector2(corner, corner))
+    # Right-aligned under the bigger gear / peek badge above it (21 Nov 2026).
+    var big: float = top_corner_size()
+    return Rect2(Vector2(view.x - corner - top_right_inset() - index * (big + 10.0), 10.0 + big + 10.0), Vector2(corner, corner))
 
 ## The touch jump button in the bottom-right corner, 25% bigger than a cluster button (14 Nov
 ## 2026, user); E stands above it (touch_controls.gd) and Inspect left of it (hold_inspect_ui.gd).
@@ -908,6 +925,7 @@ func toggle_bookmark(key: String) -> void:
         bookmarks.erase(key)
     else:
         bookmarks[key] = true
+        preload("res://scripts/learning/achievements.gd").shared().note("save_word")
     VocabularyProgress.save_bookmarked_words(bookmarks, bookmark_vocabulary, bookmark_aliases)
     if is_journal_open():
         journal_book.refresh_rows()

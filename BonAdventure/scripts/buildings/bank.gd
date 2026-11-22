@@ -3,7 +3,7 @@ extends RefCounted
 ## bank unit (scenes/town/bank.scn).
 ## Bake:  godot --headless --path . --script res://tools/bake_unit.gd -- bank
 ## Never rename or remove a baked step (add a new one that undoes it).
-const STEPS := ["coplanar_gaps", "coplanar_gaps_2", "glass_windows", "palette_interior", "shared_doors", "door_labels", "atm_art", "vault_art", "chair_backs"]
+const STEPS := ["coplanar_gaps", "coplanar_gaps_2", "glass_windows", "palette_interior", "shared_doors", "door_labels", "atm_art", "vault_art", "chair_backs", "vault_safe"]
 
 ## Faces that shared a plane and flickered are set apart (10 Nov 2026,
 ## scripts/buildings/coplanar_gaps.gd).
@@ -318,3 +318,78 @@ func chair_backs(town: Node3D, game) -> void:
 			continue
 		for mesh: MeshInstance3D in back.find_children("*", "MeshInstance3D", false, false):
 			mesh.material_override = game.material_for(Palette.accent("sky", SKY_LIGHT))
+
+## The round vault door becomes a wall safe that opens (user, 21 Nov 2026: "make the safe openable,
+## add a short animation to it as it opens"; the Bank's town stamp coin waits inside it,
+## data/achievements.json). A steel drum stands out of the vault's back wall (z 51.72 to the wall
+## at 52.38, the hole 1.08 across); the old door, wheel and four bolts move onto its mouth and hang
+## on a pivot at the hinge side (x 30.52); the door gets a solid disc (it had only a pick area).
+## The pivot is an ordinary hinged door of door_animator.gd (E, click or tap) whose door_state
+## also names the wheel: opening, the wheel turns three quarters first, then the door swings out
+## into the vault (to -z); closing, both together. The coin's "gate" is this pivot
+## (stamp_coin.gd collects only while it is open).
+const SAFE_CENTRE := Vector3(29.4, 1.5, 51.65)
+const SAFE_HINGE_X := 30.52
+const SAFE_DEPTH := Vector2(51.72, 52.38)
+const SAFE_HOLE := 1.08
+
+func vault_safe(town: Node3D, game) -> void:
+	var bank := _bank(town)
+	var door := bank.get_node_or_null("Vault door") as Node3D
+	if door == null:
+		push_error("bank vault_safe: no Vault door")
+		return
+	var pivot := Node3D.new()
+	pivot.name = "Vault safe door"
+	bank.add_child(pivot, true)
+	pivot.owner = bank.owner
+	pivot.position = Vector3(SAFE_HINGE_X, 0.0, SAFE_CENTRE.z)
+	var shift := Vector3(0, 0, SAFE_CENTRE.z - door.position.z)
+	for title in ["Vault door", "Vault wheel", "Vault bolt", "Vault bolt2", "Vault bolt3", "Vault bolt4"]:
+		var part := bank.get_node_or_null(title) as Node3D
+		if part == null:
+			continue
+		part.position += shift
+		part.reparent(pivot, true)
+	# The old round door was decoration (only its word-pick area): now solid, swinging with it.
+	var body := StaticBody3D.new()
+	body.name = "Vault door body"
+	door.add_child(body, true)
+	var disc_shape := CollisionShape3D.new()
+	var cylinder := CylinderShape3D.new()
+	cylinder.radius = 1.12
+	cylinder.height = 0.16
+	disc_shape.shape = cylinder
+	disc_shape.rotation_degrees = Vector3(90, 0, 0)
+	body.add_child(disc_shape)
+	var wheel := pivot.get_node_or_null("Vault wheel") as Node3D
+	pivot.set_meta("door_state", {"open": false, "type": "hinge", "angle": -1.5,
+			"spin": "Vault wheel" if wheel != null else "", "spin_angle": TAU * 0.75})
+	# The drum: 16 iron staves round the hole, a dark back plate, a lip ring on the front.
+	var drum := Node3D.new()
+	drum.name = "Vault safe drum"
+	bank.add_child(drum, true)
+	drum.owner = bank.owner
+	drum.position = Vector3(SAFE_CENTRE.x, SAFE_CENTRE.y, (SAFE_DEPTH.x + SAFE_DEPTH.y) * 0.5)
+	var depth := SAFE_DEPTH.y - SAFE_DEPTH.x
+	var staves := 16
+	var stave_w := TAU * (SAFE_HOLE + 0.06) / staves + 0.02
+	for k in staves:
+		var a := TAU * (k + 0.5) / staves
+		var at := Vector3(cos(a), sin(a), 0) * (SAFE_HOLE + 0.06)
+		var stave := _box(drum, game, "Safe stave", at, Vector3(stave_w, 0.12, depth), Palette.IRON)
+		stave.transform = Transform3D(Basis(Vector3.BACK, a + PI / 2.0), at)
+	var back := CylinderMesh.new()
+	back.top_radius = SAFE_HOLE + 0.02
+	back.bottom_radius = SAFE_HOLE + 0.02
+	back.height = 0.04
+	back.radial_segments = 32
+	_piece(drum, game, "Safe back plate", Vector3(0, 0, depth * 0.5 - 0.04), back, Color("2a3238"), Vector3(90, 0, 0))
+	var lip := TorusMesh.new()
+	lip.inner_radius = SAFE_HOLE - 0.01
+	lip.outer_radius = SAFE_HOLE + 0.17
+	lip.rings = 32
+	_piece(drum, game, "Safe lip", Vector3(0, 0, -depth * 0.5 + 0.01), lip, Palette.TRIM, Vector3(90, 0, 0))
+	# A small velvet shelf for the coin (the drum's lowest staves are its floor).
+	_piece(drum, game, "Safe shelf", Vector3(0, -SAFE_HOLE + 0.12, 0.05), game.shared_box_mesh(Vector3(1.1, 0.04, depth - 0.12)), Color("8c2f39"))
+	print("BANK vault_safe: pivot at %s, wheel %s, drum %d staves" % [pivot.position, wheel != null, staves])
