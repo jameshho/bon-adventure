@@ -93,12 +93,12 @@ func run() -> void:
 	var toward := func(light: DirectionalLight3D) -> float:
 		return (cycle.sky_disc.global_position - camera.global_position).normalized().dot(light.global_basis.z)
 	check(cycle.sky_disc.visible and toward.call(cycle.sun) > 0.99, "noon: the disc sits where the light comes from (dot %.3f)" % toward.call(cycle.sun))
-	check(cycle.disc_material.albedo_color.is_equal_approx(Color("ffe271")) and cycle.cloud_materials[0].albedo_color.is_equal_approx(Color.WHITE), "noon: yellow sun, white clouds")
+	check(Color(cycle.disc_material.get_shader_parameter("disc_color")).is_equal_approx(Color("ffe271")) and cycle.cloud_materials[0].albedo_color.is_equal_approx(Color.WHITE), "noon: yellow sun, white clouds")
 	var noon_clouds: Color = cycle.cloud_materials[0].albedo_color
 	cycle.set_time(18 * 60 + 45)
 	check(cycle.sky_disc.global_position.y < camera.global_position.y, "18:45: the sun disc has set below the horizon")
 	cycle.set_time(18 * 60)
-	check(cycle.cloud_materials[0].albedo_color.b < cycle.cloud_materials[0].albedo_color.r - 0.1 and cycle.disc_material.albedo_color.g < 0.8, "18:00: orange sun, warm clouds")
+	check(cycle.cloud_materials[0].albedo_color.b < cycle.cloud_materials[0].albedo_color.r - 0.1 and Color(cycle.disc_material.get_shader_parameter("disc_color")).g < 0.8, "18:00: orange sun, warm clouds")
 	# Golden hour, sunset, night.
 	cycle.set_time(17 * 60 + 45)
 	check(cycle.sun.light_color.r > cycle.sun.light_color.b + 0.2 and cycle.sun.shadow_enabled, "golden hour: warm sun with shadows")
@@ -109,7 +109,7 @@ func run() -> void:
 	check(cycle.environment.sky.sky_material.sky_top_color.v < noon_sky.v * 0.5, "midnight: dark sky")
 	check(cycle.environment.ambient_light_energy >= 0.4, "midnight: ambient stays bright enough to navigate (%.2f)" % cycle.environment.ambient_light_energy)
 	check(cycle.lamp_materials.all(func(m): return m.emission_energy_multiplier > 1.0), "midnight: lamps on")
-	check(cycle.sky_disc.visible and toward.call(cycle.sun) > 0.99 and cycle.disc_material.albedo_color.b >= cycle.disc_material.albedo_color.r, "midnight: a pale moon where the moonlight comes from")
+	check(cycle.sky_disc.visible and toward.call(cycle.sun) > 0.99 and Color(cycle.disc_material.get_shader_parameter("disc_color")).b >= Color(cycle.disc_material.get_shader_parameter("disc_color")).r, "midnight: a pale moon where the moonlight comes from")
 	check(cycle.cloud_materials[0].albedo_color.v < noon_clouds.v * 0.7, "midnight: clouds dimmed")
 	cycle.set_time(19 * 60)
 	check(not cycle.sky_disc.visible, "19:00: no disc while the light is off (the moon fades in after)")

@@ -29,9 +29,12 @@ extends Node
 ## Extend: give any node the group NIGHT_LIGHT_GROUP before bind_town() and its meshes glow at
 ## night like the streetlights, or SKY_CLOUD_GROUP and its meshes take the clouds' tint.
 ## The sky decor follows the light too (user, 9 Nov 2026): the baked "Sky sun" disc leaves the
-## batched town and sits DISC_DISTANCE from the camera in the light's direction (the sun by day,
-## a pale moon by night; one transform write per frame), and the cloud puffs share one unshaded
-## material whose colour is a keyframe value. Neither adds a light or a draw call.
+## batched town and sits in the light's direction from the camera (the sun by day, a pale moon by
+## night; one transform write per frame), and the cloud puffs share one unshaded material whose
+## colour is a keyframe value. Neither adds a light or a draw call. Since 21 Nov 2026 (user: the
+## sun looked outdated) the disc is a soft glow (shaders/sky_disc.gdshader) on a camera-facing quad
+## just inside the camera's far limit, so all scenery covers it, and it sinks into the haze colour
+## at the horizon instead of being cut off by the nearby ground.
 
 signal time_changed(minute: int)
 signal paused_changed(paused: bool)
@@ -83,12 +86,23 @@ const LAMP_RANGE := 140.0
 const SKY_DISC_NAME := "Sky sun"
 const CLOUD_PATTERNS: Array[String] = ["Cloud puff*", "Northern sky cloud*"]
 const SKY_CLOUD_GROUP := "sky_clouds"
-## How far the disc floats from the camera, and its radius as a share of that distance
+## The sky disc floats this share of the active camera's far limit away (behind every drawn
+## object, so scenery always covers it), with a core radius of DISC_RADIUS of that distance
 ## (about the size the old fixed disc looked from the town centre).
-const DISC_DISTANCE := 150.0
-const DISC_RADIUS := 0.04
-## With a view distance (Low graphics) the disc floats at most this share of it away.
-const DISC_VIEW_SHARE := 0.8
+const DISC_SHADER := preload("res://shaders/sky_disc.gdshader")
+const DISC_FAR_SHARE := 0.9
+const DISC_RADIUS := 0.045
+## Core radius as a share of the quad's half size (the rest is halo); halo strength of the sun and
+## of the moon.
+const DISC_CORE := 0.28
+const SUN_GLOW := 0.8
+const MOON_GLOW := 0.35
+## Near the horizon (sine of the disc's elevation): it fades out between these two heights, and
+## its colour sinks this far into the haze colour below DISC_HAZE_TOP.
+const DISC_FADE_LOW := -0.04
+const DISC_FADE_HIGH := 0.02
+const DISC_HAZE_TOP := 0.25
+const DISC_HAZE := 0.4
 ## Low graphics: distance fog thickens from this share of the view distance to fully opaque at it,
 ## so the far cut is hidden in the sky-coloured haze (the fog colour follows the time of day).
 const VIEW_FOG_BEGIN_SHARE := 0.4
@@ -107,7 +121,7 @@ var sky_material: ProceduralSkyMaterial
 var lamp_materials: Array[StandardMaterial3D] = []
 ## The sun/moon disc (moved out of the town) and the clouds' shared tinted material(s).
 var sky_disc: MeshInstance3D
-var disc_material: StandardMaterial3D
+var disc_material: ShaderMaterial
 var cloud_materials: Array[StandardMaterial3D] = []
 ## 0 outdoors, 1 under a roof (blended).
 var indoor := 0.0
@@ -138,7 +152,6 @@ var _player: Node3D
 var _ray: PhysicsRayQueryParameters3D
 var _fit_ray: PhysicsRayQueryParameters3D
 var _disc_dir := Vector3.UP
-var _disc_scale := 0.0
 
 
 ## Builds the sun, sky and environment under `game` and starts at the shared "now" (game_clock.gd),
@@ -245,19 +258,20 @@ func _bind_sky(town: Node3D) -> void:
 		var found: Array = holder.find_children("*", "MeshInstance3D", true, false)
 		var disc: MeshInstance3D = holder if holder is MeshInstance3D else (found[0] if not found.is_empty() else null)
 		if disc != null and disc.mesh != null:
-			var base: Material = disc.material_override
-			disc_material = base.duplicate() if base is StandardMaterial3D else StandardMaterial3D.new()
-			disc_material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-			disc_material.disable_fog = true
+			# The baked ball becomes a soft glow on a 2 x 2 quad (half size 1).
+			var quad := QuadMesh.new()
+			quad.size = Vector2(2.0, 2.0)
+			disc_material = ShaderMaterial.new()
+			disc_material.shader = DISC_SHADER
+			disc_material.set_shader_parameter("core", DISC_CORE)
 			disc.get_parent().remove_child(disc)
 			disc.name = "Sky disc"
+			disc.mesh = quad
 			disc.material_override = disc_material
 			disc.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 			disc.visibility_range_end = 0.0
 			add_child(disc)
 			sky_disc = disc
-			var radius := float(disc.mesh.get("radius")) if disc.mesh.get("radius") != null else 1.0
-			_disc_scale = DISC_DISTANCE * DISC_RADIUS / maxf(radius, 0.01)
 		if holder != disc:
 			holder.queue_free()
 	var clouds: Array = get_tree().get_nodes_in_group(SKY_CLOUD_GROUP)
@@ -396,20 +410,23 @@ func disc_rotation(hour: float) -> Vector3:
 	return Vector3(-float(_sun_path.peak_elevation) * sin(PI * t), float(_sun_path.noon_yaw) + (hour - 12.0) * float(_sun_path.yaw_per_hour), 0.0)
 
 
-## Keeps the disc DISC_DISTANCE from the active camera, so it stays in the light's direction
-## wherever the player is. _disc_dir carries the moon's size in its length.
-func _place_disc() -> void:
-	if sky_disc == null or not sky_disc.visible:
+## Keeps the disc in the light's direction from the active camera, just inside its far limit, and
+## turned to face it. _disc_dir carries the moon's size in its length.
+## A hidden disc is only moved when `always` (by _apply(), so it is in place when it shows).
+func _place_disc(always := false) -> void:
+	if sky_disc == null or not (sky_disc.visible or always):
 		return
 	var camera := get_viewport().get_camera_3d()
 	if camera == null:
 		return
 	var size := _disc_dir.length()
+	if size < 0.001:
+		return
 	var direction := _disc_dir / size
-	# Inside a shorter view distance the disc comes closer, at the same apparent size.
-	var distance := DISC_DISTANCE if view_distance <= 0.0 else minf(DISC_DISTANCE, view_distance * DISC_VIEW_SHARE)
-	var near := distance / DISC_DISTANCE
-	sky_disc.global_transform = Transform3D(Basis.from_scale(Vector3.ONE * _disc_scale * size * near), camera.global_position + direction * distance)
+	var distance := camera.far * DISC_FAR_SHARE
+	var half_size := distance * DISC_RADIUS / DISC_CORE * size
+	var up := Vector3.UP if absf(direction.y) < 0.99 else Vector3.FORWARD
+	sky_disc.global_transform = Transform3D(Basis.looking_at(direction, up).scaled(Vector3.ONE * half_size), camera.global_position + direction * distance)
 
 
 func _apply() -> void:
@@ -444,11 +461,17 @@ func _apply() -> void:
 	for material in cloud_materials:
 		_write(material, "albedo_color", s.clouds)
 	if sky_disc != null:
-		_write(disc_material, "albedo_color", s.disc)
 		var size: float = clampf(s.moon_size, 0.0, 1.0) if _night else 1.0
-		sky_disc.visible = size > 0.01
-		_disc_dir = Basis.from_euler(disc_rotation(hour) * (PI / 180.0)).z * size
-		_place_disc()
+		var toward := Basis.from_euler(disc_rotation(hour) * (PI / 180.0)).z
+		var fade := smoothstep(DISC_FADE_LOW, DISC_FADE_HIGH, toward.y)
+		sky_disc.visible = size > 0.01 and fade > 0.0
+		_disc_dir = toward * size
+		_write(disc_material, "shader_parameter/disc_color", s.disc)
+		_write(disc_material, "shader_parameter/haze_color", s.fog_color)
+		_write(disc_material, "shader_parameter/glow", MOON_GLOW if _night else SUN_GLOW)
+		_write(disc_material, "shader_parameter/fade", fade)
+		_write(disc_material, "shader_parameter/haze", DISC_HAZE * (1.0 - smoothstep(0.0, DISC_HAZE_TOP, toward.y)))
+		_place_disc(true)
 	var level: float = clampf(s.lamps, 0.0, 1.0)
 	if absf(level - _lamp_level) > 0.004:
 		_lamp_level = level

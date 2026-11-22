@@ -103,7 +103,14 @@ baseline, made slightly softer (sun 0.62 → 0.56, ambient 0.50 → 0.54).
   (one transform write). By day it follows the sun's arc without the light's 4° floor, so
   it sinks below the horizon at dawn and dusk. At night it is a pale moon where the
   moonlight comes from, faded in and out by the `moon_size` keyframe value. Its colour is
-  the `disc` keyframe value (orange at sunrise and sunset, yellow by day). The 32 cloud
+  the `disc` keyframe value (orange at sunrise and sunset, yellow by day). **Soft sun (user,
+  21 Nov 2026: the solid ball looked outdated and sat in front of fogged buildings on Low
+  graphics).** The disc is now a soft core with a halo (`shaders/sky_disc.gdshader`, unshaded,
+  no fog) on a quad turned toward the camera at 90% of the active camera's far limit
+  (`DISC_FAR_SHARE`; the 150 m distance above is gone), so every drawn object covers it at any
+  view distance. Near the horizon it blends toward the hour's fog colour and fades out between
+  about −2° and +1° (`DISC_FADE_*`, `DISC_HAZE*`) instead of being cut by the nearby ground; the
+  moon has a smaller halo (`MOON_GLOW`). Views: `docs/evidence/soft-sun-20261121/`. The 32 cloud
   puffs share one unshaded material tinted by the `clouds` value: peach at dawn, pink at
   dusk, blue-grey at night. Neither adds a light or a draw call. Put a node in the group
   `sky_clouds` before `bind_town()` to tint it with the clouds.

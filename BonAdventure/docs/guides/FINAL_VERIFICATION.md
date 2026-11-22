@@ -7866,3 +7866,19 @@ Then (user, 18 Nov): the name was approved, and `tools/build_cjk_font.py` rebuil
 `fonts/NotoSansTC-SemiBold-subset.ttf` (1391 characters, 439 KB); `--check`: 1396 needed, 0 missing.
 
 Not run: the full suite.
+
+## Soft sun and moon — 22 November 2026
+
+Scope: the sky disc in `scripts/world/day_night.gd` and the new `shaders/sky_disc.gdshader`
+([guide](performance/README.md#day-night-cycle--9-november-2026)). User, 21 Nov 2026: the solid sun
+ball looked outdated and, on Low graphics, sat in front of fogged buildings.
+
+- `python3 tools/run_checks.py --only day_night` (full town): **65 checks, 0 failures**, labelled
+  CRASH by Godot's known exit abort (`recursive_mutex lock failed`). The first run also logged a
+  non-finite transform error when the disc had zero size; guarded and run once more: no such
+  error. Still logs 174 typed-array `has()` errors from the check's own cloud lookup (known noise).
+- Rendered views (graphics window, isolated `HOME`, `dev_focus` = all):
+  `docs/evidence/soft-sun-20261121/capture.gd` → `sheet-low.png`, `sheet-high.png` (street,
+  plaza and raised view at 06:10, 06:40, 12:00, 17:45, 18:20, 18:35, 00:00). Trees and buildings
+  now cover the sun; at 18:20 it sinks into the haze, at 18:35 only a faint glow remains; the
+  moon has a small halo. Not checked on a phone or in the web build.
