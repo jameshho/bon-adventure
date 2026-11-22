@@ -424,9 +424,12 @@ func _refresh() -> void:
 	_tray_hint.text = str(ui.get("hint", ""))
 	_tray_hint.visible = counts.is_empty() and _tray_hint.text != ""
 	_fill(_tray_flow)
-	for denom in Currency.DENOMS:
-		var count := int(counts.get(denom.id, 0))
-		if count > 0:
+	# In the order the pieces were first picked, left to right (user, 21 Nov 2026): `counts`
+	# keeps insertion order, and a denomination taken back out to 0 goes to the end next time.
+	for id in counts:
+		var denom: Dictionary = Currency.denom(str(id))
+		var count := int(counts[id])
+		if count > 0 and not denom.is_empty():
 			var piece := Piece.new()
 			piece.setup(denom, true, f * PIECE_SCALE)
 			piece.set_count(count)

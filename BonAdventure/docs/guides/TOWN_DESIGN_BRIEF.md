@@ -39,7 +39,7 @@ dated history of rules and implementation.
 | Airport control tower | **Redesigned and made walkable (user-approved: lift + stair, three levels, narrow shaft flaring only at the cabin).** Shaft 8.4 × 8.4 and 22 high, 360° glass control room 11.2 × 11.2 at the top, discreet side door; site, zone `control_tower` and terminal untouched. | Implemented 29 October 2026; see [record](#airport-control-tower--29-october-2026). No new words. Roof, wrap-around observation deck and west deck door added 12 November 2026 ([record](#control-tower-roof-and-observation-deck--12-november-2026)). |
 | Storefront exteriors | Eight fronts restyled from the user's "Propuesta de rediseño exterior" sheet: per-shop palette, awnings, wall lamps, flower boxes, icon signs (user decisions, 1 November 2026: all eight shown, the sheet's palette also on approved fronts, decorative parapets allowed, no street furniture). | Implemented 1 November 2026, no resize or collision change; see [record](#storefront-exterior-redesign--1-november-2026). |
 | Cashier money minigame | Supermarket cashier (samoyed, at the till) asks for $0.25–$300.00 in Spanish; the player counts it out from 10 bills and coins on a full-screen touch-friendly screen (user decisions, 4 November 2026). | Implemented 4 November 2026 for the supermarket cashier only; see [record](#cashier-money-minigame--4-november-2026). |
-| Bank teller game | **Next, Please!**: the bear banker at reception asks the player to cover teller window 2; plush customers come up from the queue ropes and ask for $100–$500 in words; the teller checks the balance on the window's monitor, then counts out $5 / $10 / $50 / $100 bills or declines a short account; one customer a session wants change without $100 bills (user decisions, 18 Nov 2026). **No building change**: the existing teller line, queue ropes and banker are used as built. | Built 18 Nov 2026; see [record](#bank-teller-game--18-november-2026). |
+| Bank teller game | **Next, Please!**: the bear banker at reception asks the player to cover teller window 2; plush customers come up from the queue ropes and ask for $100–$500 in words; the teller checks the balance on the window's monitor, then counts out $5 / $10 / $50 / $100 bills or declines a short account; one customer a session wants change without $100 bills (user decisions, 18 Nov 2026). Since 21 Nov 2026 (user): the monitor shows the account holder's headshot, an impostor may claim another character's account, and a police officer escorts them out ([record](#impostors-and-the-police-escort--21-november-2026)); the dialogue is simpler. **No building change**: the existing teller line, queue ropes and banker are used as built. | Built 18 Nov 2026; see [record](#bank-teller-game--18-november-2026). |
 | Hospital family game | **Dr. Li** (a woman; pig plush in the doctor outfit) outside, right of the hospital entrance, runs a family-tree question game in a 2D overlay. Decisions (4 Nov 2026): 3–4 tree templates with randomized names (foreign-language names), genders and birthdays; a fixed reference date for ages; dates shown MM/DD/YYYY with an "MM/DD/YYYY" legend under them; a gender icon per person; portraits rendered once from the plush sculpts and cached; Spanish questions with the "show translation" toggle; version 1 uses 6–8 templates; coins deferred. Words are taught by **four school posters** (family tree + couples strip on the divider's Science face; months, before/after, older/younger on the General rear wall). | Stage 1 (language framework) and Stage 2 (words, names, posters, Dr. Li placed with a name card) built 4 Nov 2026; Stage 3 (question generator, validator, overlay, Dr. Li's "!" and dialogue) not built. See [record](#hospital-family-game--4-november-2026). |
 | Airport flight game | **Capitán Bruno** (the house bear, a second copy in the pilot costume) at the information desk just right of the terminal door (moved 6 Nov 2026) gives a Spanish instruction; the player finds the one matching flight on the departure board (**board only since 7 Nov 2026**: the five-bookmark booklet was removed). Decisions (5 Nov 2026): 5 questions per session, progress counts only first-try finds, no coins; Bruno says what was wrong; leaving asks first; vocabulary summary at the end; destinations are **countries only**; MM/DD/YYYY dates, 24-hour times on :00 / :30 (no "y cuarto" / "menos cuarto"); one shared random "today" (2026–2027) also used by the family game; works with Chinese. | Built 5 Nov 2026; layout, flags and bilingual rows revised 6 Nov 2026; redesigned 7 Nov 2026 to test time expressions (board only, 4 countries, near-miss flights; [redesign](#board-only-redesign-time-expressions--7-november-2026)). See [record](#airport-flight-game--5-november-2026). |
 | Alta Cocina restaurant game | **Twinkle** (waiter) at the host stand offers it; a random seated house-character customer orders one meal (starter, main, dessert, drink); the player inspects dishes by icons, bars and a thermometer only and serves the one match. Decisions (6 Nov 2026): one customer per session, 4 orders, 1–2 requirements with light intensity, negation off, a course counts once served, no coins, code-drawn art, four wall posters, all three languages. | Built 6 Nov 2026. **Flow redesigned 11 Nov 2026 (user):** Twinkle sends the player to one of two seated customers, the order is taken on an order tablet, the customer reacts and Twinkle reports back; textures and extras removed; a menu book on a table by the host stand. Same day, second request: 2–3 courses per customer, a door question instead of walking out, Twinkle names no customer. See [record](#alta-cocina-restaurant-game--6-november-2026) and [redesign](#restaurant-game-reception-tables-and-order-tablet--11-november-2026). |
@@ -3979,3 +3979,84 @@ the other games. Purpose and progression: [learning card](../game/minigames.md#n
 - Not tracked in the journal (amounts are generated language, like Pay Up!); no rewards.
 - Check: `docs/evidence/bank-teller-20261118/verify.gd` (`bank_teller` in `tools/run_checks.py`);
   screenshots in the same folder.
+
+### Impostors and the police escort — 21 November 2026
+
+**Request (user).** The teller screen shows the name, the balance and a headshot of the
+customer. A "bad NPC" may pretend to be someone else, so the picture does not match the customer
+at the window; the player can have them escorted out of the bank by an NPC in the police
+costume. Also: some bank dialogue was too advanced; make it easier.
+
+**Built (not yet reviewed by the user in the game).**
+
+- The monitor's account screen: the owner's headshot top left (`plush_portraits.gd`, the same
+  off-screen render as the hospital family cards, on a cream card), "Cuenta de {name}" and
+  "Saldo" beside it, the balance in digits underneath.
+- One impostor at most per session, a withdrawal customer that is neither the short nor the
+  change customer, rolled with `impostor_chance` (0.75) in `data/bank_teller.json`; a session of
+  fewer than 5 customers has no room for one. The impostor claims the account of a house
+  character of another species (the photo is another animal) and the dialogue box shows the
+  claimed name; the claimed account always has enough money.
+- **Call the police** is the account screen's third choice for every customer, so only the
+  photo gives an impostor away. For an honest customer it is a mistake ("¡Pero soy yo! Mire la
+  foto."); counting cash or "not enough" for an impostor brings the banker in ("¡Espera! Mira la
+  foto. ¿Es la misma cara?"). Both are retried and the customer no longer counts.
+- Caught: the impostor owns up ("No soy {claimed}. Me llamo {name}."), the police beagle in the
+  police costume (`house_characters.gd worker()` with outfit `police`, as at the police station)
+  walks in from the door around the queue rope to stand beside window 2, and says "¡Muy bien!
+  Usted, venga conmigo, por favor."; it counts when no mistake came first. **Next** walks the
+  impostor out with the officer a step behind; both are removed at the door.
+- Easier dialogue: every `teller.*` line rewritten in short present-tense sentences (Quiero
+  {amount}. ¿Tengo suficiente? No es suficiente…), dropping idioms such as "no alcanza",
+  "alcancía llena de sueños" and "formar una banda".
+- Shared dialogue box (`shop_order_panel.gd`): the answer buttons wrap onto a second row
+  instead of running off the card (`choice_row` is an `HFlowContainer`); the monitor camera
+  aims a little lower so a two-row box leaves the balance visible.
+- Check: `docs/evidence/bank-impostor-20261121/verify.gd`, with screenshots in that folder.
+
+**Second round (user, 21 Nov 2026, after the first build).**
+
+- The monitor's words ("Cuenta de {name}", "Saldo", "Ventanilla 2") are world labels
+  (`live_labels.gd`): they follow the world language, so holding EN shows them in the native one.
+- The screen is seen on the desk: the monitor camera sits further back (`MONITOR_EYE`), with the
+  desk round the screen. A higher eye that also showed the customer put the balance under the
+  dialogue box, so instead a **camera toggle** at the top of the screen ("Ver al cliente" /
+  "Ver la pantalla", person / screen icons) switches between the screen and the customer's face
+  while the account is shown (the screen step and its mistakes).
+- "Llamar a la policía" has its own icon: a badge shield with a star (`ui_icons.gd` `police`).
+- The escort: no confession; the camera stays on the impostor while the officer walks in, then
+  the officer "Disculpe. Venga conmigo, por favor.", the impostor "¿Qué pasa?", the officer
+  "Venga conmigo ahora, por favor." (lines move on after a reading time) and **Next**.
+- A right "not enough": a close-up of the player (from behind the glass) saying "Lo siento, no
+  tiene fondos suficientes.", then the customer "¿Qué? ¡Eso es imposible!". The eight persona
+  "sad" lines were removed.
+- Reasons: `reason_chance` 0.7 in `data/bank_teller.json`; otherwise a plain ask ("Hola. Quiero
+  sacar {amount}, por favor.") and a plain thanks ("¡Genial, gracias!").
+- Money screen (shared): the tray lists the bills in the order they were first picked.
+
+
+## Stamp places: storage room, bank safe, grand chapel — 21 November 2026
+
+User request (21 Nov 2026), placing the [town stamp coins](ACHIEVEMENTS.md#where-the-coins-are):
+"supermarket, in the storage room (also add some interior to the storage room in the back and make
+the door openable) … bank behind the safe and make the safe openable, add a short animation to it as
+it opens … chapel (increase the size of the chapel. add a ladder that user can climb up to the bell
+area … also make the bell ringable … you can redesign the chapel so the top doesn't look overly big
+but still can fit the user's avatar)". Only these three buildings changed; the other 15 coins sit in
+existing rooms.
+
+| Building | Step | What changed |
+| --- | --- | --- |
+| Supermarket | `supermarket.gd` `storage_room` | The 18 Nov staff wall's closed door replaced by a working shared `door.tscn` ("Staff door", 1.3 × 2.3, swings into the room; the player capsule is 1.17 units wide). The back room (x -45.75..-20.25, z 53.3..59.6) fitted out: six bays of orange/blue pallet racking with kraft boxes, a yellow aisle line, two pallets (boxes, flour sacks), a hand truck and three ceiling lamps. No new words; shop floor unchanged |
+| Bank | `bank.gd` `vault_safe` | "The safe" = the vault's round wall door (wheel and bolts). It is now a hinge door on a pivot (`Vault safe door`, solid body added): on use the wheel turns ¾ (`door_animator.gd` `spin`), then the door swings open 86°. Behind it, a new steel drum (16 iron staves, back plate, trim lip, red velvet shelf) holds the coin, which cannot be collected while the door is shut (coin `gate`) |
+| Chapel | `chapel.gd` `grand_chapel` | Enlarged from 10 × 12 to **12.6 × 15** (same front, aisle axis and entrance path; six pew rows, five side windows a side). The roof-top tower replaced by a **ground-standing bell tower** (3.6 × 3.6, north-east corner, `_bell_tower()`): solid shaft, open belfry at 6.2 m (3.0 high, piers, parapets with a 1.7 gap on the south side for the ladder), cornice, low slate pyramid and gold cross, so the top no longer looks oversized. A **ladder** (word `ladder`, group `ladders`, 6.2 high, exit forward) on the south face climbs to the belfry. The **bell** (`scripts/world/chapel_bell.gd`, word `bell`) swings with a lagging clapper on use, emits `rung` (for a later sound in `data/sounds.json`) and notes the `ring_bell` achievement. Flagpole moved clear; `data/nearby_units.json` chapel boxes updated |
+
+The chapel's earlier constants became variables so `rebuild` serves both sizes; the 12 Nov record
+above describes the previous size. Town map image (`tools/bake_town_map.gd`) **not re-baked** for
+the bigger chapel (P3).
+
+Verification (21 Nov, isolated HOME, `VT_FOCUS=all`): `docs/evidence/stamp-places-20261121/verify.gd`
+**132 checks, 0 failures**: every coin at its spot, clear of bodies and props, with a real standing
+place in reach and in sight; the safe opens (wheel first) and only then gives its coin; the staff
+door opens; a simulated climb reaches the belfry and the bell rings and settles. Pictures in that
+folder (`coin-*.png`, `bank-safe-open.png`, `storage-*.png`, `chapel-*.png`) were inspected.

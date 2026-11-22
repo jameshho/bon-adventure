@@ -352,14 +352,22 @@ The regular teller is on a break, so the banker asks you to cover window 2. Plus
 up from the queue, each with a story (a new bike, cakes for the grandchildren, a telescope…), and
 ask for an amount in words. Check their account on the teller monitor, then count out the cash
 with $5, $10, $50 and $100 bills, or tell them politely that there is not enough money. One
-customer a session only wants change and must get no $100 bills back. Mistakes get an
-in-character answer (what they received, in words) and a retry. Not tracked.
+customer a session only wants change and must get no $100 bills back. Since 21 Nov the monitor
+on the desk shows the account's name, balance and the owner's photo (its words follow EN), and a
+button at the top switches the camera between the screen and the customer. Now and then an
+impostor claims someone else's account (the photo is another animal): **Call the police** brings
+a police officer ("Disculpe. Venga conmigo, por favor." "¿Qué pasa?" "Venga conmigo ahora, por
+favor.") who escorts them out of the bank ([screenshot](../evidence/bank-impostor-20261121/impostor-monitor.png)).
+Saying "not enough" shows you telling them ("Lo siento, no tiene fondos suficientes."), and they
+answer "¿Qué? ¡Eso es imposible!". About 70% of customers give a reason; the rest just ask and
+say thanks. Mistakes get an in-character answer (what they received, in words) and a retry.
+Lines are short and simple (21 Nov). Not tracked.
 [Design](../guides/TOWN_DESIGN_BRIEF.md#bank-teller-game--18-november-2026)
 
 | Learning card | |
 | --- | --- |
-| Purpose | Understand spoken amounts from 100 to 500 (cien … quinientos, ciento cincuenta, trescientos sesenta y cinco), compare them with a balance written in digits, and count them out in bills of 5, 10, 50 and 100. |
+| Purpose | Understand spoken amounts from 100 to 500 (cien … quinientos, ciento cincuenta, trescientos sesenta y cinco), compare them with a balance written in digits, and count them out in bills of 5, 10, 50 and 100. Check who is asking: the photo on the account must be the customer at the window (user, 21 Nov 2026). |
 | Words | [Generated list](words.md#next-please) (amounts are generated language, not word-list words) |
 | Tracked in the journal | No (amounts are generated language, like Pay Up!) |
 | Session | 5 customers (`data/activities.json`); a customer counts when served right the first time (the exact cash, or a correct "not enough") |
-| Progression | Within a session (user, 18 Nov 2026): first whole hundreds (cien … quinientos), then hundreds and fifty, then any multiple of 5 that needs the $10 and $5 bills; one customer is short of money (a balance a little under the request) and one wants change for whole hundreds. Not yet across sessions |
+| Progression | Within a session (user, 18 Nov 2026): first whole hundreds (cien … quinientos), then hundreds and fifty, then any multiple of 5 that needs the $10 and $5 bills; one customer is short of money (a balance a little under the request) and one wants change for whole hundreds; in most sessions (`impostor_chance` 0.75, `data/bank_teller.json`) another withdrawal customer is an impostor whose account photo is a different animal (user, 21 Nov 2026). Not yet across sessions |

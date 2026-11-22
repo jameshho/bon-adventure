@@ -13,7 +13,8 @@ extends RefCounted
 ## and star / book (the vocabulary journal's Saved and All tabs; down, its menus' arrow; 9 Nov 2026),
 ## and sun / moon / pause / minus / plus (the HUD clock, day_clock.gd, 9 Nov 2026),
 ## and the minigame picker's game icons cart / family / cloche / pencil / door / tiles / radar /
-## bolt (game_launcher.gd, 10 Nov 2026).
+## bolt (game_launcher.gd, 10 Nov 2026),
+## and police / person / screen (the bank teller game, 21 Nov 2026).
 
 const _HEAD := '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">'
 const SHAPES := {
@@ -64,6 +65,12 @@ const SHAPES := {
 }
 
 static var _cache: Dictionary = {}
+	# The bank teller game (teller_session.gd, 21 Nov 2026): police (a badge shield with a star:
+	# "Call the police"), person (a head and shoulders: look at the customer) and screen (a
+	# desk monitor: look at the account).
+	"police": '<path d="M12 2.5l7.5 3v6c0 4.6-3.2 8.3-7.5 10-4.3-1.7-7.5-5.4-7.5-10v-6z"/><path d="M12 7.6l1.3 2.6 2.9.4-2.1 2 .5 2.9L12 14.2l-2.6 1.3.5-2.9-2.1-2 2.9-.4z"/>',
+	"person": '<circle cx="12" cy="8" r="4"/><path d="M4 21v-1.5a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6V21"/>',
+	"screen": '<rect x="2.5" y="4" width="19" height="12.5" rx="1.5"/><path d="M12 16.5v3.5M7.5 20.5h9"/>',
 
 ## The icon `name` as a square texture `pixels` wide (cached per size).
 static func texture(name: String, pixels: int = 28) -> Texture2D:

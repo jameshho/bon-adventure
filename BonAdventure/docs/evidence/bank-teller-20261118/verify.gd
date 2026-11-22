@@ -64,7 +64,7 @@ func run() -> void:
 	var town: Node3D = game.apartment
 	var spot: Vector3 = town.to_global(Session.TELLER_SPOT)
 	check(Vector2(game.player.global_position.x - spot.x, game.player.global_position.z - spot.z).length() < 0.6, "the player stands behind window 2 (%s)" % game.player.global_position)
-	check(session._monitor != null and session._monitor.visible and session._screen_amount.text == lexicon.phrase("teller.screen_idle", lexicon.foreign), "the monitor shows the window number")
+	check(session._monitor != null and session._monitor.visible and session._screen_idle.visible and session._screen_idle.text == lexicon.phrase("teller.screen_idle", lexicon.foreign), "the monitor shows the window number")
 	check(session._change_at == 1 and session._short_at == 2, "3 customers: change is the second, the short account the third")
 	await _until(func() -> bool: return session.step == "ask", 6.0)
 	var first: Dictionary = session.current
@@ -108,13 +108,13 @@ func run() -> void:
 	for i in first.dollars / 100:
 		money.add_piece("bill_100")
 	money._submit_button.pressed.emit()
-	check(session.step == "served" and host.line_id == "teller.%s_thanks" % first.persona, "paid exactly: the persona's thanks (%s)" % host.line_id)
+	check(session.step == "served" and host.line_id == str(first.thanks), "paid exactly: the customer's thanks (%s)" % host.line_id)
 	check(Board.shared().done("teller_bank") == 0, "a customer served after a mistake does not count")
 	# --- ✕ on a question asks to leave; "no" asks it again
 	session._on_talk_closed(host.line_id)
 	check(host.is_asking_leave(), "✕ on a customer's line asks to leave")
 	host._on_quit_answered(false)
-	check(not host.is_asking_leave() and host.line_id == "teller.%s_thanks" % first.persona and panel.has_choices(), "No: the same line again")
+	check(not host.is_asking_leave() and host.line_id == str(first.thanks) and panel.has_choices(), "No: the same line again")
 	# --- customer 2: change, a $100 back, then right
 	session._on_choice(host.choice_prefix() + "next")
 	await _until(func() -> bool: return session.step == "ask", 6.0)
@@ -140,7 +140,9 @@ func run() -> void:
 	check(third.kind == "withdraw" and third.balance < third.dollars, "customer 3's account is short (%d of %d)" % [third.balance, third.dollars])
 	session._on_choice(host.choice_prefix() + "check")
 	session._on_choice(host.choice_prefix() + "decline")
-	check(host.line_id == "teller.%s_sad" % third.persona and Board.shared().done("teller_bank") == 1, "a right 'not enough': the sad line, and it counts")
+	check(host.line_id == "teller.no_funds" and session.step == "declined" and session._camera.current, "a right 'not enough': the teller says it, in close-up (21 Nov 2026)")
+	await _until(func() -> bool: return session.step == "served", 6.0)
+	check(host.line_id == "teller.impossible" and Board.shared().done("teller_bank") == 1, "the customer: 'That's impossible!', and it counts")
 	# --- the rest until the target: count each one right first time
 	var guard := 0
 	while not session._finished and guard < 6:
@@ -151,6 +153,7 @@ func run() -> void:
 		if c.kind == "withdraw" and c.balance < c.dollars:
 			session._on_choice(host.choice_prefix() + "check")
 			session._on_choice(host.choice_prefix() + "decline")
+			await _until(func() -> bool: return session.step == "served", 6.0)
 		else:
 			session._on_choice(host.choice_prefix() + ("count" if c.kind == "change" else "check"))
 			if c.kind == "withdraw":
@@ -224,7 +227,7 @@ func _phrases(lexicon, data: Dictionary) -> void:
 		if str(id).begins_with("teller."):
 			ids.append(id)
 	for persona in data.personas:
-		for part in ["_ask", "_thanks", "_sad"]:
+		for part in ["_ask", "_thanks"]:
 			check(ids.has("teller.%s%s" % [persona, part]), "persona %s has %s" % [persona, part])
 		check(str(lexicon.phrases["teller.%s_ask" % persona].get("es", "")).contains("{amount}"), "%s_ask names the amount" % persona)
 	var langs := ["es", "en", "zh"]
@@ -232,7 +235,7 @@ func _phrases(lexicon, data: Dictionary) -> void:
 	for id in ids:
 		for lang in langs:
 			complete = complete and str(lexicon.phrases[id].get(lang, "")) != ""
-	check(complete and ids.size() >= 50, "every teller phrase in es, en and zh (%d)" % ids.size())
+	check(complete and ids.size() >= 50 and data.plain_asks.all(func(id) -> bool: return ids.has("teller." + str(id))), "every teller phrase in es, en and zh (%d)" % ids.size())
 	for game_group in ["games", "games_host", "games_learn"]:
 		check(lexicon.phrases.has(game_group + ".teller_bank"), game_group + ".teller_bank")
 

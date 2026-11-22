@@ -159,7 +159,10 @@ hides it meanwhile without forgetting the text (journal, map, Settings, money pa
 ids to offer (`Currency.DENOMS` ids such as `bill_1`, `coin_25`; empty = all), and `hint`, a
 line shown inside the empty tray (the welcome tutorial: "Pay $2.50", so the instruction sits
 where the player looks instead of a strip covering the tray). With no coin among `only` the Coins section is hidden (18 Nov 2026, the
-bank teller game: $5, $10, $50 and $100 bills).
+bank teller game: $5, $10, $50 and $100 bills). The tray shows the pieces in the order they
+were first picked, left to right (user, 21 Nov 2026; a denomination taken back out to none goes
+to the end when picked again). The shared dialogue box's answer buttons wrap onto a second row
+when they do not fit (`shop_order_panel.gd`, 21 Nov 2026).
 
 ## Sitting and lying
 

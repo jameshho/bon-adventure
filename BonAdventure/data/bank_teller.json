@@ -1,5 +1,5 @@
 {
-  "about": "Rules for the bank teller minigame (activity teller_bank, scripts/learning/teller_session.gd; design: docs/guides/TOWN_DESIGN_BRIEF.md 'Bank teller game'; purpose and progression: docs/game/minigames.md). The bear banker at reception asks the player to cover teller window 2; plush customers (house characters, data/house_characters.json, minus 'skip') come up from the queue one at a time. 'personas': each customer's story; its text is data/phrases.json teller.<persona>_ask (the request, with {amount}), teller.<persona>_thanks and teller.<persona>_sad (not enough money). 'notes': the only bills on offer ($5, $10, $50, $100; user, 18 Nov 2026: no smaller change). 'min_dollars' / 'max_dollars': every amount, a multiple of 5. 'change_dollars': what a change customer brings (whole hundreds, paid back without $100 bills). 'balance_extra_max': how much a balance may exceed the request; 'short_max': how far a short balance falls below it (both multiples of 5).",
+  "about": "Rules for the bank teller minigame (activity teller_bank, scripts/learning/teller_session.gd; design: docs/guides/TOWN_DESIGN_BRIEF.md 'Bank teller game'; purpose and progression: docs/game/minigames.md). The bear banker at reception asks the player to cover teller window 2; plush customers (house characters, data/house_characters.json, minus 'skip') come up from the queue one at a time. 'personas': each customer's story; its text is data/phrases.json teller.<persona>_ask (the request, with {amount}), teller.<persona>_thanks (since 21 Nov 2026 a short customer answers teller.impossible instead of a persona line). 'notes': the only bills on offer ($5, $10, $50, $100; user, 18 Nov 2026: no smaller change). 'min_dollars' / 'max_dollars': every amount, a multiple of 5. 'change_dollars': what a change customer brings (whole hundreds, paid back without $100 bills). 'balance_extra_max': how much a balance may exceed the request; 'short_max': how far a short balance falls below it (both multiples of 5). 'impostor_chance' (user, 21 Nov 2026): the chance a session has one impostor, a withdrawal customer claiming another character's account, so the headshot on the monitor shows another animal; 'Call the police' brings a police officer who escorts them out. 'reason_chance' (user, 21 Nov 2026): the chance a withdrawal customer tells their persona's story; the others ask with one of 'plain_asks' and thank with one of 'plain_thanks' (phrase ids in the teller group).",
   "personas": ["bike", "baker", "telescope", "beach", "guitar", "goldfish", "party", "garden"],
   "skip": ["bonbon"],
   "notes": ["bill_5", "bill_10", "bill_50", "bill_100"],
@@ -7,5 +7,9 @@
   "max_dollars": 500,
   "change_dollars": [100, 200, 300],
   "balance_extra_max": 600,
-  "short_max": 100
+  "short_max": 100,
+  "impostor_chance": 0.75,
+  "reason_chance": 0.7,
+  "plain_asks": ["plain_ask_1", "plain_ask_2", "plain_ask_3"],
+  "plain_thanks": ["plain_thanks_1", "plain_thanks_2"]
 }

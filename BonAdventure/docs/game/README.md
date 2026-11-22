@@ -59,7 +59,7 @@ and wrong answers per word in the journal. **Levels** ([how games get harder](mi
 | [Radar Patrol](minigames.md#radar-patrol) | Airport control tower | No (pastime) | 9 Nov | 15 Nov (easier taps) |
 | [Wire It Up!](minigames.md#wire-it-up) | Electrical box at the home | No (pastime) | 9 Nov | 9 Nov |
 | [Library Helper](minigames.md#library-helper) | Library | Yes | 13 Nov | 17 Nov (new categories and titles, tracked words, replenishing cart, cosy library) |
-| [Next, Please!](minigames.md#next-please) | Bank teller window 2 | No | 18 Nov | 18 Nov |
+| [Next, Please!](minigames.md#next-please) | Bank teller window 2 | No | 18 Nov | 21 Nov (account photo on the monitor, screen/customer camera toggle, impostors escorted out by the police, easier and more natural dialogue) |
 
 ### Start screens and app
 

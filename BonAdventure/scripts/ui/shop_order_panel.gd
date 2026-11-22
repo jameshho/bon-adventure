@@ -108,7 +108,9 @@ var foreign_label: RichTextLabel
 var native_label: Label
 ## Pinyin under the foreign line when Chinese is the foreign language (GameSettings.reading()).
 var reading_label: Label
-var choice_row: HBoxContainer
+## The answer buttons; they wrap onto a second row when they do not fit the card (21 Nov 2026:
+## the bank teller's three account-screen choices in Spanish).
+var choice_row: HFlowContainer
 var translate_button: Button
 var cart_card: PanelContainer
 var list_title: Label
@@ -454,9 +456,10 @@ func _build_dialogue() -> void:
 	stack.add_child(reading_label)
 	native_label = _label(26, LINE_SOFT)
 	stack.add_child(native_label)
-	choice_row = HBoxContainer.new()
-	choice_row.alignment = BoxContainer.ALIGNMENT_CENTER
-	choice_row.add_theme_constant_override("separation", 18)
+	choice_row = HFlowContainer.new()
+	choice_row.alignment = FlowContainer.ALIGNMENT_CENTER
+	choice_row.add_theme_constant_override("h_separation", 18)
+	choice_row.add_theme_constant_override("v_separation", 12)
 	stack.add_child(choice_row)
 
 ## The ✕ of every card: the shared close icon.

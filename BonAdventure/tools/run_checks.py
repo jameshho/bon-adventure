@@ -242,6 +242,10 @@ CHECKS = [
 ]
 # Not listed on purpose: check_animals.gd (writes docs/evidence/animals-review/measurements.json),
 # capture_*/render_*/feature capture scripts (overwrite PNGs).
+    # Next, Please! impostors: the account photo, Call the police, the officer's escort out
+    # (21 Nov 2026; headless writes no PNGs; isolated HOME).
+    dict(id="bank_impostor", script="res://docs/evidence/bank-impostor-20261121/verify.gd", suites=["full"],
+         summary=r"BANK IMPOSTOR: \d+ checks, (?P<n>\d+) failures"),
 
 SUITES = {
     "quick": [c["id"] for c in CHECKS if "quick" in c["suites"]],
