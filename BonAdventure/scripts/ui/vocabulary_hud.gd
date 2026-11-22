@@ -1088,6 +1088,8 @@ func help_sections() -> Array:
                 [["W", "/", "S"], "help.accelerate"],
                 [["A", "/", "D"], "help.steer"],
                 [["Space", "/", "R"], "help.brake"],
+                [["F"], "help.headlights"],
+                [["Q"], "help.siren"],
                 [["E"], "help.get_out"]]],
             ["help.seats", Color("9a5bb5"), [
                 [["A", "/", "D"], "help.swivel"],

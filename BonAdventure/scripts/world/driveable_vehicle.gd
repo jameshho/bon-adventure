@@ -96,6 +96,11 @@ var road_physics
 var driver_door: Node3D
 var vehicle_doors: Array[Node3D] = []
 const VehicleDoors = preload("res://scripts/world/vehicle_doors.gd")
+## Lights (21 Nov 2026, user): every road vehicle has headlights (F, the HUD's Lights button) and
+## the police car, ambulance and fire truck a siren with flashing lights (Q, the Siren button),
+## both built on first use and switched off when the driver gets out (finish_exit()).
+const Headlights = preload("res://scripts/world/vehicle_headlights.gd")
+const EmergencyLights = preload("res://scripts/world/emergency_lights.gd")
 ## Open-seat rider (the scooter, 9 Nov 2026): a RiderMount marker in the model means BonBon stays
 ## visible and rides it (scripts/player/motorcycle_rider.gd). The visible parts lean into turns
 ## and the FrontFork turns with the steering; collision and physics stay upright.
@@ -145,6 +150,7 @@ func boarding_busy() -> bool:
     return exiting or boarding_progress<1
 
 func finish_exit() -> void:
+    switch_lights_off()
     exiting=false
     boarding_progress=1
     update_driver_door()
@@ -213,7 +219,8 @@ func flight_status() -> String:
         if easy_flying: return UiText.t("vehicle.status_heli_easy",{"rotor":int(rotor_power*100)})
         return UiText.t("vehicle.status_heli",{"rotor":int(rotor_power*100),"collective":int(rad_to_deg(helicopter_physics.collective))})+"  ·  "+UiText.t("vehicle.to_easy")
     if road_physics!=null:
-        return UiText.t("vehicle.status_drive",{"speed":int(absf(current_speed)*3.6),"gear":"R" if road_physics.gear<0 else "D"})
+        var status:=UiText.t("vehicle.status_drive",{"speed":int(absf(current_speed)*3.6),"gear":"R" if road_physics.gear<0 else "D"})
+        return status+"\n"+UiText.t("vehicle.status_lights_siren" if has_siren() else "vehicle.status_lights")
     return ""
 
 func _ready() -> void:
@@ -281,9 +288,44 @@ func _physics_process(delta: float) -> void:
 func is_aircraft() -> bool:
     return helicopter or fixed_wing
 
+## Headlights and the siren: road vehicles only (cars, trucks, buses, motorbikes).
+func has_headlights() -> bool:
+    return road_physics!=null
+
+func has_siren() -> bool:
+    return has_headlights() and EmergencyLights.fits(self)
+
+func headlights_on() -> bool:
+    var lights := get_node_or_null(Headlights.NODE_NAME)
+    return lights!=null and lights.is_on
+
+func siren_on() -> bool:
+    var lights := get_node_or_null(EmergencyLights.NODE_NAME)
+    return lights!=null and lights.is_on
+
+func set_headlights(on: bool) -> void:
+    if has_headlights() and on!=headlights_on(): Headlights.of(self).set_on(on)
+
+func toggle_headlights() -> void:
+    set_headlights(not headlights_on())
+
+func toggle_siren() -> void:
+    if has_siren(): EmergencyLights.of(self).toggle()
+
+func switch_lights_off() -> void:
+    set_headlights(false)
+    if siren_on(): EmergencyLights.of(self).set_on(false)
+
 func _unhandled_input(event: InputEvent) -> void:
-    if occupied and is_aircraft() and event is InputEventKey and event.pressed and not event.echo and event.physical_keycode==KEY_C:
+    if not occupied or not event is InputEventKey or not event.pressed or event.echo: return
+    if is_aircraft() and event.physical_keycode==KEY_C:
         easy_flying=not easy_flying
+    elif has_headlights() and not boarding_busy() and event.physical_keycode==KEY_F:
+        toggle_headlights()
+        get_viewport().set_input_as_handled()
+    elif has_siren() and not boarding_busy() and event.physical_keycode==KEY_Q:
+        toggle_siren()
+        get_viewport().set_input_as_handled()
 
 func drive_step(delta: float, gas: float, steering: float, lift: float, stabilize: bool = false) -> void:
     if helicopter:

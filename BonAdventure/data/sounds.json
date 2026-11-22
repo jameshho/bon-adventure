@@ -18,6 +18,33 @@
       "distance": {"unit_size": 2.0, "max_distance": 12.0},
       "source": "https://freesound.org/people/giddster/sounds/336518/",
       "licence": "CC0 (Freesound); steady 3.2-10.2 s made a 6.5 s crossfaded loop, 16-bit mono"
+    },
+    "siren.police": {
+      "file": "res://audio/sfx/vehicles/siren_police.wav",
+      "bus": "SFX",
+      "volume_db": -10.0,
+      "loop": true,
+      "distance": {"unit_size": 6.0, "max_distance": 70.0},
+      "source": "Synthesised for this game (21 Nov 2026): wail 650-1400 Hz, 4 s cycle",
+      "licence": "Original, no third-party material; 22.05 kHz 16-bit mono"
+    },
+    "siren.ambulance": {
+      "file": "res://audio/sfx/vehicles/siren_ambulance.wav",
+      "bus": "SFX",
+      "volume_db": -10.0,
+      "loop": true,
+      "distance": {"unit_size": 6.0, "max_distance": 70.0},
+      "source": "Synthesised for this game (21 Nov 2026): hi-lo 960 / 770 Hz, 0.5 s each",
+      "licence": "Original, no third-party material; 22.05 kHz 16-bit mono"
+    },
+    "siren.fire_truck": {
+      "file": "res://audio/sfx/vehicles/siren_fire_truck.wav",
+      "bus": "SFX",
+      "volume_db": -10.0,
+      "loop": true,
+      "distance": {"unit_size": 6.0, "max_distance": 70.0},
+      "source": "Synthesised for this game (21 Nov 2026): low wail 400-1000 Hz, 5 s cycle",
+      "licence": "Original, no third-party material; 22.05 kHz 16-bit mono"
     }
   },
   "bindings": [

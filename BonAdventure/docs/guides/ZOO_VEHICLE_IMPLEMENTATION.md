@@ -16,6 +16,8 @@ player collision restoration and camera remain in use.
 | Steer | A / D |
 | Service brakes | Space |
 | Recover while falling/airborne | R, then release |
+| Headlights on / off (on by themselves when boarding at night; since 21 Nov 2026) | F, or the HUD's **Lights** button |
+| Siren and flashing lights on / off: police car, ambulance, fire truck (since 21 Nov 2026) | Q, or the HUD's **Siren** button |
 
 Release the accelerator to coast with drag/engine braking. Use Space to stop
 before exiting. Steering eases toward the input; since 21 Nov 2026 a held key sets the
@@ -136,6 +138,31 @@ rollovers, full suspension pitch/roll, gearbox/clutch internals, independent whe
 spin/burnouts, engine audio, damage or vehicle-to-vehicle momentum exchange. The
 town has gentle park slopes and 0.17-high curbs (climbed by `step_up`); steep
 ramps and real off-road simulation are not validated.
+
+## Headlights, siren and flashing lights — 21 November 2026
+
+User request: headlights for cars when driving at night, one button for all cars; the police
+car, ambulance and fire truck get one more button for a siren with flashing lights, and the
+siren and flashing lights share one reusable component.
+
+| Piece | File | What it does |
+| --- | --- | --- |
+| Headlights | `scripts/world/vehicle_headlights.gd` (`Headlights.of(vehicle)`) | The model's own lamp meshes glow (nodes named `Lamp`/`Lamp_N`, `*Headlight*`/`*Headlamp*`, `*Taillight*`/`*BrakeLight*`; sockets, frames, rings and housings stay as they are): in front of the body's middle warm white, behind it red. One shadowless `SpotLight3D` ("Beam", 30 m, 36°) lights the road ahead. |
+| Siren and flashing lights | `scripts/world/emergency_lights.gd` (`EmergencyLights.of(vehicle)`, `SIRENS`) | Finds the beacons (glowing red or blue materials on meshes named, or under a parent named, light / beacon / LED / siren / strobe), flashes red twice then blue twice every 0.8 s through two shared materials, washes the street with one small shadowless `OmniLight3D` (10 m) in the lit colour, and plays the vehicle's looping siren cue through the sound service. |
+| Vehicle API | `scripts/world/driveable_vehicle.gd` | `has_headlights()` (road vehicles), `has_siren()` (word_key in `SIRENS`), `toggle_headlights()`, `set_headlights()`, `toggle_siren()`, `headlights_on()`, `siren_on()`; F / Q while driving; `finish_exit()` switches both off. |
+| Night | `scripts/core/vehicle_controls.gd` `board()` | Boarding a road vehicle at night (`day_night.is_night()`) turns its headlights on; they do not follow the clock after that. |
+| HUD buttons | `scripts/ui/touch_controls.gd` | **Lights** in the Run slot left of jump (lit sun yellow while on) for every road vehicle; **Siren** above it (the plane's Reset slot, lit coral while on) for the three emergency vehicles. Real Buttons: mouse and touch. |
+| Sounds | `data/sounds.json` `siren.police`, `siren.ambulance`, `siren.fire_truck`; `audio/sfx/vehicles/` | Synthesised for the game (police wail 650–1400 Hz, ambulance hi-lo 960 / 770 Hz, fire truck low wail 400–1000 Hz), looped, SFX bus, −10 dB, heard to 70 m. Placeholders until the user auditions them. |
+
+Both components are built on first use, never for parked vehicles, and leaving the vehicle
+switches them off, so at most the driven vehicle carries one spot light and one omni light
+(performance first; no shadows). A new emergency vehicle needs only its word_key in `SIRENS`
+and a cue; a new road model gets headlights if its lamp nodes follow the names above.
+Limits: the motorcycle's model is merged meshes with no lamp parts, so it has the beam but no
+glowing lamp. Check: `docs/evidence/vehicle-lights-20261121/verify.gd` (each vehicle scene on its own,
+121 checks; `-- capture` renders `night-red.png` / `night-blue.png`) and `town.gd` (the real town at
+22:00: boards the police car, ambulance, fire truck and a car, presses the HUD buttons, gets out;
+42 checks, 0 failures on 21 Nov 2026, saves `town-*.png`; Main saves, so isolated HOME).
 
 ## Path steering and chase camera — 21 November 2026
 

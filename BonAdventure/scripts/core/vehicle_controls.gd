@@ -136,6 +136,10 @@ static func board(main, next_vehicle: DriveableVehicle) -> bool:
 		hud.flash_quest_message(UiText.t("toast.helicopter_easy" if DriveableVehicle.easy_flying else "toast.helicopter_help"))
 	else:
 		hud.flash_quest_message(UiText.t("toast.driving_help"))
+		# At night the headlights come on by themselves (21 Nov 2026); F / Lights switches them.
+		var day_night = main.get("day_night")
+		if day_night != null and day_night.is_night(day_night.clock_minute() / 60.0):
+			next_vehicle.set_headlights(true)
 	return true
 
 static func complete_vehicle_exit(main, vehicle: DriveableVehicle, point: Vector3) -> void:

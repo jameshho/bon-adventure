@@ -81,6 +81,12 @@ extends Control
 ##                           (hud.game_buttons_hidden()) and under the dialogue box.
 ##   Reset (vehicle.reset_plane)  red, left of E above the ▼ slot, only while flying the plane
 ##                           (fixed_wing): calls active_vehicle.reset_to_start() when it has one.
+##   Lights (vehicle.lights_button)  while driving any road vehicle (21 Nov 2026, user): in the Run
+##                           slot left of jump (Run hides in vehicles); headlights on/off like F,
+##                           lit sun yellow while on (scripts/world/vehicle_headlights.gd).
+##   Siren (vehicle.siren_button)  above Lights (the Reset slot; the plane has no siren), only in
+##                           the police car, ambulance and fire truck: siren and flashing lights
+##                           on/off like Q, lit coral while on (scripts/world/emergency_lights.gd).
 ## A finger on any real Button in the HUD (these two, the corner buttons, the word card's star
 ## and the peek badge: _gui_button_at()) is the GUI's and not tracked here, whichever finger
 ## it is: the Button takes the touch itself, so Run works with a second finger while the first
@@ -169,9 +175,15 @@ var _font: Font
 var run_button: Button
 var reset_button: Button
 var _run_styles: Dictionary = {}
+## The driving Lights and Siren toggles (see the header) and their unlit / lit looks.
+var lights_button: Button
+var siren_button: Button
+var _lights_styles: Dictionary = {}
+var _siren_styles: Dictionary = {}
 # Run (on: green) and Reset (coral) in the UI art style (18 Nov 2026), white rims.
 const RUN_LIT := [BonStyle.GREEN_BOTTOM, BonStyle.RIM]
 const RESET_RED := [BonStyle.CORAL_BOTTOM, BonStyle.RIM]
+const LIGHTS_LIT := [BonStyle.SUN, BonStyle.RIM]
 
 func _init() -> void:
 	name = "TouchControls"
@@ -191,6 +203,10 @@ func setup(game: Node) -> void:
 	reset_button = _hud_button("Reset plane button", _reset_plane)
 	_apply_styles(reset_button, _styles(RESET_RED))
 	reset_button.add_theme_color_override("font_color", Color.WHITE)
+	lights_button = _hud_button("Headlights button", func() -> void: _vehicle_call("toggle_headlights"))
+	_lights_styles = {false: _styles(null), true: _styles(LIGHTS_LIT)}
+	siren_button = _hud_button("Siren button", func() -> void: _vehicle_call("toggle_siren"))
+	_siren_styles = {false: _styles(null), true: _styles(RESET_RED)}
 
 func _process(delta: float) -> void:
 	_update_hud_buttons()
@@ -350,6 +366,17 @@ func _update_hud_buttons() -> void:
 	run_button.add_theme_color_override("font_hover_color", ink)
 	_place(reset_button, reset_rect, UiText.t("vehicle.reset_plane"),
 			free and driving and bool(vehicle.get("fixed_wing")) and not cover.intersects(reset_rect))
+	# Driving a road vehicle: Lights in the Run slot, Siren above it (emergency vehicles only).
+	var road: bool = free and driving and vehicle.has_method("has_headlights") and vehicle.has_headlights() \
+			and not vehicle.boarding_busy()
+	var lights_rect := Rect2(Vector2(jump.position.x - gap - side, run_rect.position.y), Vector2(side, side))
+	_place(lights_button, lights_rect, UiText.t("vehicle.lights_button"), road and not cover.intersects(lights_rect))
+	_place(siren_button, reset_rect, UiText.t("vehicle.siren_button"),
+			road and vehicle.has_siren() and not cover.intersects(reset_rect))
+	if lights_button.visible:
+		_light_up(lights_button, _lights_styles, vehicle.headlights_on(), BonStyle.INK)
+	if siren_button.visible:
+		_light_up(siren_button, _siren_styles, vehicle.siren_on(), Color.WHITE)
 
 func _place(button: Button, rect: Rect2, text: String, shown: bool) -> void:
 	button.visible = shown
@@ -372,6 +399,20 @@ func _place(button: Button, rect: Rect2, text: String, shown: bool) -> void:
 func _fire_once(action: String) -> void:
 	_fire(action, true)
 	_fire(action, false)
+
+## A toggle's look: lit (its `looks[true]`, `lit_ink` text) or the plain corner-button box.
+func _light_up(button: Button, looks: Dictionary, lit: bool, lit_ink: Color) -> void:
+	_apply_styles(button, looks[lit])
+	var ink: Color = lit_ink if lit else BonStyle.INK
+	button.add_theme_color_override("font_color", ink)
+	button.add_theme_color_override("font_hover_color", ink)
+	button.add_theme_color_override("font_pressed_color", ink)
+
+## Calls `method` on the vehicle being driven, if any.
+func _vehicle_call(method: String) -> void:
+	var vehicle: Variant = main.get("active_vehicle") if main != null else null
+	if is_instance_valid(vehicle) and vehicle.has_method(method):
+		vehicle.call(method)
 
 func _reset_plane() -> void:
 	var vehicle: Variant = main.get("active_vehicle") if main != null else null

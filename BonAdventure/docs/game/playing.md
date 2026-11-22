@@ -170,6 +170,11 @@ while closed (18 Nov; [how it works](../guides/MINIGAMES.md#town-map-and-guide-a
   car and the warehouse box truck can be driven too. Since 21 Nov a held A/D keeps the car
   turning at any speed and the camera swings round behind it
   ([path steering](../guides/ZOO_VEHICLE_IMPLEMENTATION.md#path-steering-and-chase-camera--21-november-2026)).
+- **Lights and sirens (21 Nov):** every car, truck, bus and bike has headlights (F or the
+  Lights button; on by themselves when you get in at night). The police car, ambulance and
+  fire truck also have a Siren button (Q): siren sound and flashing red and blue lights.
+  [Vehicle lights](../guides/ZOO_VEHICLE_IMPLEMENTATION.md#headlights-siren-and-flashing-lights--21-november-2026) ·
+  [night view](../evidence/vehicle-lights-20261121/night-red.png)
 - **Scooter:** hop on and ride. [Scooter](../guides/ZOO_VEHICLE_IMPLEMENTATION.md#scooter-and-rider--9-november-2026)
 - **Helicopter and plane:** easy flying by default (14 Nov): W to go, A/D to turn, let go and
   it levels or hovers; C switches to expert controls. A Reset button returns the plane to the
