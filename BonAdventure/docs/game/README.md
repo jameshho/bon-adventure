@@ -93,7 +93,7 @@ and wrong answers per word in the journal. **Levels** ([how games get harder](mi
 | [Hospital](town.md#hospital) | Three floors, elevator, ward doctors, helipad | 14 Nov (elevator picker) |
 | [Warehouse](town.md#warehouse) | Hall with loading bays, reception | 14 Nov (redesign) |
 | [Mystery House](town.md#mystery-house) | Casa de las Estrellas, mystery room | 9 Nov |
-| [Chapel](town.md#chapel) | Rebuilt sanctuary | 12 Nov |
+| [Chapel](town.md#chapel) | Rebuilt sanctuary; bell tower climbed by a ladder inside, from a doorway in the nave | 23 Nov (ladder moved inside, two pew rows removed) |
 | [Farm barn](town.md#farm-barn) | Hayloft, tools and supplies | 1 Nov |
 | [Playground](town.md#playground) | Towers, slide, rideable swings | 1 Nov |
 | [Park, zoo and coast](town.md#park-zoo-and-coast) | Public garden, four zoo zones, island; the clay animals walk; the zoo's tiger and the farm's horse are the new clay models; clay capybara walks in Wildlife Plains (word: capybara); clay rooster and clay chick on the farm lawn, clay monkey inside the zoo gate; no red motorcycles (only BonBon's teal scooter) | 18 Nov (clay chick; red motorcycles removed, supermarket lot cleared) |

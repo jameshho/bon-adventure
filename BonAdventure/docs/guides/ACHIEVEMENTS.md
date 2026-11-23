@@ -160,7 +160,7 @@ User's list, 21 Nov 2026; pictures `docs/evidence/stamp-places-20261121/coin-<id
 | sports_store, clothing_store, electronics_store | a corner | |
 | furniture_store | corner of the bedroom section | |
 | bakery_cafe | corner in the back | |
-| chapel | the belfry, beside the bell | chapel enlarged, a ground-standing bell tower with a climbable ladder and a ringable bell |
+| chapel | the belfry, beside the bell | chapel enlarged, a ground-standing bell tower with a climbable ladder and a ringable bell (ladder moved inside the tower 23 Nov 2026) |
 | playground | top of the slide | |
 | mystery_house | behind Madame Luna | |
 

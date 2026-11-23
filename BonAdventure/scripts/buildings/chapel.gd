@@ -17,7 +17,7 @@ extends RefCounted
 ## the exterior word "church" and carry no collision except the tower's RoofSolid
 ## (docs/evidence/town-checks/check_map_facades.gd); the front wall's collision is a thin body in the site, behind
 ## the glass, so a street ray still picks the facade.
-const STEPS := ["solid_roofs", "coplanar_gaps", "coplanar_gaps_2", "rebuild", "grand_chapel"]
+const STEPS := ["solid_roofs", "coplanar_gaps", "coplanar_gaps_2", "rebuild", "grand_chapel", "inner_ladder"]
 
 const Geo := preload("res://scripts/buildings/mystery.gd")
 const SITE := "RelocatedSites/Chapel"
@@ -93,6 +93,8 @@ const NIGHT_LIGHTS := "night_lights"
 ## = the 21 Nov ground tower with its ladder and ringable bell (_bell_tower).
 var flag_at := Vector2(40.3, 67.2)
 var ground_tower := false
+## Step inner_ladder (23 Nov 2026): the ladder climbs inside the hollow tower, entered from the nave.
+var ladder_inside := false
 var game
 var geo: Geo
 var site: Node3D
@@ -191,9 +193,32 @@ func grand_chapel(town: Node3D, main) -> void:
 	TRUSS_Z = [73.9, 78.8]
 	flag_at = Vector2(35.0, 67.3)
 	ground_tower = true
+	if ladder_inside:
+		PEW_ROWS = PEW_ROWS.slice(2)
 	rebuild(town, main)
 	var tower := site.get_node("Bell tower") as Node3D
 	print("CHAPEL grand_chapel: %.1f x %.1f, eave %.1f, tower %s, belfry floor %.1f" % [2 * W2, REAR - FRONT, EAVE, tower.position, BELFRY_FLOOR])
+
+## The ladder moves inside (user, 23 Nov 2026: "I don't like the fact that the ladder is outside.
+## Can you remove the last one or two rows of the chairs in the chapel and then add a ladder that
+## would connect up to the bell"). The two pew rows nearest the door go (four rows left), the
+## stained-glass window in the east wall's front bay (it only ever looked into the solid tower)
+## becomes a round-headed doorway into the tower, and the tower is hollow: stone walls, a stone
+## floor level with the chapel's, a lantern, and the iron ladder on the inside of its south wall
+## climbing 6.09 to a hatch in a solid belfry floor (default ladder: step off backwards, north,
+## onto the floor; walking into the hatch takes it down). The outside ladder and the gap in the
+## south parapet are gone. Same footprint, belfry, bell and coin.
+## Doorway [u along the east wall, width, sill, spring]: z 70.55..71.95, inside the tower's 69..72.
+const TOWER_DOOR := [-5.25, 1.4, 0.0, 2.2]
+## Tower wall thickness, and the belfry hatch over the ladder (tower x, z; local).
+const TOWER_T := 0.3
+const HATCH := Rect2(-0.75, -1.5, 1.5, 1.3)
+
+func inner_ladder(town: Node3D, main) -> void:
+	ladder_inside = true
+	grand_chapel(town, main)
+	var ladder := site.get_node("Bell tower/Tower ladder") as Node3D
+	print("CHAPEL inner_ladder: %d pew rows, ladder at %s up %.2f" % [PEW_ROWS.size(), ladder.position, ladder.get_meta("ladder_height")])
 
 # --- Shell ------------------------------------------------------------------------------------
 
@@ -211,20 +236,25 @@ func _shell() -> void:
 	# Side and rear walls (word "wall"), each in a frame: local x along the wall, +z outward.
 	var side_len := REAR - FRONT - 2 * T
 	var west := _wall(site, "Chapel side wall", Transform3D(Basis(Vector3.FORWARD, Vector3.UP, Vector3.RIGHT), Vector3(CX + W2 - T * 0.5, 0, ZC)), side_len * 0.5, EAVE + 0.2, SIDE_OPENINGS, true)
-	var east := _wall(site, "Chapel side wall2", Transform3D(Basis(Vector3.BACK, Vector3.UP, Vector3.LEFT), Vector3(CX - W2 + T * 0.5, 0, ZC)), side_len * 0.5, EAVE + 0.2, SIDE_OPENINGS, true)
+	var east_openings := _east_openings()
+	var east := _wall(site, "Chapel side wall2", Transform3D(Basis(Vector3.BACK, Vector3.UP, Vector3.LEFT), Vector3(CX - W2 + T * 0.5, 0, ZC)), side_len * 0.5, EAVE + 0.2, east_openings, true)
 	var rear := _wall(site, "Chapel rear wall", Transform3D(Basis(Vector3.RIGHT, Vector3.UP, Vector3.BACK), Vector3(CX, 0, REAR - T * 0.5)), W2, EAVE, REAR_OPENINGS, true)
 	for wall in [west, east, rear]:
 		wall.set_meta("word_key", "wall")
 		# Plinth course outside and wainscot inside.
 		var half: float = W2 if wall == rear else side_len * 0.5 + (T if wall != rear else 0.0)
-		_box(wall, "Plinth", Vector3(0, 0.22, T * 0.5 + 0.04), Vector3(2 * half, 0.44, 0.08), STONE_DARK, false)
 		var inner: float = side_len * 0.5 if wall != rear else W2 - T
-		_box(wall, "Wainscot", Vector3(0, FLOOR + 0.475, -T * 0.5 - 0.02), Vector3(2 * inner, 0.95, 0.04), WOOD, false)
-		_box(wall, "Chair rail", Vector3(0, FLOOR + 0.98, -T * 0.5 - 0.04), Vector3(2 * inner, 0.07, 0.08), WOOD_DARK, false)
-	# Stained glass in every opening.
-	for wall in [west, east]:
-		for o in SIDE_OPENINGS:
-			_glass(wall, o, 0.06)
+		# On the east wall with the tower doorway these three strips stop either side of it.
+		var gap: Array = [TOWER_DOOR[0] - TOWER_DOOR[1] * 0.5, TOWER_DOOR[0] + TOWER_DOOR[1] * 0.5] if wall == east and ladder_inside else []
+		_strip(wall, "Plinth", -half, half, gap, Vector3(0, 0.22, T * 0.5 + 0.04), Vector2(0.44, 0.08), STONE_DARK)
+		_strip(wall, "Wainscot", -inner, inner, gap, Vector3(0, FLOOR + 0.475, -T * 0.5 - 0.02), Vector2(0.95, 0.04), WOOD)
+		_strip(wall, "Chair rail", -inner, inner, gap, Vector3(0, FLOOR + 0.98, -T * 0.5 - 0.04), Vector2(0.07, 0.08), WOOD_DARK)
+	# Stained glass in every window (not the tower doorway).
+	for o in SIDE_OPENINGS:
+		_glass(west, o, 0.06)
+	for o in east_openings:
+		if o[2] > 0.01:
+			_glass(east, o, 0.06)
 	for o in REAR_OPENINGS:
 		_glass(rear, o, 0.06)
 	# Rear gable and string course (inside the roof's ends; no collision needed above the eaves).
@@ -258,6 +288,25 @@ func _shell() -> void:
 ## A wall in `frame` (local x along it from -half to half, y up from the ground, +z outward,
 ## centred on its mid-plane), y1 high, T thick, with round-headed openings [u, width, sill,
 ## spring]. Pieces are boxes; the panel over each opening has the round head cut out.
+## The east wall's openings: the side windows, or (ladder_inside) the front bay's window replaced by
+## the tower doorway.
+func _east_openings() -> Array:
+	if not ladder_inside:
+		return SIDE_OPENINGS
+	var list := [TOWER_DOOR]
+	for o in SIDE_OPENINGS:
+		if absf(o[0] - TOWER_DOOR[0]) > 1.0:
+			list.append(o)
+	return list
+
+## A strip along a wall frame from u0 to u1 at `at` (y, z), size (height, depth); `gap` [a, b] is
+## left open.
+func _strip(wall: Node3D, title: String, u0: float, u1: float, gap: Array, at: Vector3, size: Vector2, color: Color) -> void:
+	var spans := [[u0, u1]] if gap.is_empty() else [[u0, gap[0]], [gap[1], u1]]
+	for s in spans:
+		if s[1] - s[0] > 0.01:
+			_box(wall, title, Vector3((s[0] + s[1]) * 0.5, at.y, at.z), Vector3(s[1] - s[0], size.x, size.y), color, false)
+
 func _wall(parent: Node3D, title: String, frame: Transform3D, half: float, y1: float, openings: Array, solid: bool) -> Node3D:
 	var holder := _group(parent, title)
 	holder.transform = frame
@@ -497,11 +546,21 @@ func _bell_tower() -> void:
 	var tower := _group(site, "Bell tower")
 	tower.position = Vector3(r.position.x + half, 0, r.position.y + half)
 	var top := BELFRY_FLOOR + BELFRY_H
-	# Shaft (word "wall") up to the belfry floor.
-	_box(tower, "Tower shaft", Vector3(0, BELFRY_FLOOR * 0.5, 0), Vector3(2 * half, BELFRY_FLOOR, 2 * half), WALL, true, "wall")
-	_box(tower, "Tower plinth", Vector3(0, 0.25, 0), Vector3(2 * half + 0.12, 0.5, 2 * half + 0.12), STONE_DARK, false)
-	_box(tower, "Tower string course", Vector3(0, EAVE + 0.08, 0), Vector3(2 * half + 0.16, 0.16, 2 * half + 0.16), STONE, false)
-	_box(tower, "Tower floor band", Vector3(0, BELFRY_FLOOR - 0.06, 0), Vector3(2 * half + 0.2, 0.14, 2 * half + 0.2), STONE, false)
+	# Shaft (word "wall") up to the belfry floor: solid, or (ladder_inside) hollow.
+	if ladder_inside:
+		_hollow_shaft(tower, half)
+	else:
+		_box(tower, "Tower shaft", Vector3(0, BELFRY_FLOOR * 0.5, 0), Vector3(2 * half, BELFRY_FLOOR, 2 * half), WALL, true, "wall")
+	if ladder_inside:
+		# Rings round the outside, so the hollow shaft and the hatch stay open (no plinth in the
+		# doorway on the chapel side).
+		_ring(tower, "Tower plinth", 0.25, 0.5, half + 0.06, half, STONE_DARK, false)
+		_ring(tower, "Tower string course", EAVE + 0.08, 0.16, half + 0.08, half, STONE)
+		_ring(tower, "Tower floor band", BELFRY_FLOOR - 0.06, 0.14, half + 0.1, half, STONE)
+	else:
+		_box(tower, "Tower plinth", Vector3(0, 0.25, 0), Vector3(2 * half + 0.12, 0.5, 2 * half + 0.12), STONE_DARK, false)
+		_box(tower, "Tower string course", Vector3(0, EAVE + 0.08, 0), Vector3(2 * half + 0.16, 0.16, 2 * half + 0.16), STONE, false)
+		_box(tower, "Tower floor band", Vector3(0, BELFRY_FLOOR - 0.06, 0), Vector3(2 * half + 0.2, 0.14, 2 * half + 0.2), STONE, false)
 	for face in [Vector3(-1, 0, 0), Vector3(0, 0, -1)]:
 		# A narrow round-headed slit window on the east and south faces (dark glass).
 		var at: Vector3 = face * (half + 0.01) + Vector3(0, 3.4, 0)
@@ -509,8 +568,11 @@ func _bell_tower() -> void:
 		_mesh(tower, "Tower slit", _bm(Vector3(0.36, 1.1, 0.04)), Transform3D(basis, at), _mat(Color("33414c")))
 		_mesh(tower, "Tower slit head", geo._half_disc(0.18, 0.04), Transform3D(basis, at + Vector3(0, 0.55, 0)), _mat(Color("33414c")))
 		_mesh(tower, "Tower slit stones", geo._half_ring(0.18, 0.3, 0.06), Transform3D(basis, at + Vector3(0, 0.55, 0)), _mat(STONE))
-	# Belfry floor (word "floor": stone flags over the shaft).
-	_box(tower, "Belfry floor", Vector3(0, BELFRY_FLOOR + 0.02, 0), Vector3(2 * half - 0.1, 0.04, 2 * half - 0.1), STONE_DARK, false, "floor")
+	# Belfry floor (word "floor": stone flags over the shaft; ladder_inside: solid, round the hatch).
+	if ladder_inside:
+		_belfry_floor(tower, half)
+	else:
+		_box(tower, "Belfry floor", Vector3(0, BELFRY_FLOOR + 0.02, 0), Vector3(2 * half - 0.1, 0.04, 2 * half - 0.1), STONE_DARK, false, "floor")
 	# Corner piers.
 	for sx in [-1.0, 1.0]:
 		for sz in [-1.0, 1.0]:
@@ -522,7 +584,7 @@ func _bell_tower() -> void:
 	for k in 4:
 		var basis := Basis(Vector3.UP, PI * k / 2.0)
 		var out: Vector3 = basis * Vector3(0, 0, half - pt * 0.5)
-		if k == 2:
+		if k == 2 and not ladder_inside:
 			# South (-z): two short pieces either side of the gap over the ladder.
 			var piece := (span - LADDER_GAP) * 0.5
 			for side in [-1.0, 1.0]:
@@ -591,30 +653,93 @@ func _bell_tower() -> void:
 	_mesh(bell, "Rope sally", _cyl_mesh(0.045, 0.34), Transform3D(Basis(), Vector3(rope_x, rope_low + 0.4, 0)), _mat(RUNNER))
 	_mesh(bell, "Rope sally band", _cyl_mesh(0.047, 0.06), Transform3D(Basis(), Vector3(rope_x, rope_low + 0.4, 0)), _mat(CLOTH))
 	bell.set("badge_offset", Vector3(rope_x, rope_low + 0.4, 0))
-	# The ladder on the south face (word "ladder"): iron rails and rungs, wall brackets. Its node's
-	# +z points away from the wall (south); it is climbed to the belfry floor and stepped off
-	# forward (north) through the parapet gap (player_controller.gd update_ladder).
+	# The ladder (word "ladder"): iron rails and rungs, wall brackets. Its node's +z points away
+	# from the wall. Outside (21 Nov) on the south face, climbed to the belfry floor and stepped off
+	# forward (north) through the parapet gap; inside (ladder_inside) on the south wall's inner face,
+	# from the tower floor up through the hatch, stepped off backwards (north) onto the belfry floor
+	# (player_controller.gd update_ladder).
 	var ladder := Node3D.new()
 	ladder.name = "Tower ladder"
 	ladder.set_meta("word_key", "ladder")
-	ladder.set_meta("ladder_height", BELFRY_FLOOR)
-	ladder.set_meta("ladder_exit", "forward")
+	var rise := BELFRY_FLOOR + 0.04 - FLOOR if ladder_inside else BELFRY_FLOOR
+	ladder.set_meta("ladder_height", rise)
+	if not ladder_inside:
+		ladder.set_meta("ladder_exit", "forward")
 	tower.add_child(ladder, true)
 	ladder.add_to_group("ladders", true)
-	ladder.transform = Transform3D(Basis(Vector3.UP, PI), Vector3(0, 0, -half - 0.08))
+	if ladder_inside:
+		ladder.transform = Transform3D(Basis(), Vector3(0, FLOOR, -half + TOWER_T + 0.08))
+	else:
+		ladder.transform = Transform3D(Basis(Vector3.UP, PI), Vector3(0, 0, -half - 0.08))
 	var iron := Color("2f3238")
-	var rail_h := BELFRY_FLOOR + 1.0
+	var rail_h := rise + 1.0
 	for side in [-1.0, 1.0]:
 		_box(ladder, "Ladder rail", Vector3(side * 0.3, rail_h * 0.5, 0), Vector3(0.06, rail_h, 0.06), iron, false)
-	var rungs := int(BELFRY_FLOOR / 0.3)
+	var rungs := int(rise / 0.3)
 	for k in range(1, rungs + 1):
 		_mesh(ladder, "Ladder rung", _cyl_mesh(0.022, 0.6), Transform3D(Basis(Vector3.BACK, PI / 2), Vector3(0, k * 0.3, 0)), _mat(iron))
 	for k in range(1, 5):
 		for side in [-1.0, 1.0]:
-			_box(ladder, "Ladder bracket", Vector3(side * 0.3, k * BELFRY_FLOOR / 4.0 - 0.2, -0.06), Vector3(0.05, 0.05, 0.14), iron, false)
+			_box(ladder, "Ladder bracket", Vector3(side * 0.3, k * rise / 4.0 - 0.2, -0.06), Vector3(0.05, 0.05, 0.14), iron, false)
 	# A pick body so the word card works (clicking the rails), no collision with the player.
 	_word_pick(ladder, Vector3(0, rail_h * 0.5, 0), Vector3(0.7, rail_h, 0.12))
 	_word_pick(bell, Vector3(0, -0.34, 0), Vector3(0.9, 0.62, 0.9))
+
+## The hollow tower shaft (ladder_inside), in the tower's frame (+x toward the chapel, +z north):
+## south, east and north stone walls (word "wall") from the ground to the belfry floor; on the
+## chapel side the chapel's east wall (with the doorway) closes it, and a thick band above the
+## doorway's height closes the rest and hides the chapel roof's eave inside it. The walls stop
+## inside the chapel wall so no face lies in its inner face. A stone floor at the chapel's level
+## with a threshold through the doorway, and a lantern on the east wall.
+func _hollow_shaft(tower: Node3D, half: float) -> void:
+	var h := BELFRY_FLOOR
+	var wt := TOWER_T
+	var reach := half - T + 0.1
+	var shaft := _word(tower, "Tower shaft", "wall", Vector3.ZERO)
+	_box(shaft, "Shaft wall south", Vector3(0, h * 0.5, -half + wt * 0.5), Vector3(2 * half, h, wt), WALL, true)
+	_box(shaft, "Shaft wall north", Vector3((reach - half) * 0.5, h * 0.5, half - wt * 0.5), Vector3(reach + half, h, wt), WALL, true)
+	_box(shaft, "Shaft wall east", Vector3(-half + wt * 0.5, h * 0.5, 0), Vector3(wt, h, 2 * half - 2 * wt), WALL, true)
+	# Above the chapel wall's top (EAVE + 0.2, inside its roof) the west band and the north wall
+	# reach the tower's own face again.
+	var band_y := EAVE - 0.45
+	var band_x0 := half - T - 0.55
+	var top_y := EAVE + 0.25
+	_box(shaft, "Shaft wall west", Vector3((band_x0 + reach) * 0.5, (band_y + top_y) * 0.5, 0), Vector3(reach - band_x0, top_y - band_y, 2 * half - 2 * wt), WALL, true)
+	_box(shaft, "Shaft wall west top", Vector3((band_x0 + half) * 0.5, (top_y + h) * 0.5, 0), Vector3(half - band_x0, h - top_y, 2 * half - 2 * wt), WALL, true)
+	_box(shaft, "Shaft wall north top", Vector3(reach + (half - reach) * 0.5, (top_y + h) * 0.5, half - wt * 0.5), Vector3(half - reach, h - top_y, wt), WALL, true)
+	var inner := half - wt
+	var floor_root := _box(tower, "Tower floor", Vector3(0, FLOOR * 0.5, 0), Vector3(2 * inner, FLOOR, 2 * inner), FLOOR_STONE, true, "floor")
+	var door_z: float = TOWER_DOOR[0] + ZC - tower.position.z
+	_box(floor_root, "Tower threshold", Vector3(inner + T * 0.5, 0, door_z), Vector3(T, FLOOR, TOWER_DOOR[1]), STONE, true)
+	var lamp := _group(tower, "Tower lamp")
+	lamp.transform = Transform3D(Basis(Vector3.UP, -PI / 2), Vector3(-inner + 0.27, 3.0, 0.4))
+	_lantern(lamp, Vector3.ZERO)
+
+## A band of height h at y round the tower's outside, out to `o` (inner faces 0.05 inside the
+## walls); west = false leaves out the chapel side.
+func _ring(tower: Node3D, title: String, y: float, h: float, o: float, half: float, color: Color, west := true) -> void:
+	var i := half - 0.05
+	for sz in [-1.0, 1.0]:
+		_box(tower, title, Vector3(0, y, sz * (o + i) * 0.5), Vector3(2 * o, h, o - i), color, false)
+	for sx in ([-1.0, 1.0] if west else [-1.0]):
+		_box(tower, title, Vector3(sx * (o + i) * 0.5, y, 0), Vector3(o - i, h, 2 * i), color, false)
+
+## The solid belfry floor (ladder_inside): stone flags (word "floor") over the tower's inner square
+## round the hatch over the ladder, with a timber rim round the hatch.
+func _belfry_floor(tower: Node3D, half: float) -> void:
+	var inner := half - TOWER_T
+	var t := 0.3
+	var y := BELFRY_FLOOR + 0.04 - t * 0.5
+	var hx0 := HATCH.position.x
+	var hx1 := HATCH.end.x
+	var hz1 := HATCH.end.y
+	var root := _box(tower, "Belfry floor", Vector3(0, y, (hz1 + inner) * 0.5), Vector3(2 * inner, t, inner - hz1), STONE_DARK, true, "floor")
+	for s in [[-inner, hx0], [hx1, inner]]:
+		_box(root, "Belfry floor side", Vector3((s[0] + s[1]) * 0.5, 0, (-inner + hz1) * 0.5 - root.position.z), Vector3(s[1] - s[0], t, hz1 + inner), STONE_DARK, true)
+	var rim_y := t * 0.5 + 0.02
+	_box(root, "Hatch rim", Vector3((hx0 + hx1) * 0.5, rim_y, hz1 + 0.04 - root.position.z), Vector3(hx1 - hx0 + 0.16, 0.04, 0.08), TIMBER, false)
+	for x in [hx0 - 0.04, hx1 + 0.04]:
+		_box(root, "Hatch rim", Vector3(x, rim_y, (-inner + hz1) * 0.5 - root.position.z), Vector3(0.08, 0.04, hz1 + inner), TIMBER, false)
 
 ## A pick-only Area3D for a word root built of plain meshes (layer 1, like _box's word areas).
 func _word_pick(root: Node3D, at: Vector3, size: Vector3) -> void:

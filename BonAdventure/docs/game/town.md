@@ -231,8 +231,10 @@ ceiling and the mystery room where Madame Luna runs Mystery Doors.
 
 A small chapel with a slate roof, a belfry and spire, a rose window and stained glass; inside,
 pews either side of a red runner and a raised chancel with the altar, candles and lectern.
-Rebuilt 10–12 Nov.
-[Design record](../guides/TOWN_DESIGN_BRIEF.md#chapel-rebuild--1012-november-2026)
+Rebuilt 10–12 Nov; enlarged 21 Nov with a bell tower and a bell to ring. Since 23 Nov a doorway by
+the entrance leads into the tower, where a ladder climbs through a hatch to the bell.
+[Design record](../guides/TOWN_DESIGN_BRIEF.md#chapel-rebuild--1012-november-2026),
+[ladder inside](../guides/TOWN_DESIGN_BRIEF.md#chapel-ladder-inside-the-tower--23-november-2026)
 
 ## Farm barn
 
