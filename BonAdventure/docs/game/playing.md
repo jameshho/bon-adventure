@@ -113,8 +113,11 @@ Click or tap almost any object to see a **word card** with the word in both lang
 counts as studying it (also while walking or jumping, since 23 Nov). Some objects can be **picked up** (books, baskets) and inspected in
 BonBon's hand. The **journal** (J, or the book button top right) lists every word, by category or
 by area, with ★ saved words, ✓ studied words and the right and wrong answers from the tracked
-minigames.
+minigames. Since 23 Nov each noun shows a small picture of its object in the journal and on the
+results card after a game ([journal](../evidence/word-pictures-20261123/journal-furniture.png),
+[results](../evidence/word-pictures-20261123/results.png)); the word card in town stays text only.
 [Vocabulary book](../guides/ARCHITECTURE_REVIEW_PART1.md#vocabulary-book) ·
+[word pictures](../guides/ARCHITECTURE_REVIEW_PART1.md#word-pictures) ·
 [holding things](../guides/HAND_HOLD.md)
 
 ## Moving and controls

@@ -102,6 +102,8 @@ var vocabulary: Dictionary = {}
 var vocabulary_categories: Dictionary = {}
 var vocabulary_aliases: Dictionary = {}
 var vocabulary_sold_in: Dictionary = {}
+## Words whose town object makes no good picture (words.json "picture": false).
+var vocabulary_no_picture: Dictionary = {}
 var doors: Dictionary = {}
 var studied_words: Dictionary = {}
 var room_name := ""
@@ -112,6 +114,8 @@ var farm_gate: ZooGate
 var zones: Node3D
 var seating
 var area_vocabulary
+## Journal and results-screen word pictures (word_pictures.gd, 23 Nov 2026).
+var word_pictures
 
 ## The app scene (scripts/app/app.gd, PWA phase 3) sets staged_loading before adding Main:
 ## the town then builds over many frames and reports loading_progress, so the loading screen
@@ -196,6 +200,10 @@ func _ready() -> void:
 	await _loading_step("shops")
 	area_vocabulary = preload("res://scripts/learning/area_vocabulary.gd").new()
 	area_vocabulary.build(apartment, zones, vocabulary, vocabulary_aliases)
+	word_pictures = preload("res://scripts/ui/word_pictures.gd").new()
+	word_pictures.name = "WordPictures"
+	add_child(word_pictures)
+	word_pictures.setup(area_vocabulary.targets, vocabulary_categories, vocabulary_no_picture)
 	seating = preload("res://scripts/player/seating_controller.gd").new()
 	add_child(seating)
 	seating.setup(self)
@@ -255,6 +263,7 @@ func load_words() -> void:
 	vocabulary_categories = words.categories
 	vocabulary_aliases = words.aliases
 	vocabulary_sold_in = words.sold_in
+	vocabulary_no_picture = words.no_picture
 
 
 func current_room() -> String:

@@ -18,7 +18,7 @@ extends Control
 ##       "rewards": [{"kind": "quest", "text": "..."}, {"kind": "xp", "amount": 30}, {"kind": "coins", "amount": 5},
 ##                   {"kind": "stars", "amount": 2}],
 ##       "replay": true,
-##       "picture": func(key) -> Texture2D: ...,                  # optional word pictures
+##       "picture": func(key) -> Texture2D: ...,                  # optional; else word_pictures.gd
 ##   })
 ## Signals: continued (Continue, Esc) and replay_requested (Play again); either closes the card.
 ## Interface text in the native language (data/phrases.json group "results"); words through the
@@ -34,6 +34,7 @@ const BonStyle := preload("res://scripts/ui/bon_style.gd")
 const UiText := preload("res://scripts/language/ui_text.gd")
 const Lexicon := preload("res://scripts/language/lexicon.gd")
 const SessionWords := preload("res://scripts/learning/session_words.gd")
+const WordPictures := preload("res://scripts/ui/word_pictures.gd")
 
 ## Words shown before "See all" (user: 3-5).
 const HIGHLIGHTS := 4
@@ -303,13 +304,21 @@ func _word_row(key: String, fresh: bool, f: float) -> Control:
 	var maker: Variant = _spec.get("picture", null)
 	if maker is Callable and (maker as Callable).is_valid():
 		picture = (maker as Callable).call(key)
+	var art := TextureRect.new()
+	art.name = "Picture"
+	art.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	art.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	art.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	art.custom_minimum_size = Vector2(52, 52) * f
+	# Without a game's own picture, the word's town object (word_pictures.gd, 23 Nov 2026).
+	var pictures = WordPictures.shared()
 	if picture is Texture2D:
-		var art := TextureRect.new()
 		art.texture = picture
-		art.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		art.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		art.custom_minimum_size = Vector2(52, 52) * f
 		row.add_child(art)
+	elif pictures != null and pictures.fill(art, key):
+		row.add_child(art)
+	else:
+		art.free()
 	var texts := VBoxContainer.new()
 	texts.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	texts.add_theme_constant_override("separation", 0)

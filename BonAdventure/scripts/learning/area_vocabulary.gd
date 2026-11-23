@@ -8,6 +8,9 @@ var area_names: Dictionary = {}
 var assignments: Dictionary = {}
 var unknown_keys: Dictionary = {}
 var used_overrides: Dictionary = {}
+## Word key -> every target carrying it, interactables included (drop_interactables() leaves this
+## alone): the sources of the journal's word pictures (word_pictures.gd).
+var targets: Dictionary = {}
 
 func build(town: Node3D, zones, vocabulary: Dictionary, aliases: Dictionary) -> void:
 	groups.clear()
@@ -15,6 +18,7 @@ func build(town: Node3D, zones, vocabulary: Dictionary, aliases: Dictionary) -> 
 	assignments.clear()
 	unknown_keys.clear()
 	used_overrides.clear()
+	targets.clear()
 	_overrides = JSON.parse_string(FileAccess.get_file_as_string(OVERRIDES_PATH)).overrides
 	for zone in zones.zones:
 		groups[zone.id] = []
@@ -63,6 +67,8 @@ func add(root: Node, town: Node3D, zones, vocabulary: Dictionary, aliases: Dicti
 				break
 			ancestor = ancestor.get_parent()
 		assignments[target] = {"key":key,"zone":area,"point":point}
+		if not targets.has(key): targets[key] = []
+		targets[key].append(target)
 		# Freeze placement once after world construction. Vehicles retain their home zone.
 		target.set_meta("assigned_zone",area)
 		if not groups[area].has(key): groups[area].append(key)

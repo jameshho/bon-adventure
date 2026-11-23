@@ -26,7 +26,7 @@ from pathlib import Path
 
 PATH = Path(__file__).resolve().parents[1] / "data" / "words.json"
 LANGUAGES_PATH = Path(__file__).resolve().parents[1] / "data" / "languages.json"
-FIELDS = ("text", "forms", "category", "prefab_size", "note", "sold_in")
+FIELDS = ("text", "forms", "category", "prefab_size", "picture", "note", "sold_in")
 
 
 def load(path=PATH):
@@ -84,6 +84,8 @@ def problems(data):
         for field in entry:
             if field not in FIELDS:
                 found.append(f"{key}: unknown field {field!r}")
+        if "picture" in entry and entry["picture"] is not False:
+            found.append(f"{key}: picture may only be false (no journal picture)")
         sold_in = entry.get("sold_in", [])
         if not isinstance(sold_in, list) or not all(isinstance(s, str) and s for s in sold_in) or len(set(sold_in)) != len(sold_in):
             found.append(f"{key}: sold_in must be a list of unique store ids")

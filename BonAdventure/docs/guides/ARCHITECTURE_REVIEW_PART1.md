@@ -542,7 +542,7 @@ updated before reuse. Non-Latin scripts would need a fallback font.
 | `categories` | category name → one-line rule for what belongs there. The order is the order of the file's word groups. 19 categories (Travel added 28 October 2026 for the airport) |
 | `aliases` | legacy/synonym key → existing word key; aliases are not extra words (old saves and scenes) |
 | `removed_with_objects` | deleted words whose tagged objects the game removes from town at load (`world_refinements.gd::apply_word_list`) |
-| `words` | key → `{"text": {code: display text, …}, "forms"?: {code: {…}}, "category", "prefab_size"?, "note"?, "sold_in"?}`. The key is a permanent id (saves use it), not display text. One line per word, grouped by category. Until 4 Nov 2026 the Spanish was a `"spanish"` field |
+| `words` | key → `{"text": {code: display text, …}, "forms"?: {code: {…}}, "category", "prefab_size"?, "picture"?, "note"?, "sold_in"?}`. `"picture": false` (23 Nov 2026) means no [word picture](#word-pictures). The key is a permanent id (saves use it), not display text. One line per word, grouped by category. Until 4 Nov 2026 the Spanish was a `"spanish"` field |
 | `about` | short description of the file |
 
 A word may also carry `"sold_in": [store ids]` (3 Nov 2026): the stores whose customer-order minigame can ask for it (the 80 supermarket products use `["supermarket"]`). `tools/word_data.py` validates it (list of unique non-empty strings) and `word_data.gd` exposes it as `sold_in`. Adding a product to a store's orders means adding the store id; the object must also exist inside the store's zone to be clickable into the cart.
@@ -571,7 +571,8 @@ To add, edit or delete a word:
    forms of a person (`el niño / la niña`) and for genuinely different senses such
    as `el pez (animal) / el pescado (comida)`. Directions/adverbs take no article.
    Decisions and flagged ambiguities: [word audit](../archive/WORD_AUDIT.md#one-mexican-translation-per-word--28-october-2026).
-   `prefab_size` only for generated learning prefabs.
+   `prefab_size` only for generated learning prefabs. Add `"picture": false` when the word's
+   town object makes a poor [word picture](#word-pictures) (a blank board, a plain slab).
 3. Run `python3 tools/word_data.py`: it validates (unknown category, missing
    Spanish, broken alias, empty category) and re-formats the file.
 4. To show the word in town, give a prop a `word_key` and a clear picking shape.
@@ -710,7 +711,8 @@ buttons (now section headings of the table) and the hint stay in the HUD.
 
 - **Rows:** every word of the dictionary (not only discovered ones, which changes the
   [Stage 2](#category-and-area-journal--stage-2-28-october-2026) discovered-only list):
-  ★ | foreign | native | studied ✓ | right | wrong. The ★ toggles the existing bookmark
+  ★ | foreign | native | studied ✓ | right | wrong (since 23 Nov 2026 a picture column after ★:
+  [word pictures](#word-pictures)). The ★ toggles the existing bookmark
   (`vocabulary_hud.gd` `toggle_bookmark()`, saved at once to `VocabularyProgress.BOOKMARKS_FILE`;
   the card star uses the same function).
 - **Filters:** All / Studied / Saved (the bookmarked words; the game calls them "saved"),
@@ -729,6 +731,39 @@ buttons (now section headings of the table) and the hint stay in the HUD.
   scrolling. Measured with 781 words: rebuild 3.5 ms, scroll step 0.3 ms.
 - **Scale:** window and fonts follow min(height / 800, width / 1100); buttons 44 px × scale.
   All text is in `data/phrases.json` (`journal.*`, `games.*`).
+
+### Word pictures
+
+**23 Nov 2026 (user decision: the in-world word card stays text-only, since the object is right
+there; pictures go where the object is not).** `scripts/ui/word_pictures.gd` (Main's
+`word_pictures`, `WordPictures.shared()`) draws a word's own town object into a 128 px
+transparent picture, at runtime, so a picture always matches what the player clicked and the
+project ships no image files. It shows in the journal (a picture column after ★, and big in
+the detail view) and on the [results screen](MINIGAMES.md#results-screen) word rows.
+
+- **Source:** `area_vocabulary.gd` `targets` (word key → every target carrying it,
+  interactables included). Only the target's meshes are copied into a SubViewport (no scripts
+  run, the town is untouched); hidden parts are left out except originals the render batchers
+  hid. `Label3D` text is never copied (it would give the word away).
+- **No picture:** words of `NO_PICTURE_CATEGORIES` (Time & Directions, Colors & Descriptions,
+  Actions: not nouns; Places & Rooms: their object is the place's name sign, a blank board
+  without its text), words marked `"picture": false` in `data/words.json`, and targets over
+  300 meshes or 24 m (a building, the bus).
+- **Cost:** no download. Drawn on demand, newest request first, two at a time; at most 200 kept
+  (64 KB of texture each). Measured 23 Nov (M5, whole town, 1600 × 1000): 621 pictures in
+  11.5 s, 19 ms each. Headless runs draw nothing. `product_pictures.gd` (shop orders) uses
+  the same `draw()`.
+- **Weak pictures turned off (user, 23 Nov 2026):** 147 words carry `"picture": false`, chosen
+  from contact sheets of every picture: the body-chart parts (loose blobs), flat ground and
+  building slabs (floor, road, path, step, tile, counter, ...), blank boards and signs (the flight
+  board's words, store section signs such as *electronics*, *suspect*), and plain boxes, discs and
+  cylinders that name nothing (tea, wine, rice, soup, cloud, flower, ...). 439 of 795 words keep a
+  picture. When a word gets a better town object, remove its flag (`python3 tools/word_data.py`
+  re-formats and checks it may only be `false`).
+- **Check:** `docs/evidence/word-pictures-20261123/verify.gd` (per-category counts, journal,
+  detail and results rows; with graphics it draws every picture and saves the views; with
+  `WORD_PICTURE_SHEETS=<folder>` contact sheets of every picture). A covered or minimised
+  Godot window draws no frames, so drawing waits: keep the window visible during a graphics run.
 
 **9 Nov 2026: saved words merged into the journal, new look (user: the journal interface was
 "really bad"; combine Saved words and the Journal; bigger gear and book icons).**

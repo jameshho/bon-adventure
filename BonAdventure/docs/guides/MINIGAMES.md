@@ -299,8 +299,9 @@ locks the player while it shows, Esc = Continue) and `scripts/learning/session_w
   shows no word stats or list, only the accomplishment and any reward.
 - **Buttons**: *Continue exploring* (green) and *Play again* (blue): the same game again, as Yes on
   its greeting (the host's `launch()`).
-- Word pictures: an optional `picture` callable (word key → Texture2D); none yet (the library
-  shows words only).
+- Word pictures: an optional `picture` callable (word key → Texture2D); without one (every game
+  so far) each word row shows its town object's picture when it has one
+  ([word pictures](ARCHITECTURE_REVIEW_PART1.md#word-pictures), 23 Nov 2026).
 
 **When it shows (every game, no session code):** `scripts/learning/results_flow.gd`
 (`main.results_flow`) follows the activity board. A game starting (any route) starts

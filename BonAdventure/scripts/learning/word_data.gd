@@ -4,13 +4,14 @@ extends RefCounted
 ## vocabulary (key -> display text in the FOREIGN language of data/languages.json),
 ## categories (key -> category), aliases (old key -> word), catalog (prefab words ->
 ## {spanish, category, size}; "spanish" is the legacy name of the foreign text), sold_in
-## (word -> store ids that may order it), category_rules (category -> what belongs there)
+## (word -> store ids that may order it), no_picture (words marked "picture": false: their town
+## object makes a poor journal picture, see scripts/ui/word_pictures.gd), category_rules (category -> what belongs there)
 ## and removed_with_objects (deleted words whose tagged objects are removed from town).
 ## Edit words.json, never these.
 const Lexicon := preload("res://scripts/language/lexicon.gd")
 
 static func load_all() -> Dictionary:
-	var result := {"vocabulary": {}, "categories": {}, "aliases": {}, "catalog": {}, "sold_in": {}, "category_rules": {}, "removed_with_objects": []}
+	var result := {"vocabulary": {}, "categories": {}, "aliases": {}, "catalog": {}, "sold_in": {}, "no_picture": {}, "category_rules": {}, "removed_with_objects": []}
 	var lexicon = Lexicon.shared()
 	var parsed: Dictionary = lexicon.word_data
 	if parsed.is_empty():
@@ -26,6 +27,8 @@ static func load_all() -> Dictionary:
 		result.categories[key] = entry.category
 		if entry.has("sold_in"):
 			result.sold_in[key] = entry.sold_in
+		if entry.get("picture", true) == false:
+			result.no_picture[key] = true
 		if entry.has("prefab_size"):
 			result.catalog[key] = {"spanish": text, "category": entry.category, "size": entry.prefab_size}
 	return result

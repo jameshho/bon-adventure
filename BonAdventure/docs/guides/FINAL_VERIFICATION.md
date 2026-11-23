@@ -8128,3 +8128,30 @@ boat in open water.
   check once: **62 checks, 0 failures** (CRASH label = known exit abort). Rendered
   `VT_NIGHT=1 … flight-view-20261123/capture.gd` → `night-height-100-m.png`: the view's edge fades
   into the sky, no line. Not re-checked: dawn/dusk keyframes, where fog and horizon colours differ slightly.
+
+## Word pictures in the journal and results card — 23 November 2026
+
+User decision: the in-world word card stays text only; nouns get a picture of their own town
+object in the journal (row column and detail) and on the results card
+([word pictures](ARCHITECTURE_REVIEW_PART1.md#word-pictures)). Whole town (`VT_FOCUS=all`).
+- `docs/evidence/word-pictures-20261123/verify.gd`, graphics, 1600 × 1000: **18 checks, 0
+  failures**; 621 pictures drawn in 11.5 s (19 ms each). The first graphics run reported 539
+  pictures missing: the Godot window was covered, drew no frames and the check's 30-frame wait
+  gave up (now 240 frames; a covered window only delays drawing in the game). After the review
+  of the contact sheets, Places & Rooms (blank name signs) got no pictures; headless once on
+  the final code: **17 checks, 0 failures**, 586 of 795 words with a picture. Exits 134 (known
+  exit abort) after the summary.
+- `run_checks.py --only vocabulary_book,results_screen` (headless, final code): **93 checks, 0
+  failures** and **22 checks, 0 failures**, both labelled CRASH by the known exit abort
+  (`recursive_mutex lock failed`) after their summaries. `vocabulary_book`'s column indices were
+  updated for the new picture column.
+- Rendered: `journal-furniture.png`, `journal-food.png`, `detail-chair.png`, `results.png` in the
+  evidence folder (the journal and results shots predate the Places & Rooms exclusion, which they
+  do not show). Contact sheets were reviewed, not kept.
+- Not checked: the shop order panel's product pictures (same `draw()`, refactor only), the web
+  export and a phone, the full suite.
+- Same day (user: turn the weak ones off): `"picture": false` on 147 words in `data/words.json`
+  (new field in `tools/word_data.py`, which passes). Headless once: **19 checks, 0 failures**
+  (new: every flagged word has no picture), 439 of 795 words with a picture; exit 134 (known
+  exit abort) after the summary. Not re-rendered: the flags only remove pictures, the rest are
+  drawn as before.

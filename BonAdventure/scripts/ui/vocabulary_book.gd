@@ -3,7 +3,8 @@ extends VBoxContainer
 ## work, 8 Nov 2026; guide: docs/guides/ARCHITECTURE_REVIEW_PART1.md#vocabulary-book). The HUD
 ## (vocabulary_hud.gd) owns the journal window, its title, the By Category / By Area buttons
 ## and the bookmarks; this panel shows every word of the dictionary as a table:
-##   ★ | foreign | native | studied ✓ | right | wrong
+##   ★ | picture | foreign | native | studied ✓ | right | wrong
+## (the picture: the word's own town object, word_pictures.gd, 23 Nov 2026; also big in the detail)
 ## with filters (All / Studied / Saved, search in either language, categories and areas
 ## (multi-select menus: any number ticked, none = all; 9 Nov 2026), sorting),
 ## Show / Hide scores (the last three columns) and a detail view of one word (click a row).
@@ -24,6 +25,7 @@ const UiText := preload("res://scripts/language/ui_text.gd")
 const PinyinText := preload("res://scripts/ui/pinyin_text.gd")
 const UiIcons := preload("res://scripts/ui/ui_icons.gd")
 const BonStyle := preload("res://scripts/ui/bon_style.gd")
+const WordPictures := preload("res://scripts/ui/word_pictures.gd")
 
 ## Light palette (UI art style, 18 Nov 2026; was the dark HUD colours).
 const GOLD := Color("e9a91f")
@@ -53,6 +55,12 @@ const ROW_HEIGHT := 56.0
 const SCROLL_WIDTH := 24.0
 const STAR_WIDTH := 52.0
 const NUMBER_WIDTH := 96.0
+const PICTURE_WIDTH := 52.0
+## The detail view's picture (square, at scale 1).
+const DETAIL_PICTURE := 132.0
+## Row cells: star, picture, foreign, native, then the three score columns.
+const FOREIGN_CELL := 2
+const SCORE_CELLS := [4, 5, 6]
 
 ## A row's star was clicked: the HUD toggles and saves the bookmark, then calls refresh_rows().
 signal bookmark_toggled(word_key: String)
@@ -113,6 +121,7 @@ var scaled_styles: Array = []
 var detail: VBoxContainer
 var back_button: Button
 var detail_star: Button
+var detail_picture: TextureRect
 var detail_foreign: Label
 var detail_reading: Label
 var detail_native: Label
@@ -431,13 +440,24 @@ func _make_row(is_header: bool) -> Control:
 			if key != "":
 				bookmark_toggled.emit(key))
 		line.add_child(star)
+	# The word's picture (empty when it has none); the header keeps its column free.
+	if is_header:
+		line.add_child(_cell(PICTURE_WIDTH))
+	else:
+		var art := TextureRect.new()
+		art.name = "Picture"
+		art.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		art.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		art.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		art.set_meta("base_width", PICTURE_WIDTH)
+		line.add_child(art)
 	for spec in [[0.0, 1.3], [0.0, 1.1], [NUMBER_WIDTH, 0.0], [NUMBER_WIDTH, 0.0], [NUMBER_WIDTH, 0.0]]:
 		var cell := _cell(spec[0], spec[1])
 		if is_header:
 			cell.add_theme_color_override("font_color", HEADING)
-		elif line.get_child_count() == 1:
+		elif line.get_child_count() == FOREIGN_CELL:
 			cell.add_theme_color_override("font_color", FOREIGN)   # the word (dark on cream)
-		elif line.get_child_count() == 2:
+		elif line.get_child_count() == FOREIGN_CELL + 1:
 			cell.add_theme_color_override("font_color", TEXT)   # its translation
 		line.add_child(cell)
 	if is_header:
@@ -501,6 +521,11 @@ func _build_detail() -> void:
 	back_button.name = "Back"
 	style_button(back_button, "plain")
 	top.add_child(back_button)
+	detail_picture = TextureRect.new()
+	detail_picture.name = "Picture"
+	detail_picture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	detail_picture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	top.add_child(detail_picture)
 	var names := VBoxContainer.new()
 	names.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	names.add_theme_constant_override("separation", 0)
@@ -738,11 +763,11 @@ func _refresh_texts() -> void:
 	sort_menu.add_item(UiText.t("journal.sort_wrong"))
 	sort_menu.select(SORTS.find(sort))
 	var cells := header.get_children()
-	cells[1].text = foreign_name
-	cells[2].text = native_name
-	cells[3].text = UiText.t("journal.col_studied")
-	cells[4].text = UiText.t("journal.col_right")
-	cells[5].text = UiText.t("journal.col_wrong")
+	cells[2].text = foreign_name
+	cells[3].text = native_name
+	cells[4].text = UiText.t("journal.col_studied")
+	cells[5].text = UiText.t("journal.col_right")
+	cells[6].text = UiText.t("journal.col_wrong")
 	scores_button.text = UiText.t("journal.scores")
 	scores_button.tooltip_text = UiText.t("journal.hide_scores" if show_scores else "journal.show_scores")
 	back_button.text = UiText.t("journal.back")
@@ -768,7 +793,7 @@ func set_show_scores(value: bool) -> void:
 
 func _apply_columns(line: HBoxContainer) -> void:
 	var cells := line.get_children()
-	for i in range(3, 6):
+	for i in SCORE_CELLS:
 		cells[i].visible = show_scores
 
 # --- Virtual rows ----------------------------------------------------------------------------
@@ -834,14 +859,23 @@ func _draw_rows() -> void:
 		var saved := bookmarks.has(key)
 		cells[0].text = "★" if saved else "☆"
 		cells[0].tooltip_text = UiText.t("card.unsave" if saved else "card.save")
-		cells[1].text = word.foreign
-		cells[2].text = word.native
-		cells[3].text = "✓" if studied.has(key) else "–"
-		cells[3].add_theme_color_override("font_color", RIGHT if studied.has(key) else DIM)
-		cells[4].text = str(word.positive)
-		cells[4].add_theme_color_override("font_color", RIGHT if word.positive > 0 else DIM)
-		cells[5].text = str(word.negative)
-		cells[5].add_theme_color_override("font_color", WRONG if word.negative > 0 else DIM)
+		_show_picture(cells[1], key)
+		cells[2].text = word.foreign
+		cells[3].text = word.native
+		cells[4].text = "✓" if studied.has(key) else "–"
+		cells[4].add_theme_color_override("font_color", RIGHT if studied.has(key) else DIM)
+		cells[5].text = str(word.positive)
+		cells[5].add_theme_color_override("font_color", RIGHT if word.positive > 0 else DIM)
+		cells[6].text = str(word.negative)
+		cells[6].add_theme_color_override("font_color", WRONG if word.negative > 0 else DIM)
+
+## Shows `key`'s picture in `rect` (now or once drawn); empty without the picture maker or one.
+func _show_picture(rect: TextureRect, key: String) -> bool:
+	var pictures = WordPictures.shared()
+	if pictures == null:
+		rect.texture = null
+		return false
+	return pictures.fill(rect, key)
 
 func _on_list_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed:
@@ -892,6 +926,7 @@ func _render_detail() -> void:
 	var word: Dictionary = words[key]
 	var lexicon = Lexicon.shared()
 	detail_foreign.text = word.foreign
+	detail_picture.visible = _show_picture(detail_picture, key)
 	PinyinText.show(detail_reading, {"foreign": word.foreign})
 	detail_native.text = word.native + "  ·  " + UiText.named("categories", str(categories.get(key, "Everyday")))
 	var saved := bookmarks.has(key)
@@ -956,6 +991,8 @@ func _scale_row(row: Control) -> void:
 			continue
 		var width: float = cell.get_meta("base_width", 0.0)
 		cell.custom_minimum_size.x = width * factor
+		if cell is TextureRect:
+			continue
 		_font(cell, 22.0 if cell is Button else 19.0)
 	if row.has_meta("heading"):
 		_font(row.get_meta("heading"), 18)
@@ -1021,6 +1058,7 @@ func _scale_detail() -> void:
 	_font(detail_reading, 20)
 	_font(detail_native, 20)
 	_font(detail_star, 34)
+	detail_picture.custom_minimum_size = Vector2.ONE * DETAIL_PICTURE * f
 	detail_star.custom_minimum_size = Vector2(60, 60) * f
 	detail_star.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	for tile in detail_tiles.get_children():

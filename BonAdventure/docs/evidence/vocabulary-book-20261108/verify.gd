@@ -180,7 +180,7 @@ func run():
 			check(hud.bookmarks.has("bread") and not book.is_detail_open(), "clicking the star saves and does not open the detail")
 			await click(star.get_global_rect().get_center())
 			check(not hud.bookmarks.has("bread") and not book.is_detail_open(), "clicking the star again unsaves, still no detail")
-			await click(row.get_meta("line").get_child(1).get_global_rect().get_center())
+			await click(row.get_meta("line").get_child(book.FOREIGN_CELL).get_global_rect().get_center())
 			check(book.is_detail_open() and book.detail_key == "bread", "clicking the word itself opens the detail")
 			book.close_detail()
 
@@ -273,16 +273,16 @@ func run():
 	# --- Show / Hide scores -------------------------------------------------------------------------
 	var before := item_keys()
 	book.scores_button.pressed.emit()
-	var hidden_ok: bool = not book.show_scores and not book.header.get_child(3).visible and not book.header.get_child(5).visible
+	var hidden_ok: bool = not book.show_scores and not book.header.get_child(book.SCORE_CELLS[0]).visible and not book.header.get_child(book.SCORE_CELLS[2]).visible
 	for r in book.rows:
 		var cells: Array = r.get_meta("line").get_children()
-		hidden_ok = hidden_ok and not cells[3].visible and not cells[4].visible and not cells[5].visible and cells[1].visible
+		hidden_ok = hidden_ok and book.SCORE_CELLS.all(func(i): return not cells[i].visible) and cells[book.FOREIGN_CELL].visible
 	check(hidden_ok and not book.scores_button.button_pressed and book.scores_button.tooltip_text == UiText.t("journal.show_scores"), "Hide scores hides studied, right and wrong")
 	check(item_keys() == before and book.filter == "studied", "Hide scores changes no filter or data")
 	book.filter_buttons.all.pressed.emit()
 	await shot("scores-hidden-en-es")
 	book.scores_button.pressed.emit()
-	check(book.show_scores and book.header.get_child(4).visible, "Show scores brings them back")
+	check(book.show_scores and book.header.get_child(book.SCORE_CELLS[1]).visible, "Show scores brings them back")
 
 	# --- Detail view ------------------------------------------------------------------------------
 	book.scroll_to("apple")
