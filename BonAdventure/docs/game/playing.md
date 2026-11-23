@@ -109,7 +109,7 @@ Chinese shows pinyin under the text.
 *Screenshot 8 Nov.*
 
 Click or tap almost any object to see a **word card** with the word in both languages; that
-counts as studying it. Some objects can be **picked up** (books, baskets) and inspected in
+counts as studying it (also while walking or jumping, since 23 Nov). Some objects can be **picked up** (books, baskets) and inspected in
 BonBon's hand. The **journal** (J, or the book button top right) lists every word, by category or
 by area, with ★ saved words, ✓ studied words and the right and wrong answers from the tracked
 minigames.

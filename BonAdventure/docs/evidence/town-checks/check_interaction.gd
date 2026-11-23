@@ -177,11 +177,34 @@ func run() -> void:
     press.pressed = false
     interaction._input(press)
     player.position.x = 0
+    # The right-button events above carried position (0, 0): aim at the door again.
+    interaction.pointer_position = Vector2(640, 360)
+    await physics_frame
+    await physics_frame
     interaction.click()
+    check(hud.is_card_visible(), "Card opens for the vertical movement test")
     player.position.y += 0.01
     interaction._physics_process(1.0 / 120.0)
     check(not hud.is_card_visible(), "Vertical movement dismisses card immediately")
     player.position.y = 0
+    # A click while jumping or walking (23 Nov 2026): the card stays while the player keeps
+    # moving, and the first step after standing still closes it.
+    await physics_frame
+    await physics_frame
+    player.velocity = Vector3(0, 3, 0)
+    interaction.click()
+    check(hud.is_card_visible(), "Click while jumping opens the card")
+    player.position.y += 0.02
+    interaction._physics_process(1.0 / 120.0)
+    player.position.y += 0.02
+    interaction._physics_process(1.0 / 120.0)
+    check(hud.is_card_visible(), "Card clicked while jumping stays open in the air")
+    player.velocity = Vector3.ZERO
+    interaction._physics_process(1.0 / 120.0)
+    check(hud.is_card_visible(), "Card clicked while jumping stays open after landing")
+    player.position.y = 0
+    interaction._physics_process(1.0 / 120.0)
+    check(not hud.is_card_visible(), "First movement after standing still closes the card")
     interaction.click()
     player.position.z = 10
     interaction._physics_process(0.23)

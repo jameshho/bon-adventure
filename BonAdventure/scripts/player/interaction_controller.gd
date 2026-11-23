@@ -72,6 +72,13 @@ var _card_age := 0.0
 var selected: Node3D
 var selected_point := Vector3.ZERO
 var selected_player_position := Vector3.ZERO
+## True while the card was opened by a player already walking or in the air (user, 23 Nov 2026:
+## a tap on the tiger while jumping did nothing, as the first moving frame closed the card it
+## opened). Such a card follows the player instead of closing; once they stand still, the next
+## step closes it as usual.
+var selected_while_moving := false
+## Player speed (m/s) above which a click counts as made while moving.
+const MOVING_SPEED := 0.05
 var look_away_seconds := 0.0
 ## Mouse travel (pixels) during a right-button camera drag before the card closes.
 const ORBIT_DISMISS_PIXELS := 6.0
@@ -384,6 +391,7 @@ func click() -> void:
     else:
         selected = obj
         selected_player_position = player.global_position
+        selected_while_moving = player.velocity.length() > MOVING_SPEED
         var hit: Dictionary = aimed_hit()
         selected_point = hit["position"] if not hit.is_empty() else selected.global_position
         look_away_seconds = 0.0
@@ -422,9 +430,15 @@ func show_word(obj: Node3D) -> void:
     word_studied.emit(key)
 
 func _physics_process(delta: float) -> void:
-    # Dismiss on the first movement frame, independently of pointer-check timing.
-    if is_instance_valid(selected) and not player.global_position.is_equal_approx(selected_player_position):
-        clear_card()
+    # Dismiss on the first movement frame, independently of pointer-check timing; a card opened
+    # while moving (selected_while_moving) waits until the player has stood still first.
+    if is_instance_valid(selected):
+        if player.global_position.is_equal_approx(selected_player_position):
+            selected_while_moving = false
+        elif selected_while_moving:
+            selected_player_position = player.global_position
+        else:
+            clear_card()
     _focus_timer += delta
     if _focus_timer >= FOCUS_INTERVAL:
         refresh_focus()

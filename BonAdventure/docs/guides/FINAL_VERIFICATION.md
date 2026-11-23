@@ -1169,6 +1169,21 @@ sandboxed launch exited 134. No full-town keyboard playthrough, save-persistence
 check or full-suite rerun was performed; existing metadata issues remain outside
 this change, and current vehicle results remain in the dated rewrite sections.
 
+## Word card while moving — 23 November 2026
+
+User: tapping the tiger while jumping did nothing. The 23 October movement dismissal (above)
+closed the card on the first moving frame, so a card opened mid-jump or mid-walk vanished at
+once. Now `interaction_controller.gd` notes whether the player was moving at the click
+(`velocity` above `MOVING_SPEED`); such a card follows the player instead of closing, and once
+they stand still for a frame the old rule applies again. Interactables were not affected.
+
+`python3 tools/run_checks.py --only interaction`: **PASS** (0 failures). New checks: a click
+while jumping opens the card, it stays open in the air and after landing, and the first step
+after standing still closes it. The check's right-button events had left the pointer at (0, 0),
+so the existing "Vertical movement dismisses card immediately" check passed without opening a
+card; it now re-aims at the fixture and checks the card opened first. Not run: the full suite,
+a rendered or on-device playthrough (behaviour-only change).
+
 ## Compact town redesign — 23 October 2026
 
 Implemented the user's annotated compact-town request in the active runtime map,
