@@ -5,6 +5,6 @@
   "languages": {
     "en": {"name": "English", "badge": "EN", "flag": "us", "rules": "res://scripts/language/rules_en.gd"},
     "es": {"name": "Español", "badge": "ES", "flag": "es", "rules": "res://scripts/language/rules_es.gd"},
-    "zh": {"name": "中文（香港）", "badge": "中", "flag": "hk", "rules": "res://scripts/language/rules_zh.gd", "reading": "res://data/pinyin_zh.json"}
+    "zh": {"name": "中文（香港）", "badge": "中", "flag": "cn", "rules": "res://scripts/language/rules_zh.gd", "reading": "res://data/pinyin_zh.json"}
   }
 }
