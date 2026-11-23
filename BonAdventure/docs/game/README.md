@@ -50,7 +50,7 @@ and wrong answers per word in the journal. **Levels** ([how games get harder](mi
 | [Who's Who?](minigames.md#whos-who) | Hospital entrance | Yes | 4 Nov | 4 Nov |
 | [Flight Finder](minigames.md#flight-finder) | Airport information desk | Yes | 5 Nov | 8 Nov |
 | [Stack & Pack](minigames.md#stack--pack) | Warehouse | Yes | 5 Nov | 21 Nov (two-level shelf, tap to place; no cardboard box) |
-| [On the Menu](minigames.md#on-the-menu) | Alta Cocina | Yes | 6 Nov | 11 Nov (walk-around flow) |
+| [On the Menu](minigames.md#on-the-menu) | Alta Cocina | Yes | 6 Nov | 23 Nov (tablet below the HUD's EN badge; Choose this dish always shown) |
 | [Spot the Suspect](minigames.md#spot-the-suspect) | Police station lobby | No | 6 Nov | 6 Nov |
 | [Feel the Clues](minigames.md#feel-the-clues) | Police evidence room | Yes | 6 Nov | 8 Nov (redesign) |
 | [Desk Dash](minigames.md#desk-dash) | School classroom | Chinese measure words only | 7 Nov | 23 Nov (card translated by holding the HUD's EN button) |
@@ -59,7 +59,7 @@ and wrong answers per word in the journal. **Levels** ([how games get harder](mi
 | [Radar Patrol](minigames.md#radar-patrol) | Airport control tower | No (pastime) | 9 Nov | 15 Nov (easier taps) |
 | [Wire It Up!](minigames.md#wire-it-up) | Electrical box at the home | No (pastime) | 9 Nov | 9 Nov |
 | [Library Helper](minigames.md#library-helper) | Library | Yes | 13 Nov | 21 Nov (book close-up on pick-up, bigger right-shelf burst, thanks with a zoom on Rosa, results card, new cart after walking away) |
-| [Next, Please!](minigames.md#next-please) | Bank teller window 2 | No | 18 Nov | 21 Nov (account photo on the monitor, screen/customer camera toggle, impostors escorted out by the police, easier and more natural dialogue) |
+| [Next, Please!](minigames.md#next-please) | Bank teller window 2 | No | 18 Nov | 23 Nov (monitor and customer in one view, no toggle; paying an impostor brings the bank manager: a warning, then the player is let go) |
 
 ### Start screens and app
 
@@ -71,32 +71,33 @@ and wrong answers per word in the journal. **Levels** ([how games get harder](mi
 | [Passport](playing.md#passport-missions-stamps-and-achievements) | Missions (3 at a time, 10-minute refresh, Go there, stars on the map), town stamps page, Exploration log of every activity, XP | 21 Nov (new; 18 stamp coins placed in the town, one per building; the bank safe opens, the chapel is bigger with a bell tower to climb and a bell to ring) |
 | [Town map and guide arrow](playing.md#finding-places) | M or the map button: a picture of the town with every building's name and a "you are here" dot; tap a place, then Go there for an arrow that points the way; Go there in the ▶ picker too | 18 Nov (new; the old live map stays off) |
 | [Vehicles](playing.md#getting-around) | Cars, trucks, buses, the scooter, the helicopter and the plane; E to get in | 23 Nov (the view from the air reaches further the higher you fly and tilts down to the town, [views](../evidence/flight-view-20261123/); one graphics setting for every device, the Settings graphics row removed; one set of flying controls for the plane and helicopter on every device, on-screen ▲ / ▼; the plane is smaller and slower with a new steady flight model, [views](../evidence/small-plane-20261123/); no hands-on play-test yet); 21 Nov (headlights for every road vehicle, siren and flashing lights for the police car, ambulance and fire truck; [night view](../evidence/vehicle-lights-20261121/night-red.png); earlier 21 Nov: cars keep turning while A/D is held, camera swings behind, [views](../evidence/car-driving-20261121/); no hands-on play-test yet) |
+| [Townspeople](../guides/NPCS.md) | Every NPC (38 in the town) is in one registry; talk to anyone without a game on offer (E, click or tap) for a short everyday line in the language you learn (hold EN for your own); keep asking and they politely brush you off for a while | 23 Nov (new; [chatter](../evidence/npc-registry-20261123/chatter-line.png), [brush-off](../evidence/npc-registry-20261123/chatter-brush-off.png)) |
 | App name and icon | "Bon Adventure: Little Town of Words" ("Bon Adventure" under the icon); icon is the pig's head on mint (the user's picture) | 16 Nov (renamed, new icon, [evidence](../evidence/bon-adventure-logo-20261116/README.md)) |
 
 ### Buildings and areas
 
 | Place | What is there | Last change |
 | --- | --- | --- |
-| [Home](town.md#home) | BonBon's house, pool, garage, mahjong table, electrical box; tutorial rooms | 14 Nov (plants, fewer plushes) |
+| [Home](town.md#home) | BonBon's house, pool, garage, mahjong table, electrical box; tutorial rooms | 23 Nov (no bicycle in the garage) |
 | [Supermarket](town.md#supermarket) | Nine departments, every product a word, cashier and clerk | 18 Nov (compact layout with a staff wall and a cold wall; bigger, clay-toy products; real front windows) |
 | [Library](town.md#library) | Six category shelves (3 books each), NEW BOOKS display at the rear wall, return cart, cosy reading corner | 17 Nov (new categories, desks removed, interior refresh, readable signs) |
-| [Restaurants](town.md#restaurants) | Alta Cocina, Pizza and Burger, Taquería | 12 Nov (Alta Cocina glass) |
-| [Bakery / Café](town.md#bakery--café) | Cake counter and seating | 18 Nov (shop-row storefront: coral) |
-| [Sports store](town.md#sports-store) | Departments incl. winter sports, plush staff | 18 Nov (shop-row storefront: meadow green) |
+| [Restaurants](town.md#restaurants) | Alta Cocina, Pizza and Burger, Taquería | 23 Nov (taller facade signs, Pizza and Burger glass double door, no tray at the taquería waiter's face) |
+| [Bakery / Café](town.md#bakery--café) | Cake counter and seating with clay-style meals on the tables | 23 Nov (table meals redrawn) |
+| [Sports store](town.md#sports-store) | Departments incl. winter sports, plush staff | 23 Nov (clerk moved from the rear corner to the front of the checkout, [view](../evidence/npc-registry-20261123/sports_clerk-front.png)); 18 Nov (shop-row storefront: meadow green) |
 | [Clothing store](town.md#clothing-store) | Racks, checkout, fitting rooms with outfits | 18 Nov (shop-row storefront: rose pink) |
-| [Electronics store](town.md#electronics-store) | Computers, phones, cameras, audio, TV wall, gaming corner, appliances, plush clerk | 18 Nov (clay makeover inside; shop-row storefront: sky blue) |
+| [Electronics store](town.md#electronics-store) | Computers, phones, cameras, audio, TV wall, gaming corner, appliances (toaster, kettle, blender and rice cooker are words), plush clerk | 23 Nov (small products 20% bigger; small appliances became words) |
 | [Furniture store](town.md#furniture-store) | Living, bedroom, dining, office and lighting showrooms | 18 Nov (shop-row storefront: teal) |
-| [Bank](town.md#bank) | Tellers, vault, office, ATMs, bear banker | 18 Nov (interior refresh: palette, shared doors, ATMs, round vault door) |
-| [Police station](town.md#police-station) | Lobby, lineup room, evidence room, cell; real front windows | 18 Nov (real windows in the lobby and evidence room) |
+| [Bank](town.md#bank) | Tellers, vault, safe-deposit room, manager's office, ATMs, bear banker, manager | 23 Nov (grown backward: bigger vault room, safe-deposit room, office; staff door behind the counter; slow heavy vault door) |
+| [Police station](town.md#police-station) | Lobby, lineup room, evidence room, cell; real front windows | 23 Nov (two separate lockers whose doors open, [views](../evidence/civic-fixes-20261123/)) |
 | [Airport and control tower](town.md#airport-and-control-tower) | Terminal, restrooms, walkable tower with deck, airfield | 23 Nov (deck floor, ladder, stair rails) |
-| [School](town.md#school) | Grammar classroom and teaching areas | 14 Nov (bigger board) |
-| [Hospital](town.md#hospital) | Three floors, elevator, ward doctors, helipad | 14 Nov (elevator picker) |
-| [Warehouse](town.md#warehouse) | Hall with loading bays, reception | 14 Nov (redesign) |
+| [School](town.md#school) | Grammar classroom and teaching areas | 23 Nov (science room: mountain picture and continent chart instead of the wall triangle and green blob, named plaques; the CLASSROOM and MAIN HALL plaques now face the room, notes on the notice board) |
+| [Hospital](town.md#hospital) | Three floors, elevator, ward doctors, helipad | 23 Nov (Dr. Li stands clear of the entrance hedge); 14 Nov (elevator picker) |
+| [Warehouse](town.md#warehouse) | Hall with loading bays, reception | 23 Nov (the supply cabinet opens outside the game) |
 | [Mystery House](town.md#mystery-house) | Casa de las Estrellas, mystery room | 9 Nov |
 | [Chapel](town.md#chapel) | Rebuilt sanctuary; bell tower climbed by a ladder inside, from a doorway in the nave | 23 Nov (ladder moved inside, two pew rows removed) |
-| [Farm barn](town.md#farm-barn) | Hayloft, tools and supplies | 1 Nov |
+| [Farm barn](town.md#farm-barn) | Hayloft, tools and supplies, Tomás the farmer (bear in overalls and a straw hat; farm chatter) | 23 Nov (farmer added, [view](../evidence/npc-registry-20261123/tomas-front.png)) |
 | [Playground](town.md#playground) | Towers, slide, rideable swings | 1 Nov |
-| [Park, zoo and coast](town.md#park-zoo-and-coast) | Public garden, four zoo zones, island; the clay animals walk; the zoo's tiger and the farm's horse are the new clay models; clay capybara walks in Wildlife Plains (word: capybara); clay rooster and clay chick on the farm lawn, clay monkey inside the zoo gate; no red motorcycles (only BonBon's teal scooter) | 18 Nov (clay chick; red motorcycles removed, supermarket lot cleared) |
+| [Park, zoo and coast](town.md#park-zoo-and-coast) | Public garden, four zoo zones, island; the clay animals walk; the zoo's tiger and the farm's horse are the new clay models; clay capybara walks in Wildlife Plains (word: capybara); clay rooster and clay chick on the farm lawn, clay monkey inside the zoo gate; no red motorcycles (only BonBon's teal scooter) | 23 Nov (the zoo gate opens away from you; green welcome board outside removed) |
 
 ## Open items worth knowing while reviewing
 

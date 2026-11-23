@@ -22,6 +22,19 @@ building, the minigame design or their ownership changes.
 | — | Rack C out, task plan, hints, exits, drop rules, task card, *brown* / *medium* | **Built 8 Nov 2026** ([what changed](#task-plan-8-nov-2026)) |
 | — | Half-depth redesign (30 × 14.5), reception at the east end, two loading bays, one shelf / table / cabinet; five placing tasks | **Built 14 Nov 2026, user-approved** ([redesign](#redesign-14-nov-2026), [minigame](#minigame-14-nov-2026)); not committed |
 | — | Plain cardboard box out of the game; shelf with two clear levels; tap a level to place a box | **Built 21 Nov 2026** ([what changed](#shelf-and-placing-21-nov-2026)); not committed |
+| — | The town warehouse's supply cabinet opens outside the game | **Built 23 Nov 2026** ([what changed](#cabinet-opens-outside-the-game-23-nov-2026)) |
+
+## Cabinet opens outside the game (23 Nov 2026)
+
+User request, 23 Nov 2026: the warehouse's shelves and cabinets should open when no game is
+running. The shelf has no doors; the supply cabinet's two doors were static parts in the town
+warehouse. Warehouse step `openable_cabinet` (`scripts/buildings/warehouse.gd`, baked) hinges them
+on their outer edges with a `door_state` (the shared `door_animator.gd`: E, a click or a tap
+opens and shuts each door, angle 1.75), gives each a pick area and replaces the solid block's
+mesh with a hollow carcass (back, sides, top, base, dark inside, two shelves with boxes, folded
+sheets and tape). The cabinet keeps its word (*cabinet*) and its solid collision. The minigame
+copy still builds its cabinet from `supply_cabinet()` and hinges it in `warehouse_goods.gd`
+(unchanged). [Views](../evidence/civic-fixes-20261123/after-warehouse-cabinet-open.png).
 
 ## Shelf and placing (21 Nov 2026)
 

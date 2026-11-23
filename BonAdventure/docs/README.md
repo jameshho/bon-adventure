@@ -59,7 +59,7 @@ once a newer record or guide covers the same thing. Add a line here, not a parag
 | Building size and interior capacity | [Measured dimension review](guides/BUILDING_DIMENSION_REVIEW.md) | |
 | Building appearance, town map, new-building briefs | [Design blueprint](guides/BUILDING_DESIGN_BLUEPRINT.md), [saved user map](guides/design-references/town-map-blueprint.png), [brief template](guides/BUILDING_SPEC_TEMPLATE.md) | |
 | Reusing building parts | [Component catalog](guides/BUILDING_COMPONENT_CATALOG.md) | |
-| Home layout, doors, house plushes and outfits | [Reference home](guides/REFERENCE_HOME.md) | `scripts/buildings/home.gd`, `data/house_characters.json`, `data/plush_costumes.json` |
+| Home layout, doors, house plushes and outfits | [Reference home](guides/REFERENCE_HOME.md) | `scripts/buildings/home.gd`, `data/npcs.json`, `data/plush_costumes.json` |
 | School floor plan, Grammar Classroom room | [Single rear-half divider](guides/TOWN_DESIGN_BRIEF.md#school-single-divider-layout--26-october-2026), [classroom](guides/GRAMMAR_CLASS.md) | `scripts/buildings/school.gd` |
 | Hospital | [Three floors, stairs and elevator](guides/HOSPITAL_THREE_FLOORS.md), [ward doctors](guides/TOWN_DESIGN_BRIEF.md#hospital-ward-doctors--1-november-2026) | `scripts/buildings/hospital.gd` |
 | Supermarket | [2 Nov refit](guides/TOWN_DESIGN_BRIEF.md#supermarket-refit-fruit-checkout-by-the-door-and-clerks--2-november-2026), [product art](guides/TOWN_DESIGN_BRIEF.md#supermarket-product-art--8-november-2026), [original fit-out](guides/TOWN_DESIGN_BRIEF.md#supermarket-interior-review--26-october-2026) | `scripts/buildings/supermarket.gd` |
@@ -104,6 +104,7 @@ once a newer record or guide covers the same thing. Add a line here, not a parag
 | --- | --- | --- |
 | Animals: movement, sizes, clay models, adding species | [Animal system](guides/ANIMAL_SYSTEM.md) | `scenes/animals/`, `scripts/world/park_animals.gd` |
 | Player BonBon | [BonBon](guides/BONBON_VALIDATION.md) | |
+| Every NPC (registry, positions, idle chatter, how to add one) | [NPCs](guides/NPCS.md) | `data/npcs.json`, `scripts/characters/npc_registry.gd`, `npc_chatter.gd`, `tools/npc_report.py` |
 | Plush characters and sculpts | [Reference home](guides/REFERENCE_HOME.md), [components](guides/COMPONENTS.md) | `scripts/characters/plush_sculpt.gd`, `house_characters.gd`, `plush_costume.gd` |
 | Road vehicles | [Road physics and boarding](guides/ZOO_VEHICLE_IMPLEMENTATION.md) | |
 | Helicopter | [Rotor physics](guides/helicopter_inertia/README.md) (older motion tests are historical) | |

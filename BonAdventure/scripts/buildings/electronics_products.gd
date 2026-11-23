@@ -208,15 +208,47 @@ const MODELS := {"television": "_tv", "computer": "_computer", "laptop": "_lapto
 ## supermarket's goods, 3 Nov 2026).
 const GROW := {"smartphone": 1.3, "tablet": 1.2, "smartwatch": 1.3, "mouse": 1.15}
 
-func model_of(word: String) -> ArrayMesh:
+## `extra` scales the model about its base (the 23 Nov 2026 step `bigger_products`: the small
+## products 20% bigger).
+func model_of(word: String, extra := 1.0) -> ArrayMesh:
 	begin()
 	call(MODELS[word])
-	var grow: float = GROW.get(word, 1.0)
-	if grow != 1.0:
-		for f in _materials.size():
-			for k in _v[f].size():
-				_v[f][k] = _v[f][k] * grow
+	_grow_all(GROW.get(word, 1.0) * extra)
 	return finish("Electronics " + word)
+
+## Scales everything drawn since begin() about the origin (the model's base centre).
+func _grow_all(grow: float) -> void:
+	if grow == 1.0:
+		return
+	for f in _materials.size():
+		for k in _v[f].size():
+			_v[f][k] = _v[f][k] * grow
+
+## The small appliances as words (user, 23 Nov 2026: the rice cookers, toasters and blenders the
+## store showed were not words): one model per word and tint, base at y 0, front -Z, scaled by
+## `extra`. Toaster, kettle and blender are the wall unit's decor shapes (small_appliance()); the
+## rice cooker replaces its air fryer.
+const APPLIANCES := {"toaster": 0, "kettle": 1, "blender": 2, "rice cooker": -1}
+
+func appliance(word: String, tint: String, extra := 1.0) -> ArrayMesh:
+	begin()
+	if APPLIANCES[word] >= 0:
+		small_appliance(APPLIANCES[word], tint)
+	else:
+		_rice_cooker(tint)
+	_grow_all(extra)
+	return finish("Electronics %s %s" % [word, tint])
+
+func _rice_cooker(tint: String) -> void:
+	lathe(Vector3.ZERO, [Vector2(0, 0), Vector2(.12, 0), Vector2(.145, .025), Vector2(.152, .09),
+		Vector2(.146, .17), Vector2(.132, .19), Vector2(0, .19)], tint, SATIN, 16)
+	ring(Vector3(0, .19, 0), Vector3(.28, .02, .28), silver, METAL, Vector3.ZERO, .86, 16)
+	dome(Vector3(0, .222, 0), Vector3(.265, .065, .265), trim, SATIN, Vector3.ZERO, 16)
+	rbox(Vector3(0, .262, .01), Vector3(.13, .03, .045), iron, SATIN, Vector3.ZERO, .014)
+	cyl(Vector3(.06, .25, -.05), Vector3(.03, .012, .03), iron, SATIN, Vector3.ZERO, 8)
+	rbox(Vector3(0, .1, -.142), Vector3(.12, .075, .022), cream, SATIN, Vector3(-.1, 0, 0), .016)
+	ball(Vector3(-.028, .1, -.155), Vector3(.022, .022, .008), coral, GLOW, Vector3.ZERO, 8)
+	ball(Vector3(.028, .1, -.155), Vector3(.022, .022, .008), meadow, GLOW, Vector3.ZERO, 8)
 
 func _tv() -> void:
 	for side in [-1, 1]:

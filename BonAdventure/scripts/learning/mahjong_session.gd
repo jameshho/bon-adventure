@@ -35,13 +35,14 @@ const Home := preload("res://scripts/buildings/home.gd")
 const PopWord3D := preload("res://scripts/ui/pop_word_3d.gd")
 const ACTIVITY := "mahjong_mei"
 const TABLE := "MahjongTable"
-## Seat (= game seat and chair), plush scene, name phrase.
-const PLAYERS := [
-	["res://scenes/characters/cat_plush.tscn", "mahjong.mei"],
-	["res://scenes/characters/bear_plush.tscn", "mahjong.bao"],
-	["res://scenes/characters/samoyed_plush.tscn", "mahjong.awoo"],
-	["res://scenes/characters/golden_plush.tscn", "mahjong.kiko"],
-]
+## The players by seat (= game seat and chair): their ids in the NPC registry (data/npcs.json,
+## 23 Nov 2026), which gives each one's plush scene and name phrase (PLAYERS).
+const PLAYER_IDS := ["mei", "bao", "mahjong_awoo", "kiko"]
+const NpcRegistry := preload("res://scripts/characters/npc_registry.gd")
+## Seat -> [plush scene, name phrase], read from the registry.
+var PLAYERS: Array = PLAYER_IDS.map(func(id: String) -> Array:
+	var entry: Dictionary = NpcRegistry.spec(id)
+	return [str(entry.get("scene", "")), str(entry.get("name_phrase", ""))])
 ## Where Mei stands while the player has her chair (table-local, town units): behind the
 ## player's left shoulder, facing the table.
 const MEI_STANDS := Vector3(-1.75, 0.0, 2.0)
@@ -232,9 +233,13 @@ func _seat_npc(seat: int) -> Node3D:
 	var npc: Node3D = HouseCharacters.new().seated(str(spec[0]), table, "Mahjong player %d" % (seat + 1), spot, facing, back)
 	npc.set_meta("word_key", "person")
 	npc.set_meta("character_name", lexicon.phrase(str(spec[1]), lexicon.foreign))
+	npc.set_meta("npc_id", str(PLAYER_IDS[seat]))
 	npc.set_meta("seat_point", spot)
 	npc.add_to_group("figures")
 	HouseCharacters.fit_blocker(npc)
+	# The other three chat when talked to (npc_chatter.gd); Mei is the game's host.
+	if seat > 0 and main != null and main.get("npc_chatter") != null:
+		main.npc_chatter.attach(npc)
 	return npc
 
 func activity_running() -> bool:

@@ -25,7 +25,8 @@ Audited and consolidated 13 November 2026 (user request). Evidence: `docs/eviden
 | An elevator call or floor button; the cabin's floor picker (E at the panel: camera close-up, tap a 3D button; 14 Nov 2026) | `ElevatorCallButton` (`pick_size`, `picker_on_e`), built by `hospital_elevator.gd`; `elevator_floor_picker.gd` | `scripts/world/elevator_call_button.gd`, `scripts/ui/elevator_floor_picker.gd` | [Hospital guide](HOSPITAL_THREE_FLOORS.md#floor-picker--14-november-2026) |
 | Heavy goods carried in front, trolleys pushed and pulled | the warehouse game's own physics carry | `scripts/learning/warehouse_goods.gd` | [Holding items](#holding-items) |
 | A seat, bench, bed or swing | word `chair` / `bench` / `sofa` / `bed`, or the seat metas | `scripts/player/seating_controller.gd` | [Sitting and lying](#sitting-and-lying) |
-| An NPC sits or lies somewhere | `HouseCharacters.seated()`, `data/house_characters.json` | `scripts/characters/house_characters.gd` | [Sitting and lying](#sitting-and-lying) |
+| An NPC sits or lies somewhere | `HouseCharacters.seated()`, `data/npcs.json` | `scripts/characters/house_characters.gd` | [Sitting and lying](#sitting-and-lying) |
+| Any NPC: its id, spot, costume, role; idle chatter and brush-offs when it has no game on offer | `data/npcs.json` via `npc_registry.gd` (`spec()`, `place()`, `spawn()`, `make()`); `npc_chatter.gd` (`main.npc_chatter`) | `scripts/characters/` | [NPCs](NPCS.md) (23 Nov 2026) |
 | Eyes: blink, shut, sleep | `PlushLife` | `scripts/characters/plush_life.gd` | [Plush characters](#plush-characters) |
 | A small move: hop, shake, nod, lean | `PlushLife.play(host, figure, kind)` | `scripts/characters/plush_life.gd` | [Plush characters](#plush-characters) |
 | An NPC that talks, calls with "!" and gets a face close-up | `minigame_host.gd`, `npc_presence.gd` (spec `"board": false` for an NPC that talks through the host but is no activity, the supermarket till since 21 Nov 2026; meta `talk_face_drop` for a hat; meta `talk_camera_at`, a global point, fixes the close-up camera where walls block the automatic one, 13 Nov 2026) | `scripts/learning/` | [Minigames](MINIGAMES.md#building-a-minigame) |
@@ -74,13 +75,13 @@ func can_interact() -> Variant:      # optional: true, false (no badge) or a rea
 
 | Mechanism | Owner | Why it is separate |
 | --- | --- | --- |
-| Hinged doors, sliding doors and drawers, shower curtains | `door_animator.gd`: one registry (`main.doors`), types `hinge`, `slide`, `curtain`; every entry is an interactable | The standard. A new door or drawer is a node with a `door_state` meta. A hinge door may name a `spin` child (and `spin_angle`): that wheel turns first and the door waits for it (the bank safe, 21 Nov 2026) |
+| Hinged doors, sliding doors and drawers, shower curtains | `door_animator.gd`: one registry (`main.doors`), types `hinge`, `slide`, `curtain`; every entry is an interactable | The standard. A new door or drawer is a node with a `door_state` meta. A hinge door may name a `spin` child (and `spin_angle`): that wheel turns first and the door waits for it (the bank safe, 21 Nov 2026). A hinge door with `seconds` (door scenes: `swing_seconds`) swings slowly and heavily over that time (the bank vault, 23 Nov 2026) |
 | Walk-through doors (frame, leaf, handles, sign) | `scenes/props/door.tscn`, `double_door.tscn`, `sliding_door.tscn` ([Doors guide](DOORS.md)) | Build the door and register its leaf with the animator. **Paused 13 Nov 2026: built, no building migrated yet** |
 | Garage door | `scripts/world/garage_door.gd` | Sectional panels on a curved track; reverses mid-travel |
-| Zoo and farm gates | `scripts/world/zoo_gate.gd` | Two leaves at their own speed. Could move to the animator, but its swing speed would change; left as it is (user, 13 Nov 2026) |
+| Zoo and farm gates | `scripts/world/zoo_gate.gd` | Two leaves at their own speed. Could move to the animator, but its swing speed would change; left as it is (user, 13 Nov 2026). Since 23 Nov 2026 `toggle_gate(from)` opens the leaves away from the opener (the player's position) |
 | Vehicle doors | `scripts/world/vehicle_door.gd`, `vehicle_doors.gd` | Driven by the boarding sequence, not by E |
 | Mystery House doors | `scripts/world/mystery_door.gd` | Game doors: rattle, slam, recolour |
-| Warehouse cabinet | `warehouse_goods.gd set_cabinet()` | Lives in the minigame's copy of the hall |
+| Warehouse cabinet (minigame copy) | `warehouse_goods.gd set_cabinet()` | Lives in the minigame's copy of the hall. The town warehouse's cabinet is an ordinary `door_animator.gd` hinge pair since 23 Nov 2026 (warehouse step `openable_cabinet`), like the police lockers (police step `two_lockers`) |
 | Lift doors | `scripts/world/hospital_elevator.gd` | Part of the lift's own sequence |
 
 Do not add another door animation. A new kind of motion (for example a lid) is a new `type`
@@ -166,6 +167,13 @@ bank teller game: $5, $10, $50 and $100 bills). The tray shows the pieces in the
 were first picked, left to right (user, 21 Nov 2026; a denomination taken back out to none goes
 to the end when picked again). The shared dialogue box's answer buttons wrap onto a second row
 when they do not fit (`shop_order_panel.gd`, 21 Nov 2026).
+
+Since 23 Nov 2026 (user: the card covered the HUD's EN): `clear_of`, an Array of Controls (set
+once by `minigame_wiring.gd` to the HUD's EN, `peek_button`), keeps them visible and clickable:
+the card starts below them, clicks on them pass through the panel (`_has_point`), and the L key
+(action "peek") is no longer swallowed. When the content is taller than the card (the lowered
+card, the translation lines while EN is held) everything inside shrinks to fit (`_fit`). Empty
+`clear_of` = the whole screen, as before.
 
 ## Sitting and lying
 
@@ -297,5 +305,5 @@ in every language and prints which buildings still have small labels.
 | Medium | World signs: migrate the other buildings' sign code, one building script step and bake each ([list](#world-signs)); the check prints which still have small labels |
 | Medium | Clay animal animation: the 17 clay zoo animals walk (16 Nov 2026); not checked on the web or a phone, the golden retriever rig is heavy (72k triangles), and the 11 older piece-built animals still glide ([rollout](ANIMAL_SYSTEM.md#all-clay-zoo-animals-walk-16-nov-2026)) |
 | Low | The player's arm swing uses BonBon's shoulder point; measure it when another plush needs to walk |
-| Low | Static `lie` characters in `house_characters.json` keep their eyes open; a `hold_eyes()` call would shut them if wanted |
+| Low | Static `lie` characters in `data/npcs.json` keep their eyes open; a `hold_eyes()` call would shut them if wanted |
 | Low | Zoo gate and warehouse cabinet could join `door_animator.gd` at the cost of a small timing change |

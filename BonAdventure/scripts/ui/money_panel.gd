@@ -39,6 +39,14 @@ const DESIGN := Vector2(1100, 800)
 const TALL_LIMIT := 1.35
 
 var counts: Dictionary = {}
+## Below 1 when the content at the window's scale is taller than the card (a lowered card, the
+## translation lines while EN is held): everything inside shrinks to fit (_queue_fit()).
+var _fit := 1.0
+var _fit_pending := false
+## Controls on top of the screen the card must leave visible and clickable (23 Nov 2026, user:
+## the card covered the HUD's top-right EN, the one language toggle): the card starts below
+## them, and clicks on them pass through the panel. Empty = the whole screen, as before.
+var clear_of: Array = []
 var show_native := false
 ## Text lines, each {"foreign", "native"}: request, tray_title, bills, coins,
 ## total, submit, clear, close, translate (set by open()).
@@ -283,6 +291,7 @@ func open(lines: Dictionary) -> void:
 	# "only": the denomination ids to offer (the welcome tutorial: $1 bills and quarters, 17 Nov
 	# 2026, user); none = all of Currency.DENOMS.
 	only = lines.get("only", [])
+	_fit = 1.0
 	visible = true
 	_refresh()
 
@@ -337,13 +346,49 @@ func _input(event: InputEvent) -> void:
 	# Esc passes through to Main's popup stack, which runs close_requested.
 	if event is InputEventKey and (event as InputEventKey).keycode == KEY_ESCAPE:
 		return
+	# Hold L (the "peek" action): the native language, as the HUD's EN (Main handles it).
+	if event.is_action("peek"):
+		return
 	if event is InputEventKey or (event is InputEventMouseButton and event.button_index != MOUSE_BUTTON_LEFT):
 		get_viewport().set_input_as_handled()
+
+## Clicks on a clear_of control go through the panel to it.
+func _has_point(point: Vector2) -> bool:
+	var at := get_global_transform() * point
+	for rect in _clear_rects():
+		if rect.has_point(at):
+			return false
+	return Rect2(Vector2.ZERO, size).has_point(point)
+
+## The screen rects of the clear_of controls showing now.
+func _clear_rects() -> Array:
+	var rects: Array = []
+	for control in clear_of:
+		if is_instance_valid(control) and control.is_visible_in_tree():
+			rects.append(control.get_global_rect())
+	return rects
 
 # --- Drawing ---------------------------------------------------------------------------------
 
 func _on_resized() -> void:
+	_fit = 1.0
 	if visible:
+		_refresh()
+
+## After the layout settles: if the content is taller than the card's room, shrink everything
+## inside (_fit) and lay it out again; it grows back on the next open() or window resize.
+func _queue_fit() -> void:
+	if _fit_pending or not is_inside_tree():
+		return
+	_fit_pending = true
+	await get_tree().process_frame
+	_fit_pending = false
+	if not visible or not is_inside_tree():
+		return
+	var room := (_card.anchor_bottom - _card.anchor_top) * get_viewport_rect().size.y
+	var need := _card.get_combined_minimum_size().y
+	if need > room + 1.0 and _fit > 0.5:
+		_fit = maxf(0.5, _fit * room / need * 0.98)
 		_refresh()
 
 func _refresh() -> void:
@@ -356,6 +401,14 @@ func _refresh() -> void:
 	var share := minf(0.94, TALL_LIMIT * screen.x / screen.y)
 	_card.anchor_top = 0.5 - share / 2.0
 	_card.anchor_bottom = 0.5 + share / 2.0
+	# Below the controls it keeps clear of (clear_of), where they stand over the card's width.
+	var top := _card.anchor_top * screen.y
+	for rect in _clear_rects():
+		if rect.end.x > _card.anchor_left * screen.x and rect.position.x < _card.anchor_right * screen.x:
+			top = maxf(top, rect.end.y + 8.0 * _factor)
+	_card.anchor_top = minf(top / screen.y, _card.anchor_bottom - 0.5)
+	f *= _fit
+	_factor = f
 	_card.add_theme_stylebox_override("panel", _part(FILL, 44, 7, f, 22, 18))
 	_request_pill.add_theme_stylebox_override("panel", _part(CREAM, 40, 5, f, 26, 8))
 	_tray_box.add_theme_stylebox_override("panel", _part(CREAM, 30, 5, f, 18, 14, false))
@@ -447,6 +500,7 @@ func _refresh() -> void:
 		piece.setup(denom, false, f * PIECE_SCALE)
 		piece.pressed.connect(add_piece.bind(str(denom.id)))
 		(_bills_flow if denom.kind == "bill" else _coins_flow).add_child(piece)
+	_queue_fit()
 
 func _text(line: Dictionary) -> String:
 	return GameSettings.shared().inline(line, show_native)

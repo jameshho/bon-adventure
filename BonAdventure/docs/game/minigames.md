@@ -71,7 +71,11 @@ The clerk asks for help, lists what he needs and hands you a basket. Find the pr
 them at the till, then bring the basket back to him. The cashier checks the basket against the
 list first: a wrong basket is not charged ("please check your list"; the second time the cashier
 says what is missing and what is not on the list). Then the cashier says the total in the language you are
-learning and you count out exactly that. The shop door won't let you out with an unpaid basket.
+learning and you count out exactly that. The shop door won't let you out with an unpaid basket
+(the cashier's "pay first" line goes away a couple of seconds after you step back from the door; 23 Nov).
+Walking off during an order, after paying too, puts you back and asks whether to quit; the
+money screen leaves the top-right EN visible and clickable (23 Nov,
+[screenshots](../evidence/ui-fixes-20261123/)).
 Give the basket back to the cashier, or put it back empty on the stack by the door, to stop.
 Teaches product names, quantities and prices. Tracked.
 [Design](../guides/TOWN_DESIGN_BRIEF.md#customer-order-minigame--3-november-2026) ·
@@ -176,7 +180,9 @@ puts the box there ([details](../guides/WAREHOUSE.md#shelf-and-placing-21-nov-20
 Twinkle sends you to a seated customer, who orders two or three courses by taste, temperature,
 intensity (*un poco*, *muy*) and ingredients. Choose the dishes on a tablet and send
 them; the customer reacts and Twinkle reports back. A menu book on a table shows every dish.
-Four fully right orders win. Tracked.
+Four fully right orders win. Tracked. Since 23 Nov the tablet sits below the HUD's EN badge
+(hold it, or L, for the translation) and keeps "Choose this dish" under every dish shown
+([record](../guides/TOWN_DESIGN_BRIEF.md#restaurant-fixes--23-november-2026)).
 [Design](../guides/TOWN_DESIGN_BRIEF.md#alta-cocina-restaurant-game--6-november-2026) ·
 [11 Nov flow](../guides/TOWN_DESIGN_BRIEF.md#restaurant-game-reception-tables-and-order-tablet--11-november-2026)
 
@@ -261,6 +267,9 @@ EN button to translate the card and see the question's meaning (23 Nov; the card
 
 A clue names a colour, a shape or both; open the door that matches. A right door leads on through an endless hall of rooms; a wrong one turns you into a toad
 for three seconds. Six doors, then a treasure chest. Teaches colours and shapes. Tracked.
+A player who falls out of the hall is put back on its floor; one who ends up outside the house
+mid-game ends the game and its card (23 Nov fix: a web player was respawned at the supermarket
+with "Door 5 of 6" still showing; [evidence](../evidence/ui-fixes-20261123/verify.gd)).
 [Design](../guides/TOWN_DESIGN_BRIEF.md#mystery-house-and-mystery-doors--9-november-2026)
 
 | Learning card | |
@@ -282,7 +291,9 @@ for three seconds. Six doors, then a treasure chest. Teaches colours and shapes.
 One hand of Hong Kong mahjong against three plush players, with the calls, winds and hand names
 in the language being learned. Two short lessons (Basics, Scoring) explain the rules. Not
 tracked. Mahjong! is still offered after punging the winning tile (23 Nov), and the only
-language button is the HUD's EN, top right (23 Nov).
+language button is the HUD's EN, top right (23 Nov). Holding EN shows only the native text and
+changes no button size; the journal and ▶ buttons hide under the lesson card (23 Nov,
+[screenshots](../evidence/ui-fixes-20261123/)).
 [Guide](../guides/MAHJONG.md)
 
 | Learning card | |
@@ -371,11 +382,15 @@ up from the queue, each with a story (a new bike, cakes for the grandchildren, a
 ask for an amount in words. Check their account on the teller monitor, then count out the cash
 with $5, $10, $50 and $100 bills, or tell them politely that there is not enough money. One
 customer a session only wants change and must get no $100 bills back. Since 21 Nov the monitor
-on the desk shows the account's name, balance and the owner's photo (its words follow EN), and a
-button at the top switches the camera between the screen and the customer. Now and then an
+shows the account's name, balance and the owner's photo (its words follow EN); since 23 Nov it
+stands beside the window, so one view shows the photo and the customer's face together
+([screenshot](../evidence/bank-rework-20261123/teller-account-view.png)). Now and then an
 impostor claims someone else's account (the photo is another animal): **Call the police** brings
 a police officer ("Disculpe. Venga conmigo, por favor." "¿Qué pasa?" "Venga conmigo ahora, por
-favor.") who escorts them out of the bank ([screenshot](../evidence/bank-impostor-20261121/impostor-monitor.png)).
+favor.") who escorts them out of the bank. Pay an impostor instead and the money is gone: the bank
+manager (La jefa, a crocodile in a suit) walks out of her office to warn you
+([screenshot](../evidence/bank-rework-20261123/manager-warns-2.png)); pay a second one in the same
+session and she lets you go, with a "You've Been Let Go" card (23 Nov).
 Saying "not enough" shows you telling them ("Lo siento, no tiene fondos suficientes."), and they
 answer "¿Qué? ¡Eso es imposible!". About 70% of customers give a reason; the rest just ask and
 say thanks. Mistakes get an in-character answer (what they received, in words) and a retry.
@@ -384,8 +399,8 @@ Lines are short and simple (21 Nov). Not tracked.
 
 | Learning card | |
 | --- | --- |
-| Purpose | Understand spoken amounts from 100 to 500 (cien … quinientos, ciento cincuenta, trescientos sesenta y cinco), compare them with a balance written in digits, and count them out in bills of 5, 10, 50 and 100. Check who is asking: the photo on the account must be the customer at the window (user, 21 Nov 2026). |
+| Purpose | Understand spoken amounts from 100 to 500 (cien … quinientos, ciento cincuenta, trescientos sesenta y cinco), compare them with a balance written in digits, and count them out in bills of 5, 10, 50 and 100. Check who is asking: the photo on the account must be the customer at the window (user, 21 Nov 2026); paying an impostor has a consequence: the manager's warning, then being let go (user, 23 Nov 2026). |
 | Words | [Generated list](words.md#next-please) (amounts are generated language, not word-list words) |
 | Tracked in the journal | No (amounts are generated language, like Pay Up!) |
-| Session | 5 customers (`data/activities.json`); a customer counts when served right the first time (the exact cash, or a correct "not enough") |
-| Progression | Within a session (user, 18 Nov 2026): first whole hundreds (cien … quinientos), then hundreds and fifty, then any multiple of 5 that needs the $10 and $5 bills; one customer is short of money (a balance a little under the request) and one wants change for whole hundreds; in most sessions (`impostor_chance` 0.75, `data/bank_teller.json`) another withdrawal customer is an impostor whose account photo is a different animal (user, 21 Nov 2026). Not yet across sessions |
+| Session | 5 customers (`data/activities.json`); a customer counts when served right the first time (the exact cash, a correct "not enough", or the police for an impostor). A paid impostor does not count; a second one in a session ends it early (`payouts_to_fire`, `data/bank_teller.json`; no Play again, nothing saved) |
+| Progression | Within a session (user, 18 Nov 2026): first whole hundreds (cien … quinientos), then hundreds and fifty, then any multiple of 5 that needs the $10 and $5 bills; one customer is short of money (a balance a little under the request) and one wants change for whole hundreds; in most sessions (`impostor_chance` 0.75, `data/bank_teller.json`) another withdrawal customer is an impostor whose account photo is a different animal (user, 21 Nov 2026); after a paid impostor and the manager's warning, another impostor comes later in the session (`impostor_again`, user 23 Nov 2026). Not yet across sessions |

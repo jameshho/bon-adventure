@@ -69,6 +69,9 @@ static func animate(main, delta: float) -> void:
 			# "spin_angle" about its own Z when opening; the door waits until it has nearly done.
 			if str(state.get("spin", "")) != "" and _spin(obj, state, delta):
 				continue
+			if float(state.get("seconds", 0.0)) > 0.0:
+				_heavy_swing(obj, state, delta)
+				continue
 			var target: float = float(state.get("angle", -1.75)) if bool(state["open"]) else 0.0
 			if absf(angle_difference(obj.rotation.y, target)) < 0.001:
 				if obj.rotation.y != target: obj.rotation.y = target
@@ -104,6 +107,24 @@ static func animate(main, delta: float) -> void:
 						break
 				if state["open"]: continue
 			obj.position = next_position
+
+## A heavy hinged door (state "seconds" > 0; door.gd swing_seconds, the bank vault, 23 Nov 2026):
+## a timed swing over "seconds" that starts slowly, then settles softly (smootherstep, eased in
+## a little more), so the door seems to weigh a lot. Reversing mid-swing goes back from where it
+## is. Progress 0 (shut) to 1 (open) is kept in state "swing".
+static func _heavy_swing(obj: Node3D, state: Dictionary, delta: float) -> void:
+	var goal := 1.0 if bool(state["open"]) else 0.0
+	var t: float = float(state.get("swing", 0.0))
+	if t == goal:
+		return
+	t = move_toward(t, goal, delta / float(state["seconds"]))
+	state["swing"] = t
+	obj.rotation.y = float(state.get("angle", -1.75)) * heavy_curve(t)
+
+## The heavy swing's shape: 0 -> 0, 1 -> 1, flat at both ends; a slow, creaking first third.
+static func heavy_curve(t: float) -> float:
+	var s := t * t * t * (t * (t * 6.0 - 15.0) + 10.0)
+	return s * s * (3.0 - 2.0 * s) if t < 0.5 else s
 
 ## Turns a hinged door's "spin" wheel toward its state; true while an opening door must wait.
 static func _spin(obj: Node3D, state: Dictionary, delta: float) -> bool:

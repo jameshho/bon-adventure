@@ -227,6 +227,41 @@ func _label(font_size: int, color: Color) -> Label:
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	return label
 
+## One language at a time (user, 23 Nov 2026): the foreign text, or only the native one while
+## the HUD's EN is held (never "foreign / native" together: too crowded at the table).
+func _text(line: Variant) -> String:
+	var parts: Array = GameSettings.shared().view(line, show_native)
+	return parts[1] if show_native and parts[1] != "" else parts[0]
+
+## The width of `line`'s text in its widest language, in `control`'s font (call it in the tree).
+func _widest(line: Variant, control: Control) -> float:
+	var settings = GameSettings.shared()
+	var font: Font = control.get_theme_font("font")
+	var font_size: int = control.get_theme_font_size("font_size")
+	var widest := 0.0
+	for text in [settings.view(line, false)[0], settings.view(line, true)[1]]:
+		if str(text) != "":
+			widest = maxf(widest, font.get_string_size(str(text), HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x)
+	return ceilf(widest)
+
+## Keeps a label or button as wide as its text in either language, so holding EN changes the
+## words but never a size (user, 23 Nov 2026: EN resized the buttons). Measured once it is in
+## the tree (deferred), before the next layout pass places it.
+func _hold_width(control: Control, line: Variant) -> void:
+	var apply := func() -> void:
+		if not is_instance_valid(control):
+			return
+		var extra := 0.0
+		var box: StyleBox = control.get_theme_stylebox("normal") if control is Button else null
+		if box != null:
+			extra = box.get_margin(SIDE_LEFT) + box.get_margin(SIDE_RIGHT)
+		control.custom_minimum_size.x = maxf(control.custom_minimum_size.x, _widest(line, control) + extra)
+		_place.call_deferred()
+	if control.is_inside_tree():
+		apply.call()
+	else:
+		control.tree_entered.connect(apply, CONNECT_ONE_SHOT)
+
 # --- What the session shows ----------------------------------------------------------------
 
 func open() -> void:
@@ -248,8 +283,7 @@ func set_info(lines: Array, tiles: Array = []) -> void:
 	refresh_display()
 
 func _build_info() -> void:
-	var settings = GameSettings.shared()
-	var texts: Array = _info.map(func(line) -> String: return settings.inline(line, show_native))
+	var texts: Array = _info.map(_text)
 	var key := [texts, _info_tiles, _factor, letters]
 	if key == _info_key:
 		return   # unchanged: no rebuild between turns
@@ -266,6 +300,7 @@ func _build_info() -> void:
 		label.text = texts[i]
 		label.add_theme_font_size_override("font_size", roundi(19 * grown))
 		row.add_child(label)
+		_hold_width(label, _info[i])
 		var kind: int = int(_info_tiles[i]) if i < _info_tiles.size() else -1
 		if kind >= 0:
 			var tile := TileStrip.new()
@@ -422,8 +457,7 @@ func _button(text: String, color: Color, font_size: int, min_size: Vector2, marg
 
 ## The big Mahjong! button and the hand's worth under it.
 func _build_win_offer(action: Dictionary) -> void:
-	var settings = GameSettings.shared()
-	var button := _button(settings.inline(action.label, show_native), WIN_FILL, 46, Vector2(330, 96), 14.0)
+	var button := _button(_text(action.label), WIN_FILL, 46, Vector2(330, 96), 14.0)
 	for state in ["normal", "hover", "pressed"]:
 		var box: StyleBoxFlat = button.get_theme_stylebox(state)
 		box.border_color = WIN_INK
@@ -442,7 +476,7 @@ func _build_win_offer(action: Dictionary) -> void:
 		worth.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		worth.add_theme_color_override("font_outline_color", Color("0b1a24"))
 		worth.add_theme_constant_override("outline_size", 8)
-		worth.text = settings.inline(action.worth, show_native)
+		worth.text = _text(action.worth)
 		_scale_font(worth)
 		win_offer.add_child(worth)
 	# A gentle pulse around the button's centre; the tween dies with the button.
@@ -455,7 +489,6 @@ func _build_actions() -> void:
 	_clear(action_row)
 	_clear(win_offer)
 	win_offer.visible = false
-	var settings = GameSettings.shared()
 	for action in _actions:
 		var id := str(action.id)
 		if id == "win":
@@ -463,7 +496,7 @@ func _build_actions() -> void:
 			win_offer.visible = true
 			continue
 		var color := PASS if id in ["pass", "keep"] else CALL
-		var button := _button(settings.inline(action.label, show_native), color, 26, Vector2(120, 64))
+		var button := _button(_text(action.label), color, 26, Vector2(120, 64))
 		var tiles: Array = action.get("tiles", [])
 		if not tiles.is_empty():
 			var row := TileStrip.new()
@@ -486,8 +519,13 @@ func _build_actions() -> void:
 			box.add_child(text)
 			box.add_child(row)
 			button.text = ""
-			button.custom_minimum_size = Vector2(row.custom_minimum_size.x + 110 * _factor, small.y + 20 * _factor)
 			button.add_child(box)
+			# As wide as the label in either language: holding EN never resizes it.
+			var label_width := _widest(action.label, text)
+			text.custom_minimum_size.x = label_width
+			button.custom_minimum_size = Vector2(row.custom_minimum_size.x + maxf(110 * _factor, label_width + 40 * _factor), small.y + 20 * _factor)
+		else:
+			_hold_width(button, action.label)
 		var data := int(action.get("data", -1))
 		button.pressed.connect(func() -> void: action_pressed.emit(id, data))
 		action_row.add_child(button)
@@ -498,12 +536,11 @@ func _build_result() -> void:
 	_clear(result_stack)
 	if _result.is_empty():
 		return
-	var settings = GameSettings.shared()
 	var data: Dictionary = _result.data
 	var title := _label(34, GOLD)
 	title.autowrap_mode = TextServer.AUTOWRAP_OFF
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	title.text = settings.inline(data.title, show_native)
+	title.text = _text(data.title)
 	title.add_theme_font_override("font", BonStyle.font(700))
 	# The headline in a cream pill (the money panel's request line).
 	var pill := PanelContainer.new()
@@ -521,13 +558,13 @@ func _build_result() -> void:
 		var row := _label(23, DIM)
 		row.autowrap_mode = TextServer.AUTOWRAP_OFF
 		row.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		row.text = settings.inline(line, show_native)
+		row.text = _text(line)
 		result_stack.add_child(row)
 	if not data.get("total", {}).is_empty():
 		var total := _label(28, GOLD)
 		total.autowrap_mode = TextServer.AUTOWRAP_OFF
 		total.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		total.text = settings.inline(data.total, show_native)
+		total.text = _text(data.total)
 		result_stack.add_child(total)
 	if not data.get("scores", []).is_empty():
 		result_stack.add_child(_scoreboard(data.scores))
@@ -539,7 +576,8 @@ func _build_result() -> void:
 		# No "again" after the last hand the session plays (test launcher rounds).
 		if (_result[spec[0]] as Dictionary).is_empty():
 			continue
-		var button := _button(settings.inline(_result[spec[0]], show_native), spec[1], 26, Vector2(190, 64), 12.0)
+		var button := _button(_text(_result[spec[0]]), spec[1], 26, Vector2(190, 64), 12.0)
+		_hold_width(button, _result[spec[0]])
 		if spec[0] == "again":
 			button.pressed.connect(func() -> void: again_pressed.emit())
 		else:
@@ -552,7 +590,6 @@ func _build_result() -> void:
 ## This visit's points: a column per player (face, name, total, the last hand's change). No
 ## heading: the faces and numbers say it (user, 11 Nov 2026).
 func _scoreboard(rows: Array) -> Control:
-	var settings = GameSettings.shared()
 	var board := HBoxContainer.new()
 	board.alignment = BoxContainer.ALIGNMENT_CENTER
 	board.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -569,7 +606,7 @@ func _scoreboard(rows: Array) -> Control:
 		face.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 		column.add_child(face)
 		var name_label := _label(18, DIM)
-		name_label.text = settings.inline(row.name, show_native)
+		name_label.text = _text(row.name)
 		var total := _label(28, GOLD)
 		total.text = str(row.total)
 		var change := _label(18, GAIN if str(row.change).begins_with("+") else LOSS)

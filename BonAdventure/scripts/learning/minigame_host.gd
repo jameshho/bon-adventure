@@ -35,6 +35,7 @@ const Interactable := preload("res://scripts/core/interactable.gd")
 const Progress := preload("res://scripts/learning/game_progress.gd")
 const UiText := preload("res://scripts/language/ui_text.gd")
 const InteractIcons := preload("res://scripts/ui/interact_badge.gd")
+const Chatter := preload("res://scripts/characters/npc_chatter.gd")
 ## Metres within which E (or a click / tap) talks to the NPC or another talker.
 const TALK_DISTANCE := 3.5
 
@@ -231,14 +232,19 @@ func _on_talk(who: Node3D) -> void:
 	if not gate():
 		offer()
 
-## Says "finish the other task first" or this game's "not now" when the game cannot start;
-## returns true when it said one of them.
+## Says "finish the other task first" or, when the game is not on offer, an idle line of the
+## NPC's chatter group (npc_chatter.gd, data/npcs.json; 23 Nov 2026, user), else this game's
+## "not now"; returns true when it said one of them.
 func gate() -> bool:
 	if Board.shared().blocker(activity) != "":
 		say("common.finish_first")
 		return true
 	if not offered:
-		say(text("not_now"))
+		var chat: Dictionary = Chatter.current.next_line(talker) if Chatter.current != null and is_instance_valid(talker) else {}
+		if chat.is_empty():
+			say(text("not_now"))
+		else:
+			show_line(str(chat.id), chat.line)
 		return true
 	return false
 

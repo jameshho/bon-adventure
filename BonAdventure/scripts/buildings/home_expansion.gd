@@ -527,6 +527,7 @@ func garage() -> void:
 			if rng.randf() < .25: continue
 			var h := rng.randf_range(.3, .55)
 			box("Storage box", Vector3(15.45, y + h / 2, z), Vector3(.6, h, .55), Color("c8a46e").darkened(rng.randf() * .15), "", false).reparent(shelf, true)
+	# The bicycle that stood here was removed by home.gd step garage_bicycle_removed (23 Nov 2026).
 	prefab("bicycle", "Garage bicycle", 13.0, 14.6, .05, Vector2(1, 0), 1.4)
 
 ## Study x 16..26, z 14..23 (where the garage's second half was planned), entered from the hall.

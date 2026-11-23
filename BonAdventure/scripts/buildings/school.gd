@@ -9,7 +9,7 @@ extends RefCounted
 ## scale 1.3 applies). The shell runs x -12..12, front wall z -12.2 (entrance at x 0), rear
 ## wall z 5.675 (inner face about 5.55); the divider stands at x 0 from z -3.2 to the rear wall.
 ## The general classroom is the x < 0 half.
-const STEPS := ["grammar_classroom", "coplanar_gaps", "coplanar_gaps_2", "glass_windows", "bigger_board"]
+const STEPS := ["grammar_classroom", "coplanar_gaps", "coplanar_gaps_2", "glass_windows", "bigger_board", "science_room"]
 
 ## Lana, the sheep teacher, under Buildings/School.
 const LANA := "TeacherLana"
@@ -180,3 +180,110 @@ func coplanar_gaps_2(town: Node3D, _game) -> void:
 ## Window glass as the shared window component (12 Nov 2026, docs/guides/WINDOWS.md).
 func glass_windows(town: Node3D, _game) -> void:
 	preload("res://scripts/buildings/glass_windows.gd").migrate(town, "school")
+
+## The science room (the x > 0 half, on the left coming in) and a stray plaque (user, 23 Nov 2026:
+## "improve the interior, especially the left side; remove the random triangles on the wall";
+## docs/evidence/civic-fixes-20261123/):
+## - the bare green triangle on the front wall (PaintedMountain_11, the only "mountain" in town)
+##   becomes a framed mountain picture: sky, two peaks with snow, a green hill, a sun;
+## - the large green blob by the east wall (Continent_9, the only "continent") becomes a framed
+##   wall chart, a green continent on a blue sea, on the east wall;
+## - the blank Biology and Geography plaques get their names (signs, translated at load);
+## - two plaques with their labels (RelocatedSites/School: "Classroom plaque" / CLASSROOM and
+##   "Main Hall plaque" / MAIN HALL, the only places of the words "classroom" and "main hall")
+##   hung 0.7 off the front wall with their lettering toward the wall (blank from inside; the
+##   first over the before-and-after poster, the second in the entrance). They now sit flat on
+##   the front wall, lettering to the room: CLASSROOM above the general classroom's posters,
+##   MAIN HALL above the entrance;
+## - the empty notice board (word "notice") gets three pinned notes.
+const PICTURE_FRAME := Color("ad7b50")
+const PICTURE_SKY := Color("bfe0f5")
+const PICTURE_SEA := Color("6f9eb3")
+const PICTURE_LAND := Color("7d9f62")
+const PICTURE_ROCK := Color("8a9a9c")
+const PICTURE_SNOW := Color("fbfcf8")
+const PICTURE_SUN := Color("f2c230")
+const PLAQUE_TEXT := Color("1f5a5c")
+
+func science_room(town: Node3D, game) -> void:
+	var school: Node3D = town.get_node("Buildings/School")
+	var objects: Node3D = school.get_node("RetainedLearningObjects")
+	# The two plaques onto the front wall (school-local spots; the site has its own frame, so
+	# they are placed through global transforms with the school's axes: lettering toward +z).
+	var site: Node3D = town.get_node("RelocatedSites/School")
+	var moved := 0
+	for spec in [["Classroom plaque", "CLASSROOM upgrade sign", Vector3(-6.4, 4.0, -11.91)], ["Main Hall plaque", "MAIN HALL upgrade sign", Vector3(0.0, 4.0, -11.91)]]:
+		var plaque := site.get_node(spec[0]) as Node3D
+		var label := site.get_node(spec[1]) as Label3D
+		plaque.global_transform = Transform3D(school.global_basis, school.to_global(spec[2]))
+		label.global_transform = Transform3D(school.global_basis, school.to_global(spec[2] + Vector3(0, 0, .045)))
+		moved += 1
+	assert(moved == 2, "science_room: expected two plaques, moved %d" % moved)
+	# Pinned notes on the notice board (its cork face is +z, 0.03 in front of its centre).
+	var notice := objects.get_node("Notice") as Node3D
+	for note in [[-.22, .08, .05, Color("f2c230")], [.08, .12, -.06, Color("bfe0f5")], [.24, -.12, .08, Color("f6c1c1")]]:
+		var paper := _part(game, notice, "Pinned note", Vector3(note[0], note[1], .036), Vector3(.24, .28, .01), note[3])
+		paper.rotation.z = note[2]
+		for line in 3:
+			_part(game, paper, "Note line", Vector3(0, .05 - line * .06, .006), Vector3(.16, .015, .004), Color("6f7b88"))
+		_part(game, paper, "Note pin", Vector3(0, .11, .012), Vector3(.03, .03, .02), Color("d9534a"))
+	# The mountain picture where the triangle was (front wall, facing +z).
+	var triangle := objects.get_node("PaintedMountain_11") as Node3D
+	var at := Vector3(triangle.position.x, 2.45, -11.92)
+	triangle.free()
+	var picture := _part(game, objects, "Mountain picture", at, Vector3(1.9, 1.3, .05), PICTURE_FRAME, "mountain")
+	_part(game, picture, "Picture sky", Vector3(0, 0, .03), Vector3(1.74, 1.14, .02), PICTURE_SKY)
+	_part(game, picture, "Picture hill", Vector3(0, -.42, .045), Vector3(1.74, .3, .02), PICTURE_LAND)
+	for peak in [[-.3, .95, .8], [.38, .7, .62]]:
+		var mountain := _prism(game, picture, "Picture peak", Vector3(peak[0], -.27 + peak[2] * .5, .05), Vector3(peak[1], peak[2], .02), PICTURE_ROCK)
+		# The cap is the peak's top 0.2: as wide as the peak is at that height.
+		_prism(game, mountain, "Picture snow", Vector3(0, peak[2] * .5 - .1, .005), Vector3(peak[1] * .2 / peak[2], .2, .02), PICTURE_SNOW)
+	var sun: Node3D = game.cylinder("Picture sun", Vector3.ZERO, .11, .02, PICTURE_SUN)
+	sun.reparent(picture, false)
+	sun.position = Vector3(.62, .32, .045)
+	sun.rotation.x = PI / 2
+	# The continent chart on the east wall (facing -x: the root turns its local -z to -x).
+	var blob := objects.get_node("Continent_9") as Node3D
+	blob.free()
+	var chart := Node3D.new()
+	chart.name = "Continent chart"
+	chart.position = Vector3(11.68, 2.3, -10.0)
+	chart.rotation.y = PI / 2
+	objects.add_child(chart)
+	var board := _part(game, chart, "Continent chart board", Vector3.ZERO, Vector3(1.9, 1.3, .05), PICTURE_FRAME, "continent")
+	_part(game, board, "Chart sea", Vector3(0, 0, -.03), Vector3(1.74, 1.14, .02), PICTURE_SEA)
+	for land in [[-.2, .1, .3], [.12, .05, .26], [-.02, -.2, .22], [.3, .25, .14], [-.42, .22, .16], [.18, -.33, .12]]:
+		var disc: Node3D = game.cylinder("Chart land", Vector3.ZERO, land[2], .02, PICTURE_LAND)
+		disc.reparent(board, false)
+		disc.position = Vector3(land[0], land[1], -.045)
+		disc.rotation.x = PI / 2
+	# Plaque names (English source text; sign_language.gd shows the language at load).
+	_plaque_name(objects.get_node("Biology plaque"), "BIOLOGY", false)
+	_plaque_name(objects.get_node("Geography plaque"), "GEOGRAPHY", true)
+	print("science_room: plaques remounted, notes pinned, mountain picture, continent chart, plaque names")
+
+## A triangular prism (Main has no prism helper): mesh only, under `parent`.
+func _prism(game, parent: Node3D, title: String, pos: Vector3, size: Vector3, color: Color) -> Node3D:
+	var mesh := MeshInstance3D.new()
+	mesh.name = title
+	var prism := PrismMesh.new()
+	prism.size = size
+	mesh.mesh = prism
+	mesh.material_override = game.material_for(color)
+	parent.add_child(mesh)
+	mesh.position = pos
+	return mesh
+
+## Lettering on a 1.5 x 0.5 plaque's room face (+z, or -z when `back`).
+func _plaque_name(plaque: Node3D, text: String, back: bool) -> void:
+	var label := Label3D.new()
+	label.name = text.capitalize() + " lettering"
+	label.text = text
+	label.font_size = 64
+	label.pixel_size = .26 / 64.0
+	label.outline_size = 0
+	label.modulate = PLAQUE_TEXT
+	label.position = Vector3(0, 0, -.045 if back else .045)
+	if back:
+		label.rotation.y = PI
+	plaque.add_child(label)

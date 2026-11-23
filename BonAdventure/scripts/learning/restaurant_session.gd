@@ -199,12 +199,11 @@ func busy() -> bool:
 
 ## A random house character (not staff, not anyone seated now) sits down at table `i`.
 func _seat_customer(i: int) -> void:
-	var data: Variant = JSON.parse_string(FileAccess.get_file_as_string(HouseCharacters.DATA))
 	var taken := {}
 	for table in tables:
 		taken[str(table.spec.get("id", ""))] = true
 	var pool: Array = []
-	for spec in data.get("characters", []) if data is Dictionary else []:
+	for spec in HouseCharacters.characters():
 		if not STAFF.has(str(spec.id)) and not taken.has(str(spec.id)):
 			pool.append(spec)
 	if pool.is_empty():

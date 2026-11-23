@@ -10,7 +10,8 @@ door** (same design everywhere, colours may differ), three separate reusable com
 their own. **First building migrated 18 Nov 2026: the bank** (step `shared_doors` in
 `scripts/buildings/bank.gd`, [record](TOWN_DESIGN_BRIEF.md#bank-interior-refresh--18-november-2026)):
 office = `sliding_door.tscn`, vault = `door.tscn`, both baked, opened and walked through in
-`docs/evidence/bank-refresh-20261118/verify.gd`. This was the first bake that stripped door parts.
+`docs/evidence/bank-refresh-20261118/verify.gd`. **Second: the Pizza and Burger entrance (23 Nov 2026)**, a
+`double_door.tscn` (row below). This was the first bake that stripped door parts.
 Every other door in town is still the old hand-built one.
 
 ## Files
@@ -44,6 +45,7 @@ it) and the leaf fills the opening exactly. That is how the zero gap is guarante
 | `vision_glass` | false | upper panel becomes the shared window glass (`window.tscn`) |
 | `sign` | NONE | WOMEN / MEN restroom figure on both faces (do not combine with `vision_glass`) |
 | `hinge`, `swing_to_front`, `open_angle` | LEFT, true, 1.6 | hinged and double doors (double ignores `hinge`) |
+| `swing_seconds` | 0 | 0 = the usual quick swing; above 0 a heavy door that takes this long, starting slowly and settling softly (`door_state` `seconds`, `door_animator.gd` `_heavy_swing`; the bank vault, 3.2 s, 23 Nov 2026) |
 | `frame_visible`, `frame_width`, `frame_color` | true, 0.07, warm white | the frame |
 | sliding only: `slide`, `slide_distance`, `face_offset` | TO_LEFT, 0 (= width + 0.05), 0 (pocket) | bar pulls instead of levers; `safe_slide` re-opens on the player |
 
@@ -69,7 +71,8 @@ World-unit measurements of each door are in `docs/evidence/doors-20261113/measur
 | Warehouse entrance (glass slider), hall door | `scripts/world/warehouse.gd` `doors()` — **also rebuilt at runtime for the minigame copy** | 0.02 | sliding (glass) and `door.tscn`; change `doors()` itself to instance the components (copy: `interactive = false`, `warehouse_exit` meta on the root); remove `Hall door frame` parts |
 | Static: airport Boarding door, Burger back door, Alta Cocina kitchen back door (two faces) | static slabs | — | `door.tscn`, `interactive = false` |
 | Static: Chapel doors (two leaves standing open, `chapel.gd`) | open leaves | — | `double_door.tscn`; needs a new `start_open` export (and `DoorAnimator.restore_editor_door_states` honouring it) so they stay open as designed |
-| Static: Alta Cocina entrance leaf and arched back door; Pizza y Hamburguesas and Fine Dining facade doors | on map facades / arched openings | need a look in `before.png` first | to decide; arched doors may keep their arch trim above a rectangular leaf |
+| Pizza y Hamburguesas entrance (3.36 wide, walk-through gap behind two decorative glass doors) | facade glass, no collision | walk-through with no door | **done 23 Nov 2026**: `double_door.tscn` `Restaurants/Burger/Pizza and Burger entrance`, green glass leaves swinging in (step `pizza_burger_door` in `restaurants.gd`, [record](TOWN_DESIGN_BRIEF.md#restaurant-fixes--23-november-2026)) |
+| Static: Alta Cocina entrance leaf and arched back door; Fine Dining facade door | on map facades / arched openings | need a look in `before.png` first | to decide; arched doors may keep their arch trim above a rectangular leaf |
 
 Out of scope (user choice): vehicle doors, cabinet/locker/hutch doors, the home garage door, the
 warehouse roll-up door, the barn doors, and the Mystery House minigame doors (`mystery_door.gd`).

@@ -68,9 +68,26 @@ const CLERK_SPOT := Vector3(3.9, Y0, 6.66)
 ## Clear floor in front of the counter kept for a future clerk minigame (centre; 2 x 2 units).
 const GAME_SPOT := Vector3(3.7, Y0, 4.3)
 
+## Small products and display decor 20% bigger (user, 23 Nov 2026; step `bigger_products`, run by
+## bigger() below): word roots in BIGGER, the island decor and the small appliances.
+const SMALL := 1.2
+const BIGGER := ["Computer", "Keyboard", "Mouse", "Laptop", "Smartphone", "Tablet", "Smartwatch",
+	"Camera", "Headphones", "Speaker", "Microwave", "Game Console", "Game_Controller", "Cash register",
+	"Shopping bag"]
+## Grown roots moved so they keep clear of each other and of the islands' risers (store units).
+const NUDGE := {"Computer": Vector3(.04, 0, .1), "Keyboard": Vector3(.03, 0, .1),
+	"Mouse": Vector3(0, 0, .1), "Laptop": Vector3(.04, 0, 0)}
+## The small appliances unit as words (user, 23 Nov 2026): word per shelf (bottom to top) and slot
+## (z -1.1, -.37, .37, 1.1); blenders, the tallest, are not on the low bottom shelf.
+const SHELF_WORDS := [["toaster", "rice cooker", "kettle", "toaster"],
+	["blender", "kettle", "rice cooker", "blender"],
+	["rice cooker", "blender", "toaster", "kettle"]]
+
 var kit
 var store: Node3D
 var interior: Node3D
+## Scale of the islands' small decor (1.0 in the 18 Nov makeover, SMALL since 23 Nov).
+var small := 1.0
 
 func build(town: Node3D, _game) -> void:
 	store = town.get_node(STORE)
@@ -186,9 +203,12 @@ func _mesh(title: String) -> MeshInstance3D:
 	return mesh
 
 ## A solid box (store-local centre and size) that blocks the player.
-func _solid(title: String, centre: Vector3, size: Vector3) -> void:
+func _solid(title: String, centre: Vector3, size: Vector3, player_only := false) -> void:
 	var body := StaticBody3D.new()
 	body.name = title + " body"
+	if player_only:  # word items stand inside it: stops BonBon, not the pointer
+		body.collision_layer = preload("res://scripts/characters/house_characters.gd").FIGURE_LAYER
+		body.collision_mask = 0
 	var holder := CollisionShape3D.new()
 	var shape := BoxShape3D.new()
 	shape.size = size
@@ -265,10 +285,10 @@ func _islands() -> void:
 			"Phones island":
 				var tints := [kit.pig, kit.mint, kit.sky_light, kit.coral_light, kit.sun, kit.rose]
 				for k in 6:
-					kit.rbox(Vector3(rx + side * .03, 1.24 + .14, cz - 1.15 + k * .2), Vector3(.025, .26, .13), tints[k], Products.SATIN, Vector3(0, 0, side * .15), .02)
+					kit.rbox(Vector3(rx + side * .03, 1.25 + .13 * small, cz - 1.15 + k * .2), Vector3(.025, .26, .13) * small, tints[k], Products.SATIN, Vector3(0, 0, side * .15), .02)
 				for k in 3:
-					kit.rbox(Vector3(rx, 1.24 + .05, cz + .5 + k * .3), Vector3(.1, .1, .1), kit.rim, Products.SATIN, Vector3.ZERO, .025)
-					kit.ring(Vector3(rx, 1.245, cz + .5 + k * .3), Vector3(.2, .02, .2), kit.iron, Products.SATIN, Vector3.ZERO, .75, 12)
+					kit.rbox(Vector3(rx, 1.24 + .05 * small, cz + .5 + k * .3), Vector3(.1, .1, .1) * small, kit.rim, Products.SATIN, Vector3.ZERO, .025)
+					kit.ring(Vector3(rx, 1.24 + .005 * small, cz + .5 + k * .3), Vector3(.2, .02, .2) * small, kit.iron, Products.SATIN, Vector3.ZERO, .75, 12)
 			"Cameras island":
 				var head := Vector3(rx, 1.9, cz - 1.0)
 				for k in 3:
@@ -277,17 +297,17 @@ func _islands() -> void:
 					kit.cyl((foot + head) * .5, Vector3(.025, (head - foot).length(), .025), kit.iron, Products.SATIN, _euler_up_to((head - foot).normalized()), 6)
 				kit.rbox(head + Vector3(0, .03, 0), Vector3(.1, .06, .1), kit.iron, Products.SATIN, Vector3.ZERO, .02)
 				for k in 3:
-					kit.cyl(Vector3(cx - side * .2, TOP + .08, cz - 1.15 + k * .17), Vector3(.12, .16, .12), kit.iron, Products.SATIN, Vector3.ZERO, 14)
-					kit.ring(Vector3(cx - side * .2, TOP + .16, cz - 1.15 + k * .17), Vector3(.13, .02, .13), kit.sky, Products.SATIN, Vector3.ZERO, .7, 14)
-				kit.carton(Vector3(rx, 1.24 + .15, cz + .95), Vector3(.28, .3, .22), kit.meadow, face)
-				kit.carton(Vector3(rx, 1.24 + .12, cz + .45), Vector3(.24, .24, .2), kit.sky, face)
+					kit.cyl(Vector3(cx - side * .2, TOP + .08 * small, cz - 1.15 + k * .17), Vector3(.12, .16, .12) * small, kit.iron, Products.SATIN, Vector3.ZERO, 14)
+					kit.ring(Vector3(cx - side * .2, TOP + .16 * small, cz - 1.15 + k * .17), Vector3(.13, .02, .13) * small, kit.sky, Products.SATIN, Vector3.ZERO, .7, 14)
+				kit.carton(Vector3(rx, 1.24 + .15 * small, cz + .95), Vector3(.28, .3, .22) * small, kit.meadow, face)
+				kit.carton(Vector3(rx, 1.24 + .12 * small, cz + .45), Vector3(.24, .24, .2) * small, kit.sky, face)
 			"Audio island":
-				kit.carton(Vector3(rx, 1.24 + .17, cz - .8), Vector3(.3, .34, .24), kit.sky, face)
-				kit.carton(Vector3(rx, 1.24 + .14, cz - .2), Vector3(.26, .28, .22), kit.coral, face)
+				kit.carton(Vector3(rx, 1.24 + .17 * small, cz - .8), Vector3(.3, .34, .24) * small, kit.sky, face)
+				kit.carton(Vector3(rx, 1.24 + .14 * small, cz - .2), Vector3(.26, .28, .22) * small, kit.coral, face)
 				for k in 3:
-					var at := Vector3(rx, 1.24 + .035, cz + .45 + k * .25)
-					kit.rbox(at, Vector3(.1, .07, .14), kit.rim, Products.SATIN, Vector3.ZERO, .034)
-					kit.ball(at + Vector3(-side * .05, 0, 0), Vector3(.008, .015, .015), [kit.meadow, kit.sky, kit.coral][k], Products.GLOW, Vector3.ZERO, 8)
+					var at := Vector3(rx, 1.24 + .035 * small, cz + .45 + k * .25)
+					kit.rbox(at, Vector3(.1, .07, .14) * small, kit.rim, Products.SATIN, Vector3.ZERO, .034)
+					kit.ball(at + Vector3(-side * .05 * small, 0, 0), Vector3(.008, .015, .015) * small, [kit.meadow, kit.sky, kit.coral][k], Products.GLOW, Vector3.ZERO, 8)
 		_mesh(spec[0])
 		_solid(spec[0], Vector3(cx, (Y0 + TOP) * .5, cz), Vector3(1.1, TOP - Y0, length))
 
@@ -345,8 +365,9 @@ func _walls_right() -> void:
 	_mesh("Right wall displays")
 
 ## Left wall (+X): appliances on a stone plinth, the microwave counter, the small appliances
-## unit, the corner plant by the fan.
-func _walls_left() -> void:
+## unit, the corner plant by the fan. With `appliance_words` the unit's appliances are left out
+## of the merged mesh (bigger() makes them word roots) and its blocker lets the pointer through.
+func _walls_left(appliance_words := false) -> void:
 	kit.begin()
 	kit.rbox(Vector3(5.085, .1175, -5.725), Vector3(1.07, .065, 3.55), kit.stone, Products.MATTE, Vector3.ZERO, .02)
 	_solid("Appliance plinth", Vector3(5.085, .1175, -5.725), Vector3(1.07, .065, 3.55))
@@ -362,11 +383,12 @@ func _walls_left() -> void:
 	var n := 0
 	for y in [.195, .72, 1.32]:
 		for z in [-1.1, -.37, .37, 1.1]:
-			kit._mark_now()
-			kit.small_appliance(n + n / 4, tints[n % tints.size()])
-			kit.place(Transform3D(Basis(Vector3.UP, PI / 2), Vector3(5.37, y, z)))
+			if not appliance_words:
+				kit._mark_now()
+				kit.small_appliance(n + n / 4, tints[n % tints.size()])
+				kit.place(Transform3D(Basis(Vector3.UP, PI / 2), Vector3(5.37, y, z)))
 			n += 1
-	_solid("Small appliances unit", Vector3(5.37, 1.05, 0), Vector3(.5, 1.9, 3.0))
+	_solid("Small appliances unit", Vector3(5.37, 1.05, 0), Vector3(.5, 1.9, 3.0), appliance_words)
 	kit.plant(Vector3(5.2, Y0, 4.4), 1.0)
 	_mesh("Left wall displays")
 
@@ -408,3 +430,51 @@ func _lamps() -> void:
 		light.light_color = Color(1.0, .96, .9)
 		light.shadow_enabled = false
 		interior.add_child(light, true)
+
+## Step `bigger_products` (user, 23 Nov 2026: make the small items 20% bigger, keep the design;
+## the rice cookers, toasters and blenders become words). The roots in BIGGER get their model at
+## SMALL (pick areas refitted, NUDGE keeps them clear), the four islands and the left wall are
+## rebuilt with the decor at SMALL, and the twelve small appliances become word roots under
+## LearningDisplays, each SMALL x its 18 Nov size, standing on its shelf.
+func bigger(town: Node3D) -> String:
+	store = town.get_node(STORE)
+	interior = store.get_node("Interior")
+	var site: Node3D = town.get_node(SITE)
+	var displays: Node3D = store.get_node("LearningDisplays")
+	kit = Products.new()
+	var grown := 0
+	for spec in ROOTS:
+		if not str(spec[1]) in BIGGER:
+			continue
+		var parent: Node3D = {"L": displays, "I": interior, "S": site}[spec[0]]
+		var root := parent.get_node(spec[1]) as Node3D
+		_refit(root, kit.model_of(spec[2], SMALL), spec[3] + NUDGE.get(spec[1], Vector3.ZERO), spec[4], spec[5])
+		grown += 1
+	for title in ["Computers island", "Phones island", "Cameras island", "Audio island", "Left wall displays"]:
+		_drop(title)
+		_drop(title + " body")
+	for title in ["Appliance plinth", "Microwave counter", "Small appliances unit"]:
+		_drop(title + " body")
+	small = SMALL
+	_islands()
+	_walls_left(true)
+	var items = preload("res://scripts/buildings/sports.gd").new()
+	var tints := [kit.coral_light, kit.mint, kit.pig, kit.sky_light, kit.sun, kit.trim]
+	var counts := {}
+	var n := 0
+	for level in 3:
+		for slot in 4:
+			var word: String = SHELF_WORDS[level][slot]
+			counts[word] = counts.get(word, 0) + 1
+			var title := word.capitalize() + ("" if counts[word] == 1 else " %d" % counts[word])
+			var root: Node3D = items.item(title, word, kit.appliance(word, tints[n % tints.size()], SMALL), Vector3.ZERO, 0.0, displays)
+			root.global_transform = Transform3D(store.global_basis * Basis(Vector3.UP, PI / 2),
+				store.to_global(Vector3(5.37, [.195, .72, 1.32][level], [-1.1, -.37, .37, 1.1][slot])))
+			n += 1
+	return "%d roots grown, %d appliance words %s" % [grown, n, counts]
+
+func _drop(title: String) -> void:
+	var node := interior.get_node_or_null(title)
+	if node != null:
+		interior.remove_child(node)
+		node.free()

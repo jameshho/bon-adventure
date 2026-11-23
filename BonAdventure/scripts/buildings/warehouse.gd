@@ -2,7 +2,7 @@ extends RefCounted
 ## Warehouse own script (docs/guides/MODULAR_TOWN.md, "Changing a building"); saved in scenes/town/warehouse.scn.
 ## The hall and reception are built by scripts/world/warehouse.gd and the minigame scripts; this
 ## file only holds baked steps.
-const STEPS := ["drivable_truck", "coplanar_gaps", "coplanar_gaps_2", "entrance_ramp", "glass_windows", "glass_windows_2", "half_depth_redesign", "two_level_shelf"]
+const STEPS := ["drivable_truck", "coplanar_gaps", "coplanar_gaps_2", "entrance_ramp", "glass_windows", "glass_windows_2", "half_depth_redesign", "two_level_shelf", "openable_cabinet"]
 const W := preload("res://scripts/world/warehouse.gd")
 
 ## The delivery truck (box_truck.tscn) became a DriveableVehicle on 8 Nov 2026. Its scene root now
@@ -351,3 +351,81 @@ func two_level_shelf(town: Node3D, game) -> void:
 		node.owner = town
 		for inner in node.find_children("*", "", true, false):
 			inner.owner = town
+
+## The town warehouse's supply cabinet opens (user, 23 Nov 2026: the cabinets should open when no
+## game is running). Its two doors (warehouse.gd supply_cabinet(), static parts) get hinges on
+## their outer edges with a door_animator door_state (COMPONENTS.md "Things that open": E, a
+## click or a tap) and a pick area each; the solid block's mesh gives way to a hollow carcass
+## (back, sides, top, base, dark inside, two shelves with supplies) so an open door shows
+## something. The cabinet's collision (word "cabinet") stays. The minigame copy builds its own
+## cabinet from supply_cabinet() and keeps hinging it in warehouse_goods.gd.
+const CABINET_OPEN := 1.75
+func openable_cabinet(town: Node3D, game) -> void:
+	var body := town.get_node("Warehouse/Hall/Supply cabinet") as Node3D
+	var size := Vector3(1.8, 2.0, .6)
+	var shell := Color("8a96a3")
+	var dark := Color("4d5864")
+	var hidden := 0
+	for mesh in body.get_children():
+		if mesh is MeshInstance3D:
+			mesh.free()
+			hidden += 1
+	assert(hidden == 1, "openable_cabinet: expected the body's one mesh, found %d" % hidden)
+	var parts := [
+		["Cabinet back", Vector3(0, 0, size.z * .5 - .02), Vector3(size.x, size.y, .04), shell],
+		["Cabinet side west", Vector3(size.x * .5 - .02, 0, 0), Vector3(.04, size.y, size.z), shell],
+		["Cabinet side east", Vector3(-size.x * .5 + .02, 0, 0), Vector3(.04, size.y, size.z), shell],
+		["Cabinet top", Vector3(0, size.y * .5 - .02, 0), Vector3(size.x, .04, size.z), shell],
+		["Cabinet base", Vector3(0, -size.y * .5 + .05, 0), Vector3(size.x, .1, size.z), shell],
+		["Cabinet inside", Vector3(0, 0, size.z * .5 - .045), Vector3(size.x - .1, size.y - .1, .01), dark],
+		["Cabinet shelf", Vector3(0, -.3, .02), Vector3(size.x - .08, .03, size.z - .1), shell],
+		["Cabinet shelf", Vector3(0, .35, .02), Vector3(size.x - .08, .03, size.z - .1), shell],
+	]
+	for spec in parts:
+		_cabinet_part(game, body, spec[0], spec[1], spec[2], spec[3])
+	# Supplies on the shelves and the base: tape rolls, boxes of labels, folded sheets.
+	var supplies := [
+		["Cabinet supply box", Vector3(-.55, -.17, .05), Vector3(.4, .23, .3), Color("c8a46e")],
+		["Cabinet supply box", Vector3(-.1, -.2, .05), Vector3(.3, .17, .3), Color("3f74b5")],
+		["Cabinet supply box", Vector3(.5, .49, .05), Vector3(.45, .25, .32), Color("c8a46e")],
+		["Cabinet folded sheets", Vector3(-.45, .39, .05), Vector3(.5, .05, .34), Color("eef1f3")],
+		["Cabinet folded sheets", Vector3(-.45, .44, .05), Vector3(.48, .05, .32), Color("f2c230")],
+		["Cabinet supply box", Vector3(.45, -.76, .05), Vector3(.55, .28, .36), Color("4f9a4c")],
+	]
+	for spec in supplies:
+		_cabinet_part(game, body, spec[0], spec[1], spec[2], spec[3])
+	for tape_x in [.35, .55]:
+		var roll: Node3D = game.cylinder("Cabinet tape roll", Vector3.ZERO, .08, .06, Color("d9534a"))
+		roll.reparent(body, false)
+		roll.position = Vector3(tape_x, -.255, 0)
+	# The doors: a hinge on each outer edge; "Cabinet door west" (+x) and its handle turn with it.
+	var hinged := 0
+	for hand in ["west", "east"]:
+		var door := body.get_node("Cabinet door " + hand) as Node3D
+		var handle := body.get_node("Cabinet handle " + hand) as Node3D
+		var side := signf(door.position.x)
+		var hinge := Node3D.new()
+		hinge.name = "Cabinet hinge " + hand
+		hinge.position = Vector3(side * .88, 0, door.position.z)
+		# The leaf lies toward -side from its hinge; turning by -side * angle brings it to -z (the hall).
+		hinge.set_meta("door_state", {"open": false, "type": "hinge", "angle": -side * CABINET_OPEN})
+		body.add_child(hinge)
+		door.reparent(hinge, true)
+		handle.reparent(hinge, true)
+		var area := Area3D.new()
+		area.name = "Cabinet door pick"
+		area.set_meta("object_name", "Cabinet door")
+		door.add_child(area)
+		var shape := CollisionShape3D.new()
+		var box := BoxShape3D.new()
+		box.size = Vector3(.87, 1.94, .04)
+		shape.shape = box
+		area.add_child(shape)
+		hinged += 1
+	print("openable_cabinet: hollow carcass, %d hinged doors" % hinged)
+
+func _cabinet_part(game, parent: Node3D, title: String, pos: Vector3, size: Vector3, color: Color) -> Node3D:
+	var part: Node3D = game.box(title, Vector3.ZERO, size, color, "", false)
+	part.reparent(parent, false)
+	part.position = pos
+	return part

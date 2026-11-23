@@ -13,7 +13,7 @@ extends RefCounted
 ## the checks in docs/police-*/ use them.
 const STEPS := ["solid_roofs", "evidence_poster_words", "evidence_shelf_objects", "lobby_layout", "reception_officer_chairs",
 	"interiors_polish",
-	"coplanar_gaps", "coplanar_gaps_2", "glass_windows", "real_windows"]
+	"coplanar_gaps", "coplanar_gaps_2", "glass_windows", "real_windows", "two_lockers"]
 
 const LEFT := 33.12
 const RIGHT := 52.88
@@ -553,3 +553,98 @@ func real_windows(town: Node3D, _game) -> void:
 		print("police %s (word '%s'): cut %s, removed %s, left %s" % [spec.name, done.word, done.cut, done.removed, done.partial])
 		if done.cut.size() != 3:
 			push_error("police: %s expected 3 wall layers cut, got %d" % [spec.name, done.cut.size()])
+
+## Two separate lockers (user, 23 Nov 2026: the pair against the rear wall looked like one
+## cabinet and its doors did not open properly). The old pair overlapped (sides 0.09 apart) and
+## both doors hung from x 45.9: the second door covered the first locker's opening and the
+## second locker stood open. Interior-local, front faces -z, back against the rear wall.
+## Each locker is now its own root ("Police locker A" at x 46.44, "Police locker B" at x 45.42,
+## 0.06 apart): solid back, sides, top and plinth, a dark inside, a shelf and a coat hook; its
+## door is a door_animator hinge (door_state, word "door"; COMPONENTS.md "Things that open")
+## hung on the locker's outer side, so the two doors swing apart and never meet; the label
+## plate (word "label") is on the door. The six apples (word "apple") stay on the shelves.
+const LOCKER_CENTRES := [46.44, 45.42]
+const LOCKER_SIZE := Vector3(0.96, 2.0, 0.5)
+const LOCKER_BACK_Z := 59.35
+const LOCKER_BODY := Color("5f7f9f")
+const LOCKER_DOOR := Color("6a8cad")
+const LOCKER_INSIDE := Color("3f5770")
+const LOCKER_DARK := Color("2d2f3a")
+const LOCKER_STEEL := Color("c9d1d6")
+const LOCKER_LABEL := Color("f4eee2")
+
+func two_lockers(town: Node3D, game) -> void:
+	var interior: Node3D = town.get_node("RelocatedSites/Police/Interior")
+	var apples: Array[Node3D] = []
+	var removed := 0
+	for child in interior.get_children():
+		if not child is Node3D:
+			continue
+		var p: Vector3 = child.position
+		if p.x < 44.8 or p.x > 47.0 or p.z < 58.8 or p.z > 59.4 or p.y > 2.1:
+			continue
+		if str(child.get_meta("word_key", "")) == "apple":
+			apples.append(child)
+		elif String(child.name).begins_with("Locker") or String(child.name).begins_with("@"):
+			interior.remove_child(child)
+			child.free()
+			removed += 1
+	assert(removed == 18, "two_lockers: expected 18 old locker parts, found %d" % removed)
+	assert(apples.size() == 6, "two_lockers: expected 6 apples, found %d" % apples.size())
+	var w := LOCKER_SIZE.x
+	var h := LOCKER_SIZE.y
+	var d := LOCKER_SIZE.z
+	var mid_z := LOCKER_BACK_Z - d * .5 + .02
+	var front_z := mid_z - d * .5
+	for i in LOCKER_CENTRES.size():
+		var cx: float = LOCKER_CENTRES[i]
+		var root := Node3D.new()
+		root.name = "Police locker " + ["A", "B"][i]
+		root.position = Vector3(cx, 0, mid_z)
+		interior.add_child(root)
+		var y := .03 + h * .5
+		_locker_part(game, root, "Locker back", Vector3(0, y, d * .5 - .02), Vector3(w, h, .04), LOCKER_BODY, true)
+		for side in [-1, 1]:
+			_locker_part(game, root, "Locker side", Vector3(side * (w * .5 - .02), y, 0), Vector3(.04, h, d), LOCKER_BODY, true)
+		_locker_part(game, root, "Locker top", Vector3(0, .03 + h - .02, 0), Vector3(w, .04, d), LOCKER_BODY, true)
+		_locker_part(game, root, "Locker plinth", Vector3(0, .09, 0), Vector3(w, .12, d), LOCKER_BODY, true)
+		_locker_part(game, root, "Locker inside", Vector3(0, y, d * .5 - .045), Vector3(w - .1, h - .1, .01), LOCKER_INSIDE)
+		_locker_part(game, root, "Locker shelf", Vector3(0, 1.33, .01), Vector3(w - .08, .03, d - .06), LOCKER_BODY, true)
+		_locker_part(game, root, "Locker coat hook", Vector3(0, 1.1, d * .5 - .07), Vector3(.04, .04, .08), LOCKER_STEEL)
+		# The door: a hinge on the locker's outer edge (A: +x, B: -x), the leaf toward the other side.
+		var outer := 1.0 if i == 0 else -1.0
+		var hinge := Node3D.new()
+		hinge.name = "Locker door"
+		hinge.position = Vector3(outer * (w * .5 - .005), y, -d * .5 - .02)
+		hinge.set_meta("word_key", "door")
+		# The leaf lies along `span` from the hinge. Turning about +y by a turns +x toward -z, so
+		# the leaf reaches the room (-z) with angle 1.75 * span: both doors open out, apart.
+		var span := -outer
+		hinge.set_meta("door_state", {"open": false, "type": "hinge", "angle": 1.75 * span})
+		root.add_child(hinge)
+		var leaf_w := w - .01
+		# The pick area belongs to the hinge (the word root and the door), as before.
+		var door := _locker_part(game, hinge, "Locker door panel", Vector3(span * leaf_w * .5, 0, 0), Vector3(leaf_w, h - .02, .03), LOCKER_DOOR, false, "door")
+		door.remove_meta("word_key")
+		for area in door.find_children("*", "Area3D", false, false):
+			area.set_meta("root", hinge)
+			area.set_meta("object_name", "Locker door")
+		for k in 3:
+			_locker_part(game, hinge, "Locker vent", Vector3(span * leaf_w * .5, .45 + k * .1, -.02), Vector3(.34, .03, .01), LOCKER_DARK)
+		_locker_part(game, hinge, "Locker handle", Vector3(span * (leaf_w - .12), 0, -.03), Vector3(.04, .2, .03), LOCKER_STEEL)
+		_locker_part(game, hinge, "Locker label", Vector3(span * leaf_w * .5, .78, -.02), Vector3(.5, .2, .01), LOCKER_LABEL, false, "label")
+	# Apples onto the nearest locker's shelf, same place relative to it.
+	for apple in apples:
+		var nearest: float = LOCKER_CENTRES[0] if absf(apple.position.x - 46.45) < absf(apple.position.x - 45.4) else LOCKER_CENTRES[1]
+		var old: float = 46.45 if nearest == LOCKER_CENTRES[0] else 45.4
+		apple.position.x += nearest - old
+		apple.position.y = 1.33 + .015
+		apple.position.z = mid_z + .02
+	print("two_lockers: removed %d old parts, built 2 lockers, moved %d apples" % [removed, apples.size()])
+
+## A box part of a locker under `parent` (Main's box(); solid = a static body, word = a pick area).
+func _locker_part(game, parent: Node3D, title: String, pos: Vector3, size: Vector3, color: Color, solid := false, word := "") -> Node3D:
+	var part: Node3D = game.box(title, Vector3.ZERO, size, color, word, solid)
+	part.reparent(parent, false)
+	part.position = pos
+	return part

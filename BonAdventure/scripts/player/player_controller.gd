@@ -157,7 +157,7 @@ func bind_model() -> void:
         hand.rebind(parts["Arm"], rest_poses["Arm"])
     measure_lying()
 
-## A profile's avatar (PWA phase 3): another house plush (data/house_characters.json) replaces
+## A profile's avatar (PWA phase 3): another cast plush (data/npcs.json) replaces
 ## BonBon's model. Every plush has the same Arm / Arm_2 / Foot / Foot_2 parts and BonBon's size at
 ## scale 1. The new model keeps the node name "BonBon", so the code that poses, dresses, seats
 ## and rides the player (plush_costume.gd, motorcycle_rider.gd, bonbon_effects.gd) is unchanged.

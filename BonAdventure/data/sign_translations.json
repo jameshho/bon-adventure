@@ -89,6 +89,7 @@
   "CLASSROOM": {"es": "AULA", "zh": "課室"},
   "GENERAL CLASSROOM": {"es": "AULA GENERAL", "zh": "普通課室"},
   "SCIENCE CLASSROOM": {"es": "AULA DE CIENCIAS", "zh": "科學課室"},
+  "BIOLOGY": {"es": "BIOLOGÍA", "zh": "生物"},
   "MAIN HALL": {"es": "VESTÍBULO PRINCIPAL", "zh": "大堂"},
   "EMERGENCY": {"es": "URGENCIAS", "zh": "急症室"},
   "EXAMINATION": {"es": "EXÁMENES", "zh": "檢查"},

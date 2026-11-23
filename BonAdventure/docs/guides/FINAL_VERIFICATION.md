@@ -32,6 +32,28 @@ Start at the [README](../../README.md); editing contracts are in the
 [architecture guide](ARCHITECTURE_REVIEW_PART1.md), and implementation details and
 six rendered views are in the [Part 2 handoff](../evidence/part2/HANDOFF.md).
 
+## Civic fixes: garage, school, police lockers, warehouse cabinet, zoo gate — 23 November 2026
+
+[What was built](TOWN_DESIGN_BRIEF.md#civic-fixes-garage-school-police-lockers-warehouse-cabinet-zoo-gate--23-november-2026).
+`tools/bake_unit.gd -- base home school police warehouse` (school re-baked alone from its committed
+scene while the step was finished); `tools/compare_scenes.gd` against the committed scenes: only
+the intended nodes differ (base: the welcome board, its label and two posts). Isolated `HOME`,
+`dev_focus.txt` = `all`. `python3 tools/run_checks.py --only` with the finished scenes:
+runtime_resources PASS, interaction PASS, vocabulary_categories PASS, part2 1349 checks 0 failures,
+police_interior 202/0, police_detective 130/0, police_officer 15/0, warehouse 105/0,
+warehouse_game 108/0, grammar_class 111/0, building_access 486/0, signs 620/0, world_signs 443/0,
+vocabulary_report 5416/0 (it rewrote `docs/game/words.md` and the vocabulary report: date and
+place counts; *bicycle* now only in the sports store). Every Godot check above printed its summary
+and then aborted at exit (`recursive_mutex lock failed`, signal 6), so the runner listed them as
+CRASH: compare labels, not the status. Also failing, not from this change: `language` (zh
+characters without a reading; the same on a clean HEAD) and `compact_layout` 618 checks, 1
+failure "rigid move preserves scale …/Turboprop" (vehicles untouched here; the plane was resized
+in bb6f26be; not run on HEAD). Renders (windowed, `VT_FOCUS=home,school,police,warehouse`; not the
+full town): `docs/evidence/civic-fixes-20261123/capture.gd` before/after, inspected; it opens the
+lockers and the cabinet through the door animator (2 + 2 doors) and the zoo gate from both sides
+as the player (leaf tip at z 124.2 from outside, 127.8 from inside; the gate line is z 126). Not run:
+the full suite, a hands-on play-test, a touch device or the web export.
+
 ## Control tower deck floor, hatch, ladder, dots and stair rails — 23 November 2026
 
 [What was built](TOWN_DESIGN_BRIEF.md#control-tower-deck-floor-hatch-and-stair-rails--23-november-2026).
@@ -8187,3 +8209,24 @@ object in the journal (row column and detail) and on the results card
   mean, 13 ms max. Probe edits removed after the export. Not run: the native checks (the warm-up
   returns at once headless, and the word-pictures check loads Main without the app's loading
   screen).
+
+## NPC registry, idle chatter, farmer, standing spots — 23 November 2026
+
+Coordinator task (user decisions 23 Nov): one registry for every NPC (`data/npcs.json`, replaces
+`data/house_characters.json`), idle chatter with brush-offs, the barn farmer, natural standing
+spots. Guide: [NPCs](NPCS.md); evidence: [npc-registry-20261123](../evidence/npc-registry-20261123/README.md).
+Whole town loaded (`dev_focus.txt` = `all`, VT_FOCUS=all, isolated HOME). Every Godot check
+aborts at exit after its summary (`recursive_mutex lock failed`, signal 6, recorded in the civic
+record above), so the runner shows CRASH; the labels are compared below.
+
+| Result | Check |
+| --- | --- |
+| PASS | `npc_registry` (new, headless via the runner): **29 checks, 0 failures**, then the exit abort. Windowed render run: 29 checks, 0 failures; renders of the moved clerk, Dr. Li, the farmer and the chatter box inspected |
+| PASS | `runtime_resources` 587 checked, 0 failures; `profiles` 38 / 0; `interaction` PASS; `flight_logic` 15 / 0 |
+| PASS (exit abort) | `grammar_class` 111 / 0; `mahjong_table` 98 / 0; `bank_teller` 86 / 0; `bank_rework` 54 / 0 (second run: the first stopped on a parse error, `Session.MANAGER_HOME` read as a class member; fixed with static vars); `fitting_room` 36 / 0; `barn` 56 / 0; `plush_life` 22 / 0 |
+| NEW (not from this change) | `language`: zh readings missing for characters of other sessions' text (逛 原 笛 囉 ...; every chatter and outfit character has one), and two `restaurants.gd` lines flagged as taught-language text (restaurants session) |
+| TIMEOUT (not from this change) | `tutorial`: stale check, missing phrases `tutorial.more_to_show` / `to_supermarket` (recorded by the UI-fixes session the same day) |
+
+Not run: the full suite, the web export, a hands-on play-test. The sports store and hospital
+scenes were not re-baked (the registry moves the two NPCs at load).
+

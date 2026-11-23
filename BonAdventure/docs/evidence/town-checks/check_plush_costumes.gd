@@ -144,7 +144,7 @@ func integration() -> void:
 	var npcs: Array = game.get_node("HouseCharacters").get_children().filter(func(n: Node) -> bool: return n is Node3D)
 	check(npcs.size() == 9, "Nine Home plushes")
 	var ids := {}
-	for spec in JSON.parse_string(FileAccess.get_file_as_string("res://data/house_characters.json"))["characters"]:
+	for spec in preload("res://scripts/characters/house_characters.gd").characters():  # data/npcs.json cast since 23 Nov 2026
 		check(not ids.has(spec["id"]), "Unique character id: " + str(spec["id"]))
 		ids[spec["id"]] = true
 	for npc in npcs:

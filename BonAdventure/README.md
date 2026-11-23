@@ -215,7 +215,7 @@ places: `data/tutorial.json`; code `scripts/learning/tutorial.gd` and `tutorial_
 
 **Profiles and saves (12 Nov 2026, PWA restructure phase 1).** Up to 3 local profiles, listed in
 `user://profiles/index.json` (`scripts/core/profile_manager.gd`: name, profile name, avatar =
-a `data/house_characters.json` id; ids are never reused). Each profile keeps the save files
+a `data/npcs.json` id; ids are never reused). Each profile keeps the save files
 below in `user://profiles/<id>/`; `scripts/core/save_store.gd` owns that list, the paths and the
 atomic writes (temporary file + rename). With no profile the files stay directly in `user://`
 (the paths named below: checks and tools, which run with an isolated `HOME`, and old installs);

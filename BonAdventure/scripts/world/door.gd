@@ -95,6 +95,12 @@ enum Sign { NONE, WOMEN, MEN }
 	set(value):
 		open_angle = value
 		_rebuild()
+## 0: the usual quick swing. Above 0: a heavy door (the bank vault, 23 Nov 2026) that takes this
+## many seconds to swing, starting slowly and settling softly (door_animator.gd "seconds").
+@export_range(0.0, 8.0, 0.1) var swing_seconds := 0.0:
+	set(value):
+		swing_seconds = maxf(value, 0.0)
+		_rebuild()
 @export_group("Frame")
 @export var frame_visible := true:
 	set(value):
@@ -148,7 +154,10 @@ func _build_leaves() -> void:
 	var leaf := _leaf_node(leaf_name, Vector3(-dir * width * 0.5, 0, 0))
 	_leaf_parts(leaf, 0.0, dir * width, false)
 	var angle := open_angle * -dir * (1.0 if swing_to_front else -1.0)
-	_register(leaf, {"open": false, "type": "hinge", "angle": angle})
+	var state := {"open": false, "type": "hinge", "angle": angle}
+	if swing_seconds > 0.0:
+		state["seconds"] = swing_seconds
+	_register(leaf, state)
 
 
 func _build_frame() -> void:

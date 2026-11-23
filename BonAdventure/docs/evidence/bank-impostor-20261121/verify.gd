@@ -32,7 +32,7 @@ func check(ok: bool, label: String) -> void:
 
 func run() -> void:
 	graphics = DisplayServer.get_name() != "headless"
-	for spec in JSON.parse_string(FileAccess.get_file_as_string(HouseCharacters.DATA)).characters:
+	for spec in HouseCharacters.characters():  # data/npcs.json cast since 23 Nov 2026
 		scenes[str(spec.id)] = str(spec.scene)
 	check(Session.species_of("res://scenes/characters/pig_plush.tscn") == "pig", "species from a plush scene")
 	game = load("res://scenes/main.tscn").instantiate()

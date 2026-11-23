@@ -14,9 +14,16 @@ extends Node
 ##     (plush_portraits.gd); an impostor claims another character's account, so the photo is a
 ##     different animal. "Call the police" brings a police officer (the beagle in the police
 ##     costume, like the police station's) who escorts the impostor out of the bank.
-## While the account is on the monitor, a toggle at the top of the screen turns the camera
-## between the monitor and the customer's face, to compare the photo with who is asking. The
-## monitor's words follow the world language (EN held shows them in the native language).
+## Since 23 Nov 2026 (user) one view shows both: window 2's monitor stands to the side of the
+## window, turned toward the teller, so the account (photo, name, balance) and the customer's face
+## behind the glass are on screen together (the camera toggle of 21 Nov is gone). The monitor's
+## words follow the world language (EN held shows them in the native language).
+## Paying an impostor (user, 23 Nov 2026): the money goes, the impostor leaves happily and the
+## bank manager (a crocodile in a suit, new character) walks out of her office through the staff
+## door, says it was wrong and warns the player, walks back, and the game goes on; another
+## impostor comes later in the session. A second payout in one session: she lets the player go;
+## the session ends with a "let go" results card (no Play again; the banker offers the game
+## again on a later visit). Nothing is saved. "Call the police" stays the right answer.
 ## 70% of withdrawals give a reason (a persona story); the rest just ask and say thanks.
 ## The customer reacts in character (data/phrases.json group "teller", personas in
 ## data/bank_teller.json). A customer counts when served right the first time; at the
@@ -41,6 +48,7 @@ const GameSettings := preload("res://scripts/core/game_settings.gd")
 const PlushPortraits := preload("res://scripts/ui/plush_portraits.gd")
 const LiveLabels := preload("res://scripts/language/live_labels.gd")
 const ProfileManager := preload("res://scripts/core/profile_manager.gd")
+const UiText := preload("res://scripts/language/ui_text.gd")
 
 const ACTIVITY := "teller_bank"
 const DATA := "res://data/bank_teller.json"
@@ -68,15 +76,43 @@ const OFFICER_FACE_CAMERA_AT := Vector3(139.0, 2.75, 108.3)
 const OFFICER_LAG := 0.6
 ## The customer's talk camera: from the teller's side, above the glass, looking down at the face.
 const FACE_CAMERA_AT := Vector3(139.0, 2.75, 107.3)
-## Window 2's monitor: screen centre (its face looks +x, toward the teller) and size, and the
-## close-up camera's eye.
-const MONITOR_AT := Vector3(137.24, 1.41, 107.7)
+## Window 2's monitor (moved aside 23 Nov 2026 by bank.gd teller_side_monitor): the centre of the
+## prop, turned MONITOR_YAW degrees about y from facing +x (the teller), so it faces VIEW_EYE.
+## The account screen lies on its face (MONITOR_FACE in front of the centre), MONITOR_SIZE big.
+const MONITOR_CENTRE := Vector3(137.12, 1.41, 107.15)
+const MONITOR_YAW := -19.1
+const MONITOR_FACE := 0.035
 const MONITOR_SIZE := Vector2(0.46, 0.29)
-## (21 Nov 2026, user: the screen seen on the desk) from the teller's seat, far enough back that
-## the desk shows round the screen. The customer stands behind it: the camera toggle shows them
-## (a higher eye that showed both put the balance under a two-row dialogue box).
-const MONITOR_EYE := Vector3(138.6, 1.72, 107.7)
-const MONITOR_FOV := 42.0
+## The account view (user, 23 Nov 2026: monitor and customer at once): from behind the teller's
+## chair at eye height, the customer's face behind the glass on the left, the monitor on the
+## right, both above a two-row dialogue box.
+const VIEW_EYE := Vector3(138.85, 1.72, 107.75)
+const VIEW_AT := Vector3(136.0, 1.0, 107.38)
+const VIEW_FOV := 50.0
+## The bank manager (23 Nov 2026): a crocodile in a suit ("la jefa", word boss) who stands by
+## her desk at the back of the office (bank.gd rear_annex), facing the office door. She walks
+## to the staff door (bank.gd staff_door: town x 139.0-139.95 in the wall at z 109.525; its open
+## leaf lies along x 139.95 up to z 110.55, so she passes beyond it), through it and stops beside
+## the teller, north of window 2.
+## Her plush, outfit, word, gender, desk spot and facing are her entry in the NPC registry
+## (data/npcs.json "bank_manager", town frame; 23 Nov 2026).
+const MANAGER_ID := "bank_manager"
+const NpcRegistry := preload("res://scripts/characters/npc_registry.gd")
+## The manager's word, gender, desk spot and facing come from her registry entry (static, so checks
+## can read them as Session.MANAGER_HOME).
+static var MANAGER_WORD := str(NpcRegistry.spec(MANAGER_ID).get("word", "boss"))
+static var MANAGER_GENDER := str(NpcRegistry.spec(MANAGER_ID).get("gender", "f"))
+static var MANAGER_HOME: Vector3 = NpcRegistry.point(NpcRegistry.spec(MANAGER_ID).get("at", [143.5, 0.03, 110.3]))
+static var MANAGER_LOOK: Vector3 = NpcRegistry.direction(NpcRegistry.spec(MANAGER_ID).get("facing", "-x"))
+const MANAGER_DOOR := Vector3(139.475, 0.03, 111.0)
+const MANAGER_SPOT := Vector3(139.475, 0.03, 108.75)
+const MANAGER_FACE_CAMERA_AT := Vector3(139.1, 2.3, 107.35)
+const STAFF_DOOR_LEAF := "Staff door/Staff door leaf"
+## The cutscene camera while she walks: high in the corner by the back counter at the vault end
+## of the teller area, over the teller's shoulder toward the staff door.
+const SCENE_EYE := Vector3(140.45, 2.9, 106.1)
+const SCENE_AT := Vector3(139.2, 0.9, 109.4)
+const SCENE_FOV := 62.0
 ## The teller's own close-up (saying "not enough"): from just behind the glass, a little to the
 ## side, PLAYER_FACE_LIFT above the face, with a wider lens; the face sits PLAYER_FACE_SCREEN_Y
 ## of the way down the screen (as npc_presence.gd frames NPCs), clear of the dialogue box.
@@ -152,12 +188,13 @@ var _portraits
 ## "Balance" and the idle "Window 2" (world labels bound to phrases, live_labels.gd).
 var _screen_word: Label3D
 var _screen_idle: Label3D
-## Whether the monitor shows the current customer's account, and whether the camera is on it.
+## Whether the monitor shows the current customer's account.
 var _account_shown := false
-var _on_screen := false
-## The camera toggle between the monitor and the customer.
-var _toggle_layer: CanvasLayer
-var _toggle: Button
+## Impostors paid out this session (a second one ends the game, data/bank_teller.json
+## payouts_to_fire), the manager and her face close-up.
+var _payouts := 0
+var manager: Node3D
+var _manager_presence
 var _camera: Camera3D
 var _previous_camera: Camera3D
 var _rng := RandomNumberGenerator.new()
@@ -191,6 +228,21 @@ func setup(shop_dialogue, shop_panel, money_panel, interaction_controller, explo
 	host.leave_answered.connect(_on_leave_answered)
 	money.submitted.connect(_on_submitted)
 	money.close_requested.connect(_on_money_close)
+	_add_manager()
+
+## The bank manager at her desk (a runtime character, like the customers; not a word to learn
+## beyond her role's tag).
+func _add_manager() -> void:
+	manager = NpcRegistry.make(town, NpcRegistry.spec(MANAGER_ID), bank, "BankManager")
+	manager.set_meta("character_name", "")
+	manager.set_meta("talk_camera_at", town.to_global(MANAGER_FACE_CAMERA_AT))
+	_manager_presence = Presence.new()
+	_manager_presence.name = "ManagerPresence"
+	add_child(_manager_presence)
+	_manager_presence.setup(manager, player)
+	# Between games she chats like any NPC without an activity (npc_chatter.gd).
+	if main != null and main.get("npc_chatter") != null:
+		main.npc_chatter.attach(manager)
 
 # --- Host hooks and the activity board -------------------------------------------------------
 
@@ -227,6 +279,7 @@ func start_game() -> void:
 		return
 	playing = true
 	_finished = false
+	_payouts = 0
 	step = ""
 	Board.shared().begin(ACTIVITY)
 	_plan()
@@ -346,8 +399,7 @@ static func species_of(scene: String) -> String:
 ## an account claimed there), not the last one served. `claim_for`: the scene of an impostor,
 ## whose claimed account must belong to another species (and is not remembered as served).
 func _pick_character(claim_for := "") -> Dictionary:
-	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(HouseCharacters.DATA))
-	var all: Array = parsed.get("characters", []) if parsed is Dictionary else []
+	var all: Array = HouseCharacters.characters()
 	var taken: Array = Array(data.get("skip", [])) + [_last_character, current.get("id", ""), waiting.get("id", ""),
 			current.get("claim_id", ""), waiting.get("claim_id", "")]
 	if claim_for != "":
@@ -407,7 +459,16 @@ func _check_account() -> void:
 			host.choice("police", "teller.call_police", "police")], true)
 
 func _on_choice(id: String) -> void:
-	if not playing or current.is_empty():
+	if not playing:
+		return
+	if step == "manager":
+		match id.trim_prefix(host.choice_prefix()):
+			"sorry":
+				_manager_leaves()
+			"fired":
+				_finish(false, true, true)
+		return
+	if current.is_empty():
 		return
 	match id.trim_prefix(host.choice_prefix()):
 		"check", "again":
@@ -415,12 +476,11 @@ func _on_choice(id: String) -> void:
 		"police":
 			_call_police()
 		"count":
-			if current.get("impostor", false):
-				_impostor_missed()
-			elif current.kind == "withdraw" and current.balance < current.dollars:
+			# An impostor's (claimed) account always has enough: the cash can go (23 Nov 2026).
+			if current.kind == "withdraw" and current.balance < current.dollars:
 				# Counting out more than the account holds.
 				_miss()
-				_mistake("teller.pay_wrong", {"amount": _amount(current.dollars)}, "again", "teller.look_again")
+				_mistake("teller.pay_wrong", {"amount": _amount(current.dollars)}, "again", "teller.look_again", true)
 			else:
 				_open_money()
 		"retry":
@@ -437,7 +497,7 @@ func _decline() -> void:
 		return
 	if current.balance >= current.dollars:
 		_miss()
-		_mistake("teller.decline_wrong", {}, "again", "teller.look_again")
+		_mistake("teller.decline_wrong", {}, "again", "teller.look_again", true)
 		return
 	# The teller says it (a close-up of the player), then the customer cannot believe it.
 	step = "declined"
@@ -453,7 +513,7 @@ func _decline() -> void:
 func _call_police() -> void:
 	if not current.get("impostor", false):
 		_miss()
-		_mistake("teller.police_wrong", {}, "again", "teller.look_again")
+		_mistake("teller.police_wrong", {}, "again", "teller.look_again", true)
 		return
 	step = "escort"
 	_set_screen(false)
@@ -534,13 +594,136 @@ func _player_close_up() -> void:
 	var at := face - Vector3(0, drop, 0)
 	_camera_at(Transform3D(Basis.looking_at(at - eye, Vector3.UP), eye), PLAYER_FACE_FOV)
 
-## Counting out the cash, or "not enough", for an impostor: the banker steps in and points at
-## the photo; the customer no longer counts.
+## "Not enough" for an impostor: the banker steps in and points at the photo; the customer no
+## longer counts. (Counting out the cash for one is _impostor_paid().)
 func _impostor_missed() -> void:
 	_miss()
 	step = "fix"
 	_say_as(_host_speaker(), null, "teller.impostor_warn", lexicon.line("teller.impostor_warn"),
 			[host.choice("again", "teller.look_again", "retry")], true)
+
+## Paid out to an impostor (user, 23 Nov 2026): the cash goes, the impostor thanks the teller and
+## leaves happily (no longer counting), and the manager comes out: a warning the first time, the
+## end of the shift the second time (data/bank_teller.json payouts_to_fire). After a warning
+## another impostor comes later in the session (impostor_again), a chance to catch one.
+func _impostor_paid() -> void:
+	_miss()
+	_payouts += 1
+	var fire := _payouts >= int(data.get("payouts_to_fire", 2))
+	if not fire and bool(data.get("impostor_again", true)):
+		_another_impostor()
+	step = "paid_out"
+	PlushLife.play(self, current.node, "hop")
+	var thanks: Dictionary = lexicon.line("teller.impostor_thanks")
+	_customer_say("teller.impostor_thanks", thanks, [])
+	_later(_read_time(thanks), "paid_out", func() -> void:
+		var leaving := current
+		current = {}
+		_close_up(null)
+		host.close_dialogue()
+		_leaving.append(leaving)
+		_walk(leaving.node, EXIT_PATH, func() -> void: _remove(leaving))
+		_manager_comes(fire))
+
+## The next customer not yet in the bank (and not the change or short one) is an impostor.
+func _another_impostor() -> void:
+	var number := _spawned
+	while number == _change_at or number == _short_at:
+		number += 1
+	_impostor_at = number
+
+## The manager's walk: the camera looks along the teller area while she comes through the staff
+## door and stops beside the teller; the teller turns to her.
+func _manager_comes(fire: bool) -> void:
+	step = "manager"
+	_prompt = []
+	if manager == null or not is_instance_valid(manager):
+		if fire:
+			_finish(false, true, true)
+		else:
+			step = ""
+			_call_next()
+		return
+	_scene_camera()
+	_staff_door(true)
+	_walk(manager, [MANAGER_DOOR, MANAGER_SPOT], func() -> void:
+		if playing and step == "manager":
+			_manager_arrived(fire))
+
+func _manager_arrived(fire: bool) -> void:
+	var to_player := player.global_position - manager.global_position
+	to_player.y = 0.0
+	manager.global_basis = Basis.looking_at(to_player.normalized(), Vector3.UP)
+	_turn_player(-to_player)
+	PlushLife.play(self, manager, "shake")
+	var first_id := "teller.manager_fired_1" if fire else "teller.manager_warn_1"
+	var first: Dictionary = lexicon.line(first_id)
+	_say_as(_manager_speaker(), _manager_presence, first_id, first, [])
+	_after(_read_time(first), "manager", func() -> void:
+		var second_id := "teller.manager_fired_2" if fire else "teller.manager_warn_2"
+		var answer: Dictionary = host.choice("fired", "teller.manager_okay", "next") if fire else host.choice("sorry", "teller.manager_sorry", "next")
+		_say_as(_manager_speaker(), _manager_presence, second_id, lexicon.line(second_id), [answer]))
+
+## "Sorry, I'll check the photo": she walks back to her desk; once she is through the door the
+## door closes behind her and the next customer steps up.
+func _manager_leaves() -> void:
+	step = "manager_back"
+	_prompt = []
+	_close_up(null)
+	host.close_dialogue()
+	_scene_camera()
+	PlushLife.play(self, manager, "nod")
+	_walk(manager, [MANAGER_DOOR], func() -> void:
+		_staff_door(false)
+		_walk(manager, [MANAGER_HOME], func() -> void: _manager_home())
+		if playing and step == "manager_back":
+			step = ""
+			_turn_player(_town_direction(TELLER_LOOK))
+			_monitor_camera(false)
+			_call_next())
+
+## The manager back at her desk (also when the game ends mid-scene) and the staff door shut.
+func _manager_home() -> void:
+	if manager == null or not is_instance_valid(manager):
+		return
+	_walkers = _walkers.filter(func(walker) -> bool: return walker.node != manager)
+	var base := manager.global_position.y
+	manager.global_position = town.to_global(MANAGER_HOME)
+	manager.global_position.y = base
+	manager.global_basis = Basis.looking_at(_town_direction(MANAGER_LOOK), Vector3.UP)
+	_manager_presence.zoom_to_face(false)
+	_staff_door(false)
+
+func _manager_speaker() -> Dictionary:
+	return dialogue.speaker_line(MANAGER_WORD, MANAGER_GENDER)
+
+## Opens or shuts the staff door (bank.gd staff_door) through the shared door registry.
+func _staff_door(open: bool) -> void:
+	var leaf := bank.get_node_or_null(STAFF_DOOR_LEAF)
+	if leaf != null and main.doors.has(leaf):
+		main.doors[leaf]["open"] = open
+
+## The cutscene camera along the teller area.
+func _scene_camera() -> void:
+	_close_up(null)
+	var eye := town.to_global(SCENE_EYE)
+	var at := town.to_global(SCENE_AT)
+	_camera_at(Transform3D(Basis.looking_at(at - eye, Vector3.UP), eye), SCENE_FOV)
+
+## Turns the player (behind the counter) to face `direction` (global).
+func _turn_player(direction: Vector3) -> void:
+	direction.y = 0.0
+	if direction.length() < 0.01:
+		return
+	var yaw := atan2(-direction.x, -direction.z)
+	player.rotation.y = yaw
+	player.camera_yaw = yaw
+
+## Calls `then` after `seconds` if the game is still in `expect` (scenes with no customer).
+func _after(seconds: float, expect: String, then: Callable) -> void:
+	get_tree().create_timer(seconds).timeout.connect(func() -> void:
+		if playing and step == expect:
+			then.call())
 
 ## A mistake with this customer: the customer no longer counts, and the session reports one
 ## miss per customer (Board.add_miss, read by game_progress.gd for a game with levels).
@@ -549,16 +732,16 @@ func _miss() -> void:
 		current.missed = true
 		Board.shared().add_miss(ACTIVITY)
 
-func _mistake(id: String, values: Dictionary, retry: String, label: String) -> void:
+## `account`: a mistake about the account (the account view stays: monitor and customer).
+func _mistake(id: String, values: Dictionary, retry: String, label: String, account := false) -> void:
 	step = "fix"
 	PlushLife.play(self, current.node, "tilt")
-	_customer_say(id, lexicon.line(id, values), [host.choice(retry, label, "retry")])
+	_customer_say(id, lexicon.line(id, values), [host.choice(retry, label, "retry")], account)
 
 func _open_money() -> void:
 	step = "count"
 	_close_up(null)
 	host.close_dialogue()
-	_update_toggle()
 	money.show_native = panel.show_native
 	interaction.clear_card()
 	var change: bool = current.kind == "change"
@@ -585,6 +768,9 @@ func _on_submitted(cents: int) -> void:
 	var change: bool = current.kind == "change"
 	if paid_right(money.counts, int(current.dollars), change):
 		money.reset()
+		if current.get("impostor", false):
+			_impostor_paid()
+			return
 		PlushLife.play(self, current.node, "hop")
 		_served("teller.change_thanks" if change else str(current.thanks))
 		return
@@ -614,7 +800,6 @@ func _send_off() -> void:
 	step = ""
 	_close_up(null)
 	host.close_dialogue()
-	_update_toggle()
 	_leaving.append(leaving)
 	var officer: Node3D = leaving.get("officer")
 	if officer != null and is_instance_valid(officer):
@@ -633,20 +818,22 @@ func _send_off() -> void:
 		_call_next()
 
 ## The game is over (`complete`: the target was reached): fade back to the banker, who thanks the
-## player (`speak`), and clear the customers and the monitor.
-func _finish(complete: bool, speak := true) -> void:
+## player (`speak`), and clear the customers and the monitor. `fired`: the manager let the player
+## go (a second impostor paid): the "let go" results card instead of the banker's thanks, and
+## the banker offers the game again only on a later visit.
+func _finish(complete: bool, speak := true, fired := false) -> void:
 	playing = false
 	step = ""
-	_update_toggle()
 	host.cancel_leave()
 	host.abandon_practice()
 	money.reset()
 	money.hide_panel()
 	_close_up(null)
 	host.close_dialogue()
-	if complete:
+	if complete or fired:
 		offered = false
 	var clear := func() -> void:
+		_manager_home()
 		for customer in [current, waiting] + _leaving:
 			_remove(customer)
 		current = {}
@@ -659,6 +846,11 @@ func _finish(complete: bool, speak := true) -> void:
 		clear.call()
 		return
 	await zone.fade_through(clear)
+	if fired:
+		main.results_screen.set_meta("results_owner", ACTIVITY)
+		main.results_screen.show_results({"activity": ACTIVITY, "title": UiText.t("results.title_teller_fired"),
+				"line": UiText.t("results.line_teller_fired"), "words": {}, "rewards": [], "replay": false})
+		return
 	host.zoom(true)
 	host.say("teller.complete" if complete else "teller.stopped")
 
@@ -682,7 +874,6 @@ func _on_talk_closed(line_id: String) -> void:
 	if playing and not zone.fading and not _prompt.is_empty() and line_id == str(_prompt[0]):
 		_close_up(null)
 		host.ask_leave()
-		_update_toggle()
 
 ## Close or ✕ on the money screen: the leave question; "no" returns with the tray intact.
 func _on_money_close() -> void:
@@ -697,10 +888,9 @@ func _on_leave_answered(leave: bool) -> void:
 	if leave:
 		_finish(false)
 		return
-	_update_toggle()
 	if step == "count":
 		_open_money()
-	elif not _prompt.is_empty() and not current.is_empty():
+	elif not _prompt.is_empty() and (not current.is_empty() or step == "manager"):
 		_say_as(_prompt[4], _prompt[5], str(_prompt[0]), _prompt[1], _prompt[2], bool(_prompt[3]))
 
 # --- Dialogue and cameras ----------------------------------------------------------------------
@@ -720,8 +910,6 @@ func _say_as(speaker: Variant, presence: Variant, id: String, line: Dictionary, 
 	host.show_line(id, line, choices, 0.0, speaker)
 	_close_up(null if monitor else presence)
 	_monitor_camera(monitor)
-	_on_screen = monitor
-	_update_toggle()
 
 ## The face close-up on one customer or officer (null: none).
 func _close_up(presence) -> void:
@@ -730,12 +918,15 @@ func _close_up(presence) -> void:
 			var other = customer.get(key)
 			if other != null and is_instance_valid(other) and other != presence:
 				other.zoom_to_face(false)
+	if _manager_presence != null and _manager_presence != presence:
+		_manager_presence.zoom_to_face(false)
 	if presence != null and is_instance_valid(presence):
 		_monitor_camera(false)
 		presence.zoom_to_face(true)
 
-## The game's own fixed camera (the monitor, the player's close-up) at `view` (global).
-func _camera_at(view: Transform3D, fov := MONITOR_FOV) -> void:
+## The game's own fixed camera (the account view, the player's close-up, the manager's walk) at
+## `view` (global).
+func _camera_at(view: Transform3D, fov := VIEW_FOV) -> void:
 	if _camera == null:
 		_camera = Camera3D.new()
 		_camera.name = "TellerMonitorCamera"
@@ -747,13 +938,13 @@ func _camera_at(view: Transform3D, fov := MONITOR_FOV) -> void:
 		_previous_camera = player.get("camera") as Camera3D
 		_camera.make_current()
 
-## The close-up of window 2's monitor while the balance is read.
+## The account view while the balance is read: the monitor and the customer at once (off: back
+## to the player's own camera).
 func _monitor_camera(on: bool) -> void:
 	if on:
-		var eye := town.to_global(MONITOR_EYE)
-		# Aimed below the screen's centre, so the screen sits high, clear of a two-row dialogue box.
-		var at := town.to_global(MONITOR_AT + Vector3(0, -0.12, 0))
-		_camera_at(Transform3D(Basis.looking_at(at - eye, Vector3.UP), eye))
+		var eye := town.to_global(VIEW_EYE)
+		var at := town.to_global(VIEW_AT)
+		_camera_at(Transform3D(Basis.looking_at(at - eye, Vector3.UP), eye), VIEW_FOV)
 	elif _camera != null and _camera.current:
 		if _previous_camera != null and is_instance_valid(_previous_camera):
 			_previous_camera.make_current()
@@ -804,10 +995,15 @@ func _show_monitor() -> void:
 		_screen_idle = _screen_label(34, BonStyle.INK, 0.0)
 		_bind(_screen_word, "teller.screen_balance")
 		_bind(_screen_idle, "teller.screen_idle")
-	# Local +z (the label's front) toward the teller: town +x.
-	_monitor.global_transform = town.global_transform * Transform3D(Basis.looking_at(Vector3.LEFT, Vector3.UP), MONITOR_AT)
+	# Local +z (the label's front) out of the monitor's face, toward the teller's view.
+	var facing := monitor_facing()
+	_monitor.global_transform = town.global_transform * Transform3D(Basis.looking_at(-facing, Vector3.UP), MONITOR_CENTRE + facing * MONITOR_FACE)
 	_monitor.visible = true
 	_set_screen(false)
+
+## The direction window 2's monitor faces (town coordinates).
+static func monitor_facing() -> Vector3:
+	return Basis(Vector3.UP, deg_to_rad(MONITOR_YAW)) * Vector3.RIGHT
 
 func _screen_label(size: int, colour: Color, y: float) -> Label3D:
 	var label := Label3D.new()
@@ -846,64 +1042,11 @@ func _set_screen(account: bool) -> void:
 			_screen_photo.pixel_size = PHOTO_SIZE * 0.94 / float(photo.get_width())
 		_bind(_screen_top, "teller.screen_account", {"name": current.name})
 		_screen_amount.text = Currency.usd(int(current.balance) * 100)
-	_update_toggle()
 
 ## `label` shows phrase `id` in the world language from now on (and after a language change).
 func _bind(label: Label3D, id: String, values := {}) -> void:
 	LiveLabels.bind(label, {"phrase": id, "values": values})
 	LiveLabels.apply(label, GameSettings.shared().world_language())
-
-# --- The camera toggle -------------------------------------------------------------------------
-
-## While the account is on the monitor (the screen step, or a mistake about it), a button at the
-## top of the screen turns the camera to the customer's face and back (user, 21 Nov 2026), so
-## the photo can be compared with who is asking. Hidden otherwise.
-func _update_toggle() -> void:
-	var shown: bool = playing and _account_shown and step in ["screen", "fix"] and not current.is_empty() \
-			and not money.visible and not host.is_asking_leave()
-	if not shown:
-		if _toggle_layer != null:
-			_toggle_layer.visible = false
-		return
-	if _toggle_layer == null:
-		_toggle_layer = CanvasLayer.new()
-		_toggle_layer.name = "TellerViewToggle"
-		_toggle_layer.layer = 5
-		add_child(_toggle_layer)
-		_toggle = Button.new()
-		_toggle.focus_mode = Control.FOCUS_NONE
-		_toggle.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-		_toggle.pressed.connect(_on_toggle)
-		BonStyle.squash_on_press(_toggle)
-		_toggle_layer.add_child(_toggle)
-		get_viewport().size_changed.connect(_layout_toggle)
-	_toggle_layer.visible = true
-	_toggle.text = GameSettings.shared().stacked(lexicon.line("teller.view_customer" if _on_screen else "teller.view_screen"), panel.show_native)
-	_toggle.icon = BonStyle.icon_texture("person" if _on_screen else "screen", 96)
-	_layout_toggle()
-
-## Size and place the toggle for the window (money_panel.gd's scale): top centre.
-func _layout_toggle() -> void:
-	if _toggle == null or not _toggle_layer.visible:
-		return
-	var screen := get_viewport().get_visible_rect().size
-	var f := minf(screen.y / 800.0, screen.x / 1100.0)
-	BonStyle.style_button(_toggle, "soft", f, 28.0)
-	_toggle.add_theme_constant_override("icon_max_width", roundi(34.0 * f))
-	_toggle.custom_minimum_size = Vector2(240, 72) * f
-	_toggle.size = _toggle.get_combined_minimum_size()
-	_toggle.position = Vector2((screen.x - _toggle.size.x) * 0.5, 18.0 * f)
-
-func _on_toggle() -> void:
-	if current.is_empty():
-		return
-	_on_screen = not _on_screen
-	if _on_screen:
-		_close_up(null)
-		_monitor_camera(true)
-	else:
-		_close_up(current.presence)
-	_update_toggle()
 
 func _hide_monitor() -> void:
 	_monitor_camera(false)

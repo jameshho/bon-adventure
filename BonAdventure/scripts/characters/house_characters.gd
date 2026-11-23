@@ -1,13 +1,16 @@
 extends RefCounted
 
-# Places the named plush NPCs listed in data/house_characters.json around the Home
-# zone in simple static poses. They live under Main (unscaled, like the player BonBon),
-# carry `character_name` metadata so a click shows their name, and never count as
-# vocabulary study. Edit the JSON to rename or move them. Each has a permanent unique
-# `id` (node name and `character_id` metadata); names are display text only, so two
-# characters may look alike and share a name.
+# Places the cast (the named plush characters with "cast": true in data/npcs.json, the NPC
+# registry, docs/guides/NPCS.md; they were data/house_characters.json until 23 Nov 2026) that
+# have placement "house" around the Home zone in simple static poses. They live under Main
+# (unscaled, like the player BonBon), carry `character_name` metadata so a click shows their
+# name, and never count as vocabulary study. Edit the registry to rename or move them. Each has a
+# permanent unique `id` (node name and `character_id` metadata); names are display text only, so
+# two characters may look alike and share a name. The same ids are the profile avatars and the
+# tutorial's stand-ins (characters(), in data order).
 
-const DATA := "res://data/house_characters.json"
+const DATA := "res://data/npcs.json"
+const Registry := preload("res://scripts/characters/npc_registry.gd")
 const PlushCostume := preload("res://scripts/characters/plush_costume.gd")
 const PlushLife := preload("res://scripts/characters/plush_life.gd")
 const DIRECTIONS := {"+x": Vector3.RIGHT, "-x": Vector3.LEFT, "+z": Vector3.BACK, "-z": Vector3.FORWARD}
@@ -33,26 +36,27 @@ func build(game) -> Node3D:
 	game.add_child(root)
 	var apartment: Node3D = game.apartment
 	var turn := apartment.global_basis.orthonormalized()
-	var data: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(DATA))
 	var ids := {}
 	var bedtime := Bedtime.new()
 	bedtime.name = "Bedtime"
 	bedtime.game = game
 	bedtime.placer = self
-	for spec in data["characters"]:
+	for spec in characters():
 		var id := str(spec.get("id", ""))
 		if not id.is_valid_identifier() or id != id.to_lower() or ids.has(id):
-			push_error("house_characters.json: missing, invalid or duplicate id '%s' (%s)" % [id, spec.get("name", "")])
+			push_error("npcs.json: missing, invalid or duplicate cast id '%s' (%s)" % [id, spec.get("name", "")])
 			continue
 		ids[id] = true
-		# "in_house": false keeps a character (still an avatar and tutorial stand-in) out of the house.
-		if not bool(spec.get("in_house", true)):
+		# Only placement "house" sits in the Home; "in_house": false keeps a character (still an
+		# avatar and tutorial stand-in) out of it, its seat kept as `home_seat`.
+		if str(spec.get("placement", "")) != "house" or not bool(spec.get("in_house", true)):
 			continue
 		var npc: Node3D = load(str(spec["scene"])).instantiate()
 		npc.name = id
 		npc.set_meta("character_id", id)
 		npc.set_meta("character_name", str(spec["name"]))
 		npc.set_meta("character_species", str(spec["species"]))
+		npc.set_meta("npc_id", id)
 		root.add_child(npc)
 		# facing is an axis name, or an [x, z] vector for seats angled toward a table or view.
 		var facing: Vector3
@@ -78,7 +82,7 @@ func build(game) -> Node3D:
 			pose = Basis(facing.cross(Vector3.DOWN), facing, Vector3.DOWN)
 			for tail in npc.find_children("Tail*", "MeshInstance3D", false, false):
 				tail.visible = false
-		var spot: Array = spec["position"]
+		var spot: Array = spec["at"]
 		npc.global_transform = Transform3D(turn * pose, apartment.to_global(Vector3(spot[0], spot[1], spot[2])))
 		# Rest the body on its surface: the lowest point (tails excluded, they tuck
 		# behind or under) touches the seat, mattress or pool floor.
@@ -106,9 +110,9 @@ func build(game) -> Node3D:
 static func scene_of(id: String) -> String:
 	return str(spec_of(id).get("scene", ""))
 
-## A character's entry in data/house_characters.json ({} when unknown).
+## A cast character's entry in data/npcs.json ({} when unknown).
 static func spec_of(id: String) -> Dictionary:
-	for spec in _characters():
+	for spec in characters():
 		if str(spec.get("id", "")) == id:
 			return spec
 	return {}
@@ -119,11 +123,12 @@ static func name_of(id: String) -> String:
 
 ## Every character id, in data order (the welcome tutorial picks stand-ins in this order).
 static func ids() -> Array:
-	return _characters().map(func(spec) -> String: return str(spec.get("id", "")))
+	return characters().map(func(spec) -> String: return str(spec.get("id", "")))
 
-static func _characters() -> Array:
-	var data: Variant = JSON.parse_string(FileAccess.get_file_as_string(DATA))
-	return data.get("characters", []) if data is Dictionary else []
+## The cast (data/npcs.json entries with "cast": true), in data order: profile avatars, tutorial
+## stand-ins, and the restaurant's and bank's random customers.
+static func characters() -> Array:
+	return Registry.cast()
 
 # Every visible character and animal outside the player and vehicles joins group
 # "figures" and gets a FigureBlocker. Run once the world, its characters and the area
@@ -392,6 +397,8 @@ class Bedtime extends Node:
 		var behind: float = placer._extent(npc, -head) + bed.point.dot(head)
 		npc.global_position += head * (behind - ahead) * 0.5
 		npc.set_meta("seat_point", bed.point)
+		# Asleep: no idle chatter (npc_chatter.gd available()).
+		npc.set_meta("napping", true)
 		placer.fit_blocker(npc)
 		sleeper.bed = bed
 		sleeper.timer = rng.randf_range(ASLEEP.x, ASLEEP.y)
@@ -417,6 +424,7 @@ class Bedtime extends Node:
 			sleeper.parts[path][0].scale = sleeper.parts[path][1]
 		PlushLife.hold_eyes(npc, false)
 		npc.set_meta("seat_point", sleeper.seat_point)
+		npc.set_meta("napping", false)
 		placer.fit_blocker(npc)
 		sleeper.bed = {}
 		sleeper.timer = rng.randf_range(AWAKE.x, AWAKE.y)

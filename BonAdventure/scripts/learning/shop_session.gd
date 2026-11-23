@@ -78,6 +78,14 @@ var needs_help: bool:
 ## The order is paid, but the clerk only reports it when the player comes back to him.
 var awaiting_return := false
 var _result: Dictionary = {}
+## Leaving the store's zone during an order asks the shared leave question (user, 23 Nov 2026:
+## after paying, the player could walk off before bringing the basket back): the player is put
+## back where they were a moment before, inside, facing the clerk, and stands still until they
+## answer. Yes ends the order with the clerk's goodbye; No (or Esc) keeps it.
+var _asked_at_edge := false
+## The player's last places inside the zone (one per zone check), oldest first.
+var _inside_spots: Array = []
+const INSIDE_SPOTS := 3
 
 func setup(for_store: String, shop_dialogue, shop_panel, interaction_controller, town_zones, explorer: Node3D, world: Node3D, sold_in: Dictionary) -> void:
 	store_id = for_store
@@ -364,6 +372,16 @@ func _ask_quit() -> void:
 		host.ask_leave()
 
 func _on_leave_answered(leave: bool) -> void:
+	var at_edge := _asked_at_edge
+	_asked_at_edge = false
+	if at_edge:
+		if not leave and zones.resolve_global(player.global_position) != store_zone:
+			_step_back_in()
+		if get_parent() != null and get_parent().has_method("sync_player_controls"):
+			get_parent().sync_player_controls()
+		if leave and awaiting_return:
+			_left()
+			return
 	if leave and order != null and order.state == Order.State.SHOPPING:
 		order.cancel()
 		host.abandon_practice()
@@ -379,11 +397,41 @@ func _process(delta: float) -> void:
 	if _zone_timer >= ZONE_CHECK_INTERVAL:
 		_zone_timer = 0.0
 		var inside: bool = zones.resolve_global(player.global_position) == store_zone
+		if inside:
+			_inside_spots.append(player.global_position)
+			if _inside_spots.size() > INSIDE_SPOTS:
+				_inside_spots.pop_front()
 		if inside != in_zone:
-			in_zone = inside
-			if not inside:
-				_left()
+			if not inside and activity_running() and not _inside_spots.is_empty():
+				_ask_at_edge()
+			else:
+				in_zone = inside
+				if not inside:
+					_left()
 	host.tick(delta)
+
+## The player walked out of the store's zone during an order: back inside, and the leave
+## question (see _asked_at_edge).
+func _ask_at_edge() -> void:
+	_step_back_in()
+	if _asked_at_edge or host.is_asking_leave():
+		return
+	_asked_at_edge = true
+	player.set_controls_enabled(false)
+	host.ask_leave()
+
+## Puts the player at their oldest remembered spot inside the zone, facing the clerk.
+func _step_back_in() -> void:
+	if _inside_spots.is_empty():
+		return
+	player.global_position = _inside_spots[0]
+	player.velocity = Vector3.ZERO
+	var look: Vector3 = clerk.global_position - player.global_position if is_instance_valid(clerk) else Vector3.ZERO
+	if Vector2(look.x, look.z).length() > 0.1:
+		var yaw := atan2(-look.x, -look.z)
+		player.rotation.y = yaw
+		player.camera_yaw = yaw
+	player.reset_camera()
 
 ## A language change in Settings ends a running order with the clerk's goodbye, as leaving.
 func end_activity() -> void:

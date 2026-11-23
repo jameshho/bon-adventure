@@ -3,7 +3,7 @@ extends RefCounted
 ## electronics unit (scenes/town/electronics.scn).
 ## Bake:  godot --headless --path . --script res://tools/bake_unit.gd -- electronics
 ## Never rename or remove a baked step (add a new one that undoes it).
-const STEPS := ["coplanar_gaps", "coplanar_gaps_2", "glass_windows", "shop_row_style", "clay_makeover"]
+const STEPS := ["coplanar_gaps", "coplanar_gaps_2", "glass_windows", "shop_row_style", "clay_makeover", "bigger_products"]
 
 ## Faces that shared a plane and flickered are set apart (10 Nov 2026,
 ## scripts/buildings/coplanar_gaps.gd).
@@ -34,3 +34,11 @@ func shop_row_style(town: Node3D, game) -> void:
 ## a plush clerk and a spot kept for a clerk minigame (scripts/buildings/electronics_makeover.gd).
 func clay_makeover(town: Node3D, game) -> void:
 	preload("res://scripts/buildings/electronics_makeover.gd").new().build(town, game)
+
+
+## Small products 20% bigger and the small appliances as words (user, 23 Nov 2026: "make all the
+## small items/products 20% bigger", keep the design; the rice cookers, toasters and blenders were
+## not words): scripts/buildings/electronics_makeover.gd bigger(). Record:
+## docs/guides/TOWN_DESIGN_BRIEF.md "Electronics store makeover", 23 Nov 2026 addendum.
+func bigger_products(town: Node3D, _game) -> void:
+	print("electronics bigger_products: ", preload("res://scripts/buildings/electronics_makeover.gd").new().bigger(town))

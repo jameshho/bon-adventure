@@ -1,6 +1,6 @@
 # Vocabulary usage report
 
-Generated 2026-11-21 by `tools/vocabulary_report.gd -- --write` (whole town loaded; how to run and what each column means: the script's header and [the guide](../ARCHITECTURE_REVIEW_PART1.md#vocabulary-usage-report)). Full table: [report.csv](report.csv).
+Generated 2026-11-23 by `tools/vocabulary_report.gd -- --write` (whole town loaded; how to run and what each column means: the script's header and [the guide](../ARCHITECTURE_REVIEW_PART1.md#vocabulary-usage-report)). Full table: [report.csv](report.csv).
 
 **Dialogue:** only words that fill a `{slot:form}` in `data/phrases.json` are reported (column `phrase_slots`). Words written as plain text inside dialogue lines are not matched, so a word can appear in dialogue and still be listed here as unused.
 
@@ -8,9 +8,9 @@ Generated 2026-11-21 by `tools/vocabulary_report.gd -- --write` (whole town load
 
 | | Words |
 | --- | ---: |
-| In data/words.json | 795 |
-| Placed in the saved scenes | 773 |
-| Clickable somewhere (study by clicking) | 747 |
+| In data/words.json | 799 |
+| Placed in the saved scenes | 777 |
+| Clickable somewhere (study by clicking) | 752 |
 | Placed only by scripts at load (runtime) | 0 |
 | Only on a bound world label (poster) | 0 |
 | Tested by a game | 187 |
@@ -18,7 +18,7 @@ Generated 2026-11-21 by `tools/vocabulary_report.gd -- --write` (whole town load
 | Can fill a phrase slot | 36 |
 | **Placed nowhere and used by no game** | **22** |
 | Placed nowhere but used by a game | 0 |
-| Placed but not clickable (no pick collision) | 26 |
+| Placed but not clickable (no pick collision) | 25 |
 
 ## Hard errors (unknown word keys)
 
@@ -60,9 +60,9 @@ Decision 6 (user, 7 Nov 2026). The police lineup is not tracked: each round name
 - **Colors & Descriptions** (16): brown, creamy, crunchy, dark, dry, fizzy, fresh, juicy, loud, medium, noisy, quiet, refreshing, shiny, wet, with ice
 - **People** (1): nurse
 
-## Placed but not clickable (26)
+## Placed but not clickable (25)
 
-airplane, ambulance, armchair, banker, bed, boss, bus, car, electrical box, faucet, fire truck, gate, helicopter, label, motorcycle, pilot, police car, radar, school bus, soccer, sofa, taxi, teacher, tennis, truck, wheelchair
+airplane, ambulance, armchair, banker, bed, bus, car, electrical box, faucet, fire truck, gate, helicopter, label, motorcycle, pilot, police car, radar, school bus, soccer, sofa, taxi, teacher, tennis, truck, wheelchair
 
 ## Same meaning twice (1 groups)
 

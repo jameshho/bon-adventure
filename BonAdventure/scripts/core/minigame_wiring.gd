@@ -59,6 +59,8 @@ static func build(main) -> void:
 	main.money_panel = preload("res://scripts/ui/money_panel.gd").new()
 	hud.ui_root.add_child(main.money_panel)
 	main.money_panel.visibility_changed.connect(main.sync_player_controls)
+	# The HUD's EN (the one language toggle) stays visible and clickable above the card.
+	main.money_panel.clear_of = [hud.peek_button]
 	for cashier_id in shop_dialogue.cashiers:
 		_when(main, cashier_id, func() -> void:
 			var cashier_session = preload("res://scripts/learning/cashier_session.gd").new()

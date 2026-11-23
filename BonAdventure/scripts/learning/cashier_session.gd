@@ -42,6 +42,8 @@ const Board := preload("res://scripts/learning/activity_board.gd")
 const REQUEST_VARIANTS := 5
 const WALK_AWAY_DISTANCE := 14.0
 const MESSAGE_SECONDS := 9.0
+## How long the door's "pay first" line stays once the player steps back from the door.
+const DOOR_LINE_LINGER := 2.0
 const ZONE_CHECK_INTERVAL := 0.25
 ## Free shopping: at most this many items in the basket (it shows 12, shopping_basket.gd).
 const BASKET_MAX := 12
@@ -470,7 +472,18 @@ func _make_door() -> void:
 	door = zone.make_door_guard(space, at + Vector3.UP * size.y * 0.5, size, ask_at, ask_size, "Shop checkout door", {
 		"blocking": func() -> bool: return _unpaid_basket() and _inside(at, inward, depth * 0.5 + 0.6),
 		"ask": func() -> void: host.say("cashier.pay_first" if _basket_items() > 0 else "cashier.rack_first"),
+		# Walking back from the door takes the line away after a moment, as Mystery Doors'
+		# leave question goes when the player steps back from the arch (user, 23 Nov 2026).
+		"asking": _door_line_up,
+		"cancel": func() -> void:
+			get_tree().create_timer(DOOR_LINE_LINGER).timeout.connect(func() -> void:
+				if is_instance_valid(door) and not door.zone.overlaps_body(player) and _door_line_up():
+					host.close_dialogue()),
 		"layer": HouseCharacters.FIGURE_LAYER})
+
+## The door's "pay first" (or "put the basket back") line is still on screen.
+func _door_line_up() -> bool:
+	return host != null and host.line_id in ["cashier.pay_first", "cashier.rack_first"] and host.owns_dialogue()
 
 ## The player is more than `margin` past the doorway's centre on the store side (the wall only
 ## stands then, clear of the player).

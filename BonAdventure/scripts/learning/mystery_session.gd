@@ -157,6 +157,15 @@ var _exit_looks: Array = []
 var _room_door_close := 0.0
 ## True while the first round is played at the mystery room's own doors.
 var _room_round := false
+## Seconds the player has been out of the house while a game runs (_guard_place()).
+var _outside_time := 0.0
+## Fail-safes (23 Nov 2026; a web player was found outside the supermarket with "Door 5 of 6"
+## still on screen: Main's fall respawn below y -15 had moved them out of the endless hall, whose
+## floor is only 4 m above that line, and the game ran on). A player more than FALL_DEPTH under
+## the hall floor is put back on it; one out of the house for OUTSIDE_GRACE seconds (any other
+## move: a respawn, a reload's resume, a test) ends the game, its card and hall with it.
+const FALL_DEPTH := 1.5
+const OUTSIDE_GRACE := 0.5
 
 func setup(shared_lexicon, shared_dialogue_panel, game_card, interaction_controller, explorer: Node3D, town: Node3D, game) -> void:
 	name = "MysterySession"
@@ -1034,6 +1043,8 @@ func end_game(farewell: String, to_luna := false) -> void:
 		return
 	host.cancel_leave()
 	state = ""
+	# The card first: nothing below may leave the strip on screen after the game.
+	card.hide_card()
 	_room_round = false
 	_toad_phase = ""
 	_through = -1
@@ -1122,6 +1133,35 @@ func _on_leave_answered(leave: bool) -> void:
 
 # --- Each frame ---------------------------------------------------------------------------
 
+## The fail-safes above (FALL_DEPTH, OUTSIDE_GRACE). A fall is caught long before Main's respawn
+## (about half a second of falling): the player lands back in the hall room they fell from (or,
+## from the mystery room, at INSIDE) and the game goes on.
+func _guard_place(delta: float) -> void:
+	var p: Vector3 = house.to_local(player.global_position)
+	if p.y < Mystery.ENDLESS_FLOOR - FALL_DEPTH and absf(p.x) < Mystery.W2 + 8.0 and p.z > Mystery.FRONT - 8.0 and p.z < Mystery.REAR + 8.0:
+		push_warning("mystery_session: the player fell out of the hall at %s (state %s); put back" % [p, state])
+		if _room_round or hall == null or not hall.visible:
+			zone.place_player(house, Mystery.INSIDE, Mystery.START_LOOK)
+		else:
+			# The room between walls A and B, or (through wall B's door) between B and C.
+			var first: Vector2 = Vector2(float(Mystery.HALL_WALLS[0]) + Mystery.WALL, float(Mystery.HALL_WALLS[1])) if p.z < float(Mystery.HALL_WALLS[1]) + Mystery.WALL else Vector2(float(Mystery.HALL_WALLS[1]) + Mystery.WALL, float(Mystery.HALL_WALLS[2]))
+			var spot := Vector3(clampf(p.x, -Mystery.W2 + 1.5, Mystery.W2 - 1.5), Mystery.ENDLESS_FLOOR, clampf(p.z, first.x + 1.5, first.y - 1.5))
+			zone.place_player(house, spot, Mystery.START_LOOK)
+		player.reset_physics_interpolation()
+		player.camera_rig.reset_physics_interpolation()
+		return
+	if _in_house():
+		_outside_time = 0.0
+		return
+	_outside_time += delta
+	if _outside_time < OUTSIDE_GRACE:
+		return
+	_outside_time = 0.0
+	push_warning("mystery_session: the player left the house mid-game (state %s); game ended" % state)
+	if host.line_id != "":
+		host.close_dialogue()
+	end_game("")
+
 func _process(delta: float) -> void:
 	if host == null or not is_instance_valid(player):
 		return
@@ -1135,6 +1175,8 @@ func _process(delta: float) -> void:
 		_room_door_close -= delta
 		if _room_door_close <= 0.0 and exit_door >= 0:
 			doors[exit_door].leaf.close()
+	if in_game() and not zone.fading:
+		_guard_place(delta)
 	match state:
 		"walk":
 			_walk_tick(delta)

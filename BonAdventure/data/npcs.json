@@ -1,0 +1,1106 @@
+{
+ "about": "Every NPC in the town: one entry per character, its permanent id first (unique, lowercase, never reused or changed once saves can refer to it: profile avatars, outfits, quests). Guide and how to add one: docs/guides/NPCS.md. Read by scripts/characters/npc_registry.gd (placement, lookups), house_characters.gd (the cast: profile avatars, Home seats), the minigame sessions that make their NPCs at run time, and npc_chatter.gd (idle lines). Coordinates: 'at' and 'back' are TOWN coordinates (Main's Apartment node: +X west, +Z north, Apartment scale 1.3 applies, so 1 unit = 1.3 m in the world); 'facing' is the direction the NPC looks in the same frame, an [x, z] vector or an axis name (+x, -x, +z, -z). placement: 'house' = seated or lying in the Home by house_characters.gd ('at' is the seat or mattress surface; optional 'back' an [x, z] point on the backrest); 'scene' = baked into its unit scene at 'node' (a path under the town root); npc_registry.gd moves it to 'at' / 'facing' at load ('at' is the node's origin, the floor between its feet; a seated node keeps its seated pose), so the registry wins over the baked transform; 'registry' = made at load by npc_registry.gd under the unit part named by 'node' ('at' is the floor it stands on), never baked; 'runtime' = made by the 'owner' script (a minigame); the script reads scene, costume and name from here; 'cast' = not placed in the town (an avatar and random customer only). role: 'host' (runs 'activity', data/activities.json), 'ambient' (no activity), 'customer'. word: the data/words.json key the NPC teaches when clicked or talked to (people words). chatter: the idle-line group (data/phrases.json 'chatter.<group>_<n>', see 'chatter_groups'). cast: true = a profile avatar and tutorial stand-in (in data order; 'costume' is then its own look as an avatar, stand-in or customer, and 'work_costume' what it wears where it is placed in the town); in_house false keeps it out of the Home (its home_seat is kept), picker false leaves it off the new-player grid. Folded in from data/house_characters.json on 23 Nov 2026 (user: one registry for all NPCs).",
+ "chatter_groups": {
+  "friend": "friend",
+  "shop": "staff",
+  "cashier": "staff",
+  "waiter": "staff",
+  "kitchen": "staff",
+  "police": "staff",
+  "bank": "staff",
+  "office": "staff",
+  "warehouse": "staff",
+  "driver": "staff",
+  "hospital": "staff",
+  "school": "staff",
+  "library": "staff",
+  "airport": "staff",
+  "mystery": "staff",
+  "farm": "staff"
+ },
+ "npcs": [
+  {
+   "id": "bonbon",
+   "name": "BonBon",
+   "species": "Pig",
+   "scene": "res://scenes/characters/pig_plush.tscn",
+   "gender": "f",
+   "unit": "home",
+   "placement": "house",
+   "pose": "sit",
+   "at": [
+    12.85,
+    0.55,
+    29.7
+   ],
+   "facing": "-x",
+   "back": [
+    13.1,
+    29.7
+   ],
+   "role": "ambient",
+   "chatter": "friend",
+   "cast": true,
+   "note": "Seated in the Home by house_characters.gd (naps in a free bed now and then)."
+  },
+  {
+   "id": "leo",
+   "name": "Leo",
+   "species": "Lion",
+   "scene": "res://scenes/characters/lion_plush.tscn",
+   "gender": "m",
+   "unit": "home",
+   "placement": "house",
+   "pose": "sit",
+   "at": [
+    2.9,
+    0.81,
+    32.09
+   ],
+   "facing": "-x",
+   "back": [
+    3.13,
+    32.09
+   ],
+   "role": "ambient",
+   "chatter": "friend",
+   "cast": true,
+   "note": "Seated in the Home by house_characters.gd (naps in a free bed now and then)."
+  },
+  {
+   "id": "bruno",
+   "name": "Bruno",
+   "name_phrase": "flight.bruno",
+   "species": "Bear",
+   "scene": "res://scenes/characters/bear_plush.tscn",
+   "work_costume": "pilot",
+   "gender": "m",
+   "unit": "airport",
+   "placement": "scene",
+   "node": "Airport/Terminal/Interior/PilotBruno",
+   "pose": "stand",
+   "at": [
+    -100.1,
+    0.078,
+    239.4
+   ],
+   "facing": [
+    1.0,
+    0.0
+   ],
+   "role": "host",
+   "activity": "flight_bruno",
+   "word": "pilot",
+   "chatter": "airport",
+   "cast": true,
+   "in_house": false,
+   "home_seat": {
+    "pose": "sit",
+    "at": [
+     2.9,
+     0.81,
+     35.11
+    ],
+    "facing": "-x",
+    "back": [
+     3.13,
+     35.11
+    ]
+   },
+   "note": "Captain Bruno at the terminal's information desk; also a profile avatar and a restaurant / bank customer. His home seat is kept in case he moves back (in_house false)."
+  },
+  {
+   "id": "miso",
+   "name": "Miso",
+   "species": "Siamese Cat",
+   "scene": "res://scenes/characters/cat_plush.tscn",
+   "gender": "f",
+   "placement": "cast",
+   "role": "customer",
+   "chatter": "friend",
+   "cast": true,
+   "in_house": false,
+   "home_seat": {
+    "pose": "sit",
+    "at": [
+     0.9,
+     0.73,
+     30.5
+    ],
+    "facing": [
+     -0.88,
+     0.48
+    ],
+    "back": [
+     1.26,
+     30.3
+    ]
+   },
+   "note": "Not placed in the town: a profile avatar, tutorial stand-in, and a random customer at the Alta Cocina tables (restaurant_session.gd) and the bank windows (teller_session.gd). The home seat is kept in case it moves back."
+  },
+  {
+   "id": "awoo",
+   "name": "Sam",
+   "species": "Samoyed",
+   "scene": "res://scenes/characters/samoyed_plush.tscn",
+   "gender": "m",
+   "placement": "cast",
+   "role": "customer",
+   "chatter": "friend",
+   "cast": true,
+   "in_house": false,
+   "home_seat": {
+    "pose": "sit",
+    "at": [
+     11,
+     0.55,
+     27.9
+    ],
+    "facing": "+z",
+    "back": [
+     11,
+     27.66
+    ]
+   },
+   "note": "Not placed in the town: a profile avatar, tutorial stand-in, and a random customer at the Alta Cocina tables (restaurant_session.gd) and the bank windows (teller_session.gd). The home seat is kept in case it moves back."
+  },
+  {
+   "id": "poppy",
+   "name": "Poppy",
+   "species": "Sheep",
+   "scene": "res://scenes/characters/sheep_plush.tscn",
+   "gender": "f",
+   "placement": "cast",
+   "role": "customer",
+   "chatter": "friend",
+   "cast": true,
+   "in_house": false,
+   "home_seat": {
+    "pose": "sit",
+    "at": [
+     -1.55,
+     0.675,
+     23.8
+    ],
+    "facing": [
+     0.53,
+     -0.85
+    ],
+    "back": [
+     -1.55,
+     24.17
+    ]
+   },
+   "note": "Not placed in the town: a profile avatar, tutorial stand-in, and a random customer at the Alta Cocina tables (restaurant_session.gd) and the bank windows (teller_session.gd). The home seat is kept in case it moves back."
+  },
+  {
+   "id": "sunny",
+   "name": "Sunny",
+   "species": "Golden Retriever",
+   "scene": "res://scenes/characters/golden_plush.tscn",
+   "gender": "f",
+   "unit": "home",
+   "placement": "house",
+   "pose": "sit",
+   "at": [
+    9.15,
+    0.55,
+    31.3
+   ],
+   "facing": "+x",
+   "back": [
+    8.9,
+    31.3
+   ],
+   "role": "ambient",
+   "chatter": "friend",
+   "cast": true,
+   "picker": false,
+   "note": "Seated in the Home by house_characters.gd (naps in a free bed now and then)."
+  },
+  {
+   "id": "twinkle",
+   "name": "Twinkle",
+   "name_phrase": "restaurant.twinkle",
+   "species": "Beagle",
+   "scene": "res://scenes/characters/beagle_plush.tscn",
+   "work_costume": "waiter",
+   "gender": "f",
+   "unit": "restaurants",
+   "placement": "scene",
+   "node": "Restaurants/Pizza/BeagleWaiter",
+   "pose": "stand",
+   "at": [
+    -33.3,
+    0.078,
+    36.75
+   ],
+   "facing": [
+    0.0,
+    1.0
+   ],
+   "role": "host",
+   "activity": "restaurant_twinkle",
+   "word": "waiter",
+   "chatter": "waiter",
+   "cast": true,
+   "in_house": false,
+   "home_seat": {
+    "pose": "sit",
+    "at": [
+     1.55,
+     0.675,
+     23.8
+    ],
+    "facing": [
+     -0.53,
+     -0.85
+    ],
+    "back": [
+     1.55,
+     24.17
+    ]
+   },
+   "note": "Twinkle at the Alta Cocina host stand (the node sits under Restaurants/Pizza). As an avatar, stand-in or customer she wears no costume; at work she wears work_costume."
+  },
+  {
+   "id": "cocodrilo",
+   "name": "Cocodrilo",
+   "species": "Crocodile",
+   "scene": "res://scenes/characters/crocodile_plush.tscn",
+   "gender": "m",
+   "placement": "cast",
+   "role": "customer",
+   "chatter": "friend",
+   "cast": true,
+   "in_house": false,
+   "home_seat": {
+    "pose": "stand",
+    "at": [
+     15.0,
+     -0.96,
+     18.0
+    ],
+    "facing": "+z"
+   },
+   "note": "Not placed in the town: a profile avatar, tutorial stand-in, and a random customer at the Alta Cocina tables (restaurant_session.gd) and the bank windows (teller_session.gd). The home seat is kept in case it moves back."
+  },
+  {
+   "id": "madame_luna",
+   "name": "Madame Luna",
+   "name_phrase": "mystery.luna",
+   "species": "Siamese Cat",
+   "scene": "res://scenes/characters/cat_plush.tscn",
+   "costume": "fortune_teller",
+   "gender": "f",
+   "unit": "mystery",
+   "placement": "scene",
+   "node": "MysteryHouse/MysteryRoom/MadameLuna",
+   "pose": "stand",
+   "at": [
+    128.4,
+    0.598,
+    73.4
+   ],
+   "facing": [
+    0.6,
+    0.8
+   ],
+   "role": "host",
+   "activity": "mystery_luna",
+   "word": "cat",
+   "chatter": "mystery"
+  },
+  {
+   "id": "paty",
+   "name": "Paty",
+   "species": "Golden Retriever",
+   "scene": "res://scenes/characters/golden_plush.tscn",
+   "costume": "businessman",
+   "gender": "f",
+   "unit": "warehouse",
+   "placement": "scene",
+   "node": "Warehouse/Reception/Receptionist",
+   "pose": "sit",
+   "at": [
+    -46.5,
+    0.517,
+    232.121
+   ],
+   "facing": [
+    0.0,
+    -1.0
+   ],
+   "role": "ambient",
+   "word": "employee",
+   "chatter": "office",
+   "note": "The warehouse receptionist, seated at the reception desk."
+  },
+  {
+   "id": "ramon",
+   "name": "Ramón",
+   "name_phrase": "warehouse.ramon",
+   "species": "Lion",
+   "scene": "res://scenes/characters/lion_plush.tscn",
+   "costume": "warehouse_worker",
+   "gender": "m",
+   "unit": "warehouse",
+   "placement": "scene",
+   "node": "Warehouse/Exterior/Ramon",
+   "pose": "stand",
+   "at": [
+    -43.9,
+    -0.002,
+    218.5
+   ],
+   "facing": [
+    0.287,
+    -0.958
+   ],
+   "role": "host",
+   "activity": "warehouse_ramon",
+   "word": "boss",
+   "chatter": "warehouse",
+   "note": "The minigame's copy of the warehouse has a twin of him (scripts/world/warehouse.gd); the twin is not a separate NPC."
+  },
+  {
+   "id": "taqueria_waiter",
+   "species": "Siamese Cat",
+   "scene": "res://scenes/characters/cat_plush.tscn",
+   "costume": "waiter",
+   "gender": "m",
+   "unit": "restaurants",
+   "placement": "scene",
+   "node": "Restaurants/Cafe/Taqueria/CatWaiter",
+   "pose": "stand",
+   "at": [
+    -62.95,
+    0.078,
+    35.9
+   ],
+   "facing": [
+    -1.0,
+    0.0
+   ],
+   "role": "ambient",
+   "word": "waiter",
+   "chatter": "waiter"
+  },
+  {
+   "id": "taqueria_cook",
+   "species": "Crocodile",
+   "scene": "res://scenes/characters/crocodile_plush.tscn",
+   "costume": "chef",
+   "gender": "m",
+   "unit": "restaurants",
+   "placement": "scene",
+   "node": "Restaurants/Cafe/Taqueria/CrocodileCook",
+   "pose": "stand",
+   "at": [
+    -59.6,
+    0.078,
+    27.7
+   ],
+   "facing": [
+    0.0,
+    1.0
+   ],
+   "role": "ambient",
+   "word": "cook",
+   "chatter": "kitchen"
+  },
+  {
+   "id": "burger_cook",
+   "species": "Lion",
+   "scene": "res://scenes/characters/lion_plush.tscn",
+   "costume": "chef",
+   "gender": "m",
+   "unit": "restaurants",
+   "placement": "scene",
+   "node": "Restaurants/Burger/LionChef",
+   "pose": "stand",
+   "at": [
+    -79.7,
+    0.078,
+    26.9
+   ],
+   "facing": [
+    0.0,
+    1.0
+   ],
+   "role": "ambient",
+   "word": "cook",
+   "chatter": "kitchen"
+  },
+  {
+   "id": "burger_cashier",
+   "species": "Golden Retriever",
+   "scene": "res://scenes/characters/golden_plush.tscn",
+   "costume": "shopkeeper",
+   "gender": "f",
+   "unit": "restaurants",
+   "placement": "scene",
+   "node": "Restaurants/Burger/GoldenCashier",
+   "pose": "stand",
+   "at": [
+    -83.7,
+    0.078,
+    31.4
+   ],
+   "facing": [
+    0.0,
+    1.0
+   ],
+   "role": "ambient",
+   "word": "cashier",
+   "chatter": "cashier"
+  },
+  {
+   "id": "pizza_cook",
+   "species": "Bear",
+   "scene": "res://scenes/characters/bear_plush.tscn",
+   "costume": "chef",
+   "gender": "m",
+   "unit": "restaurants",
+   "placement": "scene",
+   "node": "Restaurants/Pizza/BearChef",
+   "pose": "stand",
+   "at": [
+    -44.0,
+    0.078,
+    21.55
+   ],
+   "facing": [
+    0.0,
+    1.0
+   ],
+   "role": "ambient",
+   "word": "cook",
+   "chatter": "kitchen"
+  },
+  {
+   "id": "pizza_bartender",
+   "species": "Beagle",
+   "scene": "res://scenes/characters/beagle_plush.tscn",
+   "costume": "waiter",
+   "gender": "m",
+   "unit": "restaurants",
+   "placement": "scene",
+   "node": "Restaurants/Pizza/BeagleBartender",
+   "pose": "stand",
+   "at": [
+    -28.6,
+    0.078,
+    29.6
+   ],
+   "facing": [
+    0.0,
+    1.0
+   ],
+   "role": "ambient",
+   "word": "waiter",
+   "chatter": "waiter"
+  },
+  {
+   "id": "mei",
+   "name": "Mei",
+   "name_phrase": "mahjong.mei",
+   "species": "Siamese Cat",
+   "scene": "res://scenes/characters/cat_plush.tscn",
+   "gender": "f",
+   "unit": "home",
+   "placement": "runtime",
+   "owner": "scripts/learning/mahjong_session.gd",
+   "pose": "sit",
+   "seat": "RelocatedSites/Home/MahjongTable chair 1 (node Mahjong player 1)",
+   "role": "host",
+   "activity": "mahjong_mei",
+   "word": "person",
+   "chatter": "friend",
+   "note": "Seated at the mahjong table in front of the home; the session reads scene and name from here, in seat order."
+  },
+  {
+   "id": "bao",
+   "name": "Bao",
+   "name_phrase": "mahjong.bao",
+   "species": "Bear",
+   "scene": "res://scenes/characters/bear_plush.tscn",
+   "gender": "m",
+   "unit": "home",
+   "placement": "runtime",
+   "owner": "scripts/learning/mahjong_session.gd",
+   "pose": "sit",
+   "seat": "RelocatedSites/Home/MahjongTable chair 2 (node Mahjong player 2)",
+   "role": "ambient",
+   "word": "person",
+   "chatter": "friend",
+   "note": "Seated at the mahjong table in front of the home; the session reads scene and name from here, in seat order."
+  },
+  {
+   "id": "mahjong_awoo",
+   "name": "Awoo",
+   "name_phrase": "mahjong.awoo",
+   "species": "Samoyed",
+   "scene": "res://scenes/characters/samoyed_plush.tscn",
+   "gender": "m",
+   "unit": "home",
+   "placement": "runtime",
+   "owner": "scripts/learning/mahjong_session.gd",
+   "pose": "sit",
+   "seat": "RelocatedSites/Home/MahjongTable chair 3 (node Mahjong player 3)",
+   "role": "ambient",
+   "word": "person",
+   "chatter": "friend",
+   "note": "Seated at the mahjong table in front of the home; the session reads scene and name from here, in seat order."
+  },
+  {
+   "id": "kiko",
+   "name": "Kiko",
+   "name_phrase": "mahjong.kiko",
+   "species": "Golden Retriever",
+   "scene": "res://scenes/characters/golden_plush.tscn",
+   "gender": "f",
+   "unit": "home",
+   "placement": "runtime",
+   "owner": "scripts/learning/mahjong_session.gd",
+   "pose": "sit",
+   "seat": "RelocatedSites/Home/MahjongTable chair 4 (node Mahjong player 4)",
+   "role": "ambient",
+   "word": "person",
+   "chatter": "friend",
+   "note": "Seated at the mahjong table in front of the home; the session reads scene and name from here, in seat order."
+  },
+  {
+   "id": "police_receptionist",
+   "species": "Beagle",
+   "scene": "res://scenes/characters/beagle_plush.tscn",
+   "costume": "police",
+   "gender": "m",
+   "unit": "police",
+   "placement": "scene",
+   "node": "RelocatedSites/Police/ReceptionOfficer",
+   "pose": "stand",
+   "at": [
+    -143.1,
+    0.498,
+    71.0
+   ],
+   "facing": [
+    0.0,
+    1.0
+   ],
+   "role": "ambient",
+   "word": "police officer",
+   "chatter": "police"
+  },
+  {
+   "id": "rocco",
+   "name": "Agente Rocco",
+   "name_phrase": "police.rocco",
+   "species": "Crocodile",
+   "scene": "res://scenes/characters/crocodile_plush.tscn",
+   "costume": "police",
+   "gender": "m",
+   "unit": "police",
+   "placement": "scene",
+   "node": "People/CrocodilePoliceOfficer",
+   "pose": "stand",
+   "at": [
+    -152.05,
+    -0.002,
+    77.75
+   ],
+   "facing": [
+    1.0,
+    0.0
+   ],
+   "role": "host",
+   "activity": "lineup_rocco",
+   "word": "police officer",
+   "chatter": "police"
+  },
+  {
+   "id": "mimi",
+   "name": "Agente Mimi",
+   "name_phrase": "police.mimi",
+   "species": "Siamese Cat",
+   "scene": "res://scenes/characters/cat_plush.tscn",
+   "costume": "police",
+   "gender": "f",
+   "unit": "police",
+   "placement": "scene",
+   "node": "People/CatEvidenceOfficer",
+   "pose": "stand",
+   "at": [
+    -145.0,
+    -0.002,
+    84.65
+   ],
+   "facing": [
+    0.0,
+    -1.0
+   ],
+   "role": "host",
+   "activity": "evidence_mimi",
+   "word": "police officer",
+   "chatter": "police"
+  },
+  {
+   "id": "bank_manager",
+   "species": "Crocodile",
+   "scene": "res://scenes/characters/crocodile_plush.tscn",
+   "costume": "businessman",
+   "gender": "f",
+   "unit": "bank",
+   "placement": "runtime",
+   "owner": "scripts/learning/teller_session.gd",
+   "pose": "stand",
+   "at": [
+    143.5,
+    0.03,
+    110.3
+   ],
+   "facing": [
+    -1.0,
+    0.0
+   ],
+   "role": "ambient",
+   "word": "boss",
+   "chatter": "office",
+   "note": "Made by the teller game at her desk in the office (the node BankManager); she walks out to warn the player when an impostor is paid. at is her desk spot (the floor she stands on)."
+  },
+  {
+   "id": "bear_banker",
+   "species": "Bear",
+   "scene": "res://scenes/characters/bear_plush.tscn",
+   "costume": "businessman",
+   "gender": "m",
+   "unit": "bank",
+   "placement": "scene",
+   "node": "RelocatedSites/Bank/Interior/BearBanker",
+   "pose": "stand",
+   "at": [
+    127.9,
+    0.028,
+    111.9
+   ],
+   "facing": [
+    1.0,
+    0.0
+   ],
+   "role": "host",
+   "activity": "teller_bank",
+   "word": "banker",
+   "chatter": "bank"
+  },
+  {
+   "id": "grocery_clerk",
+   "species": "Beagle",
+   "scene": "res://scenes/characters/beagle_plush.tscn",
+   "costume": "grocery_shopkeeper",
+   "gender": "m",
+   "unit": "supermarket",
+   "placement": "scene",
+   "node": "RelocatedSites/Supermarket/MarketInterior/BeagleClerk",
+   "pose": "stand",
+   "at": [
+    -130.0,
+    0.231,
+    121.4
+   ],
+   "facing": [
+    0.944,
+    0.33
+   ],
+   "role": "host",
+   "activity": "shop_supermarket",
+   "word": "salesperson",
+   "chatter": "shop"
+  },
+  {
+   "id": "grocery_cashier",
+   "species": "Samoyed",
+   "scene": "res://scenes/characters/samoyed_plush.tscn",
+   "costume": "grocery_shopkeeper",
+   "gender": "f",
+   "unit": "supermarket",
+   "placement": "scene",
+   "node": "RelocatedSites/Supermarket/MarketInterior/SamoyedCashier",
+   "pose": "stand",
+   "at": [
+    -135.9,
+    0.098,
+    120.6
+   ],
+   "facing": [
+    0.0,
+    1.0
+   ],
+   "role": "host",
+   "activity": "checkout_supermarket",
+   "word": "cashier",
+   "chatter": "cashier",
+   "note": "Talks through the shared host but is no activity of its own (\"board\": false)."
+  },
+  {
+   "id": "rosa",
+   "name": "Rosa",
+   "name_phrase": "library.rosa",
+   "species": "Samoyed",
+   "scene": "res://scenes/characters/samoyed_plush.tscn",
+   "costume": "librarian",
+   "gender": "f",
+   "unit": "library",
+   "placement": "scene",
+   "node": "RelocatedSites/Library/Librarian",
+   "pose": "stand",
+   "at": [
+    50.5,
+    0.04,
+    28.1
+   ],
+   "facing": [
+    -0.243,
+    0.97
+   ],
+   "role": "host",
+   "activity": "library_rosa",
+   "word": "dog",
+   "chatter": "library"
+  },
+  {
+   "id": "airport_driver",
+   "species": "Lion",
+   "scene": "res://scenes/characters/lion_plush.tscn",
+   "costume": "driver",
+   "gender": "m",
+   "unit": "airport",
+   "placement": "scene",
+   "node": "People/LionDriver",
+   "pose": "stand",
+   "at": [
+    -72.8,
+    -0.002,
+    223.0
+   ],
+   "facing": [
+    -1.0,
+    0.0
+   ],
+   "role": "ambient",
+   "word": "driver",
+   "chatter": "driver"
+  },
+  {
+   "id": "bakery_cook",
+   "species": "Samoyed",
+   "scene": "res://scenes/characters/samoyed_plush.tscn",
+   "costume": "chef",
+   "gender": "m",
+   "unit": "bakery",
+   "placement": "scene",
+   "node": "People/SamoyedCook",
+   "pose": "stand",
+   "at": [
+    144.3,
+    0.028,
+    165.7
+   ],
+   "facing": [
+    -1.0,
+    0.0
+   ],
+   "role": "ambient",
+   "word": "cook",
+   "chatter": "kitchen"
+  },
+  {
+   "id": "furniture_clerk",
+   "species": "Sheep",
+   "scene": "res://scenes/characters/sheep_plush.tscn",
+   "costume": "furniture_shopkeeper",
+   "gender": "f",
+   "unit": "furniture",
+   "placement": "scene",
+   "node": "Buildings/FurnitureStore/Interior/SheepSalesperson",
+   "pose": "stand",
+   "at": [
+    127.7,
+    0.028,
+    235.6
+   ],
+   "facing": [
+    0.0,
+    -1.0
+   ],
+   "role": "ambient",
+   "word": "salesperson",
+   "chatter": "shop"
+  },
+  {
+   "id": "electronics_clerk",
+   "species": "Golden Retriever",
+   "scene": "res://scenes/characters/golden_plush.tscn",
+   "costume": "electronics_shopkeeper",
+   "gender": "f",
+   "unit": "electronics",
+   "placement": "scene",
+   "node": "Buildings/ElectronicsStore/Interior/Electronics clerk",
+   "pose": "stand",
+   "at": [
+    139.66,
+    0.083,
+    133.1
+   ],
+   "facing": [
+    -1.0,
+    0.0
+   ],
+   "role": "ambient",
+   "word": "salesperson",
+   "chatter": "shop"
+  },
+  {
+   "id": "sports_clerk",
+   "species": "Golden Retriever",
+   "scene": "res://scenes/characters/golden_plush.tscn",
+   "costume": "sports_shopkeeper",
+   "gender": "m",
+   "unit": "sports",
+   "placement": "scene",
+   "node": "Buildings/SportsStore/Interior/GoldenSalesperson",
+   "pose": "stand",
+   "at": [
+    91.15,
+    0.038,
+    248.55
+   ],
+   "facing": [
+    0.25,
+    -0.968
+   ],
+   "role": "ambient",
+   "word": "salesperson",
+   "chatter": "shop",
+   "note": "Moved 23 Nov 2026 (user): from the far rear corner beside the checkout counter to the floor at the counter's front end, facing the entrance."
+  },
+  {
+   "id": "clothing_shopper",
+   "species": "Lion",
+   "scene": "res://scenes/characters/lion_plush.tscn",
+   "costume": "",
+   "gender": "m",
+   "unit": "clothing",
+   "placement": "scene",
+   "node": "Buildings/ClothingStore/Interior/LionShopper",
+   "pose": "stand",
+   "at": [
+    -134.9,
+    0.103,
+    162.45
+   ],
+   "facing": [
+    -0.243,
+    -0.97
+   ],
+   "role": "ambient",
+   "word": "person",
+   "chatter": "friend",
+   "note": "A shopper browsing a rack (not staff)."
+  },
+  {
+   "id": "clothing_cashier",
+   "species": "Siamese Cat",
+   "scene": "res://scenes/characters/cat_plush.tscn",
+   "costume": "clothing_shopkeeper",
+   "gender": "f",
+   "unit": "clothing",
+   "placement": "scene",
+   "node": "Buildings/ClothingStore/Interior/CatCashier",
+   "pose": "stand",
+   "at": [
+    -143.3,
+    0.103,
+    167.4
+   ],
+   "facing": [
+    1.0,
+    0.0
+   ],
+   "role": "ambient",
+   "word": "cashier",
+   "chatter": "cashier"
+  },
+  {
+   "id": "dr_li",
+   "name": "Dra. Li",
+   "name_phrase": "hospital.dr_li",
+   "species": "Pig",
+   "scene": "res://scenes/characters/pig_plush.tscn",
+   "costume": "doctor",
+   "gender": "f",
+   "unit": "hospital",
+   "placement": "scene",
+   "node": "Buildings/Hospital/DrLi",
+   "pose": "stand",
+   "at": [
+    52.95,
+    -0.001,
+    219.3
+   ],
+   "facing": [
+    0.287,
+    -0.958
+   ],
+   "role": "host",
+   "activity": "family_dr_li",
+   "word": "doctor",
+   "chatter": "hospital",
+   "note": "Outside, right of the hospital entrance (approved design). Moved 0.65 east 23 Nov 2026: she stood half inside the trimmed hedge."
+  },
+  {
+   "id": "doctor_floor3",
+   "species": "Beagle",
+   "scene": "res://scenes/characters/beagle_plush.tscn",
+   "costume": "doctor",
+   "gender": "m",
+   "unit": "hospital",
+   "placement": "scene",
+   "node": "Buildings/Hospital/Floor3/Room1/BeagleDoctor",
+   "pose": "stand",
+   "at": [
+    63.4,
+    11.198,
+    225.85
+   ],
+   "facing": [
+    -0.958,
+    -0.287
+   ],
+   "role": "ambient",
+   "word": "doctor",
+   "chatter": "hospital"
+  },
+  {
+   "id": "doctor_floor2",
+   "species": "Siamese Cat",
+   "scene": "res://scenes/characters/cat_plush.tscn",
+   "costume": "doctor",
+   "gender": "f",
+   "unit": "hospital",
+   "placement": "scene",
+   "node": "Buildings/Hospital/Floor2/Room3/CatDoctor",
+   "pose": "stand",
+   "at": [
+    52.55,
+    5.598,
+    247.55
+   ],
+   "facing": [
+    -0.944,
+    0.33
+   ],
+   "role": "ambient",
+   "word": "doctor",
+   "chatter": "hospital"
+  },
+  {
+   "id": "doctor_floor1",
+   "species": "Pig",
+   "scene": "res://scenes/characters/pig_plush.tscn",
+   "costume": "doctor",
+   "gender": "f",
+   "unit": "hospital",
+   "placement": "scene",
+   "node": "Buildings/Hospital/Floor1/Room3/BonBonDoctor",
+   "pose": "stand",
+   "at": [
+    48.6,
+    -0.001,
+    250.25
+   ],
+   "facing": [
+    0.981,
+    -0.196
+   ],
+   "role": "ambient",
+   "word": "doctor",
+   "chatter": "hospital"
+  },
+  {
+   "id": "hospital_receptionist",
+   "species": "Sheep",
+   "scene": "res://scenes/characters/sheep_plush.tscn",
+   "costume": "doctor",
+   "gender": "f",
+   "unit": "hospital",
+   "placement": "scene",
+   "node": "Buildings/Hospital/Floor1/Room1/SheepDoctor",
+   "pose": "stand",
+   "at": [
+    61.15,
+    -0.002,
+    227.6
+   ],
+   "facing": [
+    0.0,
+    -1.0
+   ],
+   "role": "ambient",
+   "word": "doctor",
+   "chatter": "hospital",
+   "note": "Behind the ground-floor reception desk."
+  },
+  {
+   "id": "lana",
+   "name": "Lana",
+   "name_phrase": "grammar.lana",
+   "species": "Sheep",
+   "scene": "res://scenes/characters/sheep_plush.tscn",
+   "costume": "teacher",
+   "gender": "f",
+   "unit": "school",
+   "placement": "scene",
+   "node": "Buildings/School/TeacherLana",
+   "pose": "stand",
+   "at": [
+    7.4,
+    -0.002,
+    237.45
+   ],
+   "facing": [
+    0.0,
+    -1.0
+   ],
+   "role": "host",
+   "activity": "grammar_lana",
+   "word": "teacher",
+   "chatter": "school"
+  },
+  {
+   "id": "tomas",
+   "name": "Tomás",
+   "name_phrase": "chatter.name_tomas",
+   "species": "Bear",
+   "scene": "res://scenes/characters/bear_plush.tscn",
+   "costume": "farmer",
+   "gender": "m",
+   "unit": "barn",
+   "placement": "registry",
+   "node": "Barn/Farmer",
+   "pose": "stand",
+   "at": [
+    69.3,
+    0.16,
+    81.9
+   ],
+   "facing": [
+    -0.8,
+    0.6
+   ],
+   "role": "ambient",
+   "chatter": "farm",
+   "note": "The farmer in the barn, by the tool rack, looking toward the doors (23 Nov 2026, user). Placed from this registry at load (npc_registry.gd); never baked into the barn scene."
+  }
+ ]
+}

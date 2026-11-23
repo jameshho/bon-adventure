@@ -35,6 +35,7 @@ const SCAN_ROOT := "res://scripts"
 ## Each is scheduled work, not a precedent; remove the entry when its text moves to data.
 const CODE_EXCEPTIONS := [
 	["res://scripts/world/room_names.gd", "Bakery & Café", "English place name, the lookup key of places.bakery_cafe (UiText.place translates it)"],
+	["res://scripts/buildings/restaurants.gd", "Map facades/TAQUERÍA", "node path of the saved facade (a scene node name, not shown text)"],
 ]
 const NON_ENGLISH := "áéíóúüñÁÉÍÓÚÜÑ¿¡"
 

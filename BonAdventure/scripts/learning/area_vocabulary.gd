@@ -79,7 +79,8 @@ func add(root: Node, town: Node3D, zones, vocabulary: Dictionary, aliases: Dicti
 ## still carries it.
 func drop_interactables(town: Node3D) -> void:
 	for target in assignments.keys():
-		if Interactable.find_for(target, town) != null:
+		# An NPC that only chats keeps its role word (npc_chatter.gd, 23 Nov 2026).
+		if Interactable.find_for(target, town) != null and not target.get_meta("talk_keeps_word", false):
 			assignments.erase(target)
 	for area in groups:
 		groups[area] = []

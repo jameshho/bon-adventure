@@ -37,6 +37,10 @@ For the minigame table and the shared systems, see [MINIGAMES.md](MINIGAMES.md#b
       gear (`corner_limit`, set by the session).
     - Both are scaled to stay out of a band `FACE_CLEAR` (0.23) × the screen's height to each
       side of the centre, where Awoo's face is on any window (the camera keeps its vertical FOV).
+    - **EN (23 Nov 2026, user).** While the HUD's EN is held the panel shows only the native text
+      (`_text()`, never "foreign / native"), and every text-sized part (status lines, call and
+      result buttons) keeps the width of its widest language (`_hold_width()`), so the status
+      card's scale, and with it the book, ★ and leave buttons, no longer change on EN.
     - Where there is room (a phone) the status card grows up to `INFO_MAX_GROW` (1.4), still
       within `INFO_MAX_HEIGHT`. Its two lines are drawn larger than its buttons
       (`INFO_TEXT_GROWTH` 1.85), so on a phone they are about 17 px instead of 14.
@@ -359,7 +363,7 @@ the time; the eye squash and moves are the lineup's (`police_detective_session.g
 | --- | --- | --- | --- |
 | 0 | Mei | cat | The host; she gets up when the player plays |
 | 1 | Bao | bear | NPC player |
-| 2 | Awoo | samoyed | NPC player. Named Lin until 9 Nov 2026; the home's dining-table samoyed, formerly Awoo, is now **Sam** (`data/house_characters.json`, id `awoo` unchanged) |
+| 2 | Awoo | samoyed | NPC player. Named Lin until 9 Nov 2026; the home's dining-table samoyed, formerly Awoo, is now **Sam** (`data/npcs.json`, id `awoo` unchanged) |
 | 3 | Kiko | golden | NPC player |
 
 The pacing (`data/mahjong.json` `pace`) is 0.56 s for an NPC turn and 0.44 s after a discard
@@ -430,7 +434,9 @@ Fixed in the review:
 - **HUD group.** HUD parts that would cover a game view are in one group
   (`vocabulary_hud.gd` `GAME_HIDDEN_GROUP`, `hide_for_game()`): the controls help, the place
   line, the walk line, the minimap and the day clock. A new HUD part joins the group instead of
-  being added to a list in each game.
+  being added to a list in each game. Since 23 Nov 2026 any `hide_for_game()` reason also hides
+  the corner buttons (`cluster_hidden()`: journal, ▶ games, passport), so they no longer show
+  over Mei's lesson card before a game.
 - **Smaller cleanups.**
   - The unused `layout()` parameter is gone.
   - Honour checks use `Rules.is_honor()` instead of the literal 27.

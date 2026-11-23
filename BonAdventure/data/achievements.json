@@ -122,10 +122,10 @@
     "bank": {
       "place": "bank",
       "unit": "bank",
-      "at": [141.05, 1.05, 103.6],
+      "at": [144.665, 1.05, 108.0],
       "gate": "RelocatedSites/Bank/Vault safe door",
-      "face": [138.93, 1.05, 103.6],
-      "where": "inside the round safe in the vault (opens with E)"
+      "face": [142.545, 1.05, 108.0],
+      "where": "inside the round safe on the back wall of the vault room (opens with E; moved with the safe 23 Nov 2026)"
     },
     "police_station": {
       "place": "police_station",

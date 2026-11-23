@@ -82,6 +82,7 @@ const Lexicon := preload("res://scripts/language/lexicon.gd")
 const ModularTown := preload("res://scripts/world/modular_town.gd")
 ## Helpers moved out of Main (7 Nov 2026); Main keeps the public methods and fields.
 const MinigameWiring := preload("res://scripts/core/minigame_wiring.gd")
+const NpcRegistry := preload("res://scripts/characters/npc_registry.gd")
 const Board := preload("res://scripts/learning/activity_board.gd")
 const VehicleControls := preload("res://scripts/core/vehicle_controls.gd")
 const DoorAnimator := preload("res://scripts/core/door_animator.gd")
@@ -114,6 +115,8 @@ var farm_gate: ZooGate
 var zones: Node3D
 var seating
 var area_vocabulary
+## Idle lines of NPCs without an activity (npc_chatter.gd, 23 Nov 2026).
+var npc_chatter
 ## Journal and results-screen word pictures (word_pictures.gd, 23 Nov 2026).
 var word_pictures
 
@@ -196,6 +199,10 @@ func _ready() -> void:
 	interaction.word_studied.connect(_on_word_studied)
 	add_child(interaction)
 	make_shops()
+	npc_chatter = preload("res://scripts/characters/npc_chatter.gd").new()
+	add_child(npc_chatter)
+	npc_chatter.setup(self)
+	npc_chatter.attach_all(self)
 	make_popups()
 	await _loading_step("shops")
 	area_vocabulary = preload("res://scripts/learning/area_vocabulary.gd").new()
@@ -382,6 +389,11 @@ func build_world() -> void:
 	restore_editor_door_states(apartment)
 	reference_layout = preload("res://scripts/world/reference_world_layout.gd").new()
 	reference_layout.restore(self)
+	# Every NPC at its spot in the registry (data/npcs.json, docs/guides/NPCS.md); the registry's own
+	# NPCs (the barn farmer) are made here, but never baked into a unit scene.
+	NpcRegistry.place(apartment)
+	if not get_meta("bake_world_only", false):
+		NpcRegistry.spawn(apartment)
 	apartment.set_meta("translated_signs", preload("res://scripts/world/sign_language.gd").translate_all(apartment))
 
 	# The sun ("Soft daylight"), sky, fog and ambient fill, blended through the day by
@@ -661,6 +673,8 @@ func add_unit(key: String) -> void:
 		await get_tree().process_frame
 		ModularTown.put_back(apartment, entry)
 	ModularTown.finish_refs(apartment)
+	NpcRegistry.place(apartment, parts)
+	NpcRegistry.spawn(apartment, parts)
 	pending_units.erase(key)
 	# The hook-up runs over several frames (17 Nov 2026, nearby loading stage 1: in one frame it
 	# took 60-130 ms natively, render batching and word areas the most; measured in
@@ -681,6 +695,7 @@ func add_unit(key: String) -> void:
 	for part in parts:
 		seating.add_seats(part)
 		preload("res://scripts/characters/house_characters.gd").solidify_figures(self, part)
+		npc_chatter.attach_all(part)
 	DoorAnimator.make_interactables(self)
 	VehicleControls.make_interactables(self)
 	area_vocabulary.drop_interactables(apartment)
@@ -828,10 +843,16 @@ func toggle_study_journal() -> void:
 	hud.toggle_journal(studied_words, vocabulary, vocabulary_categories, area_vocabulary.groups, area_vocabulary.area_names)
 	sync_player_controls()
 
+## A player below this world height fell out of the town and starts again at spawn_position().
+## -30 since 23 Nov 2026 (was -15): the Mystery House's endless hall floor (house-local -11 at
+## the Apartment's 1.3 scale) stands at about -14.3, so a small dip there moved a Mystery Doors
+## player to the supermarket with the game still running (mystery_session.gd _guard_place).
+const FALL_RESPAWN_Y := -30.0
+
 func _process(delta: float) -> void:
 	# Minigame started / ended signals (activity_board.gd watch(), PWA phase 4).
 	preload("res://scripts/learning/activity_board.gd").shared().watch()
-	if player.global_position.y < -15 and not player.noclip_enabled and not is_instance_valid(active_vehicle):
+	if player.global_position.y < FALL_RESPAWN_Y and not player.noclip_enabled and not is_instance_valid(active_vehicle):
 		player.global_position = spawn_position()
 		player.velocity = Vector3.ZERO
 		player.reset_camera()

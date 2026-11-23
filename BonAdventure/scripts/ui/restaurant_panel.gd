@@ -19,8 +19,14 @@ extends Control
 ## teach the words). After Send the tablet shows the dishes and "Order sent!", and the session
 ## closes it. The session also shows the practised words at the end (show_summary(), Finish).
 ##
-## - While visible it swallows every key and non-left mouse event (as flight_panel.gd), and
-##   Main disables the player's controls (Main.sync_player_controls).
+## - While visible it swallows every key and non-left mouse event (as flight_panel.gd) except
+##   Esc and L (hold to peek), and Main disables the player's controls (Main.sync_player_controls).
+## - The language toggle is the HUD's top-right EN badge (one toggle for every panel, 23 Nov
+##   2026; translate_button.gd follows it). The tablet starts below the HUD's EN badge and gear,
+##   leaves them unshaded and lets their clicks through (23 Nov 2026, user: the tablet covered EN).
+## - The dish page keeps "Choose this dish" pinned under it for every dish shown (disabled for a
+##   course not ordered), and the tablet never grows past its frame: the customer column's text
+##   shrinks until it fits (_fit_left; 23 Nov 2026, user: the button went missing).
 ## - Layout scales with min(window height / 800, window width / 1100) (UI decision,
 ##   4 Nov 2026: large tap targets, text that scales with a laptop window).
 const GameSettings := preload("res://scripts/core/game_settings.gd")
@@ -50,6 +56,8 @@ const RULE := Color("ddd2bc")
 const BUBBLE := Color("ffffff")
 const TAB_COLORS := [Color("9fd39a"), Color("f0c96a"), Color("e8a0a0"), Color("8fc3e8")]
 const DESIGN := Vector2(1100, 800)
+## The HUD buttons the tablet leaves free (siblings in the HUD's ui_root, vocabulary_hud.gd).
+const HUD_CORNER := ["Peek native", "Settings gear"]
 
 var show_native := false
 ## Set by open(): {title, translate, speaker (line), species, order (line), requests {course:
@@ -75,6 +83,7 @@ var _factor := 1.0
 ## fits the tablet (three requests with the translation and pinyin are long).
 var _bubble_scale := 1.0
 var _fitting := false
+var _shade: Control
 var _device: PanelContainer
 var _screen: PanelContainer
 var _stack: VBoxContainer
@@ -114,22 +123,21 @@ func _init() -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	anchor_right = 1.0
 	anchor_bottom = 1.0
-	var shade := ColorRect.new()
-	shade.color = Color(0.03, 0.03, 0.04, 0.42)
-	shade.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	shade.anchor_right = 1.0
-	shade.anchor_bottom = 1.0
-	add_child(shade)
+	_shade = Painter.new()
+	_shade.paint = _paint_shade
+	_shade.anchor_right = 1.0
+	_shade.anchor_bottom = 1.0
+	add_child(_shade)
 	portraits = Portraits.new()
 	portraits.name = "Portraits"
 	add_child(portraits)
 	_device = PanelContainer.new()
 	_device.name = "Tablet"
 	_device.mouse_filter = Control.MOUSE_FILTER_STOP
-	_device.anchor_left = 0.055
-	_device.anchor_right = 0.945
-	_device.anchor_top = 0.045
-	_device.anchor_bottom = 0.955
+	_device.anchor_left = 0.065
+	_device.anchor_right = 0.935
+	_device.anchor_top = 0.04
+	_device.anchor_bottom = 0.96
 	add_child(_device)
 	_screen = PanelContainer.new()
 	_screen.name = "Screen"
@@ -373,6 +381,9 @@ func _input(event: InputEvent) -> void:
 		return
 	if event is InputEventKey and (event as InputEventKey).keycode == KEY_ESCAPE:
 		return
+	# Hold L: the HUD's peek (EN) works over the tablet too (Main._unhandled_input).
+	if event.is_action("peek"):
+		return
 	if event is InputEventMouseButton and event.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN]:
 		return
 	if event is InputEventKey or (event is InputEventMouseButton and event.button_index != MOUSE_BUTTON_LEFT):
@@ -393,9 +404,9 @@ func _fit_left() -> void:
 	if _fitting:
 		return
 	_fitting = true
-	while visible and _bubble_scale > 0.6:
+	while visible and _bubble_scale > 0.5:
 		await get_tree().process_frame
-		var room := get_viewport_rect().size.y * (_device.anchor_bottom - _device.anchor_top)
+		var room := get_viewport_rect().size.y * (_device.anchor_bottom - _device.anchor_top) - _device.offset_top
 		if _device.get_combined_minimum_size().y <= room + 1.0:
 			break
 		_bubble_scale -= 0.05
@@ -446,6 +457,7 @@ func _refresh() -> void:
 	var screen := get_viewport_rect().size
 	_factor = clampf(minf(screen.y / DESIGN.y, screen.x / DESIGN.x), 0.5, 3.0)
 	var f := _factor
+	_clear_hud_corner()
 	var bezel := _style(BEZEL, BEZEL_EDGE, 2, int(34 * f))
 	bezel.set_content_margin_all(18 * f)
 	bezel.shadow_color = Color(0, 0, 0, 0.45)
@@ -692,8 +704,7 @@ func _fill_detail() -> void:
 	_detail.add_child(taste_rows(entry, ui.get("schema", {}), f))
 	_detail.add_child(thermometer(entry, ui.get("schema", {}), f))
 	_detail.add_child(ingredient_icons(entry, ui.get("schema", {}), f))
-	if not _wanted().has(tab):
-		return
+	# Pinned under every dish shown; disabled for a course not ordered or the dish already chosen.
 	var pick := _button(choose)
 	pick.name = "Choose"
 	pick.text = _stacked(ui.get("choose", {}))
@@ -897,6 +908,52 @@ func _fill_summary() -> void:
 		item.text = GameSettings.shared().inline(line, true, "  —  ")
 		_set_font(item, 22)
 		lines.add_child(item)
+
+## The HUD's EN badge and gear while they show (siblings in the HUD's ui_root), else [].
+func _hud_corner() -> Array:
+	var out: Array = []
+	var parent := get_parent()
+	if parent == null:
+		return out
+	for title in HUD_CORNER:
+		var button := parent.get_node_or_null(title) as Control
+		if button != null and button.is_visible_in_tree():
+			out.append(button)
+	return out
+
+## The tablet starts under the HUD's top-right buttons (when they reach down past its top).
+func _clear_hud_corner() -> void:
+	var low := 0.0
+	for button in _hud_corner():
+		low = maxf(low, button.get_global_rect().end.y - get_global_rect().position.y)
+	var top := size.y * _device.anchor_top
+	_device.offset_top = maxf(0.0, low + 8.0 * _factor - top) if low > 0.0 else 0.0
+	_shade.queue_redraw()
+
+## Clicks on the HUD's EN badge and gear go to them, not to the tablet's shade.
+func _has_point(point: Vector2) -> bool:
+	for button in _hud_corner():
+		if button.get_global_rect().has_point(get_global_transform() * point):
+			return false
+	return Rect2(Vector2.ZERO, size).has_point(point)
+
+## The dark shade over the town, with the HUD's EN badge and gear left clear.
+func _paint_shade(canvas: Control) -> void:
+	var colour := Color(0.03, 0.03, 0.04, 0.42)
+	var whole := Rect2(Vector2.ZERO, canvas.size)
+	var holes: Array = _hud_corner().map(func(b: Control) -> Rect2: return Rect2(b.get_global_rect().position - canvas.get_global_rect().position, b.size).grow(4.0))
+	if holes.is_empty():
+		canvas.draw_rect(whole, colour)
+		return
+	# One hole box round all the corner buttons: bands above, below, left and right of it.
+	var hole: Rect2 = holes[0]
+	for r in holes:
+		hole = hole.merge(r)
+	hole = hole.intersection(whole)
+	canvas.draw_rect(Rect2(0, 0, whole.size.x, hole.position.y), colour)
+	canvas.draw_rect(Rect2(0, hole.end.y, whole.size.x, whole.size.y - hole.end.y), colour)
+	canvas.draw_rect(Rect2(0, hole.position.y, hole.position.x, hole.size.y), colour)
+	canvas.draw_rect(Rect2(hole.end.x, hole.position.y, whole.size.x - hole.end.x, hole.size.y), colour)
 
 ## A Control drawn by a callable (bars and the thermometer, sized by the layout).
 class Painter extends Control:

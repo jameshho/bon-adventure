@@ -874,8 +874,10 @@ func _pulse(button: Control, on: bool) -> void:
     button.scale = Vector2.ONE * (1.0 + 0.12 * wave)
     button.self_modulate = Color.WHITE.lerp(PULSE_TINT, wave)
 
+## Any hide_for_game() reason counts too (23 Nov 2026, user: the journal and ▶ buttons showed
+## on top of Mei's mahjong lesson card, which hides the HUD with hide_for_game()).
 func cluster_hidden(button: Control) -> bool:
-    if cluster_off or in_minigame:
+    if game_buttons_hidden():
         return true
     if not cluster_cover.is_valid():
         return false

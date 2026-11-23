@@ -3,7 +3,7 @@ extends RefCounted
 ## home unit (scenes/town/home.scn).
 ## Bake:  godot --headless --path . --script res://tools/bake_unit.gd -- home
 ## Never rename or remove a baked step (add a new one that undoes it).
-const STEPS := ["solid_roofs", "bath_fixtures", "mahjong_table", "mahjong_chair_back", "toilet_flush_control", "electrical_box", "coplanar_gaps", "coplanar_gaps_2", "interaction_metas", "house_expansion", "house_furnishing", "door_heights", "family_bath_layout", "family_bath_window", "family_bath_door_inward", "clear_walkway_plants"]
+const STEPS := ["solid_roofs", "bath_fixtures", "mahjong_table", "mahjong_chair_back", "toilet_flush_control", "electrical_box", "coplanar_gaps", "coplanar_gaps_2", "interaction_metas", "house_expansion", "house_furnishing", "door_heights", "family_bath_layout", "family_bath_window", "family_bath_door_inward", "clear_walkway_plants", "garage_bicycle_removed"]
 ## The mahjong table in the front yard (user request, 9 Nov 2026; docs/guides/MAHJONG.md): its centre in
 ## town coordinates (west of the entry path, north of the front door, near the spawn point),
 ## sizes in town units. Seat 0 (the player's, Mei's until a game starts) is on the north side;
@@ -341,3 +341,17 @@ func clear_walkway_plants(town: Node3D, _game) -> void:
 			part.free()
 		freed += 1
 	print("clear_walkway_plants: %d plants removed" % freed)
+
+## The garage bicycle (home_expansion.gd garage(), prefab "Garage bicycle") is removed (user,
+## 23 Nov 2026), with its meshes, collision and word root. The word "bicycle" stays in the
+## sports store.
+func garage_bicycle_removed(town: Node3D, _game) -> void:
+	var site: Node3D = town.get_node("RelocatedSites/Home")
+	var removed := 0
+	for node in site.get_children():
+		if String(node.name).begins_with("Garage bicycle"):
+			site.remove_child(node)
+			node.free()
+			removed += 1
+	assert(removed == 1, "garage_bicycle_removed: expected 1 bicycle, found %d" % removed)
+	print("garage_bicycle_removed: removed %d" % removed)

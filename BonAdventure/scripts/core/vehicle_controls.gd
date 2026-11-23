@@ -152,8 +152,9 @@ static func complete_vehicle_exit(main, vehicle: DriveableVehicle, point: Vector
 	main.interaction.clear_card()
 	main.hud.flash_quest_message(UiText.t("toast.exited"))
 
+## The leaves open away from the player (23 Nov 2026, zoo_gate.gd).
 static func toggle_gate(main, gate: ZooGate) -> void:
-	gate.toggle_gate()
+	gate.toggle_gate(main.player.global_position)
 	main.hud.flash_quest_message(UiText.t("toast.zoo_open" if gate.is_open else "toast.zoo_closed"))
 
 static func garage_door(main) -> Node3D:

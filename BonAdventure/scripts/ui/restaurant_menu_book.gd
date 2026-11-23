@@ -175,9 +175,12 @@ func refresh_display() -> void:
 	if visible:
 		_refresh()
 
-## Esc goes to Main's popup stack; every other key and non-left button is swallowed.
+## Esc goes to Main's popup stack, L to Main's peek; every other key and non-left button is swallowed.
 func _input(event: InputEvent) -> void:
 	if not visible:
+		return
+	# Hold L: the HUD's peek (EN) works over the book too (Main._unhandled_input; 23 Nov 2026).
+	if event.is_action("peek"):
 		return
 	if event is InputEventKey and (event as InputEventKey).pressed:
 		match (event as InputEventKey).keycode:

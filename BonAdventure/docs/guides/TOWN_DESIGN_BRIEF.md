@@ -33,13 +33,13 @@ dated history of rules and implementation.
 | Clothing store interior | Built from the user's isometric design **inside the unchanged shell** (11 × 15 interior; no resize, zoning unchanged). | Implemented 28 October 2026; see [record](#clothing-store-interior--28-october-2026). Electronics follows after approval. **1 November 2026:** cashier.tscn deleted, plush clerk and shopper, checkout moved, refresh ([record](#clothing-store-clerk-and-refresh--1-november-2026)). |
 | Electronics store interior | Built from the user's isometric design **inside the unchanged shell** (11.3 × 15.2 interior; no resize, zoning unchanged). | Implemented 28 October 2026; see [record](#electronics-store-interior--28-october-2026). Completes the three user-supplied interiors. **1 November 2026:** refitted as a real electronics shop in the same shell, no new words ([record](#electronics-store-refresh--1-november-2026)). **18 November 2026 (user):** clay makeover in the game palette, same shell and words, plush clerk, no prices; supersedes the 1 Nov fixtures ([record](#electronics-store-makeover--18-november-2026)). |
 | Café and bakery interior | Built from the user's pink "Cafe & Cakes" isometric design **inside the unchanged 14 × 22 shell** (no resize, exterior unchanged). | Implemented 28 October 2026; see [record](#café-and-bakery-interior--28-october-2026). |
-| Bank interior | Built from the user's isometric bank design **inside the unchanged 12 × 15 shell** (no resize, zoning unchanged); vault, manager office, their doors and the interior ATMs kept. | Implemented 28 October 2026; see [record](#bank-interior--28-october-2026). Outdoor ATMs from the design are not built (exterior work). **1 November 2026:** plush staff added ([record](#shop-staff-bank-sports-store-furniture-showroom--1-november-2026)). **18 November 2026:** interior refresh in the game palette (sky accent), shared doors for the office and vault, door labels removed, new ATM and vault art ([record](#bank-interior-refresh--18-november-2026)). **21 November 2026:** the vault's round door opens (wheel, then swing) onto a new safe drum ([record](#stamp-places-storage-room-bank-safe-grand-chapel--21-november-2026)). |
+| Bank interior | Built from the user's isometric bank design **inside the unchanged 12 × 15 shell** (no resize, zoning unchanged); vault, manager office, their doors and the interior ATMs kept. **23 Nov 2026 (user):** the bank grows **backward only** (approval for this piece of work): a lower annex behind the old back wall (12 × 8.4) with a bigger vault room, a safe-deposit room and the extended manager's office; a staff door to the teller side; front, lobby and lobby things unchanged ([record](#bank-rework--23-november-2026)). | Implemented 28 October 2026; see [record](#bank-interior--28-october-2026). Outdoor ATMs from the design are not built (exterior work). **1 November 2026:** plush staff added ([record](#shop-staff-bank-sports-store-furniture-showroom--1-november-2026)). **18 November 2026:** interior refresh in the game palette (sky accent), shared doors for the office and vault, door labels removed, new ATM and vault art ([record](#bank-interior-refresh--18-november-2026)). **21 November 2026:** the vault's round door opens (wheel, then swing) onto a new safe drum ([record](#stamp-places-storage-room-bank-safe-grand-chapel--21-november-2026)). **23 November 2026:** rear annex (vault room with the safe moved to its back wall, safe-deposit room, office extension), staff door behind the counter, slow heavy vault door ([record](#bank-rework--23-november-2026)). |
 | Police station interior | Built from the user's isometric police design **inside the unchanged 12 × 15 shell** at its relocated site; interview room, holding cell and both doors kept. **6 November 2026 (user decision): shell enlarged to 20 × 22, front fixed, with a suspect lineup room and an evidence room for two detective minigames** ([record](#police-station-enlargement-and-detective-games--6-november-2026)). | Implemented 28 October 2026; see [record](#police-station-interior--28-october-2026). **1 November 2026:** the blocky officer was retired and a crocodile plush police officer stands beside the entrance ([record](#police-officer-crocodile-plush-at-the-station-entrance--1-november-2026)). **6 November 2026:** enlarged and refitted; the crocodile works inside (lineup game) and a cat officer works the evidence counter. **8 November 2026:** the evidence game was redesigned (one property word a round, Apretar / Tocar / Levantar) and its poster changed ([record](#police-evidence-game-redesign--8-november-2026)). **9 November 2026:** light pass: evidence exhibits, riot helmets and lobby look-alikes clickable ([interiors polish](#interiors-polish--9-november-2026)). |
 | Airport terminal interior | Built from the user's isometric airport design **inside the unchanged 34 × 18 terminal** (no resize; exterior, tower, airfield and aircraft untouched). | Implemented 28 October 2026; see [record](#airport-terminal-interior--28-october-2026). Adds a Travel word category. **8 November 2026 (user decision, built the same day):** the painted restroom doors became two real restrooms with working toilets and faucets, **inside the unchanged terminal from the baggage-claim area** (not an annex); the carousel moved 1.2 toward the front wall ([record](#bathroom-fixtures--8-november-2026)). |
 | Airport control tower | **Redesigned and made walkable (user-approved: lift + stair, three levels, narrow shaft flaring only at the cabin).** Shaft 8.4 × 8.4 and 22 high, 360° glass control room 11.2 × 11.2 at the top, discreet side door; site, zone `control_tower` and terminal untouched. | Implemented 29 October 2026; see [record](#airport-control-tower--29-october-2026). No new words. Roof, wrap-around observation deck and west deck door added 12 November 2026 ([record](#control-tower-roof-and-observation-deck--12-november-2026)). |
 | Storefront exteriors | Eight fronts restyled from the user's "Propuesta de rediseño exterior" sheet: per-shop palette, awnings, wall lamps, flower boxes, icon signs (user decisions, 1 November 2026: all eight shown, the sheet's palette also on approved fronts, decorative parapets allowed, no street furniture). | Implemented 1 November 2026, no resize or collision change; see [record](#storefront-exterior-redesign--1-november-2026). |
 | Cashier money minigame | Supermarket cashier (samoyed, at the till) asks for $0.25–$300.00 in Spanish; the player counts it out from 10 bills and coins on a full-screen touch-friendly screen (user decisions, 4 November 2026). | Implemented 4 November 2026 for the supermarket cashier only; see [record](#cashier-money-minigame--4-november-2026). |
-| Bank teller game | **Next, Please!**: the bear banker at reception asks the player to cover teller window 2; plush customers come up from the queue ropes and ask for $100–$500 in words; the teller checks the balance on the window's monitor, then counts out $5 / $10 / $50 / $100 bills or declines a short account; one customer a session wants change without $100 bills (user decisions, 18 Nov 2026). Since 21 Nov 2026 (user): the monitor shows the account holder's headshot, an impostor may claim another character's account, and a police officer escorts them out ([record](#impostors-and-the-police-escort--21-november-2026)); the dialogue is simpler. **No building change**: the existing teller line, queue ropes and banker are used as built. | Built 18 Nov 2026; see [record](#bank-teller-game--18-november-2026). |
+| Bank teller game | **Next, Please!**: the bear banker at reception asks the player to cover teller window 2; plush customers come up from the queue ropes and ask for $100–$500 in words; the teller checks the balance on the window's monitor, then counts out $5 / $10 / $50 / $100 bills or declines a short account; one customer a session wants change without $100 bills (user decisions, 18 Nov 2026). Since 21 Nov 2026 (user): the monitor shows the account holder's headshot, an impostor may claim another character's account, and a police officer escorts them out ([record](#impostors-and-the-police-escort--21-november-2026)); the dialogue is simpler. **No building change** until 23 Nov 2026. **23 Nov 2026 (user):** one view shows the monitor and the customer (no camera toggle); paying an impostor brings the **bank manager** (new character) out of her office to warn the player, a second payout in a session gets the player let go (results card, nothing saved) ([record](#bank-rework--23-november-2026)). | Built 18 Nov 2026; see [record](#bank-teller-game--18-november-2026). |
 | Hospital family game | **Dr. Li** (a woman; pig plush in the doctor outfit) outside, right of the hospital entrance, runs a family-tree question game in a 2D overlay. Decisions (4 Nov 2026): 3–4 tree templates with randomized names (foreign-language names), genders and birthdays; a fixed reference date for ages; dates shown MM/DD/YYYY with an "MM/DD/YYYY" legend under them; a gender icon per person; portraits rendered once from the plush sculpts and cached; Spanish questions with the "show translation" toggle; version 1 uses 6–8 templates; coins deferred. Words are taught by **four school posters** (family tree + couples strip on the divider's Science face; months, before/after, older/younger on the General rear wall). | Stage 1 (language framework) and Stage 2 (words, names, posters, Dr. Li placed with a name card) built 4 Nov 2026; Stage 3 (question generator, validator, overlay, Dr. Li's "!" and dialogue) not built. See [record](#hospital-family-game--4-november-2026). |
 | Airport flight game | **Capitán Bruno** (the house bear, a second copy in the pilot costume) at the information desk just right of the terminal door (moved 6 Nov 2026) gives a Spanish instruction; the player finds the one matching flight on the departure board (**board only since 7 Nov 2026**: the five-bookmark booklet was removed). Decisions (5 Nov 2026): 5 questions per session, progress counts only first-try finds, no coins; Bruno says what was wrong; leaving asks first; vocabulary summary at the end; destinations are **countries only**; MM/DD/YYYY dates, 24-hour times on :00 / :30 (no "y cuarto" / "menos cuarto"); one shared random "today" (2026–2027) also used by the family game; works with Chinese. | Built 5 Nov 2026; layout, flags and bilingual rows revised 6 Nov 2026; redesigned 7 Nov 2026 to test time expressions (board only, 4 countries, near-miss flights; [redesign](#board-only-redesign-time-expressions--7-november-2026)). See [record](#airport-flight-game--5-november-2026). |
 | Alta Cocina restaurant game | **Twinkle** (waiter) at the host stand offers it; a random seated house-character customer orders one meal (starter, main, dessert, drink); the player inspects dishes by icons, bars and a thermometer only and serves the one match. Decisions (6 Nov 2026): one customer per session, 4 orders, 1–2 requirements with light intensity, negation off, a course counts once served, no coins, code-drawn art, four wall posters, all three languages. | Built 6 Nov 2026. **Flow redesigned 11 Nov 2026 (user):** Twinkle sends the player to one of two seated customers, the order is taken on an order tablet, the customer reacts and Twinkle reports back; textures and extras removed; a menu book on a table by the host stand. Same day, second request: 2–3 courses per customer, a door question instead of walking out, Twinkle names no customer. See [record](#alta-cocina-restaurant-game--6-november-2026) and [redesign](#restaurant-game-reception-tables-and-order-tablet--11-november-2026). |
@@ -953,7 +953,7 @@ plaques, *smartwatch* and *game console* under `RelocatedSites/Electronics`); th
 | Room | Cream checker floor (`CREAM_DEEP` / `WALL_CREAM`), a sky walkway with sky edges and a deep-sky mat from the door, sky band at 3.95, wood skirting, cream ceiling, six sky pendant lamps with six omni lights (no shadows, as before) |
 | Centre | Four rounded cream islands (1.1 wide, top 0.99, wood tops, sky band on the aisle face, a raised sky step on the wall side): computers (computer, keyboard, mouse, laptop; the TECNOLOGÍA plaque stands on its step), phones (smartphone, tablet, smartwatch; phone cases, chargers), cameras (camera, lenses, tripod, boxes), audio (headphones, speaker, earbud cases, boxes) |
 | Right wall (−X) | TV wall: sky panel, console with the television, two lit screens, TELEVISORES board; soundbar bench; accessories pegboard (24 cards) over a cabinet with a router; two plants; gaming corner: deep-sky panel, lit game screen, cabinet with the game console and controller, VIDEOJUEGOS plaque |
-| Left wall (+X) | Refrigerator, washing machine and dryer on a stone plinth under ELECTRODOMÉSTICOS; microwave counter; open small-appliances unit (toasters, kettles, blenders, air fryers); fan and a plant |
+| Left wall (+X) | Refrigerator, washing machine and dryer on a stone plinth under ELECTRODOMÉSTICOS; microwave counter; open small-appliances unit (toasters, kettles, blenders, air fryers; since 23 Nov rice cookers instead of air fryers, all four words: [below](#bigger-products-and-appliance-words--23-november-2026)); fan and a plant |
 | Rear | Home theatre (sky panel, big screen with BonBon in a meadow, cabinet, soundbar) under the ELECTRÓNICA plaque; checkout: lower rounded counter (top 0.905) with register and shopping bag, the plush clerk behind it, back counter and two shelves of boxed products, CAJA sign (the `RoomPlaque`) |
 
 - **Products:** rounded clay-like models (`scripts/buildings/electronics_products.gd`, which extends the
@@ -990,6 +990,35 @@ in data this change does not touch; `world_signs` PASS. Views (noon; `capture.gd
 [rear](../evidence/electronics-makeover-20261118/after-rear.png). Not checked: night views, a phone
 or the web build.
 
+### Bigger products and appliance words — 23 November 2026
+
+**User request:** make all the small items/products 20% bigger, keeping the design, and make the
+rice cookers, toasters and blenders words. Step `bigger_products` (`electronics.gd`), code
+`electronics_makeover.gd` `bigger()`:
+
+- **Bigger:** the 15 small word roots (`BIGGER`: computer, keyboard, mouse, laptop, smartphone,
+  tablet, smartwatch, camera, headphones, speaker, microwave, game console, game controller, cash
+  register, shopping bag) get their model at `SMALL` = 1.2 (`model_of(word, extra)`), pick areas
+  refitted; computer, keyboard, mouse and laptop are nudged (`NUDGE`) to stay clear of each other
+  and of the computers island's riser. The islands' decor (dummy phones, chargers, lenses, boxes,
+  earbud cases) is rebuilt at 1.2. Not grown: the floor and wall items (television, refrigerator,
+  washing machine, dryer, fan, checkout counter), the pegboard cards (their rows already touch) and
+  the rear stock boxes.
+- **New words** (`data/words.json`, Electronics & Appliances): *toaster* (el tostador; Spain la
+  tostadora), *kettle* (la tetera eléctrica; Spain el hervidor), *blender* (la licuadora), *rice
+  cooker* (la arrocera). The small appliances unit now holds 12 word roots under
+  `LearningDisplays` (three of each, `SHELF_WORDS`; blenders, the tallest, are off the low bottom
+  shelf, where one used to touch the shelf above), drawn by `electronics_products.gd` `appliance()`;
+  the rice cooker replaces the unit's air fryer (not an A1–A2 word). The unit's blocker is on
+  `FIGURE_LAYER` so the pointer reaches the appliances. Skipped as too niche: router, lenses,
+  tripod, earbud cases, pegboard accessories.
+- **Check:** `docs/evidence/shops-polish-20261123/verify.gd` (grown sizes, no clipping between
+  grown roots, island tops and risers, appliances on and under their shelves, pickable with the
+  pointer's mask; café meals below): 301 checks, 0 failures (full town, 23 Nov);
+  `electronics-makeover-20261118/verify.gd` 332 / 0. The computer's box is not tested against the
+  keyboard and mouse (they sit under its monitor by design). Views `before-electronics-*.png` /
+  `after-electronics-*.png` in that folder. Not checked: night views, a phone or the web build.
+
 ## Café and bakery interior — 28 October 2026
 
 Built from the user's pink "Cafe & Cakes" isometric reference. `Buildings/BakeryCafe` keeps its exterior, door, roof and footprint (site (137, 166); about 13.8 × 21.8 inside, 4.6 clear), so **no expansion and no zoning change**. The user allowed a resize, but the existing room already holds the full program.
@@ -1006,6 +1035,24 @@ Built from the user's pink "Cafe & Cakes" isometric reference. `Buildings/Bakery
 All 23 learning roots under `BakeryCafe` are kept as the same nodes with unchanged word keys; they are only moved (some turned 90°) onto the new fixtures. The floating `RelocatedSites/Bakery` items (bowl with soup, cupcake, snack with its BOTANAS sign) are set on fixtures, and `People/Cook` is moved behind the register. The 14 old display tables, the two high vocabulary shelves and the PAN Y CAFÉ / VAJILLA Y REPOSTERÍA labels were removed. New fixtures are tagged only with existing words (counter, cash register, napkin, cupcake, refrigerator, juice, water, milk, sink, table, chair, bench, plant); no vocabulary was added. Eight sign texts were added to `data/sign_translations.json` (CAFÉ, PASTELES, PAN DULCE, PAN, BEBIDAS, VAJILLA, PIDE AQUÍ, CAFÉ Y PASTELES). The entry sign hangs 2.6 inside the front wall because `building_exteriors.gd` hides labels near the café façade.
 
 Owner: `scripts/world/bakery_cafe_interior.gd::build()`, called by `world_refinements.gd` after the electronics interior; guarded by the `Interior` node. Check: `docs/evidence/bakery-cafe-interior-20261028/verify.gd`. Renders: [cutaway](../evidence/bakery-cafe-interior-20261028/iso.png), [plan](../evidence/bakery-cafe-interior-20261028/top.png), [doorway](../evidence/bakery-cafe-interior-20261028/door.png), [counter](../evidence/bakery-cafe-interior-20261028/counter.png), [seating](../evidence/bakery-cafe-interior-20261028/seating.png), [behind the counter](../evidence/bakery-cafe-interior-20261028/rear.png).
+
+### Café table meals — 23 November 2026
+
+**User request:** make the food on the café tables more appealing, game-style low poly. Bakery step
+`table_meals` (`bakery.gd`), art `scripts/buildings/cafe_meals.gd` (the shared product kit:
+supermarket parts, the electronics kit's rounded boxes, and the grocery fruit and vegetable models
+reused). The five meal roots (`Everyday_Breakfast`, `_Lunch`, `_Dinner`, `_Food`, `_Coffee`; same
+names, word keys and table positions) were vocabulary prefab instances: a plate 0.9 across on a
+1.05 table and a pick box larger than the table. Each is now one merged model with a fitted pick
+area, standing on the table top (0.815): a coral placemat, a 0.44 plate with a coral rim line and a
+drink at the far corner. Breakfast: fried eggs, toast with butter, bacon, orange juice. Lunch: a
+sandwich cut in two triangles, crisps, salad, lemonade with a straw. Dinner: grilled steak, mashed
+potato with butter, peas, carrots, broccoli, water. Food: a wooden board with a crusty roll, cheese,
+apple, tomato and grapes. Coffee: a latte with a foam heart on its saucer, a spoon and a croissant
+on a side plate. The shared prefabs in `scenes/props/vocabulary/` are not touched. Check:
+`docs/evidence/shops-polish-20261123/verify.gd` (on and within the table top, fitted pick area,
+pickable from the aisle); `bakery-cafe-interior-20261028/verify.gd` 174 / 0. Views
+`before-cafe-*.png` / `after-cafe-*.png`.
 
 ## Bank interior — 28 October 2026
 
@@ -4050,7 +4097,9 @@ costume. Also: some bank dialogue was too advanced; make it easier.
 
 - The monitor's words ("Cuenta de {name}", "Saldo", "Ventanilla 2") are world labels
   (`live_labels.gd`): they follow the world language, so holding EN shows them in the native one.
-- The screen is seen on the desk: the monitor camera sits further back (`MONITOR_EYE`), with the
+- *Superseded 23 Nov 2026 ([bank rework](#bank-rework--23-november-2026)): the monitor stands
+  to the side and one view shows it with the customer; the toggle is gone.* The screen is seen on
+  the desk: the monitor camera sits further back (`MONITOR_EYE`), with the
   desk round the screen. A higher eye that also showed the customer put the balance under the
   dialogue box, so instead a **camera toggle** at the top of the screen ("Ver al cliente" /
   "Ver la pantalla", person / screen icons) switches between the screen and the customer's face
@@ -4116,3 +4165,129 @@ and climbs back down (2.8 s); the south parapet is whole; the Chapel coin is cle
 hatch. Pictures in that folder (nave to doorway, ladder from the tower floor, hatch, outside)
 inspected. The first windowed run counted parapets by name and failed on Godot's renamed
 duplicates; the check now casts a ray through the old gap instead.
+
+## Restaurant fixes — 23 November 2026
+
+User requests (23 Nov 2026): the Pizza and Burger and Taquería facade signs were too short (letters
+ran over the board edges); the Pizza and Burger main doorway could be walked through with no door;
+the taquería waiter held a tray in front of his face; and in On the Menu the order tablet covered the
+HUD's EN badge and "Choose this dish" went missing after clicking several dishes. Code:
+`scripts/buildings/restaurants.gd` steps `facade_sign_padding`, `pizza_burger_door`, `taqueria_tray`
+(baked); `scripts/ui/restaurant_panel.gd`; `scripts/ui/restaurant_menu_book.gd` (L passes through).
+
+| Part | Change |
+| --- | --- |
+| Facade signs | PIZZA AND BURGER and TAQUERÍA lettering became world signs (`world_sign.gd`): 0.9 m letters (was 1.33 and 1.50 m world, taller than their boards), fit width between the sign icons; faces grown with `WorldSign.fit_board` to 1.06 (town units, was 0.85 / 0.88) and frames to 1.18 / 1.26, staying under the cornice. Fine Dining (ALTA COCINA) already had room and is unchanged |
+| Pizza and Burger door | The facade's decorative glass doors (14 parts, no collision) removed; `double_door.tscn` `Restaurants/Burger/Pizza and Burger entrance`: clear opening 3.36 × 2.9 (facade posts' inner faces, floor to the shell's door header), wall 0.42 deep (shell + facade), facade green with vision glass, swings into the shop, E/click/tap ([doors](DOORS.md)) |
+| Taquería waiter | `CatWaiter`'s `Serving tray` and `Tray glass` (at his face) removed; no carried pose exists for plush staff. The words tray and glass remain elsewhere in town |
+| Order tablet | Starts below the HUD's EN badge and gear (siblings in the HUD's ui_root), leaves them unshaded and lets their clicks through (`_has_point`); hold L works over it. "Choose this dish" is pinned under every dish shown, disabled for a course not ordered (it used to vanish there); the customer column's text may shrink to 0.5 (was 0.6) so the tablet never grows past its frame |
+
+Not reproduced: the missing "Choose this dish" button did not disappear in standalone or in-game
+renders at 1280×800, 1280×720, 1100×620 and 844×390 after inspecting every dish of two courses; the
+plausible causes covered are the course-not-ordered case and the tablet outgrowing the window.
+Shop-row facade signs (other units) look tight too and were not changed.
+
+Verification (23 Nov, isolated HOME): `tools/run_checks.py --only runtime_resources,signs,world_signs,building_access,map_facades`
+(full town, `VT_FOCUS=all`): runtime_resources PASS; signs **618 checks, 0 failures**; world_signs **467
+checks, 0 failures**; building_access **486 checks, 0 failures** (32 saved doors, 32 registered, the new
+pair included); map_facades only its known `street ray picks new facade HOSPITAL`. Each of the four town
+checks then aborted while quitting (`recursive_mutex lock failed`, signal 6, after its summary line), so
+the runner lists them as CRASH. `docs/evidence/restaurants-fixes-20261123/panel_render.gd` (in the game,
+1280×800, `VT_FOCUS=restaurants`): **14 checks, 0 failures** (EN badge clear and clickable, Choose this
+dish inside the tablet after each of five starters and four mains and for a course not ordered, Send
+order inside with three dishes, the tablet follows the EN badge); the same script standalone at
+1280×800, 1280×720, 1100×620 (with and without the translation) and 844×390 passed before the change
+too. Renders (`capture.gd`, `VT_FOCUS=restaurants`, not the full town): before/after signs, the door
+from the street, inside and opened, the waiter, and the tablet, inspected.
+
+## Civic fixes: garage, school, police lockers, warehouse cabinet, zoo gate — 23 November 2026
+
+User requests (23 Nov 2026, with a photo of the police lockers). Code: one baked step per unit and
+two script changes; before/after renders in `docs/evidence/civic-fixes-20261123/` (`capture.gd`).
+
+| Place | Built state |
+| --- | --- |
+| Home garage | Step `garage_bicycle_removed` (`home.gd`): the "Garage bicycle" prefab (`home_expansion.gd` garage()) is gone with its collision. The word *bicycle* stays in the sports store (three) |
+| School, science room (x > 0, left of the entrance) | Step `science_room` (`school.gd`): the bare green triangle on the front wall (`PaintedMountain_11`) became a framed **mountain picture** (sky, two peaks with snow caps, a hill, a sun; word *mountain*); the large green blob by the east wall (`Continent_9`) became a framed **continent chart** on the east wall (green land on a blue sea; word *continent*); the blank Biology and Geography plaques show their names (signs, `BIOLOGY` added to `sign_translations.json`). Both words were placed only here, so they were kept |
+| School, plaques | The "Classroom plaque" (*classroom*) and "Main Hall plaque" (*main hall*) under `RelocatedSites/School` hung 0.7 off the front wall with their lettering toward the wall: blank boards over the before-and-after poster and in the entrance. They now sit flat on the front wall with the lettering to the room: CLASSROOM above the general classroom's posters, MAIN HALL above the entrance. The empty notice board (*notice*) has three pinned notes |
+| Police lockers | Step `two_lockers` (`police.gd`): the old pair overlapped (sides 0.09 apart) and both doors hung from x 45.9, so the second door covered the first locker and the second locker stood open with no working door. Rebuilt as **two separate lockers** (`Police locker A` / `B`, 0.96 wide, 0.06 apart; solid carcass, dark inside, shelf, hook). Each door is a `door_animator.gd` hinge on the locker's outer side (`door_state`, word *door*; label plate *label* on it), so E, a click or a tap opens it and the two doors swing apart. The six apples stay on the shelves |
+| Warehouse cabinet | Step `openable_cabinet` (`warehouse.gd`): the town warehouse's supply cabinet opens outside the game ([WAREHOUSE.md](WAREHOUSE.md#cabinet-opens-outside-the-game-23-nov-2026)). The shelf has no doors. The minigame copy is unchanged |
+| Zoo gate | `zoo_gate.gd` `toggle_gate(from)`: the leaves open away from the opener (from outside the zoo inward, from inside outward); `vehicle_controls.gd` passes the player's position. The farm gate uses the same script and behaves the same way |
+| Zoo welcome board | Base step `zoo_welcome_sign_removed`: the green "THE ZOO" board on two posts west of the entrance arch is gone; the arch's own board keeps the `THE ZOO` sign entry in use |
+
+Records: [verification](FINAL_VERIFICATION.md#civic-fixes-garage-school-police-lockers-warehouse-cabinet-zoo-gate--23-november-2026).
+
+## Bank rework — 23 November 2026
+
+**Request (user, in a batch of town changes).** (3) Slow the vault door down for suspense.
+(4) Make the vault bigger by growing the bank **backward** (away from the street; the user approved
+growing backward for this task only), leading into a safe-deposit box room with walls of small
+boxes (look only: no words, nothing opens); give the player a way to the teller side of the
+counter. (5) In the teller game, see the monitor and the customer at the same time. (6) A manager's
+office (reuse the office), and a new impostor flow: the player may pay an impostor; then the
+manager (a new plush character) walks out of the office to the teller, says it was wrong and
+warns them, walks back, and the game resumes; a second wrong payout in a session gets the player
+fired (a results card; play again on a later visit; nothing saved). "Call the police" stays the
+right answer. Code: `scripts/buildings/bank.gd` steps `rear_annex`, `deposit_boxes`,
+`staff_door`, `heavy_vault_door`, `teller_side_monitor`, `coplanar_gaps_3` (baked into
+`scenes/town/bank.scn`); `scripts/learning/teller_session.gd`; `door.gd` `swing_seconds` and
+`door_animator.gd` heavy swing; phrases `teller.impostor_thanks`, `teller.manager_*`,
+`results.*_teller_fired`.
+
+**Plot behind the bank (measured 23 Nov 2026).** Behind the old back wall (town x 141.6) the
+ground is open, flat grass to about x 161; the beach starts near x 164. No road, path, building or
+neighbour lies there (the Mystery House is south of the bank, z < 95.7). The annex ends at town
+x 150.0; the `bank` zone (`data/zones.json`) now reaches x 151.
+
+| Part | Built |
+| --- | --- |
+| Annex shell | Town x 141.6–150.0 across the bank's full width (z 101.9–114.1), 4.0 high (the old shell is 5.8, so its back wall and eaves still show above), flat roof in the bank roof colour, the shell's own wall, plinth and navy cornice materials; one real window in the office's side wall. The old back wall stays above the annex roof and between the teller area and the annex; it is open behind the vault and the office |
+| Vault room | The old vault (its round-door entrance and three lockers kept) opens into a room behind the teller area (town x 141.6–145.0, z 102.1–109.4): two steel shelves of banknote bundles; the round **wall safe** (wheel, door, drum) moved onto its back wall, and the Bank's stamp coin with it (`data/achievements.json` at/face) |
+| Safe-deposit room | Through a steel door with a glass panel in the vault room's back wall (town x 145.15–149.8, full width): steel cabinets of **528 small boxes** on the back, both side walls and the front (big boxes in the bottom row), a steel table in the middle. No words; two baked MultiMeshes per cabinet (`baked_multimesh.gd`; merged meshes would have added 1.2 MB to the scene) |
+| Manager's office | The old office opens into the annex (to town x 145.0): its desk, chair and computer turned round at the back, a bookshelf of binders, the window. The manager stands beside her desk |
+| Staff door | A wooden door in the office's side wall (town x 139.0–139.95, z 109.5), behind window 3's chair: lobby → office door → staff door → behind the counter. It swings into the office, hinged on its back jamb so the open leaf stays out of both walks |
+| Heavy vault door | The vault entrance (`door.tscn`) gets `swing_seconds` 3.2 and a 0.2 leaf: it opens over 3.2 s, barely moving for the first second (9% open after 1 s), then settles. New `door.gd` export, read by `door_animator.gd` (no parallel door) |
+| Teller monitor | Window 2's monitor moved toward window 1 and turned 19° toward the teller (`teller_side_monitor`; `MONITOR_CENTRE`, `MONITOR_YAW`) |
+
+**Teller game.**
+
+- *Account view:* "Check the account" shows one framing from behind the teller's chair: the
+  customer's face behind the glass on the left, the monitor (photo, name, balance) on the right,
+  both above a two-row dialogue box (`VIEW_EYE`, `VIEW_AT`). Mistakes about the account (police
+  for an honest customer, a wrong "not enough", counting a short account) keep this view. The
+  camera toggle and its two phrases are gone.
+- *Paying an impostor:* "Count out the cash" now opens the money screen for an impostor too
+  (their claimed account always has enough). Paid: "¡Gracias! ¡Adiós!" and they walk out; the
+  customer does not count. The **bank manager** — a crocodile plush in the businessman suit, tag
+  "La jefa" (word `boss`, f), a runtime character at her desk — walks from her desk through the
+  staff door (it opens and closes for her) to stand beside the teller; a camera high in the
+  corner by the back counter watches her come. Close-up: "¡Oye! Esa persona no es la de la foto.
+  ¡Le diste el dinero a otra persona!", then "Mira siempre la foto. Si pasa otra vez, ya no
+  trabajas aquí." with the answer **Lo siento. ¡Voy a mirar la foto!**; she walks back and the
+  next customer steps up. Another impostor comes later in the session (`impostor_again`), a
+  chance to catch one.
+- *Fired:* a second payout in one session (`payouts_to_fire` 2): "¡Otra vez no! Esa persona
+  tampoco es la de la foto." / "Lo siento, ya no trabajas aquí. ¡Adiós!" with **Vale. Adiós.**; the
+  screen fades to the lobby and the results card "You've Been Let Go" explains why, with no Play
+  again; the banker offers the game again on a later visit. Nothing is saved.
+- "Not enough" for an impostor still brings the banker's hint; **Call the police** still brings
+  the officer and counts.
+
+**Verification (23 Nov 2026, isolated HOME, `VT_FOCUS=bank`, not the full town).**
+`docs/evidence/bank-rework-20261123/verify.gd` (graphics, 1280 × 800) **54 checks, 0 failures**:
+annex parts, 528 look-only boxes, the annex inside x 150.1; the coin inside the moved safe; the
+vault door 9% open after 1 s and fully open after about 3.6 s; clear walking routes for a
+0.5-wide body from the lobby through the office and staff door to window 2, from the lobby
+through the vault into the deposit room, and for the manager's walk; the account view framing
+(monitor at 0.64, 0.42 of the screen, the customer's face at 0.42, 0.36, above the box); the
+warning scene (door opens, she arrives, both lines, "sorry", she walks back, the door closes, the
+game goes on with a later impostor); the firing (both lines, the card, no Play again, no offer,
+the manager back at her desk). Pictures in that folder inspected: `plan`, `exterior-back`,
+`vault-room`, `deposit-room`, `deposit-room-left`, `office-and-staff-door`,
+`staff-door-from-teller-side`, `vault-door-swinging`, `teller-account-view`, `teller-mistake-view`,
+`manager-walks-out`, `manager-warns`, `manager-warns-2`, `manager-fires`, `let-go-card`. Two
+earlier runs failed on route test points (one through the office door's jamb, one into the
+table) and on the open staff-door leaf crossing the manager's path, fixed by her path and the
+hinge side. `tools/run_checks.py`: `bank_rework` replaces `bank_impostor` (its toggle and
+banker-on-payout steps no longer exist). Size: `bank.scn` 180 KB → 319 KB.
+

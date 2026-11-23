@@ -40,7 +40,7 @@ const LOGO := "res://assets/branding/bon_adventure_logo.webp"
 ## Logo width on the title page in design pixels (DESIGN is 1100 wide).
 const LOGO_WIDTH := 820.0
 const PORTRAIT := "res://assets/ui/avatars/%s.webp"
-const CHARACTERS := "res://data/house_characters.json"
+const HouseCharacters := preload("res://scripts/characters/house_characters.gd")
 
 const DESIGN := Vector2(1100, 800)
 ## The language page's size against the window factor (user, 18 Nov 2026: shorter card).
@@ -449,8 +449,7 @@ func _nav(back: Button, forward: Button) -> Control:
 ## The character ids the new-player grid offers, in data order.
 static func _picker_ids() -> Array:
 	var ids: Array = []
-	var data: Variant = JSON.parse_string(FileAccess.get_file_as_string(CHARACTERS))
-	for spec in (data.get("characters", []) if data is Dictionary else []):
+	for spec in HouseCharacters.characters():
 		if spec.get("picker", true) != false:
 			ids.append(str(spec.get("id", "")))
 	return ids
@@ -467,7 +466,6 @@ func _progress_text(id: String) -> String:
 
 static func _character_names() -> Dictionary:
 	var names := {}
-	var data: Variant = JSON.parse_string(FileAccess.get_file_as_string(CHARACTERS))
-	for spec in (data.get("characters", []) if data is Dictionary else []):
+	for spec in HouseCharacters.characters():
 		names[str(spec.get("id", ""))] = str(spec.get("name", ""))
 	return names

@@ -242,10 +242,18 @@ CHECKS = [
     # leave question, the end in the lobby (18 Nov 2026; headless writes no PNGs; isolated HOME).
     dict(id="bank_teller", script="res://docs/evidence/bank-teller-20261118/verify.gd", suites=["full"],
          summary=r"BANK TELLER: \d+ checks, (?P<n>\d+) failures"),
-    # Next, Please! impostors: the account photo, Call the police, the officer's escort out
-    # (21 Nov 2026; headless writes no PNGs; isolated HOME).
-    dict(id="bank_impostor", script="res://docs/evidence/bank-impostor-20261121/verify.gd", suites=["full"],
-         summary=r"BANK IMPOSTOR: \d+ checks, (?P<n>\d+) failures"),
+    # Bank rework (23 Nov 2026): the rear annex (vault room, safe-deposit room, office), the staff
+    # door behind the counter, the heavy vault door, the account view (monitor and customer at
+    # once), impostor payouts and the bank manager (warning, then let go). It replaced
+    # bank_impostor (bank-impostor-20261121/verify.gd: its camera toggle and paid-impostor
+    # warning no longer exist). Headless writes no PNGs; isolated HOME.
+    dict(id="bank_rework", script="res://docs/evidence/bank-rework-20261123/verify.gd", suites=["full"],
+         summary=r"BANK REWORK: \d+ checks, (?P<n>\d+) failures"),
+    # NPC registry (23 Nov 2026): data/npcs.json is complete, every character in the town is in it
+    # and stands at its registry spot in its costume, idle chatter and brush-offs, a host's idle
+    # line when its game is not on offer, the barn farmer. Headless writes no PNGs; isolated HOME.
+    dict(id="npc_registry", script="res://docs/evidence/npc-registry-20261123/verify.gd", suites=["full"],
+         summary=r"NPC REGISTRY: \d+ checks, (?P<n>\d+) failures"),
     # Day-night cycle, lamp glow, indoor light and the HUD clock (9 Nov 2026).
     dict(id="day_night", script="res://docs/evidence/day-night-20261109/verify.gd", suites=["full"],
          summary=r"DAY NIGHT: \d+ checks, (?P<n>\d+) failures"),

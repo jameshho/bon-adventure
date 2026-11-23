@@ -29,7 +29,8 @@ and minimap are hidden for now.
 BonBon's house, where a new player wakes up and the welcome tutorial starts: bedrooms, a family
 bathroom with working toilet and faucets, living room, kitchen, garage, a sunken pool and a hot
 tub. Outside are Mei's mahjong table and the electrical box for Wire It Up!. Since 14 Nov only
-BonBon, Leo and Sunny live in the house, and the walkways were cleared.
+BonBon, Leo and Sunny live in the house, and the walkways were cleared. Since 23 Nov the garage
+has no bicycle ([record](../guides/TOWN_DESIGN_BRIEF.md#civic-fixes-garage-school-police-lockers-warehouse-cabinet-zoo-gate--23-november-2026)).
 [Reference home](../guides/REFERENCE_HOME.md) ·
 [14 Nov change](../guides/REFERENCE_HOME.md#fewer-plushes-and-clear-walkways--14-november-2026)
 
@@ -79,19 +80,26 @@ Three places to eat in one block:
 - **Pizza and Burger**, an L-shaped diner with booths and a drinks fridge (refitted 9 Nov).
 - **Taquería**, a Mexican restaurant with a bar.
 
+23 Nov: the Pizza and Burger and Taquería facade signs are taller with smaller lettering, the
+Pizza and Burger entrance is a glass double door that opens with E, and the taquería waiter no
+longer holds a tray in front of his face ([record](../guides/TOWN_DESIGN_BRIEF.md#restaurant-fixes--23-november-2026)).
+
 [Alta Cocina](../guides/TOWN_DESIGN_BRIEF.md#alta-cocina-italian-remodel-and-plush-staff--1-november-2026) ·
 [Pizza and Burger](../guides/TOWN_DESIGN_BRIEF.md#restaurants-and-police-relocation--28-october-2026) ·
 [Taquería](../guides/TOWN_DESIGN_BRIEF.md#mexican-restaurant-taquería--28-october-2026)
 
 ## Bakery / Café
 
-<img src="../evidence/bakery-cafe-interior-20261028/counter.png" width="480" alt="Bakery counter">
+<img src="../evidence/shops-polish-20261123/after-cafe-left-tables.png" width="480" alt="Café tables">
 
-*Screenshot 28 Oct.*
+*Screenshot 23 Nov.*
 
 A pink "Cafe & Cakes" bakery and café with a cake counter and seating, and a samoyed cook.
 [Design record](../guides/TOWN_DESIGN_BRIEF.md#café-and-bakery-interior--28-october-2026)
 Since 18 Nov its storefront is in the shared [shop-row look](../guides/TOWN_DESIGN_BRIEF.md#game-palette-and-shop-row--18-november-2026) (cream walls, coral accents; [outside view](../evidence/shop-row-20261118/after-bakery.png)).
+Since 23 Nov the five table words (*breakfast*, *lunch*, *dinner*, *food*, *coffee*) are clay-style meals on placemats
+([record](../guides/TOWN_DESIGN_BRIEF.md#café-table-meals--23-november-2026);
+[counter, 28 Oct](../evidence/bakery-cafe-interior-20261028/counter.png)).
 
 ## Sports store
 
@@ -129,6 +137,9 @@ future clerk game.
 [Design record](../guides/TOWN_DESIGN_BRIEF.md#electronics-store-makeover--18-november-2026) ·
 [before](../evidence/electronics-makeover-20261118/before-overview.png)
 Since 18 Nov its storefront is in the shared [shop-row look](../guides/TOWN_DESIGN_BRIEF.md#game-palette-and-shop-row--18-november-2026) (cream walls, sky blue accents; [outside view](../evidence/shop-row-20261118/after-electronics.png)).
+Since 23 Nov the small products are 20% bigger and the small appliances are words: *toaster*,
+*kettle*, *blender* and *rice cooker* ([appliances](../evidence/shops-polish-20261123/after-electronics-appliances.png),
+[record](../guides/TOWN_DESIGN_BRIEF.md#bigger-products-and-appliance-words--23-november-2026)).
 
 ## Furniture store
 
@@ -152,8 +163,14 @@ runs the teller game [Next, Please!](minigames.md#next-please) (18 Nov) at windo
 Since 18 Nov the interior is in the game palette (cream walls, sky-blue accents), the office and
 vault have the shared doors (no floating labels), and the ATMs and vault (round steel door,
 safe-deposit lockers) were redrawn ([before/after views](../evidence/bank-refresh-20261118/)).
+Since 23 Nov the bank reaches further back: the vault leads (through a slow, heavy door) into a
+bigger vault room with the round safe and on into a safe-deposit room lined with small boxes; the
+manager's office is bigger, the crocodile manager works there, and a staff door in it leads
+behind the teller counter ([plan](../evidence/bank-rework-20261123/plan.png),
+[deposit room](../evidence/bank-rework-20261123/deposit-room.png)).
 [Design record](../guides/TOWN_DESIGN_BRIEF.md#bank-interior--28-october-2026),
-[refresh](../guides/TOWN_DESIGN_BRIEF.md#bank-interior-refresh--18-november-2026)
+[refresh](../guides/TOWN_DESIGN_BRIEF.md#bank-interior-refresh--18-november-2026),
+[rework](../guides/TOWN_DESIGN_BRIEF.md#bank-rework--23-november-2026)
 
 ## Police station
 
@@ -165,6 +182,8 @@ A lobby, an office, an interview room, a holding cell, a suspect lineup room (Sp
 and an evidence room (Feel the Clues). A crocodile officer by the entrance and a police car.
 Since 18 Nov the lobby and the evidence room have real front windows: you see the street from
 inside and the rooms from outside ([windows](../guides/WINDOWS.md#real-windows--18-november-2026)).
+Since 23 Nov the two lockers by the records shelves are separate and each door opens with E or a
+tap ([open](../evidence/civic-fixes-20261123/after-police-lockers-open.png)).
 [Enlargement and games](../guides/TOWN_DESIGN_BRIEF.md#police-station-enlargement-and-detective-games--6-november-2026)
 
 ## Airport and control tower
@@ -190,7 +209,11 @@ Radar Patrol radars. The airfield has the plane and the helicopter.
 *Grammar classroom, 14 Nov.*
 
 A single-storey school whose general classroom is Lana's grammar class (Desk Dash), with
-teaching areas and posters (family tree, months) that prepare words for Who's Who?.
+teaching areas and posters (family tree, months) that prepare words for Who's Who?. Since 23 Nov
+the science room (left of the entrance) has a framed mountain picture and a continent chart in
+place of a bare wall triangle and a green blob, and its Biology and Geography plaques are named
+([view](../evidence/civic-fixes-20261123/after-school-left-front-wall.png),
+[record](../guides/TOWN_DESIGN_BRIEF.md#civic-fixes-garage-school-police-lockers-warehouse-cabinet-zoo-gate--23-november-2026)).
 [Grammar Classroom](../guides/GRAMMAR_CLASS.md) ·
 [floor plan](../guides/TOWN_DESIGN_BRIEF.md#school-single-divider-layout--26-october-2026)
 
@@ -213,7 +236,8 @@ helipad. Dr. Li runs Who's Who? outside the entrance.
 
 A metal hall between the school and the airport with two truck-loading bays, a reception at the
 east end and a hall with a shelf, a table and a cabinet. Ramón runs Stack & Pack. A box truck
-is parked outside.
+is parked outside. Since 23 Nov the supply cabinet's doors open outside the game
+([open](../evidence/civic-fixes-20261123/after-warehouse-cabinet-open.png)).
 [Warehouse guide](../guides/WAREHOUSE.md#redesign-14-nov-2026)
 
 ## Mystery House
@@ -243,7 +267,8 @@ the entrance leads into the tower, where a ladder climbs through a hatch to the 
 *Screenshot 1 Nov.*
 
 A red gambrel-roofed barn with a hayloft up a climbable ladder, tools, hay and supplies (no
-animal stalls); farm animals graze outside.
+animal stalls); farm animals graze outside. Tomás the farmer (a bear in overalls and a
+straw hat) stands by the tool rack and chats about farm life (23 Nov, [NPCs](../guides/NPCS.md)).
 [Design record](../guides/TOWN_DESIGN_BRIEF.md#farm-barn-gambrel-roof-hayloft-and-supplies-interior--1-november-2026)
 
 ## Playground
@@ -265,7 +290,8 @@ ride (E to sit, W/S to kick).
 - **Public garden:** lawns, flower borders, fountains, a pond with swan boats and a bridge, and
   the horse-and-rider statue. [Garden guide](../guides/public-garden/README.md)
 - **Zoo:** four fenced zones round a cherry-tree plaza: Savanna, Forest, Bamboo Grove and
-  Wildlife Plains, with Spanish signs; the clay-style animals were added 11–12 Nov. Since
+  Wildlife Plains, with Spanish signs; since 23 Nov the gate opens away from you (inward from
+  outside, outward from inside) and the green welcome board outside is gone; the clay-style animals were added 11–12 Nov. Since
   16 Nov the 17 clay animals walk with moving legs, breathe, look around and blink
   ([each one walking](../evidence/zoo-walk-20261116/walkers.png)); the 9 older piece-built
   animals (monkey, sheep and others) still glide. Since 17 Nov the zoo's tiger is the new

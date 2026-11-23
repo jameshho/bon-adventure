@@ -3,7 +3,7 @@ extends RefCounted
 ## restaurants unit (scenes/town/restaurants.scn).
 ## Bake:  godot --headless --path . --script res://tools/bake_unit.gd -- restaurants
 ## Never rename or remove a baked step (add a new one that undoes it).
-const STEPS := ["solid_roofs", "dining_room_refresh", "pizza_burger_refit", "coplanar_gaps", "coplanar_gaps_2", "dining_game_tables", "glass_windows", "glass_windows_2", "fine_dining_dark_glass", "fine_dining_dark_glass_2", "fine_dining_real_windows", "fine_dining_real_windows_2", "fine_dining_real_windows_3", "fine_dining_single_glass", "fine_dining_single_glass_2"]
+const STEPS := ["solid_roofs", "dining_room_refresh", "pizza_burger_refit", "coplanar_gaps", "coplanar_gaps_2", "dining_game_tables", "glass_windows", "glass_windows_2", "fine_dining_dark_glass", "fine_dining_dark_glass_2", "fine_dining_real_windows", "fine_dining_real_windows_2", "fine_dining_real_windows_3", "fine_dining_single_glass", "fine_dining_single_glass_2", "facade_sign_padding", "pizza_burger_door", "taqueria_tray"]
 
 ## Alta Cocina dining room (Restaurants/Pizza, local frame): inside faces of the walls at
 ## x = ±14.70 and z = ±7.70, floor y .09, ceiling y 6.44. Front wall (entrance, z < 0) has the
@@ -896,3 +896,88 @@ func _single_glass(town: Node3D) -> void:
 	print("restaurants: single glass: %d facade panes set, %d room panes removed" % [kept, removed])
 	if kept != 2:
 		push_error("restaurants: expected 2 facade panes, got %d" % kept)
+
+## Facade signs too short for their lettering (user, 23 Nov 2026: letters ran over the edges of
+## the Pizza and Burger and Taquería boards). The lettering becomes a world sign
+## (scripts/world/world_sign.gd) with a street-reading letter height, and the board grows
+## (WorldSign.fit_board) so there is free board above and below the text; the frame keeps its
+## border round the face and stays under the cornice. Town units; world metres in the specs.
+const FACADE_SIGNS := [
+	# facade, face, frame, lettering, frame top limit (town y), icon x range (town, free width)
+	["Map facades/PIZZA AND BURGER", "Sign face", "Sign frame", "PIZZA AND BURGER lettering", 3.99, 11.0],
+	["Map facades/TAQUERÍA", "Sign face", "Sign frame", "Facade lettering", 4.70, 11.6],
+]
+const SIGN_EM := 0.9          # letter height, world metres (readable from about 27 m)
+const SIGN_MARGIN := 0.08     # free board above and below the line box, world metres
+const SIGN_BORDER := 0.1      # frame border round the face, town units
+
+func facade_sign_padding(town: Node3D, _game) -> void:
+	var WorldSign := preload("res://scripts/world/world_sign.gd")
+	for spec in FACADE_SIGNS:
+		var facade: Node3D = town.get_node(spec[0])
+		var face := _mesh_in(facade.get_node(spec[1]))
+		var frame := _mesh_in(facade.get_node(spec[2]))
+		var label := facade.get_node(spec[3]) as Label3D
+		var scale := label.global_transform.basis.get_scale().y
+		WorldSign.restyle(label, {"read": SIGN_EM * WorldSign.READ_RATIO, "em": SIGN_EM,
+			"board": WorldSign.board_colour(face), "fit_width": float(spec[5]) * scale})
+		WorldSign.fit_board(face, label, SIGN_MARGIN)
+		var face_h := face.get_aabb().size.y * face.scale.y
+		var frame_mesh_h := frame.get_aabb().size.y
+		var centre: float = (frame.get_parent() as Node3D).position.y
+		var frame_h := minf(face_h + 2.0 * SIGN_BORDER, 2.0 * (float(spec[4]) - centre))
+		frame.scale.y = frame_h / frame_mesh_h
+		print("restaurants: %s face %.2f high, frame %.2f, letters %.2f m" % [spec[0], face_h, frame_h, WorldSign.em_of(label)])
+
+func _mesh_in(node: Node) -> MeshInstance3D:
+	return node if node is MeshInstance3D else node.find_children("*", "MeshInstance3D", false, false)[0]
+
+## The Pizza and Burger entrance was an open gap behind two decorative glass doors (user, 23 Nov
+## 2026). The shared double door (scenes/props/double_door.tscn, docs/guides/DOORS.md) now fills
+## it: glass leaves in the facade green, swinging into the shop. Opening in Burger coordinates:
+## x 1.32..4.68 (the facade posts' inner faces), floor y .10 to the header at 3.0, from the inner
+## wall face (z -7.75) to the facade face (z -8.17). The old facade door parts are removed.
+const PB_DOOR_GREEN := Color("0d4a37")
+
+func pizza_burger_door(town: Node3D, game) -> void:
+	var facade: Node3D = town.get_node("Map facades/PIZZA AND BURGER")
+	var removed := 0
+	for part in facade.get_children():
+		var at := (part as Node3D).position if part is Node3D else Vector3.ZERO
+		var door_part := String(part.name).begins_with("Door ") and not String(part.name).begins_with("Door lantern")
+		var unnamed_door_part := String(part.name).begins_with("@") and at.x > -105.9 and at.x < -102.1 and at.y < 3.3 and absf(at.z - 76.9) < 0.05
+		if door_part or unnamed_door_part:
+			game.doors.erase(part)
+			facade.remove_child(part)
+			part.free()
+			removed += 1
+	var burger: Node3D = town.get_node(PB)
+	var door: Node3D = preload("res://scenes/props/double_door.tscn").instantiate()
+	door.name = "Pizza and Burger entrance"
+	door.width = 3.36
+	door.height = 2.9
+	door.wall_thickness = 0.42
+	door.leaf_name = "Pizza and Burger entrance door"
+	door.leaf_color = PB_DOOR_GREEN
+	door.frame_color = PB_DOOR_GREEN
+	door.frame_width = 0.14
+	door.handle_color = Color(PB_CHROME)
+	door.vision_glass = true
+	door.swing_to_front = true   # +z: into the shop
+	door.position = Vector3(3.0, PB_FLOOR, -7.96)
+	burger.add_child(door, true)
+	door.owner = burger.owner
+	print("restaurants: Pizza and Burger entrance door, %d old facade door parts removed" % removed)
+
+## The taquería waiter (CatWaiter) held a serving tray and a glass in front of his face (user,
+## 23 Nov 2026). No carried pose exists for plush staff, so the tray and glass are removed (the
+## words tray and glass stay in the town elsewhere).
+func taqueria_tray(town: Node3D, game) -> void:
+	var taqueria: Node3D = town.get_node("Restaurants/Cafe/Taqueria")
+	for title in ["Serving tray", "Tray glass"]:
+		var node := taqueria.get_node_or_null(title)
+		if node == null:
+			push_error("restaurants: no %s in the Taqueria" % title)
+			continue
+		taqueria.remove_child(node)
+		node.free()

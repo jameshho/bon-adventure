@@ -4,7 +4,7 @@ extends RefCounted
 ## Bake:  godot --headless --path . --script res://tools/bake_unit.gd -- bakery
 ## Never rename or remove a baked step (add a new one that undoes it).
 ## Record: docs/guides/TOWN_DESIGN_BRIEF.md "Supermarket product art — 8 November 2026" (reuse).
-const STEPS := ["shop_products", "coplanar_gaps", "coplanar_gaps_2", "glass_windows", "shop_row_style"]
+const STEPS := ["shop_products", "coplanar_gaps", "coplanar_gaps_2", "glass_windows", "shop_row_style", "table_meals"]
 const Products = preload("res://scripts/buildings/supermarket_products.gd")
 const INTERIOR := "Buildings/BakeryCafe/Interior"
 ## Plain bottles in the drinks fridge by colour, and the three drink words, as product models.
@@ -69,3 +69,32 @@ func glass_windows(town: Node3D, _game) -> void:
 func shop_row_style(town: Node3D, game) -> void:
 	var ShopRow := preload("res://scripts/buildings/shop_row.gd")
 	print("shop_row bakery: ", ShopRow.restyle(town, game, "bakery"))
+
+
+## Table meals (user, 23 Nov 2026: the food on the café tables should look more appealing, game
+## style): the five meal words on the tables (breakfast, lunch, dinner, food, coffee; vocabulary
+## prefab instances drawn from plain plates and balls, with pick boxes larger than the table) become
+## clay-style meals from scripts/buildings/cafe_meals.gd. Same node names, word keys and table
+## positions; each root now holds one merged model and a pick area fitted to it. The shared
+## vocabulary prefabs are not touched.
+const MEALS := {"Everyday_Breakfast": "breakfast", "Everyday_Lunch": "lunch", "Everyday_Dinner": "dinner",
+	"Everyday_Food": "food", "Everyday_Coffee": "coffee"}
+const TABLE_TOP := .815
+
+func table_meals(town: Node3D, _game) -> void:
+	var cafe: Node3D = town.get_node("Buildings/BakeryCafe")
+	var art = preload("res://scripts/buildings/cafe_meals.gd").new()
+	var items = preload("res://scripts/buildings/sports.gd").new()
+	var done := 0
+	for title in MEALS:
+		var old := cafe.get_node(title) as Node3D
+		var word: String = MEALS[title]
+		assert(str(old.get_meta("word_key", "")) == word)
+		var at := Vector3(old.position.x, TABLE_TOP, old.position.z)
+		var index := old.get_index()
+		cafe.remove_child(old)
+		old.free()
+		var root: Node3D = items.item(title, word, art.meal(word), at, 0.0, cafe)
+		cafe.move_child(root, index)
+		done += 1
+	print("BAKERY table_meals: %d meals redrawn" % done)

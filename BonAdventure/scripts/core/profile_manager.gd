@@ -1,7 +1,7 @@
 extends RefCounted
 ## Local player profiles (PWA restructure, user decisions 12 Nov 2026): at most MAX_PROFILES on
 ## a device, each with the player's name, a profile name (how the game addresses them) and an
-## avatar (a data/house_characters.json id). The list is user://profiles/index.json:
+## avatar (a cast id in data/npcs.json). The list is user://profiles/index.json:
 ##   {"schema": 1, "next": 3, "last": "p1",
 ##    "profiles": [{"id": "p1", "name": "Ana", "profile_name": "Ana's town", "avatar": "bonbon"}]}
 ## Ids are never reused. Each profile's saves are in user://profiles/<id>/ (save_store.gd).
@@ -14,7 +14,6 @@ extends RefCounted
 ## as a backup.
 const SaveStore := preload("res://scripts/core/save_store.gd")
 const INDEX_PATH := "user://profiles/index.json"
-const CHARACTERS_PATH := "res://data/house_characters.json"
 const MAX_PROFILES := 3
 const MAX_NAME_LENGTH := 24
 const DEFAULT_AVATAR := "bonbon"
@@ -73,12 +72,7 @@ func can_create() -> bool:
 
 ## Avatar ids the player may pick: the house characters, in data order.
 static func avatar_ids() -> Array:
-	var parsed: Variant = SaveStore.read_json(CHARACTERS_PATH)
-	var ids: Array = []
-	if parsed is Dictionary:
-		for character in parsed.get("characters", []):
-			ids.append(str(character.get("id", "")))
-	return ids
+	return preload("res://scripts/characters/house_characters.gd").ids()
 
 ## A trimmed, length-limited name ("" when blank).
 static func clean_name(text: String) -> String:
