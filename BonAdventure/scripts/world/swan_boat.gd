@@ -155,5 +155,18 @@ func afloat(pose: Transform3D) -> bool:
     if lagoon.is_empty(): return true
     for corner in [Vector3(-1.08,0,-3.7),Vector3(1.08,0,-3.7),Vector3(-1.08,0,3.7),Vector3(1.08,0,3.7)]:
         var p: Vector3=pose*corner
-        if not Geometry2D.is_point_in_polygon(Vector2(p.x,p.z),lagoon): return false
+        if not on_lagoon(Vector2(p.x,p.z)): return false
     return true
+
+## Even-odd test with a horizontal ray (half-open edges). Geometry2D.is_point_in_polygon() reads
+## isolated points as outside where its ray meets a vertex exactly: one such point lies over the
+## lagoon fish, where the boat stopped dead with clear water ahead (23 Nov 2026).
+func on_lagoon(p: Vector2) -> bool:
+    var inside:=false
+    var j:=lagoon.size()-1
+    for i in lagoon.size():
+        var a: Vector2=lagoon[i]
+        var b: Vector2=lagoon[j]
+        if (a.y>p.y)!=(b.y>p.y) and p.x<a.x+(b.x-a.x)*(p.y-a.y)/(b.y-a.y): inside=not inside
+        j=i
+    return inside

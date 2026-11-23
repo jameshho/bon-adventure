@@ -159,8 +159,11 @@ static func _is_figure(node: Node3D) -> bool:
 
 # Box the figure's visible meshes in its own space (it moves, scales and turns with the
 # figure). Called again after a pose change. Figures that already own a solid body (the
-# giant BonBon mascot's SolidBody) are left as they are.
+# giant BonBon mascot's SolidBody) are left as they are, and so are figures with meta
+# `figure_blocker` false (the lagoon fish under the water, which the swan boat passes over).
 static func fit_blocker(node: Node3D) -> bool:
+	if not node.get_meta("figure_blocker", true):
+		return false
 	var body := node.get_node_or_null("FigureBlocker") as StaticBody3D
 	if body == null:
 		for child in node.get_children():

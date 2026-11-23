@@ -199,7 +199,8 @@ with a tick when done, plus a diary of the latest ones (21 Nov;
 - **Helicopter and plane:** easy flying by default (14 Nov): W to go, A/D to turn, let go and
   it levels or hovers; C switches to expert controls. A Reset button returns the plane to the
   runway. [Aircraft](../guides/aircraft.md#easy-flying)
-- **Swan boats** on the pond and **swings** at the playground.
+- **Swan boats** on the pond and **swings** at the playground. The pond's fish swims under the
+  water and the boats pass over it (23 Nov). [Evidence](../evidence/fish-under-water-20261123/boat_over_fish.png)
 
 [Road vehicles](../guides/ZOO_VEHICLE_IMPLEMENTATION.md) ·
 [helicopter](../guides/helicopter_inertia/README.md)

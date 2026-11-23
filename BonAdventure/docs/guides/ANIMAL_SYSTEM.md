@@ -92,7 +92,11 @@ circles. It chooses nearby random destinations, walks with smooth heading change
 stops briefly, or takes a longer rest. Rest means standing still; this change does
 not add skeletal leg animation or new lying-down poses (since 16 Nov 2026 the 17 clay zoo animals
 walk with moving legs: [clay animal animation](#clay-animal-animation-16-nov-2026)). Fish remain at their
-water elevation and birds at their authored perch/flight elevation.
+water elevation and birds at their authored perch/flight elevation. Since 23 Nov 2026 the lagoon
+fish swims just under the surface (base step `fish_under_water`, user: it looked like an obstacle in
+the swan boat's way); the translucent lagoon shader shows it, and the boat passes over it.
+It has no solid `FigureBlocker` (meta `figure_blocker` false, `house_characters.gd` `fit_blocker()`)
+([record](FINAL_VERIFICATION.md#lagoon-fish-under-the-water-and-the-swan-boat--23-november-2026)).
 
 Species profiles use **parent-local units per second** (world speed = value × 1.3).
 

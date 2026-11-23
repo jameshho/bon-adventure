@@ -8007,3 +8007,28 @@ face instead of a star.
 Exit codes 137 after the summaries (crash at quit, as before). The other session's
 `teller_session.gd` parse errors still show in the logs. Not run: the full suite, the passport
 missions check, a web export or a phone.
+
+## Lagoon fish under the water and the swan boat — 23 November 2026
+
+User: the pond fish should not block the swan boat and should be under the water. Two causes
+stopped a boat driven at the fish: `solidify_figures()` gives every animal, the fish included, a
+solid `FigureBlocker` box at runtime (layer 256), which the boat's hull sweep hit; and
+`Geometry2D.is_point_in_polygon()` reads isolated points as outside the lagoon outline (one at
+-19.37, 119.57, where the stern corner lands with the bow over the fish), so `afloat()` stopped the
+boat in open water.
+
+- Base step `fish_under_water` (base.gd, base rebaked): the fish's top 0.03 below the surface
+  (lowered 0.925 zoo units), meta `figure_blocker` false, which `fit_blocker()` now honours. The
+  bed is 0.88 deep and the fish 1.01 tall, so its belly dips into the bed. `compare_scenes.gd`:
+  only the Fish transform and metas changed (plus sign metas the bake always strips).
+- `swan_boat.gd` `on_lagoon()`: an even-odd test replaces the engine call; it disagrees with it on
+  3 of 200,000 random points (those glitches) and nowhere else.
+- `docs/evidence/fish-under-water-20261123/capture.gd` (graphics, isolated `HOME`): fish top
+  -0.446 below the surface -0.416; the boat, driven at full pedal from 14 units north, passes the
+  fish and stops on the far bank (z 102.99; before the fix z 116.3, bow over the fish).
+  [fish.png](../evidence/fish-under-water-20261123/fish.png),
+  [boat_over_fish.png](../evidence/fish-under-water-20261123/boat_over_fish.png).
+- `python3 tools/run_checks.py --only seats_swan_boats`: **0 failures**, labelled CRASH by the
+  known exit abort after its summary.
+- Not done: the full suite, a hands-on drive with the player steering. Other lagoon animals were
+  not changed.
