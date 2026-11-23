@@ -53,7 +53,7 @@ and wrong answers per word in the journal. **Levels** ([how games get harder](mi
 | [On the Menu](minigames.md#on-the-menu) | Alta Cocina | Yes | 6 Nov | 11 Nov (walk-around flow) |
 | [Spot the Suspect](minigames.md#spot-the-suspect) | Police station lobby | No | 6 Nov | 6 Nov |
 | [Feel the Clues](minigames.md#feel-the-clues) | Police evidence room | Yes | 6 Nov | 8 Nov (redesign) |
-| [Desk Dash](minigames.md#desk-dash) | School classroom | Chinese measure words only | 7 Nov | 14 Nov (5 questions, misses repeated) |
+| [Desk Dash](minigames.md#desk-dash) | School classroom | Chinese measure words only | 7 Nov | 23 Nov (card translated by holding the HUD's EN button) |
 | [Mystery Doors](minigames.md#mystery-doors) | Mystery House | Yes | 9 Nov | 10 Nov |
 | [Mahjong Club](minigames.md#mahjong-club) | Table in front of the home | No | 9 Nov | 16 Nov (camera shows Awoo, bigger pinwheel discards) |
 | [Radar Patrol](minigames.md#radar-patrol) | Airport control tower | No (pastime) | 9 Nov | 15 Nov (easier taps) |

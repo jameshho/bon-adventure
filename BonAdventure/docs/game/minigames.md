@@ -241,7 +241,8 @@ heavy/light with ten everyday objects. Tracked.
 A fill-in-the-blank sentence is on the board and the four answers lie on four desks: sit at the
 right one within 10 seconds. Five questions, and each one missed comes back once at the end.
 Grammar depends on the language: Spanish *ser*/*estar*, Chinese measure words, English
-agreement and prepositions. Points only; Chinese measure words are tracked.
+agreement and prepositions. Points only; Chinese measure words are tracked. Hold the top-right
+EN button to translate the card and see the question's meaning (23 Nov; the card's own EN bubble is gone).
 [Guide](../guides/GRAMMAR_CLASS.md)
 
 | Learning card | |

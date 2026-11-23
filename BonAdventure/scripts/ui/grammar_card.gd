@@ -1,7 +1,7 @@
 extends Control
 ## The Grammar Classroom card (guide: docs/guides/GRAMMAR_CLASS.md): a compact card at the top centre
 ## while a class runs. Top row: "Question 3 of 6", the shared progress bar (the points:
-## right answers out of 10), the translate bubble and a leave button (the exit icon). Below: the feedback after an answer (✓ / ✗, the
+## right answers out of 10) and a leave button (the exit icon). Below: the feedback after an answer (✓ / ✗, the
 ## right sentence and a short explanation in the player's language) and the large on-screen
 ## Confirm button (user decision, 6 Nov 2026: a button only, no hotkey). While a question is
 ## open the seconds left are a large number in the middle of the screen with a short hint below
@@ -10,6 +10,9 @@ extends Control
 ## `leave_requested`; it knows nothing about grammar or desks.
 ##
 ## Lines are {"foreign", "native"} dictionaries; GameSettings.view() decides what shows.
+## One language toggle (user, 23 Nov 2026, as the dialogue box since 17 Nov): the card has no
+## translate bubble of its own; holding the HUD's EN button (or L), GameSettings.peeking, shows
+## every line on it in both languages, and during a question also the question's meaning.
 ## Layout scales with min(window height / 800, window width / 1100), like money_panel.gd.
 ## Every button has focus_mode NONE so Space and Enter never press it.
 const GameSettings := preload("res://scripts/core/game_settings.gd")
@@ -18,6 +21,7 @@ const UiIcons := preload("res://scripts/ui/ui_icons.gd")
 const TranslateButton := preload("res://scripts/ui/translate_button.gd")
 const ProgressBarRow := preload("res://scripts/ui/progress_bar.gd")
 const BonStyle := preload("res://scripts/ui/bon_style.gd")
+const PracticeLog := preload("res://scripts/learning/practice_log.gd")
 
 signal confirm_pressed
 signal leave_requested
@@ -48,6 +52,8 @@ var _confirm: Dictionary = {}
 ## The button's line during feedback after a miss ("Continue"); empty otherwise.
 var _continue: Dictionary = {}
 var _translate: Dictionary = {}
+## The open question's meaning in the player's language, shown while EN is held.
+var _meaning := ""
 var _status_color := GOLD
 var _factor := 1.0
 
@@ -155,7 +161,16 @@ func _init() -> void:
 
 func _ready() -> void:
 	get_viewport().size_changed.connect(_rescale)
+	GameSettings.shared().peek_changed.connect(_on_peek)
 	_rescale()
+
+## The HUD's EN button (hold) or L: the card switches language while it is held. A peek counts as
+## the translation seen (practice_log.gd), as the bubble's press did.
+func _on_peek() -> void:
+	show_native = GameSettings.shared().peeking
+	refresh_display()
+	if show_native and is_visible_in_tree():
+		PracticeLog.shared().translation_shown.emit("")
 
 func _label(font_size: int, color: Color) -> Label:
 	var label := Label.new()
@@ -191,9 +206,10 @@ func open(title: Dictionary, confirm: Dictionary, translate: Dictionary, points:
 	refresh_display()
 
 ## A question is open: `seconds` left as the large number and `hint` below it ("Hurry! Pick a
-## desk!" or "Press Confirm or wait"); the card itself shows only the title row and Confirm.
-func show_countdown(seconds: float, hint: Dictionary, confirm_enabled: bool) -> void:
-	var changed := hint != _hint or not countdown.visible or not _status.is_empty() or confirm_button.disabled == confirm_enabled
+## desk!" or "Press Confirm or wait"); the card itself shows only the title row and Confirm,
+## plus `meaning` (the question in the player's language) while EN is held.
+func show_countdown(seconds: float, hint: Dictionary, confirm_enabled: bool, meaning: String = "") -> void:
+	var changed := meaning != _meaning or hint != _hint or not countdown.visible or not _status.is_empty() or confirm_button.disabled == confirm_enabled
 	_seconds_left = seconds
 	_hint = hint
 	countdown.visible = true
@@ -202,6 +218,7 @@ func show_countdown(seconds: float, hint: Dictionary, confirm_enabled: bool) -> 
 		return
 	_status = {}
 	_sentence = {}
+	_meaning = meaning
 	_explain = ""
 	_continue = {}
 	confirm_button.disabled = not confirm_enabled
@@ -224,6 +241,7 @@ func show_feedback(status: Dictionary, right: bool, sentence: Dictionary, explai
 	_status = status
 	_status_color = RIGHT if right else WRONG
 	_sentence = sentence
+	_meaning = ""
 	_explain = explain
 	_continue = continue_line
 	confirm_button.disabled = continue_line.is_empty()
@@ -253,7 +271,7 @@ func refresh_display() -> void:
 	if _title.is_empty():
 		return
 	var settings = GameSettings.shared()
-	title_label.text = settings.view(_title, false)[0]
+	title_label.text = settings.inline(_title, show_native)
 	status_label.text = settings.inline(_status, show_native) if not _status.is_empty() else ""
 	status_label.visible = status_label.text != ""
 	status_label.add_theme_color_override("font_color", _status_color)
@@ -262,11 +280,11 @@ func refresh_display() -> void:
 	sentence_label.text = shown[0]
 	sentence_label.visible = shown[0] != ""
 	PinyinText.show(reading_label, _sentence)
-	native_label.text = shown[1]
-	native_label.visible = shown[1] != ""
+	native_label.text = shown[1] if not _sentence.is_empty() else (_meaning if show_native else "")
+	native_label.visible = native_label.text != ""
 	explain_label.text = _explain
 	explain_label.visible = _explain != ""
-	confirm_button.text = settings.inline(_continue if not _continue.is_empty() else _confirm, false)
+	confirm_button.text = settings.stacked(_continue if not _continue.is_empty() else _confirm, show_native)
 	_rescale()
 
 func _rescale() -> void:
@@ -279,6 +297,8 @@ func _rescale() -> void:
 	(card.get_theme_stylebox("panel") as StyleBoxFlat).set_content_margin_all(12 * _factor)
 	translate_button.refresh(show_native, _factor)
 	translate_button.tooltip_text = str(_translate.get("native", ""))
+	# One toggle: the HUD's EN button (23 Nov 2026).
+	translate_button.visible = false
 	leave_button.custom_minimum_size = Vector2(56, 46) * _factor
 	leave_button.add_theme_constant_override("icon_max_width", roundi(26 * _factor))
 	# A large, easy target (user decision, 4 Nov 2026).

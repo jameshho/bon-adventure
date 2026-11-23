@@ -40,6 +40,7 @@ extends Node
 const Board := preload("res://scripts/learning/activity_board.gd")
 const Host := preload("res://scripts/learning/minigame_host.gd")
 const Zone := preload("res://scripts/learning/minigame_zone.gd")
+const GameSettings := preload("res://scripts/core/game_settings.gd")
 const Questions := preload("res://scripts/learning/grammar_questions.gd")
 const School := preload("res://scripts/buildings/school.gd")
 const ModularTown := preload("res://scripts/world/modular_town.gd")
@@ -358,7 +359,7 @@ func _begin_questions() -> void:
 	questions = bank.pick(Board.shared().rounds(ACTIVITY), _rng).map(func(q: Dictionary) -> Dictionary: return q.duplicate())
 	points = 0
 	current = -1
-	card.show_native = dialogue_panel.show_native
+	card.show_native = GameSettings.shared().peeking
 	card.open(_title(), lexicon.line("grammar.confirm"), lexicon.line("common.show_translation"), 0, questions.size())
 	_next_question()
 
@@ -440,7 +441,10 @@ func seated_letter() -> String:
 
 func _show_countdown() -> void:
 	var at_desk := seated_letter() != ""
-	card.show_countdown(maxf(time_left, 0.0), lexicon.line("grammar.seated" if at_desk else "grammar.hurry"), at_desk and not _submitted)
+	var meaning := ""
+	if current >= 0 and current < questions.size():
+		meaning = str(questions[current].get("meaning", {}).get(lexicon.native, ""))
+	card.show_countdown(maxf(time_left, 0.0), lexicon.line("grammar.seated" if at_desk else "grammar.hurry"), at_desk and not _submitted, meaning)
 
 ## The card's Confirm button: submits the desk the player sits at, once.
 func confirm() -> void:

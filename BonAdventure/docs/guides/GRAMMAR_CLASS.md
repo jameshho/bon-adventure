@@ -39,6 +39,12 @@ fill-in-the-blank questions by **sitting at the desk** that shows the right answ
    - the card shows ✓ or ✗, the right sentence (with its meaning in the player's language);
    - the card shows a one-line explanation.
 
+   **Translation (user, 23 Nov 2026):** the card has no translate bubble of its own. Holding the
+   HUD's EN button (or L) shows every line on the card in both languages (title, hint, feedback,
+   Confirm/Continue) and, during a question, the question's meaning under the title row; letting
+   go shows only the language being learned again. A peek counts as the translation seen for
+   practice tracking. Renders: [`grammar-peek-20261123/`](../evidence/grammar-peek-20261123/).
+
    **Walk back (user decision, 8 Nov 2026; replaces "the player is never moved"):** after every
    answer (right, wrong or unanswered) the game stands the player up and walks them back to the
    start in the aisle: from the aisle side of the chair straight across to the aisle (round
