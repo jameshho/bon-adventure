@@ -179,7 +179,9 @@ is walkable (lift and stairs, a ladder to the glass control room, a roof deck) a
 Radar Patrol radars. The airfield has the plane and the helicopter.
 [Terminal](../guides/TOWN_DESIGN_BRIEF.md#airport-terminal-interior--28-october-2026) ·
 [tower](../guides/TOWN_DESIGN_BRIEF.md#airport-control-tower--29-october-2026) ·
-[tower deck](../guides/TOWN_DESIGN_BRIEF.md#control-tower-roof-and-observation-deck--12-november-2026)
+[tower deck](../guides/TOWN_DESIGN_BRIEF.md#control-tower-roof-and-observation-deck--12-november-2026) ·
+[23 Nov fixes](../guides/TOWN_DESIGN_BRIEF.md#control-tower-deck-floor-hatch-and-stair-rails--23-november-2026)
+(deck floor, ladder from the top, new stair rails)
 
 ## School
 

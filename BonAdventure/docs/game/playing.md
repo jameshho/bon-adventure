@@ -123,7 +123,8 @@ minigames.
   Esc for Settings or to close the top window. F1 shows every key.
 - **Camera follows me** (on by default since 14 Nov): walking sideways slowly turns the view,
   so one hand can steer.
-- **Climb** ladders with W and S; **sit** on chairs, sofas and swings; swivel chairs turn with
+- **Climb** ladders with W and S (or the stick toward / away from the wall); at the top of a
+  ladder, walk into the hatch or hold S to climb down; **sit** on chairs, sofas and swings; swivel chairs turn with
   A and D.
 
 [All controls](../../README.md#controls-and-learning)

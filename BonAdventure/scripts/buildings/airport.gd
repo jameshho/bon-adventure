@@ -3,7 +3,7 @@ extends RefCounted
 ## airport unit (scenes/town/airport.scn).
 ## Bake:  godot --headless --path . --script res://tools/bake_unit.gd -- airport
 ## Never rename or remove a baked step (add a new one that undoes it).
-const STEPS := ["solid_roofs", "move_pilot_awoo", "restrooms", "remove_pilot_awoo", "toilet_flush_control", "radar_patrol_screens", "coplanar_gaps", "coplanar_gaps_2", "widen_tower_elevator", "remove_tower_void_guard", "glass_windows", "tower_deck", "glass_windows_2", "interaction_metas"]
+const STEPS := ["solid_roofs", "move_pilot_awoo", "restrooms", "remove_pilot_awoo", "toilet_flush_control", "radar_patrol_screens", "coplanar_gaps", "coplanar_gaps_2", "widen_tower_elevator", "remove_tower_void_guard", "glass_windows", "tower_deck", "glass_windows_2", "interaction_metas", "tower_deck_floors", "tower_hatch_carpet", "tower_stair_rails"]
 const BathFixtures := preload("res://scripts/world/bath_fixtures.gd")
 
 ## Collision for the decorative roofs and canopies (7 Nov 2026; scripts/buildings/roof_solids.gd).
@@ -742,3 +742,206 @@ func glass_windows_2(town: Node3D, _game) -> void:
 ## system; scripts/buildings/interaction_metas.gd): their objects have Interactables now.
 func interaction_metas(town: Node3D, _game) -> void:
 	preload("res://scripts/buildings/interaction_metas.gd").strip(town, "airport")
+
+
+## Tower fixes (23 Nov 2026, user: "no floor on the outside part", "the floor is blocking the ladder
+## space", "the rails for the stairs looks horrible, redraw them and make sure they are not visually
+## blocking the stairs"; docs/guides/TOWN_DESIGN_BRIEF.md "Control tower deck floor, hatch and stair
+## rails — 23 November 2026"). Interior-local coordinates as `tower_deck`.
+
+## Boxes for the fixes: a mesh from `from` to `to` (room-local) with `mat`, no collision.
+func _room_box(game, room: Node3D, title: String, from: Vector3, to: Vector3, mat: Material) -> MeshInstance3D:
+	var mesh := MeshInstance3D.new()
+	mesh.name = title
+	mesh.mesh = game.shared_box_mesh(to - from)
+	mesh.material_override = mat
+	room.add_child(mesh, true)
+	mesh.position = (from + to) * .5
+	return mesh
+
+## The deck slab and light floor were missing on the north (+z) and west (+x) sides in the saved
+## scene (their collision was there: an invisible floor). Adds the slab and floor for any side
+## whose floor mesh is absent; the other two sides are left as they are.
+func tower_deck_floors(town: Node3D, game) -> void:
+	var room: Node3D = town.get_node("Airport/ControlTower/Interior")
+	var slab_mat := _material(room.get_node("Floor slab"))
+	var deck_mat := _material(room.get_node("Observation deck floor"))
+	var o := DECK_OUT
+	var i := DECK_IN
+	var skin := DECK_FLOOR - DECK_SKIN
+	var sides := {"south": [Vector2(-o, -o), Vector2(o, -i)], "north": [Vector2(-o, i), Vector2(o, o)],
+		"west": [Vector2(i, -i), Vector2(o, i)], "east": [Vector2(-o, -i), Vector2(-i, i)]}
+	var added := []
+	for side in sides:
+		var a: Vector2 = sides[side][0]
+		var c: Vector2 = sides[side][1]
+		var probe := Vector3((a.x + c.x) * .5, DECK_FLOOR - .03, (a.y + c.y) * .5)
+		var covered := false
+		for child in room.get_children():
+			var b := _local_box(room, child)
+			if b.size != Vector3.ZERO and b.grow(.001).has_point(probe) and b.end.y <= DECK_FLOOR + .01 and b.size.x > 1.5 and b.size.z > 1.5:
+				covered = true
+				break
+		if covered:
+			continue
+		_room_box(game, room, "Observation deck slab " + side, Vector3(a.x, DECK_SLAB_BOTTOM, a.y), Vector3(c.x, skin, c.y), slab_mat)
+		_room_box(game, room, "Observation deck floor " + side, Vector3(a.x, skin, a.y), Vector3(c.x, DECK_FLOOR, c.y), deck_mat)
+		added.append(side)
+	print("tower_deck_floors: added ", added)
+
+## The control-room carpet (one 10.7 x 10.7 sheet) lay over the ladder hatch, so from above the
+## hatch looked like solid floor. The sheet is cut into four pieces round the hatch opening.
+## (Climbing down from the top is player_controller.gd `update_ladder`.)
+const HATCH := Rect2(-3.9, -1.15, 1.3, 1.3)   # x, z of the hatch opening (tower_interior `ladder`)
+
+func tower_hatch_carpet(town: Node3D, game) -> void:
+	var room: Node3D = town.get_node("Airport/ControlTower/Interior")
+	var carpet: Node3D = room.get_node("Control room carpet")
+	var box := _local_box(room, carpet)
+	var mat := _material(carpet)
+	var x0 := box.position.x
+	var x1 := box.end.x
+	var z0 := box.position.z
+	var z1 := box.end.z
+	var y0 := box.position.y
+	var y1 := box.end.y
+	var hx0 := HATCH.position.x
+	var hx1 := HATCH.end.x
+	var hz0 := HATCH.position.y
+	var hz1 := HATCH.end.y
+	_free(carpet)
+	for piece in [[x0, z0, x1, hz0], [x0, hz1, x1, z1], [x0, hz0, hx0, hz1], [hx1, hz0, x1, hz1]]:
+		_room_box(game, room, "Control room carpet", Vector3(piece[0], y0, piece[1]), Vector3(piece[2], y1, piece[3]), mat)
+	# The hatch's north rail had no collision (only the south one did): walking into the hatch
+	# from the side dropped the player down the shaft. A mirror of the south guard.
+	var guard: StaticBody3D = room.get_node("Hatch guard collision")
+	var north: StaticBody3D = guard.duplicate()
+	north.name = "Hatch guard collision north"
+	room.add_child(north, true)
+	north.position.z = HATCH.end.y + (HATCH.position.y - guard.position.z)
+	print("tower_hatch_carpet: carpet %.2f..%.2f cut round the hatch, north guard at z %.2f" % [x0, x1, north.position.z])
+
+## Stair balustrades. The old rails (thin posts standing on the treads, a mid rail, a rail across the
+## middle of each landing and rails along the walls) are removed. Each flight gets one balustrade
+## on its inner edge, standing in the 0.4 gap between the two flights so nothing stands on a
+## tread: an oak handrail, slim white balusters and a base rail along the stringer line, joined
+## round the inside of each landing turn. The empty level's guard round the stair opening (its
+## invisible "Opening guard" collision stays) is rebuilt in the same style. Decoration only.
+const STAIR_LEVELS := [0.0, 5.5, 11.0]
+const STAIR_A_X := -2.47        # inner edge of the north-going flight (treads x -3.9 .. -2.5)
+const STAIR_B_X := -2.13        # inner edge of the south-going flight (treads x -2.1 .. -0.7)
+const STAIR_RAIL_H := .88       # handrail top above the nosing line
+const BALUSTER_GAP := .42
+const TOP_SLAB_UNDERSIDE := 16.1   # empty level floor slab (y 16.1 .. 16.5)
+
+func tower_stair_rails(town: Node3D, game) -> void:
+	var room: Node3D = town.get_node("Airport/ControlTower/Interior")
+	var rail_tones := ["e8ecee", "aab3bb"]
+	var flights: Array = room.get_children().filter(func(n): return n.get_meta("word_key", "") == "stairs")
+	if flights.size() != 3:
+		push_error("tower_stair_rails: expected 3 stair flight pairs, found %d" % flights.size())
+		return
+	var removed := 0
+	for stairs in flights:
+		# The four stringers (same white as the rails) come first, from "Stair stringer" on; kept.
+		var kids: Array = stairs.get_children()
+		var first: int = kids.find(stairs.get_node("Stair stringer"))
+		for k in kids.size():
+			var child: Node = kids[k]
+			if k >= first and k < first + 4:
+				continue
+			if child is MeshInstance3D or (child is Node3D and child.get_class() == "Node3D"):
+				if _colour(child).to_html(false) in rail_tones:
+					_free(child)
+					removed += 1
+	for child in room.get_children():
+		if not (child is MeshInstance3D or child.get_class() == "Node3D"):
+			continue
+		if not _colour(child).to_html(false) in rail_tones:
+			continue
+		var b := _local_box(room, child)
+		if b.position.x > -2.25 and b.end.x < -.6 and b.position.y > 16.4 and b.end.y < 17.55 and b.position.z > -2.7 and b.end.z < 1.7:
+			_free(child)
+			removed += 1
+	var holder := Node3D.new()
+	holder.name = "Stair balustrades"
+	room.add_child(holder, true)
+	var wood: Material = game.material_for(Color("b07a4a"))
+	var white: Material = game.material_for(Color("eef1f2"))
+	var unit: Mesh = game.shared_box_mesh(Vector3.ONE)
+	# A bar of cross-section w (x) by h (y) from p to q; a sloped one is sheared so its ends stay
+	# vertical and it meets posts flush.
+	var bar := func(title: String, p: Vector3, q: Vector3, w: float, h: float, mat: Material) -> void:
+		var mesh := MeshInstance3D.new()
+		mesh.name = title
+		mesh.mesh = unit
+		mesh.material_override = mat
+		holder.add_child(mesh, true)
+		var along := q - p
+		if absf(along.x) > absf(along.z):
+			mesh.transform = Transform3D(Basis(Vector3(along.x, along.y, 0), Vector3(0, h, 0), Vector3(0, 0, w)), (p + q) * .5)
+		else:
+			mesh.transform = Transform3D(Basis(Vector3(w, 0, 0), Vector3(0, h, 0), Vector3(0, along.y, along.z)), (p + q) * .5)
+	var post := func(at: Vector3, top: float, w: float, mat: Material) -> void:
+		var mesh := MeshInstance3D.new()
+		mesh.name = "Stair newel" if w > .05 else "Stair baluster"
+		mesh.mesh = game.shared_box_mesh(Vector3(w, top - at.y, w))
+		mesh.material_override = mat
+		holder.add_child(mesh, true)
+		mesh.position = Vector3(at.x, (at.y + top) * .5, at.z)
+	var hand := Vector2(.075, .06)
+	# One sloped run: nosing line from a to b (x fixed), handrail H above it, balusters between.
+	var run := func(x: float, a: Vector2, b: Vector2) -> void:
+		var pa := Vector3(x, a.y, a.x)
+		var pb := Vector3(x, b.y, b.x)
+		var up := Vector3(0, STAIR_RAIL_H, 0)
+		bar.call("Stair handrail", pa + up - Vector3(0, hand.y * .5, 0), pb + up - Vector3(0, hand.y * .5, 0), hand.x, hand.y, wood)
+		bar.call("Stair base rail", pa + Vector3(0, .03, 0), pb + Vector3(0, .03, 0), .04, .06, white)
+		var length := absf(b.x - a.x)
+		var count := maxi(int(round(length / BALUSTER_GAP)), 1)
+		for k in range(1, count):
+			var t := float(k) / count
+			var at := pa.lerp(pb, t)
+			post.call(at + Vector3(0, .06, 0), at.y + STAIR_RAIL_H - hand.y, .03, white)
+	var flat := func(p: Vector3, q: Vector3) -> void:
+		# Level handrail and base rail from p to q (both on the walking level), balusters between.
+		var up := Vector3(0, STAIR_RAIL_H, 0)
+		bar.call("Stair handrail", p + up - Vector3(0, hand.y * .5, 0), q + up - Vector3(0, hand.y * .5, 0), hand.x, hand.y, wood)
+		bar.call("Stair base rail", p + Vector3(0, .03, 0), q + Vector3(0, .03, 0), .04, .06, white)
+		var count := maxi(int(round(p.distance_to(q) / BALUSTER_GAP)), 1)
+		for k in range(1, count):
+			var at := p.lerp(q, float(k) / count)
+			post.call(at + Vector3(0, .06, 0), at.y + STAIR_RAIL_H - hand.y, .03, white)
+	for y0 in STAIR_LEVELS:
+		# North-going flight A (x -3.9 .. -2.5): z -2.6 (y0 + .135) up to the landing edge.
+		var a0 := Vector2(-2.6, y0 + .135)
+		var a1 := Vector2(1.394, y0 + 2.75)
+		run.call(STAIR_A_X, a0, a1)
+		flat.call(Vector3(STAIR_A_X, y0 + 2.75, 1.394), Vector3(STAIR_A_X, y0 + 2.75, 1.6))
+		# The turn: across the gap along the landing edge.
+		flat.call(Vector3(STAIR_A_X, y0 + 2.75, 1.6), Vector3(STAIR_B_X, y0 + 2.75, 1.6))
+		# South-going flight B (x -2.1 .. -0.7): from the landing up to the next floor at z -2.6.
+		var b0 := Vector2(1.6, y0 + 2.885)
+		var b1 := Vector2(-2.394, y0 + 5.5)
+		if y0 < STAIR_LEVELS[-1]:
+			run.call(STAIR_B_X, b0, b1)
+			flat.call(Vector3(STAIR_B_X, y0 + 5.5, -2.394), Vector3(STAIR_B_X, y0 + 5.5, -2.6))
+			post.call(Vector3(STAIR_B_X, y0 + 5.5, -2.6), y0 + 5.5 + STAIR_RAIL_H + .03, .07, white)
+		else:
+			# The last flight runs under the empty level's floor (it covers the gap): its
+			# handrail stops where it meets the slab's underside (y 16.1).
+			var slope := (b1.y - b0.y) / (b0.x - b1.x)
+			var z_end := b0.x - (TOP_SLAB_UNDERSIDE - .02 - STAIR_RAIL_H - b0.y) / slope
+			run.call(STAIR_B_X, b0, Vector2(z_end, b0.y + (b0.x - z_end) * slope))
+		# Newels: foot of A and both sides of the turn (the head of B above).
+		var newel_top := STAIR_RAIL_H + .03
+		post.call(Vector3(STAIR_A_X, y0, -2.6), y0 + .135 + newel_top, .07, white)
+		post.call(Vector3(STAIR_A_X, y0 + 2.75, 1.6), y0 + 2.75 + newel_top, .07, white)
+		post.call(Vector3(STAIR_B_X, y0 + 2.75, 1.6), y0 + 2.885 + newel_top, .07, white)
+	# Empty level (y 16.5): guard along the opening above the last flight, west edge and north end.
+	var top := 16.5
+	flat.call(Vector3(STAIR_B_X, top, -2.6), Vector3(STAIR_B_X, top, 1.6))
+	flat.call(Vector3(STAIR_B_X, top, 1.6), Vector3(-.75, top, 1.6))
+	post.call(Vector3(STAIR_B_X, top, 1.6), top + STAIR_RAIL_H + .03, .07, white)
+	post.call(Vector3(-.75, top, 1.6), top + STAIR_RAIL_H + .03, .07, white)
+	print("tower_stair_rails: removed %d old rail parts, %d new parts" % [removed, holder.get_child_count()])

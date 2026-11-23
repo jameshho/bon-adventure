@@ -88,7 +88,7 @@ and wrong answers per word in the journal. **Levels** ([how games get harder](mi
 | [Furniture store](town.md#furniture-store) | Living, bedroom, dining, office and lighting showrooms | 18 Nov (shop-row storefront: teal) |
 | [Bank](town.md#bank) | Tellers, vault, office, ATMs, bear banker | 18 Nov (interior refresh: palette, shared doors, ATMs, round vault door) |
 | [Police station](town.md#police-station) | Lobby, lineup room, evidence room, cell; real front windows | 18 Nov (real windows in the lobby and evidence room) |
-| [Airport and control tower](town.md#airport-and-control-tower) | Terminal, restrooms, walkable tower with deck, airfield | 12 Nov (tower deck) |
+| [Airport and control tower](town.md#airport-and-control-tower) | Terminal, restrooms, walkable tower with deck, airfield | 23 Nov (deck floor, ladder, stair rails) |
 | [School](town.md#school) | Grammar classroom and teaching areas | 14 Nov (bigger board) |
 | [Hospital](town.md#hospital) | Three floors, elevator, ward doctors, helipad | 14 Nov (elevator picker) |
 | [Warehouse](town.md#warehouse) | Hall with loading bays, reception | 14 Nov (redesign) |

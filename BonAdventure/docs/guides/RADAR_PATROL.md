@@ -13,7 +13,7 @@ under **Pastimes**.
   display in the control room (level 22). Both were restyled to look like the game.
 - A click, a tap or E on a radar starts the game; it is a pastime station
   [interactable](ARCHITECTURE_REVIEW_PART1.md#interaction-system) (12 Nov 2026): a subtle dot
-  within 15 m, the "E" badge in range, no word card and no hover hint.
+  within 15 m on the same floor and in sight (23 Nov 2026), the "E" badge in range, no word card and no hover hint.
 - The game uses a full-screen panel, and the best score is saved.
 - The game shows English arcade text in every language, except its title, which is the translated game name (`games.radar_patrol`, user, 10 Nov 2026). No word is tested and nothing is tracked.
 - The design follows the user's two reference images: the play screen (square arcade frame,

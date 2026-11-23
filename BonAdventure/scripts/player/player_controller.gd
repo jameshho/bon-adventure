@@ -79,6 +79,13 @@ var ladder_node: Node3D
 var ladder_near: Node3D
 var ladder_launch := 0.0
 var ladder_velocity := Vector3.ZERO
+## Set when the ladder was taken from the top (walking into the hatch or S at its head): while the
+## key or stick push that took it is still held, it means "down", so it cannot bounce the player
+## straight back off the top (23 Nov 2026, user). Cleared once that push is let go.
+var ladder_from_top := false
+## After climbing down to the foot with that push still held: do not take the ladder again (and
+## climb back up) until it is let go.
+var ladder_wait_release := false
 var consecutive_jumps := 0
 var gait_phase := 0.0
 var gait_weight := 0.0
@@ -399,41 +406,73 @@ func movement_direction() -> Vector3:
     return Basis(Vector3.UP, camera_rig.rotation.y) * axis.limit_length(1.0)
 
 ## W / S climb a ladder you are standing in front of; Space lets go and hops away from the wall.
+## A push of the stick (or the move keys) toward the wall counts as W and away from it as S, so
+## touch players can climb too. At the head of a ladder (standing on the floor beside the hatch),
+## walking toward the ladder or holding S takes it from the top and climbs down.
 ## Returns true while clinging (velocity is then ladder_velocity).
 func update_ladder(delta: float) -> bool:
     ladder_launch = maxf(ladder_launch - delta, 0.0)
     ladder_near = null
     if noclip_enabled or not controls_enabled or ladder_launch > 0.0:
         ladder_node = null
+        ladder_from_top = false
         return false
-    var up := Input.is_action_pressed("climb_up")
-    var down := Input.is_action_pressed("climb_down")
+    var keys_up := Input.is_action_pressed("climb_up")
+    var keys_down := Input.is_action_pressed("climb_down")
     var found: Node3D = null
+    var at_head := false
     for candidate in get_tree().get_nodes_in_group("ladders"):
         if not is_instance_valid(candidate) or not candidate.is_inside_tree(): continue
         var local: Vector3 = (candidate as Node3D).to_local(global_position)
         var rise := float(candidate.get_meta("ladder_height", 4.0))
         if absf(local.x) < .65 and local.z > -.3 and local.z < 1.2 and local.y > -.2 and local.y < rise + .05:
             found = candidate
+            at_head = local.y > rise - .35
+            break
+        # The head: on the top floor, within a step of the hatch, in line with the ladder.
+        if candidate.get_meta("ladder_exit", "") != "forward" and absf(local.x) < .65 and local.z > -.3 and local.z < 2.4 \
+                and local.y > rise - .35 and local.y < rise + .6:
+            found = candidate
+            at_head = local.y > rise - .35
             break
     if found == null:
         ladder_node = null
+        ladder_from_top = false
         return false
     ladder_near = found
-    if ladder_node != found:
-        if not up: return false
-        ladder_node = found
     var out: Vector3 = found.global_basis.z.normalized()
+    var push := _ladder_push(out)
+    var up := keys_up or push > .5
+    var down := keys_down or push < -.5
+    if ladder_wait_release:
+        if up: return false
+        ladder_wait_release = false
+    if ladder_node != found:
+        if at_head and found.get_meta("ladder_exit", "") != "forward" and (down or up):
+            # Taken from the top: whatever brought the player here means "climb down".
+            ladder_from_top = true
+        elif not up:
+            return false
+        ladder_node = found
+    if ladder_from_top:
+        if up and not keys_down and not down:
+            down = true
+            up = false
+        elif not up and not down:
+            ladder_from_top = false
     var local: Vector3 = found.to_local(global_position)
     var rise := float(found.get_meta("ladder_height", 4.0))
     if jump_queued:
         jump_queued = false
         velocity = out * 5.0 + Vector3.UP * 5.0
         ladder_node = null
+        ladder_from_top = false
         ladder_launch = .3
         return false
     if down and is_on_floor() and local.y < .3:
         ladder_node = null
+        ladder_wait_release = ladder_from_top and up_held(keys_up, push)
+        ladder_from_top = false
         return false
     var climb := float(up) - float(down)
     if climb > 0.0 and local.y >= rise - .05:
@@ -443,12 +482,37 @@ func update_ladder(delta: float) -> bool:
         velocity = exit * 3.8 + Vector3.UP * 4.5
         ladder_node = null
         ladder_launch = .5
+        # The view turns to face the way she stepped off, so a W still held walks on away from
+        # the hatch instead of back into it; and that held push does not take the ladder again.
+        camera_yaw = atan2(-exit.x, -exit.z)
+        ladder_wait_release = true
         return false
-    var wanted: Vector3 = found.to_global(Vector3(clampf(local.x, -.2, .2), local.y, .45))
+    # Near the head the body is centred on the hatch so it drops through without catching its sides.
+    var side := 0.0 if local.y > rise - 1.2 else clampf(local.x, -.2, .2)
+    var wanted: Vector3 = found.to_global(Vector3(side, local.y, .45))
     var pull := (wanted - global_position) * 12.0
+    # From the head, slide over the hatch before dropping so the body clears the floor's edge.
+    var flat_gap := Vector2(wanted.x - global_position.x, wanted.z - global_position.z).length()
+    if climb < 0.0 and local.y > rise - 1.2 and flat_gap > .25:
+        climb = 0.0
     ladder_velocity = Vector3(pull.x, climb * CLIMB_SPEED, pull.z)
     rotation.y = lerp_angle(rotation.y, atan2(out.x, out.z), 1.0 - exp(-12.0 * delta))
     return true
+
+func up_held(keys_up: bool, push: float) -> bool:
+    return keys_up or push > .5
+
+## How hard the move input pushes toward the ladder's wall (+1) or away from it (-1).
+func _ladder_push(out: Vector3) -> float:
+    var axis := Vector3(
+        Input.get_action_strength("move_right") - Input.get_action_strength("move_left"),
+        0,
+        Input.get_action_strength("move_back") - Input.get_action_strength("move_forward"))
+    if axis.length_squared() < .04:
+        return 0.0
+    var direction := Basis(Vector3.UP, camera_rig.rotation.y) * axis.limit_length(1.0)
+    var flat_out := Vector3(out.x, 0, out.z).normalized()
+    return -direction.dot(flat_out)
 
 func next_jump_speed() -> float:
     # Count one includes a first press after walking off a ledge.

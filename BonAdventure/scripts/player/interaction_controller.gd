@@ -25,6 +25,9 @@ const FOCUS_INTERVAL := 0.1
 const COARSE_RANGE := 18.0
 ## Vertical metres between the player's feet and an interactable's point that still count.
 const MAX_RISE := 2.6
+## Station dots: how far the dot may sit above / below the player's feet (one storey).
+const STATION_ABOVE := 4.5
+const STATION_BELOW := 1.5
 ## Forward cone (cosine) for needs_facing; closer than FACING_FREE metres anything counts.
 const FACING_COS := 0.25
 const FACING_FREE := 0.7
@@ -270,6 +273,25 @@ var _aimed_cache: Node
 func aimed_interactable_last() -> Node:
     return _aimed_cache if is_instance_valid(_aimed_cache) else null
 
+## A station's dot shows only on the player's own floor, within discover_distance in 3D and in sight
+## (23 Nov 2026, user: the control-tower radars' dots showed from the ground and the deck, far
+## below or outside them, because only the flat distance was measured).
+func _station_near(item: Node, feet: Vector3) -> bool:
+    var at: Vector3 = item.badge_point()
+    var rise := at.y - feet.y
+    if rise <= -STATION_BELOW or rise >= STATION_ABOVE \
+            or at.distance_squared_to(feet) > item.discover_distance * item.discover_distance:
+        return false
+    # And only in sight: not through a wall, a floor or the control room's glass.
+    var ray := PhysicsRayQueryParameters3D.create(feet + Vector3.UP * 1.6, at)
+    ray.exclude = [player.get_rid()]
+    ray.collision_mask = 0xFFFFFFFF & ~FIGURE_LAYER
+    var hit := get_world_3d().direct_space_state.intersect_ray(ray)
+    if hit.is_empty():
+        return true
+    var owner_node: Node = item.get_parent()
+    return hit.collider == owner_node or owner_node.is_ancestor_of(hit.collider)
+
 ## One pass over the group: discovery icons into `bangs` / `dots`, returns the focus target.
 func _pick_focus(bangs: Array[Vector3], dots: Array[Vector3]) -> Node:
     var focusing := can_focus()
@@ -298,7 +320,7 @@ func _pick_focus(bangs: Array[Vector3], dots: Array[Vector3]) -> Node:
         if item.indicator == Interactable.Indicator.CALL and item.calling:
             bang_items.append(item)
         elif item.indicator == Interactable.Indicator.STATION and not game_running \
-                and coarse <= item.discover_distance * item.discover_distance:
+                and _station_near(item, feet):
             dot_items.append(item)
         if not focusing:
             continue

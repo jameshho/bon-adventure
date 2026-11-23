@@ -32,6 +32,22 @@ Start at the [README](../../README.md); editing contracts are in the
 [architecture guide](ARCHITECTURE_REVIEW_PART1.md), and implementation details and
 six rendered views are in the [Part 2 handoff](../evidence/part2/HANDOFF.md).
 
+## Control tower deck floor, hatch, ladder, dots and stair rails — 23 November 2026
+
+[What was built](TOWN_DESIGN_BRIEF.md#control-tower-deck-floor-hatch-and-stair-rails--23-november-2026).
+`tools/bake_unit.gd -- airport` (steps `tower_deck_floors`: added north and west;
+`tower_hatch_carpet`; `tower_stair_rails`: 164 old parts removed, 105 new), then
+`docs/evidence/tower-fixes-20261123/verify.gd`, windowed, isolated `HOME`, `VT_FOCUS=airport`
+(not the full town; `dev_focus.txt` stayed `all`): 22 checks, 0 failures, with renders of the deck
+from outside, the hatch from above, three stair views and the empty level's guard in that folder.
+The check drives the real player with W and S: from the hatch's head W and S both climb down to the
+empty level with no bounce (peak 22.00) and stay at the foot while held; W from the foot climbs,
+steps off and walks on away from the hatch. Dots: the control-room radar shows from in front of it
+and not from the deck or the ground; the radar-room one not from the floors above. Not run: the
+full suite, the old `tower-bridge-seats-20261030` and `tower-deck-20261112` checks, the barn and
+chapel ladders (their "forward" ladders skip the new top-taking code; the stick push now also
+climbs them, unplayed), electrical-box dots in the town, a touch device or the web export.
+
 ## Passport, missions, stamp coin and achievement log — 21 November 2026
 
 [What was built](ACHIEVEMENTS.md). Isolated `HOME`, `dev_focus.txt` = `all` (the runs used
