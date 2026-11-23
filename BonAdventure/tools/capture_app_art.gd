@@ -7,13 +7,12 @@ extends SceneTree
 ## Needs graphics (not --headless) and an isolated HOME (Main runs):
 ## HOME=<scratch>/home VT_FOCUS=all VT_SPAWN=none godot --path . --always-on-top --resolution 1280x720 --script res://tools/capture_app_art.gd
 ## VT_ART=shots skips the portraits (town shots and backdrop only). Re-run after a plush or the
-## town around a shot changes; then let Godot import the files. The shots use the High graphics
-## setting (sun shadows, no short view distance). Frames are drawn with force_draw() and vsync
+## town around a shot changes; then let Godot import the files. The shots keep sun shadows and no
+## short view distance (capture_shots()). Frames are drawn with force_draw() and vsync
 ## off, because a window behind others may stop drawing (--always-on-top helps too).
 const Portraits := preload("res://scripts/ui/plush_portraits.gd")
 const ProfileManager := preload("res://scripts/core/profile_manager.gd")
 const HouseCharacters := preload("res://scripts/characters/house_characters.gd")
-const GameSettings := preload("res://scripts/core/game_settings.gd")
 const AVATARS := "res://assets/ui/avatars/"
 ## Portraits cut from the user's character-grid mockup (cut_headshots.py IDS; 23 Nov 2026).
 const MOCKUP_IDS := ["bonbon", "leo", "bruno", "miso", "awoo", "poppy", "twinkle", "cocodrilo"]
@@ -71,9 +70,10 @@ func capture_portraits() -> void:
 		print("portrait ", id, " (", species, ")")
 	portraits.queue_free()
 
-## Town shots at midday, High graphics, without the HUD.
+## Town shots at midday, without the HUD. The game has one graphics setting since 23 Nov 2026
+## (no sun shadows, a 130 m fogged view); these pictures keep the fuller look the shots had (the
+## High setting until then): sun shadows and only a faint haze, set here for the shots alone.
 func capture_shots() -> void:
-	GameSettings.shared().set_graphics(GameSettings.HIGH)
 	var game: Node = load("res://scenes/main.tscn").instantiate()
 	root.add_child(game)
 	for i in 30:
@@ -81,6 +81,8 @@ func capture_shots() -> void:
 	print("town ready")
 	game.day_night.set_time(11.5 * 60.0)
 	game.day_night.pause()
+	game.day_night.set_view_distance(0.0)
+	game.day_night.sun.shadow_enabled = true
 	for layer in game.find_children("*", "CanvasLayer", true, false):
 		layer.visible = false
 	var camera := Camera3D.new()

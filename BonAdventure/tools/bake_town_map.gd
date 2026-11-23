@@ -58,7 +58,7 @@ func run() -> void:
 	main.hud.hide()
 	main.day_night.pause()
 	main.day_night.set_time(12 * 60)
-	main.day_night.set_graphics(false, 0.0)
+	main.day_night.set_view_distance(0.0)
 	if main.day_night.environment != null:
 		main.day_night.environment.fog_enabled = false
 	# No sun disc or clouds over the picture.

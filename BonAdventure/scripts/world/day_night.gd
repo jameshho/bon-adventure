@@ -11,7 +11,7 @@ extends Node
 ## whole street turns on with one property write (batched MultiMeshes keep that material).
 ## Interiors stay warm and readable: a few rays from the player every INDOOR_PROBE_INTERVAL
 ## seconds tell whether a roof and walls are around, and the "indoor" ambient fill then blends in
-## (the shadowless moon fades too, so it does not shine through roofs). The sun, its shadows and
+## (the moon fades too, so it does not shine through roofs). The sun and
 ## the sky are never changed indoors (user, 9 Nov 2026: indoors at night lit the outside like noon).
 ## The fill is local (user, 10 Nov 2026: the street seen through the hospital door was still lit
 ## like day while the same street seen outdoors was night): the global ambient always keeps the
@@ -49,7 +49,8 @@ const REFRESH_INTERVAL := 0.25
 ## re-renders the shadow map from a new angle, and small continuous turns made shadow edges
 ## shimmer (user, 9 Nov 2026: flicker in the background). Five minutes is about 1 degree
 ## (yaw_per_hour 12), a jump about every 6 s at the default 30-minute day (user, 9 Nov 2026:
-## 30 minutes, was 20). Colours, sky and lamps still blend at every refresh.
+## 30 minutes, was 20). Colours, sky and lamps still blend at every refresh. (No sun shadows since
+## 23 Nov 2026; the steps stay.)
 const SUN_STEP_MINUTES := 5.0
 ## A game can ask for rarer, sliding steps while it holds the player in one view
 ## (set_sun_steps(); mahjong: about every 30 s with a 1 s slide). Time itself runs the same.
@@ -103,11 +104,11 @@ const DISC_FADE_LOW := -0.04
 const DISC_FADE_HIGH := 0.02
 const DISC_HAZE_TOP := 0.25
 const DISC_HAZE := 0.4
-## Low graphics: distance fog thickens from this share of the view distance to fully opaque at it,
+## Distance fog thickens from this share of the view distance to fully opaque at it,
 ## so the far cut is hidden in the sky-coloured haze (the fog colour follows the time of day).
 const VIEW_FOG_BEGIN_SHARE := 0.4
 const VIEW_FOG_CURVE := 1.6
-## The look of before (High): a faint exponential haze.
+## With no view distance (the town map bake): a faint exponential haze.
 const HAZE_DENSITY := 0.0005
 
 ## Real minutes for one full game day (data/day_night.json cycle_minutes).
@@ -127,9 +128,7 @@ var cloud_materials: Array[StandardMaterial3D] = []
 var indoor := 0.0
 ## The indoor fill: a ReflectionProbe whose box is fitted to the building around the player.
 var room_probe: ReflectionProbe
-## Graphics tier (render_culling.gd apply_graphics(), 14 Nov 2026): Low turns the sun shadows
-## off and sets a view distance; 0 = unlimited (High, the look of before).
-var sun_shadows := true
+## The view distance (set_view_distance()); 0 = unlimited.
 var view_distance := 0.0
 
 var _keys: Array = []
@@ -160,7 +159,8 @@ func setup(game: Node) -> void:
 	_load(DATA_PATH)
 	sun = DirectionalLight3D.new()
 	sun.name = "Soft daylight"
-	sun.shadow_enabled = true
+	# No sun shadows: one graphics setting that runs on a phone (23 Nov 2026, render_culling.gd).
+	sun.shadow_enabled = false
 	# Not drawn in the sky: a dim sun's halo darkens a sunset sky, and a sky that ignores the
 	# light is not re-rendered while the sun moves.
 	sun.sky_mode = DirectionalLight3D.SKY_MODE_LIGHT_ONLY
@@ -452,8 +452,12 @@ func _apply() -> void:
 	_outdoor_light_energy = s.sun_energy
 	_write(sky_material, "sky_top_color", s.sky_top)
 	_write(sky_material, "sky_horizon_color", s.sky_horizon)
-	_write(sky_material, "ground_horizon_color", s.ground_horizon)
-	_write(sky_material, "ground_bottom_color", s.ground_bottom)
+	# With a view distance, everything past it is sky: below the horizon the sky takes the fog
+	# colour, so fogged ground and sea run into it without a seam (user, 23 Nov 2026: a hard line
+	# under the horizon when flying high at night, where ground_bottom was darker than the fog).
+	var fogged := view_distance > 0.0
+	_write(sky_material, "ground_horizon_color", s.fog_color if fogged else s.ground_horizon)
+	_write(sky_material, "ground_bottom_color", s.fog_color if fogged else s.ground_bottom)
 	_write(environment, "fog_light_color", s.fog_color)
 	_outdoor_color = s.ambient_color
 	_outdoor_energy = s.ambient_energy
@@ -502,8 +506,7 @@ func _make_room_probe() -> void:
 
 ## Ambient fill. The environment always keeps the outdoor value; the indoor fill probe around
 ## the player's building blends toward the "indoor" values under a roof. The direct light keeps
-## its outdoor colour, strength and shadows (roofs shadow the sun by day); only the shadowless
-## moon fades indoors, where it would otherwise shine through the roof, and part of it moves
+## its outdoor colour and strength; the moon fades indoors, where it would otherwise shine through the roof, and part of it moves
 ## into the outdoor ambient meanwhile.
 func _apply_fill() -> void:
 	var moon_fade := _outdoor_light_energy * indoor if _night else 0.0
@@ -518,16 +521,16 @@ func _apply_fill() -> void:
 		_write(room_probe, "ambient_color_energy", lerpf(_outdoor_energy, _indoor_energy, indoor))
 	_write(sun, "light_color", _outdoor_light)
 	_write(sun, "light_energy", _outdoor_light_energy - moon_fade)
-	var shadows: bool = sun_shadows and not _night and _outdoor_light_energy >= float(_sun_path.shadow_min_energy)
-	if sun.shadow_enabled != shadows:
-		sun.shadow_enabled = shadows
 
 
-## Graphics tier hook (render_culling.gd): sun shadows on/off and the view distance (0 = none).
-## A view distance switches the haze to depth fog that is opaque at that distance.
-func set_graphics(shadows: bool, distance: float) -> void:
-	sun_shadows = shadows
+## The view distance (render_culling.gd apply_view(); raised while flying, vehicle_controls.gd
+## update_flight_view()): depth fog that is opaque at that distance. 0 = no view distance, only a
+## faint exponential haze (the town map bake, tools/bake_town_map.gd).
+func set_view_distance(distance: float) -> void:
+	var switched := (distance > 0.0) != (view_distance > 0.0)
 	view_distance = distance
+	if switched and sky_material != null and is_inside_tree():
+		_apply() # the sky below the horizon (fog colour or the keyframe's ground colours)
 	if environment != null:
 		if distance > 0.0:
 			environment.fog_mode = Environment.FOG_MODE_DEPTH

@@ -1,25 +1,25 @@
 extends Node
 ## Nearby loading on phones (user decision, 17 Nov 2026: option A of the proposal in
-## docs/guides/performance/README.md, "Load only nearby buildings on phones"): on the web with
-## Low graphics, a profile that finished the welcome tutorial starts its town with only the
+## docs/guides/performance/README.md, "Load only nearby buildings on phones"): on the web, a profile that finished the welcome tutorial starts its town with only the
 ## building units (data/buildings.json) near where it comes back (app.gd start_town():
 ## initial_for()), and this node then adds the others with Main.add_unit() as the player comes
 ## within LOAD_RADIUS of them, nearest first, one at a time. Units are never freed (grow only),
 ## so the town ends where it is today once the player has been everywhere; until then the GPU
 ## holds only what is near (measured: about 60 of the units' 157 MB at a typical spot).
-## Low's view ends at 130 m in fog (render_culling.gd LOW_VIEW_DISTANCE), so a unit arrives
-## 20 m beyond what can be seen. Moving fast (driving, flying, sprinting), the spot LOOK_AHEAD
-## seconds ahead counts too. With High graphics (chosen in Settings while playing) every pending
-## unit is added, nearest first, since High draws the whole town.
+## The view ends at 130 m in fog (render_culling.gd VIEW_DISTANCE), so a unit arrives 20 m
+## beyond what can be seen; flying, the view grows with height (vehicle_controls.gd
+## update_flight_view()) and the radius grows with it (VIEW_MARGIN beyond the camera's far).
+## Moving fast (driving, flying, sprinting), the spot LOOK_AHEAD seconds ahead counts too.
 ## Units' boxes and which unit each minigame's session lives in come from data/nearby_units.json
 ## (written by tools/nearby_units_data.gd; run it again after a unit's footprint or minigames
 ## change). The minigame picker loads an absent game's unit before starting it (game_launcher.gd).
 ## VT_NEARBY=1 / 0 forces it on / off (checks run it natively).
 const ModularTown := preload("res://scripts/world/modular_town.gd")
-const GameSettings := preload("res://scripts/core/game_settings.gd")
 const DATA := "res://data/nearby_units.json"
 ## Metres (world) from a unit's nearest part box at which it is added.
 const LOAD_RADIUS := 150.0
+## Flying with a longer view: units are added this far beyond the camera's far plane instead.
+const VIEW_MARGIN := 20.0
 ## Seconds of the current speed looked ahead, above LOOK_AHEAD_SPEED metres per second.
 const LOOK_AHEAD := 3.0
 const LOOK_AHEAD_SPEED := 9.0
@@ -40,7 +40,7 @@ static func enabled() -> bool:
 	var forced := OS.get_environment("VT_NEARBY").strip_edges()
 	if forced != "":
 		return forced == "1"
-	return OS.has_feature("web") and GameSettings.shared().graphics == GameSettings.LOW
+	return OS.has_feature("web")
 
 static func data() -> Dictionary:
 	if _data.is_empty() and FileAccess.file_exists(DATA):
@@ -124,7 +124,9 @@ func _next_unit(spot: Vector3) -> String:
 	if flat.length() > LOOK_AHEAD_SPEED:
 		var ahead := town.to_local(spot + flat * LOOK_AHEAD)
 		points.append(Vector2(ahead.x, ahead.z))
-	var radius := LOAD_RADIUS / scale if enabled() else INF
+	var camera: Camera3D = main.player.camera
+	var reach := maxf(LOAD_RADIUS, camera.far + VIEW_MARGIN) if camera != null else LOAD_RADIUS
+	var radius := reach / scale if enabled() else INF
 	var best := ""
 	var best_distance := INF
 	for key in main.pending_units:

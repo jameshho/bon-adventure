@@ -32,7 +32,7 @@ extends Node
 ## after it (a slow device, or a profile resuming at a later act) at quiet moments of the
 ## tutorial: a fade or a line of dialogue being read. When the tutorial ends or is skipped, what is left loads at once
 ## behind the loading screen. Profiles that finished the tutorial load the whole town as before,
-## except with nearby loading (phones: web + Low graphics, user decision 17 Nov 2026,
+## except with nearby loading (phones: the web build, user decision 17 Nov 2026,
 ## scripts/world/nearby_units.gd): they start with the buildings near where they come back
 ## (_nearby_first_units()) and nearby_units.gd adds the rest as the player comes near.
 ## Web, after the browser dropped the graphics (WebGL context loss, 14 Nov 2026): the page reloads

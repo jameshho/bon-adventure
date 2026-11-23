@@ -11,8 +11,7 @@
     "night_from": 19.0,
     "night_until": 5.5,
     "moon_elevation": 48.0,
-    "moon_yaw": 150.0,
-    "shadow_min_energy": 0.12
+    "moon_yaw": 150.0
   },
   "indoor": {
     "ambient_color": "fff4e4",

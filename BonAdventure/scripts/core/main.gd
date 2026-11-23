@@ -842,3 +842,4 @@ func _process(delta: float) -> void:
 		room_name = next_room
 		update_progress_display()
 	DoorAnimator.animate(self, delta)
+	VehicleControls.update_flight_view(self, delta)

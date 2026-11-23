@@ -124,12 +124,7 @@ as a routine edit: regeneration can overwrite authored scene overrides. See the
 | Playground swing: sit, kick in time, brake and stand | E, W–S, E |
 | Accelerate / brake then reverse / steer | W / S / A–D |
 | Road vehicle service brakes / recover if falling | Space / R |
-| Easy flying (default since 14 Nov 2026) for the plane and helicopter, switch to expert controls and back ([easy flying](docs/guides/aircraft.md#easy-flying)) | C in the cockpit |
-| Easy plane: take off + climb / descend + brake / turn; let go flies level | W or Space / S or Shift / A–D |
-| Easy helicopter: fly / turn / up / down; let go hovers | W–S / A–D / Space / Shift, Ctrl or touch ▼ |
-| Helicopter (expert) ascent / descent / hover assist | Space / Shift / hold R |
-| Turboprop (expert) throttle / pitch / bank | Space–Shift / S–W / A–D |
-| Turboprop (expert) rudder / flaps / brakes / level assist | Z–X / F / B / hold R |
+| Fly the plane or helicopter (one set of controls on every device since 23 Nov 2026; [flying controls](docs/guides/aircraft.md#flying-controls)): up / down; faster / slower (helicopter forward / back); turn; let go flies level or hovers; on the runway W or up takes off | Space or on-screen ▲ / Shift, Ctrl or on-screen ▼; W–S; A–D |
 | Help guide / journal / town map (the map was [hidden](#hidden-features) 14–18 Nov 2026; since 18 Nov 2026 a baked picture: tap a place, Go there starts a guide arrow, also Go there in the minigame picker; the map button sits top right, left of ▶; [guide](docs/guides/MINIGAMES.md#town-map-and-guide-arrow)); the F1 guide also has a finger-sized ✕ top right (since 14 Nov 2026, for touch). The journal's book button sits top right under the gear; the ? help button is hidden since 14 Nov 2026 (user) | F1 / J / M |
 | FPS counter (Native mode, "Show everything in my language", is a checkbox in Settings) | F3 |
 | See the town's signs, building names and posters in the native language while held (not saved; also the badge button, e.g. "EN", left of the gear for touch; hidden in Native mode). Since 9 Nov 2026; the old L mode cycle was removed 7 Nov 2026 | hold L |
@@ -312,9 +307,10 @@ the export templates copied in), then serve the folder over HTTPS or `localhost`
 - **Icons:** `assets/ui/app/icon_<size>.png`, a pastel pig drawn as a vector in
   `tools/app_icon.svg` and rendered by `tools/make_app_icons.gd` (needs graphics; 13 Nov 2026).
   `config/icon` is the 192 px one.
-- **Graphics and speed (14 Nov 2026):** Low graphics is the default (Settings → Graphics quality;
-  High is the full look). Add `?perf=1` to the address (or press F3, or Settings → Show FPS) for
-  an fps / draw-call readout ([tiers and numbers](docs/guides/performance/README.md#graphics-tiers-low-default-high-kept--14-november-2026)).
+- **Graphics and speed (one setting since 23 Nov 2026):** one graphics setting for every device,
+  the phone-friendly one (no sun shadows, a 130 m fogged view that grows when flying high). Add
+  `?perf=1` to the address (or press F3, or Settings → Show FPS) for an fps / draw-call readout
+  ([setting and numbers](docs/guides/performance/README.md#one-graphics-setting-and-the-flight-view--23-november-2026)).
 - **WebGL context loss (14 Nov 2026, user: "reduce + recover"):** a phone browser can drop the
   game's graphics (low memory, or the tab was in the background), and Godot then only showed
   "WebGL context lost, please reload the page". *Reduce:* on the web, Label3D font sizes share a

@@ -10,7 +10,8 @@ extends RefCounted
 ## squeeze (two arrows pressing a cushion) and lift (an arrow raising a box) (evidence game
 ## tools since 8 Nov 2026: squeeze, touch, lift),
 ## and the flight board's takeoff / landing (a runway line with an arrow leaving or reaching it),
-## and star / book (the vocabulary journal's Saved and All tabs; down, its menus' arrow; 9 Nov 2026),
+## and star / book (the vocabulary journal's Saved and All tabs; down, its menus' arrow; 9 Nov 2026;
+## up and down are also the flying ▲ / ▼ buttons, 23 Nov 2026),
 ## and sun / moon / pause / minus / plus (the HUD clock, day_clock.gd, 9 Nov 2026),
 ## and the minigame picker's game icons cart / family / cloche / pencil / door / tiles / radar /
 ## bolt (game_launcher.gd, 10 Nov 2026),
@@ -41,6 +42,8 @@ const SHAPES := {
 	"takeoff": '<path d="M3 20.5h18"/><path d="M5 16.5L18 5"/><path d="M11 5h7v7"/>',
 	"landing": '<path d="M3 20.5h18"/><path d="M5 4.5l12 11"/><path d="M17 9v6.5h-6.5"/>',
 	"down": '<path d="M6 9.5l6 6 6-6"/>',
+	# The flying controls' ascend button (touch_controls.gd, 23 Nov 2026; descend uses down).
+	"up": '<path d="M6 14.5l6-6 6 6"/>',
 	"bell": '<path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.6 2.2H4.4z"/><path d="M10 20.6a2 2 0 0 0 4 0"/><path d="M12 3.2V5"/>',
 	"star": '<path d="M12 3.2l2.7 5.5 6.1.9-4.4 4.3 1 6.1L12 17.1l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/>',
 	"book": '<path d="M12 6.5C10 5 7 4.6 3.5 5v13.2c3.5-.4 6.5.1 8.5 1.6 2-1.5 5-2 8.5-1.6V5C17 4.6 14 5 12 6.5z"/><path d="M12 6.5v13.3"/>',

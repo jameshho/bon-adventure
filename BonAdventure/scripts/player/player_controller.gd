@@ -65,6 +65,9 @@ const LEFT_LOOK_PIXELS := 8.0
 var left_look_armed := false
 var left_look_travel := 0.0
 var camera_pitch := -0.22
+## Extra downward tilt of the view while flying high, added to camera_pitch (written by
+## vehicle_controls.gd update_flight_view(), 23 Nov 2026), so the town stays in view.
+var flight_tilt := 0.0
 ## Radians the view has been turned by hand (look_by(): a mouse or finger drag), never by the
 ## follow camera. Only grows; the welcome tutorial's "view" step waits for it (16 Nov 2026).
 var look_turned := 0.0
@@ -231,7 +234,8 @@ func board_vehicle(vehicle: DriveableVehicle) -> void:
     jump_queued = false
     # Pose BonBon after the vehicle has moved this tick, so a visible rider never lags a frame.
     process_physics_priority = 10
-    camera_distance = 23.0 if vehicle.fixed_wing else (10.0 if vehicle.helicopter else 8.5)
+    # The plane is the small one since 23 Nov 2026 (turboprop.gd SIZE): a closer chase view.
+    camera_distance = 16.0 if vehicle.fixed_wing else (10.0 if vehicle.helicopter else 8.5)
     if vehicle.fixed_wing:
         camera_yaw=vehicle.global_basis.orthonormalized().get_euler().y
         camera_pitch=-.2
@@ -374,7 +378,7 @@ func chase_view(delta: float) -> void:
 
 ## Moves the camera nearer (negative) or farther (the wheel, a pinch: touch_controls.gd).
 func zoom_by(step: float) -> void:
-    camera_distance = clampf(camera_distance + step, min_camera_distance, 38.0 if is_instance_valid(riding_vehicle) and riding_vehicle.fixed_wing else max_camera_distance)
+    camera_distance = clampf(camera_distance + step, min_camera_distance, 28.0 if is_instance_valid(riding_vehicle) and riding_vehicle.fixed_wing else max_camera_distance)
 
 func toggle_noclip() -> void:
     if seated or is_instance_valid(riding_vehicle):
@@ -537,7 +541,7 @@ func _physics_process(delta: float) -> void:
     if is_instance_valid(riding_vehicle):
         global_position = riding_vehicle.global_position + Vector3.UP * (1.7 if riding_vehicle.helicopter else 1.15)
         velocity = Vector3.ZERO
-        var camera_height := 4.5 if riding_vehicle.fixed_wing else (3.8 if riding_vehicle.helicopter else 2.75)
+        var camera_height := 3.2 if riding_vehicle.fixed_wing else (3.8 if riding_vehicle.helicopter else 2.75)
         if riding_vehicle.animated_boarding():
             animate_boarding(delta)
         if riding_vehicle.fixed_wing:
@@ -547,7 +551,7 @@ func _physics_process(delta: float) -> void:
             chase_view(delta)
         camera_rig.global_position = camera_rig.global_position.lerp(riding_vehicle.global_position + Vector3.UP * camera_height, 1.0-exp(-5.0*delta))
         camera_rig.rotation.y = lerp_angle(camera_rig.rotation.y, camera_yaw, 1.0 - exp(-camera_response * delta))
-        camera_rig.rotation.x = lerpf(camera_rig.rotation.x, camera_pitch, 1.0 - exp(-camera_response * delta))
+        camera_rig.rotation.x = lerpf(camera_rig.rotation.x, clampf(camera_pitch - flight_tilt, -1.15, 0.15), 1.0 - exp(-camera_response * delta))
         spring_arm.spring_length = lerpf(spring_arm.spring_length, camera_distance, 1.0 - exp(-4.0 * delta))
         return
     if is_on_floor() or noclip_enabled:

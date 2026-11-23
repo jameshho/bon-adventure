@@ -1,7 +1,7 @@
 extends RefCounted
 ## Runtime render-cost trim, applied once after the world is built and batched.
 ## - Web build: 3D at CSS pixel size on high-density screens (apply_web_3d_scale).
-## - Sun shadows use two cascades over SUN_SHADOW_DISTANCE metres.
+## - No sun shadows (one graphics setting since 23 Nov 2026, below).
 ## - Script-built spheres/cylinders drop Godot's 64-segment default to a budget
 ##   scaled by their world radius.
 ## - Small static props (largest AABB side under SMALL_PROP_SIZE) stop casting sun
@@ -15,14 +15,15 @@ extends RefCounted
 ##   and only pieces lit by the same local lights (at most the per-object limit)
 ##   share a batch. The renderer's per-frame light cap (32 of 124 lights) already
 ##   drops some interior lights; merging can change which ones, see the docs.
-## - Graphics tiers (14 Nov 2026, user): GameSettings.graphics LOW (default) or HIGH, applied
-##   by apply_graphics() at startup and again when Settings changes it, without a restart.
-##   HIGH is exactly the look above. LOW: no sun shadows, a LOW_VIEW_DISTANCE camera far with
-##   depth fog hiding the cut (day_night.gd set_graphics()), the short visibility ranges above
-##   (to LOW_SHORT_RANGE) times LOW_RANGE_SHARE, heavy meshes to HEAVY_LOW_RANGE, LOW_MSAA (2x since 17 Nov 2026),
-##   screen-space AA and TAA off and, on the web, 3D at LOW_WEB_PIXEL_SHARE of the
-##   CSS pixel size but at least LOW_WEB_MIN_LINES lines. The perf readout (perf_readout.gd: ?perf=1, F3, Settings) shows the cost.
-## - Web build, both tiers (14 Nov 2026, WebGL context loss): Label3D font sizes share a few
+## - One graphics setting (user, 23 Nov 2026: one consistent look that works on a phone; the
+##   Low / High choice of 14 Nov 2026 and everything only High used were removed). apply_view()
+##   at startup: no sun shadows, a VIEW_DISTANCE camera far with depth fog hiding the cut
+##   (day_night.gd set_view_distance(); flying raises it with height, vehicle_controls.gd
+##   update_flight_view()), the short visibility ranges above (up to SHORT_RANGE) times
+##   RANGE_SHARE, heavy meshes to HEAVY_RANGE, MSAA 2x (since 17 Nov 2026), screen-space AA and
+##   TAA off and, on the web, 3D at WEB_PIXEL_SHARE of the CSS pixel size but at least
+##   WEB_MIN_LINES lines. The perf readout (perf_readout.gd: ?perf=1, F3, Settings) shows the cost.
+## - Web build (14 Nov 2026, WebGL context loss): Label3D font sizes share a few
 ##   steps (share_label_sizes()), so far fewer glyph atlases sit in GPU memory.
 ## - Door leaves (17 Nov 2026): each door in Main.doors moves as one node, so its own static meshes
 ##   (slab, panels, mouldings, handles: 35 per home door) are merged into one mesh per material
@@ -36,7 +37,6 @@ extends RefCounted
 
 const SMALL_PROP_SIZE := 1.0
 const SMALL_PROP_RANGE := 60.0
-const SUN_SHADOW_DISTANCE := 50.0
 const MID_PROP_SIZE := 3.0
 const MID_PROP_RANGE := 70.0
 const SIZE_RANGE_RATIO := 60.0
@@ -45,29 +45,30 @@ const DETAIL_PART_SHARE := 0.3
 const DETAIL_RANGE_SHARE := 0.4
 const RANGED_MAX_SIZE := 10.0
 const PLUSH_RANGE := 45.0
-## Low graphics (see the header): measured in docs/guides/performance/README.md ("Graphics tiers").
-const LOW_VIEW_DISTANCE := 130.0
-const LOW_RANGE_SHARE := 0.45
-## Low shortens only the short ranges (small props, details, plush characters: High up to this);
+## The view (see the header): measured in docs/guides/performance/README.md ("Graphics tiers",
+## all of it then called Low).
+const VIEW_DISTANCE := 130.0
+const RANGE_SHARE := 0.45
+## Only the short ranges are shortened (small props, details, plush characters: up to this);
 ## larger pieces (building parts sized by SIZE_RANGE_RATIO) keep theirs and fade in the fog.
-const LOW_SHORT_RANGE := 80.0
-## Low never hides a ranged object nearer than this (plush characters stay to 20 m, not 45 x share).
-const LOW_MIN_RANGE := 20.0
-## Low: a single mesh of at least HEAVY_TRIANGLES (the clay zoo animals, 60k-300k each) hides
-## beyond HEAVY_LOW_RANGE even when High draws it without a range.
+const SHORT_RANGE := 80.0
+## A ranged object is never hidden nearer than this (plush characters stay to 20 m, not 45 x share).
+const MIN_RANGE := 20.0
+## A single mesh of at least HEAVY_TRIANGLES (the clay zoo animals, 60k-300k each) hides beyond
+## HEAVY_RANGE even when it has no range of its own.
 const HEAVY_TRIANGLES := 30000
-const HEAVY_LOW_RANGE := 40.0
-const LOW_WEB_PIXEL_SHARE := 0.8
-const LOW_WEB_MIN_3D_SCALE := 0.25
-## Low on the web never draws the 3D with fewer lines than this on the screen's short side
+const HEAVY_RANGE := 40.0
+const WEB_PIXEL_SHARE := 0.8
+const WEB_MIN_3D_SCALE := 0.25
+## On the web the 3D is never drawn with fewer lines than this on the screen's short side
 ## (17 Nov 2026, user: on an iPhone 0.8 of the CSS size was only ~310 lines, so signs were
-## unreadable and edges broke up). A laptop on Low already draws about this many.
-const LOW_WEB_MIN_LINES := 720.0
-## Low's 3D multisampling (17 Nov 2026, user: broken edges on road lines, cars and buildings on an
+## unreadable and edges broke up). A laptop already draws about this many.
+const WEB_MIN_LINES := 720.0
+## 3D multisampling (17 Nov 2026, user: broken edges on road lines, cars and buildings on an
 ## iPhone). Road markings, signs and floor lines are plain-coloured geometry, so MSAA, not texture
 ## filtering, smooths them. 2x cost 17 MB of video memory at 1560 x 720 (4x: 34 MB) and no draw
 ## calls (docs/guides/performance/README.md "Graphics tiers"). Viewport.MSAA_DISABLED turns it off.
-const LOW_MSAA := Viewport.MSAA_2X
+const MSAA := Viewport.MSAA_2X
 ## Web: every font size + outline pair a Label3D uses gets its own glyph atlas on the GPU (0.5-2 MB
 ## each); the full town's 765 labels used 87 pairs (measured 14 Nov 2026, docs/guides/performance/README.md
 ## "GPU memory on the web"). share_label_sizes() moves each label up to the next LABEL_SIZES step
@@ -96,40 +97,26 @@ var _unit_box := BoxMesh.new()
 var _unit_meshes := {}
 var _light_cells := {}
 var _max_lights := 8
-## The game this trim belongs to, every node with a visibility range and its High range
-## (meta "high_range"), and the High camera/AA values captured before the first tier change.
-var _game: Node3D
-var _ranged: Array[GeometryInstance3D] = []
-var _high := {}
 var _triangle_counts := {}
-var graphics := ""
 
-const GameSettings := preload("res://scripts/core/game_settings.gd")
 const PerfReadout := preload("res://scripts/ui/perf_readout.gd")
 
 
-## Web build only (9 Nov 2026, user decision): the 3D world renders at the page's CSS pixel size
-## instead of the screen's full pixel density (Retina 2x drew 4x the pixels and halved the frame
-## rate on an M5); the HUD and text stay sharp. Never below WEB_MIN_3D_SCALE.
-const WEB_MIN_3D_SCALE := 0.5
-## Share of the CSS pixel size and the lowest scale (1.0 and WEB_MIN_3D_SCALE on High; Low lowers both).
-static var web_pixel_share := 1.0
-static var web_min_scale := WEB_MIN_3D_SCALE
-## Fewest 3D lines on the screen's short side (0 = no floor; Low sets LOW_WEB_MIN_LINES).
-static var web_min_lines := 0.0
-
-
+## Web build only (9 Nov 2026, user decision): the 3D world renders below the screen's full pixel
+## density (Retina 2x drew 4x the pixels and halved the frame rate on an M5); the HUD and text stay
+## sharp. WEB_PIXEL_SHARE of the CSS pixel size, at least WEB_MIN_LINES lines, never below
+## WEB_MIN_3D_SCALE.
 static func apply_web_3d_scale(viewport: Viewport) -> void:
 	if not OS.has_feature("web"):
 		return
 	var density := DisplayServer.screen_get_scale()
 	viewport.scaling_3d_mode = Viewport.SCALING_3D_MODE_BILINEAR
-	var scale := web_pixel_share / maxf(density, 1.0)
+	var scale := WEB_PIXEL_SHARE / maxf(density, 1.0)
 	var size := viewport.get_visible_rect().size
 	var short_side := minf(size.x, size.y)
-	if web_min_lines > 0.0 and short_side > 0.0:
-		scale = maxf(scale, web_min_lines / short_side)
-	viewport.scaling_3d_scale = clampf(scale, web_min_scale, 1.0)
+	if short_side > 0.0:
+		scale = maxf(scale, WEB_MIN_LINES / short_side)
+	viewport.scaling_3d_scale = clampf(scale, WEB_MIN_3D_SCALE, 1.0)
 
 
 func build(game: Node3D) -> void:
@@ -138,10 +125,6 @@ func build(game: Node3D) -> void:
 	apply_web_3d_scale(viewport)
 	if OS.has_feature("web"):
 		viewport.size_changed.connect(apply_web_3d_scale.bind(viewport))
-	var sun := game.get_node_or_null("Soft daylight") as DirectionalLight3D
-	if sun != null:
-		sun.directional_shadow_max_distance = SUN_SHADOW_DISTANCE
-		sun.directional_shadow_mode = DirectionalLight3D.SHADOW_PARALLEL_2_SPLITS
 	for child in game.apartment.get_children():
 		if child.name in SKIPPED_ROOTS:
 			for item in child.get_children():
@@ -154,61 +137,40 @@ func build(game: Node3D) -> void:
 	if OS.has_feature("web"):
 		share_label_sizes(game)
 	print("Render culling: %d props trimmed, %d round meshes simplified, %d meshes in %d static batches, %d door-leaf meshes in %d" % [affected, simplified, merged, batches, leaf_merged, leaf_meshes])
-	_game = game
-	_note_ranged(game.apartment)
-	var settings = GameSettings.shared()
-	# A method, not a lambda: the settings are a static singleton that outlives the game, and a
-	# lambda left connected to it made Godot abort at exit (recursive_mutex).
-	settings.graphics_changed.connect(_on_graphics_changed)
-	apply_graphics(settings.graphics)
+	_apply_ranges(_note_ranged(game.apartment))
+	apply_view(game)
 	PerfReadout.attach(game)
 
 
-func _on_graphics_changed() -> void:
-	apply_graphics(GameSettings.shared().graphics)
-
-
-## Applies a graphics tier (GameSettings.LOW or HIGH) to the whole game; again for a later unit.
-func apply_graphics(value: String) -> void:
-	if _game == null or not is_instance_valid(_game):
-		return
-	graphics = value
-	var low := value == GameSettings.LOW
-	var viewport := _game.get_viewport()
-	var camera: Camera3D = _game.player.camera if _game.get("player") != null else null
-	if _high.is_empty():
-		_high = {"far": camera.far if camera != null else 4000.0, "msaa": viewport.msaa_3d,
-			"ssaa": viewport.screen_space_aa, "taa": viewport.use_taa}
+## The one graphics setting (see the header) for the camera, the viewport and the fog.
+static func apply_view(game: Node3D) -> void:
+	var viewport := game.get_viewport()
+	var camera: Camera3D = game.player.camera if game.get("player") != null else null
 	if camera != null:
-		camera.far = LOW_VIEW_DISTANCE if low else _high.far
-	viewport.msaa_3d = LOW_MSAA if low else _high.msaa
-	viewport.screen_space_aa = Viewport.SCREEN_SPACE_AA_DISABLED if low else _high.ssaa
-	viewport.use_taa = false if low else _high.taa
-	if _game.get("day_night") != null:
-		_game.day_night.set_graphics(not low, LOW_VIEW_DISTANCE if low else 0.0)
-	web_pixel_share = LOW_WEB_PIXEL_SHARE if low else 1.0
-	web_min_scale = LOW_WEB_MIN_3D_SCALE if low else WEB_MIN_3D_SCALE
-	web_min_lines = LOW_WEB_MIN_LINES if low else 0.0
+		camera.far = VIEW_DISTANCE
+	viewport.msaa_3d = MSAA
+	viewport.screen_space_aa = Viewport.SCREEN_SPACE_AA_DISABLED
+	viewport.use_taa = false
+	if game.get("day_night") != null:
+		game.day_night.set_view_distance(VIEW_DISTANCE)
 	apply_web_3d_scale(viewport)
-	_apply_ranges(_ranged)
 
 
-# Remembers the High visibility range (meta "high_range", 0 = none) of every ranged mesh/batch
-# and every heavy mesh under `root`, once each.
+# Every ranged mesh/batch and every heavy mesh under `root` not yet seen, marked (meta
+# "range_trimmed") so a later unit never shortens one twice.
 func _note_ranged(root: Node) -> Array[GeometryInstance3D]:
 	var found: Array[GeometryInstance3D] = []
 	var nodes := root.find_children("*", "GeometryInstance3D", true, false)
 	if root is GeometryInstance3D:
 		nodes.append(root)
 	for node: GeometryInstance3D in nodes:
-		if node.has_meta("high_range"):
+		if node.has_meta("range_trimmed"):
 			continue
 		var heavy := node is MeshInstance3D and _triangles((node as MeshInstance3D).mesh) >= HEAVY_TRIANGLES
 		if node.visibility_range_end > 0.0 or heavy:
-			node.set_meta("high_range", node.visibility_range_end)
+			node.set_meta("range_trimmed", true)
 			node.set_meta("heavy_mesh", heavy)
 			found.append(node)
-	_ranged.append_array(found)
 	return found
 
 
@@ -226,18 +188,17 @@ func _triangles(mesh: Mesh) -> int:
 	return _triangle_counts[mesh]
 
 
+# Shortens the short visibility ranges (RANGE_SHARE, up to SHORT_RANGE) and hides heavy meshes
+# beyond HEAVY_RANGE.
 func _apply_ranges(nodes: Array[GeometryInstance3D]) -> void:
-	var low := graphics == GameSettings.LOW
 	for node in nodes:
 		if not is_instance_valid(node):
 			continue
-		var high: float = node.get_meta("high_range")
-		var range_end := high
-		if low:
-			if high > 0.0 and high <= LOW_SHORT_RANGE:
-				range_end = minf(high, maxf(LOW_MIN_RANGE, high * LOW_RANGE_SHARE))
-			if node.get_meta("heavy_mesh", false):
-				range_end = HEAVY_LOW_RANGE if range_end == 0.0 else minf(range_end, HEAVY_LOW_RANGE)
+		var range_end := node.visibility_range_end
+		if range_end > 0.0 and range_end <= SHORT_RANGE:
+			range_end = minf(range_end, maxf(MIN_RANGE, range_end * RANGE_SHARE))
+		if node.get_meta("heavy_mesh", false):
+			range_end = HEAVY_RANGE if range_end == 0.0 else minf(range_end, HEAVY_RANGE)
 		node.visibility_range_end = range_end
 
 
@@ -279,7 +240,7 @@ func add_parts(game: Node3D, parts: Array, key: String) -> void:
 	for part in roots:
 		if is_instance_valid(part):
 			merge_door_leaves(part, game.doors)
-	# The unit's ranges follow the current graphics tier.
+	# The unit's ranges are trimmed as the rest of the town's.
 	var found: Array[GeometryInstance3D] = _note_ranged(container)
 	for part in parts:
 		if is_instance_valid(part):

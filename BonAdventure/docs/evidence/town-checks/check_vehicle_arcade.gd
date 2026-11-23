@@ -317,13 +317,10 @@ func aircraft() -> void:
     game.player.global_position = plane.global_position + Vector3(0, 1, 3)
     check(game.board_vehicle(plane), "board the plane")
     plane.boarding_progress = 1
-    DriveableVehicle.easy_flying = true
-    plane.global_transform = Transform3D(Basis.looking_at(outward, Vector3.UP).scaled(Vector3.ONE * 1.3), out_point)
-    plane.flight_velocity = outward * 38
+    plane.global_transform = Transform3D(Basis.looking_at(outward, Vector3.UP).scaled(plane.global_basis.get_scale()), out_point)
+    plane.flight_velocity = outward * plane.CRUISE
+    plane.airspeed = plane.CRUISE
     plane.landed = false
-    plane.throttle = .6
-    plane.engine_power = .6
-    plane.easy_hold_y = out_point.y
     var flashes := [0]
     var on_edge := func(_v): flashes[0] += 1
     plane.map_edge_reached.connect(on_edge)

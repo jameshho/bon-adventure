@@ -1,6 +1,6 @@
 extends RefCounted
-## The player's settings: the Display Mode, the two taught languages, BonBon's outfit, the
-## graphics quality and the follow camera. Saved to
+## The player's settings: the Display Mode, the two taught languages, BonBon's outfit and the
+## follow camera. Saved to
 ## the active profile's settings.json (save_store.gd; user://settings.json without a profile; learner data: tests run with an isolated HOME, see the README);
 ## defaults come from data/languages.json and DEFAULT_DISPLAY. Main loads them first thing
 ## and apply() hands the languages to the shared Lexicon before anything builds text.
@@ -14,9 +14,9 @@ extends RefCounted
 ## removed (the translate bubble is the quick peek); a saved 2 loads as FOREIGN.
 ## User decision 9 Nov 2026: L is back as hold-to-peek (`peeking`, not a mode): while L or
 ## the HUD peek button is held, world signs and labels show the native language.
-## Graphics quality (user decision, 14 Nov 2026): LOW is the default everywhere (web and Mac) so
-## the town runs on a phone; HIGH is the full look of before. Applied at once by
-## render_culling.gd apply_graphics(); see docs/guides/performance/README.md ("Graphics tiers").
+## Graphics quality: none since 23 Nov 2026 (user: one consistent setting that works on a phone,
+## render_culling.gd). The Low / High choice of 14 Nov 2026 was removed; a saved "graphics" key is
+## ignored and dropped at the next save.
 ## Follow camera (user decision, 14 Nov 2026): on by default; the Settings checkbox "Camera
 ## follows me" turns it off (player_controller.gd follow_view(); Main hands it to the player).
 const Lexicon := preload("res://scripts/language/lexicon.gd")
@@ -25,14 +25,9 @@ const SaveStore := preload("res://scripts/core/save_store.gd")
 signal changed
 ## The hold-to-peek (hold L or the HUD peek button) started or ended.
 signal peek_changed
-## The graphics quality changed (render_culling.gd re-applies it without a restart).
-signal graphics_changed
 
 enum {NATIVE, FOREIGN}
 const DEFAULT_DISPLAY := FOREIGN
-const LOW := "low"
-const HIGH := "high"
-const DEFAULT_GRAPHICS := LOW
 const FILE := "settings.json"
 ## The file without an active profile (what checks read and write); the game uses SaveStore.path(FILE).
 const PATH := "user://" + FILE
@@ -47,8 +42,6 @@ var outfit := ""
 ## signs and labels show the native language until it is released. Never saved; the
 ## Display Mode, the dialogue and practice recording are unchanged.
 var peeking := false
-## LOW or HIGH (saved with the other settings).
-var graphics := DEFAULT_GRAPHICS
 ## Whether walking sideways turns the view (saved with the other settings).
 var follow_camera := true
 
@@ -66,7 +59,6 @@ func load_saved() -> void:
 	foreign = lexicon.foreign
 	display = DEFAULT_DISPLAY
 	outfit = ""
-	graphics = DEFAULT_GRAPHICS
 	follow_camera = true
 	var parsed: Variant = SaveStore.read_json(SaveStore.path(FILE))
 	if not parsed is Dictionary:
@@ -83,12 +75,10 @@ func load_saved() -> void:
 	var worn := str(parsed.get("outfit", ""))
 	if preload("res://scripts/characters/plush_costume.gd").outfit_ids().has(worn):
 		outfit = worn
-	if str(parsed.get("graphics", "")) in [LOW, HIGH]:
-		graphics = str(parsed.graphics)
 	follow_camera = bool(parsed.get("follow_camera", true))
 
 func save() -> void:
-	SaveStore.write_json(SaveStore.path(FILE), {"display": display, "native": native, "foreign": foreign, "outfit": outfit, "graphics": graphics, "follow_camera": follow_camera}, "  ")
+	SaveStore.write_json(SaveStore.path(FILE), {"display": display, "native": native, "foreign": foreign, "outfit": outfit, "follow_camera": follow_camera}, "  ")
 
 ## Hands the chosen languages to the shared Lexicon (every phrase and word reads them).
 func apply() -> void:
@@ -109,14 +99,6 @@ func set_outfit(id: String) -> void:
 		return
 	outfit = id
 	save()
-
-## The Settings graphics switch (LOW or HIGH).
-func set_graphics(value: String) -> void:
-	if value == graphics or not value in [LOW, HIGH]:
-		return
-	graphics = value
-	save()
-	graphics_changed.emit()
 
 ## The Settings checkbox "Camera follows me".
 func set_follow_camera(on: bool) -> void:

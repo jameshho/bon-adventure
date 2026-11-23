@@ -7,14 +7,14 @@ extends Control
 ## Layout scales with min(window height / 800, window width / 1100) like the money panel.
 ## The native language is first chosen when a profile is made (app_screens.gd). It was shown
 ## locked here from 12 Nov 2026 (PWA phase 3); since 14 Nov 2026 (user) it changes here again.
-## Graphics quality (14 Nov 2026): two buttons, Low (default) and High (GameSettings.set_graphics,
-## applied at once by render_culling.gd), and "Show FPS" for the perf readout (perf_readout.gd).
+## "Show FPS" for the perf readout (perf_readout.gd). The Low / High graphics buttons (14 Nov 2026)
+## were removed on 23 Nov 2026 (user: one graphics setting, render_culling.gd).
 ## "Camera follows me" (14 Nov 2026, user): the follow camera's checkbox, on by default
 ## (GameSettings.set_follow_camera; player_controller.gd follow_view()).
 ## "Switch player" (only when the game runs from scenes/app.tscn) goes back to the profile select.
 ## UI art style (user, 18 Nov 2026; docs/guides/UI_STYLE.md): a mint BonStyle card with a meadow
 ## over a light teal veil, a dark teal title, cream checkboxes that turn green, cream drop-downs,
-## Low / High as a toggle pair, cream Switch / Replay pills and a green Close.
+## cream Switch / Replay pills and a green Close.
 const GameSettings := preload("res://scripts/core/game_settings.gd")
 const Lexicon := preload("res://scripts/language/lexicon.gd")
 const UiIcons := preload("res://scripts/ui/ui_icons.gd")
@@ -38,10 +38,6 @@ var _switch_button: Button
 var _replay_button: Button
 var _profile_row: HBoxContainer
 var _x_button: Button
-var _graphics_title: Label
-var _graphics_row: HBoxContainer
-var _low_button: Button
-var _high_button: Button
 var _show_fps: CheckBox
 var _follow_camera: CheckBox
 var _factor := 1.0
@@ -95,23 +91,6 @@ func _init() -> void:
 	_stack.add_child(_foreign_pick)
 	_native_pick.item_selected.connect(func(_i: int) -> void: _pick_languages())
 	_foreign_pick.item_selected.connect(func(_i: int) -> void: _pick_languages())
-	# Graphics quality: its title, then Low and High as one pair of big toggle buttons, on one row.
-	_graphics_row = HBoxContainer.new()
-	_stack.add_child(_graphics_row)
-	_graphics_title = _label(DIM)
-	_graphics_title.size_flags_stretch_ratio = 1.2
-	_graphics_row.add_child(_graphics_title)
-	var group := ButtonGroup.new()
-	_low_button = _button()
-	_high_button = _button()
-	for pair in [[_low_button, GameSettings.LOW], [_high_button, GameSettings.HIGH]]:
-		var choice: Button = pair[0]
-		var value: String = pair[1]
-		choice.toggle_mode = true
-		choice.button_group = group
-		choice.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		choice.pressed.connect(func() -> void: GameSettings.shared().set_graphics(value))
-		_graphics_row.add_child(choice)
 	_show_fps = CheckBox.new()
 	_show_fps.focus_mode = Control.FOCUS_NONE
 	_show_fps.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
@@ -189,11 +168,6 @@ func refresh() -> void:
 			pick.set_item_metadata(pick.item_count - 1, str(code))
 	_native_pick.select(lexicon.playable_codes().find(settings.native))
 	_foreign_pick.select(lexicon.playable_codes().find(settings.foreign))
-	_graphics_title.text = lexicon.phrase("settings.graphics", lang)
-	_low_button.text = lexicon.phrase("settings.graphics_low", lang)
-	_high_button.text = lexicon.phrase("settings.graphics_high", lang)
-	_low_button.set_pressed_no_signal(settings.graphics == GameSettings.LOW)
-	_high_button.set_pressed_no_signal(settings.graphics == GameSettings.HIGH)
 	_show_fps.text = lexicon.phrase("settings.show_fps", lang)
 	var readout := PerfReadout.find(get_tree())
 	_show_fps.visible = readout != null
@@ -226,20 +200,17 @@ func _apply_layout(screen: Vector2) -> void:
 	BonStyle.rescale_card(_card, f)
 	_stack.add_theme_constant_override("separation", roundi(14 * f))
 	_title.add_theme_font_size_override("font_size", roundi(40 * f))
-	for label in [_native_title, _foreign_title, _graphics_title]:
+	for label in [_native_title, _foreign_title]:
 		label.add_theme_font_size_override("font_size", roundi(24 * f))
 	for check in [_native_mode, _follow_camera, _show_fps]:
 		BonStyle.style_check(check, f, 24 if check == _show_fps else 26)
 	for pick in [_native_pick, _foreign_pick]:
 		BonStyle.style_option(pick, f, 26)
-	for choice in [_low_button, _high_button]:
-		BonStyle.style_toggle(choice, f, 26)
 	BonStyle.style_button(_switch_button, "soft", f, 26)
 	BonStyle.style_button(_replay_button, "soft", f, 26)
 	BonStyle.style_button(_close_button, "primary", f, 28)
 	BonStyle.style_button(_x_button, "soft_quiet", f, 26)
-	_graphics_row.add_theme_constant_override("separation", roundi(14 * f))
-	for button in [_close_button, _switch_button, _replay_button, _native_pick, _foreign_pick, _low_button, _high_button]:
+	for button in [_close_button, _switch_button, _replay_button, _native_pick, _foreign_pick]:
 		button.custom_minimum_size = Vector2(0, 64 * f)
 		button.add_theme_constant_override("icon_max_width", roundi(26 * f))
 	_close_button.custom_minimum_size = Vector2(220 * f, 66 * f)

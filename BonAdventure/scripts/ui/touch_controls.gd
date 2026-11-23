@@ -29,10 +29,8 @@ extends Control
 ##                           tap on the world.
 ##   E button               "use" (the same as the E key; the focused interactable, standing up,
 ##                           leaving a vehicle)
-##   jump button            "jump" (also brakes a car, climbs in the helicopter and the plane)
-##   down button (▼)        "descend", only while flying the helicopter or the plane (easy
-##                           flying, 14 Nov 2026, user; docs/guides/aircraft.md#easy-flying): left of
-##                           jump, it lowers the aircraft (Shift / Ctrl on a keyboard)
+##   jump button            "jump" (also brakes a car); while flying it gives way to the ▲ / ▼
+##                           Buttons below
 ##   lightning button       "debug_hyper" (hyper speed on/off, like the H key; lit while on;
 ##                           switched off for now: Features.HYPER_SPEED, README.md#hidden-features;
 ##                           13 Nov 2026, user: phones had no way to turn it on)
@@ -79,8 +77,13 @@ extends Control
 ##                           vehicle, while seated, while these controls hide (player locked, a
 ##                           TOUCH_HIDE panel), whenever the HUD hides its game buttons
 ##                           (hud.game_buttons_hidden()) and under the dialogue box.
-##   Reset (vehicle.reset_plane)  red, left of E above the ▼ slot, only while flying the plane
-##                           (fixed_wing): calls active_vehicle.reset_to_start() when it has one.
+##   ▲ / ▼ (Ascend / Descend button)  while flying the helicopter or the plane (one set of flying
+##                           controls on every device, 23 Nov 2026, user;
+##                           docs/guides/aircraft.md#flying-controls): ▲ in the jump slot, ▼ left
+##                           of it (the Run slot). Held, they hold "jump" / "descend" (Space /
+##                           Shift or Ctrl on a keyboard); a finger or the mouse.
+##   Reset (vehicle.reset_plane)  red, left of E above the ▼ slot, while flying the plane or the
+##                           helicopter: calls active_vehicle.reset_to_start().
 ##   Lights (vehicle.lights_button)  while driving any road vehicle (21 Nov 2026, user): in the Run
 ##                           slot left of jump (Run hides in vehicles); headlights on/off like F,
 ##                           lit sun yellow while on (scripts/world/vehicle_headlights.gd).
@@ -153,7 +156,6 @@ var _stick_start := Vector2.ZERO
 var _use_rect := Rect2()
 var _jump_rect := Rect2()
 var _hyper_rect := Rect2()
-var _down_rect := Rect2()
 ## finger index -> the action its button holds ("use" / "jump" / "debug_hyper").
 var _button_fingers: Dictionary = {}
 ## World fingers (not on a control): index -> position.
@@ -182,6 +184,10 @@ var _run_styles: Dictionary = {}
 ## The driving Lights and Siren toggles (see the header) and their unlit / lit looks.
 var lights_button: Button
 var siren_button: Button
+## The flying ▲ / ▼ Buttons (see the header) and the action each holds while pressed.
+var ascend_button: Button
+var descend_button: Button
+var _held_flight := {}
 var _lights_styles: Dictionary = {}
 var _siren_styles: Dictionary = {}
 # Run (on: green) and Reset (coral) in the UI art style (18 Nov 2026), white rims.
@@ -211,6 +217,8 @@ func setup(game: Node) -> void:
 	_lights_styles = {false: _styles(null), true: _styles(LIGHTS_LIT)}
 	siren_button = _hud_button("Siren button", func() -> void: _vehicle_call("toggle_siren"))
 	_siren_styles = {false: _styles(null), true: _styles(RESET_RED)}
+	ascend_button = _flight_button("Ascend button", "jump", "up")
+	descend_button = _flight_button("Descend button", "descend", "down")
 
 func _process(delta: float) -> void:
 	_update_hud_buttons()
@@ -232,7 +240,7 @@ func _process(delta: float) -> void:
 		if _stick_finger < 0 and _drawn_center.distance_to(_stick_center) < 0.5 and _drawn_knob.length() < 0.5:
 			_drawn_center = _stick_center
 			_drawn_knob = Vector2.ZERO
-		var state: Array = [_drawn_center, _drawn_knob, _stick_radius, _stick_finger >= 0, _use_rect, _jump_rect, _down_rect, _button_fingers.values(), player.hyper_enabled]
+		var state: Array = [_drawn_center, _drawn_knob, _stick_radius, _stick_finger >= 0, _use_rect, _jump_rect, _button_fingers.values(), player.hyper_enabled]
 		if state != _drawn:
 			_drawn = state
 			queue_redraw()
@@ -256,8 +264,6 @@ func _layout() -> void:
 	_use_rect = Rect2(Vector2(column_x, _jump_rect.position.y - gap - side), Vector2(side, side))
 	# No lightning button while hyper speed is switched off (Features.HYPER_SPEED).
 	_hyper_rect = Rect2(Vector2(column_x, _use_rect.position.y - gap - side), Vector2(side, side)) if Features.HYPER_SPEED else Rect2()
-	# The ▼ (descend) button, left of jump and level with its centre, only while flying.
-	_down_rect = Rect2(Vector2(_jump_rect.position.x - gap - side, _jump_rect.get_center().y - side * 0.5), Vector2(side, side)) if _flying() else Rect2()
 	# On a narrow window the dialogue box can reach the buttons: while it shows, they stand
 	# above it (its ✕ once sat on the jump button). The order cart hangs from the top right:
 	# lifting above it would push them off the screen, so a button under it hides meanwhile
@@ -266,16 +272,19 @@ func _layout() -> void:
 	if cover.has_area() and cover.intersects(Rect2(_jump_rect.position.x, 0.0, _jump_rect.size.x, view.y)):
 		var lift := _jump_rect.end.y - (cover.position.y - gap)
 		if lift > 0.0:
-			for rect in ["_use_rect", "_jump_rect", "_hyper_rect", "_down_rect"]:
+			for rect in ["_use_rect", "_jump_rect", "_hyper_rect"]:
 				var moved: Rect2 = get(rect)
 				if moved.has_area():
 					set(rect, Rect2(moved.position - Vector2(0.0, lift), moved.size))
 	var panel: Control = main.get("shop_panel") if main != null else null
 	if panel != null and panel.cart_card.is_visible_in_tree():
 		var cart: Rect2 = panel.cart_card.get_global_rect()
-		for rect in ["_use_rect", "_jump_rect", "_hyper_rect", "_down_rect"]:
+		for rect in ["_use_rect", "_jump_rect", "_hyper_rect"]:
 			if cart.intersects(get(rect)):
 				set(rect, Rect2())
+	# While flying, the ▲ / ▼ Buttons take the jump slot and the one left of it (header).
+	if _flying():
+		_jump_rect = Rect2()
 	_stick_radius = side * STICK_SIZE
 	_stick_home = Vector2(28.0 + _stick_radius * STICK_HOME_X, view.y - 28.0 - _stick_radius * STICK_HOME_Y)
 	if _drawn_center == Vector2.ZERO:
@@ -368,8 +377,12 @@ func _update_hud_buttons() -> void:
 	var ink: Color = Color.WHITE if player.sprint_enabled else BonStyle.INK
 	run_button.add_theme_color_override("font_color", ink)
 	run_button.add_theme_color_override("font_hover_color", ink)
-	_place(reset_button, reset_rect, UiText.t("vehicle.reset_plane"),
-			free and driving and bool(vehicle.get("fixed_wing")) and not cover.intersects(reset_rect))
+	var flying := free and driving and _flying()
+	_place(reset_button, reset_rect, UiText.t("vehicle.reset_plane"), flying and not cover.intersects(reset_rect))
+	# Flying: ▲ in the jump slot, ▼ left of it (where Run and Lights sit on foot and in a car).
+	var down_rect := Rect2(Vector2(jump.position.x - gap - side, jump.get_center().y - side * 0.5), Vector2(side, side))
+	_place_flight(ascend_button, jump, flying and not (cover.has_area() and cover.intersects(jump)))
+	_place_flight(descend_button, down_rect, flying and not (cover.has_area() and cover.intersects(down_rect)))
 	# Driving a road vehicle: Lights in the Run slot, Siren above it (emergency vehicles only).
 	var road: bool = free and driving and vehicle.has_method("has_headlights") and vehicle.has_headlights() \
 			and not vehicle.boarding_busy()
@@ -398,6 +411,45 @@ func _place(button: Button, rect: Rect2, text: String, shown: bool) -> void:
 	var size := clampi(roundi(minf(rect.size.x * 0.25, rect.size.x * 0.7 * 100.0 / width)), 10, 200)
 	if button.get_theme_font_size("font_size") != size:
 		button.add_theme_font_size_override("font_size", size)
+
+## A ▲ / ▼ Button: held, it holds `action` as the key would.
+func _flight_button(title: String, action: String, icon: String) -> Button:
+	var button := _hud_button(title, _no_tap)
+	button.set_meta("action", action)
+	button.set_meta("icon", icon)
+	button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	button.expand_icon = true
+	button.add_theme_color_override("icon_normal_color", BonStyle.INK)
+	button.add_theme_color_override("icon_hover_color", BonStyle.INK)
+	button.add_theme_color_override("icon_pressed_color", BonStyle.INK)
+	button.add_theme_color_override("icon_hover_pressed_color", BonStyle.INK)
+	_apply_styles(button, _styles(null))
+	button.button_down.connect(_hold_flight.bind(action, true))
+	button.button_up.connect(_hold_flight.bind(action, false))
+	return button
+
+func _no_tap() -> void:
+	pass
+
+func _hold_flight(action: String, on: bool) -> void:
+	if bool(_held_flight.get(action, false)) == on:
+		return
+	_held_flight[action] = on
+	_fire(action, on)
+
+## Shows or hides a ▲ / ▼ Button; hiding one that is held lets its action go.
+func _place_flight(button: Button, rect: Rect2, shown: bool) -> void:
+	button.visible = shown
+	if not shown:
+		_hold_flight(button.get_meta("action"), false)
+		return
+	if button.position != rect.position or button.size != rect.size:
+		button.custom_minimum_size = rect.size
+		button.size = rect.size
+		button.position = rect.position
+		var pixels := roundi(rect.size.x * 0.55)
+		button.icon = UiIcons.texture(button.get_meta("icon"), pixels)
+		button.add_theme_constant_override("icon_max_width", pixels)
 
 ## A single tap of `action` (pressed and released), as the key would send it.
 func _fire_once(action: String) -> void:
@@ -430,7 +482,7 @@ func _hidden_by_panel() -> bool:
 			return true
 	return false
 
-## Whether the player flies the helicopter or the plane (the ▼ button shows).
+## Whether the player flies the helicopter or the plane (the ▲ / ▼ buttons show).
 func _flying() -> bool:
 	var vehicle: Variant = main.get("active_vehicle") if main != null else null
 	return is_instance_valid(vehicle) and vehicle.has_method("is_aircraft") and vehicle.is_aircraft()
@@ -608,8 +660,6 @@ func _button_at(at: Vector2) -> String:
 		return "jump"
 	if _hyper_rect.has_point(at):
 		return "debug_hyper"
-	if _down_rect.has_point(at):
-		return "descend"
 	return ""
 
 ## Whether a world finger counts (the mouse finger only when its click reached the world).
@@ -682,7 +732,7 @@ func _draw() -> void:
 		# A gold ring swells out of the stick and fades (the tutorial's cue).
 		var pulse := fmod(Time.get_ticks_msec() / 1100.0, 1.0)
 		draw_arc(_drawn_center, _stick_radius * (1.08 + 0.45 * pulse), 0.0, TAU, 64, Color(GOLD, 1.0 - pulse), maxf(3.0, _stick_radius * 0.09), true)
-	for spec in [[_use_rect, "use"], [_jump_rect, "jump"], [_hyper_rect, "debug_hyper"], [_down_rect, "descend"]]:
+	for spec in [[_use_rect, "use"], [_jump_rect, "jump"], [_hyper_rect, "debug_hyper"]]:
 		if spec[0].size == Vector2.ZERO:
 			continue
 		var rect: Rect2 = spec[0]
@@ -702,7 +752,6 @@ func _draw() -> void:
 			var bolt := PackedVector2Array([center + Vector2(w * 0.25, -w), center + Vector2(-w * 0.45, w * 0.1), center + Vector2(w * 0.05, w * 0.1), center + Vector2(-w * 0.25, w)])
 			draw_polyline(bolt, HYPER if player.hyper_enabled else GOLD, maxf(3.0, radius * 0.1), true)
 		else:
-			# Jump: an up chevron; descend: the same, upside down.
+			# Jump: an up chevron.
 			var w := radius * 0.42
-			var flip := -1.0 if spec[1] == "descend" else 1.0
-			draw_polyline(PackedVector2Array([center + Vector2(-w, w * 0.45 * flip), center + Vector2(0, -w * 0.55 * flip), center + Vector2(w, w * 0.45 * flip)]), GOLD, maxf(3.0, radius * 0.1), true)
+			draw_polyline(PackedVector2Array([center + Vector2(-w, w * 0.45), center + Vector2(0, -w * 0.55), center + Vector2(w, w * 0.45)]), GOLD, maxf(3.0, radius * 0.1), true)

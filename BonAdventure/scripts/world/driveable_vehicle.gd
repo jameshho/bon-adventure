@@ -12,12 +12,11 @@ signal map_edge_reached(vehicle)
 
 @export var helicopter := false
 var fixed_wing := false
-## Easy flying (user, 14 Nov 2026), on by default for the helicopter and the turboprop; C in the
-## cockpit switches to the expert controls and back (not saved). Easy: the helicopter hovers in
-## place whenever the stick is let go (the R hover assist); the turboprop flies itself
-## (turboprop.gd easy_inputs()). The "descend" action (Ctrl, the touch ▼ button) also lowers
-## the helicopter in both modes. docs/guides/aircraft.md#easy-flying.
-static var easy_flying := true
+## One set of flying controls (user, 23 Nov 2026; before: easy flying plus a C expert mode) for
+## the helicopter and the turboprop on every device: the move actions (WASD, the touch stick)
+## set the speed (forward / back) and turn; "jump" (Space, the ▲ button) ascends and "descend"
+## (Shift, Ctrl, the ▼ button) descends; let go and the helicopter hovers, the plane flies level.
+## The ▲ / ▼ buttons are touch_controls.gd's. docs/guides/aircraft.md#flying-controls.
 var boarding_progress := 1.0
 ## Exit while moving (user, 14 Nov 2026): E works at any speed, also in the air. A moving vehicle
 ## lets BonBon out beside it at once (no door sequence) and then coasts with no input: cars and
@@ -38,7 +37,7 @@ var crash_clock := 0.0
 const EASY_RECOVER := 2.5
 const AIRCRAFT_RESET_DISTANCE := 300.0
 ## Helicopter: hitting something, or touching down, faster than this (m/s along the blocked axis)
-## is a crash. Holding "down" in easy flying lands at about 7 m/s, which stays a landing.
+## is a crash. Holding "down" lands at about 7 m/s, which stays a landing.
 const HELI_CRASH_SPEED := 10.0
 ## Pose in the parent's space when the town loaded: where reset_to_start() puts the vehicle.
 var start_transform := Transform3D.IDENTITY
@@ -216,8 +215,7 @@ func flight_status() -> String:
         return UiText.t("vehicle.getting_out" if exiting else "vehicle.getting_in")
     if helicopter:
         if crashed: return UiText.t("vehicle.status_heli_crash")
-        if easy_flying: return UiText.t("vehicle.status_heli_easy",{"rotor":int(rotor_power*100)})
-        return UiText.t("vehicle.status_heli",{"rotor":int(rotor_power*100),"collective":int(rad_to_deg(helicopter_physics.collective))})+"  ·  "+UiText.t("vehicle.to_easy")
+        return UiText.t("vehicle.status_heli",{"rotor":int(rotor_power*100)})
     if road_physics!=null:
         var status:=UiText.t("vehicle.status_drive",{"speed":int(absf(current_speed)*3.6),"gear":"R" if road_physics.gear<0 else "D"})
         return status+"\n"+UiText.t("vehicle.status_lights_siren" if has_siren() else "vehicle.status_lights")
@@ -276,14 +274,19 @@ func _physics_process(delta: float) -> void:
         # Nobody at the controls: no input.
         drive_step(delta, 0.0, 0.0, 0.0, false)
         return
-    # Move and jump actions (W A S D, Space; the touch joystick and Jump button, PWA phase 5).
+    # Move actions (W A S D, the touch joystick); jump (Space) brakes a car. Flying: ascend_input().
     var gas := Input.get_action_strength("move_forward") - Input.get_action_strength("move_back")
     var steering := Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
-    var lift := Input.get_action_strength("jump") - (maxf(float(Input.is_physical_key_pressed(KEY_SHIFT)), Input.get_action_strength("descend")) if helicopter else 0.0)
-    var hover := Input.is_physical_key_pressed(KEY_R)
-    # Easy flying: let go of the stick and the helicopter brakes to a hover.
-    if helicopter and easy_flying and absf(gas) < .05 and absf(steering) < .05: hover = true
+    var lift := ascend_input() if helicopter else Input.get_action_strength("jump")
+    # Let go of the stick and the helicopter brakes to a hover.
+    var hover := helicopter and absf(gas) < .05 and absf(steering) < .05
     drive_step(delta, gas, steering, lift, hover)
+
+## Flying up (+1) or down (-1): ascend is "jump" (Space, the ▲ button), descend is "descend"
+## (Ctrl, the ▼ button) or Shift (also "sprint", which does nothing in a vehicle).
+static func ascend_input() -> float:
+    var down := maxf(float(Input.is_physical_key_pressed(KEY_SHIFT)), Input.get_action_strength("descend"))
+    return clampf(Input.get_action_strength("jump") - down, -1.0, 1.0)
 
 func is_aircraft() -> bool:
     return helicopter or fixed_wing
@@ -318,9 +321,7 @@ func switch_lights_off() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
     if not occupied or not event is InputEventKey or not event.pressed or event.echo: return
-    if is_aircraft() and event.physical_keycode==KEY_C:
-        easy_flying=not easy_flying
-    elif has_headlights() and not boarding_busy() and event.physical_keycode==KEY_F:
+    if has_headlights() and not boarding_busy() and event.physical_keycode==KEY_F:
         toggle_headlights()
         get_viewport().set_input_as_handled()
     elif has_siren() and not boarding_busy() and event.physical_keycode==KEY_Q:

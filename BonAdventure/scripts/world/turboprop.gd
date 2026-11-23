@@ -1,18 +1,60 @@
 extends "res://scripts/world/driveable_vehicle.gd"
-## Single-engine bush turboprop. World metres/seconds; model uses town-local units.
-## Wing force vectors adapted from Igor Akulov's MIT VehicleWing3D (2025).
-## See docs/guides/aircraft.md and docs/guides/licenses/godot-aircraft-plugin-LICENSE.txt.
-@export var mass_kg := 900.0
-@export var wing_area := 28.0
-@export var max_thrust := 6200.0
-var throttle := 0.0
+## The small single-engine plane at the airport (docs/guides/aircraft.md). World metres/seconds;
+## the model uses town-local units.
+##
+## Flight model (rewritten 23 Nov 2026, user: the old one wobbled up and down by itself and its
+## nose tilt was inconsistent). It is an arcade model, not aerodynamics: the controls set a target
+## speed, climb rate and turn rate, and each eases toward its target at a steady rate (first order,
+## so nothing overshoots or bobs). The plane travels along its heading at `airspeed` and climbs at
+## `flight_velocity.y`; the nose pitch and the bank only show that motion (pitch = the climb angle,
+## bank = the turn), they never steer it. Before, a lift / drag / thrust model from
+## godot-aircraft-plugin with an autopilot on top ("easy flying"); see git history.
+##
+## Controls (driveable_vehicle.gd ascend_input(); the ▲ / ▼ Buttons in touch_controls.gd):
+##   up / down   climb at CLIMB / sink at SINK; let go: level flight at the current height
+##   stick W / S faster (FAST) / slower (SLOW) than CRUISE; on the runway W goes and S brakes
+##   stick A / D turn at up to TURN_RATE, banking with it
+## On the runway W or up runs to LIFT_OFF speed and lifts off (with W alone it climbs to
+## TAKE_OFF_HEIGHT and levels off). Holding down near the ground eases the sink rate to a gentle
+## touchdown; on the ground with no input it brakes to a stop.
+
+## The plane is shown at SIZE of the saved model (user, 23 Nov 2026: a smaller plane); BonBon
+## sits in it at the same scale.
+const SIZE := 0.65
+const CRUISE := 17.0
+const FAST := 22.0
+const SLOW := 12.0
+## Descending, it slows to APPROACH (and to SLOW below 10 m).
+const APPROACH := 14.0
+const LIFT_OFF := 11.0
+const CLIMB := 4.0
+const SINK := 3.0
+## Radians a second with A / D held (a full circle in about 13 s).
+const TURN_RATE := .5
+const MAX_BANK := .45
+const TAKE_OFF_HEIGHT := 15.0
+## m/s² speeding up (also the take-off roll), slowing in the air, braking and rolling on the ground.
+const ACCEL := 3.0
+const DECEL := 2.0
+const BRAKE := 4.0
+const ROLL_DRAG := 1.5
+## 1/s: how quickly the climb rate and the turn rate reach their targets, and the shown pitch / bank.
+const EASE := 2.0
+const POSE_EASE := 4.0
+## Touching down faster than this (m/s down) or banked more than CRASH_BANK is a crash.
+const CRASH_SINK := 4.5
+const CRASH_BANK := .35
+
+var airspeed := 0.0
+var turn_rate := 0.0
+## Shown nose-up pitch and right-wing-down bank (radians).
+var pitch := 0.0
+var bank := 0.0
+## Taking off with W alone: the height it climbs to (INF: none).
+var climb_to := INF
+## For the animation only: the propeller, the control surfaces and the flaps.
 var engine_power := 0.0
 var flaps := .5
-var airspeed := 0.0
-var angle_of_attack := 0.0
-var stalled := false
-var pitch_rate := 0.0
-var roll_rate := 0.0
 var elevator := 0.0
 var aileron := 0.0
 var rudder := 0.0
@@ -32,7 +74,7 @@ var game
 ## EASY_RECOVER live in driveable_vehicle.gd since 14 Nov 2026, shared with the helicopter).
 ## Map edge (user, 14 Nov 2026): the town's reference_map_bounds (town units, the full map's frame)
 ## grown by MAP_MARGIN world metres. Past it vehicle.map_edge flashes and the plane flies itself
-## back (the easy autopilot, banking toward the town centre; up/down still work in easy flying),
+## back (banking toward the town centre; up / down and the speed stick still work),
 ## a gentle turn rather than a wall. MAP_RESET_MARGIN further out, or unoccupied past the edge, it
 ## resets to the runway, so it can never be lost outside the map.
 const MAP_MARGIN := 150.0
@@ -41,14 +83,17 @@ const MAP_RESET_MARGIN := 400.0
 const MAP_EDGE_REPEAT := 6.0
 var map_edge_clock := 0.0
 var past_edge := false
-## Easy flying: the height held once climb / descend is let go.
-var easy_hold_y := 0.0
 ## Model envelopes (centre, size) used for flight sweeps and the airplane's collision bodies.
 const HULLS := [[Vector3(0,1.8,-.3),Vector3(1.9,2.25,7.8)], [Vector3(0,3.2,.1),Vector3(13.6,.28,2.65)], [Vector3(0,2.8,4.5),Vector3(4.2,2.3,1.6)], [Vector3(0,1.95,-4.6),Vector3(3.1,3.1,.3)]]
 
 func _ready() -> void:
     fixed_wing=true
     boarding_duration=2.4
+    # Smaller than the model (SIZE), scaled about the wheels before anything reads the pose. Set,
+    # not multiplied: a re-baked town saves the plane already at SIZE (23 Nov 2026: base.scn was
+    # baked twice and the plane shrank each time).
+    scale=Vector3.ONE*SIZE
+    home_pose=global_transform
     super._ready()
     landed=true
     # Loaded from a saved town: the model and its bodies are saved, the sweep shapes are not.
@@ -207,26 +252,27 @@ func boarding_seat() -> Transform3D:
     seat.basis=seat.basis.orthonormalized()
     return seat
 
-func boarding_seat_scale() -> float:
-    return 1.0
-
 # Validate the ground beside the actual cabin entrance.
 func preferred_exit_points() -> Array[Vector3]:
     return [to_global(Vector3(-2.1,0,-1.1))]
 
+func boarding_seat_scale() -> float:
+    return SIZE
+
 func finish_exit() -> void:
     super.finish_exit()
-    throttle=0
     engine_power=0
 
-## Left in the air, rolling or crashed: exits without the door sequence and glides on unpowered.
+## Left in the air, rolling or crashed: exits without the door sequence and glides down unpowered.
 func is_moving() -> bool:
     return crashed or not ground_contact() or current_speed>STOPPED_SPEED
+
+func moving_exit_offset() -> float:
+    return 10.5*SIZE
 
 func reset_to_start() -> void:
     super.reset_to_start()
     recover()
-    easy_hold_y=global_position.y
     past_edge=false
 
 ## The town root holding the map bounds (the plane is parked under it).
@@ -263,11 +309,6 @@ func crash_tick(delta: float) -> void:
 func travel_forward() -> Vector3:
     return -global_basis.z.normalized()
 
-func _unhandled_input(event: InputEvent) -> void:
-    super._unhandled_input(event)
-    if occupied and not easy_flying and event is InputEventKey and event.pressed and not event.echo and event.physical_keycode==KEY_F:
-        flaps=0.0 if flaps>.75 else flaps+.5
-
 func _physics_process(delta: float) -> void:
     if not needs_physics(): return
     if crashed:
@@ -275,42 +316,32 @@ func _physics_process(delta: float) -> void:
         return
     var overrun:=map_overrun()
     if not occupied:
-        # Left flying (exit while moving): glide on unpowered until it rests; past the edge, reset.
+        # Left flying (exit while moving): glides down unpowered until it rests; past the edge, reset.
         if coasting and overrun>0:
             reset_to_start()
             return
-        aircraft_step(delta,0,0,0,0,false,false)
+        fly_step(delta,0,0,0,false)
         if coasting and not crashed: settle(delta,landed and current_speed<.3)
         return
     if overrun>MAP_RESET_MARGIN:
         reset_to_start()
         return
+    var turn:=Input.get_action_strength("move_right")-Input.get_action_strength("move_left")
     if overrun>0 and not landed and not boarding_busy():
+        # Past the map edge it turns itself back toward town (up / down and speed still work).
         map_edge_clock-=delta
         if not past_edge or map_edge_clock<=0:
             map_edge_reached.emit(self)
             map_edge_clock=MAP_EDGE_REPEAT
         past_edge=true
-        var climb:=0.0
-        if easy_flying:
-            climb=Input.get_action_strength("move_forward")-Input.get_action_strength("move_back")+Input.get_action_strength("jump")-maxf(float(Input.is_physical_key_pressed(KEY_SHIFT)),Input.get_action_strength("descend"))
-        easy_step(delta,clampf(climb,-1,1),edge_turn())
-        return
-    past_edge=false
-    if easy_flying:
-        # Easy flying: the move actions (WASD, the touch stick), jump (Space, the jump button)
-        # and descend (Shift, Ctrl, the touch ▼ button).
-        var stick:=Input.get_action_strength("move_forward")-Input.get_action_strength("move_back")
-        var down:=maxf(float(Input.is_physical_key_pressed(KEY_SHIFT)),Input.get_action_strength("descend"))
-        var turn:=Input.get_action_strength("move_right")-Input.get_action_strength("move_left")
-        easy_step(delta,clampf(stick+Input.get_action_strength("jump")-down,-1,1),turn)
-        return
-    # Space raises throttle, Shift lowers it, B brakes; Ctrl is unused in the cockpit.
-    var power:=float(Input.is_physical_key_pressed(KEY_SPACE))-float(Input.is_physical_key_pressed(KEY_SHIFT))
-    var pitch:=float(Input.is_physical_key_pressed(KEY_S))-float(Input.is_physical_key_pressed(KEY_W))
-    var roll:=float(Input.is_physical_key_pressed(KEY_D))-float(Input.is_physical_key_pressed(KEY_A))
-    var yaw:=float(Input.is_physical_key_pressed(KEY_X))-float(Input.is_physical_key_pressed(KEY_Z))
-    aircraft_step(delta,power,pitch,roll,yaw,Input.is_physical_key_pressed(KEY_B),Input.is_physical_key_pressed(KEY_R))
+        turn=edge_turn()
+    else:
+        past_edge=false
+    fly_step(delta,ascend_input(),turn,speed_input())
+
+## Stick forward (+1: faster, take off) or back (-1: slower, brake on the ground).
+func speed_input() -> float:
+    return Input.get_action_strength("move_forward")-Input.get_action_strength("move_back")
 
 func _process(delta: float) -> void:
     if propeller: propeller.rotation.z=fposmod(propeller.rotation.z+engine_power*95*delta,TAU)
@@ -322,61 +353,103 @@ func _process(delta: float) -> void:
         tail_elevator.rotation.x=-elevator*.35
         tail_rudder.rotation.y=rudder*.3
         for flap in flap_nodes: flap.rotation.x=flaps*.5
-        for gear in wheels: gear.rotate_object_local(Vector3.UP,current_speed*delta/.34)
+        var radius:=.34*global_basis.get_scale().x
+        for gear in wheels: gear.rotate_object_local(Vector3.UP,current_speed*delta/radius)
 
-## Easy flying: one input for up (take off, climb) / down (descend, brake) and one to turn.
-func easy_step(delta: float,climb: float,turn: float) -> void:
+## One step of flight. `up` +1 climb / -1 descend, `turn` +1 right, `stick` +1 faster / -1 slower
+## (the module header). With `engine` off (nobody aboard) it glides down slowly and brakes once down.
+func fly_step(delta: float,up: float,turn: float,stick: float,engine: bool=true) -> void:
+    var dt:=clampf(delta,0,1.0/30)
     if crashed:
         crash_tick(delta)
         return
     if boarding_busy():
-        aircraft_step(delta,0,0,0,0,false,false)
+        advance_boarding(dt)
         return
-    var inputs:=easy_inputs(clampf(delta,0,.0333333),climb,turn)
-    aircraft_step(delta,0,inputs.pitch,inputs.roll,0,inputs.brake,false)
-
-## Works out the stick, throttle and flaps a pilot would use: on the runway full power while
-## climb is held (lifting off at take-off speed), otherwise idle and brakes; in the air it holds
-## a climb, level or descent rate with automatic throttle and banks gently to turn. It keeps
-## above stall speed and, near the ground, limits the sink rate and the bank so a landing is
-## gentle. Sets throttle and flaps itself; returns the pitch / roll / brake inputs.
-func easy_inputs(dt: float,climb: float,turn: float) -> Dictionary:
-    var attitude:=global_basis.orthonormalized().get_euler()
-    var speed:=flight_velocity.length()
-    var on_ground:=landed
-    var height:=easy_height()
-    var desired_pitch:=0.0
-    var desired_bank:=0.0
-    var throttle_target:=0.0
-    var brake:=false
-    if on_ground:
+    if not occupied and not coasting: return
+    var heading:=global_basis.orthonormalized().get_euler().y
+    var ground:=support()
+    var vs:=flight_velocity.y
+    landed=not ground.is_empty() and global_position.y-ground.position.y<.25 and vs<=.1
+    var target_pitch:=0.0
+    var target_bank:=0.0
+    var power:=0.0
+    if landed:
+        var go:=engine and (up>.1 or stick>.1)
+        if go: airspeed=move_toward(airspeed,FAST,ACCEL*dt)
+        else: airspeed=move_toward(airspeed,0,(BRAKE if engine else ROLL_DRAG)*dt)
+        # Steering on the ground (the nose wheel), less when barely rolling.
+        heading-=turn*.6*clampf(airspeed/3,0,1)*dt
+        turn_rate=0
+        vs=0
+        climb_to=INF
+        power=1.0 if go else (.25 if engine else 0.0)
+        if go and airspeed>LIFT_OFF*.8: target_pitch=.1
+        if go and airspeed>=LIFT_OFF:
+            vs=1.5
+            landed=false
+            if up<=.1: climb_to=ground.position.y+TAKE_OFF_HEIGHT
+        # Rolling, the wheels follow the ground; parked, it stays exactly where it was put.
+        if airspeed>0 or vs>0: global_position.y=ground.position.y+.09
         flaps=.5
-        throttle_target=1.0 if climb>.1 else 0.0
-        brake=climb<=.1
-        if climb>.1 and speed>21: desired_pitch=.16
-        throttle=move_toward(throttle,throttle_target,dt*.8)
-        easy_hold_y=global_position.y
-        return {"pitch":clampf((desired_pitch-attitude.x)*5,-1,1),"roll":turn,"brake":brake}
-    var target_climb:=climb*(6.0 if climb>0 else 5.0)
-    if absf(climb)>.05: easy_hold_y=global_position.y
-    else: target_climb=clampf((easy_hold_y-global_position.y)*.4,-3,3)
-    if target_climb<0 and height<12: target_climb=maxf(target_climb,-2.0-height*.4)
-    desired_pitch=clampf(.05+(target_climb-flight_velocity.y)*.09,-.22,.28)
-    # Stall protection: lower the nose and open the throttle when slow (not in the landing flare).
-    var flare:=climb<0 and height<6
-    var slow:=speed<21 and not flare
-    if slow: desired_pitch=minf(desired_pitch,.02)
-    desired_bank=-turn*(.6 if height>8 else .1)
-    # Descending slows to a landing speed with full flaps; near the ground the engine idles.
-    var target_speed:=25.0 if climb<0 else 38.0
-    throttle_target=1.0 if climb>0 or slow else clampf((.55 if climb>=0 else .3)+(target_speed-speed)*.1,0,1)
-    if flare: throttle_target=0.0
-    throttle=move_toward(throttle,throttle_target,dt*.6)
-    flaps=(1.0 if climb<0 else .5) if speed<32 else 0.0
-    return {"pitch":clampf((desired_pitch-attitude.x)*5,-1,1),"roll":clampf((attitude.z-desired_bank)*3,-1,1),"brake":false}
+    else:
+        var height:=height_above_ground()
+        var target_speed:=CRUISE+stick*(FAST-CRUISE if stick>0 else CRUISE-SLOW)
+        var target_vs:=up*(CLIMB if up>0 else SINK)
+        if absf(up)>.05: climb_to=INF
+        elif climb_to<INF:
+            target_vs=clampf((climb_to-global_position.y)*.5,0,CLIMB)
+            if global_position.y>climb_to-.3: climb_to=INF
+        if not engine:
+            target_vs=-SINK*.8
+            target_speed=SLOW
+        if target_vs<0:
+            target_speed=minf(target_speed,APPROACH if height>10 else SLOW)
+            # Near the ground the sink eases off: about 0.5 m/s at touchdown.
+            if height<10: target_vs=maxf(target_vs,-(.5+height*.25))
+        airspeed=move_toward(airspeed,target_speed,(ACCEL if target_speed>airspeed else DECEL)*dt)
+        vs=lerpf(vs,target_vs,1-exp(-EASE*dt))
+        turn_rate=lerpf(turn_rate,turn*TURN_RATE,1-exp(-EASE*dt))
+        heading-=turn_rate*dt
+        # Bank for a coordinated turn, kept small close to the ground.
+        var bank_limit:=MAX_BANK*clampf((height-1)/8,.15,1)
+        target_bank=clampf(atan(airspeed*turn_rate/9.81),-bank_limit,bank_limit)
+        target_pitch=atan2(vs,maxf(airspeed,1))+.04
+        power=0.0 if not engine else clampf(.55+.35*stick+.3*maxf(up,0)-.3*maxf(-up,0),.2,1)
+        flaps=1.0 if target_vs<0 and height<25 else (.5 if airspeed<14 else 0.0)
+    pitch=lerpf(pitch,target_pitch,1-exp(-POSE_EASE*dt))
+    bank=lerpf(bank,target_bank,1-exp(-POSE_EASE*dt))
+    engine_power=move_toward(engine_power,power,dt)
+    elevator=move_toward(elevator,clampf(up,-1,1),dt*3)
+    aileron=move_toward(aileron,turn,dt*3)
+    rudder=move_toward(rudder,turn*.5,dt*3)
+    var forward:=Vector3(-sin(heading),0,-cos(heading))
+    flight_velocity=forward*airspeed+Vector3.UP*vs
+    var next:=global_transform
+    next.basis=Basis.from_euler(Vector3(pitch,heading,-bank)).scaled(global_basis.get_scale())
+    if can_rotate(next): global_transform=next
+    var movement:=flight_velocity*dt
+    if not landed and not ground.is_empty() and vs<0 and global_position.y+movement.y<=ground.position.y+.09:
+        # Touchdown: gentle is a landing, too fast or banked a crash.
+        if vs< -CRASH_SINK or absf(bank)>CRASH_BANK:
+            crash()
+            return
+        movement.y=ground.position.y+.09-global_position.y
+        flight_velocity.y=0
+        landed=true
+    var fraction:=flight_fraction(movement)
+    global_position+=movement*fraction
+    if fraction<.999:
+        if airspeed>5 or absf(vs)>CRASH_SINK:
+            crash()
+            return
+        airspeed=0
+        flight_velocity=Vector3.ZERO
+    current_speed=flight_velocity.length()
+    if global_position.y< -8 or global_position.length()>2500: crash()
 
 ## Metres from the wheels down to whatever is below (INF when nothing within 120 m).
-func easy_height() -> float:
+func height_above_ground() -> float:
     var ray:=PhysicsRayQueryParameters3D.create(global_position+Vector3.UP*.5,global_position-Vector3.UP*120)
     ray.exclude=collision_exceptions
     ray.collision_mask=0xFFFFFEFF # skip figure blockers (layer 256)
@@ -395,102 +468,8 @@ func ground_contact() -> bool:
     var hit:=support()
     return not hit.is_empty() and global_position.y-hit.position.y<.18 and absf(flight_velocity.y)<.5
 
-func aerodynamic_force(velocity: Vector3) -> Vector3:
-    # Adapted force directions and dynamic pressure from VehicleWing3D::_calculate_section_forces.
-    # A single effective wing replaces upstream's per-section rigid-body solver.
-    var wind: Vector3=-velocity
-    var drag_direction:=wind.normalized()
-    var lift_direction:=drag_direction.cross(global_basis.x.normalized()).normalized()
-    var local_wind:=global_basis.orthonormalized().inverse()*wind
-    angle_of_attack=atan2(local_wind.y,local_wind.z)
-    var alpha:=angle_of_attack
-    var cl:=clampf(.32+flaps*.5+4.8*alpha,-1.35,1.6)
-    var stall_angle:=deg_to_rad(17.0)
-    stalled=absf(alpha)>stall_angle and airspeed>8
-    if absf(alpha)>stall_angle:
-        cl=lerpf(cl, .4*sin(2*alpha),clampf((absf(alpha)-stall_angle)/.35,0,1))
-    var cd:=.035+.055*cl*cl+flaps*.035+(.8*absf(sin(alpha)) if stalled else 0.0)
-    var pressure:=.5*1.225*velocity.length_squared()*wing_area
-    return (lift_direction*cl+drag_direction*cd)*pressure
-
-func aircraft_step(delta: float,power_input: float,pitch_input: float,roll_input: float,yaw_input: float,brake: bool,assist: bool) -> void:
-    var dt:=clampf(delta,0,.0333333)
-    if crashed:
-        if occupied and assist: reset_to_start()
-        return
-    if boarding_busy() and advance_boarding(dt): return
-    if not occupied and not coasting:
-        # Parked or an overlay is open: pause aircraft motion, retaining momentum.
-        return
-    throttle=clampf(throttle+power_input*dt*.4,0,1)
-    engine_power=move_toward(engine_power,throttle,dt*.32)
-    elevator=move_toward(elevator,pitch_input,dt*2.5)
-    aileron=move_toward(aileron,roll_input,dt*3)
-    rudder=move_toward(rudder,yaw_input,dt*3)
-    airspeed=flight_velocity.length()
-    var ground:=support()
-    landed=not ground.is_empty() and global_position.y-ground.position.y<.18 and flight_velocity.y<=.5
-    var scale_factor:=global_basis.get_scale()
-    var attitude:=global_basis.orthonormalized()
-    var euler_angles:=attitude.get_euler()
-    var authority:=clampf(airspeed/23,0,1.3)
-    var pitch_target:=elevator*.48*authority
-    var roll_target: float=-aileron*.8*authority
-    if not landed:
-        # Tail stability lowers AoA without forcing velocity to follow the nose.
-        pitch_target-=clampf(angle_of_attack-.055,-.4,.4)*.65
-        if assist:
-            pitch_target=clampf(.055-euler_angles.x,-.3,.3)
-            roll_target=clampf(-euler_angles.z*1.6,-.7,.7)
-    else:
-        roll_target=-euler_angles.z*4
-        if airspeed<18: pitch_target=-euler_angles.x*4
-        pitch_target=clampf(pitch_target,-.1,.25)
-    pitch_rate=lerpf(pitch_rate,pitch_target,1-exp(-3*dt))
-    roll_rate=lerpf(roll_rate,roll_target,1-exp(-3*dt))
-    var yaw_rate: float=-rudder*(.35 if landed else .12)*maxf(.15,authority)
-    if landed: yaw_rate-=aileron*.38*clampf(airspeed/4,0,1)
-    else: yaw_rate+=9.81*tan(clampf(euler_angles.z,-1.0,1.0))/maxf(airspeed,12)
-    var next:=global_transform
-    next.basis=(Basis(Vector3.UP,yaw_rate*dt)*attitude*Basis(Vector3.RIGHT,pitch_rate*dt)*Basis(Vector3.BACK,roll_rate*dt)).orthonormalized().scaled(scale_factor)
-    if can_rotate(next): global_transform=next
-    var force:=aerodynamic_force(flight_velocity)
-    force+=travel_forward()*max_thrust*engine_power*clampf(1-airspeed/100,.15,1)
-    var acceleration:=force/mass_kg+Vector3.DOWN*9.81
-    if landed:
-        var right:=global_basis.x.normalized()
-        flight_velocity-=right*flight_velocity.dot(right)*minf(1,dt*5)
-        var rolling:=flight_velocity.normalized()*(7.5 if brake else .35)
-        acceleration-=rolling
-        if acceleration.y<=0:
-            flight_velocity.y=0
-            acceleration.y=0
-            global_position.y=ground.position.y+.09
-    flight_velocity+=acceleration*dt
-    if landed and brake and flight_velocity.length()<.25: flight_velocity=Vector3.ZERO
-    var movement:=flight_velocity*dt
-    # Wheel contact is solved before the body envelope reaches the runway.
-    if not ground.is_empty() and flight_velocity.y<0 and global_position.y+movement.y<=ground.position.y+.09:
-        if flight_velocity.y< -4.5 or absf(euler_angles.z)>.25 or absf(euler_angles.x)>.3:
-            crash()
-            return
-        movement.y=ground.position.y+.09-global_position.y
-        flight_velocity.y=0
-        landed=true
-        rotation.x=0
-        rotation.z=0
-    var fraction:=flight_fraction(movement)
-    global_position+=movement*fraction
-    if fraction<.999:
-        if flight_velocity.length()>5: crash()
-        else: flight_velocity=Vector3.ZERO
-    current_speed=flight_velocity.length()
-    airspeed=current_speed
-    if global_position.y< -8 or global_position.length()>2500: crash()
-
 func crash() -> void:
     super.crash()
-    throttle=0
     engine_power=0
 
 func recover() -> void:
@@ -498,16 +477,15 @@ func recover() -> void:
     flight_velocity=Vector3.ZERO
     current_speed=0
     airspeed=0
-    pitch_rate=0
-    roll_rate=0
+    turn_rate=0
+    pitch=0
+    bank=0
+    climb_to=INF
     elevator=0
     aileron=0
     rudder=0
-    angle_of_attack=0
-    throttle=0
     engine_power=0
     crashed=false
-    stalled=false
     landed=true
 
 func safe_exit(player: CharacterBody3D) -> Dictionary:
@@ -519,6 +497,5 @@ func safe_exit(player: CharacterBody3D) -> Dictionary:
 func flight_status() -> String:
     if boarding_progress<1: return UiText.t("vehicle.status_plane_boarding")
     if crashed: return UiText.t("vehicle.status_plane_crash")
-    var state:=UiText.t("vehicle.plane_stall" if stalled else ("vehicle.plane_ground" if landed else "vehicle.plane_airborne"))
-    if easy_flying: return UiText.t("vehicle.status_plane_easy",{"speed":int(airspeed*1.944),"height":int(maxf(0,global_position.y-home_pose.origin.y)),"state":state})
-    return UiText.t("vehicle.status_plane",{"speed":int(airspeed*1.944),"height":int(maxf(0,global_position.y-home_pose.origin.y)),"throttle":int(throttle*100),"flaps":int(flaps*100),"state":state})+"  ·  "+UiText.t("vehicle.to_easy")
+    var state:=UiText.t("vehicle.plane_ground" if landed else "vehicle.plane_airborne")
+    return UiText.t("vehicle.status_plane",{"speed":int(airspeed*1.944),"height":int(maxf(0,global_position.y-home_pose.origin.y)),"state":state})

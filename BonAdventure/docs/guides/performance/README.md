@@ -1,6 +1,6 @@
 # Garden performance and reference polish — 2026-10-19
 
-> **Current sections (18 Nov 2026):** [graphics tiers](#graphics-tiers-low-default-high-kept--14-november-2026),
+> **Current sections (23 Nov 2026):** [one graphics setting and the flight view](#one-graphics-setting-and-the-flight-view--23-november-2026),
 > [GPU memory on the web](#gpu-memory-on-the-web--14-november-2026),
 > [nearby buildings on phones](#built--17-november-2026),
 > [indoor visibility](#indoor-visibility-hide-far-keep-near--14-november-2026),
@@ -569,7 +569,60 @@ alternating runs per cap, in the verification record).
 Measurements, checks and rendered comparisons are in the
 [verification record](../FINAL_VERIFICATION.md#2026-10-29-render-trim-phase-2-segments-ranges-static-batching).
 
+## One graphics setting and the flight view — 23 November 2026
+
+User decision (23 Nov 2026): **one graphics setting, the one that works on a phone**, and
+everything built only for High removed, to keep development focused. What was Low is now simply
+the game, on every device; the Settings "Graphics quality" row, `GameSettings.graphics`, Low/High
+and `graphics_changed` are gone (a saved `"graphics"` key is ignored and dropped at the next
+save). `render_culling.gd` `apply_view()` sets it once at the end of `build()`:
+
+- camera far `VIEW_DISTANCE` 130 m with depth fog from 40 % of it (`day_night.gd`
+  `set_view_distance()`; 0 there means the old faint exponential haze, used only by the map bake
+  and `tools/capture_app_art.gd`);
+- **no sun shadows** (`day_night.gd` keeps them off; only the app-art shots turn them on);
+- short visibility ranges × `RANGE_SHARE` 0.45 (never under `MIN_RANGE` 20 m), heavy meshes
+  hidden beyond `HEAVY_RANGE` 40 m, longer ranges unchanged (applied directly; the `high_range`
+  meta is gone);
+- 2× MSAA, screen-space AA and TAA off; web 3D scale 0.8 of the CSS pixels, at least 720 lines.
+
+`nearby_units.gd` is on for every web build (it was "web with Low"). The perf readout shows
+"view N m" (the current far plane) where it showed the tier.
+
+**Flight view** (user, 23 Nov 2026: the town vanished in fog when flying high; "height based
+view, no cap, some fog at a certain height"): `vehicle_controls.gd` `update_flight_view()` grows
+the far plane and its fog with the aircraft's height above the town, 130 m + 2.2 m per metre, at
+most `FLIGHT_VIEW_MAX` 330 m (reached at 91 m), easing back on landing or leaving the aircraft.
+There is no height limit; the chase view also tilts down with height (`FLIGHT_TILT_PER_METRE`
+0.0025 rad, at most 0.45 from 180 m) so the town stays below the plane. Above about 250 m the
+ground is beyond the view and the plane flies over a pale haze floor. Below the horizon the sky takes the fog
+colour while a view distance is set (`day_night.gd`), so the fogged ground and sea run into it
+with no seam (user, 23 Nov 2026: a hard line under the horizon flying at night, where the
+keyframe's darker `ground_bottom` showed past the view; no frame-rate cost; [night view](../../evidence/flight-view-20261123/night-height-100-m.png)). On the web,
+`nearby_units.gd` loads buildings out to the far plane + 20 m.
+
+**Measured** (native Mac, 1560×720, full town, 2 pm, plane flying north over the town centre;
+[capture and pictures](../../evidence/flight-view-20261123/)). Frame times are vsync-capped on
+the Mac and say little about a phone; draw calls carry over.
+
+| view | view distance | draws | triangles | frame |
+| --- | ---: | ---: | ---: | ---: |
+| on foot, south of the centre, looking north | 130 m | 773 | 1.01 M | 13.1 ms |
+| flying at 40 m | 218 m | 4,749 | 1.05 M | 16.8 ms |
+| flying at 100 m | 330 m | 4,227 | 0.70 M | 16.5 ms |
+| flying at 200 m | 330 m | 3,713 | 0.54 M | 16.8 ms |
+| flying at 300 m (haze floor) | 330 m | 1,277 | 0.47 M | 10.3 ms |
+
+Triangles stay about the same (short ranges still hide small props), but **draw calls are about
+5–6× the street view** while the whole town is in sight; this is the frame-rate risk on a phone.
+Earlier (14 Nov, High) the zoo/park look-back measured 5,841 draws. **Not measured:** a phone or
+the web build. If flying is slow there, lower `FLIGHT_VIEW_MAX` (one constant).
+
 ## Graphics tiers: Low default, High kept — 14 November 2026
+
+> **Superseded 23 Nov 2026** by [one graphics setting](#one-graphics-setting-and-the-flight-view--23-november-2026):
+> High and the Settings row were removed; the Low values below are the game's only setting
+> (constants renamed without the `LOW_` prefix). Kept as the record of the measurements.
 
 User decision (14 Nov 2026, mobile playability): the game was very slow on an iPhone
 (Safari / installed PWA). **Low is the default everywhere** (web and Mac); the look of before is
@@ -842,8 +895,8 @@ comes back (B only). Answered 17 Nov: the label fix, then A (buildings arrive in
 - **Stage 2 skipped:** the minimap and full map are switched off (`Features.MINIMAP`,
   `Features.FULL_MAP`); store outlines before turning them back on with nearby loading.
 - **Stage 3, option A:**
-  - `scripts/world/nearby_units.gd`: on for the web with Low graphics (`VT_NEARBY=1` / `0` forces
-    it). Every 0.25 s it adds the nearest pending unit within 150 m (any unit with High graphics),
+  - `scripts/world/nearby_units.gd`: on for the web (`VT_NEARBY=1` / `0` forces
+    it; "with Low graphics" until 23 Nov 2026). Every 0.25 s it adds the nearest pending unit within 150 m (or the camera's far plane + 20 m when flying),
     and with a 3 s look-ahead above 9 m/s; at least 0.5 s between additions; never frees a unit.
   - `data/nearby_units.json`, written by `tools/nearby_units_data.gd` (run it again after a unit's
     footprint changes or a minigame moves): each unit's part boxes in town coordinates and the unit

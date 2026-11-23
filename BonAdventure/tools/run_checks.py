@@ -101,7 +101,7 @@ CHECKS = [
     dict(id="interaction", script="res://docs/evidence/town-checks/check_interaction.gd", suites=["full"], summary=None),
     dict(id="aircraft", script="res://docs/evidence/town-checks/check_aircraft.gd", suites=["full"], fps=True,
          prefix="AIRCRAFT: ", summary=r"AIRCRAFT: \d+ checks; (?P<n>\d+) failures"),
-    # Easy flying for the plane and the helicopter (14 Nov 2026, docs/guides/aircraft.md#easy-flying).
+    # The flying controls for the plane and the helicopter (easy flying 14 Nov 2026; one set with ▲ / ▼ since 23 Nov 2026, docs/guides/aircraft.md#flying-controls).
     dict(id="easy_flying", script="res://docs/evidence/town-checks/check_easy_flying.gd", suites=["full"], fps=True,
          prefix="FAIL ", summary=r"EASY FLYING CHECKS \d+ FAILURES (?P<n>\d+)"),
     dict(id="helicopter", script="res://docs/evidence/town-checks/check_helicopter_physics.gd", suites=["full"], fps=True,

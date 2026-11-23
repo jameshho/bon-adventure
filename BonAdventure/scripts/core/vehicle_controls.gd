@@ -131,9 +131,9 @@ static func board(main, next_vehicle: DriveableVehicle) -> bool:
 	next_vehicle.begin_boarding()
 	player.board_vehicle(next_vehicle)
 	if next_vehicle.fixed_wing:
-		hud.flash_quest_message(UiText.t("toast.turboprop_easy" if DriveableVehicle.easy_flying else "toast.turboprop_help"))
+		hud.flash_quest_message(UiText.t("toast.turboprop_fly"))
 	elif next_vehicle.helicopter:
-		hud.flash_quest_message(UiText.t("toast.helicopter_easy" if DriveableVehicle.easy_flying else "toast.helicopter_help"))
+		hud.flash_quest_message(UiText.t("toast.helicopter_fly"))
 	else:
 		hud.flash_quest_message(UiText.t("toast.driving_help"))
 		# At night the headlights come on by themselves (21 Nov 2026); F / Lights switches them.
@@ -174,6 +174,46 @@ static func update_aircraft(main) -> void:
 		if vehicle.global_position.distance_to(p) > DriveableVehicle.AIRCRAFT_RESET_DISTANCE \
 				and vehicle.global_position.distance_to(vehicle.start_pose().origin) > 2.0:
 			vehicle.reset_to_start()
+
+## Flying high, the view reaches further (user, 23 Nov 2026: from the plane the town vanished in
+## the fog): the camera's far plane and its depth fog (day_night.gd set_view_distance()) grow
+## from render_culling.gd VIEW_DISTANCE by FLIGHT_VIEW_PER_METRE for every metre the aircraft is
+## above the town, to at most FLIGHT_VIEW_MAX. There is no height limit: higher still, the town
+## below lies further away than the fog begins, so it fades into haze (opaque from about
+## FLIGHT_VIEW_MAX up), which also keeps the cost bounded. On the ground or out of an aircraft it
+## eases back. On the web, nearby_units.gd loads buildings out to the same distance.
+const FLIGHT_VIEW_PER_METRE := 2.2
+const FLIGHT_VIEW_MAX := 330.0
+## 1/s: how quickly the view distance follows the height.
+const FLIGHT_VIEW_EASE := 1.5
+## High up the ground lies beyond the 330 m view, so the chase view also tilts down with height
+## (radians per metre, up to FLIGHT_TILT_MAX at 180 m), on top of the player's own up/down look:
+## the town stays below the plane and fades into haze ahead (23 Nov 2026).
+const FLIGHT_TILT_PER_METRE := 0.0025
+const FLIGHT_TILT_MAX := 0.45
+const RenderCulling := preload("res://scripts/world/render_culling.gd")
+
+## Every frame (main._process).
+static func update_flight_view(main, delta: float) -> void:
+	var camera: Camera3D = main.player.camera
+	# Only once render_culling.gd set the view (not in an editing snapshot).
+	if camera == null or main.render_culling == null or main.get("day_night") == null:
+		return
+	var target: float = RenderCulling.VIEW_DISTANCE
+	var tilt := 0.0
+	var vehicle = main.active_vehicle
+	if is_instance_valid(vehicle) and vehicle.is_aircraft():
+		var height: float = maxf(0.0, vehicle.global_position.y - main.apartment.global_position.y)
+		target = minf(FLIGHT_VIEW_MAX, RenderCulling.VIEW_DISTANCE + height * FLIGHT_VIEW_PER_METRE)
+		tilt = minf(FLIGHT_TILT_MAX, height * FLIGHT_TILT_PER_METRE)
+	main.player.flight_tilt = lerpf(main.player.flight_tilt, tilt, 1.0 - exp(-FLIGHT_VIEW_EASE * delta))
+	if absf(camera.far - target) < 0.5:
+		return
+	var view := lerpf(camera.far, target, 1.0 - exp(-FLIGHT_VIEW_EASE * delta))
+	if absf(view - target) < 0.5:
+		view = target
+	camera.far = view
+	main.day_night.set_view_distance(view)
 
 ## Four times a second (main._process): the Home roof lifts while the learner is under it. (The
 ## garage door's arrival prompt became its "E" badge, 12 Nov 2026.)

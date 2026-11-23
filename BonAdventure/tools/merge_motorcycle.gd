@@ -9,7 +9,7 @@ extends SceneTree
 ## - the other part groups become two meshes on the root: "Mechanics" (engine, exhaust, rear
 ##   suspension) and "Parts" (frame, tank, seat, bars, fenders, lights...); the lean rolls the
 ##   root's children, so they still lean as one. Two, not one: each merged mesh must stay under
-##   render_culling.gd HEAVY_TRIANGLES (30k), or Low graphics hides it beyond 40 m (one mesh of the
+##   render_culling.gd HEAVY_TRIANGLES (30k), or the game hides it beyond 40 m (one mesh of the
 ##   whole body measured 32k).
 ## StudyArea and the root's script and metas are untouched. Normals use the inverse transpose so
 ## non-uniform scales shade as before. Safe to re-run (merged groups are left as they are):
@@ -81,7 +81,7 @@ func merge(holder: Node3D, parts: Array, title: String, file: String) -> void:
 	merged.resource_name = file
 	var triangles := 0
 	for i in merged.get_surface_count(): triangles += merged.surface_get_array_index_len(i) / 3
-	if triangles >= HEAVY_TRIANGLES: push_error("%s: %d triangles, Low graphics would hide it beyond 40 m" % [file, triangles])
+	if triangles >= HEAVY_TRIANGLES: push_error("%s: %d triangles, the game would hide it beyond 40 m" % [file, triangles])
 	print("  ", path, ": ", parts.size(), " meshes -> ", merged.get_surface_count(), " surfaces, ", triangles, " triangles; ", ResourceSaver.save(merged, path, ResourceSaver.FLAG_COMPRESS))
 	merged = load(path)
 	for part in parts:

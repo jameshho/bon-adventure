@@ -14,7 +14,7 @@ func check(ok: bool, label: String) -> void:
         push_error("DOORS: "+label)
 func step(v, count: int) -> void:
     for i in range(count):
-        if v.fixed_wing: v.aircraft_step(1.0/60,0,0,0,0,true,false)
+        if v.fixed_wing: v.fly_step(1.0/60,0,0,0)
         else: v.drive_step(1.0/60,0,0,0)
         game.player._physics_process(1.0/60)
 func shot(v: Node3D, title: String, eye: Vector3, target: Vector3) -> void:
@@ -51,7 +51,7 @@ func run():
     for v in game.driveable_vehicles:
         var title: String = v.name
         var saved: Transform3D = v.global_transform
-        v.global_transform = Transform3D(Basis.IDENTITY.scaled(Vector3.ONE*1.3),Vector3(900,.30 if v.fixed_wing else .45,900))
+        v.global_transform = Transform3D(Basis.IDENTITY.scaled(saved.basis.get_scale()),Vector3(900,.30 if v.fixed_wing else .45,900))
         if v.road_physics!=null: v.road_physics.reset()
         await physics_frame
         await physics_frame

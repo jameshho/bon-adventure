@@ -2,12 +2,12 @@ extends SceneTree
 ## Day-night cycle and HUD clock (9 Nov 2026; scripts/world/day_night.gd, scripts/ui/day_clock.gd,
 ## data/day_night.json). Headless, writes no files.
 ## Checks: one sun (no new lights), start at the shared "now", keyframe blending and sun path,
-## shadows only by day, lamp heads glow only at night and keep their material through batching,
+## no sun shadows, lamp heads glow only at night and keep their material through batching,
 ## midnight wrap both ways, −/+ pause the cycle, Resume restarts it, the clock text and panel
 ## (open, − / +, Close keeps the time, Esc closes it), warm fill indoors at night with the outside left at night (roof and walls;
 ## since 10 Nov 2026 a probe box fitted to the building, the street outside the door outside it),
-## the sun disc / moon in the light's direction and the cloud tint by hour; Low graphics (the default,
-## 14 Nov 2026) drops the sun shadows and fogs the view distance, then the rest runs on High.
+## the sun disc / moon in the light's direction and the cloud tint by hour; the one graphics setting
+## (23 Nov 2026; Low and High until then): no sun shadows at any hour and a fogged view distance.
 ## Uses Main, which saves progress and settings: run with an isolated HOME (README), e.g.
 ##   python3 tools/run_checks.py --only day_night
 const GameClock := preload("res://scripts/learning/game_clock.gd")
@@ -41,22 +41,16 @@ func run() -> void:
 			suns += 1
 	check(suns == 1, "one directional light in the town world (found %d)" % suns)
 	check(cycle.find_children("*", "Light3D", true, false).is_empty(), "the cycle adds no other lights")
-	check(cycle.sun.directional_shadow_max_distance == 50.0, "render_culling still trims the sun's shadow distance")
 	check(absf(cycle.minutes - GameClock.shared().now) < 5.0, "starts at the shared now (%s vs %s)" % [GameClock.clock(int(cycle.minutes)), GameClock.clock(GameClock.shared().now)])
 	check(is_equal_approx(cycle.cycle_minutes, 30.0), "default cycle is 30 minutes")
 	check(is_equal_approx(game.get_viewport().scaling_3d_scale, 1.0), "desktop keeps full 3D resolution (the web-only scale is off)")
 
-	# Graphics tiers (14 Nov 2026, render_culling.gd apply_graphics): Low is the default, with no
-	# sun shadows and a fogged view distance; the checks below then run on High (the full look).
-	var settings = preload("res://scripts/core/game_settings.gd").shared()
-	check(settings.graphics == settings.LOW, "graphics start on Low (the default)")
+	# One graphics setting (23 Nov 2026, render_culling.gd apply_view()): no sun shadows and depth
+	# fog opaque at the 130 m view distance.
 	cycle.set_time(12 * 60.0)
-	check(not cycle.sun.shadow_enabled, "Low: no sun shadows at noon")
-	check(cycle.environment.fog_mode == Environment.FOG_MODE_DEPTH and is_equal_approx(cycle.environment.fog_depth_end, game.player.camera.far) and game.player.camera.far < 200.0,
-		"Low: depth fog is opaque at the camera's far plane (%.0f m)" % game.player.camera.far)
-	settings.set_graphics(settings.HIGH)
-	check(cycle.sun.shadow_enabled and cycle.environment.fog_mode == Environment.FOG_MODE_EXPONENTIAL and game.player.camera.far >= 4000.0,
-		"High (switched at runtime): sun shadows back, faint haze, full view distance")
+	check(not cycle.sun.shadow_enabled, "no sun shadows at noon")
+	check(cycle.environment.fog_mode == Environment.FOG_MODE_DEPTH and is_equal_approx(cycle.environment.fog_depth_end, game.player.camera.far) and is_equal_approx(game.player.camera.far, 130.0),
+		"depth fog is opaque at the camera's far plane (%.0f m)" % game.player.camera.far)
 
 	# Lamps: 19 streetlight heads and 8 bridge globes, the zoo zones' 4 lamp posts and 2 gate
 	# lanterns (base step zoo_zones, 12 Nov 2026) and the chapel's 2 door lanterns and 12
@@ -76,7 +70,7 @@ func run() -> void:
 	# Noon: the original daylight, softened; shadows on, lamps off.
 	cycle.pause()
 	cycle.set_time(12 * 60)
-	check(cycle.sun.shadow_enabled, "noon: sun shadows on")
+	check(not cycle.sun.shadow_enabled, "noon: no sun shadows (one graphics setting)")
 	check(absf(cycle.sun.rotation_degrees.x + 53.0) < 0.5 and absf(cycle.sun.rotation_degrees.y + 18.0) < 0.5, "noon: sun at the old direction (%s)" % cycle.sun.rotation_degrees)
 	check(absf(cycle.sun.light_energy - 0.56) < 0.01, "noon: sun energy 0.56 (%.3f)" % cycle.sun.light_energy)
 	check(cycle.environment.sky.sky_material.sky_top_color.is_equal_approx(Color("4f8fd0")), "noon: original sky top colour")
@@ -101,7 +95,7 @@ func run() -> void:
 	check(cycle.cloud_materials[0].albedo_color.b < cycle.cloud_materials[0].albedo_color.r - 0.1 and Color(cycle.disc_material.get_shader_parameter("disc_color")).g < 0.8, "18:00: orange sun, warm clouds")
 	# Golden hour, sunset, night.
 	cycle.set_time(17 * 60 + 45)
-	check(cycle.sun.light_color.r > cycle.sun.light_color.b + 0.2 and cycle.sun.shadow_enabled, "golden hour: warm sun with shadows")
+	check(cycle.sun.light_color.r > cycle.sun.light_color.b + 0.2 , "golden hour: warm sun")
 	check(cycle.sun.rotation_degrees.x > -30.0, "golden hour: low sun (%.1f°)" % -cycle.sun.rotation_degrees.x)
 	cycle.set_time(0)
 	check(not cycle.sun.shadow_enabled, "midnight: no shadows (moon)")
@@ -190,7 +184,7 @@ func run() -> void:
 	check(cycle.sun.light_energy < 0.01 and not cycle.sun.shadow_enabled, "indoors at night: no moonlight through the roof, no noon sun")
 	check(cycle.environment.sky.sky_material.sky_top_color.v < 0.5, "indoors at night: the sky stays night")
 	cycle.set_time(12 * 60)
-	check(absf(cycle.sun.light_energy - 0.56) < 0.01 and cycle.sun.shadow_enabled, "indoors by day: the sun is unchanged")
+	check(absf(cycle.sun.light_energy - 0.56) < 0.01, "indoors by day: the sun is unchanged")
 	cycle.set_time(0)
 	game.player.global_position = market.to_global(Vector3(-33.0, 0.1, 22.0))
 	await wait(1.6)

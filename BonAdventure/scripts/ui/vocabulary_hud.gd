@@ -1116,24 +1116,18 @@ func help_sections() -> Array:
                 [["1", "/", "2", "/", "3"], "help.elevator"]]],
         ],
         [
+            # One set of flying controls for both aircraft (23 Nov 2026, user): ▲ / ▼ on screen.
             ["help.helicopter", BonStyle.TERM, [
-                [["W", "/", "S"], "help.pitch_accelerate"],
-                [["A", "/", "D"], "help.bank_turn"],
-                [["Space", "/", "Shift"], "help.rise"],
-                [["hold", "R"], "help.hover"],
-                [["C"], "help.easy_flying"],
+                [["Space", "/", "Shift"], "help.fly_up_down"],
+                [["W", "/", "S"], "help.fly_speed"],
+                [["A", "/", "D"], "help.fly_turn"],
                 [["E"], "help.heli_exit"]]],
             ["help.turboprop", BonStyle.TERM, [
-                [["W", "/", "Space"], "help.plane_up"],
-                [["S", "/", "Shift"], "help.plane_down"],
-                [["C"], "help.easy_flying"],
-                [["Space", "/", "Shift"], "help.throttle"],
-                [["S", "/", "W"], "help.pitch"],
-                [["A", "/", "D"], "help.bank"],
-                [["Z", "/", "X"], "help.rudder"],
-                [["F"], "help.flaps"],
-                [["B"], "help.brakes"],
-                [["hold", "R"], "help.level"]]],
+                [["Space", "/", "Shift"], "help.fly_up_down"],
+                [["W", "/", "S"], "help.fly_speed"],
+                [["A", "/", "D"], "help.fly_turn"],
+                [["W", "/", "Space"], "help.fly_take_off"],
+                [["E"], "help.heli_exit"]]],
         ],
     ]
 

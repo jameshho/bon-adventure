@@ -8024,6 +8024,80 @@ Exit codes 137 after the summaries (crash at quit, as before). The other session
 `teller_session.gd` parse errors still show in the logs. Not run: the full suite, the passport
 missions check, a web export or a phone.
 
+## One set of flying controls, ▲ / ▼ buttons — 23 November 2026
+
+User: one simple, consistent control for the plane on all devices, with ascend and descend buttons;
+then the same for the helicopter ([flying controls](aircraft.md#flying-controls)). Easy flying and
+the C expert mode were replaced by one scheme for both aircraft; ▲ / ▼ are HUD Buttons shown on
+every device while flying (`touch_controls.gd`), W/S set the speed, and W alone takes off and
+levels at 20 m. The plane's pitch correction is softened above 38 m/s (it bobbed at 48 m/s).
+
+- `python3 tools/run_checks.py --only easy_flying,aircraft,vehicle_arcade,helicopter,runtime_resources`
+  (full town, final code, once): `easy_flying` **17 checks, 0 failures** (5 new: ▲ / ▼ show in
+  both aircraft and not on foot and hold up / down, faster / slower on the stick, take-off on the
+  stick alone), `aircraft` **29, 0** (the F-flaps lines removed), `vehicle_arcade` **104, 0**,
+  `helicopter` **34, 0**, `runtime_resources` **PASS**. The four town checks are labelled CRASH
+  by Godot's known exit abort (`recursive_mutex lock failed`) after their summaries; it was not
+  caused here (same abort on 21 Nov; suspect: the passport commit's lambda on the static
+  `Missions.shared()` singleton). **P2.** While tuning, `easy_flying` was run four more times.
+- Rendered views (graphics, isolated `HOME`): `docs/evidence/flying-controls-20261123/capture.gd`
+  → helicopter with a mouse and with touch, the plane on the runway, the F1 guide. The plane's
+  boarding toast was cut off at the right edge; shortened (not re-rendered).
+- Not done: a hands-on play-test, a phone or the web build; multi-touch hold of ▼ with a second
+  finger while the stick is held relies on the same GUI path as Run (not tested here).
+  `docs/evidence/run-button-shop-20261114/verify.gd` still names the removed `_down_rect`
+  (historical check, not in run_checks).
+
+## Smaller plane, new flight model — 23 November 2026
+
+User: the plane felt unnatural, its up / down tilt was inconsistent and it kept wobbling up and
+down with no input; make it a smaller, slower plane, rewriting it if better. The aerodynamic
+model plus its easy-flying autopilot was replaced by a steady arcade model (`turboprop.gd`
+`fly_step()`; [flight model](aircraft.md#flight-model)), the plane is shown at 0.65 size with
+BonBon to scale, and the chase camera is closer. `check_aircraft.gd` was rewritten for it.
+
+- `python3 tools/run_checks.py --only aircraft,easy_flying,vehicle_arcade,vehicle_doors,vehicle_boarding,helicopter`
+  (full town, once on the final code): `aircraft` **34 checks, 0 failures** (hands off for a
+  minute: 0.0 m drift, 0 m/s vertical speed, 0 pitch change), `easy_flying` **17, 0**,
+  `vehicle_arcade` **104, 0** (map edge: turned back 82 m past it), `vehicle_doors` **325, 0**,
+  `vehicle_boarding` **181, 0**, `helicopter` **34, 0**. All six are labelled CRASH by the known
+  exit abort after their summaries (see the entry above). Before that run, `aircraft` and
+  `easy_flying` ran once each and failed 2 + 1 checks (test setups and a parked-height snap; fixed).
+- Rendered views (graphics, isolated `HOME`): `docs/evidence/small-plane-20261123/capture.gd` →
+  parked beside BonBon, cockpit, take-off, climb, turn and level flight, flown with the real
+  Input actions in the chase view.
+- Not done: a hands-on play-test, a phone or the web build. `render_aircraft.gd`'s four older
+  previews were not re-rendered (they show the full-size plane).
+
+## One graphics setting, flight view — 23 November 2026
+
+User: one consistent graphics setting that works on a phone, everything built for High removed;
+a height-based view from the air with no height limit and fog high up, without risking the frame
+rate. [Setting, flight view and numbers](performance/README.md#one-graphics-setting-and-the-flight-view--23-november-2026),
+[view from the air](aircraft.md#view-from-the-air). Code: `render_culling.gd` `apply_view()`,
+`day_night.gd` `set_view_distance()`, `vehicle_controls.gd` `update_flight_view()`,
+`player_controller.gd` `flight_tilt`; removed from `game_settings.gd`, `settings_panel.gd`,
+`perf_readout.gd`, `nearby_units.gd`, `bake_town_map.gd`, `capture_app_art.gd` and the
+`settings.graphics*` phrases.
+
+- `python3 tools/run_checks.py --only runtime_resources,day_night,easy_flying,vehicle_arcade,app_flow,aircraft`
+  (full town, isolated `HOME`): `runtime_resources` **PASS**, `day_night` **62 checks, 0
+  failures** (no sun shadows, depth fog to 130 m; its High assertions removed), `easy_flying`
+  **17, 0**, `vehicle_arcade` **104, 0**, `app_flow` **24, 0**, `aircraft` **36, 0** (new: view
+  330 m and fog to 330 m at 100 m up, back to 130 m after leaving the plane). Town checks are
+  labelled CRASH by the known exit abort after their summaries. `aircraft` first failed because
+  base.scn had been re-baked with the plane already at 0.65 size and `_ready` scaled it again
+  (0.65³); `turboprop.gd` now sets the size absolutely, then it passed.
+- The chase view's downward tilt with height (`flight_tilt`) was added after those checks; it
+  ran only in the capture below (no errors), not in a check.
+- Rendered and measured (graphics, isolated `HOME`): `docs/evidence/flight-view-20261123/capture.gd`
+  → on foot, plane at 40, 100, 200 and 300 m with draw calls per view (table in the performance
+  guide: 773 draws on foot, about 4,700 flying low over the town, 1,277 at 300 m). Draw calls,
+  not triangles, are the cost of the longer view.
+- Not done: a phone or the web build (frame rate there is unknown), the full suite, a hands-on
+  play-test. Historical evidence scripts that call the removed `set_graphics()` / `GameSettings.graphics`
+  were left as they were.
+
 ## Lagoon fish under the water and the swan boat — 23 November 2026
 
 User: the pond fish should not block the swan boat and should be under the water. Two causes
@@ -8048,3 +8122,9 @@ boat in open water.
   known exit abort after its summary.
 - Not done: the full suite, a hands-on drive with the player steering. Other lagoon animals were
   not changed.
+- Later the same day (user screenshot: a hard horizontal line under the horizon flying at night):
+  while a view distance is set, the sky below the horizon takes the fog colour (`day_night.gd`
+  `_apply()`, re-applied when `set_view_distance()` switches between fog and haze). `day_night`
+  check once: **62 checks, 0 failures** (CRASH label = known exit abort). Rendered
+  `VT_NIGHT=1 … flight-view-20261123/capture.gd` → `night-height-100-m.png`: the view's edge fades
+  into the sky, no line. Not re-checked: dawn/dusk keyframes, where fog and horizon colours differ slightly.
