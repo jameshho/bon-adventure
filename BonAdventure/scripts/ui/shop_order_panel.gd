@@ -434,6 +434,7 @@ func _build_dialogue() -> void:
 	spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	top.add_child(spacer)
 	translate_button = TranslateButton.new()
+	translate_button.follows_peek = false   # _on_peek() follows the HUD's EN itself
 	translate_button.pressed.connect(toggle_translation)
 	top.add_child(translate_button)
 	dialogue_close = _icon_button("close")
@@ -489,6 +490,7 @@ func _build_cart() -> void:
 	list_title = _label(24, GOLD)
 	head.add_child(list_title)
 	cart_translate_button = TranslateButton.new()
+	cart_translate_button.follows_peek = false   # _on_peek() follows the HUD's EN itself
 	cart_translate_button.pressed.connect(toggle_translation)
 	head.add_child(cart_translate_button)
 	# The cart's ✕ (quit the order): about 1.7 x the other ✕ and edged like Leave, a clear

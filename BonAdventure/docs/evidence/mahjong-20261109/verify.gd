@@ -18,6 +18,7 @@ func _initialize() -> void:
 	_scoring()
 	_shanten()
 	_preset()
+	_pung_then_win()
 	for mode in [3, 0]:
 		_play(mode)
 	print("MAHJONG: %d checks, %d failures" % [checks, failures])
@@ -136,6 +137,31 @@ func _play(mode: int) -> void:
 	print("Mode %d: %d hands, %d wins, %d draws, fan %s; %d decisions, %.2f ms average, %.1f ms slowest" % [mode, HANDS_PER_MODE, wins, draws, fan_seen, decisions, usec / 1000.0 / maxi(decisions, 1), slowest / 1000.0])
 	print("  scoring items: %s" % [hands_seen])
 	check(wins > 0, "mode %d: somebody wins" % mode)
+
+## 23 Nov 2026 (user): a pung (or chow) of a discard that completes the hand still offers
+## Mahjong on the claimer's turn; it is a win on that discard, paid by the discarder.
+func _pung_then_win() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 20261123
+	var game := Game.new()
+	game.start(rng, 0, 0)
+	var five_s: int = tiles("5s")[0]
+	game.hands[0] = tiles("123m456m789m11p55s")
+	game.hands[3].append(five_s)
+	game.turn = 3
+	game.phase = "turn"
+	game.discard(3, five_s)
+	check(game.phase == "claim" and game.waiting.get(0, {}).has("win") and game.waiting.get(0, {}).has("pung"), "pung then win: the 5s offers both Mahjong and pung")
+	for seat in game.waiting.keys():
+		game.respond(seat, {"type": "pung"} if seat == 0 else {"type": "pass"})
+	check(game.phase == "turn" and game.turn == 0, "pung then win: the player's turn after the pung")
+	check(game.can_self_win(0), "pung then win: Mahjong still offered after the pung")
+	game.declare_self_win(0)
+	check(game.phase == "over" and int(game.result.winner) == 0 and int(game.result.from) == 3 and not game.result.self_drawn, "pung then win: a win on seat 3's discard (%s)" % [game.result])
+	# Not on a later turn: after a discard the claim is gone.
+	var plain := Game.new()
+	plain.start(rng, 0, 0)
+	check(plain.claimed_from == -1, "pung then win: no claim at the start of a hand")
 
 ## The preset game on the table before anyone sits (data/mahjong.json "preset").
 func _preset() -> void:

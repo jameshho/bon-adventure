@@ -98,7 +98,8 @@ Chinese shows pinyin under the text.
 - **Hold L** (or hold the language badge, top right) to see signs, building names, posters and
   the open word card in the native language for a moment. The word card has no button of its
   own for this (21 Nov).
-- The **translate bubble** in the dialogue box shows a line in the native language.
+- Holding the same badge also shows every dialogue box and minigame card in the native language
+  (one language button for the whole game since 23 Nov; no panel has its own EN bubble).
 
 [Languages and words](../guides/ARCHITECTURE_REVIEW_PART1.md#vocabulary-data-procedure)
 

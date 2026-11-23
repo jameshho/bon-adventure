@@ -1,9 +1,13 @@
 extends Button
-## The one "show translation" button of every dialogue and minigame (user decision, 4 Nov
+## The "show translation" bubble of every dialogue and minigame panel (user decision, 4 Nov
 ## 2026): a speech bubble with the native language's badge (EN, ES, 中 — languages.json),
-## outlined while the translation is hidden and filled while it is shown. Place it at the
-## top right, left of the ✕. It is hidden in Display Modes without a translation toggle
-## (GameSettings.shows_translate_button()). Connect `pressed` as any Button.
+## outlined while the translation is hidden and filled while it is shown. Connect `pressed` to
+## the panel's toggle as any Button.
+## One language toggle (user, 17 Nov 2026; every panel since 23 Nov 2026): the bubble is never
+## shown. The HUD's top-right EN badge (hold) or L, GameSettings.peeking, is the only toggle: while
+## it is held the bubble presses itself so its panel shows the native language, and presses
+## again when it is let go (_sync()). A panel that follows peek_changed itself (the dialogue box,
+## the grammar card) sets follows_peek = false.
 ## While it shows the translation on screen it tells the practice tracker (practice_log.gd
 ## translation_shown: "" = the open question's words, or a word's `word_key`).
 const GameSettings := preload("res://scripts/core/game_settings.gd")
@@ -21,11 +25,14 @@ var factor := 1.0
 var badge := ""
 ## The word whose translation this bubble shows ("" = the whole question).
 var word_key := ""
+## Follow the HUD's hold-to-peek (see above).
+var follows_peek := true
 
 func _init() -> void:
 	focus_mode = Control.FOCUS_NONE
 	flat = true
 	clip_text = false
+	visible = false   # one toggle: the HUD's EN badge (refresh() keeps it hidden)
 
 ## `revealed`: the translation is showing. `scale`: the window text factor.
 func refresh(revealed: bool, scale: float) -> void:
@@ -33,12 +40,38 @@ func refresh(revealed: bool, scale: float) -> void:
 	factor = scale
 	badge = GameSettings.shared().native_badge()
 	text = ""
-	visible = GameSettings.shared().shows_translate_button()
+	# One toggle: the HUD's EN badge (23 Nov 2026). shows_translate_button() still says whether
+	# a Display Mode has a translation at all.
+	visible = false
 	custom_minimum_size = Vector2(74, 52) * scale
 	queue_redraw()
+	# A card opened (or refreshed) while EN is held opens in the native language too.
+	_sync.call_deferred()
 	if revealed:
 		# Deferred: the panel may become visible (or be hidden) after this refresh.
 		_report_shown.call_deferred()
+
+func _enter_tree() -> void:
+	var settings = GameSettings.shared()
+	if not settings.peek_changed.is_connected(_sync):
+		settings.peek_changed.connect(_sync)
+
+func _exit_tree() -> void:
+	var settings = GameSettings.shared()
+	if settings.peek_changed.is_connected(_sync):
+		settings.peek_changed.disconnect(_sync)
+
+## Presses the bubble when its panel's language differs from the peek. `on` flips at once (the
+## panel's toggle may re-render later or only while visible); its next refresh() corrects it.
+func _sync() -> void:
+	if not follows_peek or not is_inside_tree():
+		return
+	var settings = GameSettings.shared()
+	var want: bool = settings.peeking and settings.shows_translate_button()
+	if want == on:
+		return
+	on = want
+	pressed.emit()
 
 func _report_shown() -> void:
 	if on and is_visible_in_tree():

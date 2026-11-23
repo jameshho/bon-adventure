@@ -181,6 +181,10 @@ Other rules:
 - **Kongs.** A kong (from a discard, four in hand, or adding to an exposed pung) draws a
   replacement from the back of the wall.
 - **Self-drawn win.** It is not possible straight after a claim.
+- **Mahjong after a pung or chow (user, 23 Nov 2026).** A player who pungs (or chows) the tile
+  that completes their hand still gets the Mahjong! button on their turn, beside discarding
+  (Keep playing). It scores as a win on that discard, paid by the discarder
+  (`mahjong_game.gd` `claimed_from`).
 - **End of the hand.** An empty wall is a draw. There is no dead wall and no robbing a kong.
 
 The NPC players (`mahjong_ai.gd`) are simple:

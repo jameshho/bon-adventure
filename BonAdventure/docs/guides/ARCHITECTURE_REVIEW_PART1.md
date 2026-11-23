@@ -413,8 +413,13 @@ a Display Mode: it is never saved, does not change cards or practice recording, 
 button is hidden in Native mode. Since 17 Nov 2026 (user) it is the one language toggle for
 the dialogue box too: while it is held the box (`shop_order_panel.gd`) shows its lines in the
 native language (`translation_shown("")` marks the open question translated), and the box's
-own translate bubble is gone. The other minigame panels still have their own translate
-bubbles. The HUD ends a peek whose release was missed
+own translate bubble is gone. Since 23 Nov 2026 (user: "two EN buttons" on the mahjong table)
+every panel's bubble is hidden too: `translate_button.gd` stays invisible and, while EN is held,
+presses itself so its panel (mahjong, lessons, money, family, restaurant and menu book, flight,
+mystery, detective, warehouse, outfit picker) switches language, and again on release; a card
+opened while EN is held opens in the native language. Panels that follow `peek_changed`
+themselves (the dialogue box, the grammar card) set `follows_peek = false`. Check:
+`docs/evidence/one-language-toggle-20261123/verify.gd`. The HUD ends a peek whose release was missed
 (neither key nor button held).
 
 **World signs in every taught language (user decision, 9 Nov 2026).** `data/sign_translations.json`

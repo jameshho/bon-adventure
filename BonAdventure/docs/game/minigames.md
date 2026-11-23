@@ -281,7 +281,8 @@ for three seconds. Six doors, then a treasure chest. Teaches colours and shapes.
 
 One hand of Hong Kong mahjong against three plush players, with the calls, winds and hand names
 in the language being learned. Two short lessons (Basics, Scoring) explain the rules. Not
-tracked.
+tracked. Mahjong! is still offered after punging the winning tile (23 Nov), and the only
+language button is the HUD's EN, top right (23 Nov).
 [Guide](../guides/MAHJONG.md)
 
 | Learning card | |

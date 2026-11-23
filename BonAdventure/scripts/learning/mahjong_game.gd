@@ -35,6 +35,11 @@ var turn := 0
 var phase := ""
 ## The tile seat `turn` just drew (-1 after a claim).
 var drawn := -1
+## After a pung or chow of a discard that completes the hand: the discarder and the tile (user,
+## 23 Nov 2026: a player may pung first and still call Mahjong instead of discarding; it scores
+## as a win on that discard, paid by its discarder). -1 otherwise.
+var claimed_from := -1
+var claimed_tile := -1
 var last_discard := -1
 var last_from := -1
 ## seat -> its claim options (claim_options()) while phase is "claim"; answered seats leave.
@@ -100,6 +105,8 @@ func load_preset(preset: Dictionary) -> void:
 	drawn_back = 0
 	turn = int(preset.turn)
 	drawn = int(preset.get("drawn", -1))
+	claimed_from = -1
+	claimed_tile = -1
 	phase = "turn"
 	last_discard = -1
 	last_from = -1
@@ -122,6 +129,8 @@ func _draw(seat: int, replacement: bool) -> void:
 		_finish({"winner": -1, "from": -1, "self_drawn": false, "score": {}, "tile": -1})
 		return
 	turn = seat
+	claimed_from = -1
+	claimed_tile = -1
 	drawn = _take_back() if replacement else _take_front()
 	hands[seat].append(drawn)
 	hands[seat].sort()
@@ -140,11 +149,14 @@ func context(seat: int, self_drawn: bool) -> Dictionary:
 
 # --- The seat whose turn it is ----------------------------------------------------------
 
-## The score if `seat` declared a self-drawn win now ({} when its hand is not complete).
+## The score if `seat` declared a win now on its turn ({} when its hand is not complete): a
+## self-drawn win after a draw, or a win on the claimed discard straight after a pung or chow.
 func self_win_score(seat: int) -> Dictionary:
-	if phase != "turn" or seat != turn or drawn < 0:   # no self-drawn win straight after a claim
+	if phase != "turn" or seat != turn:
 		return {}
-	var scored := Rules.score(hands[seat], melds[seat], context(seat, true))
+	if drawn < 0 and claimed_from < 0:
+		return {}
+	var scored := Rules.score(hands[seat], melds[seat], context(seat, drawn >= 0))
 	return scored if scored.complete else {}
 
 func can_self_win(seat: int) -> bool:
@@ -168,6 +180,11 @@ func kong_options(seat: int) -> Array:
 func declare_self_win(seat: int) -> bool:
 	if not can_self_win(seat):
 		return false
+	if drawn < 0:
+		# Mahjong after the pung or chow: a win on that discard.
+		last_call = {"seat": seat, "type": "win"}
+		_finish({"winner": seat, "from": claimed_from, "self_drawn": false, "score": self_win_score(seat), "tile": claimed_tile})
+		return true
 	last_call = {"seat": seat, "type": "self_win"}
 	_finish({"winner": seat, "from": -1, "self_drawn": true, "score": self_win_score(seat), "tile": drawn})
 	return true
@@ -198,6 +215,8 @@ func discard(seat: int, tile: int) -> bool:
 	last_discard = tile
 	last_from = seat
 	drawn = -1
+	claimed_from = -1
+	claimed_tile = -1
 	turns_played += 1
 	last_call = {}
 	answers = {}
@@ -297,6 +316,8 @@ func _claim(seat: int, answer: Dictionary) -> void:
 				if k != tile:
 					hands[seat].erase(k)
 			melds[seat].append({"type": "chow", "tile": low, "open": true, "from": last_from, "claimed": tile})
+	claimed_from = last_from
+	claimed_tile = tile
 	last_discard = -1
 	turn = seat
 	drawn = -1

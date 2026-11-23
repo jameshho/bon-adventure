@@ -106,6 +106,7 @@ func _init() -> void:
 	progress = ProgressBarRow.new()
 	top.add_child(progress)
 	translate_button = TranslateButton.new()
+	translate_button.follows_peek = false   # _on_peek() follows the HUD's EN itself
 	translate_button.pressed.connect(toggle_translation)
 	top.add_child(translate_button)
 	leave_button = Button.new()

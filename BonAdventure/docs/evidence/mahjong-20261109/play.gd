@@ -328,11 +328,22 @@ func _check_lessons() -> void:
 			lessons.refresh_display()
 			await frames(25)
 			await shot("lesson-%d-%d.png" % [lesson + 1, page + 1])
-	lessons.show_native = true
-	lessons.refresh_display()
+	# Translated by holding EN (here its key, L: the HUD's EN badge and L are one hold-to-peek;
+	# the one language toggle, 23 Nov 2026): the lesson panel has no EN bubble of its own.
+	check(not lessons.translate_button.visible, "the lessons show no EN bubble of their own")
+	var key := InputEventKey.new()
+	key.physical_keycode = KEY_L
+	key.keycode = KEY_L
+	key.pressed = true
+	Input.parse_input_event(key)
 	await frames(25)
+	check(lessons.show_native, "holding EN shows the lessons in the native language")
 	await shot("lesson-translated.png")
-	lessons.show_native = false
+	var up := key.duplicate()
+	up.pressed = false
+	Input.parse_input_event(up)
+	await frames(5)
+	check(not lessons.show_native, "letting go of EN shows the language being learned again")
 	var settings = load("res://scripts/core/game_settings.gd").shared()
 	var was: Array = [settings.native, settings.foreign]
 	settings.set_languages("en", "zh")

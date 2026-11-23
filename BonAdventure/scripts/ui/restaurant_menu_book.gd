@@ -263,7 +263,7 @@ func _refresh() -> void:
 	var tab_h: float = rects.tab_h
 	var button := Vector2(56, 56) * f
 	_translate.refresh(show_native, f)
-	var corner := button.x + _translate.size.x + 34 * f
+	var corner := button.x + (_translate.size.x + 12 * f if _translate.visible else 0.0) + 22 * f
 	_tabs.position = Vector2(cover.position.x + 24 * f, cover.position.y - tab_h + 4 * f)
 	_tabs.size = Vector2(cover.size.x - 24 * f - corner, tab_h)
 	_fill_tabs(tab_h)
