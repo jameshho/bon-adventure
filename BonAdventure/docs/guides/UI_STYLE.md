@@ -5,7 +5,7 @@ mockups are the reference; build to them, do not reinterpret them:
 
 | Mockup | What it shows | Fidelity |
 | --- | --- | --- |
-| [character-grid.webp](design-references/ui/character-grid.webp) | "Pick your character": 4 × 2 tiles, selected tile, Back / Next; its 8 headshots are the portraits (traced with vtracer, `assets/ui/avatars/source/trace_headshots.py`, 22 Nov 2026) | **Exact** |
+| [character-grid.webp](design-references/ui/character-grid.webp) | "Pick your character": 4 × 2 tiles, selected tile, Back / Next; its 8 headshots are the portraits (cut from it at 2×, `assets/ui/avatars/source/cut_headshots.py`, 23 Nov 2026; vtracer traces before) | **Exact** |
 | [profiles-and-languages.webp](design-references/ui/profiles-and-languages.webp) | Saved players with Delete and New player; "Choose Your Languages" with Just explore! | **Exact** |
 | [loading-bar.png](design-references/ui/loading-bar.png) | Striped green bar (its cloud panel was dropped by the user, 18 Nov 2026) | **Exact** bar, no panel |
 | [play-button.png](design-references/ui/play-button.png), [button-gloss.png](design-references/ui/button-gloss.png) | The glossy green pill button with a play triangle; the second is the gloss reference (user, 18 Nov 2026) | **Exact** |

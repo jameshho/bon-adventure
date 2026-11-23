@@ -1,8 +1,8 @@
 extends SceneTree
 ## Makes the pictures of the screens before the town (PWA phase 3, 12 Nov 2026), so those
 ## screens need no 3D: the avatar portraits (assets/ui/avatars/<id>.webp, from
-## plush_portraits.gd; the picker's 8 are traced from the user's mockup instead and skipped here,
-## see assets/ui/avatars/source/trace_headshots.py), the loading shots (assets/ui/app/shot_N.webp) and the blurred backdrop
+## plush_portraits.gd; the picker's 8 are cut from the user's mockup instead and skipped here,
+## see assets/ui/avatars/source/cut_headshots.py), the loading shots (assets/ui/app/shot_N.webp) and the blurred backdrop
 ## of the splash and profile screens (assets/ui/app/backdrop.webp). Overwrites those files.
 ## Needs graphics (not --headless) and an isolated HOME (Main runs):
 ## HOME=<scratch>/home VT_FOCUS=all VT_SPAWN=none godot --path . --always-on-top --resolution 1280x720 --script res://tools/capture_app_art.gd
@@ -15,6 +15,8 @@ const ProfileManager := preload("res://scripts/core/profile_manager.gd")
 const HouseCharacters := preload("res://scripts/characters/house_characters.gd")
 const GameSettings := preload("res://scripts/core/game_settings.gd")
 const AVATARS := "res://assets/ui/avatars/"
+## Portraits cut from the user's character-grid mockup (cut_headshots.py IDS; 23 Nov 2026).
+const MOCKUP_IDS := ["bonbon", "leo", "bruno", "miso", "awoo", "poppy", "twinkle", "cocodrilo"]
 const APP := "res://assets/ui/app/"
 const SHOT_SIZE := Vector2i(1280, 720)
 ## WebP quality of the shots: 0.5 keeps each one under about 70 KB for the web build (16 Nov 2026).
@@ -56,8 +58,8 @@ func capture_portraits() -> void:
 	var portraits := Portraits.new()
 	root.add_child(portraits)
 	for id in ProfileManager.avatar_ids():
-		# Traced from the user's mockup (22 Nov 2026): assets/ui/avatars/source/trace_headshots.py.
-		if FileAccess.file_exists(ProjectSettings.globalize_path(AVATARS + "source/" + id + ".svg")):
+		# Cut from the user's mockup instead: assets/ui/avatars/source/cut_headshots.py.
+		if id in MOCKUP_IDS:
 			continue
 		var species := HouseCharacters.scene_of(id).get_file().trim_suffix("_plush.tscn")
 		var texture := portraits.texture(species)

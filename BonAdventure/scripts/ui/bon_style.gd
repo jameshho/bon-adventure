@@ -559,6 +559,8 @@ static func tile(picture: Texture2D, caption: String, picked: bool, f: float, su
 	art.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	art.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	art.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	# Large pictures (the picker portraits, 544 px, mipmapped) stay smooth when drawn small.
+	art.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
 	stack.add_child(art)
 	var pill := PanelContainer.new()
 	pill.mouse_filter = Control.MOUSE_FILTER_IGNORE
