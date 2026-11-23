@@ -108,10 +108,14 @@ const TOUCH_HIDE := "touch_hide"
 ## Roblox's DynamicThumbstick start frame in landscape, Roblox/Core-Scripts
 ## DynamicThumbstick.lua; 0.5 until 14 Nov 2026, user: too much of the screen), the ring's
 ## radius (fraction of a corner button's side; 0.95 until 14 Nov 2026, when half the ring did
-## nothing), its dead zone and where full speed starts (fractions of the drawn radius; about 2
+## nothing; 0.78 since 23 Nov 2026, user: 30% bigger), its dead zone and where full speed starts (fractions of the drawn radius; about 2
 ## and 20 points on a phone, Roblox's values), and how fast the drawn stick goes home (per second).
 const STICK_ZONE_WIDTH := 0.4
-const STICK_SIZE := 0.6
+const STICK_SIZE := 0.78
+## Where the stick rests: its centre this many radii in from the left and bottom edges (plus
+## 28 px; 1.1 and 1.1 until 23 Nov 2026, user: higher and further right, off the corner; 2.2 / 1.95 earlier that day).
+const STICK_HOME_X := 1.74
+const STICK_HOME_Y := 1.44
 const DEAD_ZONE := 0.06
 const FULL_SPEED := 0.7
 const STICK_RETURN := 10.0
@@ -273,7 +277,7 @@ func _layout() -> void:
 			if cart.intersects(get(rect)):
 				set(rect, Rect2())
 	_stick_radius = side * STICK_SIZE
-	_stick_home = Vector2(28.0 + _stick_radius * 1.1, view.y - 28.0 - _stick_radius * 1.1)
+	_stick_home = Vector2(28.0 + _stick_radius * STICK_HOME_X, view.y - 28.0 - _stick_radius * STICK_HOME_Y)
 	if _drawn_center == Vector2.ZERO:
 		_drawn_center = _stick_home
 	# The HUD's "SPRINT" / "HYPER SPEED" line sits bottom left, under the joystick: lift it
