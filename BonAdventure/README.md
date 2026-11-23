@@ -196,7 +196,8 @@ once around the player so every direction is drawn (shaders compile on first dra
 the web), then it waits for 20 steady frames (under 1/24 s; at most 8 s) before play starts. The screens are `scripts/ui/app_screens.gd` (text `app.*` in
 `data/phrases.json`) and `scripts/ui/loading_screen.gd`; their pictures (avatar portraits in
 `assets/ui/avatars/`, loading shots and the blurred backdrop in `assets/ui/app/`) are made by
-`tools/capture_app_art.gd` (graphics, isolated `HOME`; re-run after a plush or a shot's
+`tools/capture_app_art.gd` (except the 8 picker portraits, traced with vtracer from the user's
+mockup since 22 Nov 2026 by `assets/ui/avatars/source/trace_headshots.py`) (graphics, isolated `HOME`; re-run after a plush or a shot's
 surroundings change). The app instantiates the unchanged `main.tscn` with `staged_loading`
 set: the units load one per frame (`modular_town.gd` `load_units(town, on_step)`) and Main
 reports `loading_progress` / `town_ready` (no threads, so this works on the web build). Home

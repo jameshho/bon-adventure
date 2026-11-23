@@ -8,10 +8,10 @@ each section.
 
 ## Starting up
 
-<img src="../evidence/ui-style-20261118/avatar.png" width="480" alt="Pick your character: eight plush tiles on a mint card">
+<img src="../evidence/character-headshots-20261122/avatar.png" width="480" alt="Pick your character: eight plush tiles on a mint card">
 
-*Screenshot 18 Nov (character grid); also [title page](../evidence/ui-style-20261118/splash.png),
-[saved players](../evidence/ui-style-20261118/profiles.png),
+*Screenshot 22 Nov (character grid); also [title page](../evidence/ui-style-20261118/splash.png),
+[saved players](../evidence/character-headshots-20261122/profiles.png),
 [languages](../evidence/ui-style-20261118/languages.png),
 [loading](../evidence/ui-style-20261118/loading.png) and
 [dialogue box](../evidence/ui-style-20261118/dialogue.png).*
@@ -23,7 +23,7 @@ language it speaks and the one it wants to learn, then the town loads. Each prof
 where the player was and comes back at that building's entrance or on clear ground nearby
 (14 Nov). Since 18 Nov the screens follow the user's mockups ([UI art style](../guides/UI_STYLE.md)):
 a saved player is picked (green, check mark) and played with Next; the character grid shows eight
-plushes (not Sunny); the language page has round flags and **Just explore!**, which starts the new
+plushes (not Sunny), whose headshots are traced with vtracer from the mockup since 22 Nov; the language page has round flags and **Just explore!**, which starts the new
 player with "Show everything in my language" on.
 [Project README](../../README.md) (startup flow) ·
 [recorded checks](../guides/FINAL_VERIFICATION.md) (search `app_flow`). There is no separate startup guide yet.

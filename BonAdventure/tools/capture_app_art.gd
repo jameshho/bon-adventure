@@ -1,7 +1,8 @@
 extends SceneTree
 ## Makes the pictures of the screens before the town (PWA phase 3, 12 Nov 2026), so those
 ## screens need no 3D: the avatar portraits (assets/ui/avatars/<id>.webp, from
-## plush_portraits.gd), the loading shots (assets/ui/app/shot_N.webp) and the blurred backdrop
+## plush_portraits.gd; the picker's 8 are traced from the user's mockup instead and skipped here,
+## see assets/ui/avatars/source/trace_headshots.py), the loading shots (assets/ui/app/shot_N.webp) and the blurred backdrop
 ## of the splash and profile screens (assets/ui/app/backdrop.webp). Overwrites those files.
 ## Needs graphics (not --headless) and an isolated HOME (Main runs):
 ## HOME=<scratch>/home VT_FOCUS=all VT_SPAWN=none godot --path . --always-on-top --resolution 1280x720 --script res://tools/capture_app_art.gd
@@ -55,6 +56,9 @@ func capture_portraits() -> void:
 	var portraits := Portraits.new()
 	root.add_child(portraits)
 	for id in ProfileManager.avatar_ids():
+		# Traced from the user's mockup (22 Nov 2026): assets/ui/avatars/source/trace_headshots.py.
+		if FileAccess.file_exists(ProjectSettings.globalize_path(AVATARS + "source/" + id + ".svg")):
+			continue
 		var species := HouseCharacters.scene_of(id).get_file().trim_suffix("_plush.tscn")
 		var texture := portraits.texture(species)
 		for i in 4:
