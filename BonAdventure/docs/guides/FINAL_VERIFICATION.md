@@ -8155,3 +8155,35 @@ object in the journal (row column and detail) and on the results card
   (new: every flagged word has no picture), 439 of 795 words with a picture; exit 134 (known
   exit abort) after the summary. Not re-rendered: the flags only remove pictures, the rest are
   drawn as before.
+- Same day (user: the animals faced away): Animals are viewed from their +Z. Graphics once
+  (1600 × 1000): **21 checks, 1 failure**, 439 pictures in 9.2 s (21 ms each); exit 137 (known
+  exit abort) after the summary. The failure was the check's own: it tested the first Food
+  row, now *oil* (`picture: false`, correctly blank); the check now tests the first row with a
+  picture (not re-run). Contact sheets reviewed: most animals face the camera; cat, monkey,
+  field mouse, kangaroo and dog still show their back or side. Views in the evidence folder
+  re-rendered by this run.
+- Same day, web cost: Web preset (`tools/deploy_web.py --out <scratch>`, not published) with a
+  temporary probe in scratch edits only (a profile with the tutorial done, every unit added,
+  then frame times and per-picture timings; the probe was removed from the tree right after
+  the export), served locally, headless Chrome 157 (GPU, vsync on, 1280 × 800 at 2×), Apple
+  Silicon laptop, `docs/evidence/day-night-20261109/web_measure.py`. Per 4–5 s phase:
+
+  | Phase | Pictures drawn | Mean frame | Frames > 50 ms (worst) | `get_image()` mean / max |
+  | --- | --- | --- | --- | --- |
+  | Town, journal closed | 0 | 16.7 ms | 0 (18 ms) | – |
+  | Open journal (All; top rows have no picture) | 0 | 16.7 ms | 0 (41 ms) | – |
+  | Category Animals (first pictures) | 6 | 18.0 ms | 2 (248 ms) | 3.8 / 9.0 ms |
+  | Category Food & Drink | 6 | 17.1 ms | 1 (115 ms) | 3.0 / 8.9 ms |
+  | Furniture, Clothing, Kitchen & Dining | 5–8 each | 16.7 ms | 0 (21 ms) | 4.4–5.4 / 9.7 ms |
+  | Journal idle; reopened (cached) | 0 | 16.7 ms | 0 (21 ms) | – |
+
+  Copying an object's meshes took under 1.1 ms. The two long frames come only with the first
+  pictures of the session (likely one-time shader compiles of the picture view; the journal
+  rebuild alone, in later phases, showed none). Not measured: a phone, Safari/Firefox.
+- Same day, fix (user): the loading warm-up draws two pictures (`word_pictures.gd warm_up()`,
+  called from `app.gd _warm_up()`). The same probe and setup once more: warmed *lion* and
+  *apple*; every phase 16.7 ms mean, **no frame over 50 ms** (worst 46 ms opening the journal,
+  as before the fix; 22 ms Animals, 23 ms Food & Drink, was 248 and 115 ms); `get_image()` 3–8 ms
+  mean, 13 ms max. Probe edits removed after the export. Not run: the native checks (the warm-up
+  returns at once headless, and the word-pictures check loads Main without the app's loading
+  screen).

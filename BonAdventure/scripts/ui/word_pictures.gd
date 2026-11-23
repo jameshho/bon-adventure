@@ -31,6 +31,11 @@ const MAX_QUEUE := 24
 const NO_PICTURE_CATEGORIES := ["Time & Directions", "Colors & Descriptions", "Actions", "Places & Rooms"]
 ## Seen from the front (-Z), a little from above and the left (product_pictures.gd's view).
 const VIEW := Vector3(-0.35, 0.55, -1.0)
+## Drawn behind the loading screen (warm_up()): the first pictures of a session compile the
+## picture view's shaders, a one-time freeze on the web (250 ms measured 23 Nov 2026).
+const WARM_CATEGORIES := ["Animals", "Food & Drink"]
+## Animals face their +Z (park_animals.gd turns them with atan2(x, z)): seen from that side.
+const ANIMAL_VIEW := Vector3(0.35, 0.55, 1.0)
 
 signal finished(key: String, texture: Texture2D)
 
@@ -93,6 +98,24 @@ func picture(key: String) -> Texture2D:
 		_pump()
 	return null
 
+## Draws one picture of each WARM_CATEGORIES (kept in the cache) and waits for them, at most
+## `max_frames` frames (a hidden window draws nothing). App._warm_up() calls it while loading.
+func warm_up(max_frames := 30) -> void:
+	if not is_inside_tree() or DisplayServer.get_name() == "headless":
+		return
+	var picked: Array = []
+	for category in WARM_CATEGORIES:
+		for key in targets:
+			if str(categories.get(key, "")) == category and has_picture(key):
+				picked.append(key)
+				break
+	for key in picked:
+		picture(key)
+	var frames := 0
+	while frames < max_frames and picked.any(func(k): return not _done.has(k) and has_picture(k)):
+		await get_tree().process_frame
+		frames += 1
+
 ## Shows `key`'s picture in `rect` now, or when it is drawn (unless the rect shows another word
 ## by then, as pooled journal rows do). Returns whether the word has a picture.
 func fill(rect: TextureRect, key: String) -> bool:
@@ -122,7 +145,8 @@ func _draw_word(key: String) -> void:
 	if parts.is_empty():
 		_failed[key] = true
 	else:
-		texture = await draw(self, parts.nodes, parts.bounds, SIZE)
+		var view := ANIMAL_VIEW if str(categories.get(key, "")) == "Animals" else VIEW
+		texture = await draw(self, parts.nodes, parts.bounds, SIZE, view)
 		if texture == null:
 			_failed[key] = true
 		else:
@@ -196,8 +220,8 @@ static func _drop(nodes: Array) -> Dictionary:
 	return {}
 
 ## Draws `nodes` (new, parentless GeometryInstance3Ds that fit `bounds`) into a transparent
-## size × size picture, under `host` for two frames. Returns null when nothing was drawn.
-static func draw(host: Node, nodes: Array, bounds: AABB, size: int) -> Texture2D:
+## size × size picture, seen from direction `from`, under `host` for two frames. Returns null when nothing was drawn.
+static func draw(host: Node, nodes: Array, bounds: AABB, size: int, from := VIEW) -> Texture2D:
 	var view := SubViewport.new()
 	view.size = Vector2i(size, size)
 	view.transparent_bg = true
@@ -223,7 +247,7 @@ static func draw(host: Node, nodes: Array, bounds: AABB, size: int) -> Texture2D
 	camera.projection = Camera3D.PROJECTION_ORTHOGONAL
 	camera.size = reach * 0.92
 	view.add_child(camera)
-	camera.position = centre + VIEW.normalized() * (reach * 2.0 + 0.2)
+	camera.position = centre + from.normalized() * (reach * 2.0 + 0.2)
 	camera.look_at(centre)
 	camera.near = 0.01
 	camera.far = reach * 6.0 + 1.0

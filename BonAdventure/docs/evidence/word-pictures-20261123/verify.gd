@@ -115,8 +115,14 @@ func run():
 		book.chosen_categories = {"Food & Drink": true}
 		book.rebuild()
 		for i in 40: await process_frame
-		var art: TextureRect = row.get_meta("line").get_child(1)
-		check(art.texture != null, "a journal row shows its picture once drawn")
+		# The first row with a picture (the first Food word, oil, is "picture": false).
+		var art: TextureRect = null
+		for r in book.rows:
+			var key := str(r.get_meta("line").get_meta("key", ""))
+			if r.visible and key != "" and pictures.has_picture(key):
+				art = r.get_meta("line").get_child(1)
+				break
+		check(art != null and art.texture != null, "a journal row shows its picture once drawn")
 		await shot(DIR + "journal-food.png")
 		book.chosen_categories = {"Furniture": true}
 		book.rebuild()

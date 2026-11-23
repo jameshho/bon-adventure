@@ -287,13 +287,14 @@ func _load_rest_now(town: Node) -> void:
 ## WARM_HEADINGS directions around the player, one drawn frame each (the first draw of each
 ## material compiles its shader, a stall on the web; a frame compiles everything in view however
 ## long it takes), then, with the tutorial (`director`), every view its act will show and its
-## dialogue box, then WARM_STEADY_FRAMES frames in a row under WARM_FRAME_SECONDS (or
-## WARM_MAX_SECONDS in all). The bar moves from CAST_SHARE to the end, one share per view.
+## dialogue box, then a few journal word pictures (word_pictures.gd warm_up()), then
+## WARM_STEADY_FRAMES frames in a row under WARM_FRAME_SECONDS (or WARM_MAX_SECONDS in all).
+## The bar moves from CAST_SHARE to the end, one share per view.
 func _warm_up(director: Node = null) -> void:
 	loading.set_text(Lexicon.shared().phrase("app.getting_ready", Lexicon.shared().native))
 	var player: Node = main.player
 	var views: Array = director.warm_views() if is_instance_valid(director) else []
-	var total := float(WARM_HEADINGS + views.size() + (1 if is_instance_valid(director) else 0) + 1)
+	var total := float(WARM_HEADINGS + views.size() + (1 if is_instance_valid(director) else 0) + 2)
 	# Without the tutorial there is no cast share: the views take it.
 	var from := CAST_SHARE if is_instance_valid(director) else TOWN_SHARE
 	var done := 0
@@ -319,6 +320,11 @@ func _warm_up(director: Node = null) -> void:
 		await director.warm_dialogue()
 		done += 1
 		loading.set_progress(lerpf(from, 1.0, done / total))
+	# The journal's word pictures: their first draw compiles shaders (word_pictures.gd warm_up()).
+	if main.get("word_pictures") != null:
+		await main.word_pictures.warm_up()
+	done += 1
+	loading.set_progress(lerpf(from, 1.0, done / total))
 	var started := Time.get_ticks_msec()
 	var steady := 0
 	while steady < WARM_STEADY_FRAMES and Time.get_ticks_msec() - started < WARM_MAX_SECONDS * 1000.0:

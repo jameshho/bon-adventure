@@ -753,6 +753,19 @@ the detail view) and on the [results screen](MINIGAMES.md#results-screen) word r
   (64 KB of texture each). Measured 23 Nov (M5, whole town, 1600 × 1000): 621 pictures in
   11.5 s, 19 ms each. Headless runs draw nothing. `product_pictures.gd` (shop orders) uses
   the same `draw()`.
+- **View:** from the object's front (-Z), a little from above and the left; Animals from their
+  +Z, the way `park_animals.gd` turns them to walk (until 23 Nov evening every animal showed its
+  back). Still seen from behind or the side: cat, monkey, field mouse, kangaroo, dog (their models
+  face another way; open, P3).
+- **Web cost (measured 23 Nov 2026, [numbers](FINAL_VERIFICATION.md#word-pictures-in-the-journal-and-results-card--23-november-2026)):**
+  nothing is drawn during play. In the web build on a fast laptop, reading a picture back from
+  the GPU (`get_image()`) took 3–5 ms (at most 10 ms) and frames stayed at 60 fps while pictures
+  drew, except the first one or two journal pages of a session: one frame of 250 ms and one of
+  115 ms (the picture view's shaders compiling once). Fixed the same day (user): `app.gd`
+  `_warm_up()` calls `word_pictures.warm_up()`, which draws one Animals and one Food & Drink
+  picture behind the loading screen (kept in the cache; at most 30 frames, skipped headless);
+  re-measured, the worst journal frame was 23 ms. Not measured on a phone (likely several times
+  slower).
 - **Weak pictures turned off (user, 23 Nov 2026):** 147 words carry `"picture": false`, chosen
   from contact sheets of every picture: the body-chart parts (loose blobs), flat ground and
   building slabs (floor, road, path, step, tile, counter, ...), blank boards and signs (the flight
