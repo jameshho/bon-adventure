@@ -1,0 +1,3997 @@
+{
+ "MRI scanner": {
+  "file": "mri_scanner",
+  "text": "MRI scanner",
+  "sha": "1f6bf2b625affec3675d84c09af6b30cb0b8fccc"
+ },
+ "after": {
+  "file": "after",
+  "text": "after",
+  "sha": "8da4ebe3e0b1b59ae1d7364d0092b09c864275ae"
+ },
+ "afternoon": {
+  "file": "afternoon",
+  "text": "afternoon",
+  "sha": "3e870d0afb7255decc985df4d88cb35b4ecbf021"
+ },
+ "airplane": {
+  "file": "airplane",
+  "text": "airplane",
+  "sha": "f11dba7575ba089b722011f81bee09fc973fc44d"
+ },
+ "airport": {
+  "file": "airport",
+  "text": "airport",
+  "sha": "a71f97d4e02784b658184af18d5ce43bc37a13ac"
+ },
+ "altar": {
+  "file": "altar",
+  "text": "altar",
+  "sha": "3760e4848259e3d7e55c667cee25ddce8ad3afee"
+ },
+ "ambulance": {
+  "file": "ambulance",
+  "text": "ambulance",
+  "sha": "4a6763a45ef9b5f4cb549c863df6d1022cded5b3"
+ },
+ "animal": {
+  "file": "animal",
+  "text": "animal",
+  "sha": "5c9c3a3c2c19b70fd38fe74807dc12efd1d09902"
+ },
+ "apple": {
+  "file": "apple",
+  "text": "apple",
+  "sha": "2a512522551b1212dd93197f2001689953045160"
+ },
+ "apple pie": {
+  "file": "apple_pie",
+  "text": "apple pie",
+  "sha": "1a2171502472abaa59aec9117bc8fc1cb1ec9b07"
+ },
+ "apple tree": {
+  "file": "apple_tree",
+  "text": "apple tree",
+  "sha": "85b5d46d77cbdafa0b5d45da7943816e90fea341"
+ },
+ "april": {
+  "file": "april",
+  "text": "April",
+  "sha": "61f7986aa6763bba36ade2286fa502fc0d629cb0"
+ },
+ "apron": {
+  "file": "apron",
+  "text": "apron",
+  "sha": "fc2d40b1ffdfb704d6a3f015847e1ab4dce7b975"
+ },
+ "arm": {
+  "file": "arm",
+  "text": "arm",
+  "sha": "95f80eddc2af6818e41f9593df8604ca3b977b1b"
+ },
+ "armchair": {
+  "file": "armchair",
+  "text": "armchair",
+  "sha": "0cd434a7967f0ffef05008a0242015b1f2b9ec3d"
+ },
+ "arrival": {
+  "file": "arrival",
+  "text": "arrival",
+  "sha": "0998b27877aa2b0d4121ded08d109bda3dbb04e6"
+ },
+ "at midnight": {
+  "file": "at_midnight",
+  "text": "at midnight",
+  "sha": "947bd42ac8d32f239937ea1ad114bd04b42f41dc"
+ },
+ "at night": {
+  "file": "at_night",
+  "text": "at night",
+  "sha": "19463d251c02c765fdc43555f239e0589eefff98"
+ },
+ "at noon": {
+  "file": "at_noon",
+  "text": "at noon",
+  "sha": "6e768772367241cd56f0a282a512e9797512f654"
+ },
+ "at one o'clock": {
+  "file": "at_one_o_clock",
+  "text": "at one o'clock",
+  "sha": "0efd8e328d7675e912c303d58d4961bae9cb5f87"
+ },
+ "at the bottom": {
+  "file": "at_the_bottom",
+  "text": "at the bottom",
+  "sha": "93282f12939e1a07a8f4453eb757c09d8e01effd"
+ },
+ "at the top": {
+  "file": "at_the_top",
+  "text": "at the top",
+  "sha": "fd5994b7ab7966ac9caff7b49392933d3f0f387a"
+ },
+ "at two o'clock": {
+  "file": "at_two_o_clock",
+  "text": "at two o'clock",
+  "sha": "77c43850f833806808b4042fcbf3f5ee5523f66a"
+ },
+ "at what time": {
+  "file": "at_what_time",
+  "text": "at what time?",
+  "sha": "4a2f457affa454ee9c4d911701ac290ae6fe6500"
+ },
+ "atlas": {
+  "file": "atlas",
+  "text": "atlas",
+  "sha": "1eebe74b9366710ce8ed4957cee6c88703d584c8"
+ },
+ "atm": {
+  "file": "atm",
+  "text": "atm",
+  "sha": "c456942a5149f21ecbf69cf47ba199fbce08ce48"
+ },
+ "august": {
+  "file": "august",
+  "text": "August",
+  "sha": "1107c798aa9ea94e9b9582af76b813d74051d2d3"
+ },
+ "aunt": {
+  "file": "aunt",
+  "text": "aunt",
+  "sha": "0756f4cf827fade824044df9fe31bad8430a0187"
+ },
+ "australia": {
+  "file": "australia",
+  "text": "Australia",
+  "sha": "3c8c73313525d13f85b00afcb7a562897fd67b39"
+ },
+ "avocado": {
+  "file": "avocado",
+  "text": "avocado",
+  "sha": "183c552ebf8c8c28a5e618fddcd27b307bc65a64"
+ },
+ "back": {
+  "file": "back",
+  "text": "back",
+  "sha": "0b2a50a382bb6c403f72b2869db8f1ca4d6545b2"
+ },
+ "backpack": {
+  "file": "backpack",
+  "text": "backpack",
+  "sha": "ea29b5e7c67e729b00fb8e9b8ed397bb110be905"
+ },
+ "badge": {
+  "file": "badge",
+  "text": "badge",
+  "sha": "05c1d96985fde565e4cc4aa979b9765eb76546ee"
+ },
+ "baggage claim": {
+  "file": "baggage_claim",
+  "text": "baggage claim",
+  "sha": "85eac5f608cf43cffed36f41db2b9cd8b560f96a"
+ },
+ "baguette": {
+  "file": "baguette",
+  "text": "baguette",
+  "sha": "72cc4142a4aac868950a5414a847cc0db7a70bc5"
+ },
+ "bakery": {
+  "file": "bakery",
+  "text": "bakery",
+  "sha": "6bfe8071713a9ed87c9af4f2ac6ec404db3d21d8"
+ },
+ "bald": {
+  "file": "bald",
+  "text": "bald",
+  "sha": "7476d79df6a331017e7a64dc54d651382000ceb2"
+ },
+ "ball": {
+  "file": "ball",
+  "text": "ball",
+  "sha": "7cb07105bd0e86c63d0b59398ab384e6352193f8"
+ },
+ "banana": {
+  "file": "banana",
+  "text": "banana",
+  "sha": "0a43ac950f9f138ce97f6e7920ad42cb072b3923"
+ },
+ "bandage": {
+  "file": "bandage",
+  "text": "bandage",
+  "sha": "adde2fac8332682d4b690e66531b182b1820ec07"
+ },
+ "bank": {
+  "file": "bank",
+  "text": "bank",
+  "sha": "f2a3a9120ee3cc9ec33a99669fd1ecdf98a6f740"
+ },
+ "banker": {
+  "file": "banker",
+  "text": "banker",
+  "sha": "e1c60e2c89a2af413a12404233885bfa17b5dba5"
+ },
+ "barrel": {
+  "file": "barrel",
+  "text": "barrel",
+  "sha": "7fce7cac745fb6cda283e9e4c6a6724908e977f0"
+ },
+ "base": {
+  "file": "base",
+  "text": "base",
+  "sha": "dba93127c0f2709046a6551b8bbe0c91e3fb03ff"
+ },
+ "basil": {
+  "file": "basil",
+  "text": "basil",
+  "sha": "bd2dc72b06d23d159c5964cd73703bdb7eb43267"
+ },
+ "basket": {
+  "file": "basket",
+  "text": "basket",
+  "sha": "ed4dfc30d43a2d24bce508bdbed4fb48e5368d2b"
+ },
+ "basketball": {
+  "file": "basketball",
+  "text": "basketball",
+  "sha": "ec52835153ce0d95d1c0e0f5b8cbf1fc7ce76bc2"
+ },
+ "basketball hoop": {
+  "file": "basketball_hoop",
+  "text": "basketball hoop",
+  "sha": "876d8d1e2f047deb3327ad4b9139a7685d9e0b71"
+ },
+ "bathroom": {
+  "file": "bathroom",
+  "text": "bathroom",
+  "sha": "7cec5edf623b8e2e67dbb0269adb3ef277d3d45e"
+ },
+ "bathtub": {
+  "file": "bathtub",
+  "text": "bathtub",
+  "sha": "837d81a64965538f77a2af9848600ff1122fd07f"
+ },
+ "beans": {
+  "file": "beans",
+  "text": "beans",
+  "sha": "4ef6043bca50265c1b1a1fad23045d2605277aa1"
+ },
+ "bear": {
+  "file": "bear",
+  "text": "bear",
+  "sha": "98cfcb36fd44d68204a9952c61b970b10f3a510e"
+ },
+ "bear cub": {
+  "file": "bear_cub",
+  "text": "bear cub",
+  "sha": "b54da157bf10572755893bca82e37b4c0576880c"
+ },
+ "beard": {
+  "file": "beard",
+  "text": "beard",
+  "sha": "13b33780dece3cdc18e03dde79a8db544a2f83f0"
+ },
+ "bed": {
+  "file": "bed",
+  "text": "bed",
+  "sha": "03123c301a18ffe40afa5cd4939e25af2c2a22c3"
+ },
+ "bed rail": {
+  "file": "bed_rail",
+  "text": "bed rail",
+  "sha": "f770443fae5f4cb558cb13841ee6f393e1ecdc1c"
+ },
+ "bedroom": {
+  "file": "bedroom",
+  "text": "bedroom",
+  "sha": "d0da7bc6f10d99b25c44296738bc42b3a3f1a44c"
+ },
+ "beef": {
+  "file": "beef",
+  "text": "beef",
+  "sha": "075b3e3d70debe6ab15dc875dface5e65de2eb45"
+ },
+ "beef with vegetables": {
+  "file": "beef_with_vegetables",
+  "text": "beef with vegetables",
+  "sha": "a0160e4a62e5981f460010c9db18bab6e0cf5c49"
+ },
+ "before": {
+  "file": "before",
+  "text": "before",
+  "sha": "73efa4a16fe729603de7e3004b2cbeb197c10a2f"
+ },
+ "behind": {
+  "file": "behind",
+  "text": "behind",
+  "sha": "da60707b9eead065fc6f514c513e5c3316d61fb4"
+ },
+ "bell": {
+  "file": "bell",
+  "text": "bell",
+  "sha": "9d7e63d84b289256f87dbdb220f90c608b61f4e8"
+ },
+ "bell pepper": {
+  "file": "bell_pepper",
+  "text": "bell pepper",
+  "sha": "8f79963b950488af76c12bc69fc3c00549ea0c9a"
+ },
+ "belly": {
+  "file": "belly",
+  "text": "belly",
+  "sha": "1ca00d6426582df9bbe0e8deb7c7b811a01f6508"
+ },
+ "belt": {
+  "file": "belt",
+  "text": "belt",
+  "sha": "1acb4d37016638ee6504149950e04f9df1f16cfe"
+ },
+ "bench": {
+  "file": "bench",
+  "text": "bench",
+  "sha": "07bc09babe57f88d18f48c5f85611413459300ff"
+ },
+ "bicycle": {
+  "file": "bicycle",
+  "text": "bicycle",
+  "sha": "377c5613025c36d4cf22bdd353b85f3aeb1d7492"
+ },
+ "big": {
+  "file": "big",
+  "text": "big",
+  "sha": "4a61e5e5035baeb47bd83e9c43ea04e9f87dfd50"
+ },
+ "bill": {
+  "file": "bill",
+  "text": "bill",
+  "sha": "89f5d2fec42996b83d4aabcfc36dab2f0eea6448"
+ },
+ "biology": {
+  "file": "biology",
+  "text": "biology",
+  "sha": "32bf0c0c1574c1e31d2d4fff7d99c59fc595ffd8"
+ },
+ "birch": {
+  "file": "birch",
+  "text": "birch",
+  "sha": "2365862a138d5461211583695e27808d40c93e8e"
+ },
+ "bitter": {
+  "file": "bitter",
+  "text": "bitter",
+  "sha": "a8581d4c475e961e9dbf660ec2cabf5ec02d7c14"
+ },
+ "black": {
+  "file": "black",
+  "text": "black",
+  "sha": "bb2b3f45238ef85f409b1d19f1268fae9a0194fd"
+ },
+ "blanket": {
+  "file": "blanket",
+  "text": "blanket",
+  "sha": "5164aab272f19961e1c7a9cdaa522d1f6c243749"
+ },
+ "blender": {
+  "file": "blender",
+  "text": "blender",
+  "sha": "8976c0ae62d901f1b909d87964b64586c1900500"
+ },
+ "blond": {
+  "file": "blond",
+  "text": "blond",
+  "sha": "e73ca5151fd51a59390d76a08883b89f7bce65b4"
+ },
+ "blood pressure monitor": {
+  "file": "blood_pressure_monitor",
+  "text": "blood pressure monitor",
+  "sha": "f3d7c7a935778dce950ca3acfe08d3c4d74671b6"
+ },
+ "blue": {
+  "file": "blue",
+  "text": "blue",
+  "sha": "11f50bb2e4367b5d176d9089c2f1ffb18420a432"
+ },
+ "boarding gate": {
+  "file": "boarding_gate",
+  "text": "boarding gate",
+  "sha": "a1bd896b1860b961a8b5c76db0b516c0161cf31e"
+ },
+ "boarding pass": {
+  "file": "boarding_pass",
+  "text": "boarding pass",
+  "sha": "cac14be790b81ab2e9bf7c1fcaae6e4e2f937e2b"
+ },
+ "boat": {
+  "file": "boat",
+  "text": "boat",
+  "sha": "231dc9e4d6a611104d171dda6cdeb8413077b622"
+ },
+ "book": {
+  "file": "book",
+  "text": "book",
+  "sha": "528186aff8744a559bb7bb80f2601639e9da5b7b"
+ },
+ "book bin": {
+  "file": "book_bin",
+  "text": "book bin",
+  "sha": "b42718cd379e8ca9bedc50e8a9e5b88d5e7e0678"
+ },
+ "bookcase": {
+  "file": "bookcase",
+  "text": "bookcase",
+  "sha": "69634a413a63e65840aa64c140d69ccd7b5c539f"
+ },
+ "bookshelf": {
+  "file": "bookshelf",
+  "text": "bookshelf",
+  "sha": "aa5a2946a729fe5f57312a66eb91cc2bf510c27d"
+ },
+ "boots": {
+  "file": "boots",
+  "text": "boots",
+  "sha": "363e455e1d65f8118901f26a946f3ba3e42fb5da"
+ },
+ "boss": {
+  "file": "boss",
+  "text": "boss",
+  "sha": "1b9b58de420f178043a267f697a6c74d60602e69"
+ },
+ "bottle": {
+  "file": "bottle",
+  "text": "bottle",
+  "sha": "c845fdfd46616b7ce5c64a225f4c17db9d77c56b"
+ },
+ "bowl": {
+  "file": "bowl",
+  "text": "bowl",
+  "sha": "433587154a231880570eebbc0bea3f867d56256e"
+ },
+ "boyfriend": {
+  "file": "boyfriend",
+  "text": "boyfriend",
+  "sha": "74f82cf887d1fd5088fcf17acd4a7f31382d7261"
+ },
+ "brain": {
+  "file": "brain",
+  "text": "brain",
+  "sha": "ff2d36c400e1d091772b9d619ebbe76d7b38ee66"
+ },
+ "brazil": {
+  "file": "brazil",
+  "text": "Brazil",
+  "sha": "60ad28b136e2818221d67ae0995605d5083ad210"
+ },
+ "bread": {
+  "file": "bread",
+  "text": "bread",
+  "sha": "2ec51efef2035de1273beb5b3c136964f239e8a2"
+ },
+ "breakfast": {
+  "file": "breakfast",
+  "text": "breakfast",
+  "sha": "65aeab1e4c656cd3c2790a46c7a8658c3068bb12"
+ },
+ "bridge": {
+  "file": "bridge",
+  "text": "bridge",
+  "sha": "548eb63362de22f2193a5646282812f988f66928"
+ },
+ "broccoli": {
+  "file": "broccoli",
+  "text": "broccoli",
+  "sha": "cddc7555042cb4192c01f7565d0466353d644090"
+ },
+ "brochure": {
+  "file": "brochure",
+  "text": "brochure",
+  "sha": "558e15bb848facd6b474d3c7f45276d341a09487"
+ },
+ "broom": {
+  "file": "broom",
+  "text": "broom",
+  "sha": "141f135411b83d8ce737afe2be441976f46a8e0d"
+ },
+ "brother": {
+  "file": "brother",
+  "text": "brother",
+  "sha": "d44a3ab15bd4892f866c0860e42ee93c7fb68ec8"
+ },
+ "brown": {
+  "file": "brown",
+  "text": "brown",
+  "sha": "6cb73123e0201f4d84448b08d8d412b6a02f9757"
+ },
+ "brown (hair)": {
+  "file": "brown_hair",
+  "text": "brown (hair)",
+  "sha": "6cb73123e0201f4d84448b08d8d412b6a02f9757"
+ },
+ "brownie": {
+  "file": "brownie",
+  "text": "brownie",
+  "sha": "af280abcdbaa41790066d8ebe0d2a68905f0097e"
+ },
+ "bucket": {
+  "file": "bucket",
+  "text": "bucket",
+  "sha": "47138ef322c6ddb9feb0587716689852868ba72e"
+ },
+ "building": {
+  "file": "building",
+  "text": "building",
+  "sha": "d24d162d18bcb7d7e4409d85ff52efc581182bc7"
+ },
+ "bulletin board": {
+  "file": "bulletin_board",
+  "text": "bulletin board",
+  "sha": "460a95de75d5885ed20e9573523eb1091450d613"
+ },
+ "burrito": {
+  "file": "burrito",
+  "text": "burrito",
+  "sha": "bcec2045871501c115f5a610ab320cf24ef525d1"
+ },
+ "bus": {
+  "file": "bus",
+  "text": "bus",
+  "sha": "a64d135ec27b5fa9ab61295d109c7ca7501dec91"
+ },
+ "bus stop": {
+  "file": "bus_stop",
+  "text": "bus stop",
+  "sha": "9eb055097af8419e76169d05eaecd0b0b0c19b9a"
+ },
+ "butter": {
+  "file": "butter",
+  "text": "butter",
+  "sha": "16269f09d88ce006f301248ccaa874c5fd00da07"
+ },
+ "cabinet": {
+  "file": "cabinet",
+  "text": "cabinet",
+  "sha": "9b62608474f4a6399bdf8dffbb4c350fd72f8100"
+ },
+ "cactus": {
+  "file": "cactus",
+  "text": "cactus",
+  "sha": "f650893cf94509f5ea37fde2dab9638373f9753c"
+ },
+ "cafe": {
+  "file": "cafe",
+  "text": "cafe",
+  "sha": "46d5096dfdef31b09aa18ecacd2f4b7394c38e1a"
+ },
+ "cake": {
+  "file": "cake",
+  "text": "cake",
+  "sha": "6a3592a56a17101471bb571a443fe39eef2aba16"
+ },
+ "camera": {
+  "file": "camera",
+  "text": "camera",
+  "sha": "e5adcde2eb24757a19d833b19d7af4d80461cc34"
+ },
+ "canada": {
+  "file": "canada",
+  "text": "Canada",
+  "sha": "6d6380624b329838c77d08f4c5cb888b19882a77"
+ },
+ "canceled": {
+  "file": "canceled",
+  "text": "canceled",
+  "sha": "80a4859b00fbf13f2ff44fc63561140e449499b8"
+ },
+ "candle": {
+  "file": "candle",
+  "text": "candle",
+  "sha": "a093199a25d316996cbf0065b5a306a3aa54fc75"
+ },
+ "candy": {
+  "file": "candy",
+  "text": "candy",
+  "sha": "97a850aa31cd4541d43ff8a7e3a18080d38aa69d"
+ },
+ "capybara": {
+  "file": "capybara",
+  "text": "capybara",
+  "sha": "46516a43919287e769f4b65a5a493e3fccd20635"
+ },
+ "car": {
+  "file": "car",
+  "text": "car",
+  "sha": "9654b8aec6fcd2be7a826abab1fe565d044f8755"
+ },
+ "card reader": {
+  "file": "card_reader",
+  "text": "card reader",
+  "sha": "c3e461b933fa23b05b01b901bb55f3c6189bdd8f"
+ },
+ "cardboard box": {
+  "file": "cardboard_box",
+  "text": "cardboard box",
+  "sha": "80cd654b858e9c1b6d72f89fd9085d99d95afea3"
+ },
+ "carrot": {
+  "file": "carrot",
+  "text": "carrot",
+  "sha": "a5c3e3b9ef471e1614bfe5ef3b030ce3330fe4f1"
+ },
+ "cash": {
+  "file": "cash",
+  "text": "cash",
+  "sha": "8e3dc44f132274433da4c5496f59e82b654c6d30"
+ },
+ "cash register": {
+  "file": "cash_register",
+  "text": "cash register",
+  "sha": "2b1058d0c3be86c5911bcd9d4c319af45a1c1945"
+ },
+ "cashier": {
+  "file": "cashier",
+  "text": "cashier",
+  "sha": "dcbcc16848f7aa35b90ea96e8656555bd77f8a59"
+ },
+ "cashier counter": {
+  "file": "cashier_counter",
+  "text": "cashier counter",
+  "sha": "c1124429af49fb86f18cf6a5c8689bd8f23f5780"
+ },
+ "cat": {
+  "file": "cat",
+  "text": "cat",
+  "sha": "d01f1578ab778fa68d102dd99d3c19988cb1183d"
+ },
+ "ceiling": {
+  "file": "ceiling",
+  "text": "ceiling",
+  "sha": "a7cb64a5136e1e27b3106fde7fafd5f5d3a5a8b7"
+ },
+ "ceiling light": {
+  "file": "ceiling_light",
+  "text": "ceiling light",
+  "sha": "8a64c56e80654536654a857c9b408c1486354aab"
+ },
+ "chair": {
+  "file": "chair",
+  "text": "chair",
+  "sha": "f6f0031ce01ea9aa986e046cd33207ec71473293"
+ },
+ "check-in counter": {
+  "file": "check_in_counter",
+  "text": "check-in counter",
+  "sha": "f475ef09ead3dd5dc832baf730047595a4492c62"
+ },
+ "checkout counter": {
+  "file": "checkout_counter",
+  "text": "checkout counter",
+  "sha": "9c9badfdc20fe1df969fc13bc761d058dec3155e"
+ },
+ "cheese": {
+  "file": "cheese",
+  "text": "cheese",
+  "sha": "b4115d1515d8f796814b51fa939bf3b5283dcd16"
+ },
+ "cheese bread": {
+  "file": "cheese_bread",
+  "text": "cheese bread",
+  "sha": "2627d673e602543b887f0e168a1de5c7fd469998"
+ },
+ "cherry": {
+  "file": "cherry",
+  "text": "cherry",
+  "sha": "3c54fe67bb4cda5ad58d12df1be73e36255731cf"
+ },
+ "cherry tree": {
+  "file": "cherry_tree",
+  "text": "cherry tree",
+  "sha": "552fd7462b8447880767d0c5b3d9c3f9e8357245"
+ },
+ "chest": {
+  "file": "chest",
+  "text": "chest",
+  "sha": "232661dd1ed7ced745e971eb725e6463316f6b15"
+ },
+ "chicken": {
+  "file": "chicken",
+  "text": "chicken",
+  "sha": "5ad005ad283bef0bf27a7453e7d65d631c99487f"
+ },
+ "chili pepper": {
+  "file": "chili_pepper",
+  "text": "chili pepper",
+  "sha": "95d3b49663d95cf5209a2d7bf390fe832a18f1a4"
+ },
+ "china": {
+  "file": "china",
+  "text": "China",
+  "sha": "c1a4834a31c319aeea0e22d8581865e7cee7d004"
+ },
+ "chocolate": {
+  "file": "chocolate",
+  "text": "chocolate",
+  "sha": "14fee965034116a795fcb2d7dfb3394318999339"
+ },
+ "chocolate cake": {
+  "file": "chocolate_cake",
+  "text": "chocolate cake",
+  "sha": "6abf829e0907bbfc52c4569f47897ad7ca7dd0a3"
+ },
+ "church": {
+  "file": "church",
+  "text": "church",
+  "sha": "635b2de2f387761f75ffdf973f1611df6161ddfc"
+ },
+ "circle": {
+  "file": "circle",
+  "text": "circle",
+  "sha": "c64948e35dc686a74ac1c01918df1b7ee1abdef9"
+ },
+ "classroom": {
+  "file": "classroom",
+  "text": "classroom",
+  "sha": "1ca32ae3509a6e24deba449bda62b038a5b12f89"
+ },
+ "clipboard": {
+  "file": "clipboard",
+  "text": "clipboard",
+  "sha": "4f070244852a1bbb8a8ee9f45da40f8957fd0e3d"
+ },
+ "clothing store": {
+  "file": "clothing_store",
+  "text": "clothing store",
+  "sha": "f1b81a24dfb7a68bed42240e942c77c593e3ff9f"
+ },
+ "cloud": {
+  "file": "cloud",
+  "text": "cloud",
+  "sha": "2f16db8c56b4a15b4c9ae2e4fc2627170eb0611d"
+ },
+ "coat": {
+  "file": "coat",
+  "text": "coat",
+  "sha": "33491c6af93bef15bc022c76be73b954923fd761"
+ },
+ "coconut": {
+  "file": "coconut",
+  "text": "coconut",
+  "sha": "56aa539de26824ebcbbf3b4aa4db62b0f3eed5cb"
+ },
+ "coffee": {
+  "file": "coffee",
+  "text": "coffee",
+  "sha": "3b95d9ca110caecfd65348ae5055e3da5f7cf7e4"
+ },
+ "coffee maker": {
+  "file": "coffee_maker",
+  "text": "coffee maker",
+  "sha": "38a142d0643d96b188a7bf3f628bda41a4cc7a3a"
+ },
+ "coffee table": {
+  "file": "coffee_table",
+  "text": "coffee table",
+  "sha": "6482981a934e188aec72bca9eade3677f04bd14d"
+ },
+ "cold": {
+  "file": "cold",
+  "text": "cold",
+  "sha": "d8d366f2e10e5784b10b89bbdd0b2ccf706f0983"
+ },
+ "compass": {
+  "file": "compass",
+  "text": "compass",
+  "sha": "edda54323fd631ebfa928bb8ddb67e736d803fd6"
+ },
+ "computer": {
+  "file": "computer",
+  "text": "computer",
+  "sha": "2ae87c3c71bebd106402989bf7b7dea0eb43e31c"
+ },
+ "container": {
+  "file": "container",
+  "text": "container",
+  "sha": "36360a24274ed90e243984ed5a2588a2eab4fa71"
+ },
+ "continent": {
+  "file": "continent",
+  "text": "continent",
+  "sha": "ae10699f9526c2df27e705af702916044456e528"
+ },
+ "conveyor belt": {
+  "file": "conveyor_belt",
+  "text": "conveyor belt",
+  "sha": "698f40f508ae22f2c081241cc81f2f6b67c19397"
+ },
+ "cook": {
+  "file": "cook",
+  "text": "cook",
+  "sha": "b31f11717439201f806f0379711942f68cfa8235"
+ },
+ "cookie": {
+  "file": "cookie",
+  "text": "cookie",
+  "sha": "8d45f68d2b360ede5c3f4d290ebdc8f0b57c9d77"
+ },
+ "corn": {
+  "file": "corn",
+  "text": "corn",
+  "sha": "ddaaffad15a5d580c408f3103cc476b330b7c6cf"
+ },
+ "counter": {
+  "file": "counter",
+  "text": "counter",
+  "sha": "97265993d919656a3a74cd020a11f237533e0314"
+ },
+ "country": {
+  "file": "country",
+  "text": "country",
+  "sha": "8503e6f935f19df3ab916ebdcddd25b05fbb46c0"
+ },
+ "cousin": {
+  "file": "cousin",
+  "text": "cousin",
+  "sha": "7d694fa2661a8d8e4ddb16bb30f8a62fdd9f0b93"
+ },
+ "cow": {
+  "file": "cow",
+  "text": "cow",
+  "sha": "90749982e962f8ce0b3936384dd8250ad2930a63"
+ },
+ "crab": {
+  "file": "crab",
+  "text": "crab",
+  "sha": "98c42c1be4ccb0493e3d555c19ca45d13fb5117d"
+ },
+ "cracker": {
+  "file": "cracker",
+  "text": "cracker",
+  "sha": "6ca3667f96b8c12821d4afa3bcf26667feab4f73"
+ },
+ "crate": {
+  "file": "crate",
+  "text": "crate",
+  "sha": "e0f5d1eb67733e4037068ec721dd8721d8f7cc01"
+ },
+ "creamy": {
+  "file": "creamy",
+  "text": "creamy",
+  "sha": "60ce27b1d5d8486ddecf1914e25b6c8557179954"
+ },
+ "credit card": {
+  "file": "credit_card",
+  "text": "credit card",
+  "sha": "9621194951b1b4d999b055d3bd20b42373bc4171"
+ },
+ "crispy pork": {
+  "file": "crispy_pork",
+  "text": "crispy pork",
+  "sha": "db0a41f72690786b6338a452fa759b2b56ae29be"
+ },
+ "crocodile": {
+  "file": "crocodile",
+  "text": "crocodile",
+  "sha": "b2b5c40c81bda5a1d345b90cbf49117eb9e614e5"
+ },
+ "croissant": {
+  "file": "croissant",
+  "text": "croissant",
+  "sha": "8971187eb2a2fd37cc946d29ed7619cf9e5027d2"
+ },
+ "cross": {
+  "file": "cross",
+  "text": "cross",
+  "sha": "ed63014b20099f407ff294e2414557f6816b5d1d"
+ },
+ "crosswalk": {
+  "file": "crosswalk",
+  "text": "crosswalk",
+  "sha": "a76b70915837f462ed748f345fc4d5d9598ee320"
+ },
+ "crunchy": {
+  "file": "crunchy",
+  "text": "crunchy",
+  "sha": "dab626567beb245bd12758f94a76828790391b55"
+ },
+ "crutches": {
+  "file": "crutches",
+  "text": "crutches",
+  "sha": "9a84cc437895a32aa813b708ef24ad3b2b3b85a3"
+ },
+ "cucumber": {
+  "file": "cucumber",
+  "text": "cucumber",
+  "sha": "904a63cb0c416ccd2b240480faf12a0914df4909"
+ },
+ "cup": {
+  "file": "cup",
+  "text": "cup",
+  "sha": "abbc8b841d85413f50ae899c6694bd4119bbfbfd"
+ },
+ "cupcake": {
+  "file": "cupcake",
+  "text": "cupcake",
+  "sha": "78443a1d31c7d50c6d91cfe8185bc997d9f681b1"
+ },
+ "curb": {
+  "file": "curb",
+  "text": "curb",
+  "sha": "4b121f1c3760f1d6bff8b8cc4e8c2386241ec883"
+ },
+ "curtain": {
+  "file": "curtain",
+  "text": "curtain",
+  "sha": "ff25a5e79c8d3f259a8ab15ce534a520cbce5bff"
+ },
+ "cushion": {
+  "file": "cushion",
+  "text": "cushion",
+  "sha": "5d57d116449adb129df50f7b247a9304cd4b0204"
+ },
+ "cypress": {
+  "file": "cypress",
+  "text": "cypress",
+  "sha": "c36a9c433804cd353dbc71a20f1572b42554837d"
+ },
+ "dark": {
+  "file": "dark",
+  "text": "dark",
+  "sha": "dc7798762e989cf3250df69ad361b0109f8d4454"
+ },
+ "daughter": {
+  "file": "daughter",
+  "text": "daughter",
+  "sha": "5885509d57bbe78f17dbb2dd67461775c6cc091b"
+ },
+ "day after tomorrow": {
+  "file": "day_after_tomorrow",
+  "text": "the day after tomorrow",
+  "sha": "3d679409f928f10990fc2dffc5c7ecb01178ec6a"
+ },
+ "day before yesterday": {
+  "file": "day_before_yesterday",
+  "text": "the day before yesterday",
+  "sha": "586d4e977acc17645426720e57a6f5ea70e4dc5b"
+ },
+ "december": {
+  "file": "december",
+  "text": "December",
+  "sha": "ec0a17585e2d5bc2e98389dd33330f6917068a5b"
+ },
+ "deer": {
+  "file": "deer",
+  "text": "deer",
+  "sha": "51ee3ac281d76949ca3722a086366adf58e38560"
+ },
+ "defibrillator": {
+  "file": "defibrillator",
+  "text": "defibrillator",
+  "sha": "41bad53844738a691a028ad36f8b229021f340f5"
+ },
+ "delayed": {
+  "file": "delayed",
+  "text": "delayed",
+  "sha": "2ee26eb2c4889ee643a54dd4474ca25ee1492619"
+ },
+ "deli counter": {
+  "file": "deli_counter",
+  "text": "deli counter",
+  "sha": "690945ce46201604efc448bd561510b0ab9086d5"
+ },
+ "departure": {
+  "file": "departure",
+  "text": "departure",
+  "sha": "2833be0c99b8604f3e1bde0586038113c502f94a"
+ },
+ "desk": {
+  "file": "desk",
+  "text": "desk",
+  "sha": "bf7b7ab7e51ac41762c3666302a7cc68db3417ba"
+ },
+ "dessert": {
+  "file": "dessert",
+  "text": "dessert",
+  "sha": "f6bfaa54da4fb17212769171a124b44b15f38e4f"
+ },
+ "destination": {
+  "file": "destination",
+  "text": "destination",
+  "sha": "766d27613e7a051e19ed3b4690eb923ae4672cce"
+ },
+ "detergent": {
+  "file": "detergent",
+  "text": "detergent",
+  "sha": "1785cef0ecb9bf7b7cfd5758aff8750e15b11a4c"
+ },
+ "dictionary": {
+  "file": "dictionary",
+  "text": "dictionary",
+  "sha": "9bb1de4db906249123fec285853de077459010c8"
+ },
+ "dining table": {
+  "file": "dining_table",
+  "text": "dining table",
+  "sha": "d79bb86b58d5c30840622804e4efa4600b0229e2"
+ },
+ "dinner": {
+  "file": "dinner",
+  "text": "dinner",
+  "sha": "4463a7d78cb38e88bdd969bd22c465572c30b6fe"
+ },
+ "display": {
+  "file": "display",
+  "text": "display",
+  "sha": "4f29a1a292b187db53122f6afe5fcac790bb4759"
+ },
+ "divider": {
+  "file": "divider",
+  "text": "divider",
+  "sha": "7e25c08b2fcde6da365850dcbd82d528bbd011cb"
+ },
+ "doctor": {
+  "file": "doctor",
+  "text": "doctor",
+  "sha": "3e1d17de04cb67237e035c04387be4fbe00f85d2"
+ },
+ "dog": {
+  "file": "dog",
+  "text": "dog",
+  "sha": "092faf0e3046a0f176b24b56dc9e7718625f1d88"
+ },
+ "donation box": {
+  "file": "donation_box",
+  "text": "donation box",
+  "sha": "56a6006fb54788c2283cfbf18b0c9b5ecb35338e"
+ },
+ "donut": {
+  "file": "donut",
+  "text": "donut",
+  "sha": "7c256bb82a5cc0ee054b12d7433f494161acd4c5"
+ },
+ "door": {
+  "file": "door",
+  "text": "door",
+  "sha": "306978d86ed70f7d90fc29cc0417f29d25669af3"
+ },
+ "down": {
+  "file": "down",
+  "text": "down",
+  "sha": "90eb950a75631f4a41cf6377756723e5564c4def"
+ },
+ "drawer": {
+  "file": "drawer",
+  "text": "drawer",
+  "sha": "9391cd35a04e5077806da26c7353b57416660a25"
+ },
+ "dress": {
+  "file": "dress",
+  "text": "dress",
+  "sha": "2d6a7c221827d8231a93ca5562d4d56fe470c406"
+ },
+ "dresser": {
+  "file": "dresser",
+  "text": "dresser",
+  "sha": "546aba7a08e633a93834f7a9d0cd4ab03848feff"
+ },
+ "driver": {
+  "file": "driver",
+  "text": "driver",
+  "sha": "32b7be7cf88982aa06727fc5349aabc428d3064e"
+ },
+ "driveway": {
+  "file": "driveway",
+  "text": "driveway",
+  "sha": "78292ff3773b32995b6ebf3c51e22f94a0970522"
+ },
+ "drum": {
+  "file": "drum",
+  "text": "drum",
+  "sha": "a2944aac86da6a68014d2120e42a7113adae81e4"
+ },
+ "dry": {
+  "file": "dry",
+  "text": "dry",
+  "sha": "f2f3db86097f4b69d17db990dc6c4a24d497eb5b"
+ },
+ "dryer": {
+  "file": "dryer",
+  "text": "dryer",
+  "sha": "a66795ac12f5f31a13c902288801485f3ac83018"
+ },
+ "duck": {
+  "file": "duck",
+  "text": "duck",
+  "sha": "176eef552969c9a05334371b97734338f7e1520c"
+ },
+ "dumbbell": {
+  "file": "dumbbell",
+  "text": "dumbbell",
+  "sha": "aabd1d95cdfff0375a9fb89ee4554b96b9ceff0b"
+ },
+ "ear": {
+  "file": "ear",
+  "text": "ear",
+  "sha": "a999c86ac2bec9968ec72dbe86970953245fa0c1"
+ },
+ "easel": {
+  "file": "easel",
+  "text": "easel",
+  "sha": "529e6bdb1577bed387e6e5562e8735910ed70736"
+ },
+ "eggs": {
+  "file": "eggs",
+  "text": "eggs",
+  "sha": "e2793fcd5b06176b56496939ec2c5a62bdcee94d"
+ },
+ "electrical box": {
+  "file": "electrical_box",
+  "text": "electrical box",
+  "sha": "e0963051056e07334ca80816f8b1b0264dccb14c"
+ },
+ "electronics": {
+  "file": "electronics",
+  "text": "electronics",
+  "sha": "c92bc3859e25c02f004dcb8a6f3f8060d4bd0247"
+ },
+ "electronics store": {
+  "file": "electronics_store",
+  "text": "electronics store",
+  "sha": "8e75cb97df72515b7c74bf8721fa3166ae871f9d"
+ },
+ "elephant": {
+  "file": "elephant",
+  "text": "elephant",
+  "sha": "b4b7012d1a93154e3614e0e6e9dc89d1ee3c15f1"
+ },
+ "elevator": {
+  "file": "elevator",
+  "text": "elevator",
+  "sha": "29c3d86ea53b48bd81206021ef483ff07e4c1057"
+ },
+ "employee": {
+  "file": "employee",
+  "text": "employee",
+  "sha": "0e7c060dce4cb3b450b9dc185705ba3ebaeb6b04"
+ },
+ "entrance": {
+  "file": "entrance",
+  "text": "entrance",
+  "sha": "2881c016db1a2665e8c1eaa37fedfd4bcf284c64"
+ },
+ "eraser": {
+  "file": "eraser",
+  "text": "eraser",
+  "sha": "96aa41d30dd28f990b3256751af9785eb20b8fee"
+ },
+ "examination bed": {
+  "file": "examination_bed",
+  "text": "examination bed",
+  "sha": "7eed7b494b80e1d22c87ce8ba7b49b160dd2443f"
+ },
+ "eye": {
+  "file": "eye",
+  "text": "eye",
+  "sha": "cb4355a3ac37ce32395668258bdaa1e851d5bd15"
+ },
+ "face": {
+  "file": "face",
+  "text": "face",
+  "sha": "b80e0f45e4de706d14c3997668795fc0e7b9381e"
+ },
+ "fan": {
+  "file": "fan",
+  "text": "fan",
+  "sha": "f217c6dc58e529abe445fa4cddb0e570940a6778"
+ },
+ "far": {
+  "file": "far",
+  "text": "far",
+  "sha": "8a4349c8c195b99614eb387e463116ce66efb803"
+ },
+ "father": {
+  "file": "father",
+  "text": "father",
+  "sha": "8d6670d1017a99e96ea0c926cc48f5b8796888b4"
+ },
+ "faucet": {
+  "file": "faucet",
+  "text": "faucet",
+  "sha": "68ba334c6fb4e85981130351dd2dc6625fab8d96"
+ },
+ "february": {
+  "file": "february",
+  "text": "February",
+  "sha": "a2ec7f016744be0f0cfa3377060c5a4fc18235ae"
+ },
+ "fence": {
+  "file": "fence",
+  "text": "fence",
+  "sha": "583a69a044b3c084a300c43a9a01e25cd7ecb26a"
+ },
+ "fern": {
+  "file": "fern",
+  "text": "fern",
+  "sha": "3622452fc7886837659a91680500d9fc7f8d4caf"
+ },
+ "field mouse": {
+  "file": "field_mouse",
+  "text": "field mouse",
+  "sha": "6262ca7e78cd0f0fb7994c599f1bb690bedd8c22"
+ },
+ "files": {
+  "file": "files",
+  "text": "files",
+  "sha": "06991db53bb7a671e70320718673f36459323c69"
+ },
+ "filing cabinet": {
+  "file": "filing_cabinet",
+  "text": "filing cabinet",
+  "sha": "9237ac179f475dfe4c7735a11c3e89491c012f5b"
+ },
+ "finger": {
+  "file": "finger",
+  "text": "finger",
+  "sha": "120b72cf8f427f8c9bbf8b4df0ce846111265926"
+ },
+ "fire truck": {
+  "file": "fire_truck",
+  "text": "fire truck",
+  "sha": "5bcc6efa49242d94bdd75ef340275944c1a0b076"
+ },
+ "first aid kit": {
+  "file": "first_aid_kit",
+  "text": "first aid kit",
+  "sha": "06273d4da674ad540036b43fc45f66518b94a710"
+ },
+ "fish": {
+  "file": "fish",
+  "text": "fish",
+  "sha": "ce6d86f9b3a333a470481068505d7feeaa62e849"
+ },
+ "fitting room": {
+  "file": "fitting_room",
+  "text": "fitting room",
+  "sha": "8c398bd2e118343cf1287318e0056fe148cee1aa"
+ },
+ "fizzy": {
+  "file": "fizzy",
+  "text": "fizzy",
+  "sha": "312f9b949ee05e03dbebc279e71279bd84ba3983"
+ },
+ "flag": {
+  "file": "flag",
+  "text": "flag",
+  "sha": "c3e7e09ab195883ce3a428a5e1a463aacbb02257"
+ },
+ "flame": {
+  "file": "flame",
+  "text": "flame",
+  "sha": "96f1770807d5d7149b849443ddb78f48797f46fd"
+ },
+ "flamingo": {
+  "file": "flamingo",
+  "text": "flamingo",
+  "sha": "5dcc697074992cc6186ca044f412ae86d0e878dd"
+ },
+ "flan": {
+  "file": "flan",
+  "text": "flan",
+  "sha": "1f48650264af5de1a6b305f2fdf2cc1f13116587"
+ },
+ "flight": {
+  "file": "flight",
+  "text": "flight",
+  "sha": "f090e62c59127a0e07137d10a655ac68e24dbe1c"
+ },
+ "flight board": {
+  "file": "flight_board",
+  "text": "flight board",
+  "sha": "c26a237e22a3c97ed68535b7cdf1b7c233e14e91"
+ },
+ "floor": {
+  "file": "floor",
+  "text": "floor",
+  "sha": "3a8556efb520a75f8685162ad1d469b3560304ab"
+ },
+ "floor lamp": {
+  "file": "floor_lamp",
+  "text": "floor lamp",
+  "sha": "16293379b665d00a36bcee764f8efcf45f860b58"
+ },
+ "flower": {
+  "file": "flower",
+  "text": "flower",
+  "sha": "d6a59d39016916896138f56907a11f068e2777eb"
+ },
+ "flowerpot": {
+  "file": "flowerpot",
+  "text": "flowerpot",
+  "sha": "9eafafb08b2012622d3123a9ab48571b943a471c"
+ },
+ "folder": {
+  "file": "folder",
+  "text": "folder",
+  "sha": "ea8fd92e06ee5023168d3df5e31cfe74b408623d"
+ },
+ "food": {
+  "file": "food",
+  "text": "food",
+  "sha": "5a862bc5f8c3349f7857d68baebd1711682a3555"
+ },
+ "foot": {
+  "file": "foot",
+  "text": "foot",
+  "sha": "20a8b1603fe8995011b779184b53cb30ce237dbd"
+ },
+ "fork": {
+  "file": "fork",
+  "text": "fork",
+  "sha": "e5252802d191062bd0433e6e5bbdd04a2de4b6b8"
+ },
+ "france": {
+  "file": "france",
+  "text": "France",
+  "sha": "4e5bdb48d5f096fc7638d68159fcfcad68423062"
+ },
+ "french fries": {
+  "file": "french_fries",
+  "text": "french fries",
+  "sha": "73701acc17ae34e5a0ebd7aef54efe9b0a3af1a0"
+ },
+ "fresh": {
+  "file": "fresh",
+  "text": "fresh",
+  "sha": "ac9b82be13ef7f408b0852897a60be57c5ba0214"
+ },
+ "friday": {
+  "file": "friday",
+  "text": "Friday",
+  "sha": "4e2ab4d8b4a38e041ad3d129b9a271faaa5397a4"
+ },
+ "fruit": {
+  "file": "fruit",
+  "text": "fruit",
+  "sha": "cf91c474fbcf50c90f376c9f4c684867408c2ffd"
+ },
+ "fruit salad": {
+  "file": "fruit_salad",
+  "text": "fruit salad",
+  "sha": "7ccac8e50bda325d78603f0568f5c6732d6c2e88"
+ },
+ "fruit yogurt": {
+  "file": "fruit_yogurt",
+  "text": "fruit yogurt",
+  "sha": "fe2c2e447dd845d5df306d0a3d1e78ee75a60596"
+ },
+ "frying pan": {
+  "file": "frying_pan",
+  "text": "frying pan",
+  "sha": "9379a789dea8f689a9ac57c6be2db456744ba62d"
+ },
+ "furniture store": {
+  "file": "furniture_store",
+  "text": "furniture store",
+  "sha": "e0df071fd97eff31929984bcf1213776cb591d10"
+ },
+ "game console": {
+  "file": "game_console",
+  "text": "game console",
+  "sha": "42d0084002f5f501267e10fb067625f979c19cb0"
+ },
+ "game controller": {
+  "file": "game_controller",
+  "text": "game controller",
+  "sha": "1d45b2fee5a6fda72e09d2e1aef5cb342551c4d1"
+ },
+ "gaming": {
+  "file": "gaming",
+  "text": "gaming",
+  "sha": "4a8374ac70aff11d5e08fa8f25316aaa75e299e2"
+ },
+ "garage": {
+  "file": "garage",
+  "text": "garage",
+  "sha": "50c7400c2da1016f919cbce2f575458be785be4b"
+ },
+ "garden": {
+  "file": "garden",
+  "text": "garden",
+  "sha": "c6cf48c895aedd18a051542b110d7155d2a6a5a1"
+ },
+ "garlic": {
+  "file": "garlic",
+  "text": "garlic",
+  "sha": "243f090a045b878b9bfb415626dc8fbc1503f15e"
+ },
+ "gate": {
+  "file": "gate",
+  "text": "gate",
+  "sha": "4e2af382dda7104e6e2f451781fb9bef852c9098"
+ },
+ "gazpacho": {
+  "file": "gazpacho",
+  "text": "gazpacho",
+  "sha": "14aa16b4b3653a0fcfacd48aecbee69e3e2184d3"
+ },
+ "geography": {
+  "file": "geography",
+  "text": "geography",
+  "sha": "85c0d34280096be245e2ec1cd37801f5b784c262"
+ },
+ "germany": {
+  "file": "germany",
+  "text": "Germany",
+  "sha": "e0b75e700d03ab01188eda7bcd7d35f7c884f5a3"
+ },
+ "giraffe": {
+  "file": "giraffe",
+  "text": "giraffe",
+  "sha": "0887616fb9f6290418e337066eb0b5616e8499ef"
+ },
+ "girlfriend": {
+  "file": "girlfriend",
+  "text": "girlfriend",
+  "sha": "44acd1549af07bd3b57af8997d12c6cc74b170b5"
+ },
+ "glass": {
+  "file": "glass",
+  "text": "glass",
+  "sha": "e8b2f8744ac003f6e8da4f9695fd27927af0d049"
+ },
+ "globe": {
+  "file": "globe",
+  "text": "globe",
+  "sha": "472905b2a45967626aac43ddf72f2c21a5b96937"
+ },
+ "gloves": {
+  "file": "gloves",
+  "text": "gloves",
+  "sha": "c5634cadb7a073a0dcb2b9e872300c010a5cd14a"
+ },
+ "goal": {
+  "file": "goal",
+  "text": "goal",
+  "sha": "ec353916bbcbf6f9e1a4d13526a94a75c12c4bc6"
+ },
+ "gorilla": {
+  "file": "gorilla",
+  "text": "gorilla",
+  "sha": "0fc565b2d5a04e862caa28fdef3dac193d3899f7"
+ },
+ "granddaughter": {
+  "file": "granddaughter",
+  "text": "granddaughter",
+  "sha": "5db4202db60ed1a7cbd3779e6296adf5aeac5654"
+ },
+ "grandfather": {
+  "file": "grandfather",
+  "text": "grandfather",
+  "sha": "04b53d06f38f73b912e9797d32b6bdb3523a9bdb"
+ },
+ "grandmother": {
+  "file": "grandmother",
+  "text": "grandmother",
+  "sha": "2e6eec3a18273ccb0344babd260c303c08017e32"
+ },
+ "grandson": {
+  "file": "grandson",
+  "text": "grandson",
+  "sha": "f1d32f85f841b792b59b066d5783c835c8c3e78b"
+ },
+ "grapes": {
+  "file": "grapes",
+  "text": "grapes",
+  "sha": "ee249f31512ab757f50331b53ea59183daaa06f6"
+ },
+ "green": {
+  "file": "green",
+  "text": "green",
+  "sha": "908bf3c94b62dccc63508f542bad3e7ce5b91010"
+ },
+ "grilled chicken": {
+  "file": "grilled_chicken",
+  "text": "grilled chicken",
+  "sha": "f13039f29859715bec5be197a5592031670389da"
+ },
+ "guacamole": {
+  "file": "guacamole",
+  "text": "guacamole",
+  "sha": "3d3fded25318156c7817311d48cef29d12ed5aed"
+ },
+ "guitar": {
+  "file": "guitar",
+  "text": "guitar",
+  "sha": "8a241dc0d82b62f31645af8c54b25a71f265c0dc"
+ },
+ "hair": {
+  "file": "hair",
+  "text": "hair",
+  "sha": "997fd15325a7609244d29a721bf6ab552de1d619"
+ },
+ "half past": {
+  "file": "half_past",
+  "text": "half past",
+  "sha": "7db823c1faafd669cf83a2f4648c868fbe09e7c7"
+ },
+ "ham": {
+  "file": "ham",
+  "text": "ham",
+  "sha": "22866853e6631fa056b1003c579f856d547616e7"
+ },
+ "hamburger": {
+  "file": "hamburger",
+  "text": "hamburger",
+  "sha": "8f03bad5697dd0d00d02f1a330d0ded20c90f57b"
+ },
+ "hand": {
+  "file": "hand",
+  "text": "hand",
+  "sha": "1c0bcc2f83938c8071d2f120e6e32d3f094762cf"
+ },
+ "handbag": {
+  "file": "handbag",
+  "text": "handbag",
+  "sha": "fd544b590070b31924b5c962559bdd69d44d6377"
+ },
+ "handle": {
+  "file": "handle",
+  "text": "handle",
+  "sha": "4846dabaa547969237a818f5e6f0aa57c7bfaffa"
+ },
+ "hanger": {
+  "file": "hanger",
+  "text": "hanger",
+  "sha": "df17e0fbf7dbbb619e46b811c7811bca0f8a13e3"
+ },
+ "hard": {
+  "file": "hard",
+  "text": "hard",
+  "sha": "6e6711855caee406940acb23c0360071635db2c1"
+ },
+ "hard candy": {
+  "file": "hard_candy",
+  "text": "hard candy",
+  "sha": "02638222bd13684e28910a0fa28da03fc90ebc68"
+ },
+ "hat": {
+  "file": "hat",
+  "text": "hat",
+  "sha": "0a210e7d4dc9a2b0bece1733f9492c7a362a298f"
+ },
+ "hay": {
+  "file": "hay",
+  "text": "hay",
+  "sha": "c420cd592b44533e8cb78b9aeca0f8cf7eacad0f"
+ },
+ "head": {
+  "file": "head",
+  "text": "head",
+  "sha": "5d845f3878e6a1aeffeed05471bfb9bc3653310d"
+ },
+ "headphones": {
+  "file": "headphones",
+  "text": "headphones",
+  "sha": "2c649233b85166964051b92df24c1ce1e65af6ad"
+ },
+ "headset": {
+  "file": "headset",
+  "text": "headset",
+  "sha": "561beb36ee2857a273c09ddd0d5b12b1403b2443"
+ },
+ "heart": {
+  "file": "heart",
+  "text": "heart",
+  "sha": "bb86020ecdfa975070aa2fd5674e9d079c400663"
+ },
+ "heavy": {
+  "file": "heavy",
+  "text": "heavy",
+  "sha": "b14e94e7349b133d22beddeeae582deae0c1f00e"
+ },
+ "hedge": {
+  "file": "hedge",
+  "text": "hedge",
+  "sha": "a042de098b23c6c5cea97e99bb1824f8245deceb"
+ },
+ "helicopter": {
+  "file": "helicopter",
+  "text": "helicopter",
+  "sha": "397ebdef9c6d920a382a32104f850f8908ede9ab"
+ },
+ "helmet": {
+  "file": "helmet",
+  "text": "helmet",
+  "sha": "93319edfe893e37fa2131a485dbd10b248fc3281"
+ },
+ "hen": {
+  "file": "hen",
+  "text": "hen",
+  "sha": "e4da2b6ad6efdc134741bebb30396a7324a95ca1"
+ },
+ "horse": {
+  "file": "horse",
+  "text": "horse",
+  "sha": "badbdfe4367ff0772f01479e214b077e9b02b46c"
+ },
+ "hospital": {
+  "file": "hospital",
+  "text": "hospital",
+  "sha": "2c66b1ed9942b4cb141d6fbf5082688d3d993a8f"
+ },
+ "hospital bed": {
+  "file": "hospital_bed",
+  "text": "hospital bed",
+  "sha": "e5fe80365cf610b4939a4569ca4e150a5fcbb686"
+ },
+ "hot": {
+  "file": "hot",
+  "text": "hot",
+  "sha": "2905c763909c6c9c37eed0bb3e503efe964b4b48"
+ },
+ "hot chocolate": {
+  "file": "hot_chocolate",
+  "text": "hot chocolate",
+  "sha": "68289a369caf59348efe1cb39345dd842e784f08"
+ },
+ "husband": {
+  "file": "husband",
+  "text": "husband",
+  "sha": "170d8cb5ae0a9b9ed95c4a04e6695a769e753b36"
+ },
+ "ice cream": {
+  "file": "ice_cream",
+  "text": "ice cream",
+  "sha": "016cd36a42511d92077a19511a9adaffc747dbe5"
+ },
+ "iced tea": {
+  "file": "iced_tea",
+  "text": "iced tea",
+  "sha": "65c05ee8bed14d0352d1b1fd3d5b6cb3f5a480b8"
+ },
+ "imaging": {
+  "file": "imaging",
+  "text": "imaging",
+  "sha": "14138d8a04dc08847afd2e4e6eb963882681eace"
+ },
+ "in front of": {
+  "file": "in_front_of",
+  "text": "in front of",
+  "sha": "558a9fdb5706f5507708e32b45db20eb770d408b"
+ },
+ "in one hour": {
+  "file": "in_one_hour",
+  "text": "in one hour",
+  "sha": "88c3fc2a223972cf29230cd479853628b2c7acdb"
+ },
+ "in one week": {
+  "file": "in_one_week",
+  "text": "in one week",
+  "sha": "1d357cd7e9cca18ea97b6688040f7c3f2811b8e3"
+ },
+ "in the afternoon": {
+  "file": "in_the_afternoon",
+  "text": "in the afternoon",
+  "sha": "f54cd77825d6b8593e16450696311498ddd64ab0"
+ },
+ "in the morning": {
+  "file": "in_the_morning",
+  "text": "in the morning",
+  "sha": "923fece8beb6d548ec8f708a6f4822b07f8afb03"
+ },
+ "in two days": {
+  "file": "in_two_days",
+  "text": "in two days",
+  "sha": "e355098a6fdb57f67ba66ca6704f1a6defcf2dd2"
+ },
+ "inside": {
+  "file": "inside",
+  "text": "inside",
+  "sha": "7d0c20878301007168c38d9a95ac3950061cadd6"
+ },
+ "italy": {
+  "file": "italy",
+  "text": "Italy",
+  "sha": "55564d632e19ffb1edb5691480d00bc76e354702"
+ },
+ "iv stand": {
+  "file": "iv_stand",
+  "text": "iv stand",
+  "sha": "4af9338348adbd2c836bb652e4c1995140bdf11e"
+ },
+ "jacket": {
+  "file": "jacket",
+  "text": "jacket",
+  "sha": "f3fc2de7a91f78e157f00b3ea8469af6f5f773a0"
+ },
+ "january": {
+  "file": "january",
+  "text": "January",
+  "sha": "920d24670591380b408b28f4750d5a3c4df25d5b"
+ },
+ "japan": {
+  "file": "japan",
+  "text": "Japan",
+  "sha": "d7818afb1998515a8509a61f3a2e7c23e0b7a5d0"
+ },
+ "jar": {
+  "file": "jar",
+  "text": "jar",
+  "sha": "c81abd54520f24f945d9008acd912db67b3168b7"
+ },
+ "jeans": {
+  "file": "jeans",
+  "text": "jeans",
+  "sha": "ce63f1309ca3c79deb6a088676cb6a38fd1084f3"
+ },
+ "juice": {
+  "file": "juice",
+  "text": "juice",
+  "sha": "8e9259243a8486f63ca1977e3f533802f720ec28"
+ },
+ "juicy": {
+  "file": "juicy",
+  "text": "juicy",
+  "sha": "fc9b2c912d8ee72f05e5c58e23caccac3db4a566"
+ },
+ "july": {
+  "file": "july",
+  "text": "July",
+  "sha": "e36d62c228df359c99efefb5e9c0bdb62588f3d3"
+ },
+ "jump rope": {
+  "file": "jump_rope",
+  "text": "jump rope",
+  "sha": "eccaa8585c873b33cb8ac3b277d06013ab1b4188"
+ },
+ "june": {
+  "file": "june",
+  "text": "June",
+  "sha": "d01dcb30d7fdc36a4186958e3737be4bf258d770"
+ },
+ "kangaroo": {
+  "file": "kangaroo",
+  "text": "kangaroo",
+  "sha": "99c18d6e020afa7640c1ca381d7f80fc218009a5"
+ },
+ "kettle": {
+  "file": "kettle",
+  "text": "kettle",
+  "sha": "6e9ff50a36143e967c92989a7649f2f8176ba451"
+ },
+ "key": {
+  "file": "key",
+  "text": "key",
+  "sha": "ce70f53d2491c7e05d36ab9237b6f35a570567a8"
+ },
+ "keyboard": {
+  "file": "keyboard",
+  "text": "keyboard",
+  "sha": "f0d45e29532fcf41423dcde67390221b1f42bd38"
+ },
+ "kitchen": {
+  "file": "kitchen",
+  "text": "kitchen",
+  "sha": "b65ba7bc3a1afae322d779c4b93bcae243e721fe"
+ },
+ "knee": {
+  "file": "knee",
+  "text": "knee",
+  "sha": "fea38df502a2d78c1552b99920624ac9b917c578"
+ },
+ "knife": {
+  "file": "knife",
+  "text": "knife",
+  "sha": "014f9fbbec3e23b614643080e45255a8d81522d1"
+ },
+ "label": {
+  "file": "label",
+  "text": "label",
+  "sha": "b61a802c4eac2675a78ce0219f2227ed65ee039f"
+ },
+ "ladder": {
+  "file": "ladder",
+  "text": "ladder",
+  "sha": "6f1a7b20b48156e2927d81259523e4cca0079236"
+ },
+ "lamb": {
+  "file": "lamb",
+  "text": "lamb",
+  "sha": "909334c3941cde9d58ae2a71c6cd926eeebc96f8"
+ },
+ "lamp": {
+  "file": "lamp",
+  "text": "lamp",
+  "sha": "d21127fc51f26ff92661cb6c36f62f761d353414"
+ },
+ "laptop": {
+  "file": "laptop",
+  "text": "laptop",
+  "sha": "c3d3e9f977c92bbe49bb6fbeade24ed193d2b64b"
+ },
+ "large intestine": {
+  "file": "large_intestine",
+  "text": "large intestine",
+  "sha": "e674ef5f08e9a33f7d8facaa2f561910c86b730b"
+ },
+ "lasagna": {
+  "file": "lasagna",
+  "text": "lasagna",
+  "sha": "02c48c8fa6f85f109a919934458a3468789ae4b8"
+ },
+ "last month": {
+  "file": "last_month",
+  "text": "last month",
+  "sha": "ea7573109b5c385fd45676387c39159098c6575b"
+ },
+ "last night": {
+  "file": "last_night",
+  "text": "last night",
+  "sha": "b543b7d59cadb764ae9b3b80022d995f688f520d"
+ },
+ "last week": {
+  "file": "last_week",
+  "text": "last week",
+  "sha": "208476ca9329f4725516cb406f0bd4d6a9539a01"
+ },
+ "last year": {
+  "file": "last_year",
+  "text": "last year",
+  "sha": "ed14e5e5e507c01417d633cdfeba4fc6b3359424"
+ },
+ "later": {
+  "file": "later",
+  "text": "later",
+  "sha": "e27fcccd1e484d80a6f28beee1e7e4ba936ab797"
+ },
+ "leaf": {
+  "file": "leaf",
+  "text": "leaf",
+  "sha": "4cf463f4092f34a8312485df8ce91c0f3c8b3f69"
+ },
+ "lectern": {
+  "file": "lectern",
+  "text": "lectern",
+  "sha": "a19ecd38d5b7bd0cc1f9a0564434e6c7c77e7ad1"
+ },
+ "left": {
+  "file": "left",
+  "text": "left",
+  "sha": "2a6c73d4b78667aec1deff89bee30f27a2bcaf7a"
+ },
+ "leg": {
+  "file": "leg",
+  "text": "leg",
+  "sha": "8e6f87f723aebc0411199a0e1d3db48ab025624b"
+ },
+ "lemon": {
+  "file": "lemon",
+  "text": "lemon",
+  "sha": "6ec8e4a3b6a1e897e7218233094417b4ea6fabc7"
+ },
+ "lemon fish": {
+  "file": "lemon_fish",
+  "text": "lemon fish",
+  "sha": "2613bb84a6fd1dc0823142492e4f82911dc2091f"
+ },
+ "lemon shrimp": {
+  "file": "lemon_shrimp",
+  "text": "lemon shrimp",
+  "sha": "f4cd861affe9ae973f8173747502bdd4d32f9971"
+ },
+ "lemonade": {
+  "file": "lemonade",
+  "text": "lemonade",
+  "sha": "87b268d350953d054ceca6085876cee8838a6f10"
+ },
+ "lettuce": {
+  "file": "lettuce",
+  "text": "lettuce",
+  "sha": "c910c473277ea12b6d8a2128527609d6f525b57f"
+ },
+ "library": {
+  "file": "library",
+  "text": "library",
+  "sha": "86bad34cedef0859ffcb565ad4cf4403e80d7f89"
+ },
+ "light": {
+  "file": "light",
+  "text": "light",
+  "sha": "4c7a2ed3fbb9f0807f994955f2f937d496147f12"
+ },
+ "light (weight)": {
+  "file": "light_weight",
+  "text": "light (not heavy)",
+  "sha": "4c7a2ed3fbb9f0807f994955f2f937d496147f12"
+ },
+ "lime": {
+  "file": "lime",
+  "text": "lime",
+  "sha": "4bc756a1ec103702ffccf584dc0f17a3ab943355"
+ },
+ "lion": {
+  "file": "lion",
+  "text": "lion",
+  "sha": "bb08a5b3a7fd503a64c2fd828c073713cb856309"
+ },
+ "liver": {
+  "file": "liver",
+  "text": "liver",
+  "sha": "f339e865e3ec99f04e317210734a1e1f2d3d58f5"
+ },
+ "living room": {
+  "file": "living_room",
+  "text": "living room",
+  "sha": "b6c0faf2486d5ab3710220281da8dea11e11fa0f"
+ },
+ "long": {
+  "file": "long",
+  "text": "long",
+  "sha": "7864fcf25b5c553a9c211800b943298c6dbdd774"
+ },
+ "loud": {
+  "file": "loud",
+  "text": "loud",
+  "sha": "d08aaaa876d48abc4cb15d9c56beed013102bd88"
+ },
+ "luggage cart": {
+  "file": "luggage_cart",
+  "text": "luggage cart",
+  "sha": "c1673a2fb1e2fe92585456a76c0058a94aa61619"
+ },
+ "lunch": {
+  "file": "lunch",
+  "text": "lunch",
+  "sha": "5874b9d629be40d3a0ddec01ea1b7d36b9ad4afb"
+ },
+ "lungs": {
+  "file": "lungs",
+  "text": "lungs",
+  "sha": "71d1cac00b5297145ce09ebfd2f8691b10a0450f"
+ },
+ "magnet": {
+  "file": "magnet",
+  "text": "magnet",
+  "sha": "ef24dcadf03db528956dcf56b6a9f9a012f2dcf8"
+ },
+ "magnifying glass": {
+  "file": "magnifying_glass",
+  "text": "magnifying glass",
+  "sha": "e38c480e565433afd2e0872554631ea9890dc81c"
+ },
+ "main hall": {
+  "file": "main_hall",
+  "text": "main hall",
+  "sha": "dff6dda79e0946c87aee284d59a4d49d04a9922f"
+ },
+ "mango": {
+  "file": "mango",
+  "text": "mango",
+  "sha": "c2d1c4496575f152c00922c7b2ec087091d07086"
+ },
+ "mannequin": {
+  "file": "mannequin",
+  "text": "mannequin",
+  "sha": "4f545df5df0eb7e4e2029cb33bd8252fc0d818ef"
+ },
+ "map": {
+  "file": "map",
+  "text": "map",
+  "sha": "36415a9128a2f5867e8eb704da45295ffe22a882"
+ },
+ "maple": {
+  "file": "maple",
+  "text": "maple",
+  "sha": "5008a376ab3f1ca0a7d8f1599a4eb836da23cef5"
+ },
+ "march": {
+  "file": "march",
+  "text": "March",
+  "sha": "06cbb6bce027b201bd914c061b5859901c6bcf36"
+ },
+ "market": {
+  "file": "market",
+  "text": "market",
+  "sha": "99d888f1cf5238321607acf9d4f8d133149586be"
+ },
+ "mattress": {
+  "file": "mattress",
+  "text": "mattress",
+  "sha": "72bb33ea9aca99b22080bcb1ec9e8317f1655793"
+ },
+ "may": {
+  "file": "may",
+  "text": "May",
+  "sha": "85246581be7ea0a281c09eeda826c92da50df0c5"
+ },
+ "meat": {
+  "file": "meat",
+  "text": "meat",
+  "sha": "bd1ecb65fd481e27f5db4cfbd7e183b5e1064878"
+ },
+ "meatballs": {
+  "file": "meatballs",
+  "text": "meatballs",
+  "sha": "cde3e8e370367834a2898d3e9762e01b7e377058"
+ },
+ "medical monitor": {
+  "file": "medical_monitor",
+  "text": "medical monitor",
+  "sha": "43a50e66147c7047b82e894e64a4798fa0b36130"
+ },
+ "medicine": {
+  "file": "medicine",
+  "text": "medicine",
+  "sha": "ece6d57a49d0daa01267b5bb1f754b5edad51aa4"
+ },
+ "medicine shelf": {
+  "file": "medicine_shelf",
+  "text": "medicine shelf",
+  "sha": "e2faf63b4e0552e8c2b6f74f3fa1095af4d0aeaa"
+ },
+ "medium": {
+  "file": "medium",
+  "text": "medium",
+  "sha": "56145c97c040f97d0e56d7f0a70b53ca1063be5b"
+ },
+ "menu": {
+  "file": "menu",
+  "text": "menu",
+  "sha": "ef96dc2b535beac49ed5d20ea323c9a7f17681d4"
+ },
+ "merry-go-round": {
+  "file": "merry_go_round",
+  "text": "merry-go-round",
+  "sha": "14a72f4b702855241e58f53cf248b2f02b6e8f05"
+ },
+ "metal detector": {
+  "file": "metal_detector",
+  "text": "metal detector",
+  "sha": "67968bc104aa71fcb174e82f3cf049cea6c58645"
+ },
+ "mexico": {
+  "file": "mexico",
+  "text": "Mexico",
+  "sha": "13dedeeb453519d42d83107da7359763315d3bb0"
+ },
+ "microphone": {
+  "file": "microphone",
+  "text": "microphone",
+  "sha": "692dcdd90c8ce4038a32577610b0841e26058e70"
+ },
+ "microwave": {
+  "file": "microwave",
+  "text": "microwave",
+  "sha": "9117c6846b0cc2bd73273d9a414f6ee55d66502c"
+ },
+ "milk": {
+  "file": "milk",
+  "text": "milk",
+  "sha": "a8445656e849863b798c3af7e13add4f7ee504c7"
+ },
+ "milkshake": {
+  "file": "milkshake",
+  "text": "milkshake",
+  "sha": "b9f6f462c6bb556ed691f8d0b3c35fcf53d5499d"
+ },
+ "mirror": {
+  "file": "mirror",
+  "text": "mirror",
+  "sha": "90cf973046428621e7ce280e2a01117cbbb3cc7c"
+ },
+ "monday": {
+  "file": "monday",
+  "text": "Monday",
+  "sha": "26176e924b63f1eed82f5c2733348d30798f7683"
+ },
+ "money": {
+  "file": "money",
+  "text": "money",
+  "sha": "b7ab1c5e7f89406cbfe0e627077a97c37bc1b781"
+ },
+ "monitor": {
+  "file": "monitor",
+  "text": "monitor",
+  "sha": "0b0349b9357c8026d18f67832a2f2fe3c7048db9"
+ },
+ "monkey": {
+  "file": "monkey",
+  "text": "monkey",
+  "sha": "41f2ea3b3a6811005ead4d6d07c6582676ee4d54"
+ },
+ "monkey bars": {
+  "file": "monkey_bars",
+  "text": "monkey bars",
+  "sha": "1c9737c048b37187be060a52bb0fd710a6548f1d"
+ },
+ "morning": {
+  "file": "morning",
+  "text": "morning",
+  "sha": "24ed9917e40bef82dbd418e9b7752c09f38d4eb7"
+ },
+ "mother": {
+  "file": "mother",
+  "text": "mother",
+  "sha": "be27a3e861e44e5b4058f72608ca4be3f909661a"
+ },
+ "motorcycle": {
+  "file": "motorcycle",
+  "text": "motorcycle",
+  "sha": "c2717aff8616b3b1d3dfe971f186d3150ed9aa37"
+ },
+ "mountain": {
+  "file": "mountain",
+  "text": "mountain",
+  "sha": "085deebe100b59f2aa4cc200d59f3e5a4822a538"
+ },
+ "mouse": {
+  "file": "mouse",
+  "text": "mouse",
+  "sha": "108ec174b5cb755261946f160aa0eace3f44a10e"
+ },
+ "moustache": {
+  "file": "moustache",
+  "text": "moustache",
+  "sha": "77b3a435f5a3f70a596be8c7d18901a9eeeaf173"
+ },
+ "mouth": {
+  "file": "mouth",
+  "text": "mouth",
+  "sha": "a0b3bc2116cc0340971525e67982f7d30115a4d4"
+ },
+ "mushroom": {
+  "file": "mushroom",
+  "text": "mushroom",
+  "sha": "4be01bc124acef4abcaeb247a59db45c3be1dba1"
+ },
+ "music": {
+  "file": "music",
+  "text": "music",
+  "sha": "e467dc49931c9768488f26425017f9c81c0f24ca"
+ },
+ "nachos": {
+  "file": "nachos",
+  "text": "nachos",
+  "sha": "baa3ea61203ad003b021166b251e28c2239bbdd1"
+ },
+ "napkin": {
+  "file": "napkin",
+  "text": "napkin",
+  "sha": "962e962701e869ede6149b6c5246fad92b0e8cc4"
+ },
+ "near": {
+  "file": "near",
+  "text": "near",
+  "sha": "0cc80d1c35237df7267fd36da6ba578ebb469f6a"
+ },
+ "neck": {
+  "file": "neck",
+  "text": "neck",
+  "sha": "da9c74196642196c92bfac06dedbfb305053a9cc"
+ },
+ "nephew": {
+  "file": "nephew",
+  "text": "nephew",
+  "sha": "d088c6a5cb4fe13850069a3749f570e3f4282356"
+ },
+ "next month": {
+  "file": "next_month",
+  "text": "next month",
+  "sha": "1a4cf05b7c20a57ee00301716c68ba06437babd6"
+ },
+ "next to": {
+  "file": "next_to",
+  "text": "next to",
+  "sha": "47a8a159db686298815c7facd4f0945bb358c68b"
+ },
+ "next week": {
+  "file": "next_week",
+  "text": "next week",
+  "sha": "cb728e6c07299f72e92662ed1d24e0ff50077041"
+ },
+ "next year": {
+  "file": "next_year",
+  "text": "next year",
+  "sha": "feda00e8180da5589ca7be0588a940c881c27174"
+ },
+ "niece": {
+  "file": "niece",
+  "text": "niece",
+  "sha": "d27877adc03f1b22ae7837f57b9fc5047b3a778a"
+ },
+ "night": {
+  "file": "night",
+  "text": "night",
+  "sha": "ec476c23ad675f7182bc87361b28a9f57366d5a4"
+ },
+ "nightstand": {
+  "file": "nightstand",
+  "text": "nightstand",
+  "sha": "1fa006edcd15baf6ba0444fb4e37debb372444fd"
+ },
+ "noisy": {
+  "file": "noisy",
+  "text": "noisy",
+  "sha": "25158eb2773edf7a56f98a7e81911f5903756e93"
+ },
+ "nose": {
+  "file": "nose",
+  "text": "nose",
+  "sha": "12f10790e426a648ba937dff51708906bf8fcfa8"
+ },
+ "notebook": {
+  "file": "notebook",
+  "text": "notebook",
+  "sha": "33a13d02754d9842ad231ef983c72954ef2b701a"
+ },
+ "notice": {
+  "file": "notice",
+  "text": "notice",
+  "sha": "fbcbc1f38e9bbb9ba00501176dc296b570bdf0fc"
+ },
+ "november": {
+  "file": "november",
+  "text": "November",
+  "sha": "877e0ceecc29b943be63609bd1cc843183d8cb2e"
+ },
+ "now": {
+  "file": "now",
+  "text": "now",
+  "sha": "0e440a16e899770721fd7367f11b780fe8bdc644"
+ },
+ "nurse": {
+  "file": "nurse",
+  "text": "nurse",
+  "sha": "7a3000920f69af633cb265b590ee05fdc8d8f95e"
+ },
+ "o'clock": {
+  "file": "o_clock",
+  "text": "o'clock",
+  "sha": "5efcdf30879b4410661b549c217efb7dc8dcc421"
+ },
+ "oak": {
+  "file": "oak",
+  "text": "oak",
+  "sha": "602053ea36b2593cbf76386de7a8babe671c48c9"
+ },
+ "october": {
+  "file": "october",
+  "text": "October",
+  "sha": "356a42637272b3016a4f4407899e67c0efd1094c"
+ },
+ "office chair": {
+  "file": "office_chair",
+  "text": "office chair",
+  "sha": "45b32501dc3ca23e80b7e606cfe99dbaf4816dd5"
+ },
+ "oil": {
+  "file": "oil",
+  "text": "oil",
+  "sha": "68494645a7fa63edee400daa1737c245c143e19f"
+ },
+ "older": {
+  "file": "older",
+  "text": "older",
+  "sha": "850805c51d0a0d707de64d555cfb3c1c35f3f8b1"
+ },
+ "olive": {
+  "file": "olive",
+  "text": "olive",
+  "sha": "e3797f36a5a6158904e5d2da032a1260d6a6d345"
+ },
+ "on": {
+  "file": "on",
+  "text": "on",
+  "sha": "bd4deca14e5e3efbe18e8dd165c967345a589c1b"
+ },
+ "on the bottom shelf": {
+  "file": "on_the_bottom_shelf",
+  "text": "on the bottom shelf",
+  "sha": "815b7a081e1154f5e98fc4553a821a07b7986929"
+ },
+ "on the top shelf": {
+  "file": "on_the_top_shelf",
+  "text": "on the top shelf",
+  "sha": "45e4569e1931fd308aa3da58b77c86de85b36d6b"
+ },
+ "on time": {
+  "file": "on_time",
+  "text": "on time",
+  "sha": "2b5c3395e2ce184de79271050da66fdc45af7fc0"
+ },
+ "on top of": {
+  "file": "on_top_of",
+  "text": "on top of",
+  "sha": "e298a090d024a0a9d6859d2fe97cc746293a346a"
+ },
+ "one hour ago": {
+  "file": "one_hour_ago",
+  "text": "one hour ago",
+  "sha": "b71fb8d5b7e64ea004a71478aac64f3898a5715c"
+ },
+ "one week ago": {
+  "file": "one_week_ago",
+  "text": "one week ago",
+  "sha": "9abb349a3951a860f958b9fc63fcf5fe3651b5b6"
+ },
+ "onion": {
+  "file": "onion",
+  "text": "onion",
+  "sha": "d6d1cce442c40390dfe47ee95d6cfae2bbe22089"
+ },
+ "orange": {
+  "file": "orange",
+  "text": "orange",
+  "sha": "2ce43be085105643e40f4d08fd3a9fb8e95bfe5c"
+ },
+ "orange (color)": {
+  "file": "orange_color",
+  "text": "orange (color)",
+  "sha": "2ce43be085105643e40f4d08fd3a9fb8e95bfe5c"
+ },
+ "orange juice": {
+  "file": "orange_juice",
+  "text": "orange juice",
+  "sha": "10b859d67a1502412df1de3a4c7b61eb3ce2c380"
+ },
+ "orange tree": {
+  "file": "orange_tree",
+  "text": "orange tree",
+  "sha": "6fb113dc3a7b52b913c1f10480669c9d856dadaa"
+ },
+ "ottoman": {
+  "file": "ottoman",
+  "text": "ottoman",
+  "sha": "e803abd9a36f55ed7596e68ff001a5b4eea77ca4"
+ },
+ "outside": {
+  "file": "outside",
+  "text": "outside",
+  "sha": "b02cd76bed35acee32b9e1fa808cde1f5e2c3502"
+ },
+ "oven": {
+  "file": "oven",
+  "text": "oven",
+  "sha": "30aec2382f5944d65459d8b32f83ca53000bd195"
+ },
+ "oxygen tank": {
+  "file": "oxygen_tank",
+  "text": "oxygen tank",
+  "sha": "d64b204145737916cc4e737c0e47ad105b5b5c8c"
+ },
+ "package": {
+  "file": "package",
+  "text": "package",
+  "sha": "bf88e8f9e9c3e00c0e19b8ab4a40fe6b065212d4"
+ },
+ "paint tube": {
+  "file": "paint_tube",
+  "text": "paint tube",
+  "sha": "98b37be628522c3a4fabd3364d3614a330724481"
+ },
+ "paintbrush": {
+  "file": "paintbrush",
+  "text": "paintbrush",
+  "sha": "eb831db882402ad21d972fbdbe85b57093320e15"
+ },
+ "painting": {
+  "file": "painting",
+  "text": "painting",
+  "sha": "55335b2289447193142e0b07b1dc6c413b45b049"
+ },
+ "palette": {
+  "file": "palette",
+  "text": "palette",
+  "sha": "bfe7098712affe137e77a04cc60d8c55fbaa58b5"
+ },
+ "palm tree": {
+  "file": "palm_tree",
+  "text": "palm tree",
+  "sha": "0490b8e68dc643ff91caae6b231cab991ddf9777"
+ },
+ "panda": {
+  "file": "panda",
+  "text": "panda",
+  "sha": "613d6028954cadf764eff455e3d9b07950909cf8"
+ },
+ "pants": {
+  "file": "pants",
+  "text": "pants",
+  "sha": "83f4893adabc771b9db0bf7ad30ea332d951c921"
+ },
+ "park": {
+  "file": "park",
+  "text": "park",
+  "sha": "7119e6125d613ea204143c70ba194a8eaf8fb723"
+ },
+ "parking": {
+  "file": "parking",
+  "text": "parking",
+  "sha": "29cff7f472dec4cf066d9af9da61ec39c8704e2d"
+ },
+ "passport": {
+  "file": "passport",
+  "text": "passport",
+  "sha": "a100c24867aa50ea09fd0014932763874bd8e60b"
+ },
+ "pasta": {
+  "file": "pasta",
+  "text": "pasta",
+  "sha": "b09d7b5c458fccb8f841e96f019a373eeef81b17"
+ },
+ "path": {
+  "file": "path",
+  "text": "path",
+  "sha": "2a876c914a37d506f64faf3fa88435be1377b650"
+ },
+ "patient chart": {
+  "file": "patient_chart",
+  "text": "patient chart",
+  "sha": "3cd0c60f57b13c0f2cda7dcb407b5df18986b710"
+ },
+ "patient room": {
+  "file": "patient_room",
+  "text": "patient room",
+  "sha": "684b370ca47fb09dbfc945be1de0aae67b6c1a14"
+ },
+ "peach": {
+  "file": "peach",
+  "text": "peach",
+  "sha": "18d179b5b4e6896386120465f5b4b6ff9e730aa6"
+ },
+ "pear": {
+  "file": "pear",
+  "text": "pear",
+  "sha": "9abf4fd1709451c21a5d353dfcf8c793f1be9ff5"
+ },
+ "pencil": {
+  "file": "pencil",
+  "text": "pencil",
+  "sha": "f18a547eb2e02748570bbc01fac3ddcb702da1f4"
+ },
+ "pencil holder": {
+  "file": "pencil_holder",
+  "text": "pencil holder",
+  "sha": "134a5f8e891f2061339f820e12b806a38959ee6d"
+ },
+ "pepper": {
+  "file": "pepper",
+  "text": "pepper",
+  "sha": "df3bf13fedf3e38ea4d31889601bd0525c08d23a"
+ },
+ "perfume": {
+  "file": "perfume",
+  "text": "perfume",
+  "sha": "703b65f2a8e5d3898ab096edcbbf00ec544cf8c7"
+ },
+ "person": {
+  "file": "person",
+  "text": "person",
+  "sha": "a695618e8007346524acc93cef1266ba982ac8a4"
+ },
+ "pew": {
+  "file": "pew",
+  "text": "pew",
+  "sha": "646078555c05122937b5a1ddbae4d87b2478526c"
+ },
+ "pharmacy": {
+  "file": "pharmacy",
+  "text": "pharmacy",
+  "sha": "07b8cf6a63807eb1915d64c53f5335a40a66c7e9"
+ },
+ "phone": {
+  "file": "phone",
+  "text": "phone",
+  "sha": "57d88f4b72b7bb312968f4c71b5cfd659eac1d26"
+ },
+ "piano": {
+  "file": "piano",
+  "text": "piano",
+  "sha": "e52161755d290e21dd1fc596feebdbdec221f85a"
+ },
+ "pig": {
+  "file": "pig",
+  "text": "pig",
+  "sha": "724aa9e56bb2c6444283dd60355826a9cd33a2a5"
+ },
+ "pillow": {
+  "file": "pillow",
+  "text": "pillow",
+  "sha": "11f106dd9f8d161562a119aecd7d38445d928bbe"
+ },
+ "pilot": {
+  "file": "pilot",
+  "text": "pilot",
+  "sha": "0bca48c7e02e0efa23092f50b75517ef9f1b7978"
+ },
+ "pine": {
+  "file": "pine",
+  "text": "pine",
+  "sha": "09902ceb55ebb428340a4c599c2108b55b375f0d"
+ },
+ "pineapple": {
+  "file": "pineapple",
+  "text": "pineapple",
+  "sha": "98bcd0cadc48dd92a1adee974896eab4e36b105d"
+ },
+ "pink": {
+  "file": "pink",
+  "text": "pink",
+  "sha": "7f83bd2032c31a1a143ec026d8c3cfa94d52f5ad"
+ },
+ "pizza": {
+  "file": "pizza",
+  "text": "pizza",
+  "sha": "596ff0c1b2e6657feaa03182def5af5502a7384f"
+ },
+ "piñata": {
+  "file": "pi_ata",
+  "text": "piñata",
+  "sha": "0e24717467d82121b2d531bc8feb7fbb7ab6d838"
+ },
+ "plant": {
+  "file": "plant",
+  "text": "plant",
+  "sha": "8a3d95133d8122d68959157366cb900bd87e9a35"
+ },
+ "planter": {
+  "file": "planter",
+  "text": "planter",
+  "sha": "55232facf9911aaeca2d633d7a7c1eaa871ca0a7"
+ },
+ "plate": {
+  "file": "plate",
+  "text": "plate",
+  "sha": "cd308d58cf98aeb20517d43b6f8a17ac98653771"
+ },
+ "play tent": {
+  "file": "play_tent",
+  "text": "play tent",
+  "sha": "a8d426a871c790455c9b4349e8f72f6a87340e82"
+ },
+ "playground": {
+  "file": "playground",
+  "text": "playground",
+  "sha": "7034cf1fff5f61516fc5a5dc3448df006b7e1bc1"
+ },
+ "police car": {
+  "file": "police_car",
+  "text": "police car",
+  "sha": "2b6752c3f1e4909f972a5a57fef5eeaf5ac59d02"
+ },
+ "police officer": {
+  "file": "police_officer",
+  "text": "police officer",
+  "sha": "7f534cd98973ff938e866fc139c480e1e470b13b"
+ },
+ "police station": {
+  "file": "police_station",
+  "text": "police station",
+  "sha": "6989dd5659b16b5fc798b2be31987dbf5049547b"
+ },
+ "pork": {
+  "file": "pork",
+  "text": "pork",
+  "sha": "872adc25d216958bfd5110172af8e1b27c066346"
+ },
+ "poster": {
+  "file": "poster",
+  "text": "poster",
+  "sha": "61078f57a77f791624afd9823d5edf7b4763e9e4"
+ },
+ "pot": {
+  "file": "pot",
+  "text": "pot",
+  "sha": "a63c560807b8ed4983d742b5fceb9883b69b0ab2"
+ },
+ "potato": {
+  "file": "potato",
+  "text": "potato",
+  "sha": "e0aae83aaa3ecd5c3ad8523493ce80afc43cb279"
+ },
+ "price": {
+  "file": "price",
+  "text": "price",
+  "sha": "b2befe41d0d79cad0f4ef6aac1c3dd7d6c932b56"
+ },
+ "price tag": {
+  "file": "price_tag",
+  "text": "price tag",
+  "sha": "abf9bf8994b18299a0b07cb1efc200be58fed824"
+ },
+ "produce": {
+  "file": "produce",
+  "text": "produce",
+  "sha": "da2d32e6085fe353aa14740f807f8431b5721e04"
+ },
+ "produce stand": {
+  "file": "produce_stand",
+  "text": "produce stand",
+  "sha": "0ed32dae3846adcfb82231d965261456f77151f4"
+ },
+ "prosthetic leg": {
+  "file": "prosthetic_leg",
+  "text": "prosthetic leg",
+  "sha": "bfa9ba84333a4ca4c0c469400f51ff54a1a0df6a"
+ },
+ "purple": {
+  "file": "purple",
+  "text": "purple",
+  "sha": "40b57c2040100784ad49aef3f6f6a0eaea18eeb9"
+ },
+ "quesadilla": {
+  "file": "quesadilla",
+  "text": "quesadilla",
+  "sha": "fabadb7805496148c9f0e3f19551eef1203f7126"
+ },
+ "queue": {
+  "file": "queue",
+  "text": "queue",
+  "sha": "a3d38111ca7122e663923623bb4dfc4c0ec08d3e"
+ },
+ "quiet": {
+  "file": "quiet",
+  "text": "quiet",
+  "sha": "a811363acbf18f937c5e883031518c21d1e7cbb2"
+ },
+ "rabbit": {
+  "file": "rabbit",
+  "text": "rabbit",
+  "sha": "cbdf8e3f379b6aec0be8dd7d565594816b4ca553"
+ },
+ "radar": {
+  "file": "radar",
+  "text": "radar",
+  "sha": "52ec8a3ce6e3107a63c9b2caa36c7743c45f56b4"
+ },
+ "radio": {
+  "file": "radio",
+  "text": "radio",
+  "sha": "08d443ecd655043672809a335bf9a08722a14c84"
+ },
+ "rake": {
+  "file": "rake",
+  "text": "rake",
+  "sha": "a43fdb42d713ad77fba254cbe58c82e2ab01393f"
+ },
+ "reading table": {
+  "file": "reading_table",
+  "text": "reading table",
+  "sha": "8af17046cb06df196d714543f641912af38e579c"
+ },
+ "receipt": {
+  "file": "receipt",
+  "text": "receipt",
+  "sha": "7c47528058be05c8bf12afb2252013746fe8506d"
+ },
+ "reception desk": {
+  "file": "reception_desk",
+  "text": "reception desk",
+  "sha": "adfd3e96006e92e33348aefac84c4b653063a03c"
+ },
+ "red": {
+  "file": "red",
+  "text": "red",
+  "sha": "34041695e826112c66877df90ee152f71ea71979"
+ },
+ "red panda": {
+  "file": "red_panda",
+  "text": "red panda",
+  "sha": "9efcc1de3e65cb377b7a5da2fd9aad2e731829c7"
+ },
+ "red-haired": {
+  "file": "red_haired",
+  "text": "red-haired",
+  "sha": "4dcd456a9f25630523128fe4b8659342c9e87e8a"
+ },
+ "reflex hammer": {
+  "file": "reflex_hammer",
+  "text": "reflex hammer",
+  "sha": "4b5f1a11cce47e223fb4ba226ffdf6588d891cf2"
+ },
+ "refreshing": {
+  "file": "refreshing",
+  "text": "refreshing",
+  "sha": "ddbd8c69fbd32fbbb90ed644f7e98cc54eb8af49"
+ },
+ "refrigerator": {
+  "file": "refrigerator",
+  "text": "refrigerator",
+  "sha": "55e3771cb4c550e91c46a4884872ecacea3e7fbf"
+ },
+ "report": {
+  "file": "report",
+  "text": "report",
+  "sha": "9b974212adea880ab16850453e2a1cec687aae1b"
+ },
+ "restaurant": {
+  "file": "restaurant",
+  "text": "restaurant",
+  "sha": "d35aa0c4b5f2f2945023d69859d585f08fa3ef55"
+ },
+ "rhinoceros": {
+  "file": "rhinoceros",
+  "text": "rhinoceros",
+  "sha": "34e1ce021046cf7f8b367a06a70917362e504312"
+ },
+ "rice": {
+  "file": "rice",
+  "text": "rice",
+  "sha": "6b29ed85cffeda48b3965e91451d816d01057a48"
+ },
+ "rice cooker": {
+  "file": "rice_cooker",
+  "text": "rice cooker",
+  "sha": "1365d385f8cf49cdf2cf0c476c404fd340558c81"
+ },
+ "right": {
+  "file": "right",
+  "text": "right",
+  "sha": "f9b23bcb705b33e9af55abb47f050607de7d084a"
+ },
+ "road": {
+  "file": "road",
+  "text": "road",
+  "sha": "22693ee188c33e0154f308a8d52a17454fe0cc72"
+ },
+ "roast lamb": {
+  "file": "roast_lamb",
+  "text": "roast lamb",
+  "sha": "fc164c11247535dd874b8726efec2b3663a0e435"
+ },
+ "rock": {
+  "file": "rock",
+  "text": "rock",
+  "sha": "83633fe87dab1249d5177c09dabe8eea8258d515"
+ },
+ "rolling pin": {
+  "file": "rolling_pin",
+  "text": "rolling pin",
+  "sha": "6f88921cccfef31543b8733249336fa56a1a05fe"
+ },
+ "roof": {
+  "file": "roof",
+  "text": "roof",
+  "sha": "f84a4fe3eba786d62d6bcf3b301d2cd0e949ffaa"
+ },
+ "rose bush": {
+  "file": "rose_bush",
+  "text": "rose bush",
+  "sha": "71882a2e0606bf9b8ae0f80578e03aea15afd266"
+ },
+ "rough": {
+  "file": "rough",
+  "text": "rough",
+  "sha": "901abc26ff871d02bf1066540970dbc8d4062fb8"
+ },
+ "rug": {
+  "file": "rug",
+  "text": "rug",
+  "sha": "b3ceb1b8a56adc3bb0167bbfd70aa3c9e737bf38"
+ },
+ "ruler": {
+  "file": "ruler",
+  "text": "ruler",
+  "sha": "fcd94437f5f017214368c1c8dd527ebaf2b3140f"
+ },
+ "salad": {
+  "file": "salad",
+  "text": "salad",
+  "sha": "592a3a1cdf98595b040154bcd791969fe26e63be"
+ },
+ "salesperson": {
+  "file": "salesperson",
+  "text": "salesperson",
+  "sha": "838a1013b11f33e36d7b1064f6d9dc736b1fd84a"
+ },
+ "salsa": {
+  "file": "salsa",
+  "text": "salsa",
+  "sha": "ccda5add8fa8c03368b918e361118887be6831f2"
+ },
+ "salt": {
+  "file": "salt",
+  "text": "salt",
+  "sha": "b446a6f80395b56f94790f425ce62d883c084190"
+ },
+ "salty": {
+  "file": "salty",
+  "text": "salty",
+  "sha": "c9f8c6e84ef5f00cc5dc1fe7f4ba13a95dc0487b"
+ },
+ "sand": {
+  "file": "sand",
+  "text": "sand",
+  "sha": "6baadcae6ef76f8145fd116731d688727efa8e75"
+ },
+ "sandbox": {
+  "file": "sandbox",
+  "text": "sandbox",
+  "sha": "ebfecc8f5afd46cfb5f3339ac090103a61bebf81"
+ },
+ "saturday": {
+  "file": "saturday",
+  "text": "Saturday",
+  "sha": "685700bb4d78d0bd88672996a3593efe1d340e4d"
+ },
+ "sausage": {
+  "file": "sausage",
+  "text": "sausage",
+  "sha": "309c77f4e96f8d3601b9f4325b9a611599f01e77"
+ },
+ "scale": {
+  "file": "scale",
+  "text": "scale",
+  "sha": "b9e1b705f001b22b632894c37c309ed6b19c01c1"
+ },
+ "scanner": {
+  "file": "scanner",
+  "text": "scanner",
+  "sha": "b497e7edcdf78281198938ee46fc06f69600ef75"
+ },
+ "scarf": {
+  "file": "scarf",
+  "text": "scarf",
+  "sha": "0acc76f495bcd224b365cb952cc636a85c3be344"
+ },
+ "schedule": {
+  "file": "schedule",
+  "text": "schedule",
+  "sha": "81221a828c3ba2d39670d9bb2e7044f94fc94c40"
+ },
+ "school": {
+  "file": "school",
+  "text": "school",
+  "sha": "021799082aeec424da129f7fbca77a97e86fec91"
+ },
+ "school bus": {
+  "file": "school_bus",
+  "text": "school bus",
+  "sha": "a16256b2698f383b35c34406514ef009e9abf829"
+ },
+ "scissors": {
+  "file": "scissors",
+  "text": "scissors",
+  "sha": "b29c81e89aaa8a50e6cdad4366a125b629079f03"
+ },
+ "screen": {
+  "file": "screen",
+  "text": "screen",
+  "sha": "4233ee6ce54e80790eee6434d63089bd141093c3"
+ },
+ "seat": {
+  "file": "seat",
+  "text": "seat",
+  "sha": "7d3775424e25c43b5272ad92b0810d594db84a23"
+ },
+ "seesaw": {
+  "file": "seesaw",
+  "text": "seesaw",
+  "sha": "c8327c95f72df6f18a2191171d0afbc517f83efa"
+ },
+ "september": {
+  "file": "september",
+  "text": "September",
+  "sha": "124a239a03cffd0f5660fcfa6de7e5d8f5b814c8"
+ },
+ "service window": {
+  "file": "service_window",
+  "text": "service window",
+  "sha": "27a0de8385262f6657fd4411ce78edf7e7c7777d"
+ },
+ "shampoo": {
+  "file": "shampoo",
+  "text": "shampoo",
+  "sha": "197edeff0ea2955b5ab71887bbf642950caa14ff"
+ },
+ "sheep": {
+  "file": "sheep",
+  "text": "sheep",
+  "sha": "d45a82d2c18278cc4a13e3c7fcd337dd35a8d8e5"
+ },
+ "sheet": {
+  "file": "sheet",
+  "text": "sheet",
+  "sha": "40c7618e88d15b5db45013fe52a2f9024ec50b06"
+ },
+ "sheet music": {
+  "file": "sheet_music",
+  "text": "sheet music",
+  "sha": "84ae91f37270df49b9f91a3e16ec72b4bb56ca4f"
+ },
+ "shelf": {
+  "file": "shelf",
+  "text": "shelf",
+  "sha": "dd6c5cb39320f27619aea9e458d00132908b78a6"
+ },
+ "shelter": {
+  "file": "shelter",
+  "text": "shelter",
+  "sha": "ab4de1685363d7ef469aaf26d24307de25dfc94e"
+ },
+ "shiny": {
+  "file": "shiny",
+  "text": "shiny",
+  "sha": "f8ad948044d9d3f619db9ac4663ca24634143041"
+ },
+ "shirt": {
+  "file": "shirt",
+  "text": "shirt",
+  "sha": "61d95010e53433621112bdc924f9a9a0fa77e428"
+ },
+ "shoes": {
+  "file": "shoes",
+  "text": "shoes",
+  "sha": "d354f13512a777b12687203268a165783d8e57fe"
+ },
+ "shopping bag": {
+  "file": "shopping_bag",
+  "text": "shopping bag",
+  "sha": "f27b546040e9fae0aa79ac1691cabf6f3e5f620e"
+ },
+ "shopping cart": {
+  "file": "shopping_cart",
+  "text": "shopping cart",
+  "sha": "105a465eb612f406a3f3f406fb2de52e08e73613"
+ },
+ "short (height)": {
+  "file": "short_height",
+  "text": "short (not tall)",
+  "sha": "07a03e92c026903d01307316af91f3dd6f2c7a80"
+ },
+ "short (length)": {
+  "file": "short_length",
+  "text": "short (not long)",
+  "sha": "07a03e92c026903d01307316af91f3dd6f2c7a80"
+ },
+ "shorts": {
+  "file": "shorts",
+  "text": "shorts",
+  "sha": "80523ac885f4ffece18ada5fdd5a13feb8e3872b"
+ },
+ "shoulder": {
+  "file": "shoulder",
+  "text": "shoulder",
+  "sha": "e2fe5c1dbe65045c5f71a928dfdcf9e95e7b602f"
+ },
+ "shovel": {
+  "file": "shovel",
+  "text": "shovel",
+  "sha": "26d0feff4dca68bde610743a8501a8fd6713a0b7"
+ },
+ "shower curtain": {
+  "file": "shower_curtain",
+  "text": "shower curtain",
+  "sha": "d994bdbb53a8bf025bc29818d8fcd32d79a92cd7"
+ },
+ "shrimp": {
+  "file": "shrimp",
+  "text": "shrimp",
+  "sha": "f0aeb6ac5f6fed21f67de496a5fdf113bf55c319"
+ },
+ "shrub": {
+  "file": "shrub",
+  "text": "shrub",
+  "sha": "deb7e3355adc5ddf492d66e76de13c0779565643"
+ },
+ "side table": {
+  "file": "side_table",
+  "text": "side table",
+  "sha": "dc0474fb365fe981277fe652fa669eb0d7573f53"
+ },
+ "sideboard": {
+  "file": "sideboard",
+  "text": "sideboard",
+  "sha": "d97d05a2a4ee6bf3743eaf12015a36b0f4cbf81c"
+ },
+ "sidewalk": {
+  "file": "sidewalk",
+  "text": "sidewalk",
+  "sha": "0ba71de9492f575c2ea13fe24e2363fcf5ba5ead"
+ },
+ "sign": {
+  "file": "sign",
+  "text": "sign",
+  "sha": "ae680f14ecb5000ca5e5e46c4d69cb96c22680ff"
+ },
+ "sink": {
+  "file": "sink",
+  "text": "sink",
+  "sha": "49562e2d97d6e84f882803ae4c9edcc3943cdc53"
+ },
+ "sister": {
+  "file": "sister",
+  "text": "sister",
+  "sha": "3f719dca52a6f569aa6309f1aed8024d67e5e5c9"
+ },
+ "skateboard": {
+  "file": "skateboard",
+  "text": "skateboard",
+  "sha": "70004970a2a7de5ec5a3c8190ccb435b1ed6a3f3"
+ },
+ "ski boots": {
+  "file": "ski_boots",
+  "text": "ski boots",
+  "sha": "b11e98fdc0676481e6b96da32075ab9a763dbafe"
+ },
+ "ski goggles": {
+  "file": "ski_goggles",
+  "text": "ski goggles",
+  "sha": "a8a83bf9c04ee982e6018a5aa5b5cc801512f0d3"
+ },
+ "ski poles": {
+  "file": "ski_poles",
+  "text": "ski poles",
+  "sha": "fdf8bc883ce6362ff0fd6c05106d4c856e7cb063"
+ },
+ "skirt": {
+  "file": "skirt",
+  "text": "skirt",
+  "sha": "af16f88580b8f19cd5aff1ba55adcee7dbb6ad35"
+ },
+ "skis": {
+  "file": "skis",
+  "text": "skis",
+  "sha": "a19e26b31e7bd7c8e6a7c2b352f0ac6973d83825"
+ },
+ "sled": {
+  "file": "sled",
+  "text": "sled",
+  "sha": "64bc4082a6021913c2bacee15fc7e04edbb411f2"
+ },
+ "sleeve": {
+  "file": "sleeve",
+  "text": "sleeve",
+  "sha": "e1cd3f7ccc0ae07c997795024aca45384134f79c"
+ },
+ "slide": {
+  "file": "slide",
+  "text": "slide",
+  "sha": "7236ad32ced7f49a3338feaf6284e22766522757"
+ },
+ "slot": {
+  "file": "slot",
+  "text": "slot",
+  "sha": "08f700e08d933c5e1fa5639719662847d5f2cbd4"
+ },
+ "small": {
+  "file": "small",
+  "text": "small",
+  "sha": "85950d1d0cc815296bb417f833dd6b30f7a0ac4b"
+ },
+ "small intestine": {
+  "file": "small_intestine",
+  "text": "small intestine",
+  "sha": "165374610b80a666668090d565d6312345cec645"
+ },
+ "smartphone": {
+  "file": "smartphone",
+  "text": "smartphone",
+  "sha": "a3df5ed310df1512f57bed96dbdceee63010cbf5"
+ },
+ "smartwatch": {
+  "file": "smartwatch",
+  "text": "smartwatch",
+  "sha": "066f247738c588109f811df8f874991ed60a87ac"
+ },
+ "smooth": {
+  "file": "smooth",
+  "text": "smooth",
+  "sha": "1079a0e20b9c594ec9eeda153658f7f319445b6c"
+ },
+ "snack": {
+  "file": "snack",
+  "text": "snack",
+  "sha": "869c8466dabd209e6e2d39c64c165d5c6ba2e4f7"
+ },
+ "snake": {
+  "file": "snake",
+  "text": "snake",
+  "sha": "bbc9290aab9a5aad54280c9506138318e049a55e"
+ },
+ "sneakers": {
+  "file": "sneakers",
+  "text": "sneakers",
+  "sha": "7ed284c532cfdfe9288bbfef050efcd7f1fd3802"
+ },
+ "snowboard": {
+  "file": "snowboard",
+  "text": "snowboard",
+  "sha": "63cd4f69eca215a59a607b14c9c91b630540599d"
+ },
+ "soap": {
+  "file": "soap",
+  "text": "soap",
+  "sha": "e19f50ce9a9fcb25fbce5780ce562a94c0a968d4"
+ },
+ "soccer": {
+  "file": "soccer",
+  "text": "soccer",
+  "sha": "4be89d96bd163bbac227668490030302309984a9"
+ },
+ "soccer ball": {
+  "file": "soccer_ball",
+  "text": "soccer ball",
+  "sha": "265c243e1a426ef2022f8a1ca61934c242604ae3"
+ },
+ "soda": {
+  "file": "soda",
+  "text": "soda",
+  "sha": "793acf87d94b9d0906b1453dbbe411a5c431db28"
+ },
+ "sofa": {
+  "file": "sofa",
+  "text": "sofa",
+  "sha": "d7365e6b35b89586eb5bb9504aa55c39067228f9"
+ },
+ "soft": {
+  "file": "soft",
+  "text": "soft",
+  "sha": "f3d12296d7aa803a05d3ce5dcbb330e1b904babd"
+ },
+ "soil": {
+  "file": "soil",
+  "text": "soil",
+  "sha": "06ee6ac447d22351f480a39e6414b0721fd79efb"
+ },
+ "son": {
+  "file": "son",
+  "text": "son",
+  "sha": "ca693838c219463fff6c63e52d89a7d581f07ded"
+ },
+ "soon": {
+  "file": "soon",
+  "text": "soon",
+  "sha": "e204f333b8172a105bba391626d54072d648b043"
+ },
+ "soup": {
+  "file": "soup",
+  "text": "soup",
+  "sha": "674add753274a0c5433a3bd7cfaf129b39554e42"
+ },
+ "sour": {
+  "file": "sour",
+  "text": "sour",
+  "sha": "d12510b241eb57974c736029ca9090a0389cc4ef"
+ },
+ "south korea": {
+  "file": "south_korea",
+  "text": "South Korea",
+  "sha": "6ef74d74a6781b9e2790364f1064b5332b28a90c"
+ },
+ "spain": {
+  "file": "spain",
+  "text": "Spain",
+  "sha": "8a1484cd4ec00db87112339883ef034708fcbd5b"
+ },
+ "sparkling water": {
+  "file": "sparkling_water",
+  "text": "sparkling water",
+  "sha": "e99f798532d26879b924d559408dcb53e364b504"
+ },
+ "speaker": {
+  "file": "speaker",
+  "text": "speaker",
+  "sha": "f7004a798280fa95a85f865409639bd756868415"
+ },
+ "spicy": {
+  "file": "spicy",
+  "text": "spicy",
+  "sha": "6e8480159ebf1488dc9eed2bd55e4ec0caa1e7b2"
+ },
+ "spicy wings": {
+  "file": "spicy_wings",
+  "text": "spicy wings",
+  "sha": "79611c9db29124ecc29fc50c13c097cc7be64a8c"
+ },
+ "sponge": {
+  "file": "sponge",
+  "text": "sponge",
+  "sha": "4ce35ced5643721ada3d6e010cf3ecbff6d8ae1d"
+ },
+ "spoon": {
+  "file": "spoon",
+  "text": "spoon",
+  "sha": "264a7a92f357d1c3ddde7b3f5bec351aa3e492a4"
+ },
+ "sport": {
+  "file": "sport",
+  "text": "sport",
+  "sha": "4a5f11812d54a82df49a866f4abb7a584ba09b85"
+ },
+ "sports store": {
+  "file": "sports_store",
+  "text": "sports store",
+  "sha": "8aee78135e8fa419e004063393a5f1f426165546"
+ },
+ "square": {
+  "file": "square",
+  "text": "square",
+  "sha": "933b01f18595e24d446449cdee475fb3a097a9a3"
+ },
+ "stairs": {
+  "file": "stairs",
+  "text": "stairs",
+  "sha": "824e756582a7e9d292ec03e991ff59e2b20d5dc4"
+ },
+ "stand": {
+  "file": "stand",
+  "text": "stand",
+  "sha": "eaa3ff31e75d33163a28fd4c8a6b17b8e3f65156"
+ },
+ "star": {
+  "file": "star",
+  "text": "star",
+  "sha": "2306565b08ecb24f68784e813a318b9086f11002"
+ },
+ "station": {
+  "file": "station",
+  "text": "station",
+  "sha": "cbcef9f6f2135556644b9378d5406e22422a39d9"
+ },
+ "statue": {
+  "file": "statue",
+  "text": "statue of George Washington",
+  "sha": "84d61a825ec2fa1ca3186e037b6b397ca3af7026"
+ },
+ "steak": {
+  "file": "steak",
+  "text": "steak",
+  "sha": "7e69ba98b0134508175d968ad9d21064402e63a7"
+ },
+ "step": {
+  "file": "step",
+  "text": "step",
+  "sha": "83e770437fabc21a262bd7ff2c1d400a4cd7ea0a"
+ },
+ "stethoscope": {
+  "file": "stethoscope",
+  "text": "stethoscope",
+  "sha": "a1b55acf807cf22deae4a325eb9c44c7c6717910"
+ },
+ "stomach": {
+  "file": "stomach",
+  "text": "stomach",
+  "sha": "05e6e2382fc922e56fb0e51887fe4fad194ebef0"
+ },
+ "stone": {
+  "file": "stone",
+  "text": "stone",
+  "sha": "7c484557ea79a71676260b897b9402a30fb7da69"
+ },
+ "stool": {
+  "file": "stool",
+  "text": "stool",
+  "sha": "bb6b62a81fd59ad74395b7d620f0d4d66267a615"
+ },
+ "stove": {
+  "file": "stove",
+  "text": "stove",
+  "sha": "adf28e11910fa23ca4e591cfbfd6c4649df53754"
+ },
+ "straight ahead": {
+  "file": "straight_ahead",
+  "text": "straight ahead",
+  "sha": "deb168d5d407617731f6fba433c024f720beb845"
+ },
+ "strawberry": {
+  "file": "strawberry",
+  "text": "strawberry",
+  "sha": "b78c7d32896a6cf8fdd0967db0447aa3b69c5ba3"
+ },
+ "street": {
+  "file": "street",
+  "text": "street",
+  "sha": "8a2b0d45c4cc1a081244cc4d1f2675ca31c20144"
+ },
+ "street sign": {
+  "file": "street_sign",
+  "text": "street sign",
+  "sha": "847f10a7ca4e56d65e2f66801c9944729f2659cd"
+ },
+ "streetlight": {
+  "file": "streetlight",
+  "text": "streetlight",
+  "sha": "3fd75349c53d24f9f51de9d5e054623d83939686"
+ },
+ "stretcher": {
+  "file": "stretcher",
+  "text": "stretcher",
+  "sha": "0c4dbd06dd376d2695642209bf63a748471204ab"
+ },
+ "suitcase": {
+  "file": "suitcase",
+  "text": "suitcase",
+  "sha": "f0db86ff2c6a17d1af1c4d7cae49a688bccd6074"
+ },
+ "sunday": {
+  "file": "sunday",
+  "text": "Sunday",
+  "sha": "167a2afbb55913b4d910054386c69bfd12e9b071"
+ },
+ "sunglasses": {
+  "file": "sunglasses",
+  "text": "sunglasses",
+  "sha": "419d29a66ee445f61ab7660bb3d4e45d20c40c59"
+ },
+ "supermarket": {
+  "file": "supermarket",
+  "text": "supermarket",
+  "sha": "acc46b29830e2e4515364c90406c37ce834eaaac"
+ },
+ "supply": {
+  "file": "supply",
+  "text": "supply",
+  "sha": "65b931a9615db3bfe7bc7b33130702208e60927e"
+ },
+ "surgical mask": {
+  "file": "surgical_mask",
+  "text": "surgical mask",
+  "sha": "18ffb72ae1cd3d488ee375f2d2f330dee5ffb9c9"
+ },
+ "suspect": {
+  "file": "suspect",
+  "text": "suspect",
+  "sha": "32b8292aa0d69b77279370f0416f3a6cd76d0e7a"
+ },
+ "sweater": {
+  "file": "sweater",
+  "text": "sweater",
+  "sha": "92c16ceea5d15ce06b58f5a9f183a4a2cd563006"
+ },
+ "sweet": {
+  "file": "sweet",
+  "text": "sweet",
+  "sha": "a2d8c254a42a0e3995b64ee29c27c3ec51ebb687"
+ },
+ "swimming pool": {
+  "file": "swimming_pool",
+  "text": "swimming pool",
+  "sha": "700922686058eeb05fc3382ca466a92e4fdcbd28"
+ },
+ "swing": {
+  "file": "swing",
+  "text": "swing",
+  "sha": "618da276cf14668c4f129408d261e9ba51e1d6a6"
+ },
+ "syringe": {
+  "file": "syringe",
+  "text": "syringe",
+  "sha": "d1924d0a7f5e8df1cd05f2b36b7d2f56ae6c278d"
+ },
+ "table": {
+  "file": "table",
+  "text": "table",
+  "sha": "486e664ee93d87ea94fe35bf2a0a0a20a82a3a35"
+ },
+ "tablecloth": {
+  "file": "tablecloth",
+  "text": "tablecloth",
+  "sha": "0f3882e9e99eaf6e2a51c569aa9e6973415458bc"
+ },
+ "tablet": {
+  "file": "tablet",
+  "text": "tablet",
+  "sha": "549c954131bb9a31bf54db517be6ffa91fda418d"
+ },
+ "taco": {
+  "file": "taco",
+  "text": "taco",
+  "sha": "de03530675c8d98b81dfdb8a0eea300a64d29903"
+ },
+ "tall": {
+  "file": "tall",
+  "text": "tall",
+  "sha": "d100d312343d1563567b05b592ed17812476a177"
+ },
+ "taxi": {
+  "file": "taxi",
+  "text": "taxi",
+  "sha": "4c5a7186f3baace49eb27c82cea37ae30c684243"
+ },
+ "tea": {
+  "file": "tea",
+  "text": "tea",
+  "sha": "dd46b7aa3f408881a5140433e1c35516bc86c0b9"
+ },
+ "teacher": {
+  "file": "teacher",
+  "text": "teacher",
+  "sha": "3354971d8d7efd6e8ec42e1b66183865eeaa0d55"
+ },
+ "teapot": {
+  "file": "teapot",
+  "text": "teapot",
+  "sha": "b96876325847952d9e4db38240b90208d6b7c60c"
+ },
+ "tech": {
+  "file": "tech",
+  "text": "tech",
+  "sha": "4908196441735c03252e057f52fc451230ba3619"
+ },
+ "television": {
+  "file": "television",
+  "text": "television",
+  "sha": "e8b41ba341a10f20e9fce5ec1bf1961e0f266816"
+ },
+ "teller counter": {
+  "file": "teller_counter",
+  "text": "teller counter",
+  "sha": "e0e1c38777c17a974a897c9aed6c04fe8dd20f71"
+ },
+ "tennis": {
+  "file": "tennis",
+  "text": "tennis",
+  "sha": "c96f9236a8b70b8321b5d922915514c5cfbefa56"
+ },
+ "tennis racket": {
+  "file": "tennis_racket",
+  "text": "tennis racket",
+  "sha": "de38ff979c2c979666805b852853b83888847e46"
+ },
+ "terminal": {
+  "file": "terminal",
+  "text": "terminal",
+  "sha": "e3432666abab4b831c8fc8c128d9cb8fda884a98"
+ },
+ "thermometer": {
+  "file": "thermometer",
+  "text": "thermometer",
+  "sha": "3e8c832d27e90676cffffc89dc2b67707ce03001"
+ },
+ "this afternoon": {
+  "file": "this_afternoon",
+  "text": "this afternoon",
+  "sha": "635ba38ba8ed310c0c355855d73c8f6ca155a414"
+ },
+ "this month": {
+  "file": "this_month",
+  "text": "this month",
+  "sha": "b1eac7b6c0c18f50c97ee610b75247eb93ae0bfe"
+ },
+ "this morning": {
+  "file": "this_morning",
+  "text": "this morning",
+  "sha": "ad9261868df1da80df5cf1a5d604df93e2104b18"
+ },
+ "this week": {
+  "file": "this_week",
+  "text": "this week",
+  "sha": "169d5a2d541e778467407bc3ac2bdb8a319f390f"
+ },
+ "this year": {
+  "file": "this_year",
+  "text": "this year",
+  "sha": "71953f2c861a5b458fb3872c7568daf4b309ae05"
+ },
+ "thursday": {
+  "file": "thursday",
+  "text": "Thursday",
+  "sha": "2cccaaaa54ea10140d543b9e40456e76900bf579"
+ },
+ "ticket": {
+  "file": "ticket",
+  "text": "ticket",
+  "sha": "b2a2214fcafe4b3c0f95a5b0edeef5c0aa354ed0"
+ },
+ "tiger": {
+  "file": "tiger",
+  "text": "tiger",
+  "sha": "fa3dbddd9bc55156b48fc831b3abdec1bd2b194f"
+ },
+ "tile": {
+  "file": "tile",
+  "text": "tile",
+  "sha": "9e27f7b8d6593b63d5d66027131a5877c92e03e3"
+ },
+ "tiramisu": {
+  "file": "tiramisu",
+  "text": "tiramisu",
+  "sha": "d14a8da185878a5feb1df2e5723e0f7699603bb3"
+ },
+ "tire": {
+  "file": "tire",
+  "text": "tire",
+  "sha": "13217f1f210deff79623995c00d38f427835123e"
+ },
+ "to arrive": {
+  "file": "to_arrive",
+  "text": "to arrive",
+  "sha": "0979e5f2900fe9f5579e14fa9597b180da1a9912"
+ },
+ "to be": {
+  "file": "to_be",
+  "text": "to be",
+  "sha": "70bdc56ca2030683213afd4c0eb4af50ec01ba6c"
+ },
+ "to bring": {
+  "file": "to_bring",
+  "text": "to bring",
+  "sha": "a71b128671e6da8796d054bba89f0342f1e84a1f"
+ },
+ "to carry": {
+  "file": "to_carry",
+  "text": "to carry",
+  "sha": "4bc8a45e7fbfd3131176f7f10734cd25f1dfca13"
+ },
+ "to close": {
+  "file": "to_close",
+  "text": "to close",
+  "sha": "2b2ecbca47d7db0737dae9c6d8c5826f1b84cc17"
+ },
+ "to depart": {
+  "file": "to_depart",
+  "text": "to leave / depart",
+  "sha": "01874665ce00df13021de39ea533e8fa2490f36a"
+ },
+ "to find": {
+  "file": "to_find",
+  "text": "to find",
+  "sha": "f28149c387c3f9061c4fa1de80884e7eadc93eaf"
+ },
+ "to give": {
+  "file": "to_give",
+  "text": "to give",
+  "sha": "afeefa11e00c3505a192318bf371871af4c4e724"
+ },
+ "to go": {
+  "file": "to_go",
+  "text": "to go",
+  "sha": "c566e880dec0993f1dbe88b691d9e7c3eb01ac21"
+ },
+ "to leave": {
+  "file": "to_leave",
+  "text": "to leave",
+  "sha": "c091bf923e917a7b681f9ae57db3b2cd231b6c91"
+ },
+ "to lift": {
+  "file": "to_lift",
+  "text": "to lift",
+  "sha": "3680aa122317768ab6b571428fdc92675eabe3d9"
+ },
+ "to listen": {
+  "file": "to_listen",
+  "text": "to listen",
+  "sha": "9521869f99be0f32acf4045b23a9c64f0270122d"
+ },
+ "to look at": {
+  "file": "to_look_at",
+  "text": "to look at",
+  "sha": "8af24256aa316b37bb33fc0655a94802611c1fee"
+ },
+ "to look for": {
+  "file": "to_look_for",
+  "text": "to look for",
+  "sha": "7b256902092235cf5581171e5c992a21bb186e7a"
+ },
+ "to measure": {
+  "file": "to_measure",
+  "text": "to measure",
+  "sha": "6f4ee07c31a181b074f4fcb3cf580a00b60f86b4"
+ },
+ "to move": {
+  "file": "to_move",
+  "text": "to move",
+  "sha": "6754f20e51e6c4034eb82a04488e62a71909a176"
+ },
+ "to open": {
+  "file": "to_open",
+  "text": "to open",
+  "sha": "5493bd5588aac691c04f7e2f21697aa520813d60"
+ },
+ "to organize": {
+  "file": "to_organize",
+  "text": "to organize",
+  "sha": "95e13caadf5a16349ab61cc7053f44028a102298"
+ },
+ "to pick up": {
+  "file": "to_pick_up",
+  "text": "to pick up",
+  "sha": "f567c28606ef8226c2492cd40640f212eabd4d86"
+ },
+ "to pull": {
+  "file": "to_pull",
+  "text": "to pull",
+  "sha": "da942baf2c78774696d0ef34637a98c17daacd58"
+ },
+ "to push": {
+  "file": "to_push",
+  "text": "to push",
+  "sha": "f34d3f0476d18f5429f2b527027c180f63caf04c"
+ },
+ "to put": {
+  "file": "to_put",
+  "text": "to put",
+  "sha": "939a2ade8b9193006969415b31327265bbb966c4"
+ },
+ "to put away": {
+  "file": "to_put_away",
+  "text": "to put away",
+  "sha": "4bb7a38e28bf75026a9f106e552bbc3124ec6ed4"
+ },
+ "to remove": {
+  "file": "to_remove",
+  "text": "to remove",
+  "sha": "79e1fe2e5f2aa807d7dee4d06dda3b2bcf468392"
+ },
+ "to squeeze": {
+  "file": "to_squeeze",
+  "text": "to squeeze",
+  "sha": "3b494555e08a6af9b97f056736ff5751340dff38"
+ },
+ "to take off": {
+  "file": "to_take_off",
+  "text": "to take off",
+  "sha": "65d68fec8da8dc600e38f54f4118f1c8e5dc273a"
+ },
+ "to take out": {
+  "file": "to_take_out",
+  "text": "to take out",
+  "sha": "d0917d8058a553e42a4a3ff223bc122b3a3fa46a"
+ },
+ "to touch": {
+  "file": "to_touch",
+  "text": "to touch",
+  "sha": "7a3b756a16df945c5df1c5a4f336945f4d76f52f"
+ },
+ "to weigh": {
+  "file": "to_weigh",
+  "text": "to weigh",
+  "sha": "c4406bc1c3b6c53b59114fc56ac8269fa8367c61"
+ },
+ "toaster": {
+  "file": "toaster",
+  "text": "toaster",
+  "sha": "d637cdbf7ff6c983eb867662ddca5ca25a9599f6"
+ },
+ "today": {
+  "file": "today",
+  "text": "today",
+  "sha": "9d07004eca729df13704e914513326e9bd273209"
+ },
+ "toe": {
+  "file": "toe",
+  "text": "toe",
+  "sha": "c1b6f37b24acadf20e82084d6f2e81b226325468"
+ },
+ "toilet": {
+  "file": "toilet",
+  "text": "toilet",
+  "sha": "ce7432bb52cca72cc5d525e2082348fe0ea968fa"
+ },
+ "toilet paper": {
+  "file": "toilet_paper",
+  "text": "toilet paper",
+  "sha": "44d0c9c62359a43ecab1689e47124fbf7b75cd70"
+ },
+ "tomato": {
+  "file": "tomato",
+  "text": "tomato",
+  "sha": "b9efb30339ad459554eb6c9769b7e777164da663"
+ },
+ "tomorrow": {
+  "file": "tomorrow",
+  "text": "tomorrow",
+  "sha": "3f0a337d91f86a0d5e9b3a8a430d11e0adb2ed5d"
+ },
+ "tongue": {
+  "file": "tongue",
+  "text": "tongue",
+  "sha": "695d85eabac5d169022645a59663919ea7b2c71a"
+ },
+ "tonight": {
+  "file": "tonight",
+  "text": "tonight",
+  "sha": "3668ae428b43b9dba3493f035a280e66dfcf1936"
+ },
+ "tooth": {
+  "file": "tooth",
+  "text": "tooth",
+  "sha": "9d55d532383acc7b16eddbe8d26cc8a923afb23e"
+ },
+ "toothbrush": {
+  "file": "toothbrush",
+  "text": "toothbrush",
+  "sha": "e481858e706f929e0cfdd1225fa52d0425226415"
+ },
+ "toothpaste": {
+  "file": "toothpaste",
+  "text": "toothpaste",
+  "sha": "3340bc32ad9f2464d78c58b0cd0f7ec1e055e702"
+ },
+ "tortilla": {
+  "file": "tortilla",
+  "text": "tortilla",
+  "sha": "382988812d8d88f919804e112f4492775b1c81b9"
+ },
+ "towel": {
+  "file": "towel",
+  "text": "towel",
+  "sha": "f2b9fd2732a62da289aaf0b51d6e8fb951d4e366"
+ },
+ "traffic light": {
+  "file": "traffic_light",
+  "text": "traffic light",
+  "sha": "0957171dd3d3d41e8c11b4bbaedc16d8be6fd8a2"
+ },
+ "train": {
+  "file": "train",
+  "text": "train",
+  "sha": "5e65f4f7a9204695e853a976d520d882b0dfe7fe"
+ },
+ "tray": {
+  "file": "tray",
+  "text": "tray",
+  "sha": "c4f5ccb0de85aea8da05b7885c53c8c108a26f29"
+ },
+ "treatment": {
+  "file": "treatment",
+  "text": "treatment",
+  "sha": "bb4f30a961d1152521cc5769cba56ea6e968007c"
+ },
+ "treatment table": {
+  "file": "treatment_table",
+  "text": "treatment table",
+  "sha": "728343eddb2b82eee3f6588c66d545ee9460019a"
+ },
+ "tree": {
+  "file": "tree",
+  "text": "tree",
+  "sha": "e8ae2c9f68d503bbd5dffd8df15ff3e7f16823dc"
+ },
+ "triangle": {
+  "file": "triangle",
+  "text": "triangle",
+  "sha": "159d4b57e42b9e1da88bf6436e0483fb59d09c10"
+ },
+ "trolley": {
+  "file": "trolley",
+  "text": "trolley",
+  "sha": "caf081b5254662fc12d127477ddffefb00b9d4f1"
+ },
+ "truck": {
+  "file": "truck",
+  "text": "truck",
+  "sha": "d7c1f2bfc0ef08661fc08a3fe1e49a566caeab90"
+ },
+ "trumpet": {
+  "file": "trumpet",
+  "text": "trumpet",
+  "sha": "fcccf11b8b3a94bde35f436aba3a444b46aec1f0"
+ },
+ "tuesday": {
+  "file": "tuesday",
+  "text": "Tuesday",
+  "sha": "b0f2d43dc07b6091738b0b37ee72c56acf9606cd"
+ },
+ "turtle": {
+  "file": "turtle",
+  "text": "turtle",
+  "sha": "6e268818a67e44539eebc959d6c73649c4ff20e3"
+ },
+ "tv stand": {
+  "file": "tv_stand",
+  "text": "tv stand",
+  "sha": "ce5643960ee8c2ab752328e8b9879c04adc91ac8"
+ },
+ "two days ago": {
+  "file": "two_days_ago",
+  "text": "two days ago",
+  "sha": "42228581c863ccec73a0e57e9981a0772ca98af4"
+ },
+ "uncle": {
+  "file": "uncle",
+  "text": "uncle",
+  "sha": "49a3c3bab2e12893413b9a4b88b8daba0cec5eaa"
+ },
+ "under": {
+  "file": "under",
+  "text": "under",
+  "sha": "bdac6fe4e637f619f689a859761f5c1dd7606c82"
+ },
+ "united states": {
+  "file": "united_states",
+  "text": "the United States",
+  "sha": "458aeba74ec21d12408f4f9d4fee969ab3e7fe5c"
+ },
+ "up": {
+  "file": "up",
+  "text": "up",
+  "sha": "6f99c81bc9a16f27837753efcc61507cf85df184"
+ },
+ "vault": {
+  "file": "vault",
+  "text": "vault",
+  "sha": "ad11a860add2ce73e69fde0acb4c7a5031a4ba54"
+ },
+ "vegetables": {
+  "file": "vegetables",
+  "text": "vegetables",
+  "sha": "b7da21d847ccb3ed7d3dbe90454c387f85c2e392"
+ },
+ "vehicle": {
+  "file": "vehicle",
+  "text": "vehicle",
+  "sha": "ae259b5025cabf952cc49e1ba2d8cefdddf63e48"
+ },
+ "violin": {
+  "file": "violin",
+  "text": "violin",
+  "sha": "2e2c026f94bcbeb224d56818705938d1a76ec9ae"
+ },
+ "volleyball": {
+  "file": "volleyball",
+  "text": "volleyball",
+  "sha": "ac7144254ba39a8ff015c636768ca9e99854fb4f"
+ },
+ "waiter": {
+  "file": "waiter",
+  "text": "waiter",
+  "sha": "243dc0b2b0802636ee97edf5393172fae969c972"
+ },
+ "walker": {
+  "file": "walker",
+  "text": "walker",
+  "sha": "d0145b4fa484f95fd5e45dd2685c8ec38304bc86"
+ },
+ "wall": {
+  "file": "wall",
+  "text": "wall",
+  "sha": "d7b1d51eb1049466546e99f0cf9da83536c9b279"
+ },
+ "wardrobe": {
+  "file": "wardrobe",
+  "text": "wardrobe",
+  "sha": "12582e7f3450546b4b55a6833b9bcb87010cc4d6"
+ },
+ "warehouse": {
+  "file": "warehouse",
+  "text": "warehouse",
+  "sha": "15acfd591fcc3ef8ff26477115d48f1ec38e8995"
+ },
+ "warm": {
+  "file": "warm",
+  "text": "warm",
+  "sha": "0b2d982bfda6ea821432c5ce2ec1a30c5cc54a33"
+ },
+ "washing machine": {
+  "file": "washing_machine",
+  "text": "washing machine",
+  "sha": "7577154645207c54cbc6116c736b32b5e20c689f"
+ },
+ "water": {
+  "file": "water",
+  "text": "water",
+  "sha": "1ceb66dbba2712c6215af48800832476fa5c3795"
+ },
+ "water bottle": {
+  "file": "water_bottle",
+  "text": "water bottle",
+  "sha": "5c6100a44acf3a913c896e4d7266f00791d8c0f8"
+ },
+ "watering can": {
+  "file": "watering_can",
+  "text": "watering can",
+  "sha": "e54951bc8ed1825359f47357ae81bc8e7d8e4f37"
+ },
+ "watermelon": {
+  "file": "watermelon",
+  "text": "watermelon",
+  "sha": "3be3dc841d2e14d9dd24840a44ff5fe62269ce29"
+ },
+ "wednesday": {
+  "file": "wednesday",
+  "text": "Wednesday",
+  "sha": "bdf43040a9bee45342d609496135f5f55d273948"
+ },
+ "weeping willow": {
+  "file": "weeping_willow",
+  "text": "weeping willow",
+  "sha": "5ea93efa40aaf62f6c0e05073bcd77514f3f5c73"
+ },
+ "wet": {
+  "file": "wet",
+  "text": "wet",
+  "sha": "dbd000cb3404bac0c49e0605ed3596f36c046884"
+ },
+ "wheel": {
+  "file": "wheel",
+  "text": "wheel",
+  "sha": "ad0891667af7b0968140e96db627030738259977"
+ },
+ "wheelbarrow": {
+  "file": "wheelbarrow",
+  "text": "wheelbarrow",
+  "sha": "310a8042a143d05fe8c6a34735d59b2e2b919d53"
+ },
+ "wheelchair": {
+  "file": "wheelchair",
+  "text": "wheelchair",
+  "sha": "69f2e08552c230b130be1303849a5d3d0b7c715a"
+ },
+ "when": {
+  "file": "when",
+  "text": "when?",
+  "sha": "3ac17ca325ddc5e192ccfe797ac0ad26059687c0"
+ },
+ "whisk": {
+  "file": "whisk",
+  "text": "whisk",
+  "sha": "2cb0fa3d0511728bcefd4d6bb7c8930df7839a96"
+ },
+ "whiteboard": {
+  "file": "whiteboard",
+  "text": "whiteboard",
+  "sha": "8e01a6fde384630e9bcefcab7d6e856823901d22"
+ },
+ "wife": {
+  "file": "wife",
+  "text": "wife",
+  "sha": "e56f5fde171ce7246e3f3b55455ed3705515edcf"
+ },
+ "window": {
+  "file": "window",
+  "text": "window",
+  "sha": "b7a711b2356f8f161e99e8a6196f9d8d2bb9cf6c"
+ },
+ "wine": {
+  "file": "wine",
+  "text": "wine",
+  "sha": "499e96b9d8700f3efe8bbb9f682179e20c53ea4a"
+ },
+ "winter hat": {
+  "file": "winter_hat",
+  "text": "winter hat",
+  "sha": "5f77c61111fd4cfb3884168bff65a1c99d902042"
+ },
+ "with ice": {
+  "file": "with_ice",
+  "text": "with ice",
+  "sha": "2a5efca1b81ab8e579e3c49482cbe5a0eba546bb"
+ },
+ "worksheet": {
+  "file": "worksheet",
+  "text": "worksheet",
+  "sha": "33980513769d1f26831a3545b729bd58ad79bd9c"
+ },
+ "world map": {
+  "file": "world_map",
+  "text": "world map",
+  "sha": "f7451481bf3219113fdbc3f16f2e0d91ff5af0f7"
+ },
+ "x ray": {
+  "file": "x_ray",
+  "text": "x ray",
+  "sha": "05858e48eb363000dc18ef4784d875301c08fa4b"
+ },
+ "x ray machine": {
+  "file": "x_ray_machine",
+  "text": "x ray machine",
+  "sha": "59ff9d547d53f03d520956d94871a38d9677f911"
+ },
+ "yard": {
+  "file": "yard",
+  "text": "yard",
+  "sha": "31999ce6602742524c8753ef247dc00233ad4349"
+ },
+ "yellow": {
+  "file": "yellow",
+  "text": "yellow",
+  "sha": "37718e7b0c7140307644f932645ea40dd4572933"
+ },
+ "yesterday": {
+  "file": "yesterday",
+  "text": "yesterday",
+  "sha": "c9d79233f33921a9cc817f62d58d0ed28777e69d"
+ },
+ "yogurt": {
+  "file": "yogurt",
+  "text": "yogurt",
+  "sha": "6b5afeeafc02357d541e9fdbc3d6ab24452cd93d"
+ },
+ "younger": {
+  "file": "younger",
+  "text": "younger",
+  "sha": "7dc73769ac13d65a04c9c694552ffbe933e671c3"
+ },
+ "zebra": {
+  "file": "zebra",
+  "text": "zebra",
+  "sha": "b8c194cf814af397f76ef0f916d218e638f99a09"
+ }
+}

@@ -1,0 +1,3997 @@
+{
+ "MRI scanner": {
+  "file": "mri_scanner",
+  "text": "磁力共振掃描器",
+  "sha": "04f79e695ffcbf9088f7ee8de343db3b2a5bad0f"
+ },
+ "after": {
+  "file": "after",
+  "text": "之後",
+  "sha": "b87c3e257a0cd8e2c50d06ec9fc7352a1986b959"
+ },
+ "afternoon": {
+  "file": "afternoon",
+  "text": "下午",
+  "sha": "ba6b0edc847769aa1bedd4f92ceb91aa5c39867e"
+ },
+ "airplane": {
+  "file": "airplane",
+  "text": "飛機",
+  "sha": "756f31b4ff23a17ee5e1ee4c26bfe287aeba79f1"
+ },
+ "airport": {
+  "file": "airport",
+  "text": "機場",
+  "sha": "6c8e8cfb3b83e5eb12497a0524a0da761a0281a7"
+ },
+ "altar": {
+  "file": "altar",
+  "text": "祭壇",
+  "sha": "fccaf92656a4c17fc47b75b6e06179778d56e270"
+ },
+ "ambulance": {
+  "file": "ambulance",
+  "text": "救護車",
+  "sha": "2b7de98e0a5664fb473d2c8f557b6ea36da8100d"
+ },
+ "animal": {
+  "file": "animal",
+  "text": "動物",
+  "sha": "7264f4e70669ee0b6ab93334ccc4a0662a89c08b"
+ },
+ "apple": {
+  "file": "apple",
+  "text": "蘋果",
+  "sha": "07b59e350d4be9e4909578ee216d3b3251f46212"
+ },
+ "apple pie": {
+  "file": "apple_pie",
+  "text": "蘋果批",
+  "sha": "9b77f14f3b2cea819311b8b19bc5839a09119981"
+ },
+ "apple tree": {
+  "file": "apple_tree",
+  "text": "蘋果樹",
+  "sha": "a02f70eff65af3c27568149bd7530e90bee43586"
+ },
+ "april": {
+  "file": "april",
+  "text": "四月",
+  "sha": "d755ffde0cf4dc7d3f794032bf81c9cfebc5cdee"
+ },
+ "apron": {
+  "file": "apron",
+  "text": "圍裙",
+  "sha": "29fbc37abe02090926d33689dc9cf5f6570669ec"
+ },
+ "arm": {
+  "file": "arm",
+  "text": "手臂",
+  "sha": "1214c3ae52e838968a8e42ad2b394c4a332a435e"
+ },
+ "armchair": {
+  "file": "armchair",
+  "text": "扶手椅",
+  "sha": "7ee8c06df852e54cea7822832437921a04aaf6ef"
+ },
+ "arrival": {
+  "file": "arrival",
+  "text": "抵達",
+  "sha": "11a1b0b82bbeea57d38b62f1df39c75409e91261"
+ },
+ "at midnight": {
+  "file": "at_midnight",
+  "text": "在午夜",
+  "sha": "aca6365ed9c0133e1a1ee98a967f29b078cc6989"
+ },
+ "at night": {
+  "file": "at_night",
+  "text": "在晚上",
+  "sha": "9dbca5c11c3dc0d467047866a1e6e28db2d2c351"
+ },
+ "at noon": {
+  "file": "at_noon",
+  "text": "在中午",
+  "sha": "ba48f06ff28986a0ad255504adbf23ab7a4027a7"
+ },
+ "at one o'clock": {
+  "file": "at_one_o_clock",
+  "text": "一點",
+  "sha": "db6760d375978ad0c77688fb0cf4ec50b50d5bef"
+ },
+ "at the bottom": {
+  "file": "at_the_bottom",
+  "text": "在下部",
+  "sha": "c3b9b37a3bc7192a45318305e7f9c145dd507f4f"
+ },
+ "at the top": {
+  "file": "at_the_top",
+  "text": "在上部",
+  "sha": "9fcd90618f428660d662cca4c38e62faa19f3f68"
+ },
+ "at two o'clock": {
+  "file": "at_two_o_clock",
+  "text": "兩點",
+  "sha": "2605200ea0dddaf49b3c5e1de3d6bda19a6484e9"
+ },
+ "at what time": {
+  "file": "at_what_time",
+  "text": "幾點？",
+  "sha": "a499e60ca0c0b4e5b897792e4b6787406327e40c"
+ },
+ "atlas": {
+  "file": "atlas",
+  "text": "地圖集",
+  "sha": "1ba4bc377e794f384804206ba6499a8ad706b798"
+ },
+ "atm": {
+  "file": "atm",
+  "text": "櫃員機",
+  "sha": "20a0e03f33b0c8bcf281850e8c770615a6b17a90"
+ },
+ "august": {
+  "file": "august",
+  "text": "八月",
+  "sha": "43215bd81f337652873e987b12ea03747464750e"
+ },
+ "aunt": {
+  "file": "aunt",
+  "text": "姑媽 / 姑姐 / 姨媽 / 阿姨 / 伯娘 / 嬸嬸 / 舅母",
+  "sha": "90679f17494c15ef71b7a79d19132a52262212d9"
+ },
+ "australia": {
+  "file": "australia",
+  "text": "澳洲",
+  "sha": "64dbc9cf85f76ff0af29cd9d348c0472556ca302"
+ },
+ "avocado": {
+  "file": "avocado",
+  "text": "牛油果",
+  "sha": "ee4cf6d17c158295da4912d87aee7d971a971b1f"
+ },
+ "back": {
+  "file": "back",
+  "text": "背",
+  "sha": "1b19dc8c8d0a4f68882ad8a25e5681cf467a6028"
+ },
+ "backpack": {
+  "file": "backpack",
+  "text": "背囊",
+  "sha": "e72abc22f073af9c72e50202b422fb6f89345ae9"
+ },
+ "badge": {
+  "file": "badge",
+  "text": "徽章",
+  "sha": "b94ed17accfd9c6dc75bbf8629b7b0174dc3d0fa"
+ },
+ "baggage claim": {
+  "file": "baggage_claim",
+  "text": "行李提取處",
+  "sha": "fe4b05af0e2b20714e8f8d5864917b37700bc6e9"
+ },
+ "baguette": {
+  "file": "baguette",
+  "text": "法包",
+  "sha": "05e2f980b23f6d6f4be22ca8aa9b879189ee90eb"
+ },
+ "bakery": {
+  "file": "bakery",
+  "text": "麵包店",
+  "sha": "7838dee39f68ab2df4692b25bee765b410a9f689"
+ },
+ "bald": {
+  "file": "bald",
+  "text": "光頭",
+  "sha": "97730c46d4ec6b3fe31575d26900130583bc4ed2"
+ },
+ "ball": {
+  "file": "ball",
+  "text": "球",
+  "sha": "a8cf7d9e14b9ac39cf8655d123e9c793b9efb3b7"
+ },
+ "banana": {
+  "file": "banana",
+  "text": "香蕉",
+  "sha": "915a7a988f8b5bbc32fd6b3f84fb33ba84d193fe"
+ },
+ "bandage": {
+  "file": "bandage",
+  "text": "繃帶",
+  "sha": "72a8821909d3fd9af3c4563ec5a8d743d3a1324b"
+ },
+ "bank": {
+  "file": "bank",
+  "text": "銀行",
+  "sha": "8ddfa375e2103d4101fe035ca77af5b98348a3d4"
+ },
+ "banker": {
+  "file": "banker",
+  "text": "銀行職員",
+  "sha": "00c47c4a43317033df461eb2aade48fbea887d78"
+ },
+ "barrel": {
+  "file": "barrel",
+  "text": "木桶",
+  "sha": "ce427aa16b36fff9e5ecd628d969ca3f0fc331d8"
+ },
+ "base": {
+  "file": "base",
+  "text": "底座",
+  "sha": "382c65c6610ab33fcfec0d119d53cb70071723da"
+ },
+ "basil": {
+  "file": "basil",
+  "text": "羅勒",
+  "sha": "bad6bbe20a64925d644f9c77ea233943b9988861"
+ },
+ "basket": {
+  "file": "basket",
+  "text": "籃",
+  "sha": "2ad8d2b0f6bd11f8677b6a1e0b926b9391c0e95a"
+ },
+ "basketball": {
+  "file": "basketball",
+  "text": "籃球",
+  "sha": "86b46852bb6d39299e5cf8ffd3bf4b430ac39dea"
+ },
+ "basketball hoop": {
+  "file": "basketball_hoop",
+  "text": "籃球架",
+  "sha": "52aa1d9dfab73fa95c4ebd26a502833a60555487"
+ },
+ "bathroom": {
+  "file": "bathroom",
+  "text": "浴室",
+  "sha": "ab381cf5cf18ea2c05c91b1046556f6fe23dcbf0"
+ },
+ "bathtub": {
+  "file": "bathtub",
+  "text": "浴缸",
+  "sha": "9eee200446c76b8e162f6948cb92c52174f89a18"
+ },
+ "beans": {
+  "file": "beans",
+  "text": "豆",
+  "sha": "c878bc22973e193dc5d48dca3d5816308b688cd6"
+ },
+ "bear": {
+  "file": "bear",
+  "text": "熊",
+  "sha": "e767f2b884c9963f09ba38d00ba71577b2adc9fe"
+ },
+ "bear cub": {
+  "file": "bear_cub",
+  "text": "小熊",
+  "sha": "04f63fbdd46881e3cd49d0f347e047e7cc9c210a"
+ },
+ "beard": {
+  "file": "beard",
+  "text": "鬍鬚",
+  "sha": "38c51f1d3b6ed890b31a1496c1c4654f3ef124b1"
+ },
+ "bed": {
+  "file": "bed",
+  "text": "床",
+  "sha": "3b9a9ae1682852da24ae604dd4d93a31fe7233c8"
+ },
+ "bed rail": {
+  "file": "bed_rail",
+  "text": "床欄",
+  "sha": "2df339c9c87c7c5d68436d859601be3cacc4f6f9"
+ },
+ "bedroom": {
+  "file": "bedroom",
+  "text": "睡房",
+  "sha": "f31f4e9713986845f5b0e44122ded3a58cff6929"
+ },
+ "beef": {
+  "file": "beef",
+  "text": "牛肉",
+  "sha": "ec393eb89137f92875100659897244d204f373cc"
+ },
+ "beef with vegetables": {
+  "file": "beef_with_vegetables",
+  "text": "蔬菜炒牛肉",
+  "sha": "a7ead7469cc5c4f7b0e267faa6c12b5be85cafa1"
+ },
+ "before": {
+  "file": "before",
+  "text": "之前",
+  "sha": "ca69c45f67588d36dabd61a84a0d2045d08819a6"
+ },
+ "behind": {
+  "file": "behind",
+  "text": "在…後面",
+  "sha": "f8590acd638792030a16117208f9beceb006a53a"
+ },
+ "bell": {
+  "file": "bell",
+  "text": "門鐘",
+  "sha": "96095c263b450c888584d7f39c674300574659b7"
+ },
+ "bell pepper": {
+  "file": "bell_pepper",
+  "text": "燈籠椒",
+  "sha": "4bb291f22fde7d29f4ff4a51e389a76bbf65c8f9"
+ },
+ "belly": {
+  "file": "belly",
+  "text": "肚",
+  "sha": "4dc285e24b7c3c7894ce693b9b8c2dc8bc62d4f5"
+ },
+ "belt": {
+  "file": "belt",
+  "text": "皮帶",
+  "sha": "07a8dd4646880adf03ea8bf4aa28cbd615afc820"
+ },
+ "bench": {
+  "file": "bench",
+  "text": "長椅",
+  "sha": "4995a58d05326e73c4438900f18579468d9d48f9"
+ },
+ "bicycle": {
+  "file": "bicycle",
+  "text": "單車",
+  "sha": "ef6e8ebf4b15ace2cc78742b6006891c2f4513cb"
+ },
+ "big": {
+  "file": "big",
+  "text": "大",
+  "sha": "e7913aacf0ebd70590b18676588416961799cab1"
+ },
+ "bill": {
+  "file": "bill",
+  "text": "賬單",
+  "sha": "b46d26aeb0e46bd33fdd2f7a450456fba1b3626b"
+ },
+ "biology": {
+  "file": "biology",
+  "text": "生物",
+  "sha": "21b2dde92e6fa3e724ce05a9a96550dd5aa08e14"
+ },
+ "birch": {
+  "file": "birch",
+  "text": "樺樹",
+  "sha": "11a276c05ef944714e283cc7858e9fde6914f4cd"
+ },
+ "bitter": {
+  "file": "bitter",
+  "text": "苦",
+  "sha": "6dc306e8c780e855596ea18a25d4f21f3e7e921f"
+ },
+ "black": {
+  "file": "black",
+  "text": "黑色",
+  "sha": "c116e62edabbaf8a0d2e9fb6479598fb3f17846b"
+ },
+ "blanket": {
+  "file": "blanket",
+  "text": "毛氈",
+  "sha": "655eb2870d3bf8e29590a2827cc9c0a6f1642b3e"
+ },
+ "blender": {
+  "file": "blender",
+  "text": "攪拌機",
+  "sha": "a34f25b174c385bac48da93d99d80bebe0643d4a"
+ },
+ "blond": {
+  "file": "blond",
+  "text": "金髮",
+  "sha": "ad7ae09f1ae206e028b4f9fc3f000a12122ec198"
+ },
+ "blood pressure monitor": {
+  "file": "blood_pressure_monitor",
+  "text": "血壓計",
+  "sha": "286348b214f75929808e77d956e32d8304057520"
+ },
+ "blue": {
+  "file": "blue",
+  "text": "藍色",
+  "sha": "5c9585326ad908a674c9fa8f7a7943d8f14c5b66"
+ },
+ "boarding gate": {
+  "file": "boarding_gate",
+  "text": "登機閘口",
+  "sha": "8c1268bfd5cf8a5edd8562dd439eada68fd91140"
+ },
+ "boarding pass": {
+  "file": "boarding_pass",
+  "text": "登機證",
+  "sha": "010d541866dffc0b9b17970f6dba1d2cc9e3f118"
+ },
+ "boat": {
+  "file": "boat",
+  "text": "船",
+  "sha": "c602119c001380bb038f68580eb2e97b496d5423"
+ },
+ "book": {
+  "file": "book",
+  "text": "書",
+  "sha": "5b2bf8e2548b3a332e46085e64640f4843fa23bc"
+ },
+ "book bin": {
+  "file": "book_bin",
+  "text": "書箱",
+  "sha": "d3950dd10df04c2d256b4dbb4cbc9b21192f4467"
+ },
+ "bookcase": {
+  "file": "bookcase",
+  "text": "書櫃",
+  "sha": "a76b9c4209b9b658f0353cdce0b40e173cbe6a28"
+ },
+ "bookshelf": {
+  "file": "bookshelf",
+  "text": "書架",
+  "sha": "8b431d01935b17960aa3ea2c3ca75641d17c4d51"
+ },
+ "boots": {
+  "file": "boots",
+  "text": "靴",
+  "sha": "552bfd249a5c037f23754456afee9393e6ef7dc2"
+ },
+ "boss": {
+  "file": "boss",
+  "text": "老闆",
+  "sha": "6d9ec64732f6d9a28b7fc2be95688c1a2c6b971d"
+ },
+ "bottle": {
+  "file": "bottle",
+  "text": "樽",
+  "sha": "e26224d24e62358473fb13f8ba9f18ceae5e6119"
+ },
+ "bowl": {
+  "file": "bowl",
+  "text": "碗",
+  "sha": "f7bdd542c7cfa2033720262c6fe661a1067e5b3a"
+ },
+ "boyfriend": {
+  "file": "boyfriend",
+  "text": "男朋友",
+  "sha": "5b8f2e6a4c7bbff9d6610be572c53ada9a3d75d1"
+ },
+ "brain": {
+  "file": "brain",
+  "text": "腦",
+  "sha": "c4762daa919f2f3c626da9332148b68b01a5bf84"
+ },
+ "brazil": {
+  "file": "brazil",
+  "text": "巴西",
+  "sha": "54c919e3b9fe6cf6b046992d463076f975395198"
+ },
+ "bread": {
+  "file": "bread",
+  "text": "麵包",
+  "sha": "037c3c82f92baa734cdd9a332da84157ed3a1ff1"
+ },
+ "breakfast": {
+  "file": "breakfast",
+  "text": "早餐",
+  "sha": "95ae2df32c5fa2e5581288522aec35c419119675"
+ },
+ "bridge": {
+  "file": "bridge",
+  "text": "橋",
+  "sha": "eef182f0c9144e46bbee96d3590d8cf9c106b328"
+ },
+ "broccoli": {
+  "file": "broccoli",
+  "text": "西蘭花",
+  "sha": "9e6f27acc78d153f207f2be0ae59c16157513807"
+ },
+ "brochure": {
+  "file": "brochure",
+  "text": "小冊子",
+  "sha": "d01d30febbc6b29469a0ac9cab58ee7243107e06"
+ },
+ "broom": {
+  "file": "broom",
+  "text": "掃把",
+  "sha": "8ab8d0f67105472ff6d76bca2c04dd9e48107ae2"
+ },
+ "brother": {
+  "file": "brother",
+  "text": "哥哥 / 弟弟",
+  "sha": "4c020b9f548c632563d5997926276e6fb1002a89"
+ },
+ "brown": {
+  "file": "brown",
+  "text": "啡色",
+  "sha": "f1d322693c8d302514c3564ea8e75262f127bcf5"
+ },
+ "brown (hair)": {
+  "file": "brown_hair",
+  "text": "啡色（頭髮）",
+  "sha": "f1d322693c8d302514c3564ea8e75262f127bcf5"
+ },
+ "brownie": {
+  "file": "brownie",
+  "text": "布朗尼",
+  "sha": "2f6e7db620c11d1a631e077c7732e4c20cea486c"
+ },
+ "bucket": {
+  "file": "bucket",
+  "text": "水桶",
+  "sha": "e8dfcce93cd4184100b92ad7a43fa3836b2945b6"
+ },
+ "building": {
+  "file": "building",
+  "text": "大廈",
+  "sha": "a2a8d5663540c7f0d826277b2b93d9c511ae19c8"
+ },
+ "bulletin board": {
+  "file": "bulletin_board",
+  "text": "告示板",
+  "sha": "efdb5f441ee5364387e1d9b231a77d90ac06c9c0"
+ },
+ "burrito": {
+  "file": "burrito",
+  "text": "墨西哥捲餅",
+  "sha": "d432e576c8d054405b1d1af361d03083a6e105e8"
+ },
+ "bus": {
+  "file": "bus",
+  "text": "巴士",
+  "sha": "103c0288e2debacc705a2f62d4ea385ca401c798"
+ },
+ "bus stop": {
+  "file": "bus_stop",
+  "text": "巴士站",
+  "sha": "fbebc80014803fd192e21b352f5455cb88a815b6"
+ },
+ "butter": {
+  "file": "butter",
+  "text": "牛油",
+  "sha": "f74308a106e96f559ebfc44fa2f8b166e72fe669"
+ },
+ "cabinet": {
+  "file": "cabinet",
+  "text": "櫃",
+  "sha": "699a20cc99f2f203db1224e498fad8b773f81a02"
+ },
+ "cactus": {
+  "file": "cactus",
+  "text": "仙人掌",
+  "sha": "a96d995c71677d64c597308ec8a876c856b29d2f"
+ },
+ "cafe": {
+  "file": "cafe",
+  "text": "咖啡店",
+  "sha": "311b0de869dd28832f702d0b1c3087a75ce47eed"
+ },
+ "cake": {
+  "file": "cake",
+  "text": "蛋糕",
+  "sha": "24386420cf27f1a279901ed1edcb3925c668c55e"
+ },
+ "camera": {
+  "file": "camera",
+  "text": "相機",
+  "sha": "00e1e27b3a1a4eb1267aa78246af0190159c4000"
+ },
+ "canada": {
+  "file": "canada",
+  "text": "加拿大",
+  "sha": "7681186ef59b82cf1f7f3b90c5e19c85e3b3761d"
+ },
+ "canceled": {
+  "file": "canceled",
+  "text": "已取消",
+  "sha": "8d54fd183caa7c21aada94b2d808f26182afb26b"
+ },
+ "candle": {
+  "file": "candle",
+  "text": "蠟燭",
+  "sha": "d0762324a3aafb8ed2b03a0e57d270a49d764a65"
+ },
+ "candy": {
+  "file": "candy",
+  "text": "糖果",
+  "sha": "d86b27ecf3093f0598682dfde44790aa091f59a6"
+ },
+ "capybara": {
+  "file": "capybara",
+  "text": "水豚",
+  "sha": "99c6444957a77e1ef58a3fb819f3b14ec4f5e945"
+ },
+ "car": {
+  "file": "car",
+  "text": "汽車",
+  "sha": "6d7c64f0f1ad83c30c69461daa95acd3470a5d87"
+ },
+ "card reader": {
+  "file": "card_reader",
+  "text": "讀卡機",
+  "sha": "7949fcaa4cb54429d9feb5f80ecb9aaa214b085a"
+ },
+ "cardboard box": {
+  "file": "cardboard_box",
+  "text": "紙箱",
+  "sha": "79a7cc4311bc2b466f5b7bfd82c7b39fe2dbf4ef"
+ },
+ "carrot": {
+  "file": "carrot",
+  "text": "紅蘿蔔",
+  "sha": "bafbf0d69f7e428e273297ba27a060b39a79383a"
+ },
+ "cash": {
+  "file": "cash",
+  "text": "現金",
+  "sha": "1b3d63cd2b3e2f14590ea37e2fe290562b14172b"
+ },
+ "cash register": {
+  "file": "cash_register",
+  "text": "收銀機",
+  "sha": "1a27c3ee7bed06b34e74eb4d7080adfbbdecc141"
+ },
+ "cashier": {
+  "file": "cashier",
+  "text": "收銀員",
+  "sha": "a6fbc572c3f757ff7ed159ff8e99b0edb285305e"
+ },
+ "cashier counter": {
+  "file": "cashier_counter",
+  "text": "收銀櫃枱",
+  "sha": "c28fe415eb321d6053b71dd13cf0d8cb7bf229f3"
+ },
+ "cat": {
+  "file": "cat",
+  "text": "貓",
+  "sha": "ca6f827e8a947ef66d628f806719482186ff1c2f"
+ },
+ "ceiling": {
+  "file": "ceiling",
+  "text": "天花板",
+  "sha": "a8148faf22c92ec215b5f21a543d3b5e2d567651"
+ },
+ "ceiling light": {
+  "file": "ceiling_light",
+  "text": "天花燈",
+  "sha": "3270e8cac8e9b691356983546726621e5481b2b6"
+ },
+ "chair": {
+  "file": "chair",
+  "text": "椅子",
+  "sha": "2f1a774918b0cc3225565b342e22f16be7ab83fb"
+ },
+ "check-in counter": {
+  "file": "check_in_counter",
+  "text": "登記櫃枱",
+  "sha": "53cd24d97a1785c2a90e6d02f10504656095f5cd"
+ },
+ "checkout counter": {
+  "file": "checkout_counter",
+  "text": "結賬處",
+  "sha": "d0b8e3fa9bd18c03b909733ef08559de44839b65"
+ },
+ "cheese": {
+  "file": "cheese",
+  "text": "芝士",
+  "sha": "76dab351826da540e6aacc92facb038c0c32cb20"
+ },
+ "cheese bread": {
+  "file": "cheese_bread",
+  "text": "芝士麵包",
+  "sha": "40062bc18775aa27806e1399f5861a03189f72a4"
+ },
+ "cherry": {
+  "file": "cherry",
+  "text": "車厘子",
+  "sha": "964858adce6a212d56d44486bb71124386670aa9"
+ },
+ "cherry tree": {
+  "file": "cherry_tree",
+  "text": "櫻桃樹",
+  "sha": "c1c4bc8f3092a627d6c9a6e26d52c9b64b0bd9c4"
+ },
+ "chest": {
+  "file": "chest",
+  "text": "胸口",
+  "sha": "3d4c31c9afc537806a1954f5505fe50e1266a106"
+ },
+ "chicken": {
+  "file": "chicken",
+  "text": "雞肉",
+  "sha": "664775fe82cc5a6f876cbb729ceb537df65d37c5"
+ },
+ "chili pepper": {
+  "file": "chili_pepper",
+  "text": "辣椒",
+  "sha": "3f657fcd11b22d643d3019d1992027b14787c29b"
+ },
+ "china": {
+  "file": "china",
+  "text": "中國",
+  "sha": "c2d6be8f7512f03cffa38f2d1c6c4717fb8ba5d0"
+ },
+ "chocolate": {
+  "file": "chocolate",
+  "text": "朱古力",
+  "sha": "b9fbd490a86e1da8273a71742966f7041caacc3f"
+ },
+ "chocolate cake": {
+  "file": "chocolate_cake",
+  "text": "朱古力蛋糕",
+  "sha": "ce8543d23ceb2eda0d7cbfa93fd2fdf4d4f46331"
+ },
+ "church": {
+  "file": "church",
+  "text": "教堂",
+  "sha": "307b938f2e6081ad2459e422b56cfb5238636af1"
+ },
+ "circle": {
+  "file": "circle",
+  "text": "圓形",
+  "sha": "ddc7a3e5120ce85bb8897c80274159253239b9b4"
+ },
+ "classroom": {
+  "file": "classroom",
+  "text": "課室",
+  "sha": "bda3d2e30c21750abc007cb03ddd0c9101f37e8d"
+ },
+ "clipboard": {
+  "file": "clipboard",
+  "text": "文件夾板",
+  "sha": "2f73a294682ca397580a756367af61d8eeec95d7"
+ },
+ "clothing store": {
+  "file": "clothing_store",
+  "text": "時裝店",
+  "sha": "13f215c032f5b1e29686953db931bc7a4ac31bc8"
+ },
+ "cloud": {
+  "file": "cloud",
+  "text": "雲",
+  "sha": "6709344e91fcb28651bc37dbaab8250ac16c6b71"
+ },
+ "coat": {
+  "file": "coat",
+  "text": "大衣",
+  "sha": "3db187a8e4c30b64cebcdd268da72c44a2cbe582"
+ },
+ "coconut": {
+  "file": "coconut",
+  "text": "椰子",
+  "sha": "f8c4c96baee6fa8b4112ac4f8819b87d4683787f"
+ },
+ "coffee": {
+  "file": "coffee",
+  "text": "咖啡",
+  "sha": "0fc2bdc15d0b87182d18c50c2a79d3945b839e3d"
+ },
+ "coffee maker": {
+  "file": "coffee_maker",
+  "text": "咖啡機",
+  "sha": "7e87c49e76a951d98aa0e00bdc76787cb4db61ab"
+ },
+ "coffee table": {
+  "file": "coffee_table",
+  "text": "茶几",
+  "sha": "e9eef02a9dc1b48caf0f6fb88862a97f0ac1907b"
+ },
+ "cold": {
+  "file": "cold",
+  "text": "凍",
+  "sha": "761e9ebcf3ee2cddc53301b6ce5e9ed4e39a4e16"
+ },
+ "compass": {
+  "file": "compass",
+  "text": "指南針",
+  "sha": "2c6e0d1a27bb328eeb743f131c31b7cdb8ddf8ac"
+ },
+ "computer": {
+  "file": "computer",
+  "text": "電腦",
+  "sha": "a3655af07f521238f7c97e6613ca87cd2d5e13ab"
+ },
+ "container": {
+  "file": "container",
+  "text": "收納箱",
+  "sha": "6e40f1631ee74d952e7bd1e3fd649177cf6e357e"
+ },
+ "continent": {
+  "file": "continent",
+  "text": "大洲",
+  "sha": "0147ff456965f52c37e20d9ff21dfe07e3943351"
+ },
+ "conveyor belt": {
+  "file": "conveyor_belt",
+  "text": "輸送帶",
+  "sha": "749adeaf90e0a9d271b8945939a1eb523885c5b8"
+ },
+ "cook": {
+  "file": "cook",
+  "text": "廚師",
+  "sha": "bf42138e73ecac21339593dc00d8c51b815a93b5"
+ },
+ "cookie": {
+  "file": "cookie",
+  "text": "曲奇",
+  "sha": "d85ce3324346287844d4d184a5a949584635dddf"
+ },
+ "corn": {
+  "file": "corn",
+  "text": "粟米",
+  "sha": "a6f6fceb8a9df9fde82eda775ecb487af711ea68"
+ },
+ "counter": {
+  "file": "counter",
+  "text": "廚房枱面",
+  "sha": "eeb4f82f3c823bcfd0f780dfb5ee7d6d2f600ede"
+ },
+ "country": {
+  "file": "country",
+  "text": "國家",
+  "sha": "4ce80c11b1bba978716f1d26493c213aa85e1bb9"
+ },
+ "cousin": {
+  "file": "cousin",
+  "text": "堂兄弟姐妹 / 表兄弟姐妹",
+  "sha": "827cfc1d2c88043ef40bdfd863d954c3cf414075"
+ },
+ "cow": {
+  "file": "cow",
+  "text": "牛",
+  "sha": "1ef25f9bc7cfd46ba0850daed08a67b3e9ae49e2"
+ },
+ "crab": {
+  "file": "crab",
+  "text": "蟹",
+  "sha": "48f7473cd9564a6f831858d4bab7286aec5bfae7"
+ },
+ "cracker": {
+  "file": "cracker",
+  "text": "梳打餅",
+  "sha": "03f421712027c92b158bc5ebc90cb238a18749a0"
+ },
+ "crate": {
+  "file": "crate",
+  "text": "木箱",
+  "sha": "b49eb6a44bca5289a9500c8be615707dff921dcb"
+ },
+ "creamy": {
+  "file": "creamy",
+  "text": "香滑",
+  "sha": "bf4d0a15175a9aff3b53ddc34aa4143c0882eef9"
+ },
+ "credit card": {
+  "file": "credit_card",
+  "text": "信用卡",
+  "sha": "dbf132e0e66a36890ff90d6b7b7244590fdda9c4"
+ },
+ "crispy pork": {
+  "file": "crispy_pork",
+  "text": "脆皮豬肉",
+  "sha": "c0e7b16f0aa172e1379cd62ab753bd9143f24c3a"
+ },
+ "crocodile": {
+  "file": "crocodile",
+  "text": "鱷魚",
+  "sha": "64c354e81c8ba271f89862b8fe1dfd2aba5a5b5d"
+ },
+ "croissant": {
+  "file": "croissant",
+  "text": "牛角包",
+  "sha": "28786fcf19d89c23a95cae5aef92b0d14ec3ae83"
+ },
+ "cross": {
+  "file": "cross",
+  "text": "十字架",
+  "sha": "ee78cf2e56f8fe45058da7a7a92b85ecef9715d5"
+ },
+ "crosswalk": {
+  "file": "crosswalk",
+  "text": "斑馬線",
+  "sha": "2bc5d4789361ca6e85406299c8cdf062ce6cdcf5"
+ },
+ "crunchy": {
+  "file": "crunchy",
+  "text": "脆",
+  "sha": "f2da8192095b541d23b0eb4fdeec4aa35150563f"
+ },
+ "crutches": {
+  "file": "crutches",
+  "text": "拐杖",
+  "sha": "da9ef070224dda9279995293efcfac18ee895c9e"
+ },
+ "cucumber": {
+  "file": "cucumber",
+  "text": "青瓜",
+  "sha": "38cf0ad405f125ec04ee48464849209453679356"
+ },
+ "cup": {
+  "file": "cup",
+  "text": "杯",
+  "sha": "0fc38b13dafeb7d8ba3cc20a7c8c0917a91929ac"
+ },
+ "cupcake": {
+  "file": "cupcake",
+  "text": "紙杯蛋糕",
+  "sha": "e34226415b4a3f6ebe4f24b7aa55ecd7cfcbf4cb"
+ },
+ "curb": {
+  "file": "curb",
+  "text": "路邊石",
+  "sha": "084306894a8072cd91595af77b303d6e64f38bff"
+ },
+ "curtain": {
+  "file": "curtain",
+  "text": "窗簾",
+  "sha": "d0d353413caf05eba85b164d1209fde96c6f5918"
+ },
+ "cushion": {
+  "file": "cushion",
+  "text": "靠墊",
+  "sha": "423d1f015d7727d38997dccaea54b9e9011185b5"
+ },
+ "cypress": {
+  "file": "cypress",
+  "text": "柏樹",
+  "sha": "98fb748db324af928df506e9b6b60744099b6e43"
+ },
+ "dark": {
+  "file": "dark",
+  "text": "深色",
+  "sha": "f495e0180b68445266112678fb864e23a31835d8"
+ },
+ "daughter": {
+  "file": "daughter",
+  "text": "女兒",
+  "sha": "029ce8b389d91e6f277ad3d8fb80e6c811b5b230"
+ },
+ "day after tomorrow": {
+  "file": "day_after_tomorrow",
+  "text": "後天",
+  "sha": "973b78627dc5499cd967c857614bda1489975ecd"
+ },
+ "day before yesterday": {
+  "file": "day_before_yesterday",
+  "text": "前天",
+  "sha": "b4e4a16f3e72fbe005a15bdabaece51ba5c8ef0b"
+ },
+ "december": {
+  "file": "december",
+  "text": "十二月",
+  "sha": "cc5e2ac9f1333ccb7f0a0d3f783d05a4894356d3"
+ },
+ "deer": {
+  "file": "deer",
+  "text": "鹿",
+  "sha": "15e3d0c4ac051e279b7b7fd96fe4273c6a53b5e1"
+ },
+ "defibrillator": {
+  "file": "defibrillator",
+  "text": "除顫器",
+  "sha": "1e82e423210a861b8ee31305fae8af46dde16303"
+ },
+ "delayed": {
+  "file": "delayed",
+  "text": "延誤",
+  "sha": "2b5d411a75cd1c880f52decde92cc94154d93110"
+ },
+ "deli counter": {
+  "file": "deli_counter",
+  "text": "熟食櫃枱",
+  "sha": "2926b8f7b5685bced7206123c8021e94c5298504"
+ },
+ "departure": {
+  "file": "departure",
+  "text": "出發",
+  "sha": "75b07d184dcf61cd021d197b07cedbd737837723"
+ },
+ "desk": {
+  "file": "desk",
+  "text": "書枱",
+  "sha": "1fd89545e94fee4560d125a61372f12efc59ade3"
+ },
+ "dessert": {
+  "file": "dessert",
+  "text": "甜品",
+  "sha": "7486f42dbdecf69f3bad69368e69c586b5a3d1cf"
+ },
+ "destination": {
+  "file": "destination",
+  "text": "目的地",
+  "sha": "64efd7fa13c6b4723de4bcdf9f5e80af118de54d"
+ },
+ "detergent": {
+  "file": "detergent",
+  "text": "清潔劑",
+  "sha": "24849fe12426e98872de8ade657b338705bebad3"
+ },
+ "dictionary": {
+  "file": "dictionary",
+  "text": "字典",
+  "sha": "03d4cf6368177d48403fef1a5293cbef0810ee4a"
+ },
+ "dining table": {
+  "file": "dining_table",
+  "text": "餐枱",
+  "sha": "08f1e02dc2f26292113209065f9dc01bb7e4796b"
+ },
+ "dinner": {
+  "file": "dinner",
+  "text": "晚餐",
+  "sha": "8e423e37a509bb296c1a5284ccee631e2bdaab36"
+ },
+ "display": {
+  "file": "display",
+  "text": "陳列架",
+  "sha": "0339f27177df4bbe56c152740ba67b7e3bf43a10"
+ },
+ "divider": {
+  "file": "divider",
+  "text": "間隔板",
+  "sha": "27626cc8b6a49d941ccda66b9cf80e0339a6aa41"
+ },
+ "doctor": {
+  "file": "doctor",
+  "text": "醫生",
+  "sha": "c9776ac4d830425545309907a264ef120a7bf5a0"
+ },
+ "dog": {
+  "file": "dog",
+  "text": "狗",
+  "sha": "3ae9b7973d0efce35449795d95dbd326864fe22d"
+ },
+ "donation box": {
+  "file": "donation_box",
+  "text": "捐款箱",
+  "sha": "542d3a301bb2db539572d12f5abcd603edf5db0c"
+ },
+ "donut": {
+  "file": "donut",
+  "text": "冬甩",
+  "sha": "07a4495f86617e46620a7b01235987235727bc5c"
+ },
+ "door": {
+  "file": "door",
+  "text": "門",
+  "sha": "22c408e774f1fa35fa1dd697be5e0b652db89630"
+ },
+ "down": {
+  "file": "down",
+  "text": "下面",
+  "sha": "4733dc93e835b47fdf30b60a3cc5879bc07d339d"
+ },
+ "drawer": {
+  "file": "drawer",
+  "text": "抽屜",
+  "sha": "a870480cf1ba34f050e9d746320f15736a1da99a"
+ },
+ "dress": {
+  "file": "dress",
+  "text": "連身裙",
+  "sha": "e574b0e56fa39eea933b391cbdfe7c6a09c5707c"
+ },
+ "dresser": {
+  "file": "dresser",
+  "text": "五斗櫃",
+  "sha": "849bf0032e439e445c92fc981a034f958e7d0d9f"
+ },
+ "driver": {
+  "file": "driver",
+  "text": "司機",
+  "sha": "acf04276ac2c7b307b970b17a0810ad47881470e"
+ },
+ "driveway": {
+  "file": "driveway",
+  "text": "車道",
+  "sha": "38262d7dbc1f832911357fbd96bae44e85ef32c3"
+ },
+ "drum": {
+  "file": "drum",
+  "text": "鼓",
+  "sha": "9f54329418de68f5d2de0995a0fdbcce2cb2ae67"
+ },
+ "dry": {
+  "file": "dry",
+  "text": "乾",
+  "sha": "7ef21220a592a905e111c60322ad1b329a118ea2"
+ },
+ "dryer": {
+  "file": "dryer",
+  "text": "乾衣機",
+  "sha": "5495e66c741c4eb21d71243861e55f687d8b3d7b"
+ },
+ "duck": {
+  "file": "duck",
+  "text": "鴨",
+  "sha": "daa0c19add6930c3f3015b8b6cf2914fd789d3b2"
+ },
+ "dumbbell": {
+  "file": "dumbbell",
+  "text": "啞鈴",
+  "sha": "bcfe13b94c27de63c220137c260f1c3c1058b02f"
+ },
+ "ear": {
+  "file": "ear",
+  "text": "耳朵",
+  "sha": "749b28d40e20beb7e3c1b72e516d0389aa23e3dc"
+ },
+ "easel": {
+  "file": "easel",
+  "text": "畫架",
+  "sha": "924083e95a6502d0da362c3db18520328f9423c4"
+ },
+ "eggs": {
+  "file": "eggs",
+  "text": "雞蛋",
+  "sha": "ebba3d9279adb6fa8c8b926d84c2f7f78713f84e"
+ },
+ "electrical box": {
+  "file": "electrical_box",
+  "text": "電箱",
+  "sha": "88551c844941d630f42d5ada68171d26d717239d"
+ },
+ "electronics": {
+  "file": "electronics",
+  "text": "電子產品",
+  "sha": "1ec52521529bd205f949af9580fe9092881f04c3"
+ },
+ "electronics store": {
+  "file": "electronics_store",
+  "text": "電器店",
+  "sha": "2d40a330f8ce7fda23e8f8fe0f355c94932573c2"
+ },
+ "elephant": {
+  "file": "elephant",
+  "text": "大象",
+  "sha": "6ceb1e5b47d60be6f9f6e22de3d32bdca7036767"
+ },
+ "elevator": {
+  "file": "elevator",
+  "text": "升降機",
+  "sha": "e9414a6fe3ea967eb64aeb63927eb8e37399a63b"
+ },
+ "employee": {
+  "file": "employee",
+  "text": "職員",
+  "sha": "cb9de4a7c4d79de9ac0abcc06a28f477a4f150ea"
+ },
+ "entrance": {
+  "file": "entrance",
+  "text": "入口",
+  "sha": "3f305d0dc14c07c21298fcab244d2985e07f2eff"
+ },
+ "eraser": {
+  "file": "eraser",
+  "text": "擦膠",
+  "sha": "90acc05840ff5e68f2cbdf63c0e40e3ea4458d5d"
+ },
+ "examination bed": {
+  "file": "examination_bed",
+  "text": "檢查床",
+  "sha": "1bfad9e4c86dc022733be061352f4e9f35247000"
+ },
+ "eye": {
+  "file": "eye",
+  "text": "眼睛",
+  "sha": "8816383504fcafbb259964be9d617af77d429764"
+ },
+ "face": {
+  "file": "face",
+  "text": "臉",
+  "sha": "8fec0e477dae8f8f74ca7ac03408b4c1eb2fc8fc"
+ },
+ "fan": {
+  "file": "fan",
+  "text": "風扇",
+  "sha": "c505415a3c5fc4c1103f4658b784c1171c5ec9c6"
+ },
+ "far": {
+  "file": "far",
+  "text": "遠",
+  "sha": "f56e470543eda0487663e6fe43ecd7b0635974b3"
+ },
+ "father": {
+  "file": "father",
+  "text": "爸爸",
+  "sha": "cb1ce877a1544a29853e22ce264c0d709530365b"
+ },
+ "faucet": {
+  "file": "faucet",
+  "text": "水龍頭",
+  "sha": "9efcdc827b18eebcc1ba86294d9eb61d868dda71"
+ },
+ "february": {
+  "file": "february",
+  "text": "二月",
+  "sha": "89306d5bc2994ada194da77c381a4c59002329d2"
+ },
+ "fence": {
+  "file": "fence",
+  "text": "圍欄",
+  "sha": "bd9c9c4cc4ee3b6963ea075a4999a355ac8a6805"
+ },
+ "fern": {
+  "file": "fern",
+  "text": "蕨",
+  "sha": "969943925c21f48299e2e89909b313366bf238f2"
+ },
+ "field mouse": {
+  "file": "field_mouse",
+  "text": "田鼠",
+  "sha": "d73de9f53570f21b00bffa55a44fcf6e5a64bf10"
+ },
+ "files": {
+  "file": "files",
+  "text": "文件",
+  "sha": "9f4f3e5684248780985be505e903a539997164be"
+ },
+ "filing cabinet": {
+  "file": "filing_cabinet",
+  "text": "文件櫃",
+  "sha": "b5f5e33797c58ee6bd4ed58ea75322452d1b78e0"
+ },
+ "finger": {
+  "file": "finger",
+  "text": "手指",
+  "sha": "7abd81e5cdf70a95eabd714092667d7428bcd8e2"
+ },
+ "fire truck": {
+  "file": "fire_truck",
+  "text": "消防車",
+  "sha": "ea74ce1a5ca2ba0b281c248ebd8c297025edc47b"
+ },
+ "first aid kit": {
+  "file": "first_aid_kit",
+  "text": "急救箱",
+  "sha": "e63a2bc6561d30a90d7268bcc15abebc43aa1b8f"
+ },
+ "fish": {
+  "file": "fish",
+  "text": "魚",
+  "sha": "5feda488c3e49159a6763be12d3a7a264950e66d"
+ },
+ "fitting room": {
+  "file": "fitting_room",
+  "text": "試身室",
+  "sha": "d7e7bc512a138c46aa9e8206120771a473c642b7"
+ },
+ "fizzy": {
+  "file": "fizzy",
+  "text": "有汽",
+  "sha": "58cb5f6575ab236bd2b48a93dd2e2fcbe736a8f3"
+ },
+ "flag": {
+  "file": "flag",
+  "text": "旗",
+  "sha": "9ce88c6b6a9de1cfc22d909ec14acb59e93eba83"
+ },
+ "flame": {
+  "file": "flame",
+  "text": "火焰",
+  "sha": "877edb4fa04ff0ce8a1f9b9449eee4d773318ff6"
+ },
+ "flamingo": {
+  "file": "flamingo",
+  "text": "火烈鳥",
+  "sha": "4ad260d9121bea9e0fd0554a1eef83e29d35fb43"
+ },
+ "flan": {
+  "file": "flan",
+  "text": "焦糖燉蛋",
+  "sha": "eb95c22dd501b14bd53e9ba878ef8dfa9852d01e"
+ },
+ "flight": {
+  "file": "flight",
+  "text": "航班",
+  "sha": "aa79879db053ebe1e44f35a61829e361ee5ee630"
+ },
+ "flight board": {
+  "file": "flight_board",
+  "text": "航班資訊屏幕",
+  "sha": "38667687129bf068e9fc1d64d727f57e1c8e949b"
+ },
+ "floor": {
+  "file": "floor",
+  "text": "地板",
+  "sha": "8d4bf403c41a6753e651143e15893f469b292343"
+ },
+ "floor lamp": {
+  "file": "floor_lamp",
+  "text": "座地燈",
+  "sha": "2c27fb360297ed1ae52030740852cdf7f9951281"
+ },
+ "flower": {
+  "file": "flower",
+  "text": "花",
+  "sha": "9d7151d0e8a55e5846467a63f733ab7833fc3ad2"
+ },
+ "flowerpot": {
+  "file": "flowerpot",
+  "text": "花盆",
+  "sha": "8dbeaa2932a8c13bc19d97dee89c3757957563b3"
+ },
+ "folder": {
+  "file": "folder",
+  "text": "文件夾",
+  "sha": "718f98d0d7ae61d2bf0cd11761a9c990db45edb8"
+ },
+ "food": {
+  "file": "food",
+  "text": "食物",
+  "sha": "276846b3f775f952b0e6ab9074dad0849ea9d448"
+ },
+ "foot": {
+  "file": "foot",
+  "text": "腳",
+  "sha": "2920c657c68296c409c48d6d9ebac93862269b62"
+ },
+ "fork": {
+  "file": "fork",
+  "text": "叉",
+  "sha": "819c9e5637f0268247daefa9cd69bb83c43e394d"
+ },
+ "france": {
+  "file": "france",
+  "text": "法國",
+  "sha": "4eb0b9831190c3ceefc334524d4f110fe3f8b429"
+ },
+ "french fries": {
+  "file": "french_fries",
+  "text": "薯條",
+  "sha": "041930f30d00d529fa2d5fb218d0574f301f694e"
+ },
+ "fresh": {
+  "file": "fresh",
+  "text": "新鮮",
+  "sha": "22cbcae1246820a32d55803e7675cead03ff6b07"
+ },
+ "friday": {
+  "file": "friday",
+  "text": "星期五",
+  "sha": "b831322f3c6a22163e5751c473ba19b2ba45f392"
+ },
+ "fruit": {
+  "file": "fruit",
+  "text": "水果",
+  "sha": "4cbeb06829b54238f67202fb0220dc80f020dcf5"
+ },
+ "fruit salad": {
+  "file": "fruit_salad",
+  "text": "水果沙律",
+  "sha": "b969874b54f14c4232468330ff47079379bb8314"
+ },
+ "fruit yogurt": {
+  "file": "fruit_yogurt",
+  "text": "水果乳酪",
+  "sha": "c1700783895536512e539790030cd04755c9e5fd"
+ },
+ "frying pan": {
+  "file": "frying_pan",
+  "text": "煎鑊",
+  "sha": "c60677838952341e56c86aa8177fa0f96346ef0e"
+ },
+ "furniture store": {
+  "file": "furniture_store",
+  "text": "傢俬店",
+  "sha": "f58c7c3297f88cfe421e445dc446e771825071eb"
+ },
+ "game console": {
+  "file": "game_console",
+  "text": "遊戲機",
+  "sha": "186852630c07529dd016af0862230447db7e1cf5"
+ },
+ "game controller": {
+  "file": "game_controller",
+  "text": "遊戲手掣",
+  "sha": "91b26171125a10c262a203028a8a9894f523b455"
+ },
+ "gaming": {
+  "file": "gaming",
+  "text": "電子遊戲",
+  "sha": "bb763a07fd848718af46d1026c833f9063cdd8fe"
+ },
+ "garage": {
+  "file": "garage",
+  "text": "車房",
+  "sha": "804029fb927b0da93b2a1f0a30ccf4767c1cdd86"
+ },
+ "garden": {
+  "file": "garden",
+  "text": "花園",
+  "sha": "c561a60d0db1eb7ec86a788602ed3f87000b1ca5"
+ },
+ "garlic": {
+  "file": "garlic",
+  "text": "蒜頭",
+  "sha": "18af919a1e56315dfa3327889484e0bcf72f7308"
+ },
+ "gate": {
+  "file": "gate",
+  "text": "閘",
+  "sha": "519a19f4e3568887bf819f2c628aa729db2b1953"
+ },
+ "gazpacho": {
+  "file": "gazpacho",
+  "text": "西班牙凍湯",
+  "sha": "49cb9004365c8a008de86cf764be237034cfe109"
+ },
+ "geography": {
+  "file": "geography",
+  "text": "地理",
+  "sha": "655483e194a8bd1d178d937729d64a526e3151ad"
+ },
+ "germany": {
+  "file": "germany",
+  "text": "德國",
+  "sha": "f53a5cd284a817ace98a93e374d19e508aaeb6d0"
+ },
+ "giraffe": {
+  "file": "giraffe",
+  "text": "長頸鹿",
+  "sha": "62d18158209214e24d2ba362ccf1a10f951efe69"
+ },
+ "girlfriend": {
+  "file": "girlfriend",
+  "text": "女朋友",
+  "sha": "6b0a5e5e1c69f64a636c11e680633ff5ad05a0e9"
+ },
+ "glass": {
+  "file": "glass",
+  "text": "玻璃",
+  "sha": "cb270788f32c64a5ae391e251ba944f831398380"
+ },
+ "globe": {
+  "file": "globe",
+  "text": "地球儀",
+  "sha": "9a82808139fca8a1c8fd1485a660bb9261d12366"
+ },
+ "gloves": {
+  "file": "gloves",
+  "text": "手套",
+  "sha": "13d593b6adce2b82b8851bc5cd52cb26eeeadef5"
+ },
+ "goal": {
+  "file": "goal",
+  "text": "龍門",
+  "sha": "f659225bcc72f307be4d87f9b6bf19d7b49ff152"
+ },
+ "gorilla": {
+  "file": "gorilla",
+  "text": "大猩猩",
+  "sha": "b2c2586b7b12bb6603efbc8b7ea2b7292b48d4bc"
+ },
+ "granddaughter": {
+  "file": "granddaughter",
+  "text": "孫女 / 外孫女",
+  "sha": "c29333abad44f87eaba5132662b304853e9df985"
+ },
+ "grandfather": {
+  "file": "grandfather",
+  "text": "爺爺 / 公公",
+  "sha": "4720a127d5104de9b16c4b8511158116ab7768f7"
+ },
+ "grandmother": {
+  "file": "grandmother",
+  "text": "嫲嫲 / 婆婆",
+  "sha": "a4ab6510d5230952f239eb661470dff812c10a83"
+ },
+ "grandson": {
+  "file": "grandson",
+  "text": "孫兒 / 外孫",
+  "sha": "377e537492fcf788f6e6fac6fa21eb0d358ea4b9"
+ },
+ "grapes": {
+  "file": "grapes",
+  "text": "提子",
+  "sha": "e26d583a9f68262fbfd2bb73896e356086cea1c1"
+ },
+ "green": {
+  "file": "green",
+  "text": "綠色",
+  "sha": "ee6d95aaba87d030d149b72949ed3b526be789df"
+ },
+ "grilled chicken": {
+  "file": "grilled_chicken",
+  "text": "燒雞",
+  "sha": "a36b61b2bb96f6cba6c9fcef35f2b108896db5f4"
+ },
+ "guacamole": {
+  "file": "guacamole",
+  "text": "牛油果醬",
+  "sha": "02d68a8f0eced13767275138880aeee849d5f0bb"
+ },
+ "guitar": {
+  "file": "guitar",
+  "text": "結他",
+  "sha": "09fc03d462dcc31c6fdad68d27f1d00e68a3f76e"
+ },
+ "hair": {
+  "file": "hair",
+  "text": "頭髮",
+  "sha": "7b5ff6fd6f059d980c2b41ce23e841f62a2e5fa6"
+ },
+ "half past": {
+  "file": "half_past",
+  "text": "半",
+  "sha": "ae92be2778cb656deaada42f79d394b3a7205a08"
+ },
+ "ham": {
+  "file": "ham",
+  "text": "火腿",
+  "sha": "fdaf19a11a4347418110ed19275c2cee8e3b700e"
+ },
+ "hamburger": {
+  "file": "hamburger",
+  "text": "漢堡包",
+  "sha": "97eb8c114ade51a55ec7e20683dfb4b5a1f1de0c"
+ },
+ "hand": {
+  "file": "hand",
+  "text": "手",
+  "sha": "0a935fbdd15af47b48d415d6337027cf7dc57178"
+ },
+ "handbag": {
+  "file": "handbag",
+  "text": "手袋",
+  "sha": "3dfed9083c04012b3f0b73c13b15687d19aa5938"
+ },
+ "handle": {
+  "file": "handle",
+  "text": "把手",
+  "sha": "7216c90c49caa1c3f9dc5761bd4d45e61b374b88"
+ },
+ "hanger": {
+  "file": "hanger",
+  "text": "衣架",
+  "sha": "851d405006f0eb216c85394ea70825b10e8e6f66"
+ },
+ "hard": {
+  "file": "hard",
+  "text": "硬",
+  "sha": "13e838e4360726264a0b6a5fb39d09de29546534"
+ },
+ "hard candy": {
+  "file": "hard_candy",
+  "text": "硬糖",
+  "sha": "109637d83232c30a1e65a078efae4a8ca90a501d"
+ },
+ "hat": {
+  "file": "hat",
+  "text": "帽",
+  "sha": "9e8953a7e9288cf46e6aa9904d23bcd140c52e47"
+ },
+ "hay": {
+  "file": "hay",
+  "text": "乾草",
+  "sha": "63f4141cfe4112b3d58011861278f172b9ec7f41"
+ },
+ "head": {
+  "file": "head",
+  "text": "頭",
+  "sha": "b449bdc516fd1852a41b5e7651cde25030d51c5a"
+ },
+ "headphones": {
+  "file": "headphones",
+  "text": "耳機",
+  "sha": "9df1ce826a824bc69ccac178bc92c9e7d24a91df"
+ },
+ "headset": {
+  "file": "headset",
+  "text": "耳機連咪",
+  "sha": "873402894be8b378b46eb8389c2d274982cab224"
+ },
+ "heart": {
+  "file": "heart",
+  "text": "心臟",
+  "sha": "ff0eab36fc4ce15f5515a515bc7edbe116fd59e6"
+ },
+ "heavy": {
+  "file": "heavy",
+  "text": "重",
+  "sha": "51f9ccf486fa8c070785b45abb9e5e85b33821fc"
+ },
+ "hedge": {
+  "file": "hedge",
+  "text": "樹籬",
+  "sha": "a3112901015f047adfb7f1a34f838ca2ecc407da"
+ },
+ "helicopter": {
+  "file": "helicopter",
+  "text": "直升機",
+  "sha": "a3ff4378245f40221a5dfaec605f2904281f2160"
+ },
+ "helmet": {
+  "file": "helmet",
+  "text": "頭盔",
+  "sha": "c315ab43d5b97a8acf384f19c8c06ef5ab00b41b"
+ },
+ "hen": {
+  "file": "hen",
+  "text": "母雞",
+  "sha": "04cbdcf113dcd9e754b23b7b42b3ddb37f48a166"
+ },
+ "horse": {
+  "file": "horse",
+  "text": "馬",
+  "sha": "e2add4110d6f3972a34a15829bd4b3786a881a0b"
+ },
+ "hospital": {
+  "file": "hospital",
+  "text": "醫院",
+  "sha": "01bf4453e94344368b41a0bafb365936ef47a3bc"
+ },
+ "hospital bed": {
+  "file": "hospital_bed",
+  "text": "病床",
+  "sha": "2a74e9c99744dc304ca45b94bb4bcf866c55c4ed"
+ },
+ "hot": {
+  "file": "hot",
+  "text": "熱",
+  "sha": "53a95f1d1d0709a5162d2aba2746899d438ffe92"
+ },
+ "hot chocolate": {
+  "file": "hot_chocolate",
+  "text": "熱朱古力",
+  "sha": "0528104fbd3b90dbf8daf68fdb2ceed6245335a0"
+ },
+ "husband": {
+  "file": "husband",
+  "text": "丈夫",
+  "sha": "1d7382820cc358cf208c9c9b225ced7fd04c9aeb"
+ },
+ "ice cream": {
+  "file": "ice_cream",
+  "text": "雪糕",
+  "sha": "62c6e2028d2a3c2ea41647505b9547c6c73762e7"
+ },
+ "iced tea": {
+  "file": "iced_tea",
+  "text": "凍茶",
+  "sha": "9b291681583f24e0704a6c8a6f4e1c8dd0006579"
+ },
+ "imaging": {
+  "file": "imaging",
+  "text": "醫學影像",
+  "sha": "6482e74e8b20585894411177007aa1af11fca186"
+ },
+ "in front of": {
+  "file": "in_front_of",
+  "text": "在…前面",
+  "sha": "463aa5e9e4ff69d5a0ca87b6a644c267707c2472"
+ },
+ "in one hour": {
+  "file": "in_one_hour",
+  "text": "一小時後",
+  "sha": "d2cfa673b664841ba1ea44dbc363f7baa8f02a34"
+ },
+ "in one week": {
+  "file": "in_one_week",
+  "text": "一個星期後",
+  "sha": "d28e3577c61a79ec1900cb5d43ef3a9f648a4dcb"
+ },
+ "in the afternoon": {
+  "file": "in_the_afternoon",
+  "text": "在下午",
+  "sha": "19215e8aac53d518e93500958715498b0cf4ed75"
+ },
+ "in the morning": {
+  "file": "in_the_morning",
+  "text": "在早上",
+  "sha": "6f7590441541c19825b52cad1aac09c9c52d44ac"
+ },
+ "in two days": {
+  "file": "in_two_days",
+  "text": "兩天後",
+  "sha": "e72115158b5de557735808192726a147190fbcba"
+ },
+ "inside": {
+  "file": "inside",
+  "text": "在…裡面",
+  "sha": "0d1043520fc771f1920181f775edc91362022d4a"
+ },
+ "italy": {
+  "file": "italy",
+  "text": "意大利",
+  "sha": "1a1e7a91aa67b77298e954eb50a313729bb4f285"
+ },
+ "iv stand": {
+  "file": "iv_stand",
+  "text": "吊針架",
+  "sha": "2fd5d97346487f7c0a6e0624864b449556645d9a"
+ },
+ "jacket": {
+  "file": "jacket",
+  "text": "外套",
+  "sha": "f4d4b76e5d72ec64f401f3b5997b3c21475d50a6"
+ },
+ "january": {
+  "file": "january",
+  "text": "一月",
+  "sha": "20243d8fd1fefa392db96dcad09a0df29f34075d"
+ },
+ "japan": {
+  "file": "japan",
+  "text": "日本",
+  "sha": "b22e21e0098c56b79e7c365052584c2c728c9564"
+ },
+ "jar": {
+  "file": "jar",
+  "text": "玻璃樽",
+  "sha": "2f049ee188e457e16dc0b6018587c20cbd548cf0"
+ },
+ "jeans": {
+  "file": "jeans",
+  "text": "牛仔褲",
+  "sha": "a1d064f7568a735ba11a69664470901fe91850e7"
+ },
+ "juice": {
+  "file": "juice",
+  "text": "果汁",
+  "sha": "0acdccab3eea77f3ec2b9f1de910902113e45eff"
+ },
+ "juicy": {
+  "file": "juicy",
+  "text": "多汁",
+  "sha": "bfac898479bd97eb032713866f6224b41536cacd"
+ },
+ "july": {
+  "file": "july",
+  "text": "七月",
+  "sha": "1c24af8b1f397a28dbb38cd7cc34b097560ce01b"
+ },
+ "jump rope": {
+  "file": "jump_rope",
+  "text": "跳繩",
+  "sha": "ab7b0af5ab60b1d3e100e58234f44c568913561e"
+ },
+ "june": {
+  "file": "june",
+  "text": "六月",
+  "sha": "77d382ce9351f64d9d2710fdfd76d99e38e0ef7d"
+ },
+ "kangaroo": {
+  "file": "kangaroo",
+  "text": "袋鼠",
+  "sha": "93ddb88fd3feae24e7477999a039589b11f37dd4"
+ },
+ "kettle": {
+  "file": "kettle",
+  "text": "電熱水煲",
+  "sha": "535082d8c2e4cd79dfa31112c1c5f540d5f5096e"
+ },
+ "key": {
+  "file": "key",
+  "text": "鎖匙",
+  "sha": "1a210ec1013f0399db9af48fc1d095d663594572"
+ },
+ "keyboard": {
+  "file": "keyboard",
+  "text": "鍵盤",
+  "sha": "4066118fb269719d306744170da02b5ada39ef14"
+ },
+ "kitchen": {
+  "file": "kitchen",
+  "text": "廚房",
+  "sha": "363b60a98574c649258ce8888d1535e7730f30eb"
+ },
+ "knee": {
+  "file": "knee",
+  "text": "膝蓋",
+  "sha": "58820fb79237c07a8aa908358d21a856c810a468"
+ },
+ "knife": {
+  "file": "knife",
+  "text": "刀",
+  "sha": "f9e8a0b1a79251653701c657227b9c2b5e6c81e7"
+ },
+ "label": {
+  "file": "label",
+  "text": "標籤",
+  "sha": "e3789f6612cd21dbcafdb3da8332dc7a12e4c92b"
+ },
+ "ladder": {
+  "file": "ladder",
+  "text": "梯",
+  "sha": "6ce6238877e5f9acfd0df953f44864702e9205a9"
+ },
+ "lamb": {
+  "file": "lamb",
+  "text": "羊肉",
+  "sha": "a3fbdc1207e9fef70e2f42fac012eeef2793892a"
+ },
+ "lamp": {
+  "file": "lamp",
+  "text": "燈",
+  "sha": "d2278e1cdf2be0a6cdbd47e3a5f82c315f8a63f0"
+ },
+ "laptop": {
+  "file": "laptop",
+  "text": "手提電腦",
+  "sha": "e02559f9d6586538cccdadb759fbbb14d2695a6f"
+ },
+ "large intestine": {
+  "file": "large_intestine",
+  "text": "大腸",
+  "sha": "30297ace3658c4758e8b0ad8b3f539a7fe4fd028"
+ },
+ "lasagna": {
+  "file": "lasagna",
+  "text": "千層麵",
+  "sha": "41d568f85cc072ff7ae0f7279476abdf83bd564d"
+ },
+ "last month": {
+  "file": "last_month",
+  "text": "上個月",
+  "sha": "0470aae35179b9cff9b9a72f02608deaf9e03d3f"
+ },
+ "last night": {
+  "file": "last_night",
+  "text": "昨晚",
+  "sha": "c72aaa77f621732effa5aed469f5b19c35c81ea3"
+ },
+ "last week": {
+  "file": "last_week",
+  "text": "上個星期",
+  "sha": "0c4216e36e43c03248c3047c05dcb7923212b102"
+ },
+ "last year": {
+  "file": "last_year",
+  "text": "去年",
+  "sha": "5e94c9432ac115a20e659516b15255ce1e6c7c8a"
+ },
+ "later": {
+  "file": "later",
+  "text": "稍後",
+  "sha": "d11cbd4337b4eb2f7c14fd4c260eb0d3759affd4"
+ },
+ "leaf": {
+  "file": "leaf",
+  "text": "葉",
+  "sha": "493d68fbda187a8bfbfd2128fa6dcc60e2787fcf"
+ },
+ "lectern": {
+  "file": "lectern",
+  "text": "講台",
+  "sha": "a79e308d8b099f7ef4bd3b5b22b166d2453a92df"
+ },
+ "left": {
+  "file": "left",
+  "text": "左邊",
+  "sha": "9337e813fe0d5e612396855d4b08014f82614b82"
+ },
+ "leg": {
+  "file": "leg",
+  "text": "腿",
+  "sha": "e7a088f2e476fe06292a8a42fb966a7ef6fb9e09"
+ },
+ "lemon": {
+  "file": "lemon",
+  "text": "檸檬",
+  "sha": "c105efcf354175fb6e1a95eb0d1e4c7faccca713"
+ },
+ "lemon fish": {
+  "file": "lemon_fish",
+  "text": "檸檬魚",
+  "sha": "4ff7910e2e189718311962c655b46c62c6951384"
+ },
+ "lemon shrimp": {
+  "file": "lemon_shrimp",
+  "text": "檸檬蝦",
+  "sha": "fca0479c0d9ed858ed612e27e231aa33ae7f822d"
+ },
+ "lemonade": {
+  "file": "lemonade",
+  "text": "檸檬水",
+  "sha": "feb249137664b7f547e4754ce8d1e1cc4c2bfd63"
+ },
+ "lettuce": {
+  "file": "lettuce",
+  "text": "生菜",
+  "sha": "534dd158e63d3201684caf7d3f2660f01a20b3c0"
+ },
+ "library": {
+  "file": "library",
+  "text": "圖書館",
+  "sha": "f6b6239a3efce90a934245a9dcc54efd0a6eff1d"
+ },
+ "light": {
+  "file": "light",
+  "text": "燈光",
+  "sha": "c418805e2b4e960c56b1e374cba7e895ac86c685"
+ },
+ "light (weight)": {
+  "file": "light_weight",
+  "text": "輕",
+  "sha": "fbca60e89874cdbc8b1912714e29fac3df52ccf0"
+ },
+ "lime": {
+  "file": "lime",
+  "text": "青檸",
+  "sha": "b6bce7f3e2ff17c0934cf9d0943db32d355226c7"
+ },
+ "lion": {
+  "file": "lion",
+  "text": "獅子",
+  "sha": "5af08978d8d08a5d7e415eee0c9183bc5979da1e"
+ },
+ "liver": {
+  "file": "liver",
+  "text": "肝",
+  "sha": "56a48552e9eb56dc627820cc1a164cbeb28f08b4"
+ },
+ "living room": {
+  "file": "living_room",
+  "text": "客廳",
+  "sha": "01f31bdd50741b5347925a1fad8de42e95cc3d38"
+ },
+ "long": {
+  "file": "long",
+  "text": "長",
+  "sha": "ef0500b8c27fead5005e70d33c6f802a611f7ee8"
+ },
+ "loud": {
+  "file": "loud",
+  "text": "大聲",
+  "sha": "22487760cf32318bf9450fc61bc29e28eaaa6db3"
+ },
+ "luggage cart": {
+  "file": "luggage_cart",
+  "text": "行李車",
+  "sha": "1632929bb784f80dfdd01f5023e44497b202c903"
+ },
+ "lunch": {
+  "file": "lunch",
+  "text": "午餐",
+  "sha": "e16278b72a1b8f68c66abf7ea8dfc61c4586cd5b"
+ },
+ "lungs": {
+  "file": "lungs",
+  "text": "肺",
+  "sha": "d2d9342df958ca0df9327044177a82b4b59a9701"
+ },
+ "magnet": {
+  "file": "magnet",
+  "text": "磁石",
+  "sha": "9503d076d41b38b2823d8e986e93f786357e70a1"
+ },
+ "magnifying glass": {
+  "file": "magnifying_glass",
+  "text": "放大鏡",
+  "sha": "de47af023f819e71c5be71cd0c02663410745d24"
+ },
+ "main hall": {
+  "file": "main_hall",
+  "text": "大堂",
+  "sha": "e78bfbc489be366584017834b14d6e2e12bcbe35"
+ },
+ "mango": {
+  "file": "mango",
+  "text": "芒果",
+  "sha": "56a61819475d0c242007979832502ce4a441f0ad"
+ },
+ "mannequin": {
+  "file": "mannequin",
+  "text": "時裝模特兒",
+  "sha": "a6df64bf038862131632ae2fa05389157f09f12b"
+ },
+ "map": {
+  "file": "map",
+  "text": "地圖",
+  "sha": "a506c485e062db0c1288640cc73f262d4b0fb9aa"
+ },
+ "maple": {
+  "file": "maple",
+  "text": "楓樹",
+  "sha": "d8d35cdcac33f08b3be696c2de20683cc90d5b11"
+ },
+ "march": {
+  "file": "march",
+  "text": "三月",
+  "sha": "ea79c76d5ae4daf7bb0f7b4fe37b6b61d7399c6b"
+ },
+ "market": {
+  "file": "market",
+  "text": "街市",
+  "sha": "882bfb888a1c306fe478b1e878cc99412be967a4"
+ },
+ "mattress": {
+  "file": "mattress",
+  "text": "床褥",
+  "sha": "b3bf8ce59406812a6cdb3f070963be4d2133750a"
+ },
+ "may": {
+  "file": "may",
+  "text": "五月",
+  "sha": "5425578b685ba734586d91f7bfed86462c73376a"
+ },
+ "meat": {
+  "file": "meat",
+  "text": "肉",
+  "sha": "621a4a4e30761009345e1ab47c66dd3d1d7943a6"
+ },
+ "meatballs": {
+  "file": "meatballs",
+  "text": "肉丸",
+  "sha": "2ea5b7a6c57adb4343308bba5d1715181d1fc012"
+ },
+ "medical monitor": {
+  "file": "medical_monitor",
+  "text": "醫療監察儀",
+  "sha": "95ca7a3e686bab24764cc6a361b3d858f3a7c6cd"
+ },
+ "medicine": {
+  "file": "medicine",
+  "text": "藥",
+  "sha": "73307282b525f2c91521e1f8127c8a018463ab05"
+ },
+ "medicine shelf": {
+  "file": "medicine_shelf",
+  "text": "藥架",
+  "sha": "9df2910e650503add41b7223f6c7f1b674031dd8"
+ },
+ "medium": {
+  "file": "medium",
+  "text": "中型",
+  "sha": "7cf0ea42c50370c23b4581fc5a83094af44afc13"
+ },
+ "menu": {
+  "file": "menu",
+  "text": "餐牌",
+  "sha": "950f38b2cca360248c23977e76992fe126442ff4"
+ },
+ "merry-go-round": {
+  "file": "merry_go_round",
+  "text": "旋轉木馬",
+  "sha": "c629e05227eec6b1391cbcce6914069bb30b2ca0"
+ },
+ "metal detector": {
+  "file": "metal_detector",
+  "text": "金屬探測器",
+  "sha": "f990101b0e9f9e8eece950012453218e63775781"
+ },
+ "mexico": {
+  "file": "mexico",
+  "text": "墨西哥",
+  "sha": "047edff02e8fe2a19e2d3846064e041c064a9388"
+ },
+ "microphone": {
+  "file": "microphone",
+  "text": "咪",
+  "sha": "7c1a5c6c3f4a1a22dbc53e56e21cb9a6443d84aa"
+ },
+ "microwave": {
+  "file": "microwave",
+  "text": "微波爐",
+  "sha": "c6417715494739d61e0cd81608ebff000753018c"
+ },
+ "milk": {
+  "file": "milk",
+  "text": "牛奶",
+  "sha": "e50eb46f1d943d7f4d1dd45d8c600448abda1a3e"
+ },
+ "milkshake": {
+  "file": "milkshake",
+  "text": "奶昔",
+  "sha": "66b929deda73b586afbda9992263bd5048a1ef37"
+ },
+ "mirror": {
+  "file": "mirror",
+  "text": "鏡",
+  "sha": "df9199248dc637b4a7e168b0e8887d8c2da4f2ae"
+ },
+ "monday": {
+  "file": "monday",
+  "text": "星期一",
+  "sha": "b51eb74df9ba191957149026655eaecb1c73b7b2"
+ },
+ "money": {
+  "file": "money",
+  "text": "錢",
+  "sha": "802b13b5de2e212f105b10bdeb208313001b66a7"
+ },
+ "monitor": {
+  "file": "monitor",
+  "text": "顯示器",
+  "sha": "451397a91fc4609265a72b7a412e485002887661"
+ },
+ "monkey": {
+  "file": "monkey",
+  "text": "猴子",
+  "sha": "1a7f11413f8e9004ee8f7d8ead06b6dade55f832"
+ },
+ "monkey bars": {
+  "file": "monkey_bars",
+  "text": "攀爬架",
+  "sha": "4ac26b687e588563c3ebc73843813bd9ccd5d016"
+ },
+ "morning": {
+  "file": "morning",
+  "text": "早上",
+  "sha": "06cb790572fb97a51c66fadc365e40ed8527b8e0"
+ },
+ "mother": {
+  "file": "mother",
+  "text": "媽媽",
+  "sha": "40adc39d93a9b5d231d2a34e94e0326097cdf14c"
+ },
+ "motorcycle": {
+  "file": "motorcycle",
+  "text": "電單車",
+  "sha": "9b731be15286891fd0b21925b383ab6db6bd859d"
+ },
+ "mountain": {
+  "file": "mountain",
+  "text": "山",
+  "sha": "50e780f8a33de122673a8457d3af4d1b97edc05c"
+ },
+ "mouse": {
+  "file": "mouse",
+  "text": "滑鼠",
+  "sha": "3825a919eed54d16d7fd9b7d0efe71fb3712af16"
+ },
+ "moustache": {
+  "file": "moustache",
+  "text": "小鬍子",
+  "sha": "64d33a80bae63d56716d08cd132f5fdba02606ef"
+ },
+ "mouth": {
+  "file": "mouth",
+  "text": "口",
+  "sha": "77a530c2c767783f0f71042ca22a8a4733edd4da"
+ },
+ "mushroom": {
+  "file": "mushroom",
+  "text": "蘑菇",
+  "sha": "88c83879ef8f763f09afbeeeb3f755fe35f84a43"
+ },
+ "music": {
+  "file": "music",
+  "text": "音樂",
+  "sha": "c4d7f9446e3b0a3d2bf4a418b5ba399048c4baee"
+ },
+ "nachos": {
+  "file": "nachos",
+  "text": "粟米片",
+  "sha": "cd5ceaba27ad64b23f50f143fae437158418fe2e"
+ },
+ "napkin": {
+  "file": "napkin",
+  "text": "餐巾",
+  "sha": "768f5ce6dc06833dab59a3c8dd25e8c14da143f9"
+ },
+ "near": {
+  "file": "near",
+  "text": "近",
+  "sha": "094603d4f38718c223740b44fedb4ef3330eeb9b"
+ },
+ "neck": {
+  "file": "neck",
+  "text": "頸",
+  "sha": "6687fdc108e3a53452f7f5eedf274fae8c3b57de"
+ },
+ "nephew": {
+  "file": "nephew",
+  "text": "姪兒 / 外甥",
+  "sha": "a056a7f20151651e162fc203494e1a4bb1694729"
+ },
+ "next month": {
+  "file": "next_month",
+  "text": "下個月",
+  "sha": "a6f343caa35ba8b561db9cd8dfa81929a1e055b1"
+ },
+ "next to": {
+  "file": "next_to",
+  "text": "在…旁邊",
+  "sha": "6d3b2212184d5e77ed83dfc576387fa7f679dad9"
+ },
+ "next week": {
+  "file": "next_week",
+  "text": "下個星期",
+  "sha": "895d5f241f664e8babc8af39dfac5f605342453b"
+ },
+ "next year": {
+  "file": "next_year",
+  "text": "明年",
+  "sha": "b51f19d45600cd4e5e7ed8b30ec4e8f4116ff1e5"
+ },
+ "niece": {
+  "file": "niece",
+  "text": "姪女 / 外甥女",
+  "sha": "8897c9665f62bfe363c9005f0f4e7a72f6d40ad1"
+ },
+ "night": {
+  "file": "night",
+  "text": "晚上",
+  "sha": "2629fd7a8e777689a1386bd137bb92eb2289b3bc"
+ },
+ "nightstand": {
+  "file": "nightstand",
+  "text": "床頭櫃",
+  "sha": "8165e05ab767c56e8ef698dfba921e759d1c9447"
+ },
+ "noisy": {
+  "file": "noisy",
+  "text": "嘈吵",
+  "sha": "a75d07ca8bba4334519c032fc200bf534df5d321"
+ },
+ "nose": {
+  "file": "nose",
+  "text": "鼻",
+  "sha": "9ff6c8ea2710206c47c5e745f21c04958425af3a"
+ },
+ "notebook": {
+  "file": "notebook",
+  "text": "筆記簿",
+  "sha": "718b72b9642bb9e9a6944366f29cec656e05e239"
+ },
+ "notice": {
+  "file": "notice",
+  "text": "通告",
+  "sha": "bec2aaff42ded65135ac9200a69a3e08113d9593"
+ },
+ "november": {
+  "file": "november",
+  "text": "十一月",
+  "sha": "7641fb3043cf53b8c988f1089c80b7eeec934069"
+ },
+ "now": {
+  "file": "now",
+  "text": "現在",
+  "sha": "fdfdbb675ea29e1164df83f7022b13f4f1f2cece"
+ },
+ "nurse": {
+  "file": "nurse",
+  "text": "護士",
+  "sha": "fca799a8806ee63de1e7adcdd0efd8f2d3b03688"
+ },
+ "o'clock": {
+  "file": "o_clock",
+  "text": "正",
+  "sha": "208ba69d70cecd2c622c20c9d7c3d3ecb0047109"
+ },
+ "oak": {
+  "file": "oak",
+  "text": "橡樹",
+  "sha": "7727159e3d80bf0587d6eed7adeac2f2c1c7a4da"
+ },
+ "october": {
+  "file": "october",
+  "text": "十月",
+  "sha": "abf3e67d4dc889ca5428f3d82f6991d5139ae009"
+ },
+ "office chair": {
+  "file": "office_chair",
+  "text": "辦公椅",
+  "sha": "bc70156f5a5f3b5bc58bf36da7626325999b3831"
+ },
+ "oil": {
+  "file": "oil",
+  "text": "油",
+  "sha": "c48d346f852266693fc73f276f5bbbab784215f6"
+ },
+ "older": {
+  "file": "older",
+  "text": "年長",
+  "sha": "5394f72e0803ccd2e52db13aaa0425f2baae0d05"
+ },
+ "olive": {
+  "file": "olive",
+  "text": "橄欖",
+  "sha": "9bf3cc04fe922252ccf3da0a25cb816143c7a193"
+ },
+ "on": {
+  "file": "on",
+  "text": "在…上",
+  "sha": "25c115593b74699d9633332f60044b13dabfaef8"
+ },
+ "on the bottom shelf": {
+  "file": "on_the_bottom_shelf",
+  "text": "在最下層的架上",
+  "sha": "4fae66f9a0f4ccf7d17c97100d642dd89fe03a25"
+ },
+ "on the top shelf": {
+  "file": "on_the_top_shelf",
+  "text": "在最上層的架上",
+  "sha": "39cb32ab72f1f9605796b4c5643ddffda9225a7f"
+ },
+ "on time": {
+  "file": "on_time",
+  "text": "準時",
+  "sha": "283eb43b60beb46553ad52dbfb480f5cd5557787"
+ },
+ "on top of": {
+  "file": "on_top_of",
+  "text": "在…上面",
+  "sha": "b9549686cc0ebcd0d03dea31e3146f250d336692"
+ },
+ "one hour ago": {
+  "file": "one_hour_ago",
+  "text": "一小時前",
+  "sha": "a5dfbe361139ccb1f9998d35b32f4a0211a8df53"
+ },
+ "one week ago": {
+  "file": "one_week_ago",
+  "text": "一個星期前",
+  "sha": "1fcd18cfcc9af1c6fcfdf8e17e88c77aa652111d"
+ },
+ "onion": {
+  "file": "onion",
+  "text": "洋蔥",
+  "sha": "06f181b805da1d8931067c8a0157516831238c63"
+ },
+ "orange": {
+  "file": "orange",
+  "text": "橙",
+  "sha": "d46f424e694af9083b1d1dc2a717fccdd3b0c5e5"
+ },
+ "orange (color)": {
+  "file": "orange_color",
+  "text": "橙色",
+  "sha": "391e9239c7ac1b395373f16199b07d838b38d6f1"
+ },
+ "orange juice": {
+  "file": "orange_juice",
+  "text": "橙汁",
+  "sha": "de69c388b483a33aad4602b88b82b01b210c9944"
+ },
+ "orange tree": {
+  "file": "orange_tree",
+  "text": "橙樹",
+  "sha": "b9ee7c71afc9fed47fcc0fed7629e8e358007099"
+ },
+ "ottoman": {
+  "file": "ottoman",
+  "text": "腳凳",
+  "sha": "0017dd0cf09a383ca28792778fc3541717a5495d"
+ },
+ "outside": {
+  "file": "outside",
+  "text": "在…外面",
+  "sha": "a44377a03401fbe567f8b5bd69b9386abb9d186e"
+ },
+ "oven": {
+  "file": "oven",
+  "text": "焗爐",
+  "sha": "bc3380beaccd7762ba59a5c8b4377eb9722a8af4"
+ },
+ "oxygen tank": {
+  "file": "oxygen_tank",
+  "text": "氧氣筒",
+  "sha": "f72116c7885b9c83ea91d11c6816f98b7a107621"
+ },
+ "package": {
+  "file": "package",
+  "text": "包裹",
+  "sha": "2095eed9efd8351aa67899eccb60b512ab636e7f"
+ },
+ "paint tube": {
+  "file": "paint_tube",
+  "text": "顏料管",
+  "sha": "66019bf759e43abd10852b55eea369945a751e8f"
+ },
+ "paintbrush": {
+  "file": "paintbrush",
+  "text": "畫筆",
+  "sha": "9f58983059e293298a3ae183ccf5623da1dd9c98"
+ },
+ "painting": {
+  "file": "painting",
+  "text": "畫",
+  "sha": "04420ae4effec0948cba76ecafc2b49489fdcf63"
+ },
+ "palette": {
+  "file": "palette",
+  "text": "調色板",
+  "sha": "655b697de305253cc646b4309fa0a311a4bb0002"
+ },
+ "palm tree": {
+  "file": "palm_tree",
+  "text": "棕櫚樹",
+  "sha": "b8e4694f34311957aafde9dca4cabb00b20d4ad5"
+ },
+ "panda": {
+  "file": "panda",
+  "text": "熊貓",
+  "sha": "c22133a3fb2caf9990ce1aa9e6f6bd6a1d88bf6e"
+ },
+ "pants": {
+  "file": "pants",
+  "text": "長褲",
+  "sha": "4793c7b158f60a4a4f4ef92ee55288b7052c7615"
+ },
+ "park": {
+  "file": "park",
+  "text": "公園",
+  "sha": "6af81678cdf0d7738769ba3cf5655428b859b2a0"
+ },
+ "parking": {
+  "file": "parking",
+  "text": "停車場",
+  "sha": "f2c56015ea3fac3b15712eb8c3311af5cd83b2ac"
+ },
+ "passport": {
+  "file": "passport",
+  "text": "護照",
+  "sha": "6c70fb377feb92fe9d0c92927afc2512feefba4e"
+ },
+ "pasta": {
+  "file": "pasta",
+  "text": "意粉",
+  "sha": "8162f068e716c69b003bc5f7a07a4df928db598e"
+ },
+ "path": {
+  "file": "path",
+  "text": "小徑",
+  "sha": "3029bb4314fbfcf891952f709fbd3140bdcf1d0b"
+ },
+ "patient chart": {
+  "file": "patient_chart",
+  "text": "病歷",
+  "sha": "91e0c498089b849dd33def8bbbe24793c5a08ec2"
+ },
+ "patient room": {
+  "file": "patient_room",
+  "text": "病房",
+  "sha": "cc1adbc379adac964b28505fccdfc09a61f4cbcd"
+ },
+ "peach": {
+  "file": "peach",
+  "text": "桃",
+  "sha": "594a3e488728db2a57aa089053f66e6f76c5be2a"
+ },
+ "pear": {
+  "file": "pear",
+  "text": "梨",
+  "sha": "333709106af85fac8c7a7ab8e20d58c31e1250c0"
+ },
+ "pencil": {
+  "file": "pencil",
+  "text": "鉛筆",
+  "sha": "d9439395745b701b83cfdaaec009c7f50a6e8403"
+ },
+ "pencil holder": {
+  "file": "pencil_holder",
+  "text": "筆筒",
+  "sha": "f97fc8d086d5944ad662c2229ef61e40b673816e"
+ },
+ "pepper": {
+  "file": "pepper",
+  "text": "胡椒粉",
+  "sha": "4ce76c6fb59d2b21df72c8cee3f62ef29f5aa610"
+ },
+ "perfume": {
+  "file": "perfume",
+  "text": "香水",
+  "sha": "405288803619c5adf96e2559f95495e0e922526c"
+ },
+ "person": {
+  "file": "person",
+  "text": "人",
+  "sha": "222899dce4fbf4f884011355dae0abc5f0808534"
+ },
+ "pew": {
+  "file": "pew",
+  "text": "教堂長椅",
+  "sha": "4f6595c67dcfb62e5dac41ad99148ade8962956d"
+ },
+ "pharmacy": {
+  "file": "pharmacy",
+  "text": "藥房",
+  "sha": "683c334df1a8d199ec74bc29905b436f2b1c8b1e"
+ },
+ "phone": {
+  "file": "phone",
+  "text": "電話",
+  "sha": "a6bebbd25eb0b492977177ead5792dc33bf55983"
+ },
+ "piano": {
+  "file": "piano",
+  "text": "鋼琴",
+  "sha": "70405e8d090ecb2dbc743128d6a2f7dd583b638d"
+ },
+ "pig": {
+  "file": "pig",
+  "text": "豬",
+  "sha": "21fdca5bec6c65ad70fa86d7f7250748882f28ab"
+ },
+ "pillow": {
+  "file": "pillow",
+  "text": "枕頭",
+  "sha": "31c7eec6f7ef1d009c5922d867beae758a6fb4a5"
+ },
+ "pilot": {
+  "file": "pilot",
+  "text": "機師",
+  "sha": "30099b362666ddd45524dd92c9c3e1d3dae43de6"
+ },
+ "pine": {
+  "file": "pine",
+  "text": "松樹",
+  "sha": "54bed7b4b1a8631cdfee732168f1ef55442c7802"
+ },
+ "pineapple": {
+  "file": "pineapple",
+  "text": "菠蘿",
+  "sha": "937349a4cdd4c9be551ede9433ce8a8394119036"
+ },
+ "pink": {
+  "file": "pink",
+  "text": "粉紅色",
+  "sha": "036c7170a6615703ff1d771defd18273e8a05c5e"
+ },
+ "pizza": {
+  "file": "pizza",
+  "text": "薄餅",
+  "sha": "52b42d9abf6f2ea06224225cac58eff7f0cc0902"
+ },
+ "piñata": {
+  "file": "pi_ata",
+  "text": "彩罐",
+  "sha": "b95bac00eeca3dd46247d54c96726c7e4edc4e0c"
+ },
+ "plant": {
+  "file": "plant",
+  "text": "植物",
+  "sha": "b9c09f939089217efdc1f7161f40548de2fc108c"
+ },
+ "planter": {
+  "file": "planter",
+  "text": "花槽",
+  "sha": "e0a8482777ffa25e52194801b2a1167821d545f3"
+ },
+ "plate": {
+  "file": "plate",
+  "text": "碟",
+  "sha": "2539d79dac41d76403c23c35c463d43ef061f1f9"
+ },
+ "play tent": {
+  "file": "play_tent",
+  "text": "遊戲帳篷",
+  "sha": "0a11c6366b9e8603d09c6bc76689847a9dab7969"
+ },
+ "playground": {
+  "file": "playground",
+  "text": "遊樂場",
+  "sha": "7963e4d9f1942b7f3d75dcaff1c402585f346350"
+ },
+ "police car": {
+  "file": "police_car",
+  "text": "警車",
+  "sha": "5c8b136ba22dabb8ecc0570572fb64061aecab84"
+ },
+ "police officer": {
+  "file": "police_officer",
+  "text": "警察",
+  "sha": "2d81ed67ec7c57f7ccd45edfbffead22577e1fe5"
+ },
+ "police station": {
+  "file": "police_station",
+  "text": "警署",
+  "sha": "4e7031532734e535e0894651a1e8c6b95df25af9"
+ },
+ "pork": {
+  "file": "pork",
+  "text": "豬肉",
+  "sha": "3ed52db360592cf4dfdc7fed776f9c9e86b6540d"
+ },
+ "poster": {
+  "file": "poster",
+  "text": "海報",
+  "sha": "d60553f6b72a30b4caa5cb3641721ccc4eb475c1"
+ },
+ "pot": {
+  "file": "pot",
+  "text": "煲",
+  "sha": "450ad1bbf316ad2d4443e68db0eb1d4b105e0264"
+ },
+ "potato": {
+  "file": "potato",
+  "text": "薯仔",
+  "sha": "d7894a1c788e748a4aab08ac3804ec2e27549aab"
+ },
+ "price": {
+  "file": "price",
+  "text": "價錢",
+  "sha": "132ebe90b00faeeb3d1fdaba1990e053135c2c40"
+ },
+ "price tag": {
+  "file": "price_tag",
+  "text": "價錢牌",
+  "sha": "af48742b1bedd7540b40e8b9e75cdfaf35bf1672"
+ },
+ "produce": {
+  "file": "produce",
+  "text": "蔬果",
+  "sha": "443bdd9b8352c111b55608b10c2f70917fdee0e0"
+ },
+ "produce stand": {
+  "file": "produce_stand",
+  "text": "蔬果攤",
+  "sha": "913022d927eff0be82069d5753e4ef15476c3a5c"
+ },
+ "prosthetic leg": {
+  "file": "prosthetic_leg",
+  "text": "義肢",
+  "sha": "435156017b9ea21f8702094461c3f509ed72d895"
+ },
+ "purple": {
+  "file": "purple",
+  "text": "紫色",
+  "sha": "6d137583b08adf53813e335efab13e7f3b47f219"
+ },
+ "quesadilla": {
+  "file": "quesadilla",
+  "text": "墨西哥芝士餅",
+  "sha": "094f68df09cccba970a4e7136b86a8fb6461beea"
+ },
+ "queue": {
+  "file": "queue",
+  "text": "隊",
+  "sha": "36525c04da4f827f8a09ddf5dd76ae32d46265a5"
+ },
+ "quiet": {
+  "file": "quiet",
+  "text": "安靜",
+  "sha": "b115ed8207ef013cf0ddc415fe7729698b328008"
+ },
+ "rabbit": {
+  "file": "rabbit",
+  "text": "兔",
+  "sha": "7bb8b2f755a5924e0acc41f68df0b5fba492a980"
+ },
+ "radar": {
+  "file": "radar",
+  "text": "雷達",
+  "sha": "5f2961c70b8ac9f7af9d0edf36e913dc3737ba92"
+ },
+ "radio": {
+  "file": "radio",
+  "text": "收音機",
+  "sha": "b6de3fe2e3cc3e840a5a8643135b7323b90b80b3"
+ },
+ "rake": {
+  "file": "rake",
+  "text": "耙",
+  "sha": "b5d2bbf58acab1e6eae25ed074dc1f87294202a0"
+ },
+ "reading table": {
+  "file": "reading_table",
+  "text": "閱讀枱",
+  "sha": "e2065e6ed54b3690eb2b65288e744c07a5914a5c"
+ },
+ "receipt": {
+  "file": "receipt",
+  "text": "收據",
+  "sha": "072f3897b0c59da0998d4a5d55cbaad4ea0be5a8"
+ },
+ "reception desk": {
+  "file": "reception_desk",
+  "text": "接待櫃枱",
+  "sha": "c60f5115f62a90e556d86cdcb9539819f286655b"
+ },
+ "red": {
+  "file": "red",
+  "text": "紅色",
+  "sha": "df9442a1bde5f69a97ac007fd9c731a0b1c5e426"
+ },
+ "red panda": {
+  "file": "red_panda",
+  "text": "小熊貓",
+  "sha": "777a86ffb1d15484bbdb51f09e0f0cac973f54ca"
+ },
+ "red-haired": {
+  "file": "red_haired",
+  "text": "紅頭髮",
+  "sha": "967c49d9c18df84ed423ccab3aa35b3f5ccd9a43"
+ },
+ "reflex hammer": {
+  "file": "reflex_hammer",
+  "text": "反射錘",
+  "sha": "64a04149d7ed2b1d0c0bd3661c01db669c46923f"
+ },
+ "refreshing": {
+  "file": "refreshing",
+  "text": "清爽",
+  "sha": "9bf0740006214ed2a813805aeb2f420b34959b65"
+ },
+ "refrigerator": {
+  "file": "refrigerator",
+  "text": "雪櫃",
+  "sha": "9453fac50eac8fd0ee4ed37b1719c2b62b800775"
+ },
+ "report": {
+  "file": "report",
+  "text": "報告",
+  "sha": "2409221b605d367cf7bfacb57ec83fb3d9bf84d7"
+ },
+ "restaurant": {
+  "file": "restaurant",
+  "text": "餐廳",
+  "sha": "844957c81130f58866fdeddfc932f0dcefd5009c"
+ },
+ "rhinoceros": {
+  "file": "rhinoceros",
+  "text": "犀牛",
+  "sha": "fceb4a521a99129261a401c21d0935304f635c95"
+ },
+ "rice": {
+  "file": "rice",
+  "text": "米",
+  "sha": "1a8079e47255dc3c8a65d9ed265ac915c851d4c5"
+ },
+ "rice cooker": {
+  "file": "rice_cooker",
+  "text": "電飯煲",
+  "sha": "e24f78baae27d0e3ed3db44a26ac22a7afb86311"
+ },
+ "right": {
+  "file": "right",
+  "text": "右邊",
+  "sha": "1fc6f2beccb14fb6ab7d91297c6b9aa20a300fe3"
+ },
+ "road": {
+  "file": "road",
+  "text": "馬路",
+  "sha": "07fbd337439af1ae39044001bb9a361290d2a60d"
+ },
+ "roast lamb": {
+  "file": "roast_lamb",
+  "text": "烤羊肉",
+  "sha": "43d1a5966f9cbdc5a14000cefa91d8d3f2a49adf"
+ },
+ "rock": {
+  "file": "rock",
+  "text": "石",
+  "sha": "8f9345cb6e1c22b490b11dd3a89519e50ebf43d7"
+ },
+ "rolling pin": {
+  "file": "rolling_pin",
+  "text": "擀麵棍",
+  "sha": "d793e17f1210699379bede1c475a3b5bf7964235"
+ },
+ "roof": {
+  "file": "roof",
+  "text": "屋頂",
+  "sha": "6276b85662373eb5939fcbee9847f8fe9270f1f3"
+ },
+ "rose bush": {
+  "file": "rose_bush",
+  "text": "玫瑰叢",
+  "sha": "ccc40e90857c7714725f1972415f2bd7abe45f8f"
+ },
+ "rough": {
+  "file": "rough",
+  "text": "粗糙",
+  "sha": "10825618aba8095cea4835c5059eb9d6cd012ee9"
+ },
+ "rug": {
+  "file": "rug",
+  "text": "地氈",
+  "sha": "a4ab2ad7e151d1229613168422cd868d8c523a18"
+ },
+ "ruler": {
+  "file": "ruler",
+  "text": "間尺",
+  "sha": "cdbf24de8968090fa969199aa6cbfd2199268438"
+ },
+ "salad": {
+  "file": "salad",
+  "text": "沙律",
+  "sha": "9c862b542e34d6286d34e90f81fc900492a89e1e"
+ },
+ "salesperson": {
+  "file": "salesperson",
+  "text": "售貨員",
+  "sha": "0da46c1e68fa0180f5fc3f9b3a1e0aa71f659339"
+ },
+ "salsa": {
+  "file": "salsa",
+  "text": "莎莎醬",
+  "sha": "2be841e8604121b5f3406bfb324293ec9249e038"
+ },
+ "salt": {
+  "file": "salt",
+  "text": "鹽",
+  "sha": "4e22a8529fd91ab08aa9cd8c44980b6342d66d09"
+ },
+ "salty": {
+  "file": "salty",
+  "text": "鹹",
+  "sha": "8b6840d02c28b4f2ed72ce48b9327aad5ad0b17d"
+ },
+ "sand": {
+  "file": "sand",
+  "text": "沙",
+  "sha": "2d375869562f7e6043fdbf9d60ab3ffe28ba096e"
+ },
+ "sandbox": {
+  "file": "sandbox",
+  "text": "沙池",
+  "sha": "de1a5a2be32dcd3f090b8eb3393d72809f15546f"
+ },
+ "saturday": {
+  "file": "saturday",
+  "text": "星期六",
+  "sha": "a3d5744fa3c7fb2d8df5efa8daacc74f85507cc3"
+ },
+ "sausage": {
+  "file": "sausage",
+  "text": "香腸",
+  "sha": "d7d971a957fd4f17ff565376d1db2b1dd21fdc0e"
+ },
+ "scale": {
+  "file": "scale",
+  "text": "磅",
+  "sha": "fc8111f4708a5d0b77e182d97103ccfa9c018b41"
+ },
+ "scanner": {
+  "file": "scanner",
+  "text": "掃描器",
+  "sha": "fec37e51eeaca2ee386638f85449615b1bd18f40"
+ },
+ "scarf": {
+  "file": "scarf",
+  "text": "頸巾",
+  "sha": "f375911ccc05324e65374202e3188289efaf91db"
+ },
+ "schedule": {
+  "file": "schedule",
+  "text": "時間表",
+  "sha": "dd0039c9ad2e514ee7c0e6422248b528c13917a7"
+ },
+ "school": {
+  "file": "school",
+  "text": "學校",
+  "sha": "42070f866da3f4161e9b14c83f760e880bde58f5"
+ },
+ "school bus": {
+  "file": "school_bus",
+  "text": "校巴",
+  "sha": "77c3edc4c1b5c010485b0443618274fdf1d3d3cc"
+ },
+ "scissors": {
+  "file": "scissors",
+  "text": "剪刀",
+  "sha": "1cda8dbe4fec89c3bb4e8f26703318e50c3ea77a"
+ },
+ "screen": {
+  "file": "screen",
+  "text": "屏幕",
+  "sha": "58c6d4d315bc6e833051213e210878deda3c2184"
+ },
+ "seat": {
+  "file": "seat",
+  "text": "座位",
+  "sha": "0672ece33658bbd2c6c484d9fbe9db323ec47058"
+ },
+ "seesaw": {
+  "file": "seesaw",
+  "text": "蹺蹺板",
+  "sha": "8765371a21f4dc3d2d8f28eeba6b7d99a0182acc"
+ },
+ "september": {
+  "file": "september",
+  "text": "九月",
+  "sha": "d74e9bbcea8d72663dc4c2fb284f082032489190"
+ },
+ "service window": {
+  "file": "service_window",
+  "text": "服務窗口",
+  "sha": "d0ac8b55ad1dd60d10f54be7e12ddc3e50bea575"
+ },
+ "shampoo": {
+  "file": "shampoo",
+  "text": "洗頭水",
+  "sha": "ab1f0d7b47e8757e2275a7adb4a3ab3858c9bab1"
+ },
+ "sheep": {
+  "file": "sheep",
+  "text": "羊",
+  "sha": "a1c7bff65ae83a5bebd1bbd19d1a37ab893cb898"
+ },
+ "sheet": {
+  "file": "sheet",
+  "text": "床單",
+  "sha": "c49bc789d2fbd1f426e7037ce245dfc3894006b0"
+ },
+ "sheet music": {
+  "file": "sheet_music",
+  "text": "樂譜",
+  "sha": "e22c24a6915751e30c5887af2b7525a3d5e58466"
+ },
+ "shelf": {
+  "file": "shelf",
+  "text": "層架",
+  "sha": "06f7454e95ac02c477c3e271180c646a06583f78"
+ },
+ "shelter": {
+  "file": "shelter",
+  "text": "候車亭",
+  "sha": "38ac3365b681fea4b5be6d229920215e288de0b0"
+ },
+ "shiny": {
+  "file": "shiny",
+  "text": "閃亮",
+  "sha": "2fbb723752638926c6a6f5db5346d1b7ca2bb5c4"
+ },
+ "shirt": {
+  "file": "shirt",
+  "text": "恤衫",
+  "sha": "080e5bbcdd28c2aebd6f313da4751b7d9ba79d45"
+ },
+ "shoes": {
+  "file": "shoes",
+  "text": "鞋",
+  "sha": "8eec0036063bec9185cb2fd895212d0be5607042"
+ },
+ "shopping bag": {
+  "file": "shopping_bag",
+  "text": "購物袋",
+  "sha": "661d5251dbd2f014c49010349633ab324d39e007"
+ },
+ "shopping cart": {
+  "file": "shopping_cart",
+  "text": "購物車",
+  "sha": "9e63817bbedb6c63dee7ef9b633aeb6ad9f9475e"
+ },
+ "short (height)": {
+  "file": "short_height",
+  "text": "矮",
+  "sha": "5655134370beb27edce61445e2e9f04db40854ae"
+ },
+ "short (length)": {
+  "file": "short_length",
+  "text": "短",
+  "sha": "0ac69608189acfd5246fd1f3fb97ea4c196b2185"
+ },
+ "shorts": {
+  "file": "shorts",
+  "text": "短褲",
+  "sha": "8980256d9f786b1c3437ff9d62a7e924513d01fc"
+ },
+ "shoulder": {
+  "file": "shoulder",
+  "text": "肩膀",
+  "sha": "38cca62c5bc6c43f3ef96b4e7359d4594843eed1"
+ },
+ "shovel": {
+  "file": "shovel",
+  "text": "鏟",
+  "sha": "c36700e68d8ba285cde92c6b5fb6c1ae459510ff"
+ },
+ "shower curtain": {
+  "file": "shower_curtain",
+  "text": "浴簾",
+  "sha": "fb68d67436658106aafcdbfa99f32c3847ba0101"
+ },
+ "shrimp": {
+  "file": "shrimp",
+  "text": "蝦",
+  "sha": "d307c4b1e30ce650dbd1d8f1d0ceeb24df6adeac"
+ },
+ "shrub": {
+  "file": "shrub",
+  "text": "灌木",
+  "sha": "d5481ae7386af81a11d5152ff986ceaf3d184ea7"
+ },
+ "side table": {
+  "file": "side_table",
+  "text": "邊枱",
+  "sha": "c823de2443cd29b676ab8f7d4c9e4c0e351db521"
+ },
+ "sideboard": {
+  "file": "sideboard",
+  "text": "餐具櫃",
+  "sha": "eff0b780d9decc99e9e966a25ce1edb0aedd3516"
+ },
+ "sidewalk": {
+  "file": "sidewalk",
+  "text": "行人路",
+  "sha": "bb6f2ee51f4bb63bea12d4179da909a4bfca224c"
+ },
+ "sign": {
+  "file": "sign",
+  "text": "告示牌",
+  "sha": "a1b36ddafa7f817aaf9ec59d3656502d0c4e9069"
+ },
+ "sink": {
+  "file": "sink",
+  "text": "洗碗盆",
+  "sha": "527dcfab44277e512d07218afb1ecdc885f3c768"
+ },
+ "sister": {
+  "file": "sister",
+  "text": "姐姐 / 妹妹",
+  "sha": "3e7fa28bfd2332e0e20d889230cb73791d87245a"
+ },
+ "skateboard": {
+  "file": "skateboard",
+  "text": "滑板",
+  "sha": "05c729704b23fa1203de7767732fb7a9dd22bb6d"
+ },
+ "ski boots": {
+  "file": "ski_boots",
+  "text": "滑雪靴",
+  "sha": "95f06708dc86ca987a9c2386c629aeac25215024"
+ },
+ "ski goggles": {
+  "file": "ski_goggles",
+  "text": "滑雪眼鏡",
+  "sha": "b747535e9b1cf764ddbf121fb3dbbe99fcc94981"
+ },
+ "ski poles": {
+  "file": "ski_poles",
+  "text": "滑雪杖",
+  "sha": "d2f07d5957228045eda173f45cc8094e8a088b5f"
+ },
+ "skirt": {
+  "file": "skirt",
+  "text": "裙",
+  "sha": "56c954a28c265bfa6d26a9a5bb2bf04e2351575f"
+ },
+ "skis": {
+  "file": "skis",
+  "text": "滑雪屐",
+  "sha": "28e9e1f51d5d1bcd6b1e7c2b67b1e2f3ed748628"
+ },
+ "sled": {
+  "file": "sled",
+  "text": "雪橇",
+  "sha": "70eb1b376ce7e652556cbf322b9968f4f700c275"
+ },
+ "sleeve": {
+  "file": "sleeve",
+  "text": "衫袖",
+  "sha": "23c0a2fe5ec26bca1c3a3ac8c132e65444162ed5"
+ },
+ "slide": {
+  "file": "slide",
+  "text": "滑梯",
+  "sha": "6fc3c1a27eda359fe59099b44482b837d54bbba5"
+ },
+ "slot": {
+  "file": "slot",
+  "text": "投入口",
+  "sha": "d3baa45f0b0f6916875c76e0f34f37deb04780ba"
+ },
+ "small": {
+  "file": "small",
+  "text": "小",
+  "sha": "6dd84b8357a06fadc9035fd5b6f128ace7f30b74"
+ },
+ "small intestine": {
+  "file": "small_intestine",
+  "text": "小腸",
+  "sha": "5fe3540f5f3ab0bbcdb0d2ffbe68dfbc7923bd2b"
+ },
+ "smartphone": {
+  "file": "smartphone",
+  "text": "智能手機",
+  "sha": "467136e6c711c219acb37399aaa8ca82aa86ddb2"
+ },
+ "smartwatch": {
+  "file": "smartwatch",
+  "text": "智能手錶",
+  "sha": "3239cb6fd94c12f9eee3040ec8d0c481740b8cf7"
+ },
+ "smooth": {
+  "file": "smooth",
+  "text": "光滑",
+  "sha": "3d7b1c367a9cf4a5ac39794a55c907143867e3cc"
+ },
+ "snack": {
+  "file": "snack",
+  "text": "零食",
+  "sha": "5bc12e8e2adcc20a99a7c8b7bf3f6b7bb6091646"
+ },
+ "snake": {
+  "file": "snake",
+  "text": "蛇",
+  "sha": "38826eeb594045b32d98ba61897826b66129915d"
+ },
+ "sneakers": {
+  "file": "sneakers",
+  "text": "波鞋",
+  "sha": "1ffe6a06aed64822f0e8ad8cb2bd3f7782957cf4"
+ },
+ "snowboard": {
+  "file": "snowboard",
+  "text": "滑雪板",
+  "sha": "f071f8b29e5ccd912b9ca9452fa1f1ba662d3004"
+ },
+ "soap": {
+  "file": "soap",
+  "text": "肥皂",
+  "sha": "2818b0b3db70894a8325e05e1a6d431242b42750"
+ },
+ "soccer": {
+  "file": "soccer",
+  "text": "足球",
+  "sha": "7a087943f8d819a4a17322ed773623de5ca1b409"
+ },
+ "soccer ball": {
+  "file": "soccer_ball",
+  "text": "足球",
+  "sha": "7a087943f8d819a4a17322ed773623de5ca1b409"
+ },
+ "soda": {
+  "file": "soda",
+  "text": "汽水",
+  "sha": "d1269e66479507d3108c16035e2bcda628480add"
+ },
+ "sofa": {
+  "file": "sofa",
+  "text": "梳化",
+  "sha": "8423bf5fbbbfb2817aedc16406503727b83841e4"
+ },
+ "soft": {
+  "file": "soft",
+  "text": "軟",
+  "sha": "d2a29ada3129b8883686369420c3235d066b812a"
+ },
+ "soil": {
+  "file": "soil",
+  "text": "泥土",
+  "sha": "a2f7f06354b34df256f7e675bda6818d6256a87b"
+ },
+ "son": {
+  "file": "son",
+  "text": "兒子",
+  "sha": "1c0a1343502bd23966d3f1dcd8d082d728a8d56d"
+ },
+ "soon": {
+  "file": "soon",
+  "text": "很快",
+  "sha": "5917e152ac9a8a574b5348a8e0ba4137d58ba932"
+ },
+ "soup": {
+  "file": "soup",
+  "text": "湯",
+  "sha": "a68afb7d4bfb97c753abcedb9df72d1260dbb6e6"
+ },
+ "sour": {
+  "file": "sour",
+  "text": "酸",
+  "sha": "93d762548366642f34dca5379219ad8571f0ee36"
+ },
+ "south korea": {
+  "file": "south_korea",
+  "text": "南韓",
+  "sha": "a2b090a13377e0ed3a4c67247707ddf1edcb75cb"
+ },
+ "spain": {
+  "file": "spain",
+  "text": "西班牙",
+  "sha": "6bb979efe34a66c536d3456d3c9ed8df4940528d"
+ },
+ "sparkling water": {
+  "file": "sparkling_water",
+  "text": "梳打水",
+  "sha": "24e0f8fd2ba39f2dad2271767832bc67d2898060"
+ },
+ "speaker": {
+  "file": "speaker",
+  "text": "喇叭",
+  "sha": "bb6a297f8b4c18a65ccd243e7d1ad47cab949c9c"
+ },
+ "spicy": {
+  "file": "spicy",
+  "text": "辣",
+  "sha": "a49a87c051c9c4f602615f8c249d00a434cd115b"
+ },
+ "spicy wings": {
+  "file": "spicy_wings",
+  "text": "辣雞翼",
+  "sha": "26ba617a8ec796ba945cad5dcfbe2b9f9709fe68"
+ },
+ "sponge": {
+  "file": "sponge",
+  "text": "海綿",
+  "sha": "d2e7b8e74cd60ea953dc05e9be8bec3fbfe1fb3e"
+ },
+ "spoon": {
+  "file": "spoon",
+  "text": "匙羹",
+  "sha": "f57fa6fa6e4c3e6121dc1bd86d8e0bd265fbf811"
+ },
+ "sport": {
+  "file": "sport",
+  "text": "運動",
+  "sha": "569a739e2b27e94a33df69e2895e5cfe5e332693"
+ },
+ "sports store": {
+  "file": "sports_store",
+  "text": "運動用品店",
+  "sha": "6fb7a780bbeb300e441c181617dd58c63d416b11"
+ },
+ "square": {
+  "file": "square",
+  "text": "正方形",
+  "sha": "02f6dad63fba478eb9b864b41bdf0db1e2a89ae9"
+ },
+ "stairs": {
+  "file": "stairs",
+  "text": "樓梯",
+  "sha": "07f1c312753dd73e37600e795209278becf1d5e9"
+ },
+ "stand": {
+  "file": "stand",
+  "text": "架",
+  "sha": "1e328d11d8a4e9d108a7f1b874a2b6a123172afe"
+ },
+ "star": {
+  "file": "star",
+  "text": "星形",
+  "sha": "124fd752057790123b0165497b21cd7dee515c60"
+ },
+ "station": {
+  "file": "station",
+  "text": "火車站",
+  "sha": "8d7bd09af19e497a55d4505dbd350f3188b6bffc"
+ },
+ "statue": {
+  "file": "statue",
+  "text": "喬治・華盛頓雕像",
+  "sha": "410010dca7dbdb56de13a2373ac933752ff217a9"
+ },
+ "steak": {
+  "file": "steak",
+  "text": "牛扒",
+  "sha": "389db3f3336b5dad1591f6b143790c44c3439253"
+ },
+ "step": {
+  "file": "step",
+  "text": "梯級",
+  "sha": "c393ad710cdc763b335fc29dfa94b3d694dc2c67"
+ },
+ "stethoscope": {
+  "file": "stethoscope",
+  "text": "聽診器",
+  "sha": "8b9ef3496cf8f8e81a423ebdbc1d49633bae746f"
+ },
+ "stomach": {
+  "file": "stomach",
+  "text": "胃",
+  "sha": "84993b28a08845f41ea68e1908a5c95523797c21"
+ },
+ "stone": {
+  "file": "stone",
+  "text": "石頭",
+  "sha": "8e3043c9b2b9d544fb87c6c81c50bc0f9be7f004"
+ },
+ "stool": {
+  "file": "stool",
+  "text": "凳",
+  "sha": "0fda16c873c4a720a18c19e0c5f7dd9118164f1b"
+ },
+ "stove": {
+  "file": "stove",
+  "text": "爐",
+  "sha": "ce38073f75163dc4a850debe7dde14d99eb46eb1"
+ },
+ "straight ahead": {
+  "file": "straight_ahead",
+  "text": "直行",
+  "sha": "7046af3f54cd1e4077a36787a6ed68c52e7cbf58"
+ },
+ "strawberry": {
+  "file": "strawberry",
+  "text": "士多啤梨",
+  "sha": "fb33b14afab42e4949522f76be871c5fc52eefcf"
+ },
+ "street": {
+  "file": "street",
+  "text": "街",
+  "sha": "7b20cfe00c9f6ca0e6f5ecb1935d74628716698a"
+ },
+ "street sign": {
+  "file": "street_sign",
+  "text": "路牌",
+  "sha": "ea2e506e362b0fdd92120767ae04d5bf4956c25e"
+ },
+ "streetlight": {
+  "file": "streetlight",
+  "text": "街燈",
+  "sha": "8c5e947734ab42bc914faf3e9d63521ae98f2706"
+ },
+ "stretcher": {
+  "file": "stretcher",
+  "text": "擔架",
+  "sha": "47e22da504ee45fa6a6ec6fb3932795ea2929629"
+ },
+ "suitcase": {
+  "file": "suitcase",
+  "text": "行李箱",
+  "sha": "8a47c1ea75fc2d2c79d5722565fbf38ea900981b"
+ },
+ "sunday": {
+  "file": "sunday",
+  "text": "星期日",
+  "sha": "92fa1339e3ea88f11e506911fc1ef685e4c651ba"
+ },
+ "sunglasses": {
+  "file": "sunglasses",
+  "text": "太陽眼鏡",
+  "sha": "4c300fdf57d22a4caea5bb7877ac984d13ec5e0a"
+ },
+ "supermarket": {
+  "file": "supermarket",
+  "text": "超級市場",
+  "sha": "e12bf44a33423bd0c3ab5dcb98641a17ac2b7b6e"
+ },
+ "supply": {
+  "file": "supply",
+  "text": "物資",
+  "sha": "c156264a50c69c2b0c9ff7191ba2678d9b130e5f"
+ },
+ "surgical mask": {
+  "file": "surgical_mask",
+  "text": "外科口罩",
+  "sha": "556e62ba0be218fdd77961c321ad893f9a031b54"
+ },
+ "suspect": {
+  "file": "suspect",
+  "text": "疑犯",
+  "sha": "4a172e6703b4b093635b99d62f0c93a851d5fe75"
+ },
+ "sweater": {
+  "file": "sweater",
+  "text": "毛衣",
+  "sha": "e9210e50bd233c8544baf75bd320028c644db11b"
+ },
+ "sweet": {
+  "file": "sweet",
+  "text": "甜",
+  "sha": "57a16fca12cc2244d2bc0104fcbc4f3f2329a20f"
+ },
+ "swimming pool": {
+  "file": "swimming_pool",
+  "text": "游泳池",
+  "sha": "c429281d40f12e2d9db766512c88743bcb4ea220"
+ },
+ "swing": {
+  "file": "swing",
+  "text": "鞦韆",
+  "sha": "9771384b7bb7181123300f0330c9b04c745f80c9"
+ },
+ "syringe": {
+  "file": "syringe",
+  "text": "針筒",
+  "sha": "d38a47233ceb7221883e62de44feafd803f8a50e"
+ },
+ "table": {
+  "file": "table",
+  "text": "枱",
+  "sha": "3bee46aa1713243163cea08e8348cf14df6c3d65"
+ },
+ "tablecloth": {
+  "file": "tablecloth",
+  "text": "枱布",
+  "sha": "720267e02fdc691201547af56c9cdf379c72965a"
+ },
+ "tablet": {
+  "file": "tablet",
+  "text": "平板電腦",
+  "sha": "496cf788bdbd48461fdcea40c27b76163e861c5f"
+ },
+ "taco": {
+  "file": "taco",
+  "text": "墨西哥夾餅",
+  "sha": "144c6f3bc18ecf5634de9143c4f492f8389b4096"
+ },
+ "tall": {
+  "file": "tall",
+  "text": "高",
+  "sha": "55825f8d5a3026b8e34b5b1ebb826f908df89793"
+ },
+ "taxi": {
+  "file": "taxi",
+  "text": "的士",
+  "sha": "d2e4be329ad27dcdf270dc9649bb30825ed567fc"
+ },
+ "tea": {
+  "file": "tea",
+  "text": "茶",
+  "sha": "634dae5ecb00a125682e8f7cb3b9afa1a1c753ab"
+ },
+ "teacher": {
+  "file": "teacher",
+  "text": "老師",
+  "sha": "6d78f1e6062c03519a2d8dd9a87190ad9b720b0d"
+ },
+ "teapot": {
+  "file": "teapot",
+  "text": "茶壺",
+  "sha": "10841a8d69ab38603dd40b5b528e5f28a3119aad"
+ },
+ "tech": {
+  "file": "tech",
+  "text": "科技",
+  "sha": "4b21005a671ac327f275d2be53e899c5314ef6b5"
+ },
+ "television": {
+  "file": "television",
+  "text": "電視",
+  "sha": "0a3fbed667e70a475674c1dbe48827f36146adc5"
+ },
+ "teller counter": {
+  "file": "teller_counter",
+  "text": "銀行櫃枱",
+  "sha": "00ecca63ea40f4a00efb11cae6461846ee6c3c60"
+ },
+ "tennis": {
+  "file": "tennis",
+  "text": "網球",
+  "sha": "fa23dd1063a7c428d560e194f8c890bc63063f42"
+ },
+ "tennis racket": {
+  "file": "tennis_racket",
+  "text": "網球拍",
+  "sha": "dad73901685abb3de905a9b55116ad6deb768da0"
+ },
+ "terminal": {
+  "file": "terminal",
+  "text": "客運大樓",
+  "sha": "7e717fe3f35998f3e200403639bc240654c6270a"
+ },
+ "thermometer": {
+  "file": "thermometer",
+  "text": "探熱針",
+  "sha": "4e0caf11e2d729d4d42c5532bf85536b78fe0771"
+ },
+ "this afternoon": {
+  "file": "this_afternoon",
+  "text": "今天下午",
+  "sha": "62deb3cba6ddda7e5c8bdd62493bdcb703d8d17b"
+ },
+ "this month": {
+  "file": "this_month",
+  "text": "這個月",
+  "sha": "f839719df0ea36642aac85c9b4b15a4305b411a4"
+ },
+ "this morning": {
+  "file": "this_morning",
+  "text": "今天早上",
+  "sha": "ee6e75b213cc3fe08953f7499d0ad237a8bee9a9"
+ },
+ "this week": {
+  "file": "this_week",
+  "text": "這個星期",
+  "sha": "8772051e28a92ba796e50b7c7641e0ed2f3ceefe"
+ },
+ "this year": {
+  "file": "this_year",
+  "text": "今年",
+  "sha": "94284e0f35a9954e4813cf0a30e3378895bd0c29"
+ },
+ "thursday": {
+  "file": "thursday",
+  "text": "星期四",
+  "sha": "6730c14f6a788fbfb9c8abb1fa290612d9b80182"
+ },
+ "ticket": {
+  "file": "ticket",
+  "text": "票",
+  "sha": "3e7a355621d2eac8e10f92e8875d1ec98e904345"
+ },
+ "tiger": {
+  "file": "tiger",
+  "text": "老虎",
+  "sha": "0712e6205e6f2d45463025e2c9fdf4901e4b1021"
+ },
+ "tile": {
+  "file": "tile",
+  "text": "瓷磚",
+  "sha": "a27698e404c3850027192f9570d63679dc5d6f9f"
+ },
+ "tiramisu": {
+  "file": "tiramisu",
+  "text": "提拉米蘇",
+  "sha": "b3952f7f1a4733fec891720fa7d36e50bf7b03ff"
+ },
+ "tire": {
+  "file": "tire",
+  "text": "輪胎",
+  "sha": "e20eed8b80caaf7211b5cf7cd10129f9ddd7bb03"
+ },
+ "to arrive": {
+  "file": "to_arrive",
+  "text": "到達",
+  "sha": "b2f6e4ee1eed6cc6fc893198475d76d236a98cd0"
+ },
+ "to be": {
+  "file": "to_be",
+  "text": "在",
+  "sha": "22a99ae65af69a5f93f0698865fd59be269df353"
+ },
+ "to bring": {
+  "file": "to_bring",
+  "text": "拿來",
+  "sha": "7570093e0280d76bab3960c305686bfaac644762"
+ },
+ "to carry": {
+  "file": "to_carry",
+  "text": "拿去",
+  "sha": "ee8b72ba4a70344822f645e2d244b5a465c259bf"
+ },
+ "to close": {
+  "file": "to_close",
+  "text": "關上",
+  "sha": "f9f0292acf53329a1962e5ad49b3f13b5fe870ba"
+ },
+ "to depart": {
+  "file": "to_depart",
+  "text": "離開",
+  "sha": "703c7b7c6e41608bb3ef4e96a57999166b694ea9"
+ },
+ "to find": {
+  "file": "to_find",
+  "text": "找到",
+  "sha": "fd2f50cb8458fd3b2894c8cfa2bb19185d160493"
+ },
+ "to give": {
+  "file": "to_give",
+  "text": "給",
+  "sha": "51f3c0bc2e38475f4314de718aac33dbd1a502fd"
+ },
+ "to go": {
+  "file": "to_go",
+  "text": "去",
+  "sha": "9a8a47c343d828ab441f34276fd0e5b869f0efeb"
+ },
+ "to leave": {
+  "file": "to_leave",
+  "text": "放下",
+  "sha": "e81c9c7bf6cd40540422f1871df6e70934291ffd"
+ },
+ "to lift": {
+  "file": "to_lift",
+  "text": "舉起",
+  "sha": "183d3b97a32074b0b612f148b7b25113d472f7d9"
+ },
+ "to listen": {
+  "file": "to_listen",
+  "text": "聽",
+  "sha": "02ac0eaeead0b4ed114eb0a1231bbe3dbce1e4c1"
+ },
+ "to look at": {
+  "file": "to_look_at",
+  "text": "看",
+  "sha": "e547359bb38d1ebf233685813e1b06d6b5e39b50"
+ },
+ "to look for": {
+  "file": "to_look_for",
+  "text": "找",
+  "sha": "cfcb66834b92ea7a4f64dd98a6eea969181928f0"
+ },
+ "to measure": {
+  "file": "to_measure",
+  "text": "量",
+  "sha": "97cdd06fd33640fa7c5c443089139ec4d1a2f6c3"
+ },
+ "to move": {
+  "file": "to_move",
+  "text": "移動",
+  "sha": "cf47a97be7d5429932599f01de7f7dc36de25029"
+ },
+ "to open": {
+  "file": "to_open",
+  "text": "打開",
+  "sha": "87351cc009e0731e0dae37bb99b7fa2a58f3cc00"
+ },
+ "to organize": {
+  "file": "to_organize",
+  "text": "整理",
+  "sha": "332c1e6c7de49308e52f1c983bce9a2e8248f385"
+ },
+ "to pick up": {
+  "file": "to_pick_up",
+  "text": "撿起",
+  "sha": "fda99b96c14a12b566ed4e4346be3fa9b42e5072"
+ },
+ "to pull": {
+  "file": "to_pull",
+  "text": "拉",
+  "sha": "9f81572b162168c28f62b87a2e82d2a64ed3c379"
+ },
+ "to push": {
+  "file": "to_push",
+  "text": "推",
+  "sha": "c10aab4770335a548c5cb892acec4956a62d499d"
+ },
+ "to put": {
+  "file": "to_put",
+  "text": "放",
+  "sha": "8caa6a4e962bf7db7ea6c6cc87846f71fde7b288"
+ },
+ "to put away": {
+  "file": "to_put_away",
+  "text": "收好",
+  "sha": "c8c260ab58bae7949fd690f432c8fa59269c7460"
+ },
+ "to remove": {
+  "file": "to_remove",
+  "text": "拿走",
+  "sha": "f6d9e6a1b3faf19d72267c692f19128b1552958f"
+ },
+ "to squeeze": {
+  "file": "to_squeeze",
+  "text": "捏",
+  "sha": "f11c2e8b0ae5bf22b86cf39e2bc6f69cc5a6cff7"
+ },
+ "to take off": {
+  "file": "to_take_off",
+  "text": "起飛",
+  "sha": "65be3ef954d08237f271b32c544802f1d6378955"
+ },
+ "to take out": {
+  "file": "to_take_out",
+  "text": "拿出",
+  "sha": "19632eb9a11384e54fecc38f00137f0673baed3c"
+ },
+ "to touch": {
+  "file": "to_touch",
+  "text": "摸",
+  "sha": "afefa1c696d2575bc4e09565350e21805b536f12"
+ },
+ "to weigh": {
+  "file": "to_weigh",
+  "text": "稱",
+  "sha": "5a5cd7cbb788d2149b76414a039a6335b60180dd"
+ },
+ "toaster": {
+  "file": "toaster",
+  "text": "多士爐",
+  "sha": "472502ad2dc21e421182b4b2e50b4da888f548e9"
+ },
+ "today": {
+  "file": "today",
+  "text": "今天",
+  "sha": "9f7de1cfec3b9943b1815a65161f0e1d779864a8"
+ },
+ "toe": {
+  "file": "toe",
+  "text": "腳趾",
+  "sha": "37189908a7622fb3d394d0614c9206c121578d1d"
+ },
+ "toilet": {
+  "file": "toilet",
+  "text": "座廁",
+  "sha": "7855bb72ce31b3f56d231da49e955cea99fa391b"
+ },
+ "toilet paper": {
+  "file": "toilet_paper",
+  "text": "廁紙",
+  "sha": "23bd8a5e71ae2ae18b06e898fb42ed44b60f3b8f"
+ },
+ "tomato": {
+  "file": "tomato",
+  "text": "番茄",
+  "sha": "0faf9070d453e85f84e6ca62e09679b1b9ae4032"
+ },
+ "tomorrow": {
+  "file": "tomorrow",
+  "text": "明天",
+  "sha": "29f57a1babae738387880bcffa52f03a7bf02007"
+ },
+ "tongue": {
+  "file": "tongue",
+  "text": "舌頭",
+  "sha": "35ad0741191a405dd4422c69e56dc6273c0f6de0"
+ },
+ "tonight": {
+  "file": "tonight",
+  "text": "今晚",
+  "sha": "ca6f1b84b8d2db85d246c5ec6eeb7b58ebbf70b7"
+ },
+ "tooth": {
+  "file": "tooth",
+  "text": "牙齒",
+  "sha": "fbf602c0c5e98423e75dc734f07582050f00076b"
+ },
+ "toothbrush": {
+  "file": "toothbrush",
+  "text": "牙刷",
+  "sha": "43b9d27600fb66a4c0e0088b9cbf27c9a16656a0"
+ },
+ "toothpaste": {
+  "file": "toothpaste",
+  "text": "牙膏",
+  "sha": "1e1588aafde8b40dd6ca5273462628667d04633c"
+ },
+ "tortilla": {
+  "file": "tortilla",
+  "text": "墨西哥薄餅",
+  "sha": "d1420709d231e1f1747493fde4d15785aedd5b78"
+ },
+ "towel": {
+  "file": "towel",
+  "text": "毛巾",
+  "sha": "35a2203e4802256a74d284d0a5fa16f43eaef777"
+ },
+ "traffic light": {
+  "file": "traffic_light",
+  "text": "交通燈",
+  "sha": "72fab4787df062b95d643d75ec8439dca9e35191"
+ },
+ "train": {
+  "file": "train",
+  "text": "火車",
+  "sha": "301725650a72b237c3356016b092934f0c5b9287"
+ },
+ "tray": {
+  "file": "tray",
+  "text": "托盤",
+  "sha": "486bb06e2c81d9a9a3430b4eb36dfdb228802914"
+ },
+ "treatment": {
+  "file": "treatment",
+  "text": "治療",
+  "sha": "66124add276be7d1191ee8bbccb374af5310079b"
+ },
+ "treatment table": {
+  "file": "treatment_table",
+  "text": "治療床",
+  "sha": "3f42da911a87c1799c26a1457c242486a2229dc8"
+ },
+ "tree": {
+  "file": "tree",
+  "text": "樹",
+  "sha": "6901015bb1c377f1b559af5830ed60974e90c55b"
+ },
+ "triangle": {
+  "file": "triangle",
+  "text": "三角形",
+  "sha": "35ebbcca4832a7e31a9f7403708c2fd7637760e4"
+ },
+ "trolley": {
+  "file": "trolley",
+  "text": "推車",
+  "sha": "e8dae8f4c2b79996b561edea59df73f1bc12aa09"
+ },
+ "truck": {
+  "file": "truck",
+  "text": "貨車",
+  "sha": "b890f357b9ebe1adb7592640d8ec15b2677ae5a2"
+ },
+ "trumpet": {
+  "file": "trumpet",
+  "text": "小號",
+  "sha": "4fa488716d7de29e71c2d15504debc3abf8dc857"
+ },
+ "tuesday": {
+  "file": "tuesday",
+  "text": "星期二",
+  "sha": "8d81044f30a5b32a79e5220a3f53699c372216d6"
+ },
+ "turtle": {
+  "file": "turtle",
+  "text": "龜",
+  "sha": "9584e86ed560b76ffdf92a05309d791f87e74075"
+ },
+ "tv stand": {
+  "file": "tv_stand",
+  "text": "電視櫃",
+  "sha": "5f7446647611155b6cbca0eb7e0610121fb6fbcf"
+ },
+ "two days ago": {
+  "file": "two_days_ago",
+  "text": "兩天前",
+  "sha": "76a64fe54dc0e55c79941075930f5be646196cea"
+ },
+ "uncle": {
+  "file": "uncle",
+  "text": "伯父 / 叔叔 / 舅父 / 姑丈 / 姨丈",
+  "sha": "e46818106ce03ca588319741b4b9c29a4860b9a3"
+ },
+ "under": {
+  "file": "under",
+  "text": "在…下面",
+  "sha": "403405b222704b1094bf308cc3ac59da2be3cffe"
+ },
+ "united states": {
+  "file": "united_states",
+  "text": "美國",
+  "sha": "0467072ab840669a6178000589254b074d13bbb1"
+ },
+ "up": {
+  "file": "up",
+  "text": "上面",
+  "sha": "4cdf835a6ce97fd84c2d366a32984a280ee56900"
+ },
+ "vault": {
+  "file": "vault",
+  "text": "保險庫",
+  "sha": "9f73e7a374a68d7668878c500d003f1b4eb0b3ae"
+ },
+ "vegetables": {
+  "file": "vegetables",
+  "text": "蔬菜",
+  "sha": "da1d330d5f9b4dcfec589e8fb9f64144e81a85ff"
+ },
+ "vehicle": {
+  "file": "vehicle",
+  "text": "車輛",
+  "sha": "27ad9b2903e50ce311ba24bf8fc7d496956410f2"
+ },
+ "violin": {
+  "file": "violin",
+  "text": "小提琴",
+  "sha": "42c4b7b68210a013f1cddfaf75fe1149f64067a7"
+ },
+ "volleyball": {
+  "file": "volleyball",
+  "text": "排球",
+  "sha": "02ec515e3b1caa28302c262df385fb97771e4bef"
+ },
+ "waiter": {
+  "file": "waiter",
+  "text": "侍應",
+  "sha": "f716c9776e33d9363ccbc01bb592d1daaff3a237"
+ },
+ "walker": {
+  "file": "walker",
+  "text": "助行架",
+  "sha": "24ddd86da0e87578e0f984d80bb6cd4ce8694196"
+ },
+ "wall": {
+  "file": "wall",
+  "text": "牆",
+  "sha": "1fb5a5d93b2e2fafbd4d16d972a7eb020805f28e"
+ },
+ "wardrobe": {
+  "file": "wardrobe",
+  "text": "衣櫃",
+  "sha": "2a95bebd26d70200db03ad803cd0e6ccca4a5af6"
+ },
+ "warehouse": {
+  "file": "warehouse",
+  "text": "倉庫",
+  "sha": "70dd065ae2a061bfab429c3ad2cb2b185684cac1"
+ },
+ "warm": {
+  "file": "warm",
+  "text": "暖",
+  "sha": "14d2fc604170777db869e2be601f72e2f9589b6d"
+ },
+ "washing machine": {
+  "file": "washing_machine",
+  "text": "洗衣機",
+  "sha": "1bfd1cd869e749f68c414731318e98a91fe87699"
+ },
+ "water": {
+  "file": "water",
+  "text": "水",
+  "sha": "7782071e4377286d067ac02015f5caa32adf8dde"
+ },
+ "water bottle": {
+  "file": "water_bottle",
+  "text": "水樽",
+  "sha": "830e44c471b07893417404334b71d450c91a7e4e"
+ },
+ "watering can": {
+  "file": "watering_can",
+  "text": "花灑",
+  "sha": "7a503afb3b5df1a2cdb811213d62c8f0e9f62a60"
+ },
+ "watermelon": {
+  "file": "watermelon",
+  "text": "西瓜",
+  "sha": "bc90c172fe1acec83aaadb9ecbf663d1dd1cb80f"
+ },
+ "wednesday": {
+  "file": "wednesday",
+  "text": "星期三",
+  "sha": "dda0f0ae09874ffe1977beca336a9800de5ee081"
+ },
+ "weeping willow": {
+  "file": "weeping_willow",
+  "text": "垂柳",
+  "sha": "b11f93bf306b5c710aff5d2f44169d64d87ad9e2"
+ },
+ "wet": {
+  "file": "wet",
+  "text": "濕",
+  "sha": "ff09a9008c9e528689e7938a8f8de77f8eacde51"
+ },
+ "wheel": {
+  "file": "wheel",
+  "text": "車輪",
+  "sha": "359f45d0861e75cc2114549b9f02535461cf5236"
+ },
+ "wheelbarrow": {
+  "file": "wheelbarrow",
+  "text": "獨輪手推車",
+  "sha": "382014c8bcef62b66e82f8ceba6a53dd2a071d23"
+ },
+ "wheelchair": {
+  "file": "wheelchair",
+  "text": "輪椅",
+  "sha": "72c8a3f47e9907a6ffba12c9e96ed2845eea1586"
+ },
+ "when": {
+  "file": "when",
+  "text": "甚麼時候？",
+  "sha": "6b92090e697b381d574facf74c187036506d3e9b"
+ },
+ "whisk": {
+  "file": "whisk",
+  "text": "打蛋器",
+  "sha": "527d12b50a054bba71f4a6757cf70f73b1de99f2"
+ },
+ "whiteboard": {
+  "file": "whiteboard",
+  "text": "白板",
+  "sha": "9fa5a5be05ca04efc6cb8d90566cdfbd03624573"
+ },
+ "wife": {
+  "file": "wife",
+  "text": "妻子",
+  "sha": "1a6e8fc235fc709a76ba0878d20cf574084ca8ef"
+ },
+ "window": {
+  "file": "window",
+  "text": "窗",
+  "sha": "213aa8bb89f8b9eecf9385ddf2f32df2f066ebd6"
+ },
+ "wine": {
+  "file": "wine",
+  "text": "葡萄酒",
+  "sha": "586e567e273955f44822fb19ea3cacd4f4ca859f"
+ },
+ "winter hat": {
+  "file": "winter_hat",
+  "text": "冷帽",
+  "sha": "47b50707a79050733f1fd7c073a0a2f6afce8a6b"
+ },
+ "with ice": {
+  "file": "with_ice",
+  "text": "加冰",
+  "sha": "b43147e0040895ccd63a9db36c69487aacd66210"
+ },
+ "worksheet": {
+  "file": "worksheet",
+  "text": "工作紙",
+  "sha": "4288d6da9cb8d5bc7a1960dd57baa56995029710"
+ },
+ "world map": {
+  "file": "world_map",
+  "text": "世界地圖",
+  "sha": "8a8a82e2558c78a8ef65760fd3d7b7d00de4f133"
+ },
+ "x ray": {
+  "file": "x_ray",
+  "text": "X光片",
+  "sha": "28dddd5ddd2652069302d8317d070c0fd6e7853e"
+ },
+ "x ray machine": {
+  "file": "x_ray_machine",
+  "text": "X光機",
+  "sha": "5979042fe24abbc767201e932392f84866a48057"
+ },
+ "yard": {
+  "file": "yard",
+  "text": "前院",
+  "sha": "1647968c37b57c6774c5804111cf201285b0afc9"
+ },
+ "yellow": {
+  "file": "yellow",
+  "text": "黃色",
+  "sha": "8e4a200684673da6d1bfbffeecbecb5e0e4f8217"
+ },
+ "yesterday": {
+  "file": "yesterday",
+  "text": "昨天",
+  "sha": "b8295069248acd19dbc1f3da89f8e43ed8a1e3b5"
+ },
+ "yogurt": {
+  "file": "yogurt",
+  "text": "乳酪",
+  "sha": "a0005d31039879d4480e1640aee9a3fe9091ee0f"
+ },
+ "younger": {
+  "file": "younger",
+  "text": "年幼",
+  "sha": "6d27a3feb17539b1da0effdcb7f6e7aba52c8ad9"
+ },
+ "zebra": {
+  "file": "zebra",
+  "text": "斑馬",
+  "sha": "3ac5acf338f4d595f91541e8dbb4ef5f32bc9250"
+ }
+}

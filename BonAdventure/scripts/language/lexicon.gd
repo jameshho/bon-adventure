@@ -249,6 +249,13 @@ func reading(text: String, lang: String) -> String:
 		return ""
 	return rules(lang).reading(text, reading_data[lang])
 
+## The reading of `text` piece by piece (rules_zh.gd reading_tokens()); [] for languages
+## without reading data.
+func reading_tokens(text: String, lang: String) -> Array:
+	if text == "" or not reading_data.has(lang) or rules(lang) == null or not rules(lang).has_method("reading_tokens"):
+		return []
+	return rules(lang).reading_tokens(text, reading_data[lang])
+
 ## Characters of `text` that the reading data does not cover ([] when all are covered).
 func reading_gaps(text: String, lang: String) -> PackedStringArray:
 	if not reading_data.has(lang) or rules(lang) == null:

@@ -72,6 +72,7 @@ once a newer record or guide covers the same thing. Add a line here, not a parag
 | Farm barn | [Record](guides/TOWN_DESIGN_BRIEF.md#farm-barn-gambrel-roof-hayloft-and-supplies-interior--1-november-2026) | `scripts/buildings/barn.gd` |
 | Playground and rideable swings | [Record and swing controls](guides/TOWN_DESIGN_BRIEF.md#playground-rebuild-and-rideable-swings--1-november-2026) | `scripts/buildings/playground.gd`, `scripts/world/playground_swing.gd` |
 | Mystery House | [Record](guides/TOWN_DESIGN_BRIEF.md#mystery-house-and-mystery-doors--9-november-2026) | `scripts/buildings/mystery.gd` |
+| Spoken words (Amazon Polly clips; off until the user approves samples) | [Spoken words](guides/VOICE.md) | `scripts/core/sound.gd` (`say_word`), `data/sounds.json` "voice", `tools/voice_manifest.gd`, `tools/voice_generate.py` |
 | Toilets, faucets and their sounds | [Bathroom fixtures](guides/TOWN_DESIGN_BRIEF.md#bathroom-fixtures--8-november-2026) | `scripts/world/bath_fixtures.gd`, `toilet.gd`, `faucet.gd`, `data/sounds.json` |
 | Electrical boxes | [Electrical box](guides/ELECTRICAL_BOX.md) | `scripts/world/electrical_box.gd` |
 | Coast, island, boulders, crabs | [Record](guides/TOWN_DESIGN_BRIEF.md#coast-deserted-island-boulders-and-crabs--29-october-2026) | `scenes/town/base.scn`, `scripts/buildings/base.gd`, `shaders/sand.gdshader` |

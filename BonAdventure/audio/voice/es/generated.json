@@ -1,0 +1,3997 @@
+{
+ "MRI scanner": {
+  "file": "mri_scanner",
+  "text": "el equipo de resonancia magnética",
+  "sha": "ff892664dccd6471a55e4feb3ac18b6306c7d07c"
+ },
+ "after": {
+  "file": "after",
+  "text": "después",
+  "sha": "398d31b79b6da6dc2e7041b5fb6d42fb52d05e18"
+ },
+ "afternoon": {
+  "file": "afternoon",
+  "text": "la tarde",
+  "sha": "d021152a4ca3f9ff47ab7f66b9d22856666e97d0"
+ },
+ "airplane": {
+  "file": "airplane",
+  "text": "el avión",
+  "sha": "ca70575d50e57e32abaabad38fdacf05f4d446ff"
+ },
+ "airport": {
+  "file": "airport",
+  "text": "el aeropuerto",
+  "sha": "4d74858d919826ce4d434f67b641cff7833ddba1"
+ },
+ "altar": {
+  "file": "altar",
+  "text": "el altar",
+  "sha": "ef7f7d6994b3ddd3d98759164ef953cad95aa9b1"
+ },
+ "ambulance": {
+  "file": "ambulance",
+  "text": "la ambulancia",
+  "sha": "cd3ca14e202edcd44832b68229113a4ef3c9cfb8"
+ },
+ "animal": {
+  "file": "animal",
+  "text": "el animal",
+  "sha": "d8235823bbff974f8611c5c8a3fd5d242d74a49a"
+ },
+ "apple": {
+  "file": "apple",
+  "text": "la manzana",
+  "sha": "35ff7a5072321d7dc71c5f1b4f8885f1bc900716"
+ },
+ "apple pie": {
+  "file": "apple_pie",
+  "text": "el pay de manzana",
+  "sha": "076ec36eba497bc24dbe76c7a008f9c6315c8e0d"
+ },
+ "apple tree": {
+  "file": "apple_tree",
+  "text": "el manzano",
+  "sha": "29a5759058011e0357dc5bd90b01b43a2ae7c5e1"
+ },
+ "april": {
+  "file": "april",
+  "text": "abril",
+  "sha": "0495c7258b2a82a30ee1610aef97eb76b0c48c71"
+ },
+ "apron": {
+  "file": "apron",
+  "text": "el delantal",
+  "sha": "4b8b219a096935b9794f86d813f1b43d79284c97"
+ },
+ "arm": {
+  "file": "arm",
+  "text": "el brazo",
+  "sha": "bec8700939d8b2989bf3866e9bc29324cfe072a4"
+ },
+ "armchair": {
+  "file": "armchair",
+  "text": "el sillón",
+  "sha": "f2878e4f411966791ace246b1cfe39ebd5d26553"
+ },
+ "arrival": {
+  "file": "arrival",
+  "text": "la llegada",
+  "sha": "44f08a70592332e90059ae627b08ab43cb2af112"
+ },
+ "at midnight": {
+  "file": "at_midnight",
+  "text": "a medianoche",
+  "sha": "0ffec7d46cf68551212816c40c0fd53243127072"
+ },
+ "at night": {
+  "file": "at_night",
+  "text": "por la noche",
+  "sha": "99b88ee22f0242b5cd76c92ce9b25360f245dec7"
+ },
+ "at noon": {
+  "file": "at_noon",
+  "text": "al mediodía",
+  "sha": "a5f6ca63b481a58c2807ed4b72e11556a2ef4fc5"
+ },
+ "at one o'clock": {
+  "file": "at_one_o_clock",
+  "text": "a la una",
+  "sha": "d701ae7887d3fffecae2a1935af0742531dddadf"
+ },
+ "at the bottom": {
+  "file": "at_the_bottom",
+  "text": "en la parte de abajo",
+  "sha": "8f5c61011522babfab018c255bf26caf1d9392a0"
+ },
+ "at the top": {
+  "file": "at_the_top",
+  "text": "en la parte de arriba",
+  "sha": "bf9974a929ae0c7b3a636be4b6a2967314141418"
+ },
+ "at two o'clock": {
+  "file": "at_two_o_clock",
+  "text": "a las dos",
+  "sha": "b30a581cc3b794672f18dcce1db3ef1272f3409e"
+ },
+ "at what time": {
+  "file": "at_what_time",
+  "text": "¿a qué hora?",
+  "sha": "3a819890f4d748f879210574f92377b4133705cf"
+ },
+ "atlas": {
+  "file": "atlas",
+  "text": "el atlas",
+  "sha": "64fb7e1111b2df6ac23b0325018cccb9f59a1313"
+ },
+ "atm": {
+  "file": "atm",
+  "text": "el cajero automático",
+  "sha": "e500e20fca7b84fd4f101d88991abf00b6b8a32c"
+ },
+ "august": {
+  "file": "august",
+  "text": "agosto",
+  "sha": "66dac6becd629bea3e5b104c36291a0608f66e19"
+ },
+ "aunt": {
+  "file": "aunt",
+  "text": "la tía",
+  "sha": "518e921a1f6799bc959c5f767381af45975e010b"
+ },
+ "australia": {
+  "file": "australia",
+  "text": "Australia",
+  "sha": "9c22d29972210fef23803ea450b9e83c6096f2df"
+ },
+ "avocado": {
+  "file": "avocado",
+  "text": "el aguacate",
+  "sha": "8a1b37a5eb9532cca01c31a85b1af7e88ca8d29b"
+ },
+ "back": {
+  "file": "back",
+  "text": "la espalda",
+  "sha": "b68cbd1982e437f0f22acb95b259a5c6658d947d"
+ },
+ "backpack": {
+  "file": "backpack",
+  "text": "la mochila",
+  "sha": "b76ca5ad4ca16d9c493df804df3453b66818fc41"
+ },
+ "badge": {
+  "file": "badge",
+  "text": "la insignia",
+  "sha": "05b370318175e46a37c26014c97eb2a29be32925"
+ },
+ "baggage claim": {
+  "file": "baggage_claim",
+  "text": "el reclamo de equipaje",
+  "sha": "881524e60189e60a04bfd5673c6b890f2224c378"
+ },
+ "baguette": {
+  "file": "baguette",
+  "text": "la baguette",
+  "sha": "cfade02fa08a20dd9e02577f6912bd14c5abbc5d"
+ },
+ "bakery": {
+  "file": "bakery",
+  "text": "la panadería",
+  "sha": "adad3c3b63e684f27da45b975c4de5e695234ed1"
+ },
+ "bald": {
+  "file": "bald",
+  "text": "calvo",
+  "sha": "d43644f0396a86c8be714472a5749687905b2c38"
+ },
+ "ball": {
+  "file": "ball",
+  "text": "la pelota",
+  "sha": "e1dbec311e4b85f35dfc361d73f1adc06c41f7a6"
+ },
+ "banana": {
+  "file": "banana",
+  "text": "el plátano",
+  "sha": "b0bc6b9102643f9cb85d8033b4360ac047385bb8"
+ },
+ "bandage": {
+  "file": "bandage",
+  "text": "la venda",
+  "sha": "94b1e65852485d805e609a776e53579c14b792a5"
+ },
+ "bank": {
+  "file": "bank",
+  "text": "el banco (dinero)",
+  "sha": "d71964de190f58bc8c20686d02bb75fb27fe2971"
+ },
+ "banker": {
+  "file": "banker",
+  "text": "el banquero / la banquera",
+  "sha": "15f4c67aaafff41c3b2f4dec1385d2f47ca18a94"
+ },
+ "barrel": {
+  "file": "barrel",
+  "text": "el barril",
+  "sha": "c9dcf4621a582dbabba54f4f3d215fe4417d289c"
+ },
+ "base": {
+  "file": "base",
+  "text": "la base",
+  "sha": "efe4902301eebbe237cf20599fdbea7eaffa729c"
+ },
+ "basil": {
+  "file": "basil",
+  "text": "la albahaca",
+  "sha": "2ee380cae2cfa919115e5db95fd8b14959803725"
+ },
+ "basket": {
+  "file": "basket",
+  "text": "la canasta",
+  "sha": "37390d73dbdf7e1daa68a6eddf930696e87a82f1"
+ },
+ "basketball": {
+  "file": "basketball",
+  "text": "el balón de basquetbol",
+  "sha": "866d5caee10dd2fcd8e88406a5e7252592c12ccb"
+ },
+ "basketball hoop": {
+  "file": "basketball_hoop",
+  "text": "la canasta de basquetbol",
+  "sha": "873f3b84d6ecf52dba4398c07dd877e296f5f09a"
+ },
+ "bathroom": {
+  "file": "bathroom",
+  "text": "el baño",
+  "sha": "afcdc2b31cdee09227a3545b543afb4766a00dce"
+ },
+ "bathtub": {
+  "file": "bathtub",
+  "text": "la tina",
+  "sha": "2acb95ad357c23315c299b33897e2722df6c10df"
+ },
+ "beans": {
+  "file": "beans",
+  "text": "los frijoles",
+  "sha": "43125b545fcd82bac19239ef62357a01656aeb62"
+ },
+ "bear": {
+  "file": "bear",
+  "text": "el oso",
+  "sha": "4b71ed4f90aecdfd59dd1e7ac737e41b77295c93"
+ },
+ "bear cub": {
+  "file": "bear_cub",
+  "text": "el osezno",
+  "sha": "346f08f0e369eca966616df989c3351a51e018db"
+ },
+ "beard": {
+  "file": "beard",
+  "text": "la barba",
+  "sha": "a72616aac3b7e25c957da8de59c398458ca8e9e4"
+ },
+ "bed": {
+  "file": "bed",
+  "text": "la cama",
+  "sha": "d65c808b60cb54311a6c4a84c9ef5999a2dce2cd"
+ },
+ "bed rail": {
+  "file": "bed_rail",
+  "text": "el barandal de la cama",
+  "sha": "1773e9b659c34847e98fa59ac3b770b1c3582ec3"
+ },
+ "bedroom": {
+  "file": "bedroom",
+  "text": "la recámara",
+  "sha": "64da4f568a34558824d231ff6d9e007fad17f4f2"
+ },
+ "beef": {
+  "file": "beef",
+  "text": "la carne de res",
+  "sha": "eb8ebd909bf1821a5cde1e0e1af6ac2197d9efb1"
+ },
+ "beef with vegetables": {
+  "file": "beef_with_vegetables",
+  "text": "la carne de res con verduras",
+  "sha": "fd9b2a23b5758fa38a35724f63b4db0f93e79ac2"
+ },
+ "before": {
+  "file": "before",
+  "text": "antes",
+  "sha": "8ae72d0fd09c2fe2f8e1a9fd25dfad51e210669c"
+ },
+ "behind": {
+  "file": "behind",
+  "text": "detrás de",
+  "sha": "a2824af938e0423bd91ddc632517267e0601736d"
+ },
+ "bell": {
+  "file": "bell",
+  "text": "el timbre",
+  "sha": "7213ca3d4ba33d392f0fcacb4430239d1d8c273c"
+ },
+ "bell pepper": {
+  "file": "bell_pepper",
+  "text": "el pimiento",
+  "sha": "3f877e8f6bfe4bbb03116dff21349bf69ed4a5b9"
+ },
+ "belly": {
+  "file": "belly",
+  "text": "la barriga",
+  "sha": "2522ebaa329baa472aa1b04096a597cf32d130a0"
+ },
+ "belt": {
+  "file": "belt",
+  "text": "el cinturón",
+  "sha": "cb1e855845ae1a79eac5507b26af4c815355f05f"
+ },
+ "bench": {
+  "file": "bench",
+  "text": "el banco (asiento)",
+  "sha": "d71964de190f58bc8c20686d02bb75fb27fe2971"
+ },
+ "bicycle": {
+  "file": "bicycle",
+  "text": "la bicicleta",
+  "sha": "5c79733997c5f2efcacf3083a5176298c3d0652b"
+ },
+ "big": {
+  "file": "big",
+  "text": "grande",
+  "sha": "90c2d59e735e420539b48be533043f3359f954a4"
+ },
+ "bill": {
+  "file": "bill",
+  "text": "la cuenta",
+  "sha": "6f652439fd55508ba618ec1c6762b728732b00cf"
+ },
+ "biology": {
+  "file": "biology",
+  "text": "la biología",
+  "sha": "7c16ba711a13a0f80dbc0afbf73557f3a90acc1c"
+ },
+ "birch": {
+  "file": "birch",
+  "text": "el abedul",
+  "sha": "800e8ca9d065e2c07f0da106ec693bb37aab0a9d"
+ },
+ "bitter": {
+  "file": "bitter",
+  "text": "amargo",
+  "sha": "c5f1a556eb47e2aff893f86308072141824afe3f"
+ },
+ "black": {
+  "file": "black",
+  "text": "negro",
+  "sha": "65b1164625bc3629a42df0a50d37b6b68f3f9894"
+ },
+ "blanket": {
+  "file": "blanket",
+  "text": "la cobija",
+  "sha": "de82fd043f7229f5837d2d5edffcdc1e9ca0ae74"
+ },
+ "blender": {
+  "file": "blender",
+  "text": "la licuadora",
+  "sha": "712e6bee85b0a605ca78ac1eda2074f2f9c9993b"
+ },
+ "blond": {
+  "file": "blond",
+  "text": "rubio",
+  "sha": "75275481e221c4bb02487561dc9818ecbe2e839a"
+ },
+ "blood pressure monitor": {
+  "file": "blood_pressure_monitor",
+  "text": "el baumanómetro",
+  "sha": "c81da8d6ca22b532ad73100d5d108031a72a90e7"
+ },
+ "blue": {
+  "file": "blue",
+  "text": "azul",
+  "sha": "0a70b7ce401d331c0e48d0f8ca06cf30de5dc7a8"
+ },
+ "boarding gate": {
+  "file": "boarding_gate",
+  "text": "la sala de abordar",
+  "sha": "bbb8fdce9815137e1841029ca0c9aba9d747078a"
+ },
+ "boarding pass": {
+  "file": "boarding_pass",
+  "text": "el pase de abordar",
+  "sha": "40dbb4327fc17911a69ff430fe3e9dcdd353b0d8"
+ },
+ "boat": {
+  "file": "boat",
+  "text": "el barco",
+  "sha": "2b789008d794fefe4e0f3ab23dee05e295e2a3e4"
+ },
+ "book": {
+  "file": "book",
+  "text": "el libro",
+  "sha": "4b8643b346f7f80f47c118d05f5a6ddb82acf3d6"
+ },
+ "book bin": {
+  "file": "book_bin",
+  "text": "la caja de libros",
+  "sha": "dd2b134c71cc918051d91719cf86f17e5cbc2213"
+ },
+ "bookcase": {
+  "file": "bookcase",
+  "text": "el librero",
+  "sha": "daec2e722226e2f160216730eef635ad256aeb62"
+ },
+ "bookshelf": {
+  "file": "bookshelf",
+  "text": "el estante para libros",
+  "sha": "7b85dc6354a6107a02ce6dc67af8d1a7beed79ca"
+ },
+ "boots": {
+  "file": "boots",
+  "text": "las botas",
+  "sha": "1651609772204d545a6737aec47f3622fb7f87b1"
+ },
+ "boss": {
+  "file": "boss",
+  "text": "el jefe / la jefa",
+  "sha": "38f1ed986c45221fa306b45f2caef4f018e17ed7"
+ },
+ "bottle": {
+  "file": "bottle",
+  "text": "la botella",
+  "sha": "caf9c9311d3c9bd8f0f248eb99704fd96416926d"
+ },
+ "bowl": {
+  "file": "bowl",
+  "text": "el tazón",
+  "sha": "9df0bf35c79f56c5aecf675b4bfb2d92300aa234"
+ },
+ "boyfriend": {
+  "file": "boyfriend",
+  "text": "el novio",
+  "sha": "9fec7bb0f575b9d43fcb15ac3e857a2b0e479e58"
+ },
+ "brain": {
+  "file": "brain",
+  "text": "el cerebro",
+  "sha": "87e58f57cbbae87d902bcd7d5c9c06bbd65cdcf7"
+ },
+ "brazil": {
+  "file": "brazil",
+  "text": "Brasil",
+  "sha": "90136c550c05fa85f87eacb24b745b46e874ef9a"
+ },
+ "bread": {
+  "file": "bread",
+  "text": "el pan",
+  "sha": "130cd74bfab551d73a3c20bf8e2818e19c6e0c5c"
+ },
+ "breakfast": {
+  "file": "breakfast",
+  "text": "el desayuno",
+  "sha": "10a6180f004722f6f7b0ffe450eb8c5ccd2240c6"
+ },
+ "bridge": {
+  "file": "bridge",
+  "text": "el puente",
+  "sha": "a4d2b63c0cd7c5303889f0e38433ce3aed8281f9"
+ },
+ "broccoli": {
+  "file": "broccoli",
+  "text": "el brócoli",
+  "sha": "bda5f6ee04b8b6c4f350d72efd220abe69b30838"
+ },
+ "brochure": {
+  "file": "brochure",
+  "text": "el folleto",
+  "sha": "9682cff80e0f600b8d4712f30ea37a7f4e502a6c"
+ },
+ "broom": {
+  "file": "broom",
+  "text": "la escoba",
+  "sha": "280ef5eb74bcf8468939b5106929c6fe4e44f3ff"
+ },
+ "brother": {
+  "file": "brother",
+  "text": "el hermano",
+  "sha": "652d60b63a94eaa524fb36825029d4514bce0cd5"
+ },
+ "brown": {
+  "file": "brown",
+  "text": "marrón",
+  "sha": "8b99bb7d3ceb1b7cafa472cc1f73c8f18b7750a6"
+ },
+ "brown (hair)": {
+  "file": "brown_hair",
+  "text": "castaño",
+  "sha": "8add82bf9607b23c94eefc16dcdc06146836aa76"
+ },
+ "brownie": {
+  "file": "brownie",
+  "text": "el brownie",
+  "sha": "02dde58179939a06eb2d1cf6fbdd6318ab7b9262"
+ },
+ "bucket": {
+  "file": "bucket",
+  "text": "la cubeta",
+  "sha": "52557816a9d02c20bec68f45aca59ad11ad3c873"
+ },
+ "building": {
+  "file": "building",
+  "text": "el edificio",
+  "sha": "d92e34cb060d1aff13635587dc46aafba5cc9f7f"
+ },
+ "bulletin board": {
+  "file": "bulletin_board",
+  "text": "el tablero de avisos",
+  "sha": "a39ebfe6afcb0d6a5c898da9b935b7f45b1b1b70"
+ },
+ "burrito": {
+  "file": "burrito",
+  "text": "el burrito",
+  "sha": "e3bac249a0a5703d61b6959ab8c860e9bbb110e7"
+ },
+ "bus": {
+  "file": "bus",
+  "text": "el autobús",
+  "sha": "56156eef9e1dc0b7dcb61fbfb89faa7d27007b37"
+ },
+ "bus stop": {
+  "file": "bus_stop",
+  "text": "la parada de autobús",
+  "sha": "4491cfe86877d2aa057edfad384b7d79d9a2dc7a"
+ },
+ "butter": {
+  "file": "butter",
+  "text": "la mantequilla",
+  "sha": "3c066eaec9fb0ef53ede0886485bd5e86d551e6b"
+ },
+ "cabinet": {
+  "file": "cabinet",
+  "text": "el gabinete",
+  "sha": "0d5044dddfe61c1691dbc1a1e1fdbcfe4c96011a"
+ },
+ "cactus": {
+  "file": "cactus",
+  "text": "el cactus",
+  "sha": "5cab699b18c7ee03a87129e75db68552e832ca6c"
+ },
+ "cafe": {
+  "file": "cafe",
+  "text": "la cafetería",
+  "sha": "064dfb747b7997ba84c9dc646fd5b78887c72e67"
+ },
+ "cake": {
+  "file": "cake",
+  "text": "el pastel",
+  "sha": "3b3b7c6cc0ebad77eb2d8179b446fcb9a0aface2"
+ },
+ "camera": {
+  "file": "camera",
+  "text": "la cámara",
+  "sha": "3a1b75b982e0a2af672b3871231aaad85af43e1d"
+ },
+ "canada": {
+  "file": "canada",
+  "text": "Canadá",
+  "sha": "baab9abaeb8ede9f1dceaa9c462571c4c38d792c"
+ },
+ "canceled": {
+  "file": "canceled",
+  "text": "cancelado",
+  "sha": "87e31457b012568cc6f7adda4516c4106c7305ee"
+ },
+ "candle": {
+  "file": "candle",
+  "text": "la vela",
+  "sha": "36cdc07dd5af8442e09b09a3c0fca3875ee08e2c"
+ },
+ "candy": {
+  "file": "candy",
+  "text": "el dulce",
+  "sha": "c865fc49c8b135a226e8d103a96b86ee95777e3a"
+ },
+ "capybara": {
+  "file": "capybara",
+  "text": "el capibara",
+  "sha": "8b32859d4b1bd8441b59cc461deb5dd0b11bafad"
+ },
+ "car": {
+  "file": "car",
+  "text": "el carro",
+  "sha": "b525d34be21d69d22a38415d9cec7a00b1020077"
+ },
+ "card reader": {
+  "file": "card_reader",
+  "text": "el lector de tarjetas",
+  "sha": "fb89bab5ebdd1b38855cc7f501dc1350c5aa17e2"
+ },
+ "cardboard box": {
+  "file": "cardboard_box",
+  "text": "la caja de cartón",
+  "sha": "9b63b88cc510acda899640dc0725658bf494ef9c"
+ },
+ "carrot": {
+  "file": "carrot",
+  "text": "la zanahoria",
+  "sha": "ddae6f52a863dca355dac2bb30f451470dd9ba39"
+ },
+ "cash": {
+  "file": "cash",
+  "text": "el dinero en efectivo",
+  "sha": "59a3fc74250d6577a65a59f525cc5a23c8a1cef7"
+ },
+ "cash register": {
+  "file": "cash_register",
+  "text": "la caja registradora",
+  "sha": "e1b0047cdbee0583d21c1d771587032c66540336"
+ },
+ "cashier": {
+  "file": "cashier",
+  "text": "el cajero / la cajera",
+  "sha": "12c6a8ebf3014f387d78f81fcacf85080b274c4b"
+ },
+ "cashier counter": {
+  "file": "cashier_counter",
+  "text": "el mostrador de caja",
+  "sha": "85715fb3f850bef09112063e738aec15d284a703"
+ },
+ "cat": {
+  "file": "cat",
+  "text": "el gato",
+  "sha": "fe65fe20eb6d87bb31f9fd0887293356984bcddb"
+ },
+ "ceiling": {
+  "file": "ceiling",
+  "text": "el techo interior",
+  "sha": "997016b9e69e190003a78f3d97fd6a78dae0f88f"
+ },
+ "ceiling light": {
+  "file": "ceiling_light",
+  "text": "la lámpara de techo",
+  "sha": "11bcda859f532fbd16d5ff1aa49a99751b2a996c"
+ },
+ "chair": {
+  "file": "chair",
+  "text": "la silla",
+  "sha": "b52374dc52551a49012da5d316b0dab7b428450b"
+ },
+ "check-in counter": {
+  "file": "check_in_counter",
+  "text": "el mostrador de documentación",
+  "sha": "3194b2b9d4086921c67d93039274835fbba50f8d"
+ },
+ "checkout counter": {
+  "file": "checkout_counter",
+  "text": "la caja",
+  "sha": "781afceca655d8996c5958c53672897ea28968fc"
+ },
+ "cheese": {
+  "file": "cheese",
+  "text": "el queso",
+  "sha": "ff7eafffaa5376460ce1db9959a20f8ce06bbc84"
+ },
+ "cheese bread": {
+  "file": "cheese_bread",
+  "text": "el pan con queso",
+  "sha": "f73bf30b5c06cce382a9b149d73885b21aee25df"
+ },
+ "cherry": {
+  "file": "cherry",
+  "text": "la cereza",
+  "sha": "7ff7ef6b903b2ea3cff405438566d1ecb2db2a6a"
+ },
+ "cherry tree": {
+  "file": "cherry_tree",
+  "text": "el cerezo",
+  "sha": "cc6e3f392ef131b9372b38ca9d7c5b327d80b82a"
+ },
+ "chest": {
+  "file": "chest",
+  "text": "el pecho",
+  "sha": "4a13e74e5a9c5329d12ee4ce5e79228950da0528"
+ },
+ "chicken": {
+  "file": "chicken",
+  "text": "el pollo",
+  "sha": "356848fbb5f40b0b260afd2dff327ae757b09607"
+ },
+ "chili pepper": {
+  "file": "chili_pepper",
+  "text": "el chile",
+  "sha": "914ac68ff8d9bfcd4af42e625d590b6fe1cda46f"
+ },
+ "china": {
+  "file": "china",
+  "text": "China",
+  "sha": "842d73dc8cecd8092ea13991fe92587bf47667b2"
+ },
+ "chocolate": {
+  "file": "chocolate",
+  "text": "el chocolate",
+  "sha": "358c1db18f0647ae1ab96af3dc18faf6a29629ca"
+ },
+ "chocolate cake": {
+  "file": "chocolate_cake",
+  "text": "el pastel de chocolate",
+  "sha": "e07b7a71346b85f7e5056c9979248ea15b12955a"
+ },
+ "church": {
+  "file": "church",
+  "text": "la iglesia",
+  "sha": "42d8bc1177909f58ad8657c0ff9ad2ecfdb575bc"
+ },
+ "circle": {
+  "file": "circle",
+  "text": "el círculo",
+  "sha": "0422725d0d60be25d3057f6e3490e61b00b863f7"
+ },
+ "classroom": {
+  "file": "classroom",
+  "text": "el salón de clases",
+  "sha": "62253c605c4a66a1897357b9b9958687c2ac2d74"
+ },
+ "clipboard": {
+  "file": "clipboard",
+  "text": "la tablilla con sujetapapeles",
+  "sha": "6b7eefc4fd56df7ff8f23e5bd586f50b92661f13"
+ },
+ "clothing store": {
+  "file": "clothing_store",
+  "text": "la tienda de ropa",
+  "sha": "bbf0631158b23716f0e093eba662d5761a8731b4"
+ },
+ "cloud": {
+  "file": "cloud",
+  "text": "la nube",
+  "sha": "23516fa6c7fe190d11a1bab3b88d6e6b08c0654e"
+ },
+ "coat": {
+  "file": "coat",
+  "text": "el abrigo",
+  "sha": "b6b5e1e39e8c05d259e30ac2f3ad385034047b53"
+ },
+ "coconut": {
+  "file": "coconut",
+  "text": "el coco",
+  "sha": "c81c66bf406520775da950f2e4efe4ab08587ff0"
+ },
+ "coffee": {
+  "file": "coffee",
+  "text": "el café",
+  "sha": "80830109d3ea069b6d58c7943af6c10f83059e12"
+ },
+ "coffee maker": {
+  "file": "coffee_maker",
+  "text": "la cafetera",
+  "sha": "24a5df1817e9f4b4fc3335822d64bfdd742d6248"
+ },
+ "coffee table": {
+  "file": "coffee_table",
+  "text": "la mesa de centro",
+  "sha": "592d342a9a11b1042b13a73e18d50215bfc0617f"
+ },
+ "cold": {
+  "file": "cold",
+  "text": "frío",
+  "sha": "a57ed20241edbad79eedd435ee17011674d6d561"
+ },
+ "compass": {
+  "file": "compass",
+  "text": "la brújula",
+  "sha": "f5f2f342685c2a73d0411d5fe2a5a637180cde4c"
+ },
+ "computer": {
+  "file": "computer",
+  "text": "la computadora",
+  "sha": "913694c490c67264ad3de96f062ae27d303c7fce"
+ },
+ "container": {
+  "file": "container",
+  "text": "el contenedor",
+  "sha": "2eb4b1847fd08fe40597ab4b8dc2fe735e34c42d"
+ },
+ "continent": {
+  "file": "continent",
+  "text": "el continente",
+  "sha": "24b6b6bf50ac6a5b9311c467ea81e22c71123e74"
+ },
+ "conveyor belt": {
+  "file": "conveyor_belt",
+  "text": "la cinta transportadora",
+  "sha": "7b9b4ecdb1bbd8ee8a53d22c32c874bbc7139a80"
+ },
+ "cook": {
+  "file": "cook",
+  "text": "el cocinero / la cocinera",
+  "sha": "4441da6a2ff0821c8a63f7abecfbd96401ddc872"
+ },
+ "cookie": {
+  "file": "cookie",
+  "text": "la galleta",
+  "sha": "52e6833974572600acd429929559f92787e05db9"
+ },
+ "corn": {
+  "file": "corn",
+  "text": "el maíz",
+  "sha": "f2952155d188092ebfdacfb79212151dd3d189d2"
+ },
+ "counter": {
+  "file": "counter",
+  "text": "la cubierta de cocina",
+  "sha": "f17fd905610bc7e524c1fed214568299e3913bd6"
+ },
+ "country": {
+  "file": "country",
+  "text": "el país",
+  "sha": "edba56981a3d2c02aa15dc2a4a04326e820d119a"
+ },
+ "cousin": {
+  "file": "cousin",
+  "text": "el primo / la prima",
+  "sha": "a830f275557a9e8f71b8a64d10dd5b84e1a988e3"
+ },
+ "cow": {
+  "file": "cow",
+  "text": "la vaca",
+  "sha": "8e17194656e53f8ace82d155e969555656bf3bee"
+ },
+ "crab": {
+  "file": "crab",
+  "text": "el cangrejo",
+  "sha": "c7c793c2db3a75cc1743306a6d6842b577b25984"
+ },
+ "cracker": {
+  "file": "cracker",
+  "text": "la galleta salada",
+  "sha": "ce6ee8687ad26fe0a22e9a97753a604844e81ece"
+ },
+ "crate": {
+  "file": "crate",
+  "text": "la caja de madera",
+  "sha": "37371341d91bd4044b4ea38adf11c4e815bac30c"
+ },
+ "creamy": {
+  "file": "creamy",
+  "text": "cremoso",
+  "sha": "c0d1058927ae5aa9eea1d4837d69adfd912d2108"
+ },
+ "credit card": {
+  "file": "credit_card",
+  "text": "la tarjeta de crédito",
+  "sha": "5db36bf345fb1d6bdb2a3716e7af1fc4c20cf42f"
+ },
+ "crispy pork": {
+  "file": "crispy_pork",
+  "text": "el cerdo crujiente",
+  "sha": "c0ceaff32beda56246c6174f6e88e448031ca1f3"
+ },
+ "crocodile": {
+  "file": "crocodile",
+  "text": "el cocodrilo",
+  "sha": "d40555d6db1c56b28603e89e511fc4d82ff29292"
+ },
+ "croissant": {
+  "file": "croissant",
+  "text": "el croissant",
+  "sha": "c0d2723b724d4753b3073f95f483569bae2b9b87"
+ },
+ "cross": {
+  "file": "cross",
+  "text": "la cruz",
+  "sha": "98c5eb968d69765418ec9b004b47cf0fb68d6a69"
+ },
+ "crosswalk": {
+  "file": "crosswalk",
+  "text": "el cruce peatonal",
+  "sha": "2ffd51957bcd601bca8ea261514ea24305ab1a2f"
+ },
+ "crunchy": {
+  "file": "crunchy",
+  "text": "crujiente",
+  "sha": "619c82b8186f8da445f96b7c9bd5503fff28ef5d"
+ },
+ "crutches": {
+  "file": "crutches",
+  "text": "las muletas",
+  "sha": "9bf35266c5868610926af5cf8a1469497ec96c50"
+ },
+ "cucumber": {
+  "file": "cucumber",
+  "text": "el pepino",
+  "sha": "855fa7130934c31edb2f228786db6bf84e8139c1"
+ },
+ "cup": {
+  "file": "cup",
+  "text": "la taza",
+  "sha": "4e7b394da5cdb0497cba90fadcf1f0aef03b41d6"
+ },
+ "cupcake": {
+  "file": "cupcake",
+  "text": "el cupcake",
+  "sha": "fb241029e9fcf4e6eff779f6a15e0e72976a188e"
+ },
+ "curb": {
+  "file": "curb",
+  "text": "el borde de la banqueta",
+  "sha": "ef2c54cae0f3bb090eeced1e51e5f5a505a7bf9a"
+ },
+ "curtain": {
+  "file": "curtain",
+  "text": "la cortina",
+  "sha": "701f2a1f42fc5954676b2968ed52223f7ce2a09b"
+ },
+ "cushion": {
+  "file": "cushion",
+  "text": "el cojín",
+  "sha": "eb50b92f08deda7a4a4b1097612fe454942b7ba2"
+ },
+ "cypress": {
+  "file": "cypress",
+  "text": "el ciprés",
+  "sha": "9270e00c00a9a2b9696088a2a69f441cd0f3ffd5"
+ },
+ "dark": {
+  "file": "dark",
+  "text": "oscuro",
+  "sha": "a2e630451be8b6289b8a7c7bd009374dbaff900a"
+ },
+ "daughter": {
+  "file": "daughter",
+  "text": "la hija",
+  "sha": "b73062514512500f3cd976932524936f190647d0"
+ },
+ "day after tomorrow": {
+  "file": "day_after_tomorrow",
+  "text": "pasado mañana",
+  "sha": "6d96fe1d2981e689c734a84b93518f0f8ab80d5e"
+ },
+ "day before yesterday": {
+  "file": "day_before_yesterday",
+  "text": "anteayer",
+  "sha": "8d3264352aaa70ecad0903d7d8b459a9f5fde7b8"
+ },
+ "december": {
+  "file": "december",
+  "text": "diciembre",
+  "sha": "73f5714af72d49c8c2c9323f32c17877d0915053"
+ },
+ "deer": {
+  "file": "deer",
+  "text": "el venado",
+  "sha": "a43bae62af6082f29f3c50198a4c7321c2ed2340"
+ },
+ "defibrillator": {
+  "file": "defibrillator",
+  "text": "el desfibrilador",
+  "sha": "45f4cf92980915898f9b07c116f4e3a77cf53ebb"
+ },
+ "delayed": {
+  "file": "delayed",
+  "text": "retrasado",
+  "sha": "b09306b99f31376daf11704716283ba079ac89fa"
+ },
+ "deli counter": {
+  "file": "deli_counter",
+  "text": "el mostrador de carnes frías",
+  "sha": "fb80a09d79fee48a733ed6e73ba20210a2e774c2"
+ },
+ "departure": {
+  "file": "departure",
+  "text": "la salida",
+  "sha": "fe286025eb5f9d697cf99a6bbf195ad3d74f5b99"
+ },
+ "desk": {
+  "file": "desk",
+  "text": "el escritorio",
+  "sha": "07a7626cdb4fe5d3872084b89fcd33916d2825d9"
+ },
+ "dessert": {
+  "file": "dessert",
+  "text": "el postre",
+  "sha": "96b2484b6c8ebb3b5404ed7cfe0c59b53015ced9"
+ },
+ "destination": {
+  "file": "destination",
+  "text": "el destino",
+  "sha": "e9df4a7a23ccd710b320c73349d065492f6adc63"
+ },
+ "detergent": {
+  "file": "detergent",
+  "text": "el detergente",
+  "sha": "88535b90e0689d44897aedd71759e2a1adf3de01"
+ },
+ "dictionary": {
+  "file": "dictionary",
+  "text": "el diccionario",
+  "sha": "4ba30e5abf664cae4ae59c0f136651a5f421102e"
+ },
+ "dining table": {
+  "file": "dining_table",
+  "text": "la mesa de comedor",
+  "sha": "068dbfbb971c4409fba29a193d7284402ee102b3"
+ },
+ "dinner": {
+  "file": "dinner",
+  "text": "la cena",
+  "sha": "db523e2a51ed21fa735a9d9b46f84a2c9b376ded"
+ },
+ "display": {
+  "file": "display",
+  "text": "el exhibidor",
+  "sha": "65aaa1b7dfe867ad197864f90b9e2dfe06ec93f0"
+ },
+ "divider": {
+  "file": "divider",
+  "text": "el divisor",
+  "sha": "ed06147cd04057b102074f362f06b7b3ffe8acc5"
+ },
+ "doctor": {
+  "file": "doctor",
+  "text": "el médico / la médica",
+  "sha": "7892441e858c5d81b3ae12331e8dc5c6594ea0e8"
+ },
+ "dog": {
+  "file": "dog",
+  "text": "el perro",
+  "sha": "cfda9ac20286b18fbe7b4e8d761ecd5a90447cdb"
+ },
+ "donation box": {
+  "file": "donation_box",
+  "text": "la caja de donaciones",
+  "sha": "17e31b48dd389c6b61e7ea3f5c437625f12df989"
+ },
+ "donut": {
+  "file": "donut",
+  "text": "la dona",
+  "sha": "214d4ed82852fc2624bb9c48b162a7a3eb53574a"
+ },
+ "door": {
+  "file": "door",
+  "text": "la puerta",
+  "sha": "7808f2ed48b0da4d981889af66cb28f9c2930cff"
+ },
+ "down": {
+  "file": "down",
+  "text": "abajo",
+  "sha": "885692fc94e1c6627ccb8d75d6b76e7536f30a6f"
+ },
+ "drawer": {
+  "file": "drawer",
+  "text": "el cajón",
+  "sha": "2c2bed1da5d18ae5c9e37c6165fa3d0c96c68443"
+ },
+ "dress": {
+  "file": "dress",
+  "text": "el vestido",
+  "sha": "45f48a923da02ded2dbf5cec80bde46e773e311f"
+ },
+ "dresser": {
+  "file": "dresser",
+  "text": "la cómoda",
+  "sha": "93714df65176443a25b7343484653ef0fc5fffcf"
+ },
+ "driver": {
+  "file": "driver",
+  "text": "el conductor / la conductora",
+  "sha": "69a558b93890fe7b1394b76ab66f60e39d7f1394"
+ },
+ "driveway": {
+  "file": "driveway",
+  "text": "la entrada para carros",
+  "sha": "0ca81e40bd496b932632fb8989fd5d71e79d6036"
+ },
+ "drum": {
+  "file": "drum",
+  "text": "el tambor",
+  "sha": "19f819337d5ce323444d0a70d2d900c51502be24"
+ },
+ "dry": {
+  "file": "dry",
+  "text": "seco",
+  "sha": "dba434debd713d3b895a290654b629aea15c63f4"
+ },
+ "dryer": {
+  "file": "dryer",
+  "text": "la secadora",
+  "sha": "e36c0f1b884d820b0a6b97f534e70478eeddc2de"
+ },
+ "duck": {
+  "file": "duck",
+  "text": "el pato",
+  "sha": "b6c930f7ddf24b5eb8393ede8c69c34c7146c2c8"
+ },
+ "dumbbell": {
+  "file": "dumbbell",
+  "text": "la mancuerna",
+  "sha": "a6e45b5b4a17dbe97bda0be60eb0696423c21c84"
+ },
+ "ear": {
+  "file": "ear",
+  "text": "la oreja",
+  "sha": "5a071152e4b752f0b38f29cc78c68627e5c7d647"
+ },
+ "easel": {
+  "file": "easel",
+  "text": "el caballete",
+  "sha": "44a24eecad2b4073375ffaabeb6cbe0d73d69b9a"
+ },
+ "eggs": {
+  "file": "eggs",
+  "text": "los huevos",
+  "sha": "323bd3a75831aafb59cac7e39793d640fb6171b8"
+ },
+ "electrical box": {
+  "file": "electrical_box",
+  "text": "la caja eléctrica",
+  "sha": "c4b5c4c655956d215f5209e63dc6881c1c6dde28"
+ },
+ "electronics": {
+  "file": "electronics",
+  "text": "los aparatos electrónicos",
+  "sha": "777808dca3112c6bd872f8ed9572d7c97482dca4"
+ },
+ "electronics store": {
+  "file": "electronics_store",
+  "text": "la tienda de electrónica",
+  "sha": "900cd413393e45c65e988f8936031437a5a4dc8f"
+ },
+ "elephant": {
+  "file": "elephant",
+  "text": "el elefante",
+  "sha": "6d201e74e488b465467f4a7de1db5b522bb4c426"
+ },
+ "elevator": {
+  "file": "elevator",
+  "text": "el elevador",
+  "sha": "8587d74f74f850bb1e17870c5af70d568cf0fac1"
+ },
+ "employee": {
+  "file": "employee",
+  "text": "el empleado / la empleada",
+  "sha": "7988e924d846143f98ad0c81b669d133220dedbd"
+ },
+ "entrance": {
+  "file": "entrance",
+  "text": "la entrada",
+  "sha": "52c779618d0a2232fea59c23ebba29a8359b8b7a"
+ },
+ "eraser": {
+  "file": "eraser",
+  "text": "el borrador",
+  "sha": "d11d76bae6022af6993e9861da426905b7265f69"
+ },
+ "examination bed": {
+  "file": "examination_bed",
+  "text": "la camilla de examen",
+  "sha": "f585218ba7a1396ad058c5383cd10888ffa9f91b"
+ },
+ "eye": {
+  "file": "eye",
+  "text": "el ojo",
+  "sha": "d7e638cd609a3923d4772514a47cefe8a1c49969"
+ },
+ "face": {
+  "file": "face",
+  "text": "la cara",
+  "sha": "fe6251b692d408f851a75c053fdb065d9950dc79"
+ },
+ "fan": {
+  "file": "fan",
+  "text": "el ventilador",
+  "sha": "abb481afa689ae3cdc7736ccc4fb057c772c2d19"
+ },
+ "far": {
+  "file": "far",
+  "text": "lejos",
+  "sha": "dc1049fc5867a191072203647f580fbc2a537969"
+ },
+ "father": {
+  "file": "father",
+  "text": "el padre",
+  "sha": "edc61b0e65cf1852a0d44f21f373cf96e47e30fc"
+ },
+ "faucet": {
+  "file": "faucet",
+  "text": "la llave de agua",
+  "sha": "648c0be0bdb8a262c21fa7f5ab999e94456737c9"
+ },
+ "february": {
+  "file": "february",
+  "text": "febrero",
+  "sha": "42d2cc9c20f9119d06b270c99a6aebe867869419"
+ },
+ "fence": {
+  "file": "fence",
+  "text": "la cerca",
+  "sha": "841f9eabf8426283640d7bad44daf90b62116d07"
+ },
+ "fern": {
+  "file": "fern",
+  "text": "el helecho",
+  "sha": "e14e5e8a450993ae0ff4af68d03b39b45e6c5107"
+ },
+ "field mouse": {
+  "file": "field_mouse",
+  "text": "el ratón",
+  "sha": "19c09120cb5c6399d8a9b37df45126ef49e4e6f7"
+ },
+ "files": {
+  "file": "files",
+  "text": "los archivos",
+  "sha": "74ab660579b88eb617fd43258ac178e07f71472d"
+ },
+ "filing cabinet": {
+  "file": "filing_cabinet",
+  "text": "el archivador",
+  "sha": "073d9780ab7aa868a0318393cf6fe1e837fe417c"
+ },
+ "finger": {
+  "file": "finger",
+  "text": "el dedo",
+  "sha": "bf5ccdeace5ef1ca9f32469a8b3e243230088cd3"
+ },
+ "fire truck": {
+  "file": "fire_truck",
+  "text": "el camión de bomberos",
+  "sha": "637d5c4e92d4c9a3e2c1f42179ab20c9614ac70e"
+ },
+ "first aid kit": {
+  "file": "first_aid_kit",
+  "text": "el botiquín de primeros auxilios",
+  "sha": "d403c920c46705923e952f75dfc14a05a09c3316"
+ },
+ "fish": {
+  "file": "fish",
+  "text": "el pez (animal) / el pescado (comida)",
+  "sha": "8cc514a1d5bbe901125a927cc195003862f1f921"
+ },
+ "fitting room": {
+  "file": "fitting_room",
+  "text": "el probador",
+  "sha": "2d33fe3e3d23aa9e8533302e935afccf0612c854"
+ },
+ "fizzy": {
+  "file": "fizzy",
+  "text": "con gas",
+  "sha": "33ed020cd98895a6c55e4b205ed866f955d50ce1"
+ },
+ "flag": {
+  "file": "flag",
+  "text": "la bandera",
+  "sha": "f9b37ca337b1de5f0029220426d5f99e7837015a"
+ },
+ "flame": {
+  "file": "flame",
+  "text": "la llama",
+  "sha": "d9752156cf4e3dee8d6cb0acb7f7413f16248085"
+ },
+ "flamingo": {
+  "file": "flamingo",
+  "text": "el flamenco",
+  "sha": "cb319c18782255e1c653cb488fc504c25980479d"
+ },
+ "flan": {
+  "file": "flan",
+  "text": "el flan",
+  "sha": "2256f6c0eef0cbd6ef0f91ca9845c637e3febc73"
+ },
+ "flight": {
+  "file": "flight",
+  "text": "el vuelo",
+  "sha": "5322e00aad6f556d3828a4211913bda68aac99b4"
+ },
+ "flight board": {
+  "file": "flight_board",
+  "text": "la pantalla de vuelos",
+  "sha": "50c67ce72335d507d51217fb7e9ebf77d08728bf"
+ },
+ "floor": {
+  "file": "floor",
+  "text": "el piso",
+  "sha": "bdaae3f8aef7578faf0da6ebce0e7a034aaf7a63"
+ },
+ "floor lamp": {
+  "file": "floor_lamp",
+  "text": "la lámpara de pie",
+  "sha": "5cb2286ffca8c20916819868e718ec5d07cc313a"
+ },
+ "flower": {
+  "file": "flower",
+  "text": "la flor",
+  "sha": "cfc88cffb45efda7585683a0fd23f794bdf462db"
+ },
+ "flowerpot": {
+  "file": "flowerpot",
+  "text": "la maceta",
+  "sha": "1c20762b9a719de6e8b91523156fe2de1dc385fe"
+ },
+ "folder": {
+  "file": "folder",
+  "text": "la carpeta",
+  "sha": "33251041f04900e1301dab385742d3c3b0359823"
+ },
+ "food": {
+  "file": "food",
+  "text": "la comida",
+  "sha": "ddb9e2a8b5a8a4cea1c8b65ef0375e0449c41f1f"
+ },
+ "foot": {
+  "file": "foot",
+  "text": "el pie",
+  "sha": "3ce0fb01d748c7f8036d188481b4f501edb4adae"
+ },
+ "fork": {
+  "file": "fork",
+  "text": "el tenedor",
+  "sha": "7fcb8708c1df0cf5331be67da25a6f925e8db189"
+ },
+ "france": {
+  "file": "france",
+  "text": "Francia",
+  "sha": "883fdc1c4aa040f8a56622c0d8f5a8eafa76484e"
+ },
+ "french fries": {
+  "file": "french_fries",
+  "text": "las papas fritas",
+  "sha": "e1e891bf2891e85ffb8fab9296a0b648560bf6e3"
+ },
+ "fresh": {
+  "file": "fresh",
+  "text": "fresco",
+  "sha": "0e40c9a1910ed8edf5b8b82b646446441099faf6"
+ },
+ "friday": {
+  "file": "friday",
+  "text": "viernes",
+  "sha": "bf1bc5ed8baab7ca78c587d1116cad48ac3ff691"
+ },
+ "fruit": {
+  "file": "fruit",
+  "text": "la fruta",
+  "sha": "c12d1e5332e33ee52dd6022f263aaf547a0c97f2"
+ },
+ "fruit salad": {
+  "file": "fruit_salad",
+  "text": "la ensalada de frutas",
+  "sha": "b8a6ca008fa2d32d95049749363cab743fa2a432"
+ },
+ "fruit yogurt": {
+  "file": "fruit_yogurt",
+  "text": "el yogur de frutas",
+  "sha": "5ccf16ac15e9a9f184b9c1496f57518a3f780cc0"
+ },
+ "frying pan": {
+  "file": "frying_pan",
+  "text": "la sartén",
+  "sha": "59590d71bc01b31f90ef9be16aac3da61608316f"
+ },
+ "furniture store": {
+  "file": "furniture_store",
+  "text": "la tienda de muebles",
+  "sha": "63d85a7f9afc6f51e28b0370508d32242a1bafed"
+ },
+ "game console": {
+  "file": "game_console",
+  "text": "la consola de videojuegos",
+  "sha": "5c8caa661abc6887055fe6a0198b5903bee72ce4"
+ },
+ "game controller": {
+  "file": "game_controller",
+  "text": "el control de videojuegos",
+  "sha": "0e3759a477973cc7057c2edf6485db2ce10fbec2"
+ },
+ "gaming": {
+  "file": "gaming",
+  "text": "los videojuegos",
+  "sha": "1200d4adb52b67de74ee018531a8ac673c39a6ad"
+ },
+ "garage": {
+  "file": "garage",
+  "text": "el garaje",
+  "sha": "2822e0cf5d29a9070c44fc80f529d19fbd8044d8"
+ },
+ "garden": {
+  "file": "garden",
+  "text": "el jardín",
+  "sha": "b8d1ea51245823a2189bb4e224bf40741220063e"
+ },
+ "garlic": {
+  "file": "garlic",
+  "text": "el ajo",
+  "sha": "b8e99284cda3f80075feaaf6cf352538ab43e11d"
+ },
+ "gate": {
+  "file": "gate",
+  "text": "el portón",
+  "sha": "95ffd2705352003bddd9f150352e9696403f399a"
+ },
+ "gazpacho": {
+  "file": "gazpacho",
+  "text": "el gazpacho",
+  "sha": "afce0f256dfbfec2e03cb1213d52550f12342e08"
+ },
+ "geography": {
+  "file": "geography",
+  "text": "la geografía",
+  "sha": "06e5f999d7ffd5da0b8fb86d4c0dc1f73059c9c7"
+ },
+ "germany": {
+  "file": "germany",
+  "text": "Alemania",
+  "sha": "b03305a9fbe1edc1bac6c50f88cab7914f56d5da"
+ },
+ "giraffe": {
+  "file": "giraffe",
+  "text": "la jirafa",
+  "sha": "572d0ad729856b9abcbfe3d4c35fcf672b1b21c6"
+ },
+ "girlfriend": {
+  "file": "girlfriend",
+  "text": "la novia",
+  "sha": "4549cfdbcf9d692f25c50be6806b896184d95354"
+ },
+ "glass": {
+  "file": "glass",
+  "text": "el vidrio",
+  "sha": "1542c24d40ab269d3ed20477125851f395acfd34"
+ },
+ "globe": {
+  "file": "globe",
+  "text": "el globo terráqueo",
+  "sha": "85d3f714ce4b85a281c602d94b6bae94bac4286a"
+ },
+ "gloves": {
+  "file": "gloves",
+  "text": "los guantes",
+  "sha": "97146145eecdca0df97c00aa655bff1820287f25"
+ },
+ "goal": {
+  "file": "goal",
+  "text": "la portería",
+  "sha": "d70e8538a8f9bcd90fcc2d63b253e6ffd01da937"
+ },
+ "gorilla": {
+  "file": "gorilla",
+  "text": "el gorila",
+  "sha": "02c665fbcd6aee9997ffe205a987e03f31ce0513"
+ },
+ "granddaughter": {
+  "file": "granddaughter",
+  "text": "la nieta",
+  "sha": "1e5349ffc2ded8589997a70b6c6e23e3bdf9e583"
+ },
+ "grandfather": {
+  "file": "grandfather",
+  "text": "el abuelo",
+  "sha": "ab7d8263a8b1320c0feb1d206ae56f3747379c5e"
+ },
+ "grandmother": {
+  "file": "grandmother",
+  "text": "la abuela",
+  "sha": "c4a176ea737a4557fb30753b35bde4c4a1ae60fe"
+ },
+ "grandson": {
+  "file": "grandson",
+  "text": "el nieto",
+  "sha": "1497eb3a1aed8c4dba62cbe446d32dd6df319ab2"
+ },
+ "grapes": {
+  "file": "grapes",
+  "text": "las uvas",
+  "sha": "f7f797166fe4e7857f385fe07e1ee9dec0c63e65"
+ },
+ "green": {
+  "file": "green",
+  "text": "verde",
+  "sha": "fcdfd8bf9f6a2786efeacff37c1137fe9aa1203d"
+ },
+ "grilled chicken": {
+  "file": "grilled_chicken",
+  "text": "el pollo a la parrilla",
+  "sha": "fdf51f25f394bfcf16eb6f660bfb9533ba7d0486"
+ },
+ "guacamole": {
+  "file": "guacamole",
+  "text": "el guacamole",
+  "sha": "d805b00da708d2d863dd3960f78448a4016e1069"
+ },
+ "guitar": {
+  "file": "guitar",
+  "text": "la guitarra",
+  "sha": "1cc9fcff0437d1c507db9a72730354bb0b94073c"
+ },
+ "hair": {
+  "file": "hair",
+  "text": "el pelo / el cabello",
+  "sha": "b1e8aa68bc012028d24e56217ca141a5ca9d13ab"
+ },
+ "half past": {
+  "file": "half_past",
+  "text": "y media",
+  "sha": "01d77a22faf0f68cd569f63ca5ed12816f7b3309"
+ },
+ "ham": {
+  "file": "ham",
+  "text": "el jamón",
+  "sha": "a3bb874a0986a4b5c6fa660bba1cc77bc87a1b73"
+ },
+ "hamburger": {
+  "file": "hamburger",
+  "text": "la hamburguesa",
+  "sha": "adf692be39b34d214ad16a26ee9062a4a6d368a9"
+ },
+ "hand": {
+  "file": "hand",
+  "text": "la mano",
+  "sha": "7219b302d7b0fee611c4e8a17a9dcee5b85fea1c"
+ },
+ "handbag": {
+  "file": "handbag",
+  "text": "la bolsa de mano",
+  "sha": "46bccce91f05ab01b8342ecbe7dcabdac1061372"
+ },
+ "handle": {
+  "file": "handle",
+  "text": "la manija",
+  "sha": "52ea38d7a55350401d5abe9cdd868b2cc9d36370"
+ },
+ "hanger": {
+  "file": "hanger",
+  "text": "el gancho para ropa",
+  "sha": "11ad043e42c69354180ebd67e13649c06e1e07df"
+ },
+ "hard": {
+  "file": "hard",
+  "text": "duro",
+  "sha": "62fc207af47673fa6b9ae12ab11c72a2bf0d10b9"
+ },
+ "hard candy": {
+  "file": "hard_candy",
+  "text": "el caramelo duro",
+  "sha": "9ca97d1de78adbc00b151b667beecbde4b55cebd"
+ },
+ "hat": {
+  "file": "hat",
+  "text": "el sombrero",
+  "sha": "907a42aaefb664deec9ef43391033433268c76e7"
+ },
+ "hay": {
+  "file": "hay",
+  "text": "la paja",
+  "sha": "f9211005e9b13ef5b167372a59f718442f371ff4"
+ },
+ "head": {
+  "file": "head",
+  "text": "la cabeza",
+  "sha": "0568611aaa201529fad883bf0c7edeb49ec85dda"
+ },
+ "headphones": {
+  "file": "headphones",
+  "text": "los audífonos",
+  "sha": "04f20738ff405d5cdd113e913b6684483f2b6df8"
+ },
+ "headset": {
+  "file": "headset",
+  "text": "los audífonos con micrófono",
+  "sha": "be249590386bb05a390a8f627fa30f2c2cb7f347"
+ },
+ "heart": {
+  "file": "heart",
+  "text": "el corazón",
+  "sha": "7853aeb697a68f30795bae7ce60aaced9feb03ac"
+ },
+ "heavy": {
+  "file": "heavy",
+  "text": "pesado",
+  "sha": "8ece948c280ac976c470867da693bda2d9fa6df0"
+ },
+ "hedge": {
+  "file": "hedge",
+  "text": "la cerca viva",
+  "sha": "47a00bb416c41403fad439ef835faabfdd8e61a0"
+ },
+ "helicopter": {
+  "file": "helicopter",
+  "text": "el helicóptero",
+  "sha": "50fa673958726983332d8e537196a2f3db882202"
+ },
+ "helmet": {
+  "file": "helmet",
+  "text": "el casco",
+  "sha": "044fe09917796104ccad357be17b82b6a30e10f2"
+ },
+ "hen": {
+  "file": "hen",
+  "text": "la gallina",
+  "sha": "33c3da0321e8783850145f7695f37aed7cfcb086"
+ },
+ "horse": {
+  "file": "horse",
+  "text": "el caballo",
+  "sha": "66d19503b2a4760114de2fc6b9dab3132d8e87cb"
+ },
+ "hospital": {
+  "file": "hospital",
+  "text": "el hospital",
+  "sha": "d5f3fb26851d682920c385cef164d959a1e6bd59"
+ },
+ "hospital bed": {
+  "file": "hospital_bed",
+  "text": "la cama de hospital",
+  "sha": "5fa2fd9c75ad904545dc9931c964f4108a59d523"
+ },
+ "hot": {
+  "file": "hot",
+  "text": "caliente",
+  "sha": "e2c945e882af73f73f1f160a5ca846fdeb31585a"
+ },
+ "hot chocolate": {
+  "file": "hot_chocolate",
+  "text": "el chocolate caliente",
+  "sha": "0eca3cba84142642c14de4efbb787b2c2966915b"
+ },
+ "husband": {
+  "file": "husband",
+  "text": "el esposo",
+  "sha": "d3bfa30900e0bd923b6bd3c80a10da453641a194"
+ },
+ "ice cream": {
+  "file": "ice_cream",
+  "text": "el helado",
+  "sha": "770bbe275183d53dbfd94c04d75fb5e197d9103c"
+ },
+ "iced tea": {
+  "file": "iced_tea",
+  "text": "el té helado",
+  "sha": "fc1bec328d05b2adca467e885fd09db11758928c"
+ },
+ "imaging": {
+  "file": "imaging",
+  "text": "la imagenología",
+  "sha": "ef9bc799aa1d2e8fdb3af07b623bbfdf66fe4aa0"
+ },
+ "in front of": {
+  "file": "in_front_of",
+  "text": "delante de",
+  "sha": "21d63ce179374a4b88852fa2f5b81664612fe2b7"
+ },
+ "in one hour": {
+  "file": "in_one_hour",
+  "text": "dentro de una hora",
+  "sha": "2adc641318bd80067e7164395e271af08105273a"
+ },
+ "in one week": {
+  "file": "in_one_week",
+  "text": "dentro de una semana",
+  "sha": "da16542e548d0d0551a6a3bc223ba52678415a9f"
+ },
+ "in the afternoon": {
+  "file": "in_the_afternoon",
+  "text": "por la tarde",
+  "sha": "912265cb71f49cf3ee952519312ae32e31761310"
+ },
+ "in the morning": {
+  "file": "in_the_morning",
+  "text": "por la mañana",
+  "sha": "19c1b258aba3fbbb102c41617ce23aa7751c52d2"
+ },
+ "in two days": {
+  "file": "in_two_days",
+  "text": "dentro de dos días",
+  "sha": "29f4f7fd3c3d3ca9f90d74a8c48a2380619551a3"
+ },
+ "inside": {
+  "file": "inside",
+  "text": "dentro de",
+  "sha": "43bfffc9ecb3b38f070f56c86ad95a11fd800b5f"
+ },
+ "italy": {
+  "file": "italy",
+  "text": "Italia",
+  "sha": "fa6586de0cee728e6abacae54291c995295d8691"
+ },
+ "iv stand": {
+  "file": "iv_stand",
+  "text": "el soporte para suero",
+  "sha": "eff6328ddbe6d82e671cc7d0171ead89092c6ddd"
+ },
+ "jacket": {
+  "file": "jacket",
+  "text": "la chamarra",
+  "sha": "57b48f10856568876a436958fbacad90496e1077"
+ },
+ "january": {
+  "file": "january",
+  "text": "enero",
+  "sha": "2405c75093fb53058f6c64587454484cbf9e7a9e"
+ },
+ "japan": {
+  "file": "japan",
+  "text": "Japón",
+  "sha": "d8b6f13cbc88903c0817bf973c15559cceda21ae"
+ },
+ "jar": {
+  "file": "jar",
+  "text": "el frasco",
+  "sha": "8729e1c638dc89d34b65261556531910eaa9aa88"
+ },
+ "jeans": {
+  "file": "jeans",
+  "text": "los jeans",
+  "sha": "7ec289947ebe433d3169bec3805b78c3c39c05bf"
+ },
+ "juice": {
+  "file": "juice",
+  "text": "el jugo",
+  "sha": "00d1a1f3164c6508e0cb24d2ef310980a83c813e"
+ },
+ "juicy": {
+  "file": "juicy",
+  "text": "jugoso",
+  "sha": "c2636ca62306143b0550207159076e14d33679ff"
+ },
+ "july": {
+  "file": "july",
+  "text": "julio",
+  "sha": "22585c3b5ba8cc833917f175d4ee93293456a259"
+ },
+ "jump rope": {
+  "file": "jump_rope",
+  "text": "la cuerda de saltar",
+  "sha": "b549eb07ee8e01d742ae2ae2a71e455949f701eb"
+ },
+ "june": {
+  "file": "june",
+  "text": "junio",
+  "sha": "b6afee70e5b581efcd6f83022e11f327139ee809"
+ },
+ "kangaroo": {
+  "file": "kangaroo",
+  "text": "el canguro",
+  "sha": "bb0017c56fc5ae8e7271a34e7cca1c204b09313f"
+ },
+ "kettle": {
+  "file": "kettle",
+  "text": "la tetera eléctrica",
+  "sha": "d00fa430570d7bcd093e617abae52aeb7b200cdc"
+ },
+ "key": {
+  "file": "key",
+  "text": "la llave",
+  "sha": "244f29405c8145ebdfcb0633a7b29b12bcf4993a"
+ },
+ "keyboard": {
+  "file": "keyboard",
+  "text": "el teclado",
+  "sha": "0e60c55a6c19e2568ed451f290e0c6f6f2a228b8"
+ },
+ "kitchen": {
+  "file": "kitchen",
+  "text": "la cocina",
+  "sha": "57a0d810df664c8d52e9f2f8faa7868f7df81a07"
+ },
+ "knee": {
+  "file": "knee",
+  "text": "la rodilla",
+  "sha": "c398da916da5cc12bf4260beb1d740a0c6c7c282"
+ },
+ "knife": {
+  "file": "knife",
+  "text": "el cuchillo",
+  "sha": "b51c48ca74d30f2c1d04de50d2ac63d85bcdfd1a"
+ },
+ "label": {
+  "file": "label",
+  "text": "la etiqueta",
+  "sha": "bba911e491cb902c84f71bcd1f478034ad299606"
+ },
+ "ladder": {
+  "file": "ladder",
+  "text": "la escalera",
+  "sha": "1b9b37c979822f2d46527e79c9fcecdc6a5c40d0"
+ },
+ "lamb": {
+  "file": "lamb",
+  "text": "el cordero",
+  "sha": "3fb48d2787b1ffb6d6df6927e8612d792fe73e3a"
+ },
+ "lamp": {
+  "file": "lamp",
+  "text": "la lámpara",
+  "sha": "2afe181eb6680dabf4cb527d5dd0bb571747a59a"
+ },
+ "laptop": {
+  "file": "laptop",
+  "text": "la laptop",
+  "sha": "376cae08c6bbc0dc0a1c21e69ab5bce9fad0aa2b"
+ },
+ "large intestine": {
+  "file": "large_intestine",
+  "text": "el intestino grueso",
+  "sha": "107b4b973da008eabb2ab40844a9a32755198305"
+ },
+ "lasagna": {
+  "file": "lasagna",
+  "text": "la lasaña",
+  "sha": "f746c0f88b3960a6f9a19e45dfc7a582493c7851"
+ },
+ "last month": {
+  "file": "last_month",
+  "text": "el mes pasado",
+  "sha": "f60c4a03be3e6217d5a82ae065fc005a5163aff3"
+ },
+ "last night": {
+  "file": "last_night",
+  "text": "anoche",
+  "sha": "29b70ed6f48697b9bb2cbd5c051417460235d885"
+ },
+ "last week": {
+  "file": "last_week",
+  "text": "la semana pasada",
+  "sha": "0abde12aa33c12b1c296574a8cd6e3f776176df9"
+ },
+ "last year": {
+  "file": "last_year",
+  "text": "el año pasado",
+  "sha": "5fa5b2a298be2ea1bb13f8c75e9b8efe5567c11c"
+ },
+ "later": {
+  "file": "later",
+  "text": "más tarde",
+  "sha": "7806fbd39fd00f2340e0fe2a1ca4c985143964fe"
+ },
+ "leaf": {
+  "file": "leaf",
+  "text": "la hoja",
+  "sha": "bbc3e6517be14e5d5c95e5a9d22b36cfae9c4627"
+ },
+ "lectern": {
+  "file": "lectern",
+  "text": "el atril",
+  "sha": "886518bc265c2049c4ad2cb0b98aedc8cad753e3"
+ },
+ "left": {
+  "file": "left",
+  "text": "a la izquierda",
+  "sha": "3d1b142cacae3af0457d0298f972ae5c8d4e4e4b"
+ },
+ "leg": {
+  "file": "leg",
+  "text": "la pierna",
+  "sha": "4e3e9998c045296d267b9c9a76513bb3568f5240"
+ },
+ "lemon": {
+  "file": "lemon",
+  "text": "el limón",
+  "sha": "8542bbc1441342f68d5bebfd45801986e04b2f97"
+ },
+ "lemon fish": {
+  "file": "lemon_fish",
+  "text": "el pescado al limón",
+  "sha": "3cba3f2fcb2b6c881c3eecbad8ac11035c5bc951"
+ },
+ "lemon shrimp": {
+  "file": "lemon_shrimp",
+  "text": "los camarones con limón",
+  "sha": "7cb5243bc7de5a00ca9a284f05d23a23888ac69c"
+ },
+ "lemonade": {
+  "file": "lemonade",
+  "text": "la limonada",
+  "sha": "2786c246264e00f9f57d19167e8f0362d19652d8"
+ },
+ "lettuce": {
+  "file": "lettuce",
+  "text": "la lechuga",
+  "sha": "01d50d715aae08de3031ee18917bb261eff6be6d"
+ },
+ "library": {
+  "file": "library",
+  "text": "la biblioteca",
+  "sha": "2d9d68b9cf2f763b851d7b89446c9452cd154346"
+ },
+ "light": {
+  "file": "light",
+  "text": "la luz",
+  "sha": "1039817c7785e5bbdb55b5a4635bce7e9d91b32d"
+ },
+ "light (weight)": {
+  "file": "light_weight",
+  "text": "ligero",
+  "sha": "00ed6cab2af2621bb21bfc7b459a6ea91044bbcd"
+ },
+ "lime": {
+  "file": "lime",
+  "text": "el limón verde",
+  "sha": "5f724ed392fca235324853c54ea109668994db0d"
+ },
+ "lion": {
+  "file": "lion",
+  "text": "el león",
+  "sha": "c977020774ac7f1425f24904c3e85d6d82f04409"
+ },
+ "liver": {
+  "file": "liver",
+  "text": "el hígado",
+  "sha": "8583f34eea1f856aa42bf7dfaf828236e59abca6"
+ },
+ "living room": {
+  "file": "living_room",
+  "text": "la sala",
+  "sha": "7305fcd4304d278e6d086dc85c87d76ccb6beff7"
+ },
+ "long": {
+  "file": "long",
+  "text": "largo",
+  "sha": "e28334f897520fa0fd19d712b0d390fc58b1da50"
+ },
+ "loud": {
+  "file": "loud",
+  "text": "fuerte",
+  "sha": "896f5791e382e02df293d6a45643d6ee39de0e2f"
+ },
+ "luggage cart": {
+  "file": "luggage_cart",
+  "text": "el carrito de equipaje",
+  "sha": "324545b34bfdb813510a5670d5e99ac94ca0427c"
+ },
+ "lunch": {
+  "file": "lunch",
+  "text": "el almuerzo",
+  "sha": "0312271742c342a0a6ef03960c71ce2eaa63acaa"
+ },
+ "lungs": {
+  "file": "lungs",
+  "text": "los pulmones",
+  "sha": "2be7e07e7057fe23513c1ee45e9b2f9687a15e67"
+ },
+ "magnet": {
+  "file": "magnet",
+  "text": "el imán",
+  "sha": "7ee69f8475446f609437a741951984e74b2f458d"
+ },
+ "magnifying glass": {
+  "file": "magnifying_glass",
+  "text": "la lupa",
+  "sha": "78f07d435a3c172216750608f77517ff0db02b17"
+ },
+ "main hall": {
+  "file": "main_hall",
+  "text": "el vestíbulo principal",
+  "sha": "4f3935dd0c13fd002f5fbf5e20ffa0212d424b71"
+ },
+ "mango": {
+  "file": "mango",
+  "text": "el mango",
+  "sha": "3d0e1efdc3780872c201b7a11bd80e629bc5814c"
+ },
+ "mannequin": {
+  "file": "mannequin",
+  "text": "el maniquí",
+  "sha": "046cffa752b588e7dca0000ed2f1956cf933d38d"
+ },
+ "map": {
+  "file": "map",
+  "text": "el mapa",
+  "sha": "2be6b9d277eb3342fa6a06b29dfef6b9ca2974a8"
+ },
+ "maple": {
+  "file": "maple",
+  "text": "el arce",
+  "sha": "f0105968457e3e819ef25adcb39a88820209f390"
+ },
+ "march": {
+  "file": "march",
+  "text": "marzo",
+  "sha": "f66f8ccd620bf88853162b14a3968228f1968f32"
+ },
+ "market": {
+  "file": "market",
+  "text": "el mercado",
+  "sha": "c8ec764e2f76fa481289caa24a9b5066be411002"
+ },
+ "mattress": {
+  "file": "mattress",
+  "text": "el colchón",
+  "sha": "573f0aca15a439f3a71dffa823011b5d88f76cb0"
+ },
+ "may": {
+  "file": "may",
+  "text": "mayo",
+  "sha": "10ba819f879fd20b2c8cb071c267242b1f16edec"
+ },
+ "meat": {
+  "file": "meat",
+  "text": "la carne",
+  "sha": "8d8d7f5bfaf127776c6f4d534c55762d7cc8bf02"
+ },
+ "meatballs": {
+  "file": "meatballs",
+  "text": "las albóndigas",
+  "sha": "daf57db3ed66a9cb5cb0067215a6dbb8719e1c4f"
+ },
+ "medical monitor": {
+  "file": "medical_monitor",
+  "text": "el monitor médico",
+  "sha": "3d214dd841e1e004306c77251dfd0bc736775e9e"
+ },
+ "medicine": {
+  "file": "medicine",
+  "text": "el medicamento",
+  "sha": "29a52df40a8de0c8da9bca1243e00794b816c9a7"
+ },
+ "medicine shelf": {
+  "file": "medicine_shelf",
+  "text": "el estante de medicamentos",
+  "sha": "5ec36037f1a520d7dd6d6463aa25a6fb8f822a6d"
+ },
+ "medium": {
+  "file": "medium",
+  "text": "mediano",
+  "sha": "f643d652d48e5690cceb79abcf0db3c458854698"
+ },
+ "menu": {
+  "file": "menu",
+  "text": "el menú",
+  "sha": "1f699280ef76b813cbd05741ecd9247ba06cd01e"
+ },
+ "merry-go-round": {
+  "file": "merry_go_round",
+  "text": "el carrusel",
+  "sha": "e77688d9ab63b3cb804bc4b15bd039941b6da373"
+ },
+ "metal detector": {
+  "file": "metal_detector",
+  "text": "el detector de metales",
+  "sha": "723bff9ea0ccf7b34da15c5e93b840a6676c4d81"
+ },
+ "mexico": {
+  "file": "mexico",
+  "text": "México",
+  "sha": "ff52a2ff2c22140ea769ed439aba7e4fb25c6531"
+ },
+ "microphone": {
+  "file": "microphone",
+  "text": "el micrófono",
+  "sha": "d89902e8100ca829e2b632159cc6eccbb096a7be"
+ },
+ "microwave": {
+  "file": "microwave",
+  "text": "el microondas",
+  "sha": "bdf444f7c34e59722984a76d7dcb54a691fe6daf"
+ },
+ "milk": {
+  "file": "milk",
+  "text": "la leche",
+  "sha": "65f0167d72affb0dd2d03cd86ce14351525883bd"
+ },
+ "milkshake": {
+  "file": "milkshake",
+  "text": "la malteada",
+  "sha": "d2e2ed9d22316480108bd1e942bdc0f959dc98cf"
+ },
+ "mirror": {
+  "file": "mirror",
+  "text": "el espejo",
+  "sha": "a0dd645ee8368ec2fe4aa075a81fecad115707e5"
+ },
+ "monday": {
+  "file": "monday",
+  "text": "lunes",
+  "sha": "3e50646a167c31e41b2f1376f23e20fe5af0e0ef"
+ },
+ "money": {
+  "file": "money",
+  "text": "el dinero",
+  "sha": "0bed4a467cd027eefd324b3b9bb919ceb87d9263"
+ },
+ "monitor": {
+  "file": "monitor",
+  "text": "el monitor",
+  "sha": "85adb7fbb78376253acc245fde38ca9edde9fd02"
+ },
+ "monkey": {
+  "file": "monkey",
+  "text": "el mono",
+  "sha": "31a297072cf4674bc79628132579951d35e028bf"
+ },
+ "monkey bars": {
+  "file": "monkey_bars",
+  "text": "el pasamanos",
+  "sha": "0fc9da1f3eda09fb96f3e879ede59675f4e7ec48"
+ },
+ "morning": {
+  "file": "morning",
+  "text": "la mañana",
+  "sha": "22c7d599465f52b01be75590125389883bc1d0f5"
+ },
+ "mother": {
+  "file": "mother",
+  "text": "la madre",
+  "sha": "b6729311802727b7f0e837d5103f99eea3002707"
+ },
+ "motorcycle": {
+  "file": "motorcycle",
+  "text": "la moto",
+  "sha": "b0ead298559c9b6f026763f6da1a867089b8d6c3"
+ },
+ "mountain": {
+  "file": "mountain",
+  "text": "la montaña",
+  "sha": "0cafee68b84b9ce5e1177ac4d2412f3c4fdea7a8"
+ },
+ "mouse": {
+  "file": "mouse",
+  "text": "el mouse",
+  "sha": "96eddc5f4f9bd7b4321647fa5edf48745ac430b4"
+ },
+ "moustache": {
+  "file": "moustache",
+  "text": "el bigote",
+  "sha": "7af905e034c27b2afaa953add74813f137db4648"
+ },
+ "mouth": {
+  "file": "mouth",
+  "text": "la boca",
+  "sha": "e3723a453d54b27caecabed1c869d4fe103995bf"
+ },
+ "mushroom": {
+  "file": "mushroom",
+  "text": "el champiñón",
+  "sha": "cf842c7c5516ecb0705ea4e04f431974a0b03d21"
+ },
+ "music": {
+  "file": "music",
+  "text": "la música",
+  "sha": "bc07150546ba402d61e4be5af24ffa51544dc728"
+ },
+ "nachos": {
+  "file": "nachos",
+  "text": "los nachos",
+  "sha": "1247f031384f8b0b7914be96ae91122e81286225"
+ },
+ "napkin": {
+  "file": "napkin",
+  "text": "la servilleta",
+  "sha": "f9fcd2cebc235121e6349f5417abcb3be6a3424f"
+ },
+ "near": {
+  "file": "near",
+  "text": "cerca",
+  "sha": "662cf566fb7e3fa75624d55f7cbb105482f70df1"
+ },
+ "neck": {
+  "file": "neck",
+  "text": "el cuello",
+  "sha": "fcf5dc10fd591d15b6ce966d31b7cae62a40b973"
+ },
+ "nephew": {
+  "file": "nephew",
+  "text": "el sobrino",
+  "sha": "f415c977da9df0ba90472a64c6135007ce760c39"
+ },
+ "next month": {
+  "file": "next_month",
+  "text": "el próximo mes",
+  "sha": "c588f8e32c0ce7226f13f7a6f8767c58ba928706"
+ },
+ "next to": {
+  "file": "next_to",
+  "text": "al lado de",
+  "sha": "20c55b4713d384136a8656023fcfd8e6e11fe7b6"
+ },
+ "next week": {
+  "file": "next_week",
+  "text": "la próxima semana",
+  "sha": "b6db0dccce0ae6bec0742e4647455c95639d0197"
+ },
+ "next year": {
+  "file": "next_year",
+  "text": "el próximo año",
+  "sha": "1074a12a10b59053588c81a9c793933a4ee0e59c"
+ },
+ "niece": {
+  "file": "niece",
+  "text": "la sobrina",
+  "sha": "015bb16ef2aff2356486eb1d39dac9409b66f1a3"
+ },
+ "night": {
+  "file": "night",
+  "text": "la noche",
+  "sha": "3b9b207a2059f17fc3bb17c3261351f0963dc36d"
+ },
+ "nightstand": {
+  "file": "nightstand",
+  "text": "la mesita de noche",
+  "sha": "1faf73c79de32cc9aa5a9a7557f2c5333bf0e08d"
+ },
+ "noisy": {
+  "file": "noisy",
+  "text": "ruidoso",
+  "sha": "ca7c0fd1df7286e97df09dd60602e9d1c6aa9ff5"
+ },
+ "nose": {
+  "file": "nose",
+  "text": "la nariz",
+  "sha": "a014a0da4015b4e3e8a041867c7b15f68150546d"
+ },
+ "notebook": {
+  "file": "notebook",
+  "text": "el cuaderno",
+  "sha": "1a9feccde499b95b8605728fed46689e14c2b3f7"
+ },
+ "notice": {
+  "file": "notice",
+  "text": "el aviso",
+  "sha": "f86b794e1a133bced0780f534483adddbd47ab38"
+ },
+ "november": {
+  "file": "november",
+  "text": "noviembre",
+  "sha": "cac730e914d1900843ed80492a4d0b80873354eb"
+ },
+ "now": {
+  "file": "now",
+  "text": "ahora",
+  "sha": "ea2ffc0f7420bae64fb4a1f67a49f626805698fb"
+ },
+ "nurse": {
+  "file": "nurse",
+  "text": "el enfermero / la enfermera",
+  "sha": "8dbbb9ac6d0aad3b4e5a7dc75f6d5b764197795a"
+ },
+ "o'clock": {
+  "file": "o_clock",
+  "text": "en punto",
+  "sha": "32c6a2b774b3482e9977b7bb38582d123d2e9979"
+ },
+ "oak": {
+  "file": "oak",
+  "text": "el roble",
+  "sha": "9fe559212cb69241482ba1ff3b87f936e8a59a64"
+ },
+ "october": {
+  "file": "october",
+  "text": "octubre",
+  "sha": "4772328d0189fc61ccf604a97aff3e824fb4cc91"
+ },
+ "office chair": {
+  "file": "office_chair",
+  "text": "la silla de oficina",
+  "sha": "ddc6887d2a98abb0e7fdcb9b892e79c16113cd15"
+ },
+ "oil": {
+  "file": "oil",
+  "text": "el aceite",
+  "sha": "2662279dca544859105957ac719b61bad02ec87e"
+ },
+ "older": {
+  "file": "older",
+  "text": "mayor",
+  "sha": "8c0cc721155ef50b3749608e373cd1714a386d5b"
+ },
+ "olive": {
+  "file": "olive",
+  "text": "la aceituna",
+  "sha": "ede94999efb2885ef5ebe6653fbc328504513333"
+ },
+ "on": {
+  "file": "on",
+  "text": "sobre",
+  "sha": "9e1fbda06b20acc68aeb8fb074148862a4245366"
+ },
+ "on the bottom shelf": {
+  "file": "on_the_bottom_shelf",
+  "text": "en el estante de abajo",
+  "sha": "a12f910e27a560880f293d75d86e69e4de539ea6"
+ },
+ "on the top shelf": {
+  "file": "on_the_top_shelf",
+  "text": "en el estante de arriba",
+  "sha": "696d8d837b8664a27e6de1a2027ade680ac193ce"
+ },
+ "on time": {
+  "file": "on_time",
+  "text": "a tiempo",
+  "sha": "8f323cf66cebd6a751da08c6faf6e692a06bd30d"
+ },
+ "on top of": {
+  "file": "on_top_of",
+  "text": "encima de",
+  "sha": "384565cd119821cf756e52f58256dd38a0a8faeb"
+ },
+ "one hour ago": {
+  "file": "one_hour_ago",
+  "text": "hace una hora",
+  "sha": "6c8758a0c83243aee241c406f4d7c94f7db2f13d"
+ },
+ "one week ago": {
+  "file": "one_week_ago",
+  "text": "hace una semana",
+  "sha": "cf7e43ce3053d4590a3accc2e21a938c9784c8b9"
+ },
+ "onion": {
+  "file": "onion",
+  "text": "la cebolla",
+  "sha": "2617cf1fddbfd4171c2c95afa9ca23066f58866c"
+ },
+ "orange": {
+  "file": "orange",
+  "text": "la naranja",
+  "sha": "f0cab0ba2bf6f8b0e3dee60c90a58e3dc2e34ae3"
+ },
+ "orange (color)": {
+  "file": "orange_color",
+  "text": "naranja",
+  "sha": "24d1e3469edf52c45be1f13ab9213e864de537fe"
+ },
+ "orange juice": {
+  "file": "orange_juice",
+  "text": "el jugo de naranja",
+  "sha": "3e39219385a3aef5df0a3b0eab091d2da7122fc4"
+ },
+ "orange tree": {
+  "file": "orange_tree",
+  "text": "el naranjo",
+  "sha": "6f5eb3aa0fa5d3e8ae728cb800a54f488b540740"
+ },
+ "ottoman": {
+  "file": "ottoman",
+  "text": "el puf",
+  "sha": "bf4c9f6f7c6fcff5a5df8023ff8d8ba0017197bd"
+ },
+ "outside": {
+  "file": "outside",
+  "text": "fuera de",
+  "sha": "87f74a731a0c2829532ae4da8686a3a946fb874a"
+ },
+ "oven": {
+  "file": "oven",
+  "text": "el horno",
+  "sha": "181f04848a421708fc430d341d2317d4d2f2c433"
+ },
+ "oxygen tank": {
+  "file": "oxygen_tank",
+  "text": "el tanque de oxígeno",
+  "sha": "2f0cc3b662e4980dddde9048812e5502537518cc"
+ },
+ "package": {
+  "file": "package",
+  "text": "el paquete",
+  "sha": "3cc520b2ad031889bd5b5897d3ea5595b789a493"
+ },
+ "paint tube": {
+  "file": "paint_tube",
+  "text": "el tubo de pintura",
+  "sha": "80fc3e85167531c09eea9fb9d11c5b95126946b5"
+ },
+ "paintbrush": {
+  "file": "paintbrush",
+  "text": "el pincel",
+  "sha": "8caed4ce219b9dd808be4f2f5653c6078870db6d"
+ },
+ "painting": {
+  "file": "painting",
+  "text": "el cuadro",
+  "sha": "b24a17fc2dfe617b05462913a215dfa3195b8eac"
+ },
+ "palette": {
+  "file": "palette",
+  "text": "la paleta",
+  "sha": "2fbf7136474a2def44f69c2d9eea891c26b353a1"
+ },
+ "palm tree": {
+  "file": "palm_tree",
+  "text": "la palmera",
+  "sha": "32dde25907b4b4e8397e74d0f933646bddf1ac02"
+ },
+ "panda": {
+  "file": "panda",
+  "text": "el panda",
+  "sha": "be63c7b24be443fba33e7203584b5f68f1f268ee"
+ },
+ "pants": {
+  "file": "pants",
+  "text": "los pantalones",
+  "sha": "8782546f0ced9ea7dffff92af6cff4883633d9aa"
+ },
+ "park": {
+  "file": "park",
+  "text": "el parque",
+  "sha": "2b7f376f68f87ba8f85362c7eeee20e5b0fd0407"
+ },
+ "parking": {
+  "file": "parking",
+  "text": "el estacionamiento",
+  "sha": "74b842bcabe9055b54934690b66a28e673dd403e"
+ },
+ "passport": {
+  "file": "passport",
+  "text": "el pasaporte",
+  "sha": "7acca396ce10c1e327e69296f81610c453d83453"
+ },
+ "pasta": {
+  "file": "pasta",
+  "text": "la pasta",
+  "sha": "bc7f02b9d8899cda1e7e35c89d87a1e6d9166029"
+ },
+ "path": {
+  "file": "path",
+  "text": "el sendero",
+  "sha": "5303586144c3914e3548c4aa104924024aa746d7"
+ },
+ "patient chart": {
+  "file": "patient_chart",
+  "text": "el expediente médico",
+  "sha": "b0454ce6d620c3be7e3a4d5ce263ba104c89e351"
+ },
+ "patient room": {
+  "file": "patient_room",
+  "text": "la habitación del paciente",
+  "sha": "f0181ede712ffc8e32729c5333317616c2a1bddc"
+ },
+ "peach": {
+  "file": "peach",
+  "text": "el durazno",
+  "sha": "fe945d2297e46fe88d28b7bd721dd44d3c4e3f45"
+ },
+ "pear": {
+  "file": "pear",
+  "text": "la pera",
+  "sha": "40d1a088403278296aacd68e169663a3eecc5f54"
+ },
+ "pencil": {
+  "file": "pencil",
+  "text": "el lápiz",
+  "sha": "4c9b93e050507899bb515d273864aac3dfce1686"
+ },
+ "pencil holder": {
+  "file": "pencil_holder",
+  "text": "el portalápices",
+  "sha": "d59ea5d2575c81a2666f813546ce822915187b78"
+ },
+ "pepper": {
+  "file": "pepper",
+  "text": "la pimienta",
+  "sha": "5c565048ca7b01f77e816e972faa576db7432b5e"
+ },
+ "perfume": {
+  "file": "perfume",
+  "text": "el perfume",
+  "sha": "e67ced6e1ec6915a7fcd35ab2e0194fcbe3a9ebf"
+ },
+ "person": {
+  "file": "person",
+  "text": "la persona",
+  "sha": "cf86e3bad7be3fd14732fbc74750f3cf16675969"
+ },
+ "pew": {
+  "file": "pew",
+  "text": "el banco de iglesia",
+  "sha": "6017666eeee938e043d46e9666c8e565ae303e98"
+ },
+ "pharmacy": {
+  "file": "pharmacy",
+  "text": "la farmacia",
+  "sha": "968ab61232b6cca65ebc39104dc3bbadf069a979"
+ },
+ "phone": {
+  "file": "phone",
+  "text": "el teléfono",
+  "sha": "137d672d4f4807fa62984116d88c1bd89a5ee6ae"
+ },
+ "piano": {
+  "file": "piano",
+  "text": "el piano",
+  "sha": "b1d44b572ef40ff976c7c6f7ed1f7b15654fa87e"
+ },
+ "pig": {
+  "file": "pig",
+  "text": "el cerdo",
+  "sha": "dee521f2167eac9501dff9b642c9c663abfc9fb5"
+ },
+ "pillow": {
+  "file": "pillow",
+  "text": "la almohada",
+  "sha": "532f48a8c60a1f0094def3f9f4ddeebc4a0c2235"
+ },
+ "pilot": {
+  "file": "pilot",
+  "text": "el piloto / la piloto",
+  "sha": "cdddb8cf3fd03e65eb3db633db1976eb5a14e0b8"
+ },
+ "pine": {
+  "file": "pine",
+  "text": "el pino",
+  "sha": "dee49f27ef69ad5b4098bbda0b146393b91abff8"
+ },
+ "pineapple": {
+  "file": "pineapple",
+  "text": "la piña",
+  "sha": "892082309d693178dc55a347e28eb3099476be90"
+ },
+ "pink": {
+  "file": "pink",
+  "text": "rosa",
+  "sha": "125020f96b52af4d9ecde35d83bf02b84b9ba117"
+ },
+ "pizza": {
+  "file": "pizza",
+  "text": "la pizza",
+  "sha": "d3832a1b89f41d3061ab241025ee030b35d19412"
+ },
+ "piñata": {
+  "file": "pi_ata",
+  "text": "la piñata",
+  "sha": "8d4d24f09d94ee53a59b2e1e5df7e5c3eef97602"
+ },
+ "plant": {
+  "file": "plant",
+  "text": "la planta",
+  "sha": "f647903d81c6bbbad1396c6d9fdfdd5d7467be17"
+ },
+ "planter": {
+  "file": "planter",
+  "text": "la jardinera",
+  "sha": "c67750c2bed16725bae4e329921af37ff510f6fe"
+ },
+ "plate": {
+  "file": "plate",
+  "text": "el plato",
+  "sha": "d44f88d7b907b0cc907ce09005aaae0651c0f00b"
+ },
+ "play tent": {
+  "file": "play_tent",
+  "text": "la carpa de juegos",
+  "sha": "6431a3770f2f28bbbacaefd6530143a8aaf6260f"
+ },
+ "playground": {
+  "file": "playground",
+  "text": "la zona de juegos",
+  "sha": "0b5d42f60418fa4f274cfa2229c335ccf5600d8d"
+ },
+ "police car": {
+  "file": "police_car",
+  "text": "la patrulla",
+  "sha": "fe57be2eab2f6d887719de287fb671f8e3cbf3ba"
+ },
+ "police officer": {
+  "file": "police_officer",
+  "text": "el policía / la policía",
+  "sha": "bb906a3acc43c84348b7f678f4075f21c0a950e8"
+ },
+ "police station": {
+  "file": "police_station",
+  "text": "la estación de policía",
+  "sha": "aa41573b699b68cbba0223b7867ea7decd80d851"
+ },
+ "pork": {
+  "file": "pork",
+  "text": "la carne de cerdo",
+  "sha": "d6458faf9cdb307014c32c51fd8e7bfddc124162"
+ },
+ "poster": {
+  "file": "poster",
+  "text": "el cartel",
+  "sha": "1df7714f19d45ab8514a77f32d798501aca08aba"
+ },
+ "pot": {
+  "file": "pot",
+  "text": "la olla",
+  "sha": "0775d0c8a2550b5fb1254b88948867dbd25851cb"
+ },
+ "potato": {
+  "file": "potato",
+  "text": "la papa",
+  "sha": "09b02629c6e74fa3297aef9a5ef19a2efae1f0e4"
+ },
+ "price": {
+  "file": "price",
+  "text": "el precio",
+  "sha": "d8f4224ec0c6b7fa53a774f07f07c2076eb666de"
+ },
+ "price tag": {
+  "file": "price_tag",
+  "text": "la etiqueta de precio",
+  "sha": "593845cd47d8db9541bcaf9975d1c2c666f21efc"
+ },
+ "produce": {
+  "file": "produce",
+  "text": "las frutas y verduras",
+  "sha": "7d01f508c0c9cad386d63dd7b22f282bf9811e17"
+ },
+ "produce stand": {
+  "file": "produce_stand",
+  "text": "el puesto de frutas y verduras",
+  "sha": "f0a4824062168acea2a73845320a3e1b1d40a1ce"
+ },
+ "prosthetic leg": {
+  "file": "prosthetic_leg",
+  "text": "la prótesis de pierna",
+  "sha": "5747e3fac18d6cf234efa2a3951f20f314351912"
+ },
+ "purple": {
+  "file": "purple",
+  "text": "morado",
+  "sha": "18615c15c3e85ee5512ff0b76e1ab90ffd2237be"
+ },
+ "quesadilla": {
+  "file": "quesadilla",
+  "text": "la quesadilla",
+  "sha": "68a270d7a8b2b9f9d7d6396ef70d460c7fb78477"
+ },
+ "queue": {
+  "file": "queue",
+  "text": "la fila",
+  "sha": "6ec4fcd55b7dad3b33b93820c2d0ca91dfc70728"
+ },
+ "quiet": {
+  "file": "quiet",
+  "text": "silencioso",
+  "sha": "23ef47263bbca47b3984ac8a948b961aaf9d1be1"
+ },
+ "rabbit": {
+  "file": "rabbit",
+  "text": "el conejo",
+  "sha": "80d2d8d164eb632cee8371cfd6869d6d3b9a9b71"
+ },
+ "radar": {
+  "file": "radar",
+  "text": "el radar",
+  "sha": "477bdffe114174b0d924fa4cdc805cf6959d3d2f"
+ },
+ "radio": {
+  "file": "radio",
+  "text": "la radio",
+  "sha": "fb04be71c31256c0c70eeb8d05fd27924f641d47"
+ },
+ "rake": {
+  "file": "rake",
+  "text": "el rastrillo",
+  "sha": "e4d2893d4b419c4bc3db744bb2aeec57c889ec89"
+ },
+ "reading table": {
+  "file": "reading_table",
+  "text": "la mesa de lectura",
+  "sha": "e42d3bf69b2c9de9b454e06d56341b6a86fb6aa3"
+ },
+ "receipt": {
+  "file": "receipt",
+  "text": "el recibo",
+  "sha": "7465a5f5c4f3f17b8a5f45fd1ad1d59052d7ce3e"
+ },
+ "reception desk": {
+  "file": "reception_desk",
+  "text": "el mostrador de recepción",
+  "sha": "556662a6c26b72ee7cf1b5e0e74f7c90a48d1bd8"
+ },
+ "red": {
+  "file": "red",
+  "text": "rojo",
+  "sha": "37b57ae2bc1fea031415bd148d29dbfb83a58c17"
+ },
+ "red panda": {
+  "file": "red_panda",
+  "text": "el panda rojo",
+  "sha": "051958efbbc1e88d72f2b80e449b694925135071"
+ },
+ "red-haired": {
+  "file": "red_haired",
+  "text": "pelirrojo",
+  "sha": "6da1075acb151669487a5995a6f04b2bafc0f2a5"
+ },
+ "reflex hammer": {
+  "file": "reflex_hammer",
+  "text": "el martillo de reflejos",
+  "sha": "24fad4fa5cb0fb72b1b44af4e2a2193e8d2d3e40"
+ },
+ "refreshing": {
+  "file": "refreshing",
+  "text": "refrescante",
+  "sha": "fbcfd2f909db65f43499489de8a0a67a2dfafb40"
+ },
+ "refrigerator": {
+  "file": "refrigerator",
+  "text": "el refrigerador",
+  "sha": "d822e30dc5337a2d893e559a08e23153b2538817"
+ },
+ "report": {
+  "file": "report",
+  "text": "el informe",
+  "sha": "3b9038d68032ba7283418a01ca887e31b92c8cdd"
+ },
+ "restaurant": {
+  "file": "restaurant",
+  "text": "el restaurante",
+  "sha": "2845de38422277aaf488ef9dd538ab01fe560500"
+ },
+ "rhinoceros": {
+  "file": "rhinoceros",
+  "text": "el rinoceronte",
+  "sha": "ca9a3ea09b094b3eddd72f1e239c86b4d57a9699"
+ },
+ "rice": {
+  "file": "rice",
+  "text": "el arroz",
+  "sha": "c652794080c8c5cb376af11b09cc16dd37b3a583"
+ },
+ "rice cooker": {
+  "file": "rice_cooker",
+  "text": "la arrocera",
+  "sha": "5c2458c91ea0bd2979d92bf58a0d702831fb0242"
+ },
+ "right": {
+  "file": "right",
+  "text": "a la derecha",
+  "sha": "02c9220b198446b014478e11e3d8daa4176847e5"
+ },
+ "road": {
+  "file": "road",
+  "text": "la carretera",
+  "sha": "489ba9d1740394e95121d869b9a5a3929530edae"
+ },
+ "roast lamb": {
+  "file": "roast_lamb",
+  "text": "el cordero asado",
+  "sha": "c41ac00d950d13627c410cbf99dd883fec3b105b"
+ },
+ "rock": {
+  "file": "rock",
+  "text": "la roca",
+  "sha": "2ba8a3c6ba25c3ee3c2cec93b02203fac3b335d6"
+ },
+ "rolling pin": {
+  "file": "rolling_pin",
+  "text": "el rodillo",
+  "sha": "8e4e8d26e797b85616e94bb1cf917412ca46837e"
+ },
+ "roof": {
+  "file": "roof",
+  "text": "el techo",
+  "sha": "cea8c90ac24cfc6824f27fb6e4b3714e604a1741"
+ },
+ "rose bush": {
+  "file": "rose_bush",
+  "text": "el rosal",
+  "sha": "5a1849cc843e1dd1a9cb027900ad67107590bd20"
+ },
+ "rough": {
+  "file": "rough",
+  "text": "áspero",
+  "sha": "e91c83de0a7835996a19cb84bd4329993d2cd124"
+ },
+ "rug": {
+  "file": "rug",
+  "text": "la alfombra",
+  "sha": "c1acaec15c8ebfe4f7ed67cb16ba594a10f9347f"
+ },
+ "ruler": {
+  "file": "ruler",
+  "text": "la regla",
+  "sha": "33b0d75b2a986cff940bd7e1cd6a921621134f25"
+ },
+ "salad": {
+  "file": "salad",
+  "text": "la ensalada",
+  "sha": "cb18e44db3f67d340e8f64c4dfa03e4204143da5"
+ },
+ "salesperson": {
+  "file": "salesperson",
+  "text": "el vendedor / la vendedora",
+  "sha": "7c2a0bf270e84bd91d6d7312e7204b02825d48be"
+ },
+ "salsa": {
+  "file": "salsa",
+  "text": "la salsa",
+  "sha": "f64003c468f9f294cc5ac79275748840eb223457"
+ },
+ "salt": {
+  "file": "salt",
+  "text": "la sal",
+  "sha": "33855eb9d28aa5f5f041b25e74f0b7f1343cb512"
+ },
+ "salty": {
+  "file": "salty",
+  "text": "salado",
+  "sha": "00a94c03483b6719ea85a10af67e991a660064ad"
+ },
+ "sand": {
+  "file": "sand",
+  "text": "la arena",
+  "sha": "fafdc5e6d24bc6f221ac6e7c850d2de679e69ca5"
+ },
+ "sandbox": {
+  "file": "sandbox",
+  "text": "el arenero",
+  "sha": "4c241c376402bd009a79f7e9dd3dd6c8ecce6bce"
+ },
+ "saturday": {
+  "file": "saturday",
+  "text": "sábado",
+  "sha": "16217f4a34a0f8dcddef7d71ab6a27e267c35527"
+ },
+ "sausage": {
+  "file": "sausage",
+  "text": "la salchicha",
+  "sha": "ff302a08162a965e0611fa5cf248b0d5b3c6fbba"
+ },
+ "scale": {
+  "file": "scale",
+  "text": "la báscula",
+  "sha": "436c0d8133fe75111d85c6f1edd64d3a8a950169"
+ },
+ "scanner": {
+  "file": "scanner",
+  "text": "el escáner",
+  "sha": "5e1a151ca2bba81131cffa0a76b5ddbbb87fd626"
+ },
+ "scarf": {
+  "file": "scarf",
+  "text": "la bufanda",
+  "sha": "2b153a5ed2d51e190d4f86eff2fad1d469ad8154"
+ },
+ "schedule": {
+  "file": "schedule",
+  "text": "el horario",
+  "sha": "d2049dc9a1651d48132cb00e4db84057b09b8645"
+ },
+ "school": {
+  "file": "school",
+  "text": "la escuela",
+  "sha": "5daf53e17a3ab42c03ccf56341d0d08bd231ef1c"
+ },
+ "school bus": {
+  "file": "school_bus",
+  "text": "el autobús escolar",
+  "sha": "ccc9ba2dab748dc1d19aac7b5aff6fe31603fe90"
+ },
+ "scissors": {
+  "file": "scissors",
+  "text": "las tijeras",
+  "sha": "7d94b51d557829417210c3f5b6e026c44c025f61"
+ },
+ "screen": {
+  "file": "screen",
+  "text": "la pantalla",
+  "sha": "6321b706014f9a021225fa70c00688ac3832389f"
+ },
+ "seat": {
+  "file": "seat",
+  "text": "el asiento",
+  "sha": "55b0e3068ca6c5f594c69dddf4b97daee68f2287"
+ },
+ "seesaw": {
+  "file": "seesaw",
+  "text": "el subibaja",
+  "sha": "752408cc22fcf9d686b154b6effba22cfb5e24ed"
+ },
+ "september": {
+  "file": "september",
+  "text": "septiembre",
+  "sha": "fd1286499111fecace5453c6888176158b628c32"
+ },
+ "service window": {
+  "file": "service_window",
+  "text": "la ventanilla",
+  "sha": "e938e13d50d2b7e9ac2c25ad82db9c32bf93f689"
+ },
+ "shampoo": {
+  "file": "shampoo",
+  "text": "el champú",
+  "sha": "a3574074d4364e6d77304ffde0756ea6cd121878"
+ },
+ "sheep": {
+  "file": "sheep",
+  "text": "la oveja",
+  "sha": "fac3a06a03dc542a69cd80369ba1de11cf1622ac"
+ },
+ "sheet": {
+  "file": "sheet",
+  "text": "la sábana",
+  "sha": "6f6edb1f8e1af5d0d520a3c180cd984ac6f58460"
+ },
+ "sheet music": {
+  "file": "sheet_music",
+  "text": "la partitura",
+  "sha": "5cc5982acba019f3262f341e9de013c3818a3c86"
+ },
+ "shelf": {
+  "file": "shelf",
+  "text": "el estante",
+  "sha": "7c6f106b2a9352f3c667fbfcc6321611a073efc4"
+ },
+ "shelter": {
+  "file": "shelter",
+  "text": "el refugio",
+  "sha": "a5bd0226366f1754b4131414ff2ff2a1f2d7be28"
+ },
+ "shiny": {
+  "file": "shiny",
+  "text": "brillante",
+  "sha": "dbddd65644d728deda85ef6e7297920178491da0"
+ },
+ "shirt": {
+  "file": "shirt",
+  "text": "la camisa",
+  "sha": "83dd9f58d9cb6859c5a591428dfbbd5ccf8a2f59"
+ },
+ "shoes": {
+  "file": "shoes",
+  "text": "los zapatos",
+  "sha": "29c17a706a8f4668b73ae6339204e78a8e68e258"
+ },
+ "shopping bag": {
+  "file": "shopping_bag",
+  "text": "la bolsa de compras",
+  "sha": "9df88f59940b5935de92cc4890e08a2a144ba783"
+ },
+ "shopping cart": {
+  "file": "shopping_cart",
+  "text": "el carrito de compras",
+  "sha": "629e6eec4de3b329c8437a45b4cbbfc608683962"
+ },
+ "short (height)": {
+  "file": "short_height",
+  "text": "bajo",
+  "sha": "b6fe3bcbbba64d6eac2808f85cad13301576b871"
+ },
+ "short (length)": {
+  "file": "short_length",
+  "text": "corto",
+  "sha": "6a14b4c66f9932306a8752b16147c4f93c9bc773"
+ },
+ "shorts": {
+  "file": "shorts",
+  "text": "los shorts",
+  "sha": "f37aa9c16b796bddcbe44cc0b098a876e46f74fe"
+ },
+ "shoulder": {
+  "file": "shoulder",
+  "text": "el hombro",
+  "sha": "2f8ba5f8d2c1531d00c0533ee1279b66c3b40ddc"
+ },
+ "shovel": {
+  "file": "shovel",
+  "text": "la pala",
+  "sha": "f28e046fd941420f88a961015b5e7192b6131bd0"
+ },
+ "shower curtain": {
+  "file": "shower_curtain",
+  "text": "la cortina de baño",
+  "sha": "81f0615ea16c0aa2e104da43a326685f0138ef0b"
+ },
+ "shrimp": {
+  "file": "shrimp",
+  "text": "el camarón",
+  "sha": "ee2ea6f8abdef230e58f05f569982e24fb6452ab"
+ },
+ "shrub": {
+  "file": "shrub",
+  "text": "el arbusto",
+  "sha": "153f35437af444a9903a6b1909e80370d42c2c7f"
+ },
+ "side table": {
+  "file": "side_table",
+  "text": "la mesa auxiliar",
+  "sha": "07090e0ae3e83d21f11b397f6389aab4c3671814"
+ },
+ "sideboard": {
+  "file": "sideboard",
+  "text": "el aparador",
+  "sha": "d1114badad317aaa277216f3485530848eb68f62"
+ },
+ "sidewalk": {
+  "file": "sidewalk",
+  "text": "la banqueta",
+  "sha": "d61a5ee677af253f4542819ee978d43cb0411de8"
+ },
+ "sign": {
+  "file": "sign",
+  "text": "el letrero",
+  "sha": "63faa417a0561cc846117cc74d66e96086fc5383"
+ },
+ "sink": {
+  "file": "sink",
+  "text": "el fregadero",
+  "sha": "289eeed7da15a78c93efea610e7b96310cb9a0c6"
+ },
+ "sister": {
+  "file": "sister",
+  "text": "la hermana",
+  "sha": "3251015ff3a57585ab7dc9dfd03e83b7c13d9f21"
+ },
+ "skateboard": {
+  "file": "skateboard",
+  "text": "la patineta",
+  "sha": "850172a3c704e473abce4965d8f05746bf6d7199"
+ },
+ "ski boots": {
+  "file": "ski_boots",
+  "text": "las botas de esquí",
+  "sha": "5aec495ef298a72d48ddfed674995a44d9d945b1"
+ },
+ "ski goggles": {
+  "file": "ski_goggles",
+  "text": "los goggles",
+  "sha": "408bd445f39214f802c6ab79dd1476fb64f67f90"
+ },
+ "ski poles": {
+  "file": "ski_poles",
+  "text": "los bastones de esquí",
+  "sha": "df6f19735bee22302b1165f522672a19b2dee0fd"
+ },
+ "skirt": {
+  "file": "skirt",
+  "text": "la falda",
+  "sha": "347c6baa92ca35f55a96b28d5a5ee4cb040464cb"
+ },
+ "skis": {
+  "file": "skis",
+  "text": "los esquís",
+  "sha": "a275106b87dd86fcf3d5af7a3717fce356d72aed"
+ },
+ "sled": {
+  "file": "sled",
+  "text": "el trineo",
+  "sha": "5ce11746ae601dd5de9dc345552b4048f894bbaa"
+ },
+ "sleeve": {
+  "file": "sleeve",
+  "text": "la manga",
+  "sha": "2e6496d151866e3e7e21ed90742ad3ad28f0dec8"
+ },
+ "slide": {
+  "file": "slide",
+  "text": "la resbaladilla",
+  "sha": "b265ab4c702bcecdbe845a882b7a928232efc98b"
+ },
+ "slot": {
+  "file": "slot",
+  "text": "la ranura",
+  "sha": "094febc68a5f893171101e5493c3fc8fcb572407"
+ },
+ "small": {
+  "file": "small",
+  "text": "pequeño",
+  "sha": "f282a4c25d17f1fa65ed3e47b35d5cc826413e50"
+ },
+ "small intestine": {
+  "file": "small_intestine",
+  "text": "el intestino delgado",
+  "sha": "7f793d80d4f6fb1c615154a4934aca7274ad93a0"
+ },
+ "smartphone": {
+  "file": "smartphone",
+  "text": "el celular",
+  "sha": "da5d9af3fd214c59ff1c58daf0f932dc84624a53"
+ },
+ "smartwatch": {
+  "file": "smartwatch",
+  "text": "el reloj inteligente",
+  "sha": "4ddf8dcd7bcfc8618cebfc604921db4b483cc5ad"
+ },
+ "smooth": {
+  "file": "smooth",
+  "text": "liso",
+  "sha": "19a2e3550d6d61361b34209087cb39e63ed80f4e"
+ },
+ "snack": {
+  "file": "snack",
+  "text": "la botana",
+  "sha": "f6efdc0bd642286c236328d0348549968c1e351e"
+ },
+ "snake": {
+  "file": "snake",
+  "text": "la serpiente",
+  "sha": "7bec5b87e402d4a6a4e755aaccfe7f235fc43b74"
+ },
+ "sneakers": {
+  "file": "sneakers",
+  "text": "los tenis",
+  "sha": "9206ccc1b9b0477145bd1238e950dd4696b1b5d8"
+ },
+ "snowboard": {
+  "file": "snowboard",
+  "text": "la tabla de snowboard",
+  "sha": "eba998bfe1a04346afdb8313725875ec84553339"
+ },
+ "soap": {
+  "file": "soap",
+  "text": "el jabón",
+  "sha": "06d1e8155ea9108a7c8e78d379ebaa50d5b691b3"
+ },
+ "soccer": {
+  "file": "soccer",
+  "text": "el fútbol",
+  "sha": "e7378e173b38b653b43742fab49842bf547b4e26"
+ },
+ "soccer ball": {
+  "file": "soccer_ball",
+  "text": "el balón de fútbol",
+  "sha": "4a15dc5c0cd98fc00941d5b02cda46d60ea14a66"
+ },
+ "soda": {
+  "file": "soda",
+  "text": "el refresco",
+  "sha": "b6474cb7837e91f75f06fc2d809c4ed692fc1209"
+ },
+ "sofa": {
+  "file": "sofa",
+  "text": "el sofá",
+  "sha": "7b0020459c79535080189d3d9755b3b844a03dcc"
+ },
+ "soft": {
+  "file": "soft",
+  "text": "blando",
+  "sha": "2326d0e1ae107f01a197e797d34a78b8a5c65377"
+ },
+ "soil": {
+  "file": "soil",
+  "text": "la tierra",
+  "sha": "4389907201f05e15b4b3d565adff8cd73efe4900"
+ },
+ "son": {
+  "file": "son",
+  "text": "el hijo",
+  "sha": "722f03faf15363e5fc4509cb7dfbcee6c10a50fa"
+ },
+ "soon": {
+  "file": "soon",
+  "text": "pronto",
+  "sha": "b997945d413848243f43204bfbbf622d208cf269"
+ },
+ "soup": {
+  "file": "soup",
+  "text": "la sopa",
+  "sha": "e62605f54d29575cfc5bd21bfb1e0bacce3462c9"
+ },
+ "sour": {
+  "file": "sour",
+  "text": "ácido",
+  "sha": "c80c1268c05dc98023063e0787163142a8cf8415"
+ },
+ "south korea": {
+  "file": "south_korea",
+  "text": "Corea del Sur",
+  "sha": "9438760afe715d885b53b6135c58ed5313c88707"
+ },
+ "spain": {
+  "file": "spain",
+  "text": "España",
+  "sha": "fce0a63eac0d7ae7d24c5ffc3a4f0c7fa32e160f"
+ },
+ "sparkling water": {
+  "file": "sparkling_water",
+  "text": "el agua con gas",
+  "sha": "ee5e783d8c0bfd55d48c3241b2be818abaacba8b"
+ },
+ "speaker": {
+  "file": "speaker",
+  "text": "la bocina",
+  "sha": "4f1d4521c982f9a7e9a8da151be9b7b3ead45465"
+ },
+ "spicy": {
+  "file": "spicy",
+  "text": "picante",
+  "sha": "a28b0e6cfa05d233b9a991a085a480372dee985e"
+ },
+ "spicy wings": {
+  "file": "spicy_wings",
+  "text": "las alitas picantes",
+  "sha": "f5952de84d7c91a80d705a79d49ea103f95b35d8"
+ },
+ "sponge": {
+  "file": "sponge",
+  "text": "la esponja",
+  "sha": "8466a86804acc99581fd759f9a6066a6496c79e0"
+ },
+ "spoon": {
+  "file": "spoon",
+  "text": "la cuchara",
+  "sha": "5d8f3b7d2febaf1c9114ead848de38eb152667e7"
+ },
+ "sport": {
+  "file": "sport",
+  "text": "el deporte",
+  "sha": "7d5b4ca3ab1781c11985e98c6c3b7e1ebbf21a9b"
+ },
+ "sports store": {
+  "file": "sports_store",
+  "text": "la tienda de deportes",
+  "sha": "40eb1235fe136f696887cc2c8c30677bb1a0f755"
+ },
+ "square": {
+  "file": "square",
+  "text": "el cuadrado",
+  "sha": "05bf840140025614c12f5aa765674b576fb4d609"
+ },
+ "stairs": {
+  "file": "stairs",
+  "text": "las escaleras",
+  "sha": "5aa5e46fa4ed8201b5896fba6572201ecb6df57b"
+ },
+ "stand": {
+  "file": "stand",
+  "text": "el soporte",
+  "sha": "f31332b2e956b312db5b6a668691cde97f80b0c7"
+ },
+ "star": {
+  "file": "star",
+  "text": "la estrella",
+  "sha": "849ed28876b3a8b51e32bda2a5a6b3f9f7bd35c3"
+ },
+ "station": {
+  "file": "station",
+  "text": "la estación de tren",
+  "sha": "e9b54fe45ee65f183dc6b6167ad7bf9ddb14fab0"
+ },
+ "statue": {
+  "file": "statue",
+  "text": "la estatua de George Washington",
+  "sha": "9d18c912f4959d34e1873815abf615761d8ab3ef"
+ },
+ "steak": {
+  "file": "steak",
+  "text": "el bistec",
+  "sha": "d42f95ea67299e5f2bf6013e9d238eb3f3ef5f0d"
+ },
+ "step": {
+  "file": "step",
+  "text": "el escalón",
+  "sha": "b2543d8fd575fbd75b7c1cad9ad09e3c7b55dd54"
+ },
+ "stethoscope": {
+  "file": "stethoscope",
+  "text": "el estetoscopio",
+  "sha": "92372ee9a08463c887e63718854e0caeaf07713e"
+ },
+ "stomach": {
+  "file": "stomach",
+  "text": "el estómago",
+  "sha": "c089037f686c285ebc8dd0cfb18edf05224797da"
+ },
+ "stone": {
+  "file": "stone",
+  "text": "la piedra",
+  "sha": "8bf9a9916ce2dfb3c40ab32079959f459e855ad0"
+ },
+ "stool": {
+  "file": "stool",
+  "text": "el taburete",
+  "sha": "136c8d5e763ca76d187267fa31f0a3d5e80d5c74"
+ },
+ "stove": {
+  "file": "stove",
+  "text": "la estufa",
+  "sha": "7fc3263aff1c10727f46ef34f33a901e0438a711"
+ },
+ "straight ahead": {
+  "file": "straight_ahead",
+  "text": "todo derecho",
+  "sha": "ba00d8f15033da83f0501b90253ff16cc91a9b7d"
+ },
+ "strawberry": {
+  "file": "strawberry",
+  "text": "la fresa",
+  "sha": "069b4f97d4a04a7d7cbfca3bc236ac44b1bf03aa"
+ },
+ "street": {
+  "file": "street",
+  "text": "la calle",
+  "sha": "ac8a75a0c2792872cf3f794a04ef2a985074dab8"
+ },
+ "street sign": {
+  "file": "street_sign",
+  "text": "el letrero de la calle",
+  "sha": "6e720d41cc50cda4e61e9cd864654ab1861a5590"
+ },
+ "streetlight": {
+  "file": "streetlight",
+  "text": "el poste de luz",
+  "sha": "d4f54318b0aff3adc2193ee07a3c034ff5c48278"
+ },
+ "stretcher": {
+  "file": "stretcher",
+  "text": "la camilla",
+  "sha": "6adac8a4dd88b6c4885ddd547659bba8abe544e0"
+ },
+ "suitcase": {
+  "file": "suitcase",
+  "text": "la maleta",
+  "sha": "90aa3488cfa1ab210e438a205dda90cf57de1cc8"
+ },
+ "sunday": {
+  "file": "sunday",
+  "text": "domingo",
+  "sha": "b02dd3b7ab6c133ae459501a11d5f4bb3ffb4523"
+ },
+ "sunglasses": {
+  "file": "sunglasses",
+  "text": "los lentes de sol",
+  "sha": "9cb1fea6228d509b600386eb40cb6426d72af2e7"
+ },
+ "supermarket": {
+  "file": "supermarket",
+  "text": "el supermercado",
+  "sha": "a239b468a24ec1ee06ba71a04bddc82674504b89"
+ },
+ "supply": {
+  "file": "supply",
+  "text": "el suministro",
+  "sha": "03503da80407827e2a5a093431c49d390a6083a6"
+ },
+ "surgical mask": {
+  "file": "surgical_mask",
+  "text": "la mascarilla quirúrgica",
+  "sha": "cd5e08c0b907223a34bd4ca5039898b127851281"
+ },
+ "suspect": {
+  "file": "suspect",
+  "text": "el sospechoso / la sospechosa",
+  "sha": "e24221f02390491d194bafdb8ac728ba9603ba55"
+ },
+ "sweater": {
+  "file": "sweater",
+  "text": "el suéter",
+  "sha": "44c6160c1ad08e7222f562d77fc1d21161b7ca9a"
+ },
+ "sweet": {
+  "file": "sweet",
+  "text": "dulce",
+  "sha": "4fdf6145d5048076c3ea41844313a2063ee2c71d"
+ },
+ "swimming pool": {
+  "file": "swimming_pool",
+  "text": "la alberca",
+  "sha": "9dc01f0ebfe87139a971ea208d97114c859a3425"
+ },
+ "swing": {
+  "file": "swing",
+  "text": "el columpio",
+  "sha": "b7e2b6bbfee6c100fe48ec6de5a666ebd2ca5bdb"
+ },
+ "syringe": {
+  "file": "syringe",
+  "text": "la jeringa",
+  "sha": "cce7b763f5efcdb311382aa401dec9b5f5d8c1b7"
+ },
+ "table": {
+  "file": "table",
+  "text": "la mesa",
+  "sha": "78ec69e2a41ecd03375f0bdea6ff1fe19b31b527"
+ },
+ "tablecloth": {
+  "file": "tablecloth",
+  "text": "el mantel",
+  "sha": "ebe31d08e43debeeb7513c65159d3f12f5953c5f"
+ },
+ "tablet": {
+  "file": "tablet",
+  "text": "la tablet",
+  "sha": "a928c54371f915f3d2acd046d4a58bfbe6d85457"
+ },
+ "taco": {
+  "file": "taco",
+  "text": "el taco",
+  "sha": "f3a45277cba8ed4f6b9e9956148258b81234d837"
+ },
+ "tall": {
+  "file": "tall",
+  "text": "alto",
+  "sha": "d524a8eac71857e7384eefbe1aae2ab4876974f0"
+ },
+ "taxi": {
+  "file": "taxi",
+  "text": "el taxi",
+  "sha": "63132b20f2a30ae82d09003cc9c97f0ef2d17eb3"
+ },
+ "tea": {
+  "file": "tea",
+  "text": "el té",
+  "sha": "02cc29221f1ba7e4f858c3d26ed2450855a28563"
+ },
+ "teacher": {
+  "file": "teacher",
+  "text": "el profesor / la profesora",
+  "sha": "eb4d1083e28f36482f1c291e55f3ca078b2535c9"
+ },
+ "teapot": {
+  "file": "teapot",
+  "text": "la tetera",
+  "sha": "730410ea2f3c2fd233f8feaa97d81f8778c25b30"
+ },
+ "tech": {
+  "file": "tech",
+  "text": "la tecnología",
+  "sha": "ae56a9ac33a159141a9dc755ce25f2fe1695914e"
+ },
+ "television": {
+  "file": "television",
+  "text": "la televisión",
+  "sha": "c119e7bad413baae350c2f799837ac32484bad03"
+ },
+ "teller counter": {
+  "file": "teller_counter",
+  "text": "el mostrador bancario",
+  "sha": "b927ec2e572bc8f2d1fb47048e5f475bc0d12bb2"
+ },
+ "tennis": {
+  "file": "tennis",
+  "text": "el tenis",
+  "sha": "94086282924ff2d286addd6218284ccbb33a646b"
+ },
+ "tennis racket": {
+  "file": "tennis_racket",
+  "text": "la raqueta de tenis",
+  "sha": "0bbe990864637ffb3b06cb4eb9b9ca852fc39fb0"
+ },
+ "terminal": {
+  "file": "terminal",
+  "text": "la terminal",
+  "sha": "fc1558058023b22605cb2f8f85fc2d9a667b8a20"
+ },
+ "thermometer": {
+  "file": "thermometer",
+  "text": "el termómetro",
+  "sha": "42ce05bcad986e994f9048d7e460e58c4f4db1f9"
+ },
+ "this afternoon": {
+  "file": "this_afternoon",
+  "text": "esta tarde",
+  "sha": "e61191e22be7819499f36fd84d6161c8f792176a"
+ },
+ "this month": {
+  "file": "this_month",
+  "text": "este mes",
+  "sha": "d3fec6be7bd19b4ebe1f80b98b69fc11c3b27f22"
+ },
+ "this morning": {
+  "file": "this_morning",
+  "text": "esta mañana",
+  "sha": "e69730e0a9268bf8517353e7dfeeaf53df769142"
+ },
+ "this week": {
+  "file": "this_week",
+  "text": "esta semana",
+  "sha": "4c98d9ac57f1a4ce24338465af545e7be55f10a6"
+ },
+ "this year": {
+  "file": "this_year",
+  "text": "este año",
+  "sha": "d04e4844569aa26d40dcca3af4e8a1195e0fffa0"
+ },
+ "thursday": {
+  "file": "thursday",
+  "text": "jueves",
+  "sha": "1f5f9103af9c888ee57e9cc46a8137255a38b226"
+ },
+ "ticket": {
+  "file": "ticket",
+  "text": "el boleto",
+  "sha": "e4a2217efc9126b4fec8ce7458c1a40b71780e14"
+ },
+ "tiger": {
+  "file": "tiger",
+  "text": "el tigre",
+  "sha": "5f9721f20243e07acfe2237f6ce457bf2f89a843"
+ },
+ "tile": {
+  "file": "tile",
+  "text": "el azulejo",
+  "sha": "4e7c442609d3f263c47f313f3ab2059ad8e52d36"
+ },
+ "tiramisu": {
+  "file": "tiramisu",
+  "text": "el tiramisú",
+  "sha": "44d061ce63be4137c59122eafe930fc55098da11"
+ },
+ "tire": {
+  "file": "tire",
+  "text": "la llanta",
+  "sha": "ae51fbb100e3119765e936e936eed1346a51fb1b"
+ },
+ "to arrive": {
+  "file": "to_arrive",
+  "text": "llegar",
+  "sha": "fd5ad2b669ff8b257eb2b37ebec6d4887aa07a19"
+ },
+ "to be": {
+  "file": "to_be",
+  "text": "estar",
+  "sha": "1e886af39b1e9d903f6798b08b0a71ddd3cac387"
+ },
+ "to bring": {
+  "file": "to_bring",
+  "text": "traer",
+  "sha": "8898dd942a7e3ccaf7593fe73b293db6fc858be0"
+ },
+ "to carry": {
+  "file": "to_carry",
+  "text": "llevar",
+  "sha": "1310149a5a6f31baa3bf5b9feb26fbf3fa2b8fab"
+ },
+ "to close": {
+  "file": "to_close",
+  "text": "cerrar",
+  "sha": "c9731919e8366ef0bfad2e17b1ae02360d8ded6a"
+ },
+ "to depart": {
+  "file": "to_depart",
+  "text": "salir",
+  "sha": "74e93b2375b3a3750eafcfbd7618acb7185f443f"
+ },
+ "to find": {
+  "file": "to_find",
+  "text": "encontrar",
+  "sha": "b8d29caf07bb723de126b2b1770d03bc56085576"
+ },
+ "to give": {
+  "file": "to_give",
+  "text": "dar",
+  "sha": "1b823dcc4ab5864295a757e78093894cbb6e7bc7"
+ },
+ "to go": {
+  "file": "to_go",
+  "text": "ir",
+  "sha": "288b0fcae229c827182eac305805862248d38df3"
+ },
+ "to leave": {
+  "file": "to_leave",
+  "text": "dejar",
+  "sha": "fd0c62ed2e43fe59ebd07b072bff4ef871e1d3d6"
+ },
+ "to lift": {
+  "file": "to_lift",
+  "text": "levantar",
+  "sha": "d0899141037b361ecd12b0155206498bdf59293a"
+ },
+ "to listen": {
+  "file": "to_listen",
+  "text": "escuchar",
+  "sha": "c21e06b708605d9a127ccea667fb49ce3c9d9971"
+ },
+ "to look at": {
+  "file": "to_look_at",
+  "text": "mirar",
+  "sha": "659113e2ef253ac91ee9cb962ff5b211a933ba6e"
+ },
+ "to look for": {
+  "file": "to_look_for",
+  "text": "buscar",
+  "sha": "f4d353a6834132910958e9547b73f40d8b78c4f2"
+ },
+ "to measure": {
+  "file": "to_measure",
+  "text": "medir",
+  "sha": "2b4f85fac7c6a5782dc4ecd40061644fe5d25f8a"
+ },
+ "to move": {
+  "file": "to_move",
+  "text": "mover",
+  "sha": "697a4b2d0f5364a4c178173f38d0b781ab5527f0"
+ },
+ "to open": {
+  "file": "to_open",
+  "text": "abrir",
+  "sha": "b7cad5c786e16fb55615a299f5338372ef2963f5"
+ },
+ "to organize": {
+  "file": "to_organize",
+  "text": "ordenar",
+  "sha": "4d4367bfb530c2a2f02c0fd14d9fd5e65a622963"
+ },
+ "to pick up": {
+  "file": "to_pick_up",
+  "text": "recoger",
+  "sha": "c1bf8b8f4fd372ca3ba727afb50ecc75e4972609"
+ },
+ "to pull": {
+  "file": "to_pull",
+  "text": "jalar",
+  "sha": "948d1763064966168ffc116b6c7ccc5f8966c3ce"
+ },
+ "to push": {
+  "file": "to_push",
+  "text": "empujar",
+  "sha": "7cac2c7247f48d5c9e3b2596a7ef75cfcd9f0139"
+ },
+ "to put": {
+  "file": "to_put",
+  "text": "poner",
+  "sha": "e493052e0bf9c20821a78bb70fb04128eeac3cfc"
+ },
+ "to put away": {
+  "file": "to_put_away",
+  "text": "guardar",
+  "sha": "9a20fe04a6e6c839b935742d08207a814a933f1d"
+ },
+ "to remove": {
+  "file": "to_remove",
+  "text": "quitar",
+  "sha": "ab54727a792db314ff49c04470a7511493de7b17"
+ },
+ "to squeeze": {
+  "file": "to_squeeze",
+  "text": "apretar",
+  "sha": "8d759f7799504e00328944ffa6798e9db2aa3144"
+ },
+ "to take off": {
+  "file": "to_take_off",
+  "text": "despegar",
+  "sha": "238c629c4def20464b6e4f961be47720360cbd5f"
+ },
+ "to take out": {
+  "file": "to_take_out",
+  "text": "sacar",
+  "sha": "4d91b899ef507ff6cd662cb296cda0fc19f050c6"
+ },
+ "to touch": {
+  "file": "to_touch",
+  "text": "tocar",
+  "sha": "03107b6d2e0714dca4bf9836430ee193a1467611"
+ },
+ "to weigh": {
+  "file": "to_weigh",
+  "text": "pesar",
+  "sha": "4993a42cd7389a2a84a525f7008981b9c2ad5e37"
+ },
+ "toaster": {
+  "file": "toaster",
+  "text": "el tostador",
+  "sha": "46e24b2864d112a4b5d246a65b651f63dce71709"
+ },
+ "today": {
+  "file": "today",
+  "text": "hoy",
+  "sha": "d14e9ab1e9e57f6b6946611740754b039939f25c"
+ },
+ "toe": {
+  "file": "toe",
+  "text": "el dedo del pie",
+  "sha": "8a549f3ba2ce2ad53ab0ee35b77840ef071e3b44"
+ },
+ "toilet": {
+  "file": "toilet",
+  "text": "el inodoro",
+  "sha": "455ed2f301c3288249d043b12830b0b577b9cddc"
+ },
+ "toilet paper": {
+  "file": "toilet_paper",
+  "text": "el papel higiénico",
+  "sha": "354be642030151fedbd112388159c89d81c47a27"
+ },
+ "tomato": {
+  "file": "tomato",
+  "text": "el tomate",
+  "sha": "8cbe94554681cac55b6788893039aab53fb952a0"
+ },
+ "tomorrow": {
+  "file": "tomorrow",
+  "text": "mañana",
+  "sha": "4a5110e7a86fec01c3a23ddf57094b80599ed983"
+ },
+ "tongue": {
+  "file": "tongue",
+  "text": "la lengua",
+  "sha": "fb6cf3189c75f4cd02c790c99954aae7c0a1fb0d"
+ },
+ "tonight": {
+  "file": "tonight",
+  "text": "esta noche",
+  "sha": "c67e9d28644d0dd835668dbcf6dee86d00e24f5d"
+ },
+ "tooth": {
+  "file": "tooth",
+  "text": "el diente",
+  "sha": "3f5dfdd3ab248de7d9d635e291c0bfe1d50b1ee7"
+ },
+ "toothbrush": {
+  "file": "toothbrush",
+  "text": "el cepillo de dientes",
+  "sha": "9001753b3947ebf4689a85cf6c68f64d00a384a2"
+ },
+ "toothpaste": {
+  "file": "toothpaste",
+  "text": "la pasta de dientes",
+  "sha": "b8dc607acdaa89e72cdfd015650fe7e5a8648fbf"
+ },
+ "tortilla": {
+  "file": "tortilla",
+  "text": "la tortilla",
+  "sha": "c95011c6441c1cd212d9ba2dec0c12e64ac5c9fd"
+ },
+ "towel": {
+  "file": "towel",
+  "text": "la toalla",
+  "sha": "269e0803ea785ba4b5d1c3d101ec80a43f917888"
+ },
+ "traffic light": {
+  "file": "traffic_light",
+  "text": "el semáforo",
+  "sha": "5e35d31207973a7ec7c05110f79bb5834c15df72"
+ },
+ "train": {
+  "file": "train",
+  "text": "el tren",
+  "sha": "4707806297cd5e0c0e0846c9da835266e57016bd"
+ },
+ "tray": {
+  "file": "tray",
+  "text": "la bandeja",
+  "sha": "7938f594e2e5e536a6b7fb7404f2febf14010c44"
+ },
+ "treatment": {
+  "file": "treatment",
+  "text": "el tratamiento",
+  "sha": "04c4d60bc51e5acdd9975f85c8533019a001dc6c"
+ },
+ "treatment table": {
+  "file": "treatment_table",
+  "text": "la mesa de tratamiento",
+  "sha": "f844ecbfea757c61bcab1e33fe4bea1db0ae479c"
+ },
+ "tree": {
+  "file": "tree",
+  "text": "el árbol",
+  "sha": "da3a9c56582fb6193c9196fe1e95e5d519916e27"
+ },
+ "triangle": {
+  "file": "triangle",
+  "text": "el triángulo",
+  "sha": "26a6c7e440d671948112d8d81be515f81e790cbf"
+ },
+ "trolley": {
+  "file": "trolley",
+  "text": "el carrito",
+  "sha": "f0db82b9862e0cd34eb57dc5c987d78ae6aee9ee"
+ },
+ "truck": {
+  "file": "truck",
+  "text": "el camión",
+  "sha": "6302f086cbb85a03b1143d078418adcf4c77aaac"
+ },
+ "trumpet": {
+  "file": "trumpet",
+  "text": "la trompeta",
+  "sha": "e2b29e1219151d490fa67964f58419f728dcf627"
+ },
+ "tuesday": {
+  "file": "tuesday",
+  "text": "martes",
+  "sha": "8e9144b8acab07bd5cf64012b3352a6d50b63347"
+ },
+ "turtle": {
+  "file": "turtle",
+  "text": "la tortuga",
+  "sha": "d56b79f4564ee1ac41c76efb550158ca9174891d"
+ },
+ "tv stand": {
+  "file": "tv_stand",
+  "text": "el mueble para la televisión",
+  "sha": "98863d9e8576e53b2f677e86892547ca35b42ea3"
+ },
+ "two days ago": {
+  "file": "two_days_ago",
+  "text": "hace dos días",
+  "sha": "4c1f7f1566345a06d4008d812347ff89a6b2dec7"
+ },
+ "uncle": {
+  "file": "uncle",
+  "text": "el tío",
+  "sha": "9c69e07574143cef20a86233678b4c82d01bb4fd"
+ },
+ "under": {
+  "file": "under",
+  "text": "debajo de",
+  "sha": "9c90009015d01c28bb2c28496a412f06e413d907"
+ },
+ "united states": {
+  "file": "united_states",
+  "text": "Estados Unidos",
+  "sha": "1645fb7a4c1fa3dd2a089987ed5fea3c6a5d9e7b"
+ },
+ "up": {
+  "file": "up",
+  "text": "arriba",
+  "sha": "52041890161c05941d7751ab6c0267291af520ee"
+ },
+ "vault": {
+  "file": "vault",
+  "text": "la bóveda",
+  "sha": "a13357a7df9ffb12b9b49264948102d5ba746528"
+ },
+ "vegetables": {
+  "file": "vegetables",
+  "text": "las verduras",
+  "sha": "079c5b9303eca1c19d95f8781d98310fe2557e73"
+ },
+ "vehicle": {
+  "file": "vehicle",
+  "text": "el vehículo",
+  "sha": "e5f7ad834263dbc6e2f62377a5440b809d724322"
+ },
+ "violin": {
+  "file": "violin",
+  "text": "el violín",
+  "sha": "ec895c0def6fd577537273920e0b99e1e7538fbd"
+ },
+ "volleyball": {
+  "file": "volleyball",
+  "text": "el balón de voleibol",
+  "sha": "b384f0e06c72573358693c8affca62d985f80a76"
+ },
+ "waiter": {
+  "file": "waiter",
+  "text": "el mesero / la mesera",
+  "sha": "b53fb9830078b3c0aced702ecc7a8761ed9c7e0d"
+ },
+ "walker": {
+  "file": "walker",
+  "text": "el andador",
+  "sha": "b626422be2dd5c2e6e8a01dca28e4105a5f828bb"
+ },
+ "wall": {
+  "file": "wall",
+  "text": "la pared",
+  "sha": "245faa31aa8c51382e686932e6149ae95446c757"
+ },
+ "wardrobe": {
+  "file": "wardrobe",
+  "text": "el ropero",
+  "sha": "e8ddc973c1b444b3a41bf147d5e8d045e17a298a"
+ },
+ "warehouse": {
+  "file": "warehouse",
+  "text": "el almacén",
+  "sha": "bb203a7c5877e26311c356679ae48332f4f7a401"
+ },
+ "warm": {
+  "file": "warm",
+  "text": "tibio",
+  "sha": "a1f5759d3fcafbbadd1655d02bad1ba33d003016"
+ },
+ "washing machine": {
+  "file": "washing_machine",
+  "text": "la lavadora",
+  "sha": "8a32244502c10e498935eb5ddb0d8d54099acec0"
+ },
+ "water": {
+  "file": "water",
+  "text": "el agua",
+  "sha": "fc2150ebc3fff62f289c3518a66009698d09a400"
+ },
+ "water bottle": {
+  "file": "water_bottle",
+  "text": "la botella de agua",
+  "sha": "ee1302ef072532c5df71e6406ca30b836a0f0f9d"
+ },
+ "watering can": {
+  "file": "watering_can",
+  "text": "la regadera",
+  "sha": "272a93faf29a88d2ef956f3fac611c174df71fe0"
+ },
+ "watermelon": {
+  "file": "watermelon",
+  "text": "la sandía",
+  "sha": "e2c0ad217598cc55209af5e6b10e0550db9d0b2e"
+ },
+ "wednesday": {
+  "file": "wednesday",
+  "text": "miércoles",
+  "sha": "276cbbe8c7643f8062009eaded0e6c89240a8cfd"
+ },
+ "weeping willow": {
+  "file": "weeping_willow",
+  "text": "el sauce llorón",
+  "sha": "43aa1d04dc4f983a6c9167a1315b8920bd4138cc"
+ },
+ "wet": {
+  "file": "wet",
+  "text": "mojado",
+  "sha": "24078a6a5cd0196ea68dc850dfe540ea8393f707"
+ },
+ "wheel": {
+  "file": "wheel",
+  "text": "la rueda",
+  "sha": "4ee49ba15c62cf3590fe990900156cfdaa16f4a4"
+ },
+ "wheelbarrow": {
+  "file": "wheelbarrow",
+  "text": "la carretilla",
+  "sha": "e18a3b3e446d2362fe3cb1020d5af4d99a744d80"
+ },
+ "wheelchair": {
+  "file": "wheelchair",
+  "text": "la silla de ruedas",
+  "sha": "97acd39c7128fef23452c2c544e8bd37be8a064a"
+ },
+ "when": {
+  "file": "when",
+  "text": "¿cuándo?",
+  "sha": "c90d27c1a8df5f64f290ad23e74236950324c856"
+ },
+ "whisk": {
+  "file": "whisk",
+  "text": "el batidor de globo",
+  "sha": "4441ca2a0a8d1f2be82b07f7efe32f352de030d2"
+ },
+ "whiteboard": {
+  "file": "whiteboard",
+  "text": "el pizarrón blanco",
+  "sha": "fb41437c2f907ada8b8296e3d93440042860a5b2"
+ },
+ "wife": {
+  "file": "wife",
+  "text": "la esposa",
+  "sha": "138408bc04ca5cb00a3e1a6db7cb0938631184ac"
+ },
+ "window": {
+  "file": "window",
+  "text": "la ventana",
+  "sha": "6d0e202a81610153f30ba2e8ca3c18a6c6e97b1b"
+ },
+ "wine": {
+  "file": "wine",
+  "text": "el vino",
+  "sha": "0e00f10db8110c4cb8c4756b3541160ea5b4baa2"
+ },
+ "winter hat": {
+  "file": "winter_hat",
+  "text": "el gorro",
+  "sha": "6920fe2f46b4cfd223da88f2d9bb7940abe96280"
+ },
+ "with ice": {
+  "file": "with_ice",
+  "text": "con hielo",
+  "sha": "fd250a979e2e4d054cd962722c9d4b7b0c7af598"
+ },
+ "worksheet": {
+  "file": "worksheet",
+  "text": "la hoja de ejercicios",
+  "sha": "57a88ff7a71267763f245275f24d438c7bf917a4"
+ },
+ "world map": {
+  "file": "world_map",
+  "text": "el mapamundi",
+  "sha": "cfcaeb81c78ceb9b8137a91c100300af0c58df49"
+ },
+ "x ray": {
+  "file": "x_ray",
+  "text": "la radiografía",
+  "sha": "d036877f765140dc6578dff79845cb5c2e23db01"
+ },
+ "x ray machine": {
+  "file": "x_ray_machine",
+  "text": "la máquina de rayos X",
+  "sha": "26fe79d121329400f59241ed72b861848f592a27"
+ },
+ "yard": {
+  "file": "yard",
+  "text": "el patio delantero",
+  "sha": "8910f44c3d977c4ca43422755151b5e98da3fc24"
+ },
+ "yellow": {
+  "file": "yellow",
+  "text": "amarillo",
+  "sha": "67b636546fc82f984bda236591f714e431b498fb"
+ },
+ "yesterday": {
+  "file": "yesterday",
+  "text": "ayer",
+  "sha": "2e8f7a421946056f6ff2761cc6c4643eb714289f"
+ },
+ "yogurt": {
+  "file": "yogurt",
+  "text": "el yogur",
+  "sha": "554c34aa5e690bb8e59080b321d2f0351b183708"
+ },
+ "younger": {
+  "file": "younger",
+  "text": "menor",
+  "sha": "326dd740dc84b112b03903f973d55a139e72512e"
+ },
+ "zebra": {
+  "file": "zebra",
+  "text": "la cebra",
+  "sha": "427673cd1576214d6ac7f72256b3c304db0fe3cf"
+ }
+}

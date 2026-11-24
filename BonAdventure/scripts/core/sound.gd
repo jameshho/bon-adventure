@@ -8,6 +8,12 @@ extends Node
 ##
 ## Main adds it (Sound.new()) after the world is built; it binds every node already in the tree
 ## and any added later. Elsewhere: Sound.shared().play_at("cue.id", node).
+##
+## Spoken words (24 Nov 2026, guide docs/guides/VOICE.md): the catalogue's "voice" section names
+## one clip per word and language, <folder>/<lang>/<voice_file(key)>.ogg, made by
+## tools/voice_generate.py. say_word() plays it on the Voice bus, not positional, one word at a
+## time. While "voice.enabled" is false (user, 24 Nov 2026) it plays nothing and has_voice() is
+## false, so no speaker button or automatic word ever shows or sounds.
 const PATH := "res://data/sounds.json"
 
 static var _shared
@@ -15,7 +21,10 @@ static var _shared
 var cues: Dictionary = {}
 ## script resource path -> binding dictionary (play / start / stop: signal -> cue id).
 var bindings: Dictionary = {}
+## The catalogue's "voice" section (enabled, folder, bus, volume_db, languages).
+var voice: Dictionary = {}
 var _streams: Dictionary = {}
+var _voice_player: AudioStreamPlayer
 
 static func shared():
 	return _shared
@@ -28,6 +37,7 @@ func _init() -> void:
 		push_error("sound.gd: cannot read " + PATH)
 		return
 	cues = data.get("cues", {})
+	voice = data.get("voice", {})
 	for binding in data.get("bindings", []):
 		bindings[str(binding["script"])] = binding
 
@@ -96,6 +106,57 @@ func stop_loop(cue_id: String, at: Node3D) -> void:
 func looping(cue_id: String, at: Node3D) -> AudioStreamPlayer3D:
 	var player := at.get_node_or_null(NodePath(_loop_name(cue_id)))
 	return player if player is AudioStreamPlayer3D and not player.is_queued_for_deletion() else null
+
+## --- Spoken words -----------------------------------------------------------------------------
+
+## The clip's file name for a word key: lower case, every run of other characters one "_"
+## ("apple pie" -> "apple_pie"). tools/voice_manifest.gd refuses two keys with the same name.
+static func voice_file(key: String) -> String:
+	var out := ""
+	var gap := false
+	for c in key.to_lower():
+		if (c >= "a" and c <= "z") or (c >= "0" and c <= "9"):
+			if gap and out != "":
+				out += "_"
+			out += c
+			gap = false
+		else:
+			gap = true
+	return out
+
+func voice_enabled() -> bool:
+	return bool(voice.get("enabled", false))
+
+## res://audio/voice/<lang>/<file>.ogg, whether or not it exists.
+func voice_path(key: String, lang: String) -> String:
+	return "%s/%s/%s.ogg" % [str(voice.get("folder", "res://audio/voice")), lang, voice_file(key)]
+
+## True when spoken words are switched on and this word has a clip in `lang`.
+func has_voice(key: String, lang: String) -> bool:
+	return voice_enabled() and lang != "" and ResourceLoader.exists(voice_path(key, lang))
+
+## Says a word in `lang` (stopping any word still being said). Returns false and plays nothing
+## while spoken words are off or the clip is missing.
+func say_word(key: String, lang: String) -> bool:
+	if not has_voice(key, lang):
+		return false
+	var cue_id := "voice.%s.%s" % [lang, voice_file(key)]
+	if not _streams.has(cue_id):
+		_streams[cue_id] = load(voice_path(key, lang))
+	var clip: AudioStream = _streams[cue_id]
+	if clip == null:
+		return false
+	if _voice_player == null:
+		_voice_player = AudioStreamPlayer.new()
+		_voice_player.name = "Voice"
+		add_child(_voice_player)
+	_voice_player.stop()
+	_voice_player.stream = clip
+	_voice_player.bus = str(voice.get("bus", "Voice"))
+	_voice_player.volume_db = float(voice.get("volume_db", 0.0))
+	_voice_player.set_meta("sound_cue", cue_id)
+	_voice_player.play()
+	return true
 
 func _loop_name(cue_id: String) -> String:
 	return "Sound " + cue_id.replace(".", " ")

@@ -159,6 +159,14 @@ func reading_gaps(text: String, data: Dictionary) -> PackedStringArray:
 			gaps.append(token.source)
 	return gaps
 
+## The reading piece by piece (24 Nov 2026, for spoken words, tools/voice_manifest.gd):
+## [{"source": 蘋果, "reading": píngguǒ, "kind": word / gap / open / close / other}].
+func reading_tokens(text: String, data: Dictionary) -> Array:
+	var out: Array = []
+	for token in _tokens(text, data):
+		out.append({"source": token.source, "reading": token.text, "kind": token.kind})
+	return out
+
 ## [{"text", "kind": word / gap / open / close / other, "source"}]
 func _tokens(text: String, data: Dictionary) -> Array:
 	_prepare(data)

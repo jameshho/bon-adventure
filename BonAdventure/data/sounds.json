@@ -47,6 +47,21 @@
       "licence": "Original, no third-party material; 22.05 kHz 16-bit mono"
     }
   },
+  "voice": {
+    "_comment": "Spoken words (24 Nov 2026): one clip per word and language at <folder>/<lang>/<file>.ogg, where <file> is sound.gd voice_file(key). 'enabled' is the master switch: while false, sound.gd say_word() plays nothing (user, 24 Nov 2026: no sound until the user has listened to samples). tools/voice_manifest.gd lists what to say; tools/voice_generate.py makes the clips with Amazon Polly. 'languages' gives each language's Polly voice. Guide: docs/guides/VOICE.md.",
+    "enabled": false,
+    "folder": "res://audio/voice",
+    "bus": "Voice",
+    "volume_db": 0.0,
+    "polly_region": "us-east-1",
+    "source": "Amazon Polly text-to-speech (neural engine), made by tools/voice_generate.py",
+    "licence": "Polly output, used under the AWS Service Terms; no third-party recordings",
+    "languages": {
+      "es": {"voice": "Mia", "language_code": "es-MX", "engine": "neural", "note": "Latin American (Mexican) Spanish, user decision 24 Nov 2026, matching words.json's Mexican Spanish; samples approved by the user 24 Nov 2026. Male alternative: Andrés."},
+      "en": {"voice": "Joanna", "language_code": "en-US", "engine": "neural"},
+      "zh": {"voice": "Zhiyu", "language_code": "cmn-CN", "engine": "neural", "pinyin": true, "note": "Mandarin, like the game's pinyin. The Traditional text is spoken with the game's own pinyin (data/pinyin_zh.json) as SSML phonemes, so Polly does not guess readings."}
+    }
+  },
   "bindings": [
     {"script": "res://scripts/world/toilet.gd", "play": {"flush_started": "toilet.flush"}},
     {"script": "res://scripts/world/faucet.gd", "start": {"turned_on": "faucet.run"}, "stop": {"turned_off": "faucet.run"}}
