@@ -112,6 +112,65 @@ func load_preset(preset: Dictionary) -> void:
 	last_from = -1
 	result = {}
 
+## The hand in progress as plain data for the save file (mahjong_session.gd, user 23 Nov 2026:
+## a player may leave and continue the same hand later). The claim being answered is kept as the
+## waiting seats and the answers given so far; restore() asks claim_options() again.
+func to_save() -> Dictionary:
+	return {"min_fan": min_fan, "prevailing": prevailing, "dealer": dealer, "wall": wall,
+		"drawn_front": drawn_front, "drawn_back": drawn_back, "hands": hands, "melds": melds,
+		"discards": discards, "seat_winds": seat_winds, "turn": turn, "phase": phase, "drawn": drawn,
+		"claimed_from": claimed_from, "claimed_tile": claimed_tile, "last_discard": last_discard,
+		"last_from": last_from, "waiting": waiting.keys(),
+		"answers": answers.keys().map(func(seat) -> Array: return [seat, answers[seat]]),
+		"turns_played": turns_played}
+
+## Puts back a hand from to_save() (JSON numbers come back as floats). False when the data is
+## not a hand in play; the game is then unchanged.
+func restore(saved: Dictionary) -> bool:
+	if not str(saved.get("phase", "")) in ["turn", "claim"] or not saved.get("wall") is Array:
+		return false
+	var ints := func(list) -> Array: return Array(list).map(func(k) -> int: return int(k))
+	min_fan = int(saved.min_fan)
+	prevailing = int(saved.get("prevailing", Rules.EAST))
+	dealer = int(saved.dealer)
+	wall = ints.call(saved.wall)
+	drawn_front = int(saved.drawn_front)
+	drawn_back = int(saved.drawn_back)
+	for seat in 4:
+		hands[seat] = ints.call(saved.hands[seat])
+		discards[seat] = ints.call(saved.discards[seat])
+		melds[seat] = Array(saved.melds[seat]).map(func(m: Dictionary) -> Dictionary:
+			var meld := {"type": str(m.type), "tile": int(m.tile), "open": bool(m.get("open", true)), "from": int(m.get("from", -1))}
+			if m.has("claimed"):
+				meld["claimed"] = int(m.claimed)
+			return meld)
+		seat_winds[seat] = int(saved.seat_winds[seat])
+	turn = int(saved.turn)
+	phase = str(saved.phase)
+	drawn = int(saved.drawn)
+	claimed_from = int(saved.claimed_from)
+	claimed_tile = int(saved.claimed_tile)
+	last_discard = int(saved.last_discard)
+	last_from = int(saved.last_from)
+	turns_played = int(saved.turns_played)
+	answers = {}
+	for pair in saved.get("answers", []):
+		var answer: Dictionary = {"type": str(pair[1].get("type", "pass"))}
+		if pair[1].has("tile"):
+			answer["tile"] = int(pair[1].tile)
+		answers[int(pair[0])] = answer
+	waiting = {}
+	for seat in saved.get("waiting", []):
+		var options := claim_options(int(seat))
+		if not options.is_empty():
+			waiting[int(seat)] = options
+	result = {}
+	last_call = {}
+	ai_plans = {}
+	if phase == "claim" and waiting.is_empty():
+		_resolve()   # everyone had answered: settle the claim as it would have been
+	return true
+
 func _take_front() -> int:
 	drawn_front += 1
 	return wall.pop_front()

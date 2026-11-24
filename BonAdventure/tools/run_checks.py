@@ -202,6 +202,12 @@ CHECKS = [
          summary=r"^MAHJONG: \d+ checks, (?P<n>\d+) failures"),
     dict(id="mahjong_table", script="res://docs/evidence/mahjong-20261109/play.gd", suites=["full"],
          summary=r"^MAHJONG TABLE: \d+ checks, (?P<n>\d+) failures"),
+    # Mahjong memory (23 Nov 2026): leave and carry on the same hand and scores.
+    dict(id="mahjong_memory", script="res://docs/evidence/mahjong-memory-20261123/verify.gd", suites=["full"],
+         summary=r"^MAHJONG MEMORY: \d+ checks, (?P<n>\d+) failures"),
+    # The hand bar's hide/show button (24 Nov 2026).
+    dict(id="mahjong_hand_toggle", script="res://docs/evidence/mahjong-hand-toggle-20261124/verify.gd", suites=["full"],
+         summary=r"^MAHJONG HAND TOGGLE: \d+ checks, (?P<n>\d+) failures"),
     # Shared plush eyes, blinking and gestures (13 Nov 2026, docs/guides/COMPONENTS.md#plush-characters).
     dict(id="plush_life", script="res://docs/evidence/plush-rig-20261113/verify.gd", suites=["full"], fps=True,
          summary=r"^PLUSH LIFE: \d+ checks, (?P<n>\d+) failures"),

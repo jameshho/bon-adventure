@@ -6039,6 +6039,15 @@ Two failures came from other work:
 
 (This section was written then, and replaced here because a concurrent edit had dropped it.)
 
+**Memory (23 Nov 2026).** [Memory](MAHJONG.md#memory): `mahjong_memory` 30 checks, 0 failures
+(headless, and again with graphics for its two views); `mahjong_table` 101 checks, 0 failures.
+Both ran with `VT_FOCUS=home` (only the home loaded, not the full town) and an isolated `HOME`.
+Godot printed the known `recursive_mutex` abort at exit after the summary line.
+
+**Hand hide/show button (24 Nov 2026).** `mahjong_hand_toggle` 9 checks, 0 failures, with graphics
+at 1280×800, `VT_FOCUS=home`, isolated `HOME` (one test bug fixed first: it read the panel before
+the session redrew it). `mahjong_table` afterwards (headless, same setup): 104 checks, 0 failures.
+
 **Follow-up (user requests, same day).** Changes:
 - Awoo's chair moved back (home step `mahjong_chair_back`).
 - Lin renamed Awoo, and the home's Awoo renamed Sam.

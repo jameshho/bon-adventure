@@ -142,6 +142,10 @@ func _on_page_event(_args: Array) -> void:
 	# The profile's saved place too (player_place.gd), so a closed tab reopens near this spot.
 	if is_instance_valid(main) and main.get("place_keeper") != null:
 		main.place_keeper.save_now()
+	# Mei's mahjong game at the table (mahjong_session.gd), so a closed tab can carry it on.
+	var mahjong: Node = main.get_node_or_null("MahjongSession") if is_instance_valid(main) else null
+	if mahjong != null:
+		mahjong.save_now()
 
 
 ## Writes the resume note when the player stands on the ground on foot (not driving, seated,

@@ -293,7 +293,10 @@ in the language being learned. Two short lessons (Basics, Scoring) explain the r
 tracked. Mahjong! is still offered after punging the winning tile (23 Nov), and the only
 language button is the HUD's EN, top right (23 Nov). Holding EN shows only the native text and
 changes no button size; the journal and ▶ buttons hide under the lesson card (23 Nov,
-[screenshots](../evidence/ui-fixes-20261123/)).
+[screenshots](../evidence/ui-fixes-20261123/)). Mei remembers an unfinished game: next time she
+first asks whether to carry on, with the same hand and points (23 Nov,
+[screenshots](../evidence/mahjong-memory-20261123/)). A ▾ button tucks the hand bar away to
+see your own tiles on the table (24 Nov, [screenshots](../evidence/mahjong-hand-toggle-20261124/)).
 [Guide](../guides/MAHJONG.md)
 
 | Learning card | |
@@ -301,7 +304,7 @@ changes no button size; the journal and ▶ buttons hide under the lesson card (
 | Purpose | Hear and use game language (calls, winds, hand names) while playing; a pastime. |
 | Words | [Generated list](words.md#mahjong-club) |
 | Tracked in the journal | No |
-| Session | One hand |
+| Session | One hand; an unfinished game and its points are kept to carry on later (user, 23 Nov) |
 | Progression | None (pastime; user approval 18 Nov) |
 
 ## Radar Patrol

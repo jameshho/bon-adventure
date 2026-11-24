@@ -8,7 +8,10 @@ extends Control
 ## showing your points), translate and leave at the top right beside the HUD's own buttons
 ## (16 Nov 2026: the top centre stays clear for Awoo's face), the scoreboard card that button opens (10 Nov 2026,
 ## user: each player's wind and points this visit), no message line (user, 9 Nov 2026), and the result card at the end (who won,
-## each scoring hand with its fan, the total, Play again and Leave). It only draws what
+## each scoring hand with its fan, the total, Play again and Leave). A round ▾ button over the
+## hand bar's right end tucks the hand away to see the player's own tiles on the table under it
+## (exposed sets, discards; user, 24 Nov 2026); ▴ at the bottom right brings it back, and so
+## does the start of the player's next turn. It only draws what
 ## mahjong_session.gd gives it and emits signals; it knows no rules.
 ##
 ## Lines are {"foreign", "native"} dictionaries; GameSettings decides what shows. Layout scales
@@ -90,6 +93,10 @@ var _result: Dictionary = {}
 var _places := HAND_SLOTS
 ## The tile marked to play on the player's next turn (-1: none); one slot of that kind shows it.
 var _queued := -1
+## The hand bar tucked away (hand_toggle); shown again on open() and when a turn of the player's
+## begins.
+var hand_hidden := false
+var hand_toggle: Button
 
 var info_card: PanelContainer
 var info_rows: VBoxContainer
@@ -171,6 +178,12 @@ func _init() -> void:
 	hand_row = HBoxContainer.new()
 	hand_row.alignment = BoxContainer.ALIGNMENT_BEGIN
 	hand_bar.add_child(hand_row)
+	hand_toggle = Button.new()
+	hand_toggle.name = "Hand toggle"
+	hand_toggle.focus_mode = Control.FOCUS_NONE
+	hand_toggle.expand_icon = false
+	hand_toggle.pressed.connect(func() -> void: set_hand_hidden(not hand_hidden))
+	add_child(hand_toggle)
 	action_row = HBoxContainer.new()
 	action_row.alignment = BoxContainer.ALIGNMENT_CENTER
 	action_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -265,6 +278,7 @@ func _hold_width(control: Control, line: Variant) -> void:
 # --- What the session shows ----------------------------------------------------------------
 
 func open() -> void:
+	hand_hidden = false
 	_result = {}
 	result_card.visible = false
 	visible = true
@@ -316,6 +330,8 @@ func _build_info() -> void:
 ## discards now, and how many places the hand has besides the drawn tile (13 less 3 for each
 ## exposed set).
 func set_hand(hand: Array, drawn: int, discarding: bool, places: int = HAND_SLOTS) -> void:
+	if discarding and not _discarding:
+		hand_hidden = false   # the player's turn: the hand is needed to play
 	_hand = hand.duplicate()
 	_drawn = drawn
 	_discarding = discarding
@@ -393,8 +409,15 @@ func _build_hand() -> void:
 		var mark := not marked and kind >= 0 and kind == _queued
 		marked = marked or mark
 		_show_slot(_slots[i], kind, mark)
-	hand_bar.visible = not _hand.is_empty()
+	hand_bar.visible = not _hand.is_empty() and not hand_hidden
+	hand_toggle.visible = not _hand.is_empty()
+	hand_toggle.icon = UiIcons.texture("up" if hand_hidden else "down", roundi(40 * _factor * INFO_GROWTH))
 	_place.call_deferred()
+
+## Tucks the hand bar away (true) or brings it back.
+func set_hand_hidden(hidden: bool) -> void:
+	hand_hidden = hidden
+	_build_hand()
 
 func _ensure_slots() -> void:
 	if _slots.size() == HAND_SLOTS + 1 and _slots[0].custom_minimum_size == _hand_tile:
@@ -661,13 +684,14 @@ func _rescale() -> void:
 	_factor = minf(screen.y / DESIGN.y, screen.x / DESIGN.x)
 	var grown := _factor * INFO_GROWTH
 	# Lessons, scoreboard and leave: cream round buttons with dark teal icons (money panel's ✕).
-	for button in [lessons_button, score_button, leave_button]:
+	for button in [lessons_button, score_button, leave_button, hand_toggle]:
 		BonStyle.style_button(button, "minor", grown, 22)
 		for name in ["font_color", "font_hover_color", "font_pressed_color", "font_hover_pressed_color", "icon_normal_color", "icon_hover_color", "icon_pressed_color", "icon_hover_pressed_color"]:
 			button.add_theme_color_override(name, GOLD)
 	leave_button.custom_minimum_size = Vector2(56, 56) * grown
 	lessons_button.custom_minimum_size = Vector2(56, 56) * grown
 	score_button.custom_minimum_size = Vector2(56, 56) * grown
+	hand_toggle.custom_minimum_size = Vector2(56, 56) * grown
 	score_button.add_theme_font_size_override("font_size", roundi(22 * grown))
 	translate_button.refresh(show_native, grown)
 	info_card.get_theme_stylebox("panel").set_content_margin_all(10 * grown)
@@ -713,6 +737,13 @@ func _place() -> void:
 	corner_card.position = Vector2(right - corner_card.size.x * corner_card.scale.x, margin)
 	hand_bar.reset_size()
 	hand_bar.position = Vector2((screen.x - hand_bar.size.x) * 0.5, screen.y - hand_bar.size.y - margin)
+	# The hide/show button: just above the bar's right end, or in the bottom right corner while
+	# the bar is tucked away.
+	hand_toggle.reset_size()
+	if hand_bar.visible:
+		hand_toggle.position = Vector2(hand_bar.position.x + hand_bar.size.x - hand_toggle.size.x, hand_bar.position.y - hand_toggle.size.y - margin * 0.5)
+	else:
+		hand_toggle.position = screen - hand_toggle.size - Vector2(margin, margin)
 	action_row.reset_size()
 	var above := hand_bar.position.y if hand_bar.visible else screen.y - margin
 	action_row.position = Vector2((screen.x - action_row.size.x) * 0.5, above - action_row.size.y - margin)

@@ -19,8 +19,15 @@ extends Node
 ## fades back: the player stands up, Mei sits down again, the preset game returns.
 ##
 ## Text: data/phrases.json group "mahjong"; rules and pacing: data/mahjong.json; offers: the
-## activity board ("mahjong_mei", data/activities.json). Nothing is saved or tracked (no word
-## is tested; no coins exist).
+## activity board ("mahjong_mei", data/activities.json). No word is tested and no coins exist.
+##
+## Memory (user, 23 Nov 2026): the profile's mahjong.json (save_store.gd) keeps the mode, the
+## visit's won hands (the scoreboard) and the hand in play when the player leaves, closes the
+## app or hides the page (save_now()), and after every finished hand. With a game saved, Mei's
+## first question after Yes is "Shall we carry on with our last game?": Yes, continue sits down
+## at the same hand with the same scores (a new hand when the last one had ended); No, a new
+## game goes on to the lesson and mode questions as before (the old save stays until the new
+## game is saved over it).
 const Board := preload("res://scripts/learning/activity_board.gd")
 const Host := preload("res://scripts/learning/minigame_host.gd")
 const PlushLife := preload("res://scripts/characters/plush_life.gd")
@@ -33,6 +40,8 @@ const View := preload("res://scripts/learning/mahjong_view.gd")
 const HouseCharacters := preload("res://scripts/characters/house_characters.gd")
 const Home := preload("res://scripts/buildings/home.gd")
 const PopWord3D := preload("res://scripts/ui/pop_word_3d.gd")
+const SaveStore := preload("res://scripts/core/save_store.gd")
+const SAVE_FILE := "mahjong.json"
 const ACTIVITY := "mahjong_mei"
 const TABLE := "MahjongTable"
 ## The players by seat (= game seat and chair): their ids in the NPC registry (data/npcs.json,
@@ -142,6 +151,9 @@ var _hud_hidden: Array = []
 ## This visit's won hands ({"winner", "from" (-1 self-drawn), "fan"}) for the scoreboard
 ## (user, 10 Nov 2026): kept over Play again, cleared when the player sits down or leaves.
 var _visit_hands: Array = []
+## The profile's save file, fixed at setup (a save while the town is torn down for a profile
+## switch still goes to this profile, like player_place_keeper.gd).
+var _save_path := ""
 
 ## Whether Mei offers the game now (kept on the host, like the other sessions).
 var offered: bool:
@@ -163,6 +175,7 @@ func setup(shared_lexicon, shared_dialogue_panel, mahjong_panel, interaction_con
 	interaction = interaction_controller
 	player = explorer
 	main = game_main
+	_save_path = SaveStore.path(SAVE_FILE)
 	_rng.randomize()
 	table = world.find_child(TABLE, true, false) as Node3D
 	if table == null:   # the home is left out by dev_focus.txt: stay inert
@@ -301,7 +314,9 @@ func _ask_mode() -> void:
 
 func _on_choice(id: String) -> void:
 	match id.trim_prefix(host.choice_prefix()):
-		"yes": _ask_lessons()
+		"yes": _ask_continue() if not _saved().is_empty() else _ask_lessons()
+		"continue": _begin(_mode, _saved())
+		"fresh": _ask_lessons()   # the old game is replaced once the new one is saved
 		"teach": _ask_which()
 		"basics": _open_lessons(0)
 		"scoring": _open_lessons(1)
@@ -309,18 +324,31 @@ func _on_choice(id: String) -> void:
 		"three": _begin(3)
 		"any": _begin(0)
 
-func _begin(mode: int) -> void:
+## A saved game ({"mode", "hands", "game"}) asks first whether to carry on (user, 23 Nov 2026).
+func _ask_continue() -> void:
+	var points: int = Rules.balances(_saved().get("hands", []))[0]
+	host.say("mahjong.continue_ask", [host.choice("continue", "mahjong.continue_yes", "play"), host.choice("fresh", "mahjong.continue_new", "check")], 0.0, {"points": _signed(points)})
+
+## `resume`: a saved game to carry on (its mode, scores and hand in play); {} deals a new game.
+func _begin(mode: int, resume: Dictionary = {}) -> void:
 	host.close_dialogue()
-	_mode = int(Rules.config().get("modes", {}).get("three" if mode > 0 else "any", mode))
+	if resume.is_empty():
+		_mode = int(Rules.config().get("modes", {}).get("three" if mode > 0 else "any", mode))
+	else:
+		_mode = int(resume.get("mode", mode))
 	_playing = true
 	_visit_hands.clear()
+	for hand in resume.get("hands", []):
+		_visit_hands.append({"winner": int(hand.winner), "from": int(hand.from), "fan": int(hand.fan)})
 	Board.shared().begin(ACTIVITY)
 	interaction.clear_card()
 	# Seen in the town (user, 9 Nov 2026): Mei gets up and steps aside, the player sits down
 	# in her chair, and only then the screen fades into the game (minigame_table.gd). A language
 	# change (end_activity()) during the walk-up stops it.
 	if await sitting.begin(_open_game) and _playing:
-		_new_hand()
+		var saved_hand: Variant = resume.get("game")
+		if not (saved_hand is Dictionary and _resume_hand(saved_hand)):
+			_new_hand()
 
 ## Behind the fade into the game: the slow sun, the tiles with the current letters, the panel.
 func _open_game() -> void:
@@ -346,6 +374,52 @@ func _new_hand() -> void:
 	_fresh = true
 	game.start(_rng, _rng.randi_range(0, 3), _mode)
 	_dirty = true
+
+## Sits down at the saved hand; false when it cannot be restored (a new hand is dealt).
+func _resume_hand(saved_hand: Dictionary) -> bool:
+	var restored := Game.new()
+	if not restored.restore(saved_hand):
+		return false
+	game = restored
+	game.changed.connect(func() -> void: _dirty = true)
+	_result_shown = false
+	_shown_call = {}
+	_declined_turn = -1
+	_set_queued(-1)
+	_hide_call_words()
+	panel.open()
+	_fresh = true
+	_dirty = true
+	return true
+
+# --- Memory ------------------------------------------------------------------------------
+
+## The profile's saved game, or {} when there is nothing to carry on (no hand in play and no
+## won hand yet).
+func _saved() -> Dictionary:
+	var data: Variant = SaveStore.read_json(_save_path) if _save_path != "" else null
+	if not data is Dictionary:
+		return {}
+	if data.get("game") is Dictionary or not Array(data.get("hands", [])).is_empty():
+		return data
+	return {}
+
+func _write_save(data: Dictionary) -> void:
+	if _save_path != "":
+		SaveStore.write_json(_save_path, data)
+
+## Writes the game at the table now (on leaving, after each hand, when the app closes or the
+## page is hidden: web_resume.gd). Nothing while the player is not seated.
+func save_now() -> void:
+	if not _playing or game == null:
+		return
+	_write_save({"mode": _mode, "hands": _visit_hands,
+		"game": game.to_save() if game.phase != "over" else null})
+
+func _notification(what: int) -> void:
+	if what in [NOTIFICATION_WM_CLOSE_REQUEST, NOTIFICATION_APPLICATION_PAUSED,
+			NOTIFICATION_APPLICATION_FOCUS_OUT, NOTIFICATION_EXIT_TREE]:
+		save_now()
 
 # --- Each frame --------------------------------------------------------------------------
 
@@ -574,6 +648,7 @@ func _show_result() -> void:
 		data.total = lexicon.line("mahjong.total", {"fan": int(score.fan)})
 		_visit_hands.append({"winner": winner, "from": -1 if result.self_drawn else int(result.from), "fan": int(score.fan)})
 	data.scores = _scoreboard(winner >= 0)
+	save_now()
 	_update_scores()
 	_hide_call_words()
 	panel.show_result(data, _again_label(), lexicon.line("mahjong.leave"))
@@ -641,6 +716,7 @@ func _leave(line: String) -> void:
 ## Behind the fade back to the town: the game and panel go, the preset returns; the table
 ## helper then stands the player up and seats Mei again.
 func _close_game() -> void:
+	save_now()
 	panel.hide_panel()
 	if view != null:
 		view.hide_counter()

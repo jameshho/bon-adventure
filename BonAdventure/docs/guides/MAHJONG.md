@@ -210,7 +210,8 @@ Simulated results with four NPC players:
 1. **Talking to Mei.** Click or press E on Mei (cat, north chair, gold "!"). She greets the player;
    Yes leads to "Do you know how to play mahjong?" (user, 9 Nov 2026). **Yes, I know how** leads
    to the mode question with **Mínimo 3 fan** and **Cualquier fan** buttons; **No, teach me**
-   asks which lesson ([Lessons](#lessons)).
+   asks which lesson ([Lessons](#lessons)). When this profile left a game unfinished, Yes first
+   asks **"Shall we carry on with our last game? You have +N points."** ([Memory](#memory)).
 2. **Sitting down.** Mei gets up and steps to the player's left-back corner, and the player sits in
    her chair (seen in the town), then a fade. The player's model, the minimap, the controls help and the walk line are hidden.
    So is the whole bottom-right button cluster (journal, map, ▶ games, help; user, 10 Nov 2026):
@@ -230,6 +231,11 @@ Simulated results with four NPC players:
    "fichas" in the language being learned, tilted toward the player's seat.
    There is no message line over the table at all (user, 9 Nov 2026: "remove this sentence and everything shown in this box"): no "Awoo's turn…", no claim prompt, no "too few fan" note; the buttons and call words say what happens.
    - **Discarding.** Click a tile to discard it. The tile just drawn sits apart on the right.
+   - **Hiding the hand (user, 24 Nov 2026).** A round ▾ button just above the hand bar's right end
+     tucks the bar away, so the player can see their own tiles on the table under it (exposed sets,
+     standing hand, nearest discards); ▴ in the bottom-right corner brings it back. The start of
+     the player's next turn (a draw or a claim) and a new hand bring it back by themselves; call
+     buttons still show while it is hidden (`mahjong_panel.gd` `hand_toggle`, `set_hand_hidden()`).
    - **Playing ahead (user, 9 Nov 2026).** While another player plays, double-click (or tap twice)
      a hand tile to mark it: it lifts with a pink border and a ▶ badge. On the player's next turn
      it is discarded automatically after 0.5 s (`pace.auto_discard`), unless a **Mahjong!** or
@@ -286,11 +292,34 @@ Simulated results with four NPC players:
      (`mahjong_rules.gd` `points_for()` / `balances()`, shared with the lessons). Under the fan total
      the card shows each player's face, name and total and, under it, what that hand changed
      (green / red); the ★ scoreboard card closes while the result shows. Totals carry over Play again and the mode change, and are cleared on sitting
-     down and on leaving (`_visit_hands` in `mahjong_session.gd`). A draw pays nothing; nothing is saved.
+     down and on leaving (`_visit_hands` in `mahjong_session.gd`). A draw pays nothing. Since
+     23 Nov 2026 they are also saved with the game ([Memory](#memory)).
 8. **Leaving.** ✕, Esc, or Salir. During a hand the shared leave question asks first. A fade, then
    the player stands, Mei sits again, and the tiles and camera are freed. Mei says goodbye.
 
-Nothing is saved, tracked by the practice log (no single word is tested) or paid (no coins exist).
+Nothing is tracked by the practice log (no single word is tested) or paid (no coins exist).
+
+## Memory
+
+User, 23 Nov 2026: a player can come back to an unfinished game, with its hand and scores.
+
+- **What is saved.** The profile's `mahjong.json` (`save_store.gd` `PROFILE_FILES`):
+  `{"mode": min fan, "hands": the visit's won hands (the scoreboard), "game": the hand in play
+  (mahjong_game.gd to_save()) or null}`. `mahjong_session.gd` `save_now()` writes it on leaving
+  (also a language change), after every finished hand, and when the app closes, loses focus or the
+  web page is hidden (`web_resume.gd`). The path is fixed when the session is set up, so a profile
+  switch saves to the profile that played.
+- **Asking.** With a hand in play or at least one won hand saved, Mei's first question after Yes
+  is "Shall we carry on with our last game? You have +N points." (`mahjong.continue_ask`), instead
+  of the lesson and mode questions. **Yes, continue** sits down in the saved mode with the saved
+  scores, at the same hand tile for tile (a new hand when the last one had ended). **No, a new
+  game** goes on to the lesson and mode questions as before; the old save stays until the new game
+  is saved over it (on leaving or after a hand), so walking away keeps it.
+- **Restoring a hand.** `mahjong_game.gd` `restore()` turns the JSON numbers back into ints, asks
+  `claim_options()` again for the seats still to answer a discard and settles a claim everyone had
+  answered. Not kept: a tile marked to play ahead, a declined Mahjong! (the button shows again),
+  and a hand that ended in the moment before its result card showed.
+- The test launcher's games are saved the same way.
 
 ## Lessons
 
@@ -398,6 +427,14 @@ call words and the pause after a call kept their timing.
   the lesson pages (`lesson-1-1.png` … `lesson-2-3.png`, `lesson-translated.png`,
   `lesson-zh-*.png`, `lesson-in-game.png`) in
   that folder (rendered at 1280×800 with only the home loaded, `VT_FOCUS=home`).
+- `docs/evidence/mahjong-memory-20261123/verify.gd` (`mahjong_memory`, 23 Nov 2026) checks the
+  [memory](#memory): hands saved through JSON mid-turn and mid-claim restore exactly and play on to
+  the same end; at the table, leave mid-hand, the continue question with the points, the same hand
+  and scores back, a finished hand saved and continued as a new hand, and No, a new game. With
+  graphics it saves `continue-ask.png` and `continued.png` (1280×800, `VT_FOCUS=home`).
+- `docs/evidence/mahjong-hand-toggle-20261124/verify.gd` (`mahjong_hand_toggle`, 24 Nov 2026)
+  checks the hide/show button: its place and size, hiding and showing, and the player's next turn
+  bringing the hand back. With graphics it saves `hand-shown.png` and `hand-hidden.png`.
 - Results are recorded in [FINAL_VERIFICATION.md](FINAL_VERIFICATION.md#mahjong-table--9-november-2026).
 
 ## Code review (9 Nov 2026, user request)
