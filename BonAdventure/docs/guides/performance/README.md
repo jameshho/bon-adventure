@@ -124,11 +124,16 @@ baseline, made slightly softer (sun 0.62 → 0.56, ambient 0.50 → 0.54).
 - **Indoors** means a static roof within 30 m overhead and static walls within 40 m on at
   least 3 of 4 sides. It is probed with 5 rays every 0.25 s, so bridges, awnings and
   porches count as outdoors. Indoors, the warm `indoor` ambient fill blends in (in about
-  1 s), and the shadowless moon fades so it does not shine through roofs. The sun, its
-  shadows and the sky are never changed indoors. (Until the evening of 9 Nov 2026 the light also
+  1 s), and the shadowless moon fades so it does not shine through roofs. Since 25 Nov 2026
+  (improvement plan GFX-03) the sun fades the same way, since no shadows stop it at the roof;
+  half its strength moves into the outdoor ambient meanwhile (`LIGHT_FILL_SHARE`), and the
+  `indoor` fill rose from 0.54 to 0.62 to make up for it
+  ([renders](../../evidence/light-indoor-flight-20261125/indoor.png): café, home and supermarket
+  door at 08:00, 12:00 and 18:30). The sun's direction and colour and the sky are never changed indoors. (Until the evening of 9 Nov 2026 the light also
   switched to noon indoors. The user saw the street outside the hospital door lit like noon
   under a night sky, so that was removed.) Shops lit by fill look the same at any hour. The
-  Home, lit by the sun through its lifted roof by day, is lamp-lit and darker at night.
+  Home was lit by the sun through its lifted roof by day until 25 Nov 2026; it now takes the
+  fill like the shops (the probe still finds its walls and ceiling).
 - **Indoor fill is local (10 Nov 2026).** Until then the fill was the global ambient, so the
   street seen through the hospital door at night was still lit warm and bright like day,
   while the same street looked like night from outside (user screenshots). Now the
@@ -598,7 +603,12 @@ There is no height limit; the chase view also tilts down with height (`FLIGHT_TI
 ground is beyond the view and the plane flies over a pale haze floor. Below the horizon the sky takes the fog
 colour while a view distance is set (`day_night.gd`), so the fogged ground and sea run into it
 with no seam (user, 23 Nov 2026: a hard line under the horizon flying at night, where the
-keyframe's darker `ground_bottom` showed past the view; no frame-rate cost; [night view](../../evidence/flight-view-20261123/night-height-100-m.png)). On the web,
+keyframe's darker `ground_bottom` showed past the view; no frame-rate cost; [night view](../../evidence/flight-view-20261123/night-height-100-m.png)). Above the
+horizon a hard line remained where the sky's blue met the fogged ground; since 25 Nov 2026
+(GFX-04) the view distance past 130 m steps (in tenths, over 150 m) the sky's horizon colour to
+the fog colour, `sky_curve` from 0.15 to 0.6 and `fog_sky_affect` to 0.3, so the haze runs into
+the sky ([day 40 / 100 m, night 100 m, on foot](../../evidence/light-indoor-flight-20261125/flight.png)).
+On foot (130 m) the sky is unchanged; a climb re-renders the 64 px sky radiance about ten times. On the web,
 `nearby_units.gd` loads buildings out to the far plane + 20 m.
 
 **Measured** (native Mac, 1560×720, full town, 2 pm, plane flying north over the town centre;

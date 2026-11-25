@@ -178,13 +178,16 @@ func run() -> void:
 	var probe: ReflectionProbe = cycle.room_probe
 	var head: Vector3 = game.player.global_position + Vector3.UP * 1.6
 	check(probe != null and probe.visible and cycle.in_room_fill(head), "indoors at night: the indoor fill box is shown around the player")
-	check(probe != null and absf(probe.ambient_color_energy - 0.54) < 0.01, "indoors at night: warm ambient fill inside the box (%.2f)" % (probe.ambient_color_energy if probe != null else 0.0))
+	# The fill strength is data/day_night.json "indoor" (0.54 until 25 Nov 2026, then 0.62 with the sun fading indoors).
+	check(probe != null and absf(probe.ambient_color_energy - cycle._indoor_energy) < 0.01, "indoors at night: warm ambient fill inside the box (%.2f)" % (probe.ambient_color_energy if probe != null else 0.0))
 	check(cycle.environment.ambient_light_color.is_equal_approx(cycle.sample(0.0).ambient_color), "indoors at night: the global ambient keeps the night colour")
 	check(not cycle.in_room_fill(market.to_global(Vector3(-33.0, 1.7, 22.0))), "indoors at night: the street outside the door is outside the fill box")
 	check(cycle.sun.light_energy < 0.01 and not cycle.sun.shadow_enabled, "indoors at night: no moonlight through the roof, no noon sun")
 	check(cycle.environment.sky.sky_material.sky_top_color.v < 0.5, "indoors at night: the sky stays night")
 	cycle.set_time(12 * 60)
-	check(absf(cycle.sun.light_energy - 0.56) < 0.01, "indoors by day: the sun is unchanged")
+	# Since 25 Nov 2026 (improvement plan GFX-03) the sun fades indoors like the moon (no shadows
+	# stop it at the roof); its direction and colour, and the sky, stay the time of day's.
+	check(cycle.sun.light_energy < 0.01 and cycle.sun.rotation_degrees.is_equal_approx(cycle.sun_rotation(12.0)), "indoors by day: the sun fades through the roof, its direction unchanged")
 	cycle.set_time(0)
 	game.player.global_position = market.to_global(Vector3(-33.0, 0.1, 22.0))
 	await wait(1.6)

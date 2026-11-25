@@ -11,8 +11,9 @@ extends Node
 ## whole street turns on with one property write (batched MultiMeshes keep that material).
 ## Interiors stay warm and readable: a few rays from the player every INDOOR_PROBE_INTERVAL
 ## seconds tell whether a roof and walls are around, and the "indoor" ambient fill then blends in
-## (the moon fades too, so it does not shine through roofs). The sun and
-## the sky are never changed indoors (user, 9 Nov 2026: indoors at night lit the outside like noon).
+## (the moon fades too, so it does not shine through roofs; since 25 Nov 2026 the sun as well, as
+## there are no shadows to stop it). The sun's direction and colour and the sky are never changed
+## indoors (user, 9 Nov 2026: indoors at night lit the outside like noon).
 ## The fill is local (user, 10 Nov 2026: the street seen through the hospital door was still lit
 ## like day while the same street seen outdoors was night): the global ambient always keeps the
 ## outdoor value, and one ReflectionProbe ("Indoor fill", ambient colour only, captures nothing)
@@ -74,9 +75,10 @@ const ROOM_MAX_WALLS := 8
 const ROOM_CEILING_GAP := 0.3
 const ROOM_MARGIN := 0.05
 const ROOM_SKY_STEP := 1.5
-## The moon fades indoors; this share of its strength is added to the outdoor ambient meanwhile,
-## so the street seen through a door is about as bright as when standing in it.
-const MOON_FILL_SHARE := 0.5
+## The sun and moon fade indoors (no shadows stop them at the roof; sun since 25 Nov 2026,
+## improvement plan GFX-03); this share of their strength is added to the outdoor ambient
+## meanwhile, so the street seen through a door is about as bright as when standing in it.
+const LIGHT_FILL_SHARE := 0.5
 ## Lamp heads that glow at night (baked base world): the 19 streetlight heads and the 8 bridge globes.
 const LAMP_PATTERNS: Array[String] = ["Streetlight lamp*", "Bridge globe lamp*"]
 const LAMP_NAME := "^(Streetlight lamp|Bridge globe lamp)\\d*$"
@@ -110,6 +112,18 @@ const VIEW_FOG_BEGIN_SHARE := 0.4
 const VIEW_FOG_CURVE := 1.6
 ## With no view distance (the town map bake): a faint exponential haze.
 const HAZE_DENSITY := 0.0005
+## The flight sky (25 Nov 2026, improvement plan GFX-04): above the on-foot view distance
+## (render_culling.gd VIEW_DISTANCE, 130 m) the view grows with height and the fogged ground met
+## the sky in a hard line at the horizon. Over FLIGHT_SKY_RANGE metres of extra view the sky's
+## horizon colour turns to the fog colour, its gradient widens (sky_curve from the on-foot SKY_CURVE)
+## and the depth fog veils the sky by up to FLIGHT_FOG_SKY. Stepped in FLIGHT_SKY_STEPS, so a climb
+## re-renders the sky a few times, not every frame. On foot nothing changes.
+const FLIGHT_SKY_FROM := 130.0
+const FLIGHT_SKY_RANGE := 150.0
+const FLIGHT_SKY_STEPS := 10.0
+const SKY_CURVE := 0.15
+const FLIGHT_SKY_CURVE := 0.6
+const FLIGHT_FOG_SKY := 0.3
 
 ## Real minutes for one full game day (data/day_night.json cycle_minutes).
 var cycle_minutes := 30.0
@@ -130,6 +144,8 @@ var indoor := 0.0
 var room_probe: ReflectionProbe
 ## The view distance (set_view_distance()); 0 = unlimited.
 var view_distance := 0.0
+## 0 on foot, 1 high in the air (the flight sky, FLIGHT_SKY_FROM).
+var flight_sky := 0.0
 
 var _keys: Array = []
 var _sun_path: Dictionary = {}
@@ -451,7 +467,9 @@ func _apply() -> void:
 	_outdoor_light = s.sun_color
 	_outdoor_light_energy = s.sun_energy
 	_write(sky_material, "sky_top_color", s.sky_top)
-	_write(sky_material, "sky_horizon_color", s.sky_horizon)
+	_write(sky_material, "sky_horizon_color", s.sky_horizon.lerp(s.fog_color, flight_sky))
+	_write(sky_material, "sky_curve", lerpf(SKY_CURVE, FLIGHT_SKY_CURVE, flight_sky))
+	_write(environment, "fog_sky_affect", FLIGHT_FOG_SKY * flight_sky)
 	# With a view distance, everything past it is sky: below the horizon the sky takes the fog
 	# colour, so fogged ground and sea run into it without a seam (user, 23 Nov 2026: a hard line
 	# under the horizon when flying high at night, where ground_bottom was darker than the fog).
@@ -506,12 +524,12 @@ func _make_room_probe() -> void:
 
 ## Ambient fill. The environment always keeps the outdoor value; the indoor fill probe around
 ## the player's building blends toward the "indoor" values under a roof. The direct light keeps
-## its outdoor colour and strength; the moon fades indoors, where it would otherwise shine through the roof, and part of it moves
-## into the outdoor ambient meanwhile.
+## its outdoor colour; the sun or moon fades indoors, where it would otherwise shine through the
+## roof, and part of it moves into the outdoor ambient meanwhile.
 func _apply_fill() -> void:
-	var moon_fade := _outdoor_light_energy * indoor if _night else 0.0
+	var light_fade := _outdoor_light_energy * indoor
 	_write(environment, "ambient_light_color", _outdoor_color)
-	_write(environment, "ambient_light_energy", _outdoor_energy + moon_fade * MOON_FILL_SHARE)
+	_write(environment, "ambient_light_energy", _outdoor_energy + light_fade * LIGHT_FILL_SHARE)
 	if room_probe != null:
 		var shown: bool = indoor > 0.0 and room_probe.get_meta("fitted")
 		if room_probe.visible != shown:
@@ -520,7 +538,7 @@ func _apply_fill() -> void:
 		_write(room_probe, "ambient_color", _outdoor_color.lerp(_indoor_color, indoor).srgb_to_linear())
 		_write(room_probe, "ambient_color_energy", lerpf(_outdoor_energy, _indoor_energy, indoor))
 	_write(sun, "light_color", _outdoor_light)
-	_write(sun, "light_energy", _outdoor_light_energy - moon_fade)
+	_write(sun, "light_energy", _outdoor_light_energy - light_fade)
 
 
 ## The view distance (render_culling.gd apply_view(); raised while flying, vehicle_controls.gd
@@ -529,6 +547,10 @@ func _apply_fill() -> void:
 func set_view_distance(distance: float) -> void:
 	var switched := (distance > 0.0) != (view_distance > 0.0)
 	view_distance = distance
+	var high := snappedf(clampf((distance - FLIGHT_SKY_FROM) / FLIGHT_SKY_RANGE, 0.0, 1.0), 1.0 / FLIGHT_SKY_STEPS)
+	if high != flight_sky:
+		flight_sky = high
+		switched = true
 	if switched and sky_material != null and is_inside_tree():
 		_apply() # the sky below the horizon (fog colour or the keyframe's ground colours)
 	if environment != null:

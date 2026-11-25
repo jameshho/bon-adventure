@@ -1,5 +1,5 @@
 {
-  "note": "Day-night lighting (scripts/world/day_night.gd, docs/guides/performance/README.md#day-night-cycle--9-november-2026). cycle_minutes: real minutes for one full game day. Keyframes are blended linearly by hour (wrapping at midnight); every keyframe lists every value. The 08:00-16:00 keyframes are the town's original daylight, slightly softened (user, 9 Nov 2026). lamps: 0 = off, 1 = full glow of the streetlight and bridge globe heads. indoor: the ambient fill used under a roof and between walls at every hour; the sun, shadows and sky are not changed indoors, so the outside seen through doors keeps the time of day. disc: colour of the sun disc in the sky by day and the moon by night (it follows the light's direction); moon_size: 0-1 size of the moon disc (only used at night, so the moon fades in and out instead of popping); clouds: tint of the sky clouds. The 06:00 sunrise keyframe is the exact midpoint of its neighbours except for disc and clouds.",
+  "note": "Day-night lighting (scripts/world/day_night.gd, docs/guides/performance/README.md#day-night-cycle--9-november-2026). cycle_minutes: real minutes for one full game day. Keyframes are blended linearly by hour (wrapping at midnight); every keyframe lists every value. The 08:00-16:00 keyframes are the town's original daylight, slightly softened (user, 9 Nov 2026). lamps: 0 = off, 1 = full glow of the streetlight and bridge globe heads. indoor: the ambient fill used under a roof and between walls at every hour; it replaces the sun or moon, which fade indoors (they would shine through the roof; sun since 25 Nov 2026). The sky and the light's direction and colour are not changed indoors, so the outside seen through doors keeps the time of day. disc: colour of the sun disc in the sky by day and the moon by night (it follows the light's direction); moon_size: 0-1 size of the moon disc (only used at night, so the moon fades in and out instead of popping); clouds: tint of the sky clouds. The 06:00 sunrise keyframe is the exact midpoint of its neighbours except for disc and clouds.",
   "cycle_minutes": 30,
   "sun": {
     "sunrise": 6.0,
@@ -15,7 +15,7 @@
   },
   "indoor": {
     "ambient_color": "fff4e4",
-    "ambient_energy": 0.54
+    "ambient_energy": 0.62
   },
   "lamp_glow": "ffd58a",
   "lamp_energy": 2.2,
