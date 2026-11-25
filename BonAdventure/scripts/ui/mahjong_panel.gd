@@ -11,9 +11,7 @@ extends Control
 ## each scoring hand with its fan, the total, Play again and Leave). A small cream pull tab on
 ## the hand tray's top edge (▾) slides the tray away to see the player's own tiles on the table
 ## under it (exposed sets, discards; user, 24 Nov 2026); the tab stays at the bottom edge (▴) to
-## bring it back, and so does the start of the player's next turn. A small nameplate by each
-## opponent shows their name, seat wind and points, softly lit on their turn (UI polish, user,
-## 24 Nov 2026). It only draws what mahjong_session.gd gives it and emits signals; it knows no rules.
+## bring it back, and so does the start of the player's next turn. It only draws what mahjong_session.gd gives it and emits signals; it knows no rules.
 ##
 ## Lines are {"foreign", "native"} dictionaries; GameSettings decides what shows. Layout scales
 ## with min(window height / 800, window width / 1100), like money_panel.gd (user decision,
@@ -65,8 +63,7 @@ const LINE := 3
 const SOFT_SHADOW := Color(0.1, 0.27, 0.32, 0.14)
 ## The tray's slide (seconds) when the tab tucks it away or brings it back.
 const TRAY_SLIDE := 0.22
-## Nameplates: soft gold outline and glow on the player whose turn it is.
-const TURN_GLOW := Color("f2b53a")
+
 ## The scoreboard's change after a hand: points won, points paid.
 const GAIN := Color("3f9a35")
 const LOSS := Color("d0523f")
@@ -121,12 +118,6 @@ var hand_toggle: TrayHandle
 ## 0: the tray up, 1: slid below the screen (tweened over TRAY_SLIDE).
 var _tray_t := 0.0
 var _tray_tween: Tween
-## Opponents' nameplates (seats 1-3): where each sits in the world (`seat_points`, set by the
-## session with its `camera`) and whose turn it is (set_turn()).
-var seat_points: Array = []
-var camera: Camera3D
-var _plates: Array = [null, null, null, null]
-var _turn := -1
 
 var info_card: PanelContainer
 var info_rows: VBoxContainer
@@ -233,10 +224,6 @@ func _init() -> void:
 	add_child(score_card)
 	score_stack = VBoxContainer.new()
 	score_card.add_child(score_stack)
-	for seat in range(1, 4):
-		_plates[seat] = _make_plate(seat)
-		add_child(_plates[seat])
-	move_child(score_card, -1)
 	move_child(result_card, -1)
 	visible = false
 	resized.connect(_rescale)
@@ -386,7 +373,6 @@ func set_scores(rows: Array) -> void:
 		return
 	_scores = rows.duplicate(true)
 	score_button.text = str(_scores[0].total) if not _scores.is_empty() else ""
-	_build_plates()
 	if score_card.visible:
 		_build_scores()
 
@@ -788,115 +774,6 @@ func refresh_display() -> void:
 			_build_result()
 	_place.call_deferred()
 
-# --- Opponents' nameplates (UI polish, user, 24 Nov 2026) ----------------------------------
-
-## Lights the nameplate of the player whose turn it is (-1 or 0: none lit).
-func set_turn(seat: int) -> void:
-	if seat == _turn:
-		return
-	_turn = seat
-	for plate_seat in range(1, 4):
-		_style_plate(plate_seat)
-
-## A small cream plate: the seat wind as a little tile, the name, the points.
-func _make_plate(seat: int) -> PanelContainer:
-	var plate := PanelContainer.new()
-	plate.name = "Nameplate %d" % seat
-	plate.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	plate.visible = false
-	var row := HBoxContainer.new()
-	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	plate.add_child(row)
-	var wind := TileStrip.new()
-	wind.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	wind.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	row.add_child(wind)
-	for color in [GOLD, DIM]:
-		var label := _label(18, color)
-		label.autowrap_mode = TextServer.AUTOWRAP_OFF
-		label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		row.add_child(label)
-	return plate
-
-## Nameplates keep a readable size on a phone (the rest of the panel scales lower).
-func _plate_factor() -> float:
-	return maxf(_factor, 0.7)
-
-func _style_plate(seat: int) -> void:
-	var plate: PanelContainer = _plates[seat]
-	if plate == null:
-		return
-	var f := _plate_factor()
-	var lit := seat == _turn
-	var look := StyleBoxFlat.new()
-	look.bg_color = Color(PASS, 0.95)
-	look.border_color = TURN_GLOW if lit else QUIET_EDGE
-	look.set_border_width_all(3 if lit else 2)
-	look.set_corner_radius_all(roundi(14 * f))
-	look.anti_aliasing = true
-	look.shadow_color = Color(TURN_GLOW, 0.4) if lit else SOFT_SHADOW
-	look.shadow_size = roundi((9 if lit else 3) * f)
-	look.shadow_offset = Vector2.ZERO if lit else Vector2(0, 1.5 * f)
-	look.content_margin_left = 8 * f
-	look.content_margin_right = 12 * f
-	look.content_margin_top = 4 * f
-	look.content_margin_bottom = 4 * f
-	plate.add_theme_stylebox_override("panel", look)
-	(plate.get_child(0) as HBoxContainer).add_theme_constant_override("separation", roundi(6 * f))
-	if lit and plate.is_visible_in_tree():
-		# A soft bump as the turn arrives, nothing that keeps moving.
-		plate.pivot_offset = plate.size * 0.5
-		var tween := plate.create_tween()
-		tween.tween_property(plate, "scale", Vector2.ONE * 1.06, 0.12).set_trans(Tween.TRANS_SINE)
-		tween.tween_property(plate, "scale", Vector2.ONE, 0.16).set_trans(Tween.TRANS_SINE)
-
-func _build_plates() -> void:
-	var f := _plate_factor()
-	for seat in range(1, 4):
-		var plate: PanelContainer = _plates[seat]
-		plate.visible = seat < _scores.size()
-		if not plate.visible:
-			continue
-		var data: Dictionary = _scores[seat]
-		var row := plate.get_child(0) as HBoxContainer
-		var wind := row.get_child(0) as TileStrip
-		var kind := int(data.get("wind", -1))
-		wind.visible = kind >= 0
-		wind.tiles = [kind] if kind >= 0 else []
-		wind.letters = letters
-		wind.custom_minimum_size = Vector2(0.32, 0.32 * 1.3) * TILE.x * f
-		wind.queue_redraw()
-		var name_label := row.get_child(1) as Label
-		name_label.text = _text(data.name)
-		name_label.add_theme_font_size_override("font_size", roundi(18 * f))
-		_hold_width(name_label, data.name)
-		var points := row.get_child(2) as Label
-		points.text = str(data.total)
-		points.add_theme_font_size_override("font_size", roundi(18 * f))
-	_place.call_deferred()
-
-## Each plate under its player's point on screen (`seat_points` through `camera`), kept on the
-## screen and below the top cards.
-func _place_plates(screen: Vector2, margin: float) -> void:
-	for seat in range(1, 4):
-		var plate: PanelContainer = _plates[seat]
-		if not plate.visible:
-			continue
-		if camera == null or not is_instance_valid(camera) or seat >= seat_points.size() or camera.is_position_behind(seat_points[seat]):
-			plate.position = Vector2(-1000, -1000)
-			continue
-		plate.reset_size()
-		var plate_size := plate.size
-		var at := camera.unproject_position(seat_points[seat]) - plate_size * 0.5
-		at.x = clampf(at.x, margin, screen.x - margin - plate_size.x)
-		var top := margin
-		for card in [info_card, corner_card]:
-			var r := Rect2(card.position, card.size * card.scale)
-			if at.x < r.end.x and at.x + plate_size.x > r.position.x:
-				top = maxf(top, r.end.y + margin * 0.6)
-		at.y = clampf(at.y, top, screen.y * 0.6)
-		plate.position = at
-
 # --- Layout --------------------------------------------------------------------------------
 
 func _rescale() -> void:
@@ -928,8 +805,6 @@ func _rescale() -> void:
 	leave_button.icon = UiIcons.texture("exit", roundi(40 * grown))
 	hand_toggle.factor = maxf(_factor, 0.6)
 	hand_toggle.custom_minimum_size = Vector2(150, 50) * hand_toggle.factor
-	for seat in range(1, 4):
-		_style_plate(seat)
 	# The whole bar (14 tiles, 13 gaps of 2, the 18 gap before the drawn tile, the card's
 	# margins) at HAND_GROWTH, or as large as fits between the screen's side margins.
 	var natural := TILE.x * (HAND_SLOTS + 1) + 2.0 * HAND_SLOTS + 18.0
@@ -941,7 +816,6 @@ func _rescale() -> void:
 		_build_result()
 		if score_card.visible:
 			_build_scores()
-		_build_plates()
 	_place.call_deferred()
 
 func _scale_font(label: Label) -> void:
@@ -990,7 +864,6 @@ func _place() -> void:
 	result_card.custom_minimum_size.x = 460 * _factor
 	result_card.reset_size()
 	result_card.position = (screen - result_card.size) * Vector2(0.5, 0.42)
-	_place_plates(screen, margin)
 
 # --- The tray's pull tab --------------------------------------------------------------------
 

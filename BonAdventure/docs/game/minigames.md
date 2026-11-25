@@ -355,12 +355,12 @@ changes no button size; the journal and ▶ buttons hide under the lesson card (
 first asks whether to carry on, with the same hand and points (23 Nov,
 [screenshots](../evidence/mahjong-memory-20261123/)). A pull tab on the hand tray slides it away to
 see your own tiles on the table (24 Nov, [screenshots](../evidence/mahjong-hand-toggle-20261124/)).
+UI polish (24 Nov): a smaller status card and soft call buttons with their tiles apart
+([screenshots](../evidence/mahjong-ui-polish-20261124/); the nameplates and cream counter shown
+there were removed again on 25 Nov).
 [Guide](../guides/MAHJONG.md)
 
 | Learning card | |
-UI polish (24 Nov): a smaller status card, soft call buttons with their tiles apart, nameplates by
-the opponents (lit on their turn) and a cream table counter
-([screenshots](../evidence/mahjong-ui-polish-20261124/)).
 | --- | --- |
 | Purpose | Hear and use game language (calls, winds, hand names) while playing; a pastime. |
 | Words | [Generated list](words.md#mahjong-club) |

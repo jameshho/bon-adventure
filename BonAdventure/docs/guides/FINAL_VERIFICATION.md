@@ -6057,6 +6057,9 @@ checks passed there. The first 844×390 run hung on its first screenshot while o
 Godot windows were open; it was stopped and run once more. `mahjong_hand_toggle` (updated for the
 centred pull tab and its slide): 9 checks, 0 failures, headless. `mahjong_table` and
 `mahjong_memory` were not re-run.
+25 Nov 2026: nameplates and the cream counter reverted (user). `mahjong_ui_polish` without their
+checks: 10 checks, 0 failures at 1280×800 with graphics; the 1280×800 renders were redone. The
+844×390 renders still show the removed nameplates and plaque.
 
 **Follow-up (user requests, same day).** Changes:
 - Awoo's chair moved back (home step `mahjong_chair_back`).

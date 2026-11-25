@@ -1,7 +1,7 @@
 extends SceneTree
 ## 24 Nov 2026: the Mahjong UI polish (docs/guides/MAHJONG.md, "The screen"): the compact status
-## card, the soft call buttons above the tray's pull tab, the opponents' nameplates (lit on their
-## turn, clear of the cards and the tray) and the cream table counter. Plays until the player may
+## card and the soft call buttons above the tray's pull tab (the nameplates and the cream table
+## counter it first checked were reverted on 25 Nov 2026, user). Plays until the player may
 ## claim a discard with Pung / Chow / Kong (or 40 turns), checks the layout and, with graphics,
 ## saves actions.png, then an opponent's turn (turn.png) and the tray slid away (tray-hidden.png),
 ## named with the window size when it is not 1280x800.
@@ -92,16 +92,6 @@ func run():
 	check(absf(tab.get_center().x - bar.get_center().x) < 2.0, "the tab is centred on the tray")
 	for button in panel.action_row.get_children():
 		check(whole.encloses(button.get_global_rect()), "%s fits on screen" % button.name)
-	var plates: Array = []
-	for seat in range(1, 4):
-		var plate: Control = panel._plates[seat]
-		var r := plate.get_global_rect()
-		plates.append(r)
-		check(plate.visible and whole.encloses(r), "nameplate %d shows on screen (%s)" % [seat, r])
-		check(not r.intersects(info) and not r.intersects(corner) and not r.intersects(bar) and not r.intersects(row), "nameplate %d is clear of the cards, calls and tray (%s)" % [seat, r])
-		var label: Label = plate.get_child(0).get_child(1)
-		check(label.text != "", "nameplate %d names its player (%s)" % [seat, label.text])
-	check(not plates[0].intersects(plates[1]) and not plates[1].intersects(plates[2]) and not plates[0].intersects(plates[2]), "the nameplates do not overlap")
 	var counter: Node3D = session.view.get_node_or_null("CentreCounter")
 	check(counter != null and counter.visible, "the table counter shows")
 	await shot("actions.png")
@@ -114,7 +104,6 @@ func run():
 		session._process(0.5)
 	session._refresh()
 	await create_timer(0.4).timeout
-	check(g.phase == "over" or panel._turn == g.turn, "the opponent's plate is lit on their turn (%d)" % g.turn)
 	await shot("turn.png")
 	panel.hand_toggle.pressed.emit()
 	await create_timer(0.35).timeout
