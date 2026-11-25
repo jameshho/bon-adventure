@@ -30,6 +30,29 @@ For the minigame table and the shared systems, see [MINIGAMES.md](MINIGAMES.md#b
     icons and margins scale with the window like its text (before, its icons had fixed pixel
     sizes), and the card is scaled down to at most 19 % of the screen's height (`INFO_MAX_HEIGHT`),
     so on a phone (844×390) it stays clear of the far discard row (user: "fit on phone").
+    *Superseded 24 Nov 2026 by the UI polish below (status card about 25 % smaller, counter 20 %).*
+  - **UI polish (24 Nov 2026, user: more cohesive, less cluttered, same look and gameplay).**
+    One look for every part of `mahjong_panel.gd`: thin 3 px outlines (`LINE`), light shadows
+    (`SOFT_SHADOW`), corner radii 20 for cards and 16 for buttons, gentle motion (a small lift
+    under the mouse, a squash when pressed, the call buttons fading in). Checked by
+    [`mahjong-ui-polish-20261124/verify.gd`](../evidence/mahjong-ui-polish-20261124/) at
+    1280×800 and 844×390.
+    - **Status card** (top left) about 25 % smaller: 10 % of the screen's height on a laptop,
+      14 % on a phone (`INFO_HEIGHT_LAPTOP`, `INFO_HEIGHT_PHONE`; it was up to 19 %). The book,
+      ★ and leave buttons are small cream rounded squares with a thin outline (no thick round
+      rims or heavy shadows); `INFO_GROWTH` 1.1, `INFO_TEXT_GROWTH` 1.45.
+    - **Pull tab** instead of the round ▾ button: see "Hiding the hand" below.
+    - **Call buttons**: Pung, Kong and Chow soft pastel green with a green outline and green
+      words (the primary choice), their tiles in a light well of their own at the right; Pass
+      and Keep playing cream with a pale outline (secondary); Mahjong! stays gold with red words
+      and its pulse (the main choice) in the same shape.
+    - **Nameplates**: a small cream plate by each opponent with their seat-wind tile, name and
+      points this visit, at their chest on screen (`NAMEPLATE_OUT`, `NAMEPLATE_HEIGHT` in
+      `mahjong_session.gd`, projected through the game camera), kept clear of the top cards.
+      The plate of the player whose turn it is gets a soft gold outline and glow and one small
+      bump (`set_turn()`); nothing keeps moving.
+    - **Centre counter**: a small cream rounded plaque with dark teal words and a slightly darker
+      lip (was a dark navy box), drawn 20 % larger than its model (`COUNTER_GROWTH`, was 30 %).
   - **Top of the screen clear for Awoo (16 Nov 2026, user: "make the top status bar easy to read
     but not block awoo's face").** The status bar is split in two:
     - the status card (top left) keeps the mode, your wind, the book and the ★;
@@ -226,14 +249,17 @@ Simulated results with four NPC players:
    corner badge, name and points; ★ or its round ✕ (top right) closes it, and play goes on
    meanwhile. Since 11 Nov 2026 (user) neither scoreboard has a "Points this visit" heading: the
    faces and numbers say it.
-   The tiles left and the round wind are on a dark console in the middle of the table
+   The tiles left and the round wind are on a cream plaque (24 Nov 2026; a dark console before) in the middle of the table
    (`mahjong_view.gd` `show_counter()`): the round wind as a face-up tile, the number and the word
    "fichas" in the language being learned, tilted toward the player's seat.
    There is no message line over the table at all (user, 9 Nov 2026: "remove this sentence and everything shown in this box"): no "Awoo's turn…", no claim prompt, no "too few fan" note; the buttons and call words say what happens.
    - **Discarding.** Click a tile to discard it. The tile just drawn sits apart on the right.
-   - **Hiding the hand (user, 24 Nov 2026).** A round ▾ button just above the hand bar's right end
-     tucks the bar away, so the player can see their own tiles on the table under it (exposed sets,
-     standing hand, nearest discards); ▴ in the bottom-right corner brings it back. The start of
+   - **Hiding the hand (user, 24 Nov 2026).** A small cream pull tab centred on the hand tray's top
+     edge, with a dark teal ▾, slides the tray down off the screen (0.22 s, `TRAY_SLIDE`), so the
+     player can see their own tiles on the table under it (exposed sets, standing hand, nearest
+     discards); the tab stays at the bottom edge with ▴ to slide it back. The tab's touch area
+     (150 × 50 × scale, at least 0.6) is larger than the drawn tab, and the call buttons sit above
+     it (UI polish, same day; it was a round button above the bar's right end). The start of
      the player's next turn (a draw or a claim) and a new hand bring it back by themselves; call
      buttons still show while it is hidden (`mahjong_panel.gd` `hand_toggle`, `set_hand_hidden()`).
    - **Playing ahead (user, 9 Nov 2026).** While another player plays, double-click (or tap twice)

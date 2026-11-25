@@ -6048,6 +6048,16 @@ Godot printed the known `recursive_mutex` abort at exit after the summary line.
 at 1280×800, `VT_FOCUS=home`, isolated `HOME` (one test bug fixed first: it read the panel before
 the session redrew it). `mahjong_table` afterwards (headless, same setup): 104 checks, 0 failures.
 
+**Mahjong UI polish (24 Nov 2026).** `VT_FOCUS=home`, isolated `HOME`, not the full town.
+`mahjong_ui_polish` (new): 21 checks, 0 failures at 1280×800 with graphics (status card 80 px,
+10 % of the height; it was 107 px). At 844×390: 19 checks, 2 failures, "the player may claim a
+discard" and "call buttons show". That random game offered the player no Pung/Chow/Kong in 34
+turns, so the call buttons were **not checked at phone size**. The layout, nameplate and tray
+checks passed there. The first 844×390 run hung on its first screenshot while other sessions'
+Godot windows were open; it was stopped and run once more. `mahjong_hand_toggle` (updated for the
+centred pull tab and its slide): 9 checks, 0 failures, headless. `mahjong_table` and
+`mahjong_memory` were not re-run.
+
 **Follow-up (user requests, same day).** Changes:
 - Awoo's chair moved back (home step `mahjong_chair_back`).
 - Lin renamed Awoo, and the home's Awoo renamed Sam.

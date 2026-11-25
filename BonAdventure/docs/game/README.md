@@ -58,7 +58,7 @@ be forgotten come back.
 | [Feel the Clues](minigames.md#feel-the-clues) | Police evidence room | Yes | 6 Nov | 8 Nov (redesign) |
 | [Desk Dash](minigames.md#desk-dash) | School classroom | Chinese measure words only | 7 Nov | 23 Nov (card translated by holding the HUD's EN button) |
 | [Mystery Doors](minigames.md#mystery-doors) | Mystery House | Yes | 9 Nov | 10 Nov |
-| [Mahjong Club](minigames.md#mahjong-club) | Table in front of the home | No | 9 Nov | 24 Nov (hide the hand to see your tiles; 23 Nov: carry on an unfinished game; one EN button, top right; Mahjong! still offered after a pung) |
+| [Mahjong Club](minigames.md#mahjong-club) | Table in front of the home | No | 9 Nov | 24 Nov (UI polish: nameplates, soft call buttons, cream counter, pull tab; hide the hand to see your tiles; 23 Nov: carry on an unfinished game; one EN button, top right; Mahjong! still offered after a pung) |
 | [Radar Patrol](minigames.md#radar-patrol) | Airport control tower | No (pastime) | 9 Nov | 15 Nov (easier taps) |
 | [Wire It Up!](minigames.md#wire-it-up) | Electrical box at the home | No (pastime) | 9 Nov | 9 Nov |
 | [Library Helper](minigames.md#library-helper) | Library | Yes | 13 Nov | 21 Nov (book close-up on pick-up, bigger right-shelf burst, thanks with a zoom on Rosa, results card, new cart after walking away) |

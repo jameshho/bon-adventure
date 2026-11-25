@@ -211,6 +211,10 @@ CHECKS = [
     # The hand bar's hide/show button (24 Nov 2026).
     dict(id="mahjong_hand_toggle", script="res://docs/evidence/mahjong-hand-toggle-20261124/verify.gd", suites=["full"],
          summary=r"^MAHJONG HAND TOGGLE: \d+ checks, (?P<n>\d+) failures"),
+    # The Mahjong UI polish (24 Nov 2026): compact status card, calls above the pull tab,
+    # opponents' nameplates, cream counter. Headless writes no PNGs.
+    dict(id="mahjong_ui_polish", script="res://docs/evidence/mahjong-ui-polish-20261124/verify.gd", suites=["full"],
+         summary=r"^MAHJONG UI POLISH: \d+ checks, (?P<n>\d+) failures"),
     # Shared plush eyes, blinking and gestures (13 Nov 2026, docs/guides/COMPONENTS.md#plush-characters).
     dict(id="plush_life", script="res://docs/evidence/plush-rig-20261113/verify.gd", suites=["full"], fps=True,
          summary=r"^PLUSH LIFE: \d+ checks, (?P<n>\d+) failures"),
