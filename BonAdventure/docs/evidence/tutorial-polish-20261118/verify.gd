@@ -1,9 +1,12 @@
 extends SceneTree
 ## The welcome tutorial after the user's polish list of 18 Nov 2026 (replaces
 ## tutorial-review-20261117/verify.gd as the "tutorial" check, which it copies and adapts):
-## - "have a look around" stays 1.8 s; the view step needs a 2 rad drag, then 2 s; the walk step
-##   10 m, then 1 s; meet friends / where are they / help find stay 2.0 / 2.3 / 2.0 s, more to
-##   show 3 s, let's go outside 2 s, and the front door opens by itself after "more to show";
+## - "have a look around" stays 1.8 s; the view step needs a 2 rad drag, then 1 s; the walk step
+##   10 m, then 0.5 s; meet friends / where are they / help find stay 2.0 / 2.3 / 2.0 s; the front
+##   door opens by itself, then "let's go outside" (one line with "more to show") stays 3.5 s
+##   (updated 25 Nov 2026 to the user's reviews of 20 and 21 Nov: shorter pauses, the merged
+##   line, no "to the supermarket", the fruit at $1.25; tutorial-review2-20261121/verify.gd
+##   checks the rest of the 21 Nov review);
 ## - no ✕ on the dialogue box and no HUD clock while the tutorial runs; the Skip button hides while
 ##   an instruction strip shows; "not where we are going" / "not there" close after 2 s, "not on
 ##   our shopping list" after 1.5 s; no "press E to open the curtain" strip;
@@ -22,7 +25,7 @@ extends SceneTree
 ## - "you found one / everyone" and "more to show you" are in the guide's close-up although she
 ##   is in the living room; Sunny's "we need food first" is in her close-up;
 ## - the cast walks to the supermarket's door without boxing the player in;
-## - the shopping list is 1 apple and 2 bananas ($1.50);
+## - the shopping list is 1 apple and 2 bananas ($1.25 since 21 Nov 2026);
 ## - a replay (Settings) starts with every home door shut, the sleeper back in its seat.
 ## The rest as in the 17 Nov script check:
 ## - bubbles move on by themselves after their reading time, with a gap before the next one, and
@@ -317,11 +320,11 @@ func act_house() -> void:
 	await frames(5)
 	check(str(tutorial.step.get("for", "")) == "view", "1.6 rad is not enough (2 rad needed)")
 	player.look_by(Vector2(turn_px, 0))
-	# 2 s to look on before the next line.
+	# 1 s to look on before the next line (2 s until the 20 Nov 2026 review).
 	var viewed := Time.get_ticks_msec()
 	check(await wait_line("tutorial.try_walking"), "BonBon: now try walking")
 	var held := (Time.get_ticks_msec() - viewed) / 1000.0
-	check(held > 1.8 and held < 3.2, "2 s after the drag before the next line (%.1f s)" % held)
+	check(held > 0.8 and held < 2.2, "1 s after the drag before the next line (%.1f s)" % held)
 	tutorial._advance = true
 	await wait_until(func() -> bool: return tutorial.strip.text == phrase("tutorial.ui_move"))
 	check(player.look_allowed and player.move_allowed and not main.interaction.interact_allowed, "the walking step allows the view and walking, nothing to use")
@@ -471,16 +474,15 @@ func find_friends(site: Node3D) -> void:
 	await create_timer(0.8).timeout
 	await shot("found-all")
 	tutorial._advance = true
-	check(await wait_line("tutorial.more_to_show"), "the guide: more to show you")
+	check(await wait_line("tutorial.lets_go_outside", {}, 6.0), "the guide: more to show you, let's go outside (one line)")
 	var more_at := Time.get_ticks_msec()
-	await frames(10)
-	check(get_root().get_viewport().get_camera_3d() != main.camera, "'more to show you' stays in her close-up")
-	check(await wait_line("tutorial.lets_go_outside", {}, 6.0), "the guide: let's go outside")
-	var more := (Time.get_ticks_msec() - more_at) / 1000.0
-	check(more > 2.9 and more < 4.0, "'more to show you' stays 3 s (%.1f s with the gap)" % more)
 	var front: Node3D = site.find_child("Front door", true, false)
-	check(front != null and main.doors[front].get("open", false), "the front door opens by itself after 'more to show you'")
-	tutorial._advance = true
+	check(front != null and main.doors[front].get("open", false), "the front door has opened by itself")
+	await frames(10)
+	check(get_root().get_viewport().get_camera_3d() != main.camera, "'let's go outside' stays in her close-up")
+	await wait_until(func() -> bool: return shown() != phrase("tutorial.lets_go_outside"), 8.0)
+	var more := (Time.get_ticks_msec() - more_at) / 1000.0
+	check(more > 3.0 and more < 4.3, "'let's go outside' stays 3.5 s (%.1f s)" % more)
 	fast = true
 
 # --- Act 2 -----------------------------------------------------------------------------------
@@ -510,7 +512,7 @@ func act_market() -> void:
 	await shot("need-food")
 	tutorial._advance = true
 	fast = true
-	check(await wait_line("tutorial.to_supermarket"), "BonBon: to the supermarket")
+	# (No "to the supermarket" since 20 Nov 2026: the friend's line leads straight to the clerk.)
 	# (Most town buildings have open doorways; the bank's office and vault are doors.)
 	var bank: Node3D = ModularTown.building(main.apartment, "bank")
 	var other_door: Node3D = null
@@ -598,7 +600,7 @@ func act_market() -> void:
 	await wait_until(func() -> bool: return trip.phase == "till")
 	await teleport(trip._till(), Vector3(0, 0, -1))
 	check(await wait_until(func() -> bool: return main.shop_panel.has_choices()), "the cashier asks")
-	check(shown() == phrase("tutorial.cashier_hello", {"amount": {"learn": trip.dialogue.money_values(150)}}), "the cashier: that'll be ... (%s)" % shown())
+	check(shown() == phrase("tutorial.cashier_hello", {"amount": {"learn": trip.dialogue.money_values(125)}}), "the cashier: that'll be ... (%s)" % shown())
 	check(not main.shop_panel.current_line().terms.any(func(term) -> bool: return term.get("show", false)), "the amount comes without its digits")
 	check(tutorial.strip.text == phrase("tutorial.ui_hold_en", {"badge": GameSettings.shared().native_badge()}), "the strip: hold EN if unsure (%s)" % tutorial.strip.text)
 	check(main.shop_panel._speaker.foreign == main.shop_panel._speaker.native, "the cashier's name is in the native language (%s)" % str(main.shop_panel._speaker))
@@ -611,7 +613,7 @@ func act_market() -> void:
 	check(money.visible and offered.size() == 2, "the money panel offers only the $1 bill and the quarter (%d pieces)" % offered.size())
 	await frames(2)
 	check(not main.hold_ui.inspect_button.visible, "no Inspect button while paying")
-	check(money._tray_hint.visible and money._tray_hint.text == phrase("tutorial.ui_pay", {"amount": "$1.50"}), "the empty tray says: tap to make $1.50 (%s)" % money._tray_hint.text)
+	check(money._tray_hint.visible and money._tray_hint.text == phrase("tutorial.ui_pay", {"amount": "$1.25"}), "the empty tray says: tap to make $1.25 (%s)" % money._tray_hint.text)
 	await shot("pay")
 	money.counts = {"bill_1": 1}
 	money.submitted.emit(100)
@@ -619,8 +621,8 @@ func act_market() -> void:
 	await wait_until(func() -> bool: return main.shop_panel.has_choices())
 	main.shop_panel.choice_pressed.emit(trip.PAY)
 	await frames(3)
-	money.counts = {"bill_1": 1, "coin_25": 2}
-	money.submitted.emit(150)
+	money.counts = {"bill_1": 1, "coin_25": 1}
+	money.submitted.emit(125)
 	check(await wait_line("tutorial.cashier_thanks"), "the cashier: perfect, thank you")
 	check(await wait_line("tutorial.meet_outside"), "BonBon: let's meet outside")
 	check(not trip.door.blocks(), "after paying the store door opens")
