@@ -19,7 +19,13 @@ extends Node
 ## while the window draws no frames (hidden), drawing waits.
 ##
 ##   WordPictures.shared().fill(texture_rect, key)   # shows the picture now or when it is drawn
+##   WordPictures.shared().fill(texture_rect, key, WordPictures.BIG)  # the journal's word page
 const SIZE := 128
+## The journal's word page shows one picture at up to about 320 px (25 Nov 2026): drawn at this
+## size, so it is not a blown-up SIZE picture; the SIZE one stands in while it is drawn. At most
+## MAX_BIG are kept (256 KB each).
+const BIG := 256
+const MAX_BIG := 8
 const MAX_PICTURES := 200
 const MAX_PARTS := 300
 ## Nodes looked at per target before giving up (a whole building).
@@ -48,7 +54,8 @@ var targets: Dictionary = {}
 var categories: Dictionary = {}
 ## key -> true for words.json "picture": false.
 var no_picture: Dictionary = {}
-## key -> Texture2D; the most recently used last (oldest dropped first).
+## Picture id (the word key, or "key@size" for other sizes) -> Texture2D; the most recently used
+## last (oldest dropped first). _failed, _queue, _drawing and _waiting use the same ids.
 var _done: Dictionary = {}
 var _failed: Dictionary = {}
 var _queue: Array[String] = []
@@ -83,16 +90,20 @@ func has_picture(key: String) -> bool:
 			return true
 	return false
 
+static func _id(key: String, size: int) -> String:
+	return key if size == SIZE else "%s@%d" % [key, size]
+
 ## The picture, or null while it is being drawn (then `finished` follows) or when there is none.
-func picture(key: String) -> Texture2D:
-	if _done.has(key):
-		var texture: Texture2D = _done[key]
-		_done.erase(key)
-		_done[key] = texture
+func picture(key: String, size := SIZE) -> Texture2D:
+	var id := _id(key, size)
+	if _done.has(id):
+		var texture: Texture2D = _done[id]
+		_done.erase(id)
+		_done[id] = texture
 		return texture
-	if has_picture(key) and not _drawing.has(key) and is_inside_tree() and DisplayServer.get_name() != "headless":
-		_queue.erase(key)
-		_queue.append(key)
+	if has_picture(key) and not _failed.has(id) and not _drawing.has(id) and is_inside_tree() and DisplayServer.get_name() != "headless":
+		_queue.erase(id)
+		_queue.append(id)
 		while _queue.size() > MAX_QUEUE:
 			_queue.pop_front()
 		_pump()
@@ -118,23 +129,29 @@ func warm_up(max_frames := 30) -> void:
 
 ## Shows `key`'s picture in `rect` now, or when it is drawn (unless the rect shows another word
 ## by then, as pooled journal rows do). Returns whether the word has a picture.
-func fill(rect: TextureRect, key: String) -> bool:
-	rect.set_meta("picture_key", key)
-	rect.texture = picture(key)
+## A `size` other than SIZE shows the SIZE picture, if there is one already, until it is drawn.
+func fill(rect: TextureRect, key: String, size := SIZE) -> bool:
+	var id := _id(key, size)
+	rect.set_meta("picture_key", id)
+	rect.texture = picture(key, size)
 	if rect.texture == null and has_picture(key):
-		if not _waiting.has(key):
-			_waiting[key] = []
-		_waiting[key].append(weakref(rect))
+		if size != SIZE and _done.has(key):
+			rect.texture = _done[key]
+		if not _waiting.has(id):
+			_waiting[id] = []
+		_waiting[id].append(weakref(rect))
 	return has_picture(key)
 
 func _pump() -> void:
 	while _busy < AT_ONCE and not _queue.is_empty():
-		var key: String = _queue.pop_back()
+		var id: String = _queue.pop_back()
 		_busy += 1
-		_drawing[key] = true
-		_draw_word(key)
+		_drawing[id] = true
+		_draw_word(id)
 
-func _draw_word(key: String) -> void:
+func _draw_word(id: String) -> void:
+	var key := id.get_slice("@", 0)
+	var size := int(id.get_slice("@", 1)) if id.contains("@") else SIZE
 	var texture: Texture2D = null
 	var parts: Dictionary = {}
 	for target in targets.get(key, []):
@@ -143,23 +160,28 @@ func _draw_word(key: String) -> void:
 			if not parts.is_empty():
 				break
 	if parts.is_empty():
-		_failed[key] = true
+		_failed[id] = true
 	else:
 		var view := ANIMAL_VIEW if str(categories.get(key, "")) == "Animals" else VIEW
-		texture = await draw(self, parts.nodes, parts.bounds, SIZE, view)
+		texture = await draw(self, parts.nodes, parts.bounds, size, view)
 		if texture == null:
-			_failed[key] = true
+			_failed[id] = true
 		else:
-			_done[key] = texture
+			_done[id] = texture
 			while _done.size() > MAX_PICTURES:
 				_done.erase(_done.keys()[0])
-	for ref in _waiting.get(key, []):
+			var big: Array = _done.keys().filter(func(k: String) -> bool: return k.contains("@"))
+			while big.size() > MAX_BIG:
+				_done.erase(big.pop_front())
+	# A big picture that could not be drawn leaves the SIZE one shown.
+	var shown: Texture2D = texture if texture != null or size == SIZE else _done.get(key)
+	for ref in _waiting.get(id, []):
 		var rect: TextureRect = ref.get_ref()
-		if rect != null and str(rect.get_meta("picture_key", "")) == key:
-			rect.texture = texture
-	_waiting.erase(key)
-	_drawing.erase(key)
-	if texture != null:
+		if rect != null and str(rect.get_meta("picture_key", "")) == id:
+			rect.texture = shown
+	_waiting.erase(id)
+	_drawing.erase(id)
+	if texture != null and size == SIZE:
 		finished.emit(key, texture)
 	_busy -= 1
 	_pump()

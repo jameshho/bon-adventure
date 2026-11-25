@@ -191,10 +191,11 @@ CHECKS = [
          summary=r"WORLD SIGNS: \d+ checks, (?P<n>\d+) failures"),
     dict(id="practice_log", script="res://docs/evidence/practice-log-20261107/verify.gd", suites=["full"],
          summary=r"PRACTICE LOG: \d+ checks, (?P<n>\d+) failures"),
-    # The vocabulary book (J journal table, filters, word detail; Stage C, 8 Nov 2026). Headless
+    # The vocabulary journal's sticker book (Places tab, baked place index; 25 Nov 2026,
+    # docs/guides/JOURNAL.md); it replaced the table check vocabulary_book (8 Nov 2026). Headless
     # here; with graphics the same script also renders its PNGs.
-    dict(id="vocabulary_book", script="res://docs/evidence/vocabulary-book-20261108/verify.gd", suites=["full"],
-         summary=r"VOCABULARY BOOK: \d+ checks, (?P<n>\d+) failures"),
+    dict(id="journal_sticker_book", script="res://docs/evidence/journal-sticker-book-20261125/verify.gd", suites=["full"],
+         summary=r"JOURNAL STICKER BOOK: \d+ checks, (?P<n>\d+) failures"),
     # Airport flight game logic after the board-only redesign (no town; 7 Nov 2026).
     dict(id="flight_logic", script="res://docs/evidence/flight-board-20261107/verify.gd", suites=["full"],
          summary=r"^(PASS|FAIL): \d+ checks, (?P<n>\d+) failed"),

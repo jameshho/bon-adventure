@@ -567,8 +567,9 @@ func make_popups() -> void:
 	if Features.FULL_MAP:
 		popups.watch(hud.map_overlay, hud.toggle_map)
 	popups.watch(hud.journal_overlay, toggle_study_journal)
-	# The vocabulary book's word detail sits above the journal: Esc goes back to the table first.
-	popups.watch(hud.journal_book.detail, hud.journal_book.close_detail)
+	# The sticker book's Back button shows inside a chapter or a word page: Esc goes back one
+	# level (word page -> chapter -> contents) before it closes the journal (25 Nov 2026).
+	popups.watch(hud.journal_book.back_button, hud.journal_book.go_back)
 	popups.watch(hud.help_overlay, hud.toggle_help)
 	MinigameWiring.watch_popups(self, popups)
 	popups.watch(settings_panel, settings_panel.close)

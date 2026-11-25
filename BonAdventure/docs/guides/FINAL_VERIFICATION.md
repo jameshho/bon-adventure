@@ -8312,3 +8312,45 @@ instead of "Call the police", teller chairs as seats, a wider staff door, no dia
 | FAIL 5 / 54, then a diagnostic run 0 / 54 | `bank_rework` (23 Nov script, updated 24 Nov the same way). First run: the manager's walk crossed the end of the wider staff door's open leaf (a real issue: her turn in the office, `MANAGER_DOOR`, moved from z 111.0 to 111.6), and four manager-scene labels failed (door opens, warning 1, the manager's close-up, warning 2) while the second visit and the firing passed. A copy of the script that logged the scene every 0.5 s after the payout (not the committed script) passed **54 checks, 0 failures**: she opened the door, walked out and gave both warnings. The four failures were not reproduced; the committed script was not run again (no re-runs for a pass). **P3:** watch for a timing race in the manager scene's first visit |
 
 Not run: the full suite, `runtime_resources`, the web export, touch, a hands-on play-test.
+
+## Vocabulary journal: sticker book, Places tab — 25 November 2026
+
+[What was built and its rules](JOURNAL.md#built-so-far-25-nov-2026). `dev_focus.txt` = `all`;
+every run with an isolated `HOME`, `VT_FOCUS=all`, `VT_SPAWN=none`; the full town.
+
+| Result | Check |
+| --- | --- |
+| PASS | `vocabulary_report` with `--write` (headless): **5476 checks, 0 failures**; wrote the new `data/journal_places.json` (758 findable words, 42 not findable, 50 in 4 or more places). The same run also rewrote `report.csv`, `summary.md` and `docs/game/words.md`, only because Library Helper's runtime books now count as placed (car, cat … in the library) and the date; those three were left out of this change (unrelated; the next full run refreshes them) |
+| PASS | `journal_sticker_book` (new; replaces `vocabulary_book`, whose table is gone): **50 checks, 0 failures** headless, and with graphics at 1280 × 800 (views in [`journal-sticker-book-20261125/`](../evidence/journal-sticker-book-20261125/)) |
+| PASS | the same at 844 × 390 (phone landscape, `-844x390` views): **50 checks, 0 failures**. One earlier run at this size stalled for 10 minutes waiting for a drawn frame after its third view (the window was probably hidden; Godot draws nothing then) and was stopped; the next run completed |
+| KNOWN-type, not this change | `language`: **5402 checks, 1 failure**: no pinyin reading for 掉 顆 舍, from the hen-house egg lines already committed (`data/phrases.json` at 278d40f1). This change's new Chinese characters (貼 詳 情) got readings in `data/pinyin_zh.json`. **P3:** add the three readings |
+
+Not run: the full suite; `minigame_launcher`, `building_lookup` and `tutorial_polish`, which only
+open and close the journal (`toggle_study_journal`, unchanged); the web export; real touch input
+(swipes and taps were checked through the book's own handlers, not pushed screen events);
+a hands-on play-test.
+
+### Review fixes (same day)
+
+A self-review found that game answers never counted as found (the book read only the studied
+list, so airplane, car, soccer, tennis and bed could never be found). Fixed with: found = studied
+or in the practice log of the language learned; `from_games` in the place index ("Found in a
+game at"); ← → / Page Up / Page Down; footer key hints only with keyboard play; buttons at
+least 44 px and text at least 11 px at the smallest scale; the word page's picture drawn at
+256 px; a scrolling right side on the word page; fewer style allocations; README and
+architecture-guide wording. Runs as above (isolated `HOME`, `VT_FOCUS=all`), each once when the
+change was complete:
+
+| Result | Check |
+| --- | --- |
+| PASS (exit abort) | `vocabulary_report --write`: **5475 checks, 0 failures**; `journal_places.json` gained `from_games` (airplane, bed, car, soccer, tennis). The run's report/word-list churn was reverted as before |
+| PASS (exit abort) | `journal_sticker_book`, now 67 checks headless (+ 1 with graphics: Details fits the window): **67 / 0 headless, 68 / 0 at 1280 × 800 and at 844 × 390**. New: game-answer finding per language, the game-only word page, keys, keyboard-only hint, tap and text floors, the big picture request, Chinese learned (pinyin) with a Spanish interface and a Chinese interface (views `zh-chapter`, `zh-word-page`, `zh-ui-contents`) |
+| Stalled, re-run | The first windowed runs at both sizes stalled waiting for a drawn frame (another session's Godot window opened over them; a covered window draws nothing). They were stopped and run once more with `--always-on-top`, which completed |
+| Found and fixed | The first phone render showed Details pushing the album past the window bottom (taller buttons and text); the right side now scrolls, and the check above covers it |
+| KNOWN-type, not this change | `language`: **5414 checks, 1 failure** (the same missing readings 掉 顆 舍) |
+
+Remaining (P3): on a phone the Details table's "Translated" heading is clipped by the scroll bar;
+the search placeholder capitalises language names in Spanish ("Chino o Español", the existing
+`language.*` names). Old evidence scripts that drove the table no longer run and are not in
+`run_checks.py`: `word-pictures-20261123/verify.gd`, `journal-speaker-20261124/capture.gd`,
+`vocabulary-book-20261108/verify.gd` (and older ones using `set_journal_view`).

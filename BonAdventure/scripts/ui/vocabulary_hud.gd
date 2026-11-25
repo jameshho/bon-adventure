@@ -81,15 +81,14 @@ var journal_panel: PanelContainer
 var journal_title: Label
 ## Header right side: "5 of 781 words studied" and its bar; the ✕ close button.
 var journal_progress_label: Label
-var journal_progress: ProgressBar
+## The full total's bar (findable words found; BonStyle.StripedBar since 25 Nov 2026).
+var journal_progress: BonStyle.StripedBar
 var journal_close: Button
 var journal_icon: TextureRect
-## The table, filters and word detail (scripts/ui/vocabulary_book.gd; Stage C, 8 Nov 2026).
+## The sticker book: contents, chapters and the word page (scripts/ui/vocabulary_book.gd; the
+## Places tab of docs/guides/JOURNAL.md, 25 Nov 2026; it replaced the table of 8 Nov 2026).
 var journal_book
 var journal_hint: Label
-var journal_category_button: Button
-var journal_area_button: Button
-var journal_by_area := false
 var journal_studied: Dictionary = {}
 var journal_dictionary: Dictionary = {}
 var journal_categories: Dictionary = {}
@@ -421,7 +420,8 @@ func _ready() -> void:
     journal_panel.add_child(journal_stack)
     journal_book = preload("res://scripts/ui/vocabulary_book.gd").new()
     journal_book.bookmark_toggled.connect(toggle_bookmark)
-    # Header: book icon and title, then progress (studied of all words) and the ✕.
+    # Header (sticker book, 25 Nov 2026): book icon and title, the full total ("N of M words
+    # found", findable words only) over a striped bar, the book's search and ★ Pocket, the ✕.
     var journal_header := HBoxContainer.new()
     journal_header.name = "Journal header"
     journal_header.add_theme_constant_override("separation", 14)
@@ -445,18 +445,11 @@ func _ready() -> void:
     journal_progress_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
     journal_progress_label.add_theme_color_override("font_color", BonStyle.INK_SOFT)
     progress_stack.add_child(journal_progress_label)
-    journal_progress = ProgressBar.new()
-    journal_progress.show_percentage = false
-    journal_progress.mouse_filter = Control.MOUSE_FILTER_IGNORE
-    var bar_back := StyleBoxFlat.new()
-    bar_back.bg_color = Color("cfe8eb")
-    bar_back.set_corner_radius_all(6)
-    var bar_fill := StyleBoxFlat.new()
-    bar_fill.bg_color = BonStyle.GREEN_BOTTOM
-    bar_fill.set_corner_radius_all(6)
-    journal_progress.add_theme_stylebox_override("background", bar_back)
-    journal_progress.add_theme_stylebox_override("fill", bar_fill)
+    journal_progress = BonStyle.StripedBar.new()
+    journal_progress.name = "Journal total bar"
     progress_stack.add_child(journal_progress)
+    journal_header.add_child(journal_book.search)
+    journal_header.add_child(journal_book.pocket_button)
     journal_close = Button.new()
     journal_close.name = "Close journal"
     journal_close.focus_mode = Control.FOCUS_NONE
@@ -467,24 +460,6 @@ func _ready() -> void:
     journal_book.style_button(journal_close, "plain")
     journal_close.pressed.connect(func() -> void: journal_toggle_requested.emit())
     journal_header.add_child(journal_close)
-    # The grouping buttons (By Category / By Area) sit at the end of the book's tab row.
-    var views := HBoxContainer.new()
-    views.add_theme_constant_override("separation", 6)
-    journal_book.tab_bar.add_child(views)
-    journal_category_button = Button.new()
-    phrase_label(journal_category_button, "journal.by_category")
-    journal_category_button.toggle_mode = true
-    journal_category_button.focus_mode = Control.FOCUS_NONE
-    journal_book.style_button(journal_category_button, "plain")
-    journal_category_button.pressed.connect(func(): set_journal_view(false))
-    views.add_child(journal_category_button)
-    journal_area_button = Button.new()
-    phrase_label(journal_area_button, "journal.by_area")
-    journal_area_button.toggle_mode = true
-    journal_area_button.focus_mode = Control.FOCUS_NONE
-    journal_book.style_button(journal_area_button, "plain")
-    journal_area_button.pressed.connect(func(): set_journal_view(true))
-    views.add_child(journal_area_button)
     journal_hint = journal_book.hint
     journal_stack.add_child(journal_book)
 
@@ -600,7 +575,10 @@ func _layout_hud() -> void:
     quest_toast.size = Vector2(minf(490.0, viewport_size.x - 20.0), 48.0)
     journal_overlay.position = Vector2.ZERO
     journal_overlay.size = viewport_size
-    var book_size := Vector2(minf(1020.0 * f, viewport_size.x - 40.0), minf(740.0 * f, viewport_size.y - 40.0))
+    # Wide, short windows (a phone held sideways) give the two-page album more width than the
+    # height-led factor would (sticker book, 25 Nov 2026): up to 1.5 x f, never past the window.
+    var wide: float = clampf(viewport_size.x / 1100.0, f, f * 1.5)
+    var book_size := Vector2(minf(1020.0 * wide, viewport_size.x - 40.0), minf(740.0 * f, viewport_size.y - 40.0))
     journal_panel.size = book_size
     journal_panel.position = (viewport_size - book_size) * 0.5
     var card: StyleBoxFlat = journal_panel.get_theme_stylebox("panel")
@@ -612,11 +590,10 @@ func _layout_hud() -> void:
     journal_icon.texture = BonStyle.icon_texture("journal", roundi(46 * f))
     journal_title.add_theme_font_size_override("font_size", roundi(28 * f))
     journal_progress_label.add_theme_font_size_override("font_size", roundi(15 * f))
-    journal_progress.custom_minimum_size = Vector2(220 * f, 10 * f)
-    journal_close.custom_minimum_size = Vector2(52, 52) * f
-    for button in [journal_category_button, journal_area_button]:
-        button.add_theme_font_size_override("font_size", roundi(17 * f))
-        button.custom_minimum_size = Vector2(0, 48 * f)
+    journal_progress.f = f
+    journal_progress.custom_minimum_size = Vector2(200 * f, 20 * f)
+    # Finger-sized on a landscape phone too (the book's TAP).
+    journal_close.custom_minimum_size = Vector2.ONE * maxf(52.0 * f, journal_book.TAP)
     journal_book.apply_scale(f)
     help_overlay.size = Vector2(minf(1240.0, viewport_size.x - 40.0), minf(660.0, viewport_size.y - 40.0))
     help_overlay.position = (viewport_size - help_overlay.size) * 0.5
@@ -1044,28 +1021,16 @@ func toggle_journal(studied: Dictionary, dictionary: Dictionary, categories: Dic
     journal_area_names = area_names
     render_journal()
 
-func set_journal_view(by_area: bool) -> void:
-    journal_by_area = by_area
-    render_journal()
-
 static func journal_english(key: String) -> String:
     return key.replace("_", " ").capitalize()
 
-## The title, view buttons and hint; the vocabulary book draws the words (every word of the
-## dictionary, with filters; see scripts/ui/vocabulary_book.gd).
+## The title and the full total; the sticker book draws the pages (scripts/ui/vocabulary_book.gd)
+## and counts the findable words (its baked place index), found = studied.
 func render_journal() -> void:
-    journal_category_button.set_pressed_no_signal(not journal_by_area)
-    journal_area_button.set_pressed_no_signal(journal_by_area)
     journal_title.text = UiText.t("journal.title").to_upper()
-    var studied_count := 0
-    for key in journal_studied:
-        if journal_dictionary.has(key):
-            studied_count += 1
-    journal_progress_label.text = UiText.t("journal.progress", {"count": studied_count, "total": journal_dictionary.size()})
-    journal_progress.max_value = maxi(1, journal_dictionary.size())
-    journal_progress.value = studied_count
-    journal_hint.text = UiText.t("journal.hint_area" if journal_by_area else "journal.hint_category")
-    journal_book.set_data(journal_studied, journal_dictionary, journal_categories, journal_areas, journal_area_names, bookmarks, journal_by_area)
+    journal_book.set_data(journal_studied, journal_dictionary, journal_categories, journal_areas, journal_area_names, bookmarks)
+    journal_progress_label.text = UiText.t("journal.found_total", {"found": journal_book.total_found, "total": journal_book.total_words})
+    journal_progress.value = float(journal_book.total_found) / maxf(1.0, float(journal_book.total_words))
 
 const HELP_PLAIN_TOKENS := ["/", "+", "hold", "then"]
 ## Words on key caps, shown in the native language; other caps are printed key names.
@@ -1366,6 +1331,9 @@ func _draw_key_hint(hint: Control) -> void:
 ## Shows or hides every key hint circle (keyboard play on, touch off).
 func set_keyboard_hints(on: bool) -> void:
     keyboard_hints = on
+    # The journal's footer names the ← → keys and Hold L only with keyboard play.
+    if journal_book != null:
+        journal_book.set_keyboard_hints(on)
     for hint in key_hints:
         if is_instance_valid(hint):
             hint.visible = on

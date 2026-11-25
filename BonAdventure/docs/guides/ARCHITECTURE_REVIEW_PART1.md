@@ -576,7 +576,8 @@ To add, edit or delete a word:
 3. Run `python3 tools/word_data.py`: it validates (unknown category, missing
    Spanish, broken alias, empty category) and re-formats the file.
 4. To show the word in town, give a prop a `word_key` and a clear picking shape.
-   The By Area journal picks it up automatically from where it stands.
+   The journal's places pick it up from where it stands after `tools/vocabulary_report.gd --
+   --write` rebakes `data/journal_places.json` ([journal](JOURNAL.md#baked-place-index)).
 5. To delete a word, remove its line and either strip its `word_key` tags from scenes
    (the object stays as decoration) or list it in `removed_with_objects` (the object
    is removed at load). To rename, add an alias from the old key.
@@ -594,6 +595,10 @@ To add, edit or delete a word:
 
 ### Vocabulary usage report
 
+*25 Nov 2026: with `--write` it also writes the journal's baked place index
+`data/journal_places.json` (findable words and their places;
+[Journal](JOURNAL.md#baked-place-index)).*
+
 **7 Nov 2026 (Stage A of the vocabulary tracking work; replaces `docs/word_audit.gd`).**
 `tools/vocabulary_report.gd` loads the whole town once (headless, isolated `HOME`,
 `VT_FOCUS=all`) and lists every word of `data/words.json`:
@@ -601,7 +606,7 @@ To add, edit or delete a word:
 - **where it is placed:** objects with a `word_key` / `exterior_word` meta per building unit
   (`data/buildings.json` parts, else `base`) and site (town zone), split into *saved* (from
   the saved scenes) and *runtime* (built by scripts at load); world labels bound to the word
-  (`live_labels.gd`); and *clickable* objects (the journal's By Area index);
+  (`live_labels.gd`); and *clickable* objects (the journal's place index, `data/journal_places.json`);
 - **which games test it**, as game ids from `data/activities.json`, following decision 6
   (user, 7 Nov 2026): the shop order item (`sold_in`), the family relative
   (`family_tree.gd` `WORDS`), the restaurant dish, the warehouse item (`warehouse_goods.gd`
@@ -703,6 +708,11 @@ file, then each wired game in the town. Stage C reads these counts in the
 
 ### Vocabulary book
 
+*Superseded 25 Nov 2026: the table below was replaced by the sticker book's Places tab (user's
+redesign; what is built and its rules: [Journal](JOURNAL.md#built-so-far-25-nov-2026)). Kept as
+the record of the 8–24 Nov table; its code is in git history. The practice-log numbers it showed
+are now the word page's Details.*
+
 **8 Nov 2026 (Stage C of the vocabulary tracking work; user decisions 7 Nov 2026).** The J
 journal's body is `scripts/ui/vocabulary_book.gd`, hosted by `vocabulary_hud.gd`
 (`toggle_journal` / `render_journal` hand it the studied words, dictionary, categories, areas
@@ -738,8 +748,9 @@ buttons (now section headings of the table) and the hint stay in the HUD.
 there; pictures go where the object is not).** `scripts/ui/word_pictures.gd` (Main's
 `word_pictures`, `WordPictures.shared()`) draws a word's own town object into a 128 px
 transparent picture, at runtime, so a picture always matches what the player clicked and the
-project ships no image files. It shows in the journal (a picture column after ★, and big in
-the detail view) and on the [results screen](MINIGAMES.md#results-screen) word rows.
+project ships no image files. It shows in the journal (on the stickers, and on the word page
+drawn at 256 px, `fill(rect, key, BIG)`, since 25 Nov 2026; at most `MAX_BIG` = 8 kept, the
+128 px one shown while it draws) and on the [results screen](MINIGAMES.md#results-screen) word rows.
 
 - **Source:** `area_vocabulary.gd` `targets` (word key → every target carrying it,
   interactables included). Only the target's meshes are copied into a SubViewport (no scripts

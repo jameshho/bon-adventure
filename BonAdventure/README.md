@@ -164,8 +164,7 @@ registry and animation; vehicle and gate controllers own their motion.
 All word data lives in one file, `data/words.json`: 635 words in 22 categories
 (5 Nov 2026; each with a written rule), 13 aliases, and prefab sizes for generated learning
 props. Scenes store only each object's `word_key`. Validate and re-format with
-`python3 tools/word_data.py`; report usage with `tools/vocabulary_report.gd` ([vocabulary usage report](docs/guides/ARCHITECTURE_REVIEW_PART1.md#vocabulary-usage-report)). The journal (J) is the [vocabulary book](docs/guides/ARCHITECTURE_REVIEW_PART1.md#vocabulary-book): every word in a table (★ saved, studied ✓, right / wrong from the practice tracker), filters, search, Show / Hide scores and a per-game detail per word, in By Category and By Area sections
-sorted alphabetically. Shared discoveries count across areas; area totals count
+`python3 tools/word_data.py`; report usage with `tools/vocabulary_report.gd` ([vocabulary usage report](docs/guides/ARCHITECTURE_REVIEW_PART1.md#vocabulary-usage-report)). The journal (J) is a sticker book ([vocabulary journal](docs/guides/JOURNAL.md#places-tab), 25 Nov 2026): a chapter per place with every word as a sticker (a silhouette until found), a word page with the right / wrong counts per game, search and the ★ Pocket. Shared discoveries count across areas; area totals count
 unique words from actual learnable objects. Learning is discovery/study plus the shop "customer order" minigame (missions were
 removed 3 Nov 2026; see [customer order](docs/guides/TOWN_DESIGN_BRIEF.md#customer-order-minigame--3-november-2026)); there is
 no separate quiz/scoring system implemented here.
@@ -237,7 +236,7 @@ Progress is kept per foreign language as canonical-key arrays in
 `user://vocabulary_progress_by_language.json` (`{"es": [...]}`); the older single array
 `user://vocabulary_apartment_progress.json` is read once as the Spanish progress and left
 untouched as a backup ([Stage 3](docs/guides/ARCHITECTURE_REVIEW_PART1.md#shared-dialogue-popups-and-settings--4-november-2026)).
-Saved words (bookmarks) are one list for every language; they are the journal's Saved tab (the
+Saved words (bookmarks) are one list for every language; they are the journal's ★ Pocket (the
 book button, top right, opens the journal; 9 Nov 2026).
 Old installs may still have an unused `user://vocabulary_town_quests_v21.json`; nothing reads it any more.
 

@@ -107,24 +107,30 @@ Chinese shows pinyin under the text.
 
 ## Studying words and the journal
 
-<img src="../evidence/vocabulary-book-20261108/saved-en-es.png" width="480" alt="Journal word list">
+<img src="../evidence/journal-sticker-book-20261125/chapter-flipped.png" width="480" alt="Journal sticker album, the Supermarket chapter">
 
-*Screenshot 8 Nov.*
+*Screenshot 25 Nov.*
 
 Click or tap almost any object to see a **word card** with the word in both languages; that
 counts as studying it (also while walking or jumping, since 23 Nov). A word on a **poster**
 (school, airport, restaurants, warehouse, police, Mystery House) or a menu board opens a
 **close-up of the whole poster** instead (24 Nov): tap a word on it for its card, tap beside it,
 the ✕, Esc or E to go back ([view](../evidence/poster-closeup-20261124/restaurant-menu-board-closeup.png)). Some objects can be **picked up** (books, baskets) and inspected in
-BonBon's hand. The **journal** (J, or the book button top right) lists every word, by category or
-by area, with ★ saved words, ✓ studied words and the right and wrong answers from the tracked
-minigames. Since 23 Nov each noun shows a small picture of its object in the journal and on the
-results card after a game ([journal](../evidence/word-pictures-20261123/journal-furniture.png),
+BonBon's hand. The **journal** (J, or the book button top right) is a **sticker album** since
+25 Nov: a contents page of places (each with "12 of 28" found and a bar, plus Around town for
+words found everywhere and the ★ Pocket of saved words) and, per place, spreads of 8 stickers.
+A found word shows its picture and foreign word (tap: the native word; tap again: its page with
+the speaker, ★, the places it is in and Details with the right and wrong answers from the
+minigames); a word not found yet is a grey silhouette with "?". A word counts as found when
+its card is opened or when you first answer it in a minigame. ← → turn the pages. The header counts
+"N of 758 words found" (words no player can find are left out) and has a search that never gives
+away a word not found ([views](../evidence/journal-sticker-book-20261125/)). Since 23 Nov each
+noun has a picture of its object (also on the results card after a game,
 [results](../evidence/word-pictures-20261123/results.png)); the word card in town stays text only.
-Since 24 Nov a **speaker** on the word card, on every journal row and in a word's journal page
-says the word in the language you are learning ([journal](../evidence/journal-speaker-20261124/journal-rows.png),
-[word page](../evidence/journal-speaker-20261124/journal-detail.png)).
-[Vocabulary book](../guides/ARCHITECTURE_REVIEW_PART1.md#vocabulary-book) ·
+Since 24 Nov a **speaker** on the word card and the journal's word page says the word in the
+language you are learning. Still to come: drawn icons, growth stages, a review round and a
+Topics tab ([design](../guides/JOURNAL.md)).
+[Journal](../guides/JOURNAL.md) ·
 [word pictures](../guides/ARCHITECTURE_REVIEW_PART1.md#word-pictures) ·
 [holding things](../guides/HAND_HOLD.md)
 
