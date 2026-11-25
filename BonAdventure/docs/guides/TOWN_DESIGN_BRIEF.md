@@ -4456,3 +4456,23 @@ recorded, leaving the zoo mid-game). Screenshots in the same folder. Limitation:
 eating bow is mild (the elephant's trunk reaches the food), and the food in the bag only just shows
 above its rim.
 
+
+## On the Menu: sent-back orders — 24 November 2026
+
+User request (24 Nov 2026): a wrong order gave no feedback until the player walked back to Twinkle.
+New flow: Send order → "Order sent!" → the customer's "Thank you!" → "Oh no, this is not what I
+ordered. Can you try again?" (`restaurant.verdict_wrong`, reworded) → `RETRY_SECONDS` (2.5 s) later
+the tablet opens again on the same order with that line in its bubble, the right dishes kept on the
+slip, and each wrong dish marked ✗ (red row in the list, "✗ dish" on its course's slip row) and not
+choosable for that course. Retries repeat until every dish is right; then "Excellent!" and Twinkle's
+"Good job!" when it was right at the first send, which alone counts toward the target (user, 24 Nov
+2026: "Only first-try orders"); after a retry Twinkle says "{name} got what they wanted in the end.
+Next time, try to get it right the first time!" (`restaurant.report_retry`), the order does not count,
+and the visit's first wrong send adds one board miss (`add_miss`, progression stars). Only the first send is tracked in the practice log; a retry opens no
+new question. Twinkle's wrong-dish report (`report_wrong`, `miss_first`, `miss_also`,
+`Orders.report_ref`) is no longer shown. Code: `scripts/learning/restaurant_session.gd` (`wrong`,
+`tries`), `scripts/ui/restaurant_panel.gd` (`is_wrong`, `ui.wrong`, `ui.picks`).
+
+Verification (24 Nov, isolated HOME, `VT_FOCUS=restaurants`, not the full town):
+`docs/evidence/restaurant-retry-20261124/verify.gd` (a retried order, then a first-try one) **23 checks, 0 failures**; renders of the line and
+the reopened tablet in the same folder, inspected. Not run: the full suite and the practice-log check.

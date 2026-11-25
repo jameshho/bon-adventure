@@ -53,7 +53,7 @@ be forgotten come back.
 | [Who's Who?](minigames.md#whos-who) | Hospital entrance | Yes | 4 Nov | 4 Nov |
 | [Flight Finder](minigames.md#flight-finder) | Airport information desk | Yes | 5 Nov | 8 Nov |
 | [Stack & Pack](minigames.md#stack--pack) | Warehouse | Yes | 5 Nov | 21 Nov (two-level shelf, tap to place; no cardboard box) |
-| [On the Menu](minigames.md#on-the-menu) | Alta Cocina | Yes | 6 Nov | 23 Nov (tablet below the HUD's EN badge; Choose this dish always shown) |
+| [On the Menu](minigames.md#on-the-menu) | Alta Cocina | Yes | 6 Nov | 24 Nov (wrong order sent back at once, retry with wrong dishes blocked) |
 | [Spot the Suspect](minigames.md#spot-the-suspect) | Police station lobby | No | 6 Nov | 6 Nov |
 | [Feel the Clues](minigames.md#feel-the-clues) | Police evidence room | Yes | 6 Nov | 8 Nov (redesign) |
 | [Desk Dash](minigames.md#desk-dash) | School classroom | Chinese measure words only | 7 Nov | 23 Nov (card translated by holding the HUD's EN button) |

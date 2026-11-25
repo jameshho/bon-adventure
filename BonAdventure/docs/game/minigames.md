@@ -238,9 +238,12 @@ puts the box there ([details](../guides/WAREHOUSE.md#shelf-and-placing-21-nov-20
 Twinkle sends you to a seated customer, who orders two or three courses by taste, temperature,
 intensity (*un poco*, *muy*) and ingredients. Choose the dishes on a tablet and send
 them; the customer reacts and Twinkle reports back. A menu book on a table shows every dish.
-Four fully right orders win. Tracked. Since 23 Nov the tablet sits below the HUD's EN badge
+Four orders right at the first send win. Tracked. Since 23 Nov the tablet sits below the HUD's EN badge
 (hold it, or L, for the translation) and keeps "Choose this dish" under every dish shown
-([record](../guides/TOWN_DESIGN_BRIEF.md#restaurant-fixes--23-november-2026)).
+([record](../guides/TOWN_DESIGN_BRIEF.md#restaurant-fixes--23-november-2026)). Since 24 Nov a
+wrong order is sent back at once ("Can you try again?"): the tablet reopens with the right dishes
+kept and each wrong dish marked ✗ and blocked; a fixed order does not count
+([record](../guides/TOWN_DESIGN_BRIEF.md#on-the-menu-sent-back-orders--24-november-2026)).
 [Design](../guides/TOWN_DESIGN_BRIEF.md#alta-cocina-restaurant-game--6-november-2026) ·
 [11 Nov flow](../guides/TOWN_DESIGN_BRIEF.md#restaurant-game-reception-tables-and-order-tablet--11-november-2026)
 
@@ -249,7 +252,7 @@ Four fully right orders win. Tracked. Since 23 Nov the tablet sits below the HUD
 | Purpose | Dish names, courses and describing food (taste, temperature, intensity, ingredients). |
 | Words | [Generated list](words.md#on-the-menu) |
 | Tracked in the journal | Yes: the dish served |
-| Session | One meal of 4 courses, a course counts when right |
+| Session | 4 orders of 2-3 courses; an order counts when every dish is right at the first send; a wrong order is sent back and retried (wrong dishes blocked) but does not count; only the first send is tracked |
 | Progression | Designed 18 Nov, not built: L1 two courses, one need each · L2 + *un poco* / *muy* (today) · L3 three courses with a *no* / *sin* · L4 three needs per course |
 
 ## Spot the Suspect
