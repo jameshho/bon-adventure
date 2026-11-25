@@ -9,7 +9,8 @@ data/expected_check_failures.json and prints one table:
   PASS        no failures
   KNOWN       only failures listed in the expected-failures file
   NEW         failures not in the file (labels are printed)
-  CRASH       exited on a signal, or no summary line was printed
+  CRASH       exited on a signal, or no summary line was printed (a Godot abort on exit AFTER the
+              summary line, "recursive_mutex lock failed" since 25 Nov 2026, is judged by the summary)
   TIMEOUT     killed after the check's timeout
               (a SCRIPT ERROR raised in the check's own script, or another script under docs/,
               usually ends its coroutine and leaves Godot idle: when the log then stays quiet
@@ -472,11 +473,33 @@ def own_script_error(check: dict, text: str) -> str:
     return ""
 
 
+EXIT_CRASH = "recursive_mutex lock failed"
+
+
+def exit_crash_after_summary(check: dict, log: str) -> bool:
+    """True when the log's summary line is followed by Godot's shutdown abort (EXIT_CRASH) and
+    nothing from the check itself: the check finished and only the engine's exit failed."""
+    text = open(log, errors="replace").read()
+    summary = re.compile(check["summary"], re.M) if check.get("summary") else None
+    if summary is None:
+        return False
+    last = None
+    for last in summary.finditer(text):
+        pass
+    return last is not None and EXIT_CRASH in text[last.end():]
+
+
 def classify(result: dict, check: dict, expected: dict) -> dict:
     entry = expected.get(check["id"], {})
     known = entry.get("known", [])
     rc = result["rc"]
     notes: list[str] = []
+    # Since 25 Nov 2026 Godot (4.7.2 on this Mac) aborts while shutting down, after the check has
+    # printed its summary ("recursive_mutex lock failed", SIGABRT). The summary is then the result:
+    # judge it as a normal exit and say so in the notes.
+    if rc is not None and rc != 0 and result["summary_found"] and exit_crash_after_summary(check, result["log"]):
+        notes.append(f"Godot crashed on exit after the summary (exit {rc}); judged by the summary")
+        rc = 1 if (result["count"] or result["labels"]) else 0
     new, fixed, cnotes = compare(result["labels"], known)
     notes += cnotes
     if result["status"] == "TIMEOUT":
