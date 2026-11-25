@@ -27,6 +27,7 @@ const Feeding := preload("res://scripts/world/animal_feeding.gd")
 const Basket := preload("res://scripts/world/shopping_basket.gd")
 const Strip := preload("res://scripts/ui/instruction_strip.gd")
 const GameSettings := preload("res://scripts/core/game_settings.gd")
+const WordMemory := preload("res://scripts/learning/word_memory.gd")
 const ACTIVITY := "feeding_nico"
 const NPC := "ZooKeeper"
 const STORE := "zoo"
@@ -146,7 +147,9 @@ func open_game() -> void:
 	_next_request()
 
 ## `count` requests of zoo animals whose word tier (in the language being learned) is in `tiers`,
-## each with a food it eats; no animal twice in a row (twice at most when there are few).
+## each with a food it eats; no animal twice in a row (twice at most when there are few). Each
+## pass through the animals is in the word memory's order (due first, then allowed new ones;
+## word_memory.gd order(), 25 Nov 2026; it was a shuffle).
 func plan(count: int, tiers: Array) -> Array:
 	# JSON numbers are floats: compare tiers as ints.
 	var wanted: Array = tiers.map(func(t) -> int: return int(t))
@@ -160,8 +163,7 @@ func plan(count: int, tiers: Array) -> Array:
 	var last := ""
 	while found.size() < count and not pool.is_empty():
 		if bag.is_empty():
-			bag = pool.duplicate()
-			bag.shuffle()
+			bag = WordMemory.shared().order(pool, _rng)
 			if bag.size() > 1 and bag[0] == last:
 				bag.push_back(bag.pop_front())
 		var key: String = bag.pop_front()

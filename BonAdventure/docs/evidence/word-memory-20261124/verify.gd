@@ -6,7 +6,11 @@ extends SceneTree
 ## - order(): due words, then the allowed new (lowest tier), then known, then the other new,
 ## - want() and pick_round(), seeding from the practice log, saving and the profile reset,
 ## - a simulated learner: over 600 questions new words keep coming while recall stays high,
-## - the games' pickers run with the memory (Desk Dash, Mystery Doors, Feel the Clues).
+## - the games' pickers run with the memory (Desk Dash, Mystery Doors, Feel the Clues),
+## - (25 Nov 2026, LEARN-01/02) "being learned" counts only lexicon words in the game's pool or
+##   answered recently: a learner who saturates one game meets new words in the next; seeded Good
+##   words start learned; Feeding Time! asks a due animal first, never the same one twice in a row.
+## Words whose being-learned state matters are real lexicon keys (real()); fillers are not.
 ## Writes user:// saves: run with an isolated HOME. Plays no sound.
 ##   HOME=<scratch>/home godot --headless --path . --script res://docs/evidence/word-memory-20261124/verify.gd
 const WordMemory := preload("res://scripts/learning/word_memory.gd")
@@ -16,6 +20,8 @@ const SaveStore := preload("res://scripts/core/save_store.gd")
 const Grammar := preload("res://scripts/learning/grammar_questions.gd")
 const Mystery := preload("res://scripts/learning/mystery_session.gd")
 const Clues := preload("res://scripts/learning/detective_clues.gd")
+const Lexicon := preload("res://scripts/language/lexicon.gd")
+const ZooFeeding := preload("res://scripts/learning/zoo_feeding_session.gd")
 var failures := 0
 var checks := 0
 
@@ -32,6 +38,25 @@ func answer(keys: Array, right: Variant) -> void:
 	PracticeLog.shared().begin("check", keys)
 	PracticeLog.shared().first_answer(right)
 	PracticeLog.shared().complete()
+
+## Feeding Time!'s food helper as plan() uses it: the animals and what they eat.
+class FeederStub extends RefCounted:
+	var nodes: Array = []
+	var eats: Dictionary = {}
+	func animals() -> Array:
+		return nodes
+
+## Real lexicon word keys, sorted (the memory ignores keys missing from the lexicon).
+var _real: Array = []
+func real(i: int) -> String:
+	if _real.is_empty():
+		_real = Lexicon.shared().words().keys()
+		_real.sort()
+	return str(_real[i])
+
+## A word the learner knows well, answered at the current step.
+func knows(memory, key: String) -> void:
+	memory._memory().words[key] = {"s": 40.0, "d": 4.0, "last": memory.step(), "reps": 4, "lapses": 0}
 
 func fresh() -> void:
 	WordMemory._shared = null
@@ -72,18 +97,18 @@ func run():
 	fresh()
 	memory = WordMemory.shared()
 	check(memory.new_gap() == WordMemory.NEW_GAP_BASE and memory.new_allowed() == WordMemory.NEW_AT_ONCE, "a new player may meet NEW_AT_ONCE new words")
-	answer(["w0"], false)
+	answer([real(0)], false)
 	check(memory.new_allowed() == 0, "right after a new word, none allowed")
 	for i in WordMemory.NEW_GAP_BASE:
-		answer(["w0"], true)
+		answer([real(0)], true)
 	check(memory.new_allowed() >= 1, "allowed again after the gap")
 	for i in 11:
-		answer(["x%d" % i], false)
+		answer([real(1 + i)], false)
 	check(memory.learning_count() >= 12 and memory.new_gap() == -1 and memory.new_allowed() == 0, "no new words while 12 are being learned")
 	fresh()
 	memory = WordMemory.shared()
 	for i in 6:
-		answer(["y%d" % i], false)
+		answer([real(20 + i)], false)
 	check(memory.new_gap() == WordMemory.NEW_GAP_BASE + 2, "gap grows with words being learned (%d)" % memory.new_gap())
 
 	# --- order(), want(), pick_round() --------------------------------------------------------
@@ -123,7 +148,7 @@ func run():
 	fresh()
 	PracticeLog.shared().counts = {"es": {"dog": {"g": {"positive": 3, "negative": 1, "translated": 0}}, "fish": {"g": {"positive": 0, "negative": 2, "translated": 1}}}}
 	memory = WordMemory.shared()
-	check(is_equal_approx(float(memory.state("dog").s), WordMemory.W[2]) and is_equal_approx(float(memory.state("fish").s), WordMemory.W[0]), "seeded from the practice log")
+	check(is_equal_approx(float(memory.state("dog").s), maxf(WordMemory.W[2], WordMemory.LEARNED_STABILITY)) and is_equal_approx(float(memory.state("fish").s), WordMemory.W[0]), "seeded from the practice log (a Good word starts learned)")
 	PracticeLog.shared().counts = {}
 	preload("res://scripts/core/profile_manager.gd").reset_singletons()
 	check(WordMemory._shared == null, "the profile reset clears the memory")
@@ -137,7 +162,7 @@ func run():
 	memory = WordMemory.shared()
 	var pool: Array = []
 	for i in 120:
-		pool.append("sim%03d" % i)
+		pool.append(real(100 + i))
 	var sim := RandomNumberGenerator.new()
 	sim.seed = 42
 	var seen_at: Array = []
@@ -188,5 +213,85 @@ func run():
 	var again: Dictionary = clues.generate_evidence(rng, "find")
 	check(str(Clues.words_of(again.clues)[0]) == word, "Feel the Clues: the due word's clue comes back (%s, %s)" % [word, Clues.words_of(again.clues)])
 
+	two_games()
+	zoo_due_first()
+
 	print("WORD MEMORY CHECK: %d checks, %d failures" % [checks, failures])
 	quit(0 if failures == 0 else 1)
+
+## LEARN-01: a learner who has missed 15 words of one game (more than MAX_LEARNING being learned)
+## moves to a second game (10 well-known words, 30 new) and still meets new words in it.
+func two_games() -> void:
+	fresh()
+	var memory = WordMemory.shared()
+	var game_a: Array = []
+	var game_b: Array = []
+	for i in 40:
+		game_a.append(real(300 + i))
+		game_b.append(real(400 + i))
+	for i in 10:
+		knows(memory, game_b[i])
+	var sim := RandomNumberGenerator.new()
+	sim.seed = 11
+	for i in 15:
+		answer([game_a[i]], false)  # 15 of game A's words missed: being learned there
+	check(memory.learning_count(game_a) >= WordMemory.MAX_LEARNING and memory.new_allowed(game_a) == 0, "game A: no new words while %d are being learned there" % memory.learning_count(game_a))
+	var met := 0
+	for q in 40:
+		var key: String = memory.order(game_b, sim)[0]
+		met += int(memory.is_new(key))
+		answer([key], true)
+	print("TWO GAMES: game A learning %d; new words met in 40 questions of game B: %d" % [memory.learning_count(game_a), met])
+	check(met >= 4, "game B: new words come although game A has %d being learned (%d met)" % [WordMemory.MAX_LEARNING, met])
+	check(memory.learning_count(game_a) >= WordMemory.MAX_LEARNING and memory.new_allowed(game_a) == 0, "back in game A its own words still hold new ones back")
+	for i in 12:
+		answer(["not_a_word_%d" % i], false)
+	var fakes: Array = []
+	for i in 12:
+		fakes.append("not_a_word_%d" % i)
+	check(memory.learning_count(fakes) == memory.learning_count(), "keys missing from the lexicon are not being learned, even just answered")
+
+## LEARN-02: Feeding Time! plans requests in the memory's order: a due animal first.
+func zoo_due_first() -> void:
+	fresh()
+	var memory = WordMemory.shared()
+	var lexicon = Lexicon.shared()
+	var tier_of := {}
+	var animals: Array = []
+	for i in _real.size():
+		var t: int = lexicon.tier(real(i), lexicon.foreign)
+		tier_of[t] = tier_of.get(t, []) + [real(i)]
+		if tier_of[t].size() == 5:
+			animals = tier_of[t]
+			break
+	var feeder := FeederStub.new()
+	for key in animals:
+		var node := Node3D.new()
+		node.set_meta("word_key", key)
+		feeder.nodes.append(node)
+		feeder.eats[key] = ["apple"]
+	var session = ZooFeeding.new()
+	session.lexicon = lexicon
+	session.feeder = feeder
+	var due: String = animals[3]
+	answer([due], false)
+	for key in animals:
+		if key != due:
+			knows(memory, key)
+	for i in 40:
+		answer(["filler"], true)
+	for key in animals:
+		if key != due:
+			knows(memory, key)
+	check(memory.is_due(due) and animals.all(func(k): return k == due or not memory.is_due(k)), "zoo: only %s is due" % due)
+	var tiers := [lexicon.tier(due, lexicon.foreign)]
+	var requests: Array = session.plan(3, tiers)
+	check(not requests.is_empty() and str(requests[0].animal) == due, "Feeding Time!: the due animal is asked first (%s)" % [requests.map(func(r): return r.animal)])
+	requests = session.plan(12, tiers)
+	var repeats := 0
+	for i in range(1, requests.size()):
+		repeats += int(requests[i].animal == requests[i - 1].animal)
+	check(requests.size() == 12 and repeats == 0, "Feeding Time!: no animal twice in a row (%d repeats)" % repeats)
+	session.free()
+	for node in feeder.nodes:
+		node.free()

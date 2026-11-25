@@ -22,15 +22,19 @@ extends RefCounted
 ## New words come in gradually, by an interval in steps: after a new word is first answered,
 ## the next one is allowed new_gap() steps later (NEW_GAP_BASE, +1 for every LEARNING_PER_STEP
 ## words still being learned, none while MAX_LEARNING are), at most NEW_AT_ONCE at a time.
-## "Being learned": seen with S under LEARNED_STABILITY. So a player who keeps getting words
-## right meets new words often; one who struggles reviews first.
+## "Being learned": seen with S under LEARNED_STABILITY, a word of the lexicon, and either in the
+## pool the game asks about or answered in the last RECENT_STEPS steps (25 Nov 2026: before, every
+## low-stability word ever logged counted, so a player with 12 of them in one game never met a
+## new word in another). So a player who keeps getting words right meets new words often; one who
+## struggles reviews first.
 ## Games with a fixed generator (a family tree, a flight board) keep their own generator and
 ## ask wants(keys) to pick among a few generated questions instead (see pick_round()).
 ##
 ## Saved per profile: word_memory.json {"es": {"step": 41, "last_new": 37, "words": {"apple":
 ## {"s": 3.7, "d": 5.1, "last": 12, "reps": 2, "lapses": 0}}}}. A language without memory is
 ## seeded once from the practice log (one review per word: Good when right answers outnumber
-## the others). Games started from the ▶ picker record like any other (practice_log.gd).
+## the others; a Good word starts at LEARNED_STABILITY at least, since 25 Nov 2026, so a player's
+## well-known words do not hold back new ones; languages seeded before keep their memory). Games started from the ▶ picker record like any other (practice_log.gd).
 const PracticeLog := preload("res://scripts/learning/practice_log.gd")
 const Lexicon := preload("res://scripts/language/lexicon.gd")
 const SaveStore := preload("res://scripts/core/save_store.gd")
@@ -53,6 +57,8 @@ const MAX_LEARNING := 12
 const NEW_AT_ONCE := 3
 ## A word with at least this stability (FSRS days) counts as learned, not "being learned".
 const LEARNED_STABILITY := 4.0
+## Words answered this many steps ago or less count as being learned in any game (two FSRS days).
+const RECENT_STEPS := 16
 ## Tier of a word without one (data/words.json "tier" is a draft, 24 Nov 2026).
 const DEFAULT_TIER := 2
 
@@ -92,7 +98,10 @@ func _seeded(language: String, pending: Dictionary = {}) -> Dictionary:
 		var right := int(sum.positive) - (1 if outcome == "positive" else 0)
 		var other := int(sum.negative) + int(sum.translated) - (1 if outcome in ["negative", "translated"] else 0)
 		if right + other > 0:
-			memory.words[str(key)] = _first_state(GOOD if right > other else AGAIN, 0)
+			var first := _first_state(GOOD if right > other else AGAIN, 0)
+			if right > other:
+				first.s = maxf(float(first.s), LEARNED_STABILITY)
+			memory.words[str(key)] = first
 	return memory
 
 func step() -> int:
@@ -115,25 +124,35 @@ func retrievability(key: String) -> float:
 func is_due(key: String) -> bool:
 	return not is_new(key) and retrievability(key) < TARGET_RETENTION
 
-## Seen words still being learned (stability under LEARNED_STABILITY).
-func learning_count() -> int:
+## Seen words still being learned (stability under LEARNED_STABILITY) that are in the lexicon
+## and in `pool` (the words the game asks about) or answered in the last RECENT_STEPS steps.
+func learning_count(pool: Array = []) -> int:
+	var memory := _memory()
+	var now := int(memory.get("step", 0))
+	var lexicon: Dictionary = Lexicon.shared().words()
+	var in_pool := {}
+	for key in pool:
+		in_pool[str(key)] = true
 	var n := 0
-	for key in _memory().words:
-		if float(_memory().words[key].s) < LEARNED_STABILITY:
+	for key in memory.words:
+		var s: Dictionary = memory.words[key]
+		if float(s.s) >= LEARNED_STABILITY or not lexicon.has(key):
+			continue
+		if in_pool.has(key) or now - int(s.last) <= RECENT_STEPS:
 			n += 1
 	return n
 
 ## Steps between new words now: NEW_GAP_BASE, +1 per LEARNING_PER_STEP words being learned;
-## -1 (no new words) while MAX_LEARNING are being learned.
-func new_gap() -> int:
-	var learning := learning_count()
+## -1 (no new words) while MAX_LEARNING are being learned. `pool` as in learning_count().
+func new_gap(pool: Array = []) -> int:
+	var learning := learning_count(pool)
 	if learning >= MAX_LEARNING:
 		return -1
 	return NEW_GAP_BASE + learning / LEARNING_PER_STEP
 
-## How many never-seen words may come up now.
-func new_allowed() -> int:
-	var gap := new_gap()
+## How many never-seen words may come up now (`pool` as in learning_count()).
+func new_allowed(pool: Array = []) -> int:
+	var gap := new_gap(pool)
 	if gap < 0:
 		return 0
 	var since: int = step() - int(_memory().get("last_new", -1000))
@@ -155,7 +174,7 @@ func order(pool: Array, rng: RandomNumberGenerator = null) -> Array:
 			known.append([retrievability(k) + jitter, k])
 	for list in [due, fresh, known]:
 		list.sort_custom(func(a, b): return a[0] < b[0])
-	var quota := mini(new_allowed(), fresh.size())
+	var quota := mini(new_allowed(pool), fresh.size())
 	var ranked: Array = []
 	for list in [due, fresh.slice(0, quota), known, fresh.slice(quota)]:
 		for item in list:
@@ -178,7 +197,7 @@ func want(keys: Array) -> int:
 		elif is_new(k):
 			new_words += 1
 	if new_words > 0:
-		if new_words > new_allowed():
+		if new_words > new_allowed(keys):
 			return -1 if best < 2 else best
 		best = maxi(best, 1)
 	return best

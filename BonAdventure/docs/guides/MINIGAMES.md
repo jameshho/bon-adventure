@@ -203,6 +203,10 @@ Which words a learning game asks about (24 Nov 2026; design and numbers owned by
 [practice tracker](ARCHITECTURE_REVIEW_PART1.md#practice-tracker) records (`recorded` signal),
 `STEPS_PER_DAY` = 8. Grades: positive = Good, negative or translated = Again. New words are
 allowed by a gap in steps that grows with the words being learned (`new_gap()`, `new_allowed()`).
+"Being learned" (since 25 Nov 2026, improvement plan LEARN-01): stability under
+`LEARNED_STABILITY`, a key the lexicon has, and either in the pool the game asks about
+(`order(pool)`, `want(keys)`) or answered in the last `RECENT_STEPS` (16) steps; before, every
+weak word ever logged counted, so 12 in one game stopped new words in all of them.
 
 | Call | Use |
 | --- | --- |
@@ -210,23 +214,27 @@ allowed by a gap in steps that grows with the words being learned (`new_gap()`, 
 | `choose(pool, n, rng)` | the first n of `order()` |
 | `want(keys)` | 2 due, 1 allowed new, 0 known only, -1 too many new: for comparing candidate questions |
 | `pick_round(make, words_of, tries)` | for generators that build a whole round (`make` replaces the game's state each call): keeps the first round with `want() >= 1`, else the last |
-| `state(key)`, `retrievability(key)`, `is_due`, `is_new`, `learning_count()`, `step()` | inspection |
+| `state(key)`, `retrievability(key)`, `is_due`, `is_new`, `learning_count(pool)`, `step()` | inspection |
 
 Wired in: `shop_order.gd` (`_generate_order`), `library_session.gd` (`_fill_cart`),
 `restaurant_orders.gd` (`_by_memory`), `warehouse_tasks.gd` (`_pick_item`), `grammar_questions.gd`
 (`pick`), `detective_clues.gd` (evidence clue order), `family_session.gd` / `flight_session.gd`
-(`next_question`, `pick_round`) and `mystery_session.gd` (`make_rounds`, `pick_round`). Pass the
+(`next_question`, `pick_round`), `mystery_session.gd` (`make_rounds`, `pick_round`) and, since
+25 Nov 2026, `zoo_feeding_session.gd` (`plan`: each refill of the animal bag in `order()`, still
+never the same animal twice in a row). Pass the
 game's own `rng` so seeded runs repeat. A new game that records practice should pick its words
 with one of these.
 
 **Save:** `word_memory.json` per profile (`PROFILE_FILES`; reset with the singletons), keyed by
 learned language: `{"es": {"step", "last_new", "words": {key: {s, d, last, reps, lapses}}}}`. A
-language without memory is seeded once from the practice log. The activity board creates the
+language without memory is seeded once from the practice log; a word seeded Good starts at
+`LEARNED_STABILITY` at least (25 Nov 2026; languages seeded earlier keep their memory). The activity board creates the
 memory when a session begins, so it hears every recorded question.
 
 **Check:** `docs/evidence/word-memory-20261124/verify.gd` (headless, no town): FSRS updates, the
 new-word gap, order/want/pick_round, saving, seeding and reset, a 600-question simulated
-learner, and the Desk Dash, Mystery Doors and Feel the Clues pickers.
+learner, the Desk Dash, Mystery Doors and Feel the Clues pickers and (25 Nov 2026) a learner who
+saturates one game and still meets new words in a second, plus Feeding Time!'s due animal first.
 
 ## Minigame picker
 
