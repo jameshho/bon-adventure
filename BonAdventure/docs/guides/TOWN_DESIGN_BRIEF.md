@@ -4434,6 +4434,11 @@ Built 24 Nov 2026. Ownership:
   facing the path, striped awning, the translated ANIMAL FOOD board, the "Paper bags" stack (the
   till's rack) and five food crates (`Booth food <key>`, word roots with pick areas). The bake
   reported nothing in the way; gate, fences and path unchanged.
+  Board fit (25 Nov 2026, base step `zoo_food_booth_sign_fit`): the sign's fit width was given in
+  town units (2.0) but `world_sign.gd` takes world metres, so English and Spanish failed
+  `world_signs`; it is now 2.52 m (the 2.1-unit board less margins), two lines allowed, and the
+  board is 0.8 units (1.04 m) tall, bottom edge unchanged. Spanish wraps to COMIDA PARA / ANIMALES
+  at the 9 m letter height ([renders](../evidence/zoo-booth-sign-20261125/)).
 - **Nico:** registry NPC `nico` (`data/npcs.json`, unit `base`, node `ParkZoo/ZooKeeper`), outfit
   `zookeeper` (`data/plush_costumes.json`).
 - **Bag:** carrier `bag` of `shopping_basket.gd` (`give(from, Basket.BAG)`, word *shopping bag*,
