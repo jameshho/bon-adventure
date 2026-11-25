@@ -10,7 +10,7 @@ Read this first; everything below is a dated log, and each entry describes only 
   ([record](#full-suite-after-the-fast-track--25-november-2026)). NEW: `bank_rework`, traced the same day to the check
   paying an impostor before it reached the window, and fixed
   ([record](#bank_rework-manager-failure-traced--25-november-2026)). CRASH: `app_flow` segfaulted once in the loading
-  screen and passed alone (P2: watch).
+  screen; 16 later runs alone passed (P3: engine crash, see the record).
 - **Before that:** 16 Nov 2026, `run_checks.py full`, `dev_focus.txt` = `all`: PASS 47,
   NEW 6, TIMEOUT 3 ([record](#docs-reorganised-into-game--guides--evidence--archive--16-november-2026)).
   All 9 were traced to game changes and their checks fixed; the 9 re-run once: **PASS 7, KNOWN 2,
@@ -8373,7 +8373,7 @@ NEW 1, CRASH 1** (78 checks; the runner's exit-crash rule judged the rest by the
 | --- | --- | --- |
 | KNOWN | `map_facades`, `rooftops`, `voice_backbone` | as listed in `expected_check_failures.json` |
 | NEW 4 / 54 | `bank_rework` | the same four manager-scene labels as the first 24 Nov run (staff door opens, the manager comes over, her close-up, the first warning); later labels pass. Cause found and fixed afterwards: a check bug ([trace](#bank_rework-manager-failure-traced--25-november-2026)) |
-| CRASH (signal 11, 2 s) | `app_flow` | headless segfault in the loading screen's `_process` (`loading_screen.gd:165`) before any label; run once more alone: **PASS** (15 s). Not reproduced; possibly two Godot runs at once or the uncommitted loading music. **P2:** watch |
+| CRASH (signal 11, 2 s) | `app_flow` | headless segfault inside the engine (main thread, a 2D item setter in the loading screen's `_process`, `loading_screen.gd:165`) while `main.tscn` was read on the loader thread, before any label. Afterwards **16 runs alone, all PASS** (1 + 15 in a row). The official build has no symbols, so the engine frame is unknown. Seen only in headless runs (dummy renderer) with two Godot checks at once; the web build loads without a thread. **P3:** if it recurs, test the loading screen writing its picture properties only when they change |
 
 All checks that failed this morning now pass, among them `language`, `results_screen`,
 `world_signs`, `bath_fixtures`, `electrical_box`, `practice_log`, `touch_controls`,

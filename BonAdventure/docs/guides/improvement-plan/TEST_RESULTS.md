@@ -18,6 +18,7 @@ project record: milestone results are also written there.
 | 25 Nov 2026 | M0 full suite | `278d40f1`, **while 3–7 sessions were editing the same checkout** | all | `run_checks.py full` (11:42–12:20) | Runner totals: CRASH 55, NEW 1, PASS 10, TIMEOUT 4. Re-judged with C0 (crash on exit after the summary): **PASS 53, KNOWN 2, NEW 10, TIMEOUT 1, invalid 4** | invalid: `bank_teller`, `bank_rework`, `bank_teller_polish`, `npc_registry` (a session's `main.gd` edit did not parse while they ran) |
 | 25 Nov 2026 | QA-02 full suite after the fast track | `dfd2be4c` + another session's uncommitted sound/door/sheep work | all | `run_checks.py full --jobs 2` (615 s) | **PASS 73, KNOWN 3, NEW 1, CRASH 1**: NEW `bank_rework` (manager timing race, as 24 Nov); CRASH `app_flow` (segfault in the loading screen; passed alone once) | web, phone, renders |
 | 25 Nov 2026 | `bank_rework` trace | `6093c685` + uncommitted sound work | all | `run_checks.py --only bank_rework` (10 runs: 9 traced, 3 failing; then 1 with the fix) | cause: the check paid an impostor before it reached the window (8-turn guard); fixed, **54/0** | other bank checks: loop not affected, not re-run |
+| 25 Nov 2026 | `app_flow` crash rate | `522321d6` + uncommitted sound work | all | `run_checks.py --only app_flow` × 15 | **15 PASS, 0 CRASH** (the suite's one segfault not reproduced) | load from parallel checks |
 
 ### NEW labels from the 25 Nov suite (triage)
 

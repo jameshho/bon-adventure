@@ -19,7 +19,7 @@ decisions in [DECISION_LOG.md](DECISION_LOG.md#open-decisions).
 
 ## Next step
 
-1. P2: watch `app_flow` (one segfault in the loading screen). `bank_rework` is traced and fixed.
+1. P3: `app_flow`'s one engine segfault (0 in 16 runs since). `bank_rework` is traced and fixed.
 2. Wave 2 left: C11 known words (LEARN-04), C12 real-time review (LEARN-03), per-language voice
    packs (PERF-04), `request_leave()` in the other in-world games, the phone size floor (UI-02,
    after the user's phone check).
