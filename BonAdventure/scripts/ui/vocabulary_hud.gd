@@ -581,7 +581,6 @@ func _layout_hud() -> void:
     size_corner_button(map_button, top_slot(2))
     size_corner_button(help_button, bottom_slot(3))
     peek_button.add_theme_font_size_override("font_size", roundi(corner * 0.36))
-    fps_label.position = Vector2(peek_button.position.x - 120.0, 16)
     bookmark_star.position = popup_panel.position + Vector2(popup_panel.size.x - bookmark_star.size.x - 12.0 * f, 12.0 * f)
     speaker_button.custom_minimum_size = bookmark_star.size
     speaker_button.size = bookmark_star.size
@@ -592,12 +591,19 @@ func _layout_hud() -> void:
     room_label.position = Vector2(16, 16 + minimap_side + 6)
     room_label.size = Vector2(maxf(minimap_side, 420.0), 28)
     room_label.add_theme_font_size_override("font_size", roundi(16 * f))
-    flight_label.position = Vector2(18, room_label.position.y + 34)
-    movement_label.position = Vector2(18, viewport_size.y - 132)
-    noclip_label.position = Vector2(18, viewport_size.y - 104)
+    # The status texts (FPS, flight line, sprint line, noclip, quest toast) scale with the window
+    # too (UI-06, 25 Nov 2026; were fixed 15-18 px), never under 3/4 of their 1100 x 800 size so
+    # they stay readable on a landscape phone. Sizes and offsets at f = 1 are the old ones.
+    var t := maxf(f, 0.75)
+    for pair in [[fps_label, 15], [flight_label, 17], [movement_label, 16], [noclip_label, 18], [quest_toast, 16]]:
+        (pair[0] as Label).add_theme_font_size_override("font_size", roundi(pair[1] * t))
+    fps_label.position = Vector2(peek_button.position.x - 120.0 * t, 16.0 * t)
+    flight_label.position = Vector2(18.0 * t, room_label.position.y + 34.0 * t)
+    movement_label.position = Vector2(18.0 * t, viewport_size.y - 132.0 * t)
+    noclip_label.position = Vector2(18.0 * t, viewport_size.y - 104.0 * t)
     # The toast (flash_quest_message) sits below FPS on the right.
-    quest_toast.position = Vector2(maxf(8.0, viewport_size.x - 510.0), top_slot(0).end.y + 12.0)
-    quest_toast.size = Vector2(minf(490.0, viewport_size.x - 20.0), 48.0)
+    quest_toast.position = Vector2(maxf(8.0, viewport_size.x - 510.0 * t), top_slot(0).end.y + 12.0 * t)
+    quest_toast.size = Vector2(minf(490.0 * t, viewport_size.x - 20.0), 48.0 * t)
     journal_overlay.position = Vector2.ZERO
     journal_overlay.size = viewport_size
     var book_size := Vector2(minf(1020.0 * f, viewport_size.x - 40.0), minf(740.0 * f, viewport_size.y - 40.0))
