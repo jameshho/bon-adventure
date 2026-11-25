@@ -415,10 +415,11 @@ func stand() -> void:
     game.player.end_sitting(exit.point)
     game.hud.flash_quest_message(UiText.t("seats.standing"))
 
-## Space gets up like E from any seat or bed. Swings and seesaws (meta playground_swing)
-## take Space themselves; vehicles never reach here (the player is not seated in them).
+## Space (the "jump" action, so the touch Jump button too) gets up like E from any seat or
+## bed. Swings and seesaws (meta playground_swing) take it themselves; vehicles never reach
+## here (the player is not seated in them).
 func _unhandled_input(event: InputEvent) -> void:
-    if not (event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_SPACE): return
+    if not event.is_action_pressed("jump"): return
     if not game.player.seated or not game.player.controls_enabled or current_swing() != null: return
     get_viewport().set_input_as_handled()
     stand()
