@@ -121,7 +121,9 @@ scale. Shapes (pills, cards, cloud banner, bushes) are drawn by `scripts/ui/bon_
 - Text on cream or mint is `INK` / `BROWN`, never white; white text only on green, blue, coral.
 - A page card should sit in proportion to the screen, not fill its whole height: the language
   page is built at 0.8 scale with a plain title (no cloud or sprout; user, 18 Nov 2026).
-- Keep the scene bright: no dark full-screen shades behind cards.
+- Keep the scene bright: no dark full-screen shades behind cards. The veil behind Settings, the map,
+  the journal and the word card is `BonStyle.SHADE`, a light cream veil (`CREAM` at 32 %; it was a
+  teal shade until 25 Nov 2026, P3-15: [before/after](../evidence/ui-scale-20261125/README.md#p3-15-light-veil-d14-beforeafter)).
 - In-game screens (everything after the start screens) use soft blue (`SKY`, kinds `"soft"`) where the start screens use cream; green stays for on/selected/go. Cream stays on the start screens (exact mockups) and the dialogue box.
 - Motion is gentle: Play breathes (scale 1.04, 0.9 s), the bar's stripes drift, a press squashes
   to 0.96. Nothing flashes.

@@ -213,7 +213,7 @@ func _ready() -> void:
     ui_root.add_child(flight_label)
 
     overlay = ColorRect.new()
-    overlay.color = Color(0.03, 0.07, 0.10, 0.24)
+    overlay.color = BonStyle.SHADE
     overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
     overlay.visible = false
     ui_root.add_child(overlay)
