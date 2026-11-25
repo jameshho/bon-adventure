@@ -139,6 +139,21 @@ func run():
 		made[0] += 1
 		return {"words": ["bread"]}, func(r): return r.words, 4)
 	check(made[0] == 4 and picked.words == ["bread"], "pick_round falls back to the last round")
+	# A word-less round (a family "who is older") never replaces a turned-down round with words:
+	# word-less rounds record no step, so the new-word gate would never reopen (25 Nov 2026).
+	var newish: String = real(500)
+	answer([real(501)], true)  # a new word just now: none allowed for a few steps
+	check(memory.want([newish]) == -1, "a new word is not allowed now")
+	made[0] = 0
+	picked = memory.pick_round(func():
+		made[0] += 1
+		return {"words": [newish]} if made[0] % 2 == 1 else {"words": []}, func(r): return r.words, 4)
+	check(picked.words == [newish] and made[0] == 5, "after a turned-down round with words, word-less rounds are skipped and the next round with words is taken (%s, %d made)" % [picked.words, made[0]])
+	made[0] = 0
+	picked = memory.pick_round(func():
+		made[0] += 1
+		return {"words": []}, func(r): return r.words)
+	check(made[0] == 1 and picked.words.is_empty(), "a word-less round is taken as it comes")
 
 	# --- Saving, seeding, reset ---------------------------------------------------------------
 	var saved: Variant = SaveStore.read_json(SaveStore.path(WordMemory.FILE))

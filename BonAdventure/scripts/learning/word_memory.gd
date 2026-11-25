@@ -205,15 +205,25 @@ func want(keys: Array) -> int:
 ## For games whose generator builds a whole round at once (a family tree question, a flight
 ## board): calls `make` up to `tries` times until a round's words (`words_of(round)`) are wanted
 ## (want() >= 1) and returns that round; else the last one made (each call replaces the game's
-## state, so the last one is the one in place). An empty round is retried.
+## state, so the last one is the one in place). An empty round is retried. A round that tests no
+## word (a family "who is older" question) is taken as it comes, but once a round with words was
+## turned down only rounds with words count, and from the last try on the next one is taken
+## whatever its words (25 Nov 2026: before, a word-less round replaced it, and since those record
+## no step, the new-word gate never reopened and a game could stop asking about words at all).
 func pick_round(make: Callable, words_of: Callable, tries := 6) -> Variant:
 	var made: Variant = null
-	for attempt in tries:
+	var saw_words := false
+	for attempt in tries * 2:
 		made = make.call()
 		if made == null or (made is Dictionary and made.is_empty()):
 			continue
 		var keys: Array = words_of.call(made)
-		if keys.is_empty() or want(keys) >= 1:
+		if keys.is_empty():
+			if not saw_words:
+				return made
+			continue
+		saw_words = true
+		if want(keys) >= 1 or attempt >= tries - 1:
 			return made
 	return made
 

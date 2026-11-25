@@ -225,7 +225,7 @@ weak word ever logged counted, so 12 in one game stopped new words in all of the
 | `order(pool, rng)` | the pool best first: due, allowed new (by `words.json` `tier`), known, other new. For games that pick items from a list |
 | `choose(pool, n, rng)` | the first n of `order()` |
 | `want(keys)` | 2 due, 1 allowed new, 0 known only, -1 too many new: for comparing candidate questions |
-| `pick_round(make, words_of, tries)` | for generators that build a whole round (`make` replaces the game's state each call): keeps the first round with `want() >= 1`, else the last |
+| `pick_round(make, words_of, tries)` | for generators that build a whole round (`make` replaces the game's state each call): keeps the first round with `want() >= 1`, else the last. A round that tests no word is taken as it comes, but never replaces a turned-down round with words (25 Nov 2026: word-less rounds record no step, so the new-word gate could stay shut) |
 | `state(key)`, `retrievability(key)`, `is_due`, `is_new`, `learning_count(pool)`, `step()` | inspection |
 
 Wired in: `shop_order.gd` (`_generate_order`), `library_session.gd` (`_fill_cart`),
