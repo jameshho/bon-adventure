@@ -276,9 +276,11 @@ func _on_dialogue_closed() -> void:
 
 ## The shared quit card with this game's question (or `question_id`, e.g. the restaurant's
 ## "leave the restaurant?" at its door); the answer arrives as leave_answered.
-func ask_leave(question_id := "") -> void:
+## `yes_id` / `no_id`: the buttons' own labels (a till sharing a game's host, zoo food booth).
+func ask_leave(question_id := "", yes_id := "", no_id := "") -> void:
 	_asking_leave = true
-	dialogue_panel.show_quit(lexicon.line(question_id if question_id != "" else text("leave_confirm")), lexicon.line(text("leave_yes")), lexicon.line(text("leave_no")))
+	dialogue_panel.show_quit(lexicon.line(question_id if question_id != "" else text("leave_confirm")),
+			lexicon.line(yes_id if yes_id != "" else text("leave_yes")), lexicon.line(no_id if no_id != "" else text("leave_no")))
 
 func is_asking_leave() -> bool:
 	return _asking_leave

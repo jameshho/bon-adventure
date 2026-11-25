@@ -84,6 +84,7 @@ For debugging, read the file in the profile folder (`user://profiles/<id>/achiev
 | `mission` | `missions.gd complete()` |
 | `stamp.<id>` | `stamp_coin.gd collect()` |
 | `ring_bell` | `chapel_bell.gd ring()` (the chapel's tower bell, 21 Nov 2026) |
+| `farm_egg`, `golden_egg` | `hen_house.gd deliver()`: an egg (a golden one) put in the barn's egg crate (24 Nov 2026; no achievement or reward yet, counted for later stars: [record](TOWN_DESIGN_BRIEF.md#hen-house-and-eggs--24-november-2026)) |
 
 `tick()` runs four times a second from `main.gd` (with `VehicleControls.update_home`) and notes
 a state only when it turns on, so sitting for a minute counts once.

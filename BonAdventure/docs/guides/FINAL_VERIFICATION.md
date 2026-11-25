@@ -8239,3 +8239,23 @@ record above), so the runner shows CRASH; the labels are compared below.
 Not run: the full suite, the web export, a hands-on play-test. The sports store and hospital
 scenes were not re-baked (the registry moves the two NPCs at load).
 
+
+## Hen house and eggs — 24 November 2026
+
+User request: a hen house with hens that lay eggs to carry to a crate in the barn
+([record](TOWN_DESIGN_BRIEF.md#hen-house-and-eggs--24-november-2026)). Barn re-baked
+(`tools/bake_unit.gd -- barn`, step `hen_house`; 8 new palette materials); the barn's box in
+`data/nearby_units.json` set from a fresh `tools/nearby_units_data.gd` run (only the barn entry
+taken: the run also picked up other sessions' uncommitted building changes). Runner with the
+whole town (`dev_focus.txt` = `all`, isolated HOME). Both Godot checks hit the known exit abort
+after their summary (`recursive_mutex lock failed`, signal 6), so the runner shows CRASH; the
+labels are compared below.
+
+| Result | Check |
+| --- | --- |
+| PASS (exit abort) | `hen_house` (new): **49 checks, 0 failures**: coop, 11 spots, 12 cups, 6 hens in their yard; fresh profile finds eggs; odds over 2000 simulated 15-minute absences (mean 3.5, 5+ eggs rarer, cap 7 reached only over long absences, 3.1% golden); every spot clear and reachable by BonBon's capsule; egg to hand, to crate, saved; carried out of the farm gate: dropped, toast, broken egg, crate emptied. Windowed run (VT_FOCUS=barn): 49 / 0, views `docs/evidence/hen-house-20261124/` inspected |
+| PASS (exit abort) | `barn` 56 checks, 0 failures |
+| PASS | `runtime_resources` 592 checked, 0 failures; `interaction` PASS |
+
+Not run: the full suite, the web export, touch, a hands-on play-test (the checks call the egg's
+and crate's actions directly rather than pressing E).

@@ -112,6 +112,14 @@ func words() -> Dictionary:
 func has_word(key: String) -> bool:
 	return words().has(key)
 
+## How early a learner meets the word in `lang`: 1 starter, 2 everyday, 3 wider, 4 specialist
+## (words.json "tier", a number or {code: n, "default": n}). Unknown words are 4.
+func tier(key: String, lang: String) -> int:
+	var value: Variant = words().get(key, {}).get("tier", 4)
+	if value is Dictionary:
+		value = value.get(lang, value.get("default", 4))
+	return int(value)
+
 ## The word as the rules modules see it: {"key", "text", "forms"} in one language.
 ## `kin`: family-tree details for a relationship word (family_tree.gd kin(); Chinese chooses
 ## 爺爺 or 公公 from them), {} otherwise.

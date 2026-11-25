@@ -1,5 +1,5 @@
 {
-  "about": "Rules for the shop minigames (customer order with its checkout, free shopping with a basket); their text lives in data/phrases.json ('shop', 'cashier', 'money' groups). 'stores': each shop's clerk node, zone and order rules (how often the clerk needs help is data/activities.json 'shop_<store>'); a word may be ordered only when its words.json entry lists the store id in 'sold_in'. 'cashiers': each cashier counter's NPC node and zone. 'order_words' (optional) limits what the clerk orders (and what counts as a pick) to those words, each also sold there (14 Nov 2026, user: basic fruit and vegetables; orders of exactly 2 items, 1-2 each, at most 3 of one in the cart). 'basket': true hands the player a shopping basket to carry while shopping (shopping_basket.gd, user 14 Nov 2026). clerk_gender / npc_gender ('m' or 'f') is the NPC's gender, used for its role word ('el vendedor' or 'la vendedora'). See docs/guides/TOWN_DESIGN_BRIEF.md, Customer order minigame. Checkout (user, 21 Nov 2026; Pay Up! retired into it): a store's 'prices' are four tiers of word -> price in cents, ordered from easy words to hard ones: tier 1 whole dollars, tier 2 .25/.50/.75, tier 3 quarters with dimes (5-cent steps payable with 25 and 10 cents), tier 4 any cents; every word sold there needs one price. A level's 'order_tiers' n (data/activities.json) lets the clerk order from the first n tiers instead of 'order_words'. 'basket_racks': the basket stacks (nodes) where a player takes a basket to shop freely and puts an empty one back. 'door': the shop door's invisible wall while the player carries an unpaid basket (centre 'at', 'size' [depth, height, width], 'inward' [x, z] into the store, world metres; the same doorway as data/tutorial.json shop.door). 'cashiers': the till where both are paid (cashier_session.gd).",
+  "about": "Rules for the shop minigames (customer order with its checkout, free shopping with a basket); their text lives in data/phrases.json ('shop', 'cashier', 'money' groups). 'stores': each shop's clerk node, zone and order rules (how often the clerk needs help is data/activities.json 'shop_<store>'); a word may be ordered only when its words.json entry lists the store id in 'sold_in'. 'cashiers': each cashier counter's NPC node and zone. 'order_words' (optional) limits what the clerk orders (and what counts as a pick) to those words, each also sold there (14 Nov 2026, user: basic fruit and vegetables; orders of exactly 2 items, 1-2 each, at most 3 of one in the cart). 'basket': true hands the player a shopping basket to carry while shopping (shopping_basket.gd, user 14 Nov 2026). clerk_gender / npc_gender ('m' or 'f') is the NPC's gender, used for its role word ('el vendedor' or 'la vendedora'). See docs/guides/TOWN_DESIGN_BRIEF.md, Customer order minigame. Checkout (user, 21 Nov 2026; Pay Up! retired into it): a store's 'prices' are tiers of word -> price in cents; since 24 Nov 2026 (user) a product sits in its word's tier (data/words.json 'tier'): tier 1 whole dollars, tier 2 .25/.50/.75, tier 3 any cents (no product is a tier 4 word; quarters-with-dimes prices are gone); every word sold there needs one price. A level's 'order_tiers' n (data/activities.json) lets the clerk order from the first n tiers instead of 'order_words'. 'basket_racks': the basket stacks (nodes) where a player takes a basket to shop freely and puts an empty one back. 'door': the shop door's invisible wall while the player carries an unpaid basket (centre 'at', 'size' [depth, height, width], 'inward' [x, z] into the store, world metres; the same doorway as data/tutorial.json shop.door). 'cashiers': the till where both are paid (cashier_session.gd). The zoo food booth (24 Nov 2026, Feeding Time!; docs/game/minigames.md#feeding-time) is a store with no clerk (no Grocery Run there) and a till: its 'carrier' 'bag' hands out a paper bag instead of a basket, 'keep_paid' lets the player keep the paid bag and carry its food to the animals (animal_feeding.gd), and its cashier's 'shared_host' names the minigame whose host (minigame_host.gd) the till borrows, because Nico both sells the food and hosts the game (zoo_feeding_session.gd creates this till; minigame_wiring.gd skips it). Prices follow the word tiers like the supermarket's.",
   "stores": {
     "supermarket": {
       "zone": "supermarket",
@@ -11,16 +11,30 @@
       "clerk_gender": "m",
       "basket": true,
       "prices": [
-        {"apple": 100, "banana": 100, "orange": 100, "grapes": 300, "strawberry": 400, "watermelon": 500, "pear": 100, "lemon": 100, "tomato": 100, "carrot": 100, "potato": 100, "onion": 100, "lettuce": 200, "broccoli": 200, "cucumber": 100, "corn": 100, "milk": 300, "bread": 300, "eggs": 400, "water bottle": 100},
-        {"cheese": 450, "juice": 275, "cookie": 225, "cake": 850, "candy": 125, "chocolate": 250, "fish": 775, "chicken": 650, "meat": 825, "soda": 175, "coffee": 525, "cherry": 350, "peach": 125, "mango": 175, "pineapple": 325},
-        {"butter": 335, "yogurt": 110, "ham": 560, "sausage": 445, "steak": 985, "shrimp": 720, "donut": 135, "cupcake": 260, "croissant": 185, "baguette": 240, "salad": 495, "coconut": 270, "lime": 60, "avocado": 145},
-        {"bell pepper": 129, "chili pepper": 79, "garlic": 89, "mushroom": 249, "cracker": 319, "soap": 199, "shampoo": 647, "sponge": 108, "toothbrush": 299, "toothpaste": 367, "toilet paper": 783, "detergent": 1156}
+        {"apple": 100, "banana": 100, "orange": 100, "grapes": 300, "strawberry": 400, "watermelon": 500, "pear": 100, "lemon": 100, "tomato": 100, "carrot": 100, "potato": 100, "onion": 100, "lettuce": 200, "broccoli": 200, "cucumber": 100, "corn": 100, "milk": 300, "bread": 300, "eggs": 400, "cheese": 500, "juice": 300, "cake": 800, "chocolate": 200, "fish": 800, "chicken": 600, "meat": 800, "coffee": 500},
+        {"water bottle": 125, "candy": 125, "cookie": 225, "soda": 175, "cherry": 350, "peach": 125, "mango": 175, "pineapple": 325, "butter": 325, "yogurt": 125, "ham": 550, "sausage": 450, "steak": 975, "shrimp": 725, "donut": 150, "cupcake": 250, "croissant": 175, "salad": 475, "soap": 175, "shampoo": 650, "sponge": 125, "toothbrush": 275, "toothpaste": 375, "toilet paper": 775},
+        {"avocado": 149, "baguette": 239, "coconut": 269, "lime": 59, "bell pepper": 129, "chili pepper": 79, "garlic": 89, "mushroom": 249, "cracker": 319, "detergent": 1156}
       ],
       "basket_racks": ["Shopping basket", "Shopping basket2"],
       "door": {"at": [-172.4, 0.0, 163.8], "size": [0.4, 3.0, 7.4], "inward": [-1.0, 0.0]}
+    },
+    "zoo": {
+      "zone": "zoo",
+      "carrier": "bag",
+      "keep_paid": true,
+      "cart_max_each": 3,
+      "prices": [
+        {"meat": 100, "apple": 100, "fish": 100, "carrot": 100},
+        {},
+        {"bamboo": 125}
+      ],
+      "basket_racks": ["Paper bags"],
+      "lines": {"cashier.basket_empty": "zoo.bag_empty", "cashier.give_back": "zoo.give_back_bag", "cashier.empty_first": "zoo.empty_first"},
+      "paid_line": "zoo.bag_paid"
     }
   },
   "cashiers": {
-    "supermarket": {"zone": "supermarket", "npc": "SamoyedCashier", "npc_gender": "m"}
+    "supermarket": {"zone": "supermarket", "npc": "SamoyedCashier", "npc_gender": "m"},
+    "zoo": {"zone": "zoo", "npc": "ZooKeeper", "npc_gender": "m", "shared_host": "feeding_nico"}
   }
 }

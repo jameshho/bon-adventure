@@ -147,6 +147,10 @@ func _game_words() -> void:
 			# 21 Nov 2026 the levels order from the store's price tiers, the last level from all of
 			# them: every priced word can be ordered.
 			var rules: Dictionary = stores.get(str(store), {})
+			# A store with no clerk has no Grocery Run (the zoo food booth, 24 Nov 2026: its foods
+			# are Feeding Time!'s, below).
+			if not rules.has("clerk"):
+				continue
 			var allowed: Array = rules.get("order_words", [])
 			for tier in rules.get("prices", []):
 				allowed = allowed + (tier as Dictionary).keys()
@@ -196,6 +200,12 @@ func _game_words() -> void:
 	var mystery = load("res://scripts/buildings/mystery.gd")
 	for raw in mystery.COLORS.keys() + mystery.SHAPES:
 		use(tests, "mystery_luna", str(raw))
+	# Feeding Time! (24 Nov 2026): each request tests the zoo animal it names; the foods are shown.
+	var zoo := _json("res://data/zoo_feeding.json")
+	for raw in zoo.get("eats", {}).keys():
+		use(tests, "feeding_nico", str(raw))
+	for raw in zoo.get("foods", []):
+		use(shows, "feeding_nico", str(raw))
 	# Library Helper (17 Nov 2026): a book's first placement tests its topic and its category word.
 	var library = load("res://scripts/buildings/library.gd")
 	for raw in library.BOOK_WORDS.values():
@@ -370,7 +380,7 @@ func _write(rows: Array, duplicates: Array, slot_phrases: Dictionary, unplaced: 
 	for group in duplicates:
 		for key in group.keys:
 			dup_keys[key] = true
-	var lines: Array = ["word_key,category,clickable,placed_saved,placed_saved_where,placed_runtime,placed_runtime_where,labels,labels_where,tests,shows,phrase_slots,flags"]
+	var lines: Array = ["word_key,category,tier,clickable,placed_saved,placed_saved_where,placed_runtime,placed_runtime_where,labels,labels_where,tests,shows,phrase_slots,flags"]
 	for row in rows:
 		var flags: Array = []
 		if row.unused:
@@ -381,7 +391,7 @@ func _write(rows: Array, duplicates: Array, slot_phrases: Dictionary, unplaced: 
 			flags.append("not_clickable")
 		if dup_keys.has(row.key):
 			flags.append("duplicate")
-		lines.append(",".join([row.key, row.category, row.clickable, row.saved, row.saved_where, row.runtime, row.runtime_where, row.labels, row.labels_where,
+		lines.append(",".join([row.key, row.category, _tier_label(row.key), row.clickable, row.saved, row.saved_where, row.runtime, row.runtime_where, row.labels, row.labels_where,
 			" ".join(row.tests), " ".join(row.shows), " ".join(row.slots), " ".join(flags)].map(_csv)))
 	var csv := "\n".join(lines) + "\n"
 	var summary := _summary(rows, duplicates, slot_phrases, unplaced)
@@ -412,17 +422,21 @@ func _guide_words() -> String:
 			names[str(phrase_id).trim_prefix("games.")] = lexicon.phrases[phrase_id]
 	var out: Array = ["# Words in each minigame", "",
 		"[← Minigames](minigames.md) · [Game guide](README.md)", "",
-		"Generated %s by `tools/vocabulary_report.gd -- --write` from the game data. **Do not edit by hand**: words live in `data/words.json` and each game's data file; rerun the report after changing them. \"Tested\" words are the ones a question checks and the journal tracks; \"shown\" words appear in the game without being checked one at a time. Phrases (dialogue) are not listed. Where each word is placed in town: [vocabulary report](../guides/vocabulary-report/summary.md)." % Time.get_date_string_from_system(),
+		"Generated %s by `tools/vocabulary_report.gd -- --write` from the game data. **Do not edit by hand**: words live in `data/words.json` and each game's data file; rerun the report after changing them. \"Tested\" words are the ones a question checks and the journal tracks; \"shown\" words appear in the game without being checked one at a time. Phrases (dialogue) are not listed. Words are sorted by their [tier](minigames.md#word-tiers) (1 starter, 2 everyday, 3 wider, 4 specialist; a language with its own tier shows it in brackets). Where each word is placed in town: [vocabulary report](../guides/vocabulary-report/summary.md)." % Time.get_date_string_from_system(),
 		""]
 	for id in names:
 		var name: String = str(names[id].get("en", id)) if names[id] is Dictionary else str(id)
 		var tested: Array = tests.keys().filter(func(key): return tests[key].has(id))
 		var shown: Array = shows.keys().filter(func(key): return shows[key].has(id) and not (tests.has(key) and tests[key].has(id)))
-		tested.sort()
-		shown.sort()
+		var by_tier := func(a, b):
+			var ta := _tier_label(a)
+			var tb := _tier_label(b)
+			return ta < tb or (ta == tb and str(a) < str(b))
+		tested.sort_custom(by_tier)
+		shown.sort_custom(by_tier)
 		out.append("## " + name)
 		out.append("")
-		out.append("Activity id `%s`. Tested: %d · shown only: %d." % [id, tested.size(), shown.size()])
+		out.append("Activity id `%s`. Tested: %d · shown only: %d.%s" % [id, tested.size(), shown.size(), _tier_counts(tested)])
 		out.append("")
 		if tested.is_empty() and shown.is_empty():
 			out.append("No words from `data/words.json` (phrases or generated language only, or a pastime).")
@@ -433,12 +447,31 @@ func _guide_words() -> String:
 				continue
 			out.append("**%s**" % part[0])
 			out.append("")
-			out.append("| English | Spanish | Chinese |")
-			out.append("| --- | --- | --- |")
+			out.append("| Tier | English | Spanish | Chinese |")
+			out.append("| ---: | --- | --- | --- |")
 			for key in part[1]:
-				out.append("| %s | %s | %s |" % [lexicon.word(key, "en"), lexicon.word(key, "es"), lexicon.word(key, "zh")])
+				out.append("| %s | %s | %s | %s |" % [_tier_label(key), lexicon.word(key, "en"), lexicon.word(key, "es"), lexicon.word(key, "zh")])
 			out.append("")
 	return "\n".join(out)
+
+## A word's tier for the guide: "2", or "2 (zh 3)" when a language has its own tier.
+func _tier_label(key: String) -> String:
+	var lexicon = Lexicon.shared()
+	var base: int = lexicon.tier(key, "default")
+	var label := str(base)
+	for code in lexicon.codes():
+		if lexicon.tier(key, code) != base:
+			label += " (%s %d)" % [code, lexicon.tier(key, code)]
+	return label
+
+## " Tiers 1–4: 5 · 3 · 0 · 1." for the tested words, or "" when there are none.
+func _tier_counts(keys: Array) -> String:
+	if keys.is_empty():
+		return ""
+	var counts := [0, 0, 0, 0]
+	for key in keys:
+		counts[clampi(Lexicon.shared().tier(key, "default"), 1, 4) - 1] += 1
+	return " Tested by tier 1–4: %d · %d · %d · %d." % counts
 
 func _read(path: String) -> String:
 	return FileAccess.get_file_as_string(path) if FileAccess.file_exists(path) else ""

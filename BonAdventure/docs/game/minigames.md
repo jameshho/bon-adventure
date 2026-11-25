@@ -58,6 +58,64 @@ described in [MINIGAMES.md → Progression](../guides/MINIGAMES.md#progression).
 
 *Screenshots 18 Nov: the star card after a clean Pay Up! session; the level badge on a greeting.*
 
+## Which words come up
+
+*Built 24 Nov 2026 (user: "apply FSRS to each game … focus on the interval in gradually
+increasing the new words … not on time").* One shared **word memory** decides which words every
+learning game asks about, so a player keeps meeting new words as they play more rounds, and
+reviews the ones they are about to forget. The code is in
+[MINIGAMES.md → Word memory](../guides/MINIGAMES.md#word-memory).
+
+- **Counted in questions, not days.** Every question answered in any game is one step. The
+  memory uses the FSRS spaced-repetition model on those steps: each word has a stability (how
+  long it is remembered) and a difficulty, and its recall chance drops as other questions pass.
+  A right first answer makes the word last longer; a wrong one or a shown translation makes it
+  come back soon.
+- **New words come in gradually.** At most 3 at a time. After a new word, the next one waits 3
+  questions, plus 1 for every 3 words still being learned; with 12 words still being learned no
+  new word comes until some are known. A player who keeps getting words right meets new ones
+  often; one who struggles reviews first.
+- **Order of words in a round:** words about to be forgotten first, then the new words allowed
+  now (lowest [word tier](#word-tiers) first), then known words least well remembered first,
+  then the other new words (so a game always has enough).
+- **Per game:** Grocery Run, Library Helper and On the Menu order their items by it; Stack & Pack
+  picks the box; Desk Dash puts the wanted nouns' questions first; Feel the Clues picks the clue;
+  Who's Who?, Flight Finder and Mystery Doors make a few rounds and keep the first whose words
+  are wanted. Games without tracked words (pastimes, Spot the Suspect) are unchanged.
+- **Saved** per profile and per learned language. A save from before starts from its practice
+  record (each word once).
+- Simulated learner (check, 24 Nov): about 21 new words per 100 questions, all 120 met by 600,
+  86% right.
+- **Not yet:** day-based review (time between sessions); showing a word's memory in the journal;
+  tuning the numbers by play.
+
+## Word tiers
+
+*Draft 24 Nov 2026, for the user's review.* Since 24 Nov the [word memory](#which-words-come-up)
+reads it for the order of new words; the per-game levels do not yet. Every word in
+`data/words.json` has a `tier`: how early a learner meets it. It is the shared order behind the
+planned per-game levels (each game's higher levels add higher-tier words) and the town-wide
+vocabulary progress ("Tier 1: 48 of 164 known"). One number per word, or a map with a
+`default` and per-language numbers when a word is clearly easier or harder in one language (an
+English look-alike in Spanish); the draft has no per-language tiers yet.
+
+| Tier | Meaning | Words (draft) | Examples |
+| ---: | --- | ---: | --- |
+| 1 | **Starter**: first-week words, very common, easy to picture | 164 | apple, dog, mother, red, today, door, hand, to go |
+| 2 | **Everyday**: common words most learners know within a few months | 332 | cookie, rabbit, jacket, the months, next to, passport, to carry |
+| 3 | **Wider**: less frequent, still general | 244 | avocado, nephew, thermometer, arrival, wheelbarrow, rough |
+| 4 | **Specialist**: technical or place-specific | 59 | defibrillator, lectern, conveyor belt, metal detector, gazpacho |
+
+Ranked by how common and useful the word is, how easily it is pictured, and how basic its
+category is. Each game's word list ([words.md](words.md)) is sorted by tier and gives its
+count per tier (for example Grocery Run 27 · 24 · 10 · 0, On the Menu 6 · 13 · 16 · 3).
+
+**Decided 24 Nov (user):** Grocery Run's prices follow the word tiers, and tier 3 products get
+any-cents prices ([Grocery Run](#grocery-run), Prices). 31 products moved by one price tier.
+
+**To decide (user):**
+- Whether to add per-language tiers now (Spanish look-alikes such as *chocolate*, *piano*, *hospital*).
+
 ## Grocery Run
 
 *買餸啦！ · ¡Al súper!* — **Beagle clerk, outside the supermarket door; paid at the samoyed cashier's till**
@@ -93,8 +151,8 @@ door, click any product into it, and pay at the till. Same rules for the door an
 | Words | [Generated list](words.md#grocery-run) |
 | Tracked in the journal | Yes: each item ordered (right when the first basket at the till had none of it missing or extra) |
 | Session | One order, paid and brought back; no progress bar |
-| Prices | One price per product, by how hard its word is (user, 21 Nov): easiest words whole dollars, then .25/.50/.75, then quarters with dimes (such as $3.35), hardest any cents (such as $0.79). The list is in [data/shops.json](../../data/shops.json) `prices` |
-| Progression | **Built 18 Nov; levels follow the price tiers since 21 Nov.** L1 two basic fruit or vegetables, 1–2 each (whole dollars) · L2 three items, 1–3 each, from the first two price tiers · L3 three items from the first three tiers · L4 four items, 1–3 each, from all products. Stars count mistakes at the till |
+| Prices | One price per product, by how hard its word is (user, 21 Nov). Since 24 Nov (user) a product's price follows its [word tier](#word-tiers): tier 1 whole dollars (27 products), tier 2 .25/.50/.75 (24), tier 3 any cents such as $0.79 (10); the quarters-with-dimes prices are gone. The list is in [data/shops.json](../../data/shops.json) `prices` |
+| Progression | **Built 18 Nov; levels follow the price tiers since 21 Nov.** L1 two basic fruit or vegetables, 1–2 each (whole dollars) · L2 three items, 1–3 each, from tiers 1–2 · L3 three items from all products (tiers 1–3 since 24 Nov) · L4 four items, 1–3 each, from all products. Stars count mistakes at the till |
 
 ## Pay Up!
 
@@ -407,3 +465,45 @@ Lines are short and simple (21 Nov). Not tracked.
 | Tracked in the journal | No (amounts are generated language, like Pay Up!) |
 | Session | 5 customers (`data/activities.json`); a customer counts when served right the first time (the exact cash, a correct "not enough", or the police for an impostor). A paid impostor does not count; a second one in a session ends it early (`payouts_to_fire`, `data/bank_teller.json`; no Play again, nothing saved) |
 | Progression | Within a session (user, 18 Nov 2026): first whole hundreds (cien … quinientos), then hundreds and fifty, then any multiple of 5 that needs the $10 and $5 bills; one customer is short of money (a balance a little under the request) and one wants change for whole hundreds; in most sessions (`impostor_chance` 0.75, `data/bank_teller.json`) another withdrawal customer is an impostor whose account photo is a different animal (user, 21 Nov 2026); after a paid impostor and the manager's warning, another impostor comes later in the session (`impostor_again`, user 23 Nov 2026). Not yet across sessions |
+
+## Feeding Time!
+
+*餵食時間！ · ¡Hora de comer!* — **Nico (sheep zookeeper), at the food booth just inside the zoo gate**
+
+*Designed 24 Nov 2026 with the user and built the same day.* Screenshots: [booth](../evidence/zoo-feeding-20261124/booth.png), [bag](../evidence/zoo-feeding-20261124/bag.png), [an elephant eating](../evidence/zoo-feeding-20261124/eating.png), [a lion refusing an apple](../evidence/zoo-feeding-20261124/refusing.png).
+
+Nico runs a small food booth on the grass inside the ZOO arch, beside the path, in front of the
+Wildlife Plains. He sells five animal foods: **meat, apple, fish, carrot and bamboo** (bamboo is a
+new word). Every zoo animal eats at least one of them; the table is data
+([zoo feeding data](../../data/zoo_feeding.json)):
+
+| Food | Who eats it |
+| --- | --- |
+| meat | lion, tiger, snake, bear, bear cub |
+| fish | flamingo, bear, bear cub |
+| apple | elephant, giraffe, monkey, gorilla, zebra, deer, kangaroo, rhinoceros, capybara, bear, bear cub |
+| carrot | elephant, giraffe, zebra, deer, kangaroo, rhinoceros, capybara |
+| bamboo | panda, red panda |
+
+**Free feeding** (not a game: no stars, nothing saved). Take a paper bag from the stack on the
+counter, click the foods into it and pay Nico, the same way as free shopping at the supermarket
+(the bag works like the shopping basket). Carry the bag into a zone and press E (or tap) on an
+animal: it walks over to the food, eats it with its head down and a little hop, and the bag gets
+lighter. An animal offered a food it does not eat sniffs it, shakes its head and walks off. The
+bag goes away when it is empty or when you leave the zoo.
+
+**The game.** Nico asks for help: "Can you feed the apple to the elephant?" in the language you
+are learning, and hands you a bag with the food for the whole session (user, 24 Nov: the keeper
+always hands the food over, so the game is only about the animal names). Find the named animal and
+feed it; the next request follows at once. Feeding a different animal is a miss: it comes over and
+sniffs, Nico says which animal that was and asks again.
+
+| Learning card | |
+| --- | --- |
+| Purpose | Recognise the names of the zoo animals when someone asks for one, and find that animal in its zone. |
+| Words | The 17 zoo animals ([generated list](words.md#feeding-time)); the five foods are shown, not tested |
+| Tracked in the journal | Yes: the animal named in each request (right when the first animal fed was the named one) |
+| Session | A number of requests per level; a request counts when the first animal fed is the right one |
+| Progression | Built 24 Nov (user design). Animals by [word tier](#word-tiers): L1 3 requests, tier-2 animals (bear, elephant, giraffe, lion, monkey, panda, snake, tiger, zebra) · L2 5 requests, tier-2 animals · L3 5 requests, tiers 2–3 (adds bear cub, deer, flamingo, gorilla, kangaroo, red panda, rhinoceros) · L4 6 requests, every zoo animal (adds the tier-4 capybara). Nico always hands the food over. Stars from first-try requests |
+| Results card | *Animals Fed!* "You helped Nico feed the hungry animals!" |
+| Town mission | "Help Nico feed the hungry animals at the zoo!" |

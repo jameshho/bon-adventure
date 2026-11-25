@@ -136,6 +136,9 @@ func watch() -> void:
 
 ## A new session starts at 0.
 func begin(id: String) -> void:
+	# The word memory listens from the first session on (word_memory.gd: every recorded
+	# question is one step, also in games that pick their words another way).
+	preload("res://scripts/learning/word_memory.gd").shared()
 	_done[id] = 0
 	_misses[id] = 0
 	var data_rounds := maxi(1, int(activities.get(id, {}).get("progress", 0)))

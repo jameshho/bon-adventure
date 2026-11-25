@@ -14,7 +14,13 @@ extends Node
 ## tools/voice_generate.py. say_word() plays it on the Voice bus, not positional, one word at a
 ## time. While "voice.enabled" is false (user, 24 Nov 2026) it plays nothing and has_voice() is
 ## false, so no speaker button or automatic word ever shows or sounds.
+##
+## Web (24 Nov 2026, user: the tab always showed a speaker icon): Godot's AudioContext runs and
+## sends silence the whole time. The Web preset's head script keeps window.bonAudioContexts; while
+## none of this service's players plays, it is suspended (checked every WEB_IDLE_CHECK s), and
+## _web_wake() resumes it before any play. Every game sound goes through this service.
 const PATH := "res://data/sounds.json"
+const WEB_IDLE_CHECK := 0.5
 
 static var _shared
 
@@ -25,6 +31,12 @@ var bindings: Dictionary = {}
 var voice: Dictionary = {}
 var _streams: Dictionary = {}
 var _voice_player: AudioStreamPlayer
+## Every player this service made (looping and one-shot), to know whether anything plays.
+var _players: Array = []
+var _web := OS.has_feature("web")
+## The page starts with its audio suspended (the Web preset's head script).
+var _web_awake := false
+var _web_check := 0.0
 
 static func shared():
 	return _shared
@@ -48,6 +60,40 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	for node in get_tree().root.find_children("*", "", true, false):
 		_bind(node)
+
+func _process(delta: float) -> void:
+	if not _web:
+		return
+	_web_check -= delta
+	if _web_check > 0.0:
+		return
+	_web_check = WEB_IDLE_CHECK
+	if _web_awake and not is_playing():
+		_web_suspend()
+
+## Whether any sound of this service is playing now.
+func is_playing() -> bool:
+	var live: Array = []
+	var playing := false
+	for player in _players:
+		if is_instance_valid(player) and not player.is_queued_for_deletion():
+			live.append(player)
+			playing = playing or player.playing
+	_players = live
+	return playing
+
+## Suspends the page's audio while nothing plays (no speaker icon); the page then ignores
+## Godot's own resume() until _web_wake().
+func _web_suspend() -> void:
+	JavaScriptBridge.eval("window.bonAudioWanted = false; (window.bonAudioContexts || []).forEach(function (c) { if (c.state === 'running') { c.suspend(); } })", true)
+	_web_awake = false
+
+## Resumes the page's audio just before a sound starts.
+func _web_wake() -> void:
+	_web_check = WEB_IDLE_CHECK * 2.0
+	if _web and not _web_awake:
+		JavaScriptBridge.eval("window.bonAudioWanted = true; (window.bonAudioContexts || []).forEach(function (c) { if (c.state !== 'closed') { c.resume(); } })", true)
+		_web_awake = true
 
 func _exit_tree() -> void:
 	if get_tree().node_added.is_connected(_bind):
@@ -82,6 +128,7 @@ func play_at(cue_id: String, at: Node3D) -> AudioStreamPlayer3D:
 	var player := _player(cue_id, at)
 	if player != null:
 		player.finished.connect(player.queue_free)
+		_web_wake()
 		player.play()
 	return player
 
@@ -93,6 +140,7 @@ func start_loop(cue_id: String, at: Node3D) -> AudioStreamPlayer3D:
 	var player := _player(cue_id, at)
 	if player != null:
 		player.name = _loop_name(cue_id)
+		_web_wake()
 		player.play()
 	return player
 
@@ -150,11 +198,13 @@ func say_word(key: String, lang: String) -> bool:
 		_voice_player = AudioStreamPlayer.new()
 		_voice_player.name = "Voice"
 		add_child(_voice_player)
+		_players.append(_voice_player)
 	_voice_player.stop()
 	_voice_player.stream = clip
 	_voice_player.bus = str(voice.get("bus", "Voice"))
 	_voice_player.volume_db = float(voice.get("volume_db", 0.0))
 	_voice_player.set_meta("sound_cue", cue_id)
+	_web_wake()
 	_voice_player.play()
 	return true
 
@@ -175,4 +225,5 @@ func _player(cue_id: String, at: Node3D) -> AudioStreamPlayer3D:
 	player.max_distance = float(distance.get("max_distance", 0.0))
 	player.set_meta("sound_cue", cue_id)
 	at.add_child(player)
+	_players.append(player)
 	return player

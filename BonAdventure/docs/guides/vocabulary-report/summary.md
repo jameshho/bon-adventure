@@ -1,6 +1,6 @@
 # Vocabulary usage report
 
-Generated 2026-11-23 by `tools/vocabulary_report.gd -- --write` (whole town loaded; how to run and what each column means: the script's header and [the guide](../ARCHITECTURE_REVIEW_PART1.md#vocabulary-usage-report)). Full table: [report.csv](report.csv).
+Generated 2026-11-24 by `tools/vocabulary_report.gd -- --write` (whole town loaded; how to run and what each column means: the script's header and [the guide](../ARCHITECTURE_REVIEW_PART1.md#vocabulary-usage-report)). Full table: [report.csv](report.csv).
 
 **Dialogue:** only words that fill a `{slot:form}` in `data/phrases.json` are reported (column `phrase_slots`). Words written as plain text inside dialogue lines are not matched, so a word can appear in dialogue and still be listed here as unused.
 
@@ -8,13 +8,13 @@ Generated 2026-11-23 by `tools/vocabulary_report.gd -- --write` (whole town load
 
 | | Words |
 | --- | ---: |
-| In data/words.json | 799 |
-| Placed in the saved scenes | 777 |
-| Clickable somewhere (study by clicking) | 752 |
+| In data/words.json | 800 |
+| Placed in the saved scenes | 778 |
+| Clickable somewhere (study by clicking) | 753 |
 | Placed only by scripts at load (runtime) | 0 |
 | Only on a bound world label (poster) | 0 |
-| Tested by a game | 187 |
-| Only shown by a game | 49 |
+| Tested by a game | 203 |
+| Only shown by a game | 50 |
 | Can fill a phrase slot | 36 |
 | **Placed nowhere and used by no game** | **22** |
 | Placed nowhere but used by a game | 0 |
@@ -32,6 +32,7 @@ Decision 6 (user, 7 Nov 2026). The police lineup is not tracked: each round name
 | --- | ---: | ---: |
 | `evidence_mimi` | 6 | 10 |
 | `family_dr_li` | 19 | 12 |
+| `feeding_nico` | 17 | 5 |
 | `flight_bruno` | 26 | 0 |
 | `grammar_lana` | 16 | 0 |
 | `library_rosa` | 24 | 0 |
@@ -43,6 +44,7 @@ Decision 6 (user, 7 Nov 2026). The police lineup is not tracked: each round name
 
 - **evidence_mimi** tests: hard, heavy, light (weight), rough, smooth, soft
 - **family_dr_li** tests: aunt, boyfriend, brother, cousin, daughter, father, girlfriend, granddaughter, grandfather, grandmother, grandson, husband, mother, nephew, niece, sister, son, uncle, wife
+- **feeding_nico** tests: bear, bear cub, capybara, deer, elephant, flamingo, giraffe, gorilla, kangaroo, lion, monkey, panda, red panda, rhinoceros, snake, tiger, zebra
 - **flight_bruno** tests: brazil, canada, day after tomorrow, day before yesterday, france, friday, germany, in one hour, japan, last night, mexico, monday, one hour ago, saturday, spain, sunday, this afternoon, this morning, thursday, today, tomorrow, tonight, tuesday, united states, wednesday, yesterday
 - **grammar_lana** tests: apple, bed, book, bowl, cat, cow, desk, dog, duck, fish, horse, knife, map, pants, shirt, water
 - **library_rosa** tests: airplane, animal, basketball, cactus, cake, car, cat, cookie, dog, drum, elephant, flower, food, guitar, music, piano, pizza, plant, soccer, sport, tennis, train, tree, vehicle

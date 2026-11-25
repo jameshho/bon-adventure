@@ -150,6 +150,8 @@ func setup(game) -> void:
 	main.hud.style_corner_button(corner_button)
 	corner_button.pressed.connect(toggle)
 	main.hud.ui_root.add_child(corner_button)
+	# Its key (F9) in a hint circle while playing with a keyboard (vocabulary_hud.gd, 24 Nov 2026).
+	main.hud.add_key_hint(corner_button, "games")
 	get_viewport().size_changed.connect(_layout)
 	refresh_display()
 

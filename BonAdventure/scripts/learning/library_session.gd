@@ -172,6 +172,10 @@ func _fill_cart() -> void:
 		return
 	var picks := catalog.duplicate()
 	_shuffle(picks)
+	# Books whose topic word is due come first, then allowed new ones (word_memory.gd, 24 Nov
+	# 2026); the shuffle above breaks ties.
+	var ranked: Array = preload("res://scripts/learning/word_memory.gd").shared().order(picks.map(func(e): return str(e.word)), rng)
+	picks.sort_custom(func(a, b): return ranked.find(str(a.word)) < ranked.find(str(b.word)))
 	var places := slots.duplicate()
 	_shuffle(places)
 	var count := mini(rng.randi_range(BOOKS_MIN, BOOKS_MAX), mini(picks.size(), places.size()))

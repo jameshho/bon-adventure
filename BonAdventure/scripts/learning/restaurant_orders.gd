@@ -148,7 +148,12 @@ func new_menu() -> void:
 		var pool: Array = dishes().filter(func(d): return str(d.course) == str(course))
 		var best: Array = []
 		for attempt in 30:
-			_shuffle(pool)
+			# The first menu puts the dishes the word memory wants first (due, then allowed new;
+			# word_memory.gd, 24 Nov 2026); later tries shuffle until a menu can be ordered from.
+			if attempt == 0:
+				_by_memory(pool)
+			else:
+				_shuffle(pool)
 			var count := clampi(rng.randi_range(int(size[0]), int(size[1])), 1, pool.size())
 			var pick: Array = pool.slice(0, count)
 			best = pick
@@ -177,7 +182,7 @@ func make_order(course: String, served: Array = [], recent: Array = []) -> Dicti
 	var targets: Array = section.filter(func(d): return not served.has(str(d.id)))
 	if targets.is_empty():
 		targets = section.duplicate()
-	_shuffle(targets)
+	_by_memory(targets)
 	# Plain orders are the fallback, so a menu that cannot say "muy" or "pero no" still works.
 	for options in [[intensity, negation], [false, false]]:
 		for target in targets:
@@ -317,6 +322,12 @@ static func _combinations(items: Array, n: int) -> Array:
 		for rest in _combinations(items.slice(i + 1), n - 1):
 			out.append([items[i]] + rest)
 	return out
+
+## Dishes in the word memory's order of their words (word_memory.gd order()), ties shuffled.
+func _by_memory(list: Array) -> void:
+	_shuffle(list)
+	var ranked: Array = preload("res://scripts/learning/word_memory.gd").shared().order(list.map(func(d): return str(d.word)), rng)
+	list.sort_custom(func(a, b): return ranked.find(str(a.word)) < ranked.find(str(b.word)))
 
 func _shuffle(list: Array) -> void:
 	for i in range(list.size() - 1, 0, -1):

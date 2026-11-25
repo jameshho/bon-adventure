@@ -8,6 +8,12 @@
 "removed_with_objects" lists deleted words whose tagged objects the game removes
 from town at load (world_refinements.gd::apply_word_list).
 
+"tier" (required) ranks how early a learner meets the word: 1 starter, 2 everyday, 3 wider,
+4 specialist. It is one number, or {language code: number} when the word is easier or harder in
+one language (an English look-alike in Spanish); a language missing from that map uses
+"default". Minigame levels and the town's vocabulary progress read it (draft 24 Nov 2026,
+docs/game/minigames.md#word-tiers).
+
 "sold_in" (optional) lists the store ids (keys of "stores" in data/shop_dialogue.json) whose
 "customer order" minigame may ask for the word; only real, clickable products get it.
 
@@ -26,7 +32,7 @@ from pathlib import Path
 
 PATH = Path(__file__).resolve().parents[1] / "data" / "words.json"
 LANGUAGES_PATH = Path(__file__).resolve().parents[1] / "data" / "languages.json"
-FIELDS = ("text", "forms", "category", "prefab_size", "picture", "note", "sold_in")
+FIELDS = ("text", "forms", "category", "tier", "prefab_size", "picture", "note", "sold_in")
 
 
 def load(path=PATH):
@@ -84,6 +90,11 @@ def problems(data):
         for field in entry:
             if field not in FIELDS:
                 found.append(f"{key}: unknown field {field!r}")
+        tier = entry.get("tier")
+        tiers = list(tier.values()) if isinstance(tier, dict) else [tier]
+        if not tiers or not all(isinstance(t, int) and not isinstance(t, bool) and 1 <= t <= 4 for t in tiers) \
+                or (isinstance(tier, dict) and ("default" not in tier or not all(c == "default" or c in codes for c in tier))):
+            found.append(f"{key}: tier must be 1-4, or a map of language codes and 'default' to 1-4")
         if "picture" in entry and entry["picture"] is not False:
             found.append(f"{key}: picture may only be false (no journal picture)")
         sold_in = entry.get("sold_in", [])

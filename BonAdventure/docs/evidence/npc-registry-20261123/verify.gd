@@ -91,7 +91,8 @@ func _check_data() -> void:
 		var placement := str(entry.get("placement", ""))
 		if not placement in PLACEMENTS:
 			problems.append("placement")
-		if placement != "cast" and not units.has(str(entry.get("unit", ""))):
+		# "base": the base world, always loaded (the zoo's Nico, 24 Nov 2026).
+		if placement != "cast" and not units.has(str(entry.get("unit", ""))) and str(entry.get("unit", "")) != "base":
 			problems.append("unit")
 		if placement in ["house", "scene", "registry"] and (not entry.get("at") is Array or not entry.has("facing")):
 			problems.append("at/facing")

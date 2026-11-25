@@ -47,8 +47,9 @@ dated history of rules and implementation.
 | Warehouse and Warehouse Worker minigame | **Redesign approved 14 Nov 2026 (user): 30 × 14.5, reception inside at the east end, two loading bays, divider, one shelf / table / cabinet, five placing tasks** ([record](#warehouse-redesign--14-november-2026)). Original: **new building between the school and the airport** (user request, 5 Nov 2026): silver/light-gray metal hall 30 × 22 with a 12 × 7 reception annex (desk, seated receptionist), a second door into a large, high, empty hall; a supervisor (lion plush Ramón) offers a five-task minigame in a **separate copy** of the same architecture. Decisions: no coins, no first-try counting, tú, A1–A2 daily words only. | Phase 1 (site, school move, shell, reception) Phase 2 (50 words, three reception posters, Ramón outside) Phase 3 (racks A–C, tables, scale, cabinet, conveyor, IN/OUT areas, light stock, truck) Phase 4 (game frame: copy, fade, task card, leave question) and Phase 5 (physics goods, carrying, trolleys, task generator and checks, wrong-attempt help) built 5 Nov 2026; Phase 6 full suite run 5 Nov 2026. See [record](#warehouse-and-warehouse-worker-minigame--5-november-2026) and the [warehouse guide](WAREHOUSE.md). **14 Nov 2026 redesign built (uncommitted); the lot's car and motorcycle (base world) not built.** |
 | Grammar Classroom | The school's general classroom becomes a grammar class (user brief, 6 Nov 2026): Lana (new sheep plush teacher) by one large rear-wall board; 6 desks in 2 columns × 3 rows, the front four are answer desks A–D; questions per learned language (Spanish ser/estar, Chinese shared measure words, English agreement and prepositions); points only, no coins. | Remodel baked into `school.scn` 7 Nov 2026 (`scripts/buildings/school.gd` step `grammar_classroom`). See [record](#grammar-classroom-remodel--6-november-2026) and the [guide](GRAMMAR_CLASS.md). |
 | Mystery House and Mystery Doors | **New building, "Casa de las Estrellas"** (user brief and image, 9 Nov 2026): cream stone, purple tiled roofs with gold trim, a purple gold-ribbed dome with a crystal, arched purple entrance with a gold star, stained glass, lanterns, flowers and vines, carpeted steps, a sign post. **24 × 30** (school-like frontage, deeper), in the bottom-left corner of the map (south of the bank, facing the loop road). Hall with shape and colour posters; a high mysterious room under the dome with stars and the twelve zodiac constellations (decoration only); three locked coloured doors that open only in **Mystery Doors** (Madame Luna, cat plush fortune-teller): clues by shape, then colour, then both; a wrong door turns the player into a toad for 2 s. Door wall after the user's door reference (same day). | Built 9 Nov 2026 (`scenes/town/mystery.scn`, own script `scripts/buildings/mystery.gd`; map site base step `mystery_house_site`). See [record](#mystery-house-and-mystery-doors--9-november-2026). |
-| Farm barn | **Taller gambrel barn on the unchanged 12 × 9 footprint** (user decisions, 1 November 2026, loose reference image): walls 5.0 → eave 6.0, gambrel ridge 10.5; door opening 3.4 × 4.0 (was 3.6 high) with open X-braced double doors; walkable hayloft reached by a climbable ladder; tools / hay / supplies interior with nine new words. Supplies only, no animal stalls. | Implemented 1 November 2026; see [record](#farm-barn-gambrel-roof-hayloft-and-supplies-interior--1-november-2026). Ladder turned to face the door and the paddock shelter and trough rebuilt the same day. A feed trough and the vegetable garden remain future items. |
+| Farm barn | **Taller gambrel barn on the unchanged 12 × 9 footprint** (user decisions, 1 November 2026, loose reference image): walls 5.0 → eave 6.0, gambrel ridge 10.5; door opening 3.4 × 4.0 (was 3.6 high) with open X-braced double doors; walkable hayloft reached by a climbable ladder; tools / hay / supplies interior with nine new words. Supplies only, no animal stalls. | Implemented 1 November 2026; see [record](#farm-barn-gambrel-roof-hayloft-and-supplies-interior--1-november-2026). Ladder turned to face the door and the paddock shelter and trough rebuilt the same day. A feed trough and the vegetable garden remain future items. **Hen house (user, 24 Nov 2026):** a small separate coop in the paddock west of the barn with six hens laying eggs to collect; an egg crate inside the barn door ([record](#hen-house-and-eggs--24-november-2026)). |
 | Zoo layout | **User design, 12 November 2026:** the wild-animal lawn (unchanged footprint, farm untouched, no north exit) is four fenced zones around a cross path and a cherry-tree plaza with lamps (its two benches removed, user, 23 Nov 2026): **Savanna** (giraffe, rhinoceros, deer, kangaroo, zebra), **Forest** (bear, bear cub, gorilla), **Bamboo Grove** (panda, red panda, monkey), **Wildlife Plains** (elephant, lion, tiger, flamingo, snake); Spanish zone signs (LA SABANA, EL BOSQUE, EL BAMBÚ, LAS LLANURAS) and a ZOO arch (EL ZOOLÓGICO) at the gate; full scenery kept lightweight. | Built 12 Nov 2026 (base step `zoo_zones`); see [record](#zoo-zones--12-november-2026). Each zone has a walk-in gap so every animal stays studiable. |
+| Zoo food booth and Feeding Time! | **User decisions, 24 Nov 2026:** a food booth just inside the zoo gate (on the grass strip in front of Wildlife Plains, beside the path; the zoo footprint is unchanged, the user left expanding north to the agent and it was not needed) run by **Nico, a sheep zookeeper**, who both sells and hosts the game. Five foods: meat, apple, fish, carrot, bamboo (bamboo a new word). Free buying with a paper bag that works like the supermarket basket; animals walk to the food and eat it. The minigame asks for an animal by name; Nico always hands the food over. | Designed and built 24 Nov 2026 (base step `zoo_food_booth`; check `docs/evidence/zoo-feeding-20261124/verify.gd`); see [record](#zoo-food-booth-and-feeding-time--24-november-2026) and the [learning card](../game/minigames.md#feeding-time). |
 | Home pool and sidewalks | Sunken home pool with real depth; curbed, raised sidewalks along the loop road. | Implemented 28 October 2026; see [pool and sidewalks](#home-pool-depth-and-raised-sidewalks--28-october-2026). |
 | Completed interiors | House and library remain as built. | Preserve rooms, furnishings, doors and learning content. |
 | Remaining interiors | Follow each building's detailed program below. | Future stages, one building at a time; no wholesale interior construction in the exterior stage. |
@@ -1477,6 +1478,49 @@ Check: `docs/evidence/barn-20261101/verify.gd`; renders: `docs/evidence/barn-202
 (the first build's views are kept in `after/`).
 Verification: [final verification](FINAL_VERIFICATION.md#farm-barn-rebuild--1-november-2026).
 
+## Hen house and eggs — 24 November 2026
+
+User request: a hen house at the barn where 5–6 hens live and lay eggs; eggs appear at random,
+usually about 3, more rarely up to 6–7; the player finds an egg (like a coin), picks it up and
+delivers it into a container; leaving the area with an egg in hand drops it ("oh no, you dropped
+the egg"). User decisions (24 Nov 2026): a **separate coop in the paddock** (not inside the barn,
+not a lean-to); the **egg crate is in the barn**; hens **lay over time**, about 3–4 eggs when the
+player comes back after about 15 minutes, the 5th, 6th and 7th egg at a lower chance; a **rare
+golden egg**; **no reward for now** (stars may be added later as a currency). This changes the
+brief's "barn primarily tools/hay/supplies, not animal housing" and "no additional farm
+buildings": the barn itself stays supplies-only and the coop is a small farm structure.
+
+All numbers are **town units** (Apartment scale 1.3; +X west, +Z north). Owner: barn step
+`hen_house` (`scripts/buildings/barn.gd`, baked into `scenes/town/barn.scn`) builds
+`Barn/Hen house` with town-frame coordinates; `scripts/world/hen_house.gd` runs it, eggs are
+`scripts/world/farm_egg.gd` (built at run time, never baked).
+
+| Item | Built |
+| --- | --- |
+| Coop | Centre (79.0, 76.6), west of the barn (wall x 72), south of the sheep, 2.6 from the south fence: 3.0 × 1.8 body on four legs, floor 0.7, red walls with cream corner boards to the eave 1.9, slate gable roof (ridge 2.55, along X), triangular gable ends. Pop door and a cleated ramp on the east side down toward the barn. Collision: legs, floor, walls, roof, nest boxes |
+| Nest boxes | Four open boxes hung on the north face (floor 0.55, sloped lid), straw in each: egg spots 1–4 |
+| Straw nests | Seven on the ground (egg spots 5–11): by the ramp's foot, west of the front, by the hay bale, two behind the coop, its south-east corner, its west side |
+| Hens | Six farm hens (`scenes/animals/hen.tscn`, the paddock hen's size) wandering (`park_animals.gd configure()`) in their yard x 73.4…84.6, z 74…82 |
+| Egg crate | On a 1.1 × 0.6 table at (69.0, 83.7), inside the barn's front wall west of the doorway (the door route stays clear; Tomás stands 1.8 south): a tray of 12 cups (2 × 6) |
+
+Rules (`hen_house.gd`): one roll per 60 s of real time, also while the game is shut (caught up at
+load, at most 60 rolls). Fewer than 4 eggs: an egg with chance 0.28; eggs 5–7: 0.04; never more
+than 7. Each egg is golden with chance 0.03, else white or brown. A new profile starts with 15
+rolls made. Simulated 15 minutes from empty: mean 3.5 eggs (4: 55%, 3: 19%, 5: 9%, 6–7: 1%).
+E / click / tap on an egg takes it in the left hand (`hand_hold.gd` profile `egg`; again at its
+nest puts it back); on the crate with an egg in the hand puts it in the next cup with a hop and
+sparks (`success_burst.gd`) and the toast "Egg in the crate! N so far." (golden: "A golden
+egg!"); with an empty hand the crate says "Find eggs at the hen house and bring them here."
+Carrying an egg out of the farm (lawn x 42…90, z 73…109, plus 1) drops it: it breaks on the
+ground under the hand for 3 s and the HUD toast says "Oh no! You dropped the egg." Leaving the
+farm empties the crate (the farmer takes the eggs); a full crate (12) is emptied before the next.
+Toasts: `toast.egg_*` / `toast.golden_egg` in `data/phrases.json`. Saved per profile:
+`hen_house.json` (laid eggs and the last roll). Rewards: none yet; each delivery notes the
+achievement events `farm_egg` / `golden_egg` so a later reward (stars) can count them.
+
+No new words (*eggs* and *hen* already exist). Check: `docs/evidence/hen-house-20261124/verify.gd`
+(views in the same folder). Verification: [final verification](FINAL_VERIFICATION.md#hen-house-and-eggs--24-november-2026).
+
 ## Hospital ward doctors — 1 November 2026
 
 User request: three more plush characters in doctors' uniforms around the hospital; one
@@ -1991,7 +2035,12 @@ User decisions (supersede the Done button and retries above, and retire the
   again", "What went wrong?"). No change is given.
 - **Levels follow the tiers** (`order_tiers` in `data/activities.json`): L1 the 16 basic fruit and
   vegetables (all whole dollars), L2 the first two tiers, L3 three, L4 all products. `retries` is
-  gone. Stars count mistakes: each basket turned down (the same basket again is not counted twice)
+  gone.
+- **Prices follow the word tiers (user, 24 Nov 2026).** Each product sits in its word's
+  [tier](../game/minigames.md#word-tiers) (`data/words.json` `tier`), so there are three price
+  tiers: whole dollars, .25/.50/.75, any cents. The quarters-with-dimes style is gone (no product
+  is a tier 4 word, and the user chose any cents for tier 3 to keep the hardest money). L3 and L4
+  now both order from all products; L4 still differs by four items. Stars count mistakes: each basket turned down (the same basket again is not counted twice)
   and each wrong payment.
 - **Free shopping.** The basket stacks by the door (`basket_racks`) are Interactables: E takes a
   basket; any priced product of the store goes into it (3 of one, 12 in all), and the till charges
@@ -4290,4 +4339,48 @@ earlier runs failed on route test points (one through the office door's jamb, on
 table) and on the open staff-door leaf crossing the manager's path, fixed by her path and the
 hinge side. `tools/run_checks.py`: `bank_rework` replaces `bank_impostor` (its toggle and
 banker-on-payout steps no longer exist). Size: `bank.scn` 180 KB → 319 KB.
+
+## Zoo food booth and Feeding Time — 24 November 2026
+
+User request (relayed by the session that started this work): a food booth at the zoo entrance
+selling five simple animal foods, free buying with a carried bag like the supermarket basket, an
+eating animation, and a minigame that asks the player to feed a named animal. Agreed with the user
+before building:
+
+| Decision | Choice |
+| --- | --- |
+| Foods | meat, apple, fish, carrot, **bamboo** (new word, tier 3, with a new product model); every zoo animal eats at least one (table on the [learning card](../game/minigames.md#feeding-time)) |
+| Host | One NPC, **Nico** (sheep plush, zookeeper outfit), sells at the booth and hosts the game (registry placement, `data/npcs.json`) |
+| Booth | Just inside the gate on the free grass strip (z 122.5…126) west of the path, in front of Wildlife Plains, counter facing the path; zoo footprint, fences and gate unchanged |
+| Game food | Nico always hands the food over (the player does not buy it in the game); the game tests only the animal names |
+| Levels | By word tier, as on the learning card |
+
+Built 24 Nov 2026. Ownership:
+
+- **Booth:** base step `zoo_food_booth` (`scripts/buildings/base.gd`, baked into `scenes/town/base.scn`):
+  `ParkZoo/ZooFoodBooth` at x −75.35…−73.0, z 122.9…125.45 (zoo-local = town coordinates), counter
+  facing the path, striped awning, the translated ANIMAL FOOD board, the "Paper bags" stack (the
+  till's rack) and five food crates (`Booth food <key>`, word roots with pick areas). The bake
+  reported nothing in the way; gate, fences and path unchanged.
+- **Nico:** registry NPC `nico` (`data/npcs.json`, unit `base`, node `ParkZoo/ZooKeeper`), outfit
+  `zookeeper` (`data/plush_costumes.json`).
+- **Bag:** carrier `bag` of `shopping_basket.gd` (`give(from, Basket.BAG)`, word *shopping bag*,
+  hand profile `bag` in `hand_hold.gd`).
+- **Till:** store and cashier `zoo` in `data/shops.json` (`carrier`, `keep_paid`, `lines`,
+  `paid_line`, cashier `shared_host`): `cashier_session.gd` borrows the game's host; a paid bag is
+  kept with its food (meta `food`) and taken away when the player leaves the zoo zone.
+- **Feeding:** `scripts/world/animal_feeding.gd` (Interactables on the animals only while the
+  bag holds food, the food on the ground, refused food back in the bag); `park_animals.gd`
+  `offer_food()` / `food_done` (come, eat, refuse; picking and wandering origins unchanged);
+  `clay_animator.gd` `eat` (head and neck bow, chew; the plush `Head` is not touched).
+- **Game:** `scripts/learning/zoo_feeding_session.gd` (shared host, levels from
+  `data/activities.json` `feeding_nico`, foods table `data/zoo_feeding.json`), created in
+  `minigame_wiring.gd`; phrases in the `zoo` group of `data/phrases.json`.
+
+Verification (24 Nov 2026, full town, isolated HOME): `docs/evidence/zoo-feeding-20261124/verify.gd`
+(`zoo_feeding` in `tools/run_checks.py`) — 52 checks, 0 failures (data, booth, free buying and
+paying, free feeding with eating and refusing, a level-1 game with one miss → 2 stars and practice
+recorded, leaving the zoo mid-game). Screenshots in the same folder. Limitation: in a still image the
+eating bow is mild (the elephant's trunk reaches the food), and the food in the bag only just shows
+above its rim.
 

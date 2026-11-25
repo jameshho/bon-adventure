@@ -50,6 +50,9 @@ static func build(main) -> void:
 	shop_panel.walker = main.player
 	hud.ui_root.add_child(shop_panel)
 	for store_id in shop_dialogue.stores:
+		# A store with no clerk has no Grocery Run (the zoo food booth: only its till).
+		if not (shop_dialogue.stores[store_id] as Dictionary).has("clerk"):
+			continue
 		_when(main, store_id, func() -> void:
 			var session = preload("res://scripts/learning/shop_session.gd").new()
 			main.add_child(session)
@@ -62,6 +65,10 @@ static func build(main) -> void:
 	# The HUD's EN (the one language toggle) stays visible and clickable above the card.
 	main.money_panel.clear_of = [hud.peek_button]
 	for cashier_id in shop_dialogue.cashiers:
+		# A till whose NPC also hosts a game ("shared_host": the zoo food booth) is made by that
+		# game's session, with its host.
+		if (shop_dialogue.cashiers[cashier_id] as Dictionary).has("shared_host"):
+			continue
 		_when(main, cashier_id, func() -> void:
 			var cashier_session = preload("res://scripts/learning/cashier_session.gd").new()
 			main.add_child(cashier_session)
@@ -72,6 +79,11 @@ static func build(main) -> void:
 		var teller_session = preload("res://scripts/learning/teller_session.gd").new()
 		main.add_child(teller_session)
 		teller_session.setup(shop_dialogue, shop_panel, main.money_panel, main.interaction, main.player, main.apartment, main))
+	# Nico's Feeding Time! at the zoo food booth (24 Nov 2026; the zoo is in the base world, always
+	# loaded): the game, the booth's till (sharing Nico's host) and feeding the animals with a bag.
+	var zoo_session = preload("res://scripts/learning/zoo_feeding_session.gd").new()
+	main.add_child(zoo_session)
+	zoo_session.setup(shop_dialogue, shop_panel, main.money_panel, main.interaction, main.zones, main.player, main.apartment, main.vocabulary_sold_in)
 	# Dr. Li's family game (hospital): same dialogue box, plus the family panel.
 	main.family_panel = preload("res://scripts/ui/family_panel.gd").new()
 	hud.ui_root.add_child(main.family_panel)

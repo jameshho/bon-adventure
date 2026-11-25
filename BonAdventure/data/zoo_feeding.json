@@ -1,0 +1,24 @@
+{
+  "about": "Feeding the zoo animals (Feeding Time!, user design 24 Nov 2026; docs/game/minigames.md#feeding-time). 'foods' are the five foods the zoo food booth sells (data/shops.json store 'zoo', each word's sold_in lists 'zoo'), in the order a bag offers them. 'eats' maps each zoo animal's word key to the foods it eats (the user's table; every animal eats at least one). 'food_phrases' names a phrase to say a food in a sentence when its word's display text cannot (fish: 'el pez (animal) / el pescado (comida)'). Read by scripts/world/animal_feeding.gd (free feeding with a bag) and scripts/learning/zoo_feeding_session.gd (the game; its levels pick animals by word tier, data/activities.json 'feeding_nico').",
+  "foods": ["meat", "apple", "fish", "carrot", "bamboo"],
+  "eats": {
+    "lion": ["meat"],
+    "tiger": ["meat"],
+    "snake": ["meat"],
+    "bear": ["fish", "meat", "apple"],
+    "bear cub": ["fish", "meat", "apple"],
+    "flamingo": ["fish"],
+    "elephant": ["apple", "carrot"],
+    "giraffe": ["apple", "carrot"],
+    "monkey": ["apple"],
+    "gorilla": ["apple"],
+    "zebra": ["carrot", "apple"],
+    "deer": ["carrot", "apple"],
+    "kangaroo": ["carrot", "apple"],
+    "rhinoceros": ["carrot", "apple"],
+    "capybara": ["carrot", "apple"],
+    "panda": ["bamboo"],
+    "red panda": ["bamboo"]
+  },
+  "food_phrases": {"fish": "zoo.fish_food"}
+}

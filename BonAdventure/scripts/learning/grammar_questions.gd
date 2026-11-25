@@ -34,10 +34,18 @@ func load_bank(code: String) -> bool:
 static func has_bank(code: String) -> bool:
 	return FileAccess.file_exists(DIR + code + ".json")
 
-## `count` different questions in random order (all of them when the bank is smaller).
+## `count` different questions (all of them when the bank is smaller): those on a noun the word
+## memory wants first (word_memory.gd, 24 Nov 2026: due, then allowed new), the rest in random order.
 func pick(count: int, rng: RandomNumberGenerator) -> Array:
 	var order: Array = questions.duplicate()
 	shuffle(order, rng)
+	var nouns: Array = order.map(func(q): return str(q.get("noun", ""))).filter(func(n): return n != "")
+	if not nouns.is_empty():
+		var ranked: Array = preload("res://scripts/learning/word_memory.gd").shared().order(nouns, rng)
+		var rank := func(q) -> int:
+			var i := ranked.find(str(q.get("noun", "")))
+			return i if i >= 0 else ranked.size()
+		order.sort_custom(func(a, b): return rank.call(a) < rank.call(b))
 	return order.slice(0, mini(count, order.size()))
 
 ## The question's four answers in random desk order.

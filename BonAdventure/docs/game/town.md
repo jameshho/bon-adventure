@@ -271,6 +271,12 @@ animal stalls); farm animals graze outside. Tomás the farmer (a bear in overall
 straw hat) stands by the tool rack and chats about farm life (23 Nov, [NPCs](../guides/NPCS.md)).
 [Design record](../guides/TOWN_DESIGN_BRIEF.md#farm-barn-gambrel-roof-hayloft-and-supplies-interior--1-november-2026)
 
+**Hen house** (24 Nov): a little red coop beside the barn where six hens lay eggs over time
+(about 3–4 after 15 minutes away, rarely up to 7; now and then a golden one). Pick an egg up
+from a nest box or a straw nest and put it in the egg crate inside the barn door; carry it out
+of the farm and you drop it. Just for fun for now (stars may come later).
+[Views](../evidence/hen-house-20261124/), [record](../guides/TOWN_DESIGN_BRIEF.md#hen-house-and-eggs--24-november-2026)
+
 ## Playground
 
 <img src="../evidence/playground-20261101/after/aerial.png" width="480" alt="Playground">

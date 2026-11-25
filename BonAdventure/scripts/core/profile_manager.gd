@@ -172,6 +172,7 @@ func use_default() -> void:
 static func reset_singletons() -> void:
 	preload("res://scripts/core/game_settings.gd")._shared = null
 	preload("res://scripts/learning/practice_log.gd")._shared = null
+	preload("res://scripts/learning/word_memory.gd")._shared = null
 	preload("res://scripts/learning/activity_board.gd")._shared = null
 	preload("res://scripts/learning/game_clock.gd")._shared = null
 	preload("res://scripts/learning/game_progress.gd")._shared = null

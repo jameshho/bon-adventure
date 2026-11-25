@@ -10,6 +10,10 @@ extends Node3D
 ## Shopping with it (user, 14 Nov 2026; the welcome tutorial's shop and the supermarket's order
 ## game): `give(node)` puts a new basket in the player's hand (hand_hold.gd), `show_items()`
 ## fills it with a small model of each picked product, and `take_back(node)` removes it again.
+##
+## Paper bag (24 Nov 2026, the zoo food booth: Feeding Time!): `give(node, BAG)` hands out the same
+## component as a kraft paper bag (word *shopping bag*, hand_hold.gd profile "bag"), its items
+## peeking out of the top. Everything else (remember, show_items, take_back, carried) is the same.
 
 const Art := preload("res://scripts/buildings/supermarket_products.gd")
 const HandHold := preload("res://scripts/player/hand_hold.gd")
@@ -28,9 +32,19 @@ const ITEM_SIZE := .15
 const FLOOR := .045
 const SLOTS_X := [-.18, 0.0, .18]
 const SLOTS_Z := [-.085, .085]
+## The carriers: the red basket (default) and the paper bag (meta "carrier" before it enters the tree).
+const BASKET := "basket"
+const BAG := "bag"
+## The bag: half sizes of its base (x, z), its rim, and where its items sit (they peek out of the top).
+const BAG_HALF := Vector2(.15, .1)
+const BAG_RIM := .32
+const BAG_FLOOR := .2
+const BAG_SLOTS_X := [-.07, .07]
+const BAG_SLOTS_Z := [-.04, .04]
 
 static var _mesh: ArrayMesh
 static var _handles: ArrayMesh
+static var _bag: ArrayMesh
 static var _products
 ## Word key -> the mesh that shows it in the basket (remember()).
 var _models: Dictionary = {}
@@ -38,7 +52,7 @@ var _contents: Node3D
 
 ## Hands the player a new, empty basket (whatever the hand held is put back first); returns it,
 ## or the basket already given if the player carries one. Null without a player.
-static func give(from: Node) -> Node3D:
+static func give(from: Node, carrier := BASKET) -> Node3D:
 	var hand = HandHold.of_player(from)
 	if hand == null:
 		return null
@@ -48,8 +62,9 @@ static func give(from: Node) -> Node3D:
 		hand.release()
 	var basket: Node3D = load(SCENE).instantiate()
 	basket.set_meta(GIVEN_META, true)
+	basket.set_meta("carrier", carrier)
 	# Its kind by name: _ready() sets the hold_kind meta only once it is in the tree.
-	hand.hold(basket, "basket")
+	hand.hold(basket, carrier)
 	return basket
 
 ## The basket given by give() that the player carries now, or null.
@@ -95,6 +110,10 @@ func show_items(counts: Dictionary) -> void:
 	for child in _contents.get_children():
 		_contents.remove_child(child)
 		child.queue_free()
+	var bag := is_bag()
+	var across: Array = BAG_SLOTS_X if bag else SLOTS_X
+	var deep: Array = BAG_SLOTS_Z if bag else SLOTS_Z
+	var floor_y: float = BAG_FLOOR if bag else FLOOR
 	var slot := 0
 	for key in counts:
 		if not _models.has(key):
@@ -103,17 +122,17 @@ func show_items(counts: Dictionary) -> void:
 		if mesh == null:
 			continue
 		for i in int(counts[key]):
-			if slot >= SLOTS_X.size() * SLOTS_Z.size() * 2:
+			if slot >= across.size() * deep.size() * 2:
 				return
 			var box := mesh.get_aabb()
 			var grow := ITEM_SIZE / maxf(.001, maxf(box.size.x, maxf(box.size.y, box.size.z)))
 			var item := MeshInstance3D.new()
 			item.name = "%s %d" % [key, i + 1]
 			item.mesh = mesh
-			var layer := slot / (SLOTS_X.size() * SLOTS_Z.size())
-			var cell := slot % (SLOTS_X.size() * SLOTS_Z.size())
+			var layer := slot / (across.size() * deep.size())
+			var cell := slot % (across.size() * deep.size())
 			var turn := Basis(Vector3.UP, .7 * slot)
-			var at := Vector3(SLOTS_X[cell % SLOTS_X.size()], FLOOR + layer * ITEM_SIZE * .7, SLOTS_Z[cell / SLOTS_X.size()])
+			var at := Vector3(across[cell % across.size()], floor_y + layer * ITEM_SIZE * .7, deep[cell / across.size()])
 			item.transform = Transform3D(turn.scaled(Vector3.ONE * grow), at - turn * (Vector3(box.get_center().x, box.position.y, box.get_center().z) * grow))
 			_contents.add_child(item)
 			slot += 1
@@ -130,15 +149,21 @@ func on_inspect_end(_inspector = null) -> void:
 	if handles != null:
 		handles.visible = true
 
+## The paper bag of the zoo food booth (give(node, BAG)), not the red basket.
+func is_bag() -> bool:
+	return str(get_meta("carrier", BASKET)) == BAG
+
 ## How many item models the basket shows now.
 func item_count() -> int:
 	return _contents.get_child_count() if _contents != null and is_instance_valid(_contents) else 0
 
 func _ready() -> void:
-	if not has_meta("word_key"):
-		set_meta("word_key", "basket")
+	var bag := is_bag()
+	# The scene's word is "basket"; a bag is a "shopping bag".
+	if bag or not has_meta("word_key"):
+		set_meta("word_key", "shopping bag" if bag else "basket")
 	set_meta("learning_object", true)
-	set_meta("hold_kind", "basket")
+	set_meta("hold_kind", BAG if bag else BASKET)
 	for child in get_children():
 		if child.has_meta(PART_META):
 			remove_child(child)
@@ -146,13 +171,14 @@ func _ready() -> void:
 	var model := MeshInstance3D.new()
 	model.name = "Model"
 	model.set_meta(PART_META, true)
-	model.mesh = mesh()
+	model.mesh = bag_mesh() if bag else mesh()
 	add_child(model)
-	var handles := MeshInstance3D.new()
-	handles.name = "Handles"
-	handles.set_meta(PART_META, true)
-	handles.mesh = handles_mesh()
-	add_child(handles)
+	if not bag:
+		var handles := MeshInstance3D.new()
+		handles.name = "Handles"
+		handles.set_meta(PART_META, true)
+		handles.mesh = handles_mesh()
+		add_child(handles)
 	var area := Area3D.new()
 	area.name = "Interaction"
 	area.set_meta(PART_META, true)
@@ -160,9 +186,9 @@ func _ready() -> void:
 	area.collision_mask = 0
 	var shape := CollisionShape3D.new()
 	var box := BoxShape3D.new()
-	box.size = Vector3(.7, GRIP + .03, .48)
+	box.size = Vector3(BAG_HALF.x * 2 + .02, BAG_RIM + .03, BAG_HALF.y * 2 + .02) if bag else Vector3(.7, GRIP + .03, .48)
 	shape.shape = box
-	shape.position = Vector3(0, (GRIP + .03) * .5, 0)
+	shape.position = Vector3(0, box.size.y * .5, 0)
 	area.add_child(shape)
 	add_child(area)
 
@@ -211,6 +237,34 @@ static func mesh() -> ArrayMesh:
 	kit.bx(Vector3(0, RIM - .07, z - .0025), Vector3(.1, .015, .002), Art.NAVY, Art.MATTE, Vector3(tilt, 0, 0))
 	_mesh = kit.finish("Shopping basket (carried)")
 	return _mesh
+
+## The paper bag: an open kraft bag with a folded-over rim, side gussets and a green paw print
+## (the zoo booth's). Base centre at the origin, long side along X, rim at BAG_RIM.
+static func bag_mesh() -> ArrayMesh:
+	if _bag != null:
+		return _bag
+	var kit = Art.new()
+	var paper := Art.KRAFT
+	kit.begin()
+	var wall := .008
+	var h := BAG_RIM
+	for s in [-1, 1]:
+		kit.bx(Vector3(0, h * .5, s * (BAG_HALF.y - wall * .5)), Vector3(BAG_HALF.x * 2, h, wall), paper, Art.MATTE)
+		kit.bx(Vector3(s * (BAG_HALF.x - wall * .5), h * .5, 0), Vector3(wall, h, BAG_HALF.y * 2 - wall * 2), kit.darker(paper, .06), Art.MATTE)
+		# The gusset fold down the middle of each short side.
+		kit.bx(Vector3(s * (BAG_HALF.x + .001), h * .45, 0), Vector3(.003, h * .8, .006), kit.darker(paper, .16), Art.MATTE)
+		# The folded-over rim, a band a shade lighter all round.
+		kit.bx(Vector3(0, h - .02, s * (BAG_HALF.y + .002)), Vector3(BAG_HALF.x * 2 + .006, .04, .005), kit.lighter(paper, .12), Art.MATTE)
+		kit.bx(Vector3(s * (BAG_HALF.x + .002), h - .02, 0), Vector3(.005, .04, BAG_HALF.y * 2 + .006), kit.lighter(paper, .12), Art.MATTE)
+	kit.bx(Vector3(0, .004, 0), Vector3(BAG_HALF.x * 2, .008, BAG_HALF.y * 2), kit.darker(paper, .1), Art.MATTE)
+	# A paw print on both faces: a pad and four toes.
+	for s in [-1, 1]:
+		var z: float = s * (BAG_HALF.y + .003)
+		kit.bx(Vector3(0, .13, z), Vector3(.06, .05, .003), Art.LEAF, Art.MATTE)
+		for t in 4:
+			kit.bx(Vector3(-.036 + t * .024, .175 + (.008 if t in [1, 2] else 0.0), z), Vector3(.016, .02, .003), Art.LEAF, Art.MATTE)
+	_bag = kit.finish("Paper bag (carried)")
+	return _bag
 
 ## The two handles, raised from the long sides and meeting over the middle, with a grip sleeve.
 static func handles_mesh() -> ArrayMesh:

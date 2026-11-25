@@ -380,7 +380,7 @@ the player reads in a taught language lives in data and is read only through
 | File | Holds |
 | --- | --- |
 | `data/languages.json` | the known languages (display name, rules module) and which is `native` (translations, help) and `foreign` (taught) |
-| `data/words.json` | every listed word: display `text` per language, optional grammar `forms` (below) |
+| `data/words.json` | every listed word: display `text` per language, its `tier` (1–4, how early a learner meets it; `Lexicon.tier(key, lang)`, [draft 24 Nov 2026](../game/minigames.md#word-tiers)), optional grammar `forms` (below) |
 | `data/phrases.json` | every sentence and button label, grouped by feature; id `group.key` (`shop.success`), one line per language |
 | `scripts/language/rules_<code>.gd` | one per language, extending `language_rules.gd`: grammatical forms, numbers, money amounts, list joining |
 | `data/language_samples.json` | human-checked expected outputs of the rules and of every grammar phrase, per language |

@@ -7,7 +7,7 @@ extends RefCounted
 ##   const STEPS := ["add_bench", ...]          # applied in this order, each exactly once
 ##   func add_bench(town: Node3D, game) -> void # town = Main's Apartment, scale 1.3, town coords
 ## Never rename or remove a baked step (add a new one that undoes it).
-const STEPS := ["solid_roofs", "remove_bird", "tulip_beds", "plaza_fountains", "bronze_statue", "statue_blueprint", "statue_traced", "statue_traced_refit", "statue_reference", "statue_reference_finish", "statue_angular_portrait", "statue_temple_hair", "statue_hair_relief_fit", "statue_single_bronze", "bench_placement", "statue_patina", "statue_patina_warm", "toy_scooter", "toy_scooter_full_size", "statue_town_bronze", "mystery_house_site", "coplanar_gaps", "coplanar_gaps_2", "lion_blueprint_display", "lion_clay_display", "lion_clay_face_rework", "lion_clay_ears_fit", "lion_clay_eyes_mane", "lion_clay_ears_mane_two_layers", "giraffe_clay_display", "giraffe_clay_colours", "giraffe_clay_refine", "elephant_clay_display", "red_panda_clay_display", "elephant_clay_colours", "panda_clay_display", "cow_clay_display", "gorilla_clay_display", "panda_clay_face", "gorilla_clay_refine", "cow_clay_colours_eyes", "deer_clay_display", "cow_clay_muzzle", "gorilla_clay_eyelids", "deer_clay_eyes_ears", "cow_clay_lower_lip", "cow_clay_muzzle_reverted", "kangaroo_clay_display", "lion_clay_second_pass", "lion_crawl_display", "lion_crawl_colours", "lion_mix_display", "lion_temp_marks", "lion_temp_marks_lower", "rhino_clay_display", "zebra_clay_display", "lion_clay_roams", "lion_designs_removed", "black_bear_clay_display", "black_bear_clay_front_row", "black_bear_clay_soles", "flamingo_clay_display", "flamingo_clay_colours", "black_bear_cub_beside_bear", "black_bear_cub_clear_of_zebra", "flamingo_clay_back_feathers", "black_bear_cub_body", "golden_retriever_clay_display", "black_bear_cub_body_reverted", "black_bear_adult_clay_display", "black_bears_front_row_pair", "black_bear_cub_baby", "black_bear_cub_young_face", "golden_retriever_clay_coat", "duck_clay_display", "black_bear_cub_lighter_fur", "pig_clay_display", "clay_animals_roam", "clay_animals_spacing", "animals_bigger", "zoo_zones", "chapel_old_outline", "home_expansion_ground", "home_side_pad_trim", "statue_word", "clay_animals_unpacked", "parked_vehicles", "warehouse_entrance_walk", "spawn_clear_car", "clay_meshes_external", "pig_clay_walks", "clay_animals_walk", "rooster_clay_display", "capybara_clay_display", "tiger_clay_walks", "monkey_clay_display", "horse_clay_walks", "capybara_clay_walks", "chick_clay_display", "tutorial_lot_clear", "fish_under_water", "zoo_plaza_benches_removed", "zoo_welcome_sign_removed"]
+const STEPS := ["solid_roofs", "remove_bird", "tulip_beds", "plaza_fountains", "bronze_statue", "statue_blueprint", "statue_traced", "statue_traced_refit", "statue_reference", "statue_reference_finish", "statue_angular_portrait", "statue_temple_hair", "statue_hair_relief_fit", "statue_single_bronze", "bench_placement", "statue_patina", "statue_patina_warm", "toy_scooter", "toy_scooter_full_size", "statue_town_bronze", "mystery_house_site", "coplanar_gaps", "coplanar_gaps_2", "lion_blueprint_display", "lion_clay_display", "lion_clay_face_rework", "lion_clay_ears_fit", "lion_clay_eyes_mane", "lion_clay_ears_mane_two_layers", "giraffe_clay_display", "giraffe_clay_colours", "giraffe_clay_refine", "elephant_clay_display", "red_panda_clay_display", "elephant_clay_colours", "panda_clay_display", "cow_clay_display", "gorilla_clay_display", "panda_clay_face", "gorilla_clay_refine", "cow_clay_colours_eyes", "deer_clay_display", "cow_clay_muzzle", "gorilla_clay_eyelids", "deer_clay_eyes_ears", "cow_clay_lower_lip", "cow_clay_muzzle_reverted", "kangaroo_clay_display", "lion_clay_second_pass", "lion_crawl_display", "lion_crawl_colours", "lion_mix_display", "lion_temp_marks", "lion_temp_marks_lower", "rhino_clay_display", "zebra_clay_display", "lion_clay_roams", "lion_designs_removed", "black_bear_clay_display", "black_bear_clay_front_row", "black_bear_clay_soles", "flamingo_clay_display", "flamingo_clay_colours", "black_bear_cub_beside_bear", "black_bear_cub_clear_of_zebra", "flamingo_clay_back_feathers", "black_bear_cub_body", "golden_retriever_clay_display", "black_bear_cub_body_reverted", "black_bear_adult_clay_display", "black_bears_front_row_pair", "black_bear_cub_baby", "black_bear_cub_young_face", "golden_retriever_clay_coat", "duck_clay_display", "black_bear_cub_lighter_fur", "pig_clay_display", "clay_animals_roam", "clay_animals_spacing", "animals_bigger", "zoo_zones", "chapel_old_outline", "home_expansion_ground", "home_side_pad_trim", "statue_word", "clay_animals_unpacked", "parked_vehicles", "warehouse_entrance_walk", "spawn_clear_car", "clay_meshes_external", "pig_clay_walks", "clay_animals_walk", "rooster_clay_display", "capybara_clay_display", "tiger_clay_walks", "monkey_clay_display", "horse_clay_walks", "capybara_clay_walks", "chick_clay_display", "tutorial_lot_clear", "fish_under_water", "zoo_plaza_benches_removed", "zoo_welcome_sign_removed", "zoo_food_booth"]
 const Plaza = preload("res://scripts/buildings/monument_plaza.gd")
 
 ## Collision for the decorative gazebo roof cap (7 Nov 2026; scripts/buildings/roof_solids.gd).
@@ -1831,3 +1831,139 @@ func zoo_welcome_sign_removed(town: Node3D, _game) -> void:
 			removed += 1
 	assert(removed == 4, "zoo_welcome_sign_removed: expected 4 sign parts, found %d" % removed)
 	print("zoo_welcome_sign_removed: removed %d sign parts" % removed)
+
+## The zoo food booth (Feeding Time!, user design 24 Nov 2026; docs/guides/TOWN_DESIGN_BRIEF.md,
+## "Zoo food booth and Feeding Time"): a small kiosk on the grass strip just inside the gate, west
+## of the path in front of Wildlife Plains (zoo-local = town coordinates), its counter facing the
+## path (-X). On the counter: a stack of paper bags ("Paper bags", the till's basket rack,
+## data/shops.json store "zoo") and five open crates, one per food word (meat, apple, fish,
+## carrot, bamboo), each a word root with its pick area, showing the supermarket's product
+## models. A striped awning on four posts and an ANIMAL FOOD board (WorldSign). Nico stands
+## behind the counter (a registry NPC, data/npcs.json nico, made at load, never baked).
+## The zoo's footprint, fences, gate and planters are unchanged.
+const BOOTH_FRONT := -75.35
+const BOOTH_BACK := -73.0
+const BOOTH_Z := Vector2(122.9, 125.45)
+const BOOTH_FOODS := ["meat", "apple", "fish", "carrot", "bamboo"]
+
+func zoo_food_booth(town: Node3D, game) -> void:
+	var Art = preload("res://scripts/buildings/supermarket_products.gd")
+	var Basket = preload("res://scripts/world/shopping_basket.gd")
+	var WorldSign = preload("res://scripts/world/world_sign.gd")
+	var zoo: Node3D = town.get_node("ParkZoo")
+	var ground := .12
+	# Nothing of the zoo may stand where the booth goes (the lawn and zone grounds lie under it).
+	var area := Rect2(BOOTH_FRONT - .3, BOOTH_Z.x, BOOTH_BACK - BOOTH_FRONT + .6, BOOTH_Z.y - BOOTH_Z.x)
+	for node in zoo.find_children("*", "Node3D", true, false):
+		var title := String(node.name)
+		var local := zoo.to_local(node.global_position)
+		if node is VisualInstance3D and not title.ends_with("lawn") and not title.begins_with("Zone ground") \
+				and area.has_point(Vector2(local.x, local.z)):
+			print("zoo_food_booth: in the way: %s at %s" % [zoo.get_path_to(node), zoo.to_local(node.global_position)])
+	var root := Node3D.new()
+	root.name = "ZooFoodBooth"
+	zoo.add_child(root)
+	var wood := Color("b5834f")
+	var dark := Color("7a5232")
+	var cream := Color("f3ead8")
+	var green := Color("5f8f3a")
+	var length := BOOTH_Z.y - BOOTH_Z.x
+	var mid_z := (BOOTH_Z.x + BOOTH_Z.y) * .5
+	# Counter: a wooden box with a cream band and a top slab overhanging the front.
+	var top := ground + 1.0
+	var counter_x := BOOTH_FRONT + .35
+	_zz_part(root, "Booth counter", "box", Vector3(counter_x, (ground + top) * .5, mid_z), Vector3(.7, top - ground, length), wood, game)
+	_zz_part(root, "Booth counter band", "box", Vector3(BOOTH_FRONT - .005, ground + .62, mid_z), Vector3(.02, .18, length - .1), green, game)
+	_zz_part(root, "Booth counter top", "box", Vector3(counter_x - .05, top + .03, mid_z), Vector3(.86, .06, length + .1), Color("d9b07a"), game)
+	_zz_solid(root, "Booth counter solid", Vector3(counter_x, ground + .6, mid_z), Vector3(.75, 1.2, length + .05))
+	# Four posts and a back rail; a striped awning sloping down to the front.
+	var roof_low := ground + 2.75
+	var roof_high := ground + 3.15
+	for x in [BOOTH_FRONT + .05, BOOTH_BACK - .05]:
+		for z in [BOOTH_Z.x + .05, BOOTH_Z.y - .05]:
+			var height: float = (roof_low if x < counter_x else roof_high) - ground
+			_zz_part(root, "Booth post", "box", Vector3(x, ground + height * .5, z), Vector3(.1, height, .1), dark, game)
+			_zz_solid(root, "Booth post solid", Vector3(x, ground + height * .5, z), Vector3(.14, height, .14))
+	_zz_part(root, "Booth back rail", "box", Vector3(BOOTH_BACK - .05, ground + 1.0, mid_z), Vector3(.06, .08, length - .1), dark, game)
+	_zz_solid(root, "Booth back solid", Vector3(BOOTH_BACK - .05, ground + 1.0, mid_z), Vector3(.12, 2.0, length - .1))
+	for side in [-1.0, 1.0]:
+		var z: float = BOOTH_Z.x + .05 if side < 0 else BOOTH_Z.y - .05
+		_zz_solid(root, "Booth side solid", Vector3((counter_x + BOOTH_BACK) * .5, ground + 1.0, z), Vector3(BOOTH_BACK - counter_x, 2.0, .12))
+	var depth := BOOTH_BACK - BOOTH_FRONT + .6
+	var slope := atan2(roof_high - roof_low, BOOTH_BACK - BOOTH_FRONT)
+	var stripes := 7
+	for k in stripes:
+		var z := BOOTH_Z.x - .15 + (length + .3) * (k + .5) / stripes
+		var strip := _zz_part(root, "Booth awning", "box", Vector3((BOOTH_FRONT + BOOTH_BACK) * .5 - .15, (roof_low + roof_high) * .5 + .05, z),
+				Vector3(depth / cos(slope), .05, (length + .3) / stripes), green if k % 2 == 0 else cream, game)
+		strip.rotation.z = slope
+	# The scalloped front edge of the awning.
+	for k in stripes:
+		var z := BOOTH_Z.x - .15 + (length + .3) * (k + .5) / stripes
+		_zz_part(root, "Booth awning flap", "box", Vector3(BOOTH_FRONT - .45, roof_low - .06, z), Vector3(.03, .22, (length + .3) / stripes - .02), green if k % 2 == 0 else cream, game)
+	# The board above the awning's front edge, lettered ANIMAL FOOD (translated at load).
+	_zz_part(root, "Booth board", "box", Vector3(BOOTH_FRONT - .3, roof_low + .42, mid_z), Vector3(.06, .5, 2.1), cream, game)
+	var label := WorldSign.make(root, "Booth sign", "ANIMAL FOOD", Vector3(BOOTH_FRONT - .34, roof_low + .42, mid_z), {"read": 9.0, "colour": Color("4f3a22"), "board": cream, "fit_width": 2.0})
+	label.rotation.y = -PI / 2.0
+	# The paper bags (the till's basket rack): a stack of folded bags and one standing open.
+	var art = Art.new()
+	var slots := []
+	for i in 6:
+		slots.append(BOOTH_Z.x + .25 + (length - .5) * i / 5.0)
+	var bags := Node3D.new()
+	bags.name = "Paper bags"
+	bags.position = Vector3(counter_x - .05, top + .06, slots[0])
+	root.add_child(bags)
+	for i in 4:
+		_zz_part(bags, "Folded bag", "box", Vector3(.05, .012 + i * .022, 0), Vector3(.22, .02, .32), Color("c9a477").darkened(.04 * (i % 2)), game)
+	var open := MeshInstance3D.new()
+	open.name = "Open bag"
+	open.mesh = Basket.bag_mesh()
+	open.position = Vector3(-.1, .1, 0)
+	open.rotation.y = PI / 2.0
+	open.scale = Vector3.ONE * 1.1
+	bags.add_child(open)
+	_pick_area(bags, Vector3(0, .25, 0), Vector3(.5, .55, .45))
+	# The food crates, one word each.
+	for i in BOOTH_FOODS.size():
+		var key: String = BOOTH_FOODS[i]
+		var crate := Node3D.new()
+		crate.name = "Booth food " + key
+		crate.position = Vector3(counter_x - .08, top + .06, slots[i + 1])
+		crate.set_meta("word_key", key)
+		crate.set_meta("learning_object", true)
+		root.add_child(crate)
+		_zz_part(crate, "Crate floor", "box", Vector3(0, .01, 0), Vector3(.36, .02, .36), Color("c8955c"), game)
+		for side in [-1.0, 1.0]:
+			_zz_part(crate, "Crate side", "box", Vector3(side * .17, .07, 0), Vector3(.02, .12, .36), Color("c8955c"), game)
+			_zz_part(crate, "Crate side", "box", Vector3(0, .07, side * .17), Vector3(.36, .12, .02), Color("b07a45"), game)
+		var mesh: ArrayMesh = art.model(key)
+		var box := mesh.get_aabb()
+		var grow := .17 / maxf(.001, maxf(box.size.x, maxf(box.size.y, box.size.z)))
+		var spots := [Vector3(-.07, 0, -.07), Vector3(.07, 0, .06), Vector3(-.05, 0, .08), Vector3(.06, .05, -.05)]
+		for j in spots.size():
+			var item := MeshInstance3D.new()
+			item.name = "%s %d" % [key, j + 1]
+			item.mesh = mesh
+			var turn := Basis(Vector3.UP, .9 * j + .3)
+			var at: Vector3 = spots[j] + Vector3(0, .03 + j / 3 * .04, 0)
+			item.transform = Transform3D(turn.scaled(Vector3.ONE * grow), at - turn * (Vector3(box.get_center().x, box.position.y, box.get_center().z) * grow))
+			crate.add_child(item)
+		_pick_area(crate, Vector3(0, .12, 0), Vector3(.38, .26, .38))
+	print("zoo_food_booth: counter %.2f..%.2f x, %.2f..%.2f z; %d crates and the paper bags" % [BOOTH_FRONT, counter_x + .35, BOOTH_Z.x, BOOTH_Z.y, BOOTH_FOODS.size()])
+
+## A pick area (layer 2, as the basket's) so a click or a tap names the object.
+func _pick_area(parent: Node3D, at: Vector3, size: Vector3) -> void:
+	var area := Area3D.new()
+	area.name = "Pick area"
+	area.collision_layer = 2
+	area.collision_mask = 0
+	area.monitoring = false
+	area.position = at
+	var shape := CollisionShape3D.new()
+	var box := BoxShape3D.new()
+	box.size = size
+	shape.shape = box
+	area.add_child(shape)
+	parent.add_child(area)
+

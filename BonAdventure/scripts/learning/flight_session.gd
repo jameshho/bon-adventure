@@ -173,14 +173,19 @@ func open_game() -> void:
 func next_question() -> void:
 	if not quiz:
 		return
-	question = {}
-	for attempt in 10:
-		var kind := Questions.pick_kind(_rng, _last_kind)
-		_new_schedule()
-		question = questions.design(kind, _rng)
-		if not question.is_empty():
-			_last_kind = kind
-			break
+	# A board whose tested words are due or may be new is preferred (word_memory.gd,
+	# 24 Nov 2026). Each try builds a new board, so the last one made is the one shown.
+	var make := func() -> Dictionary:
+		for attempt in 10:
+			var kind := Questions.pick_kind(_rng, _last_kind)
+			_new_schedule()
+			var made: Dictionary = questions.design(kind, _rng)
+			if not made.is_empty():
+				_last_kind = kind
+				return made
+		return {}
+	var picked: Variant = preload("res://scripts/learning/word_memory.gd").shared().pick_round(make, func(made: Dictionary) -> Array: return _tested(made).keys())
+	question = picked if picked is Dictionary else {}
 	if question.is_empty():
 		push_error("flight_session: no board could be built for a question")
 		return

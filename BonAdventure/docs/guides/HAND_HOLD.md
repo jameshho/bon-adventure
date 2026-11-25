@@ -53,6 +53,7 @@ hand.held                                 # the item or null; hand.held_changed(
 | --- | --- |
 | book | Upright at her side, cover facing out, spine forward, gripped near its middle; firm (sway 0); arm 0.1 forward, 0.16 out, half the walking swing |
 | basket | Hanging from its handles, long side along her path; swings (sway 1); arm 0.3 out so it clears her body. `shopping_basket.gd give()` passes the kind "basket" (14 Nov 2026: the meta is set only in `_ready()`, so a given basket had used the default profile) |
+| egg | A farm egg from the hen house (24 Nov 2026, `farm_egg.gd`): cupped in the mitten, arm 0.38 forward as if carried carefully, a quarter of the walking swing, firm (sway 0) |
 | default | Centred in the palm, arm a little forward |
 
 Standing still the arm is at its holding pose and the item does not move; walking and running

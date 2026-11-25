@@ -109,13 +109,20 @@ func _new_family() -> void:
 func next_question() -> void:
 	if tree == null or _asked_in_family >= QUESTIONS_PER_FAMILY:
 		_new_family()
-	question = {}
-	for attempt in 10:
-		var kind := Questions.pick_kind(_rng, _last_kind)
-		question = Questions.generate(tree, kind, _rng)
-		if not question.is_empty():
-			_last_kind = kind
-			break
+	# A relation question whose word is due or may be new is preferred (word_memory.gd,
+	# 24 Nov 2026); the other kinds test no word and are taken as they come.
+	var make := func() -> Dictionary:
+		for attempt in 10:
+			var kind := Questions.pick_kind(_rng, _last_kind)
+			var made: Dictionary = Questions.generate(tree, kind, _rng)
+			if not made.is_empty():
+				_last_kind = kind
+				return made
+		return {}
+	var words_of := func(made: Dictionary) -> Array:
+		return [str(made.word)] if str(made.get("kind", "")) == "relation" else []
+	var picked: Variant = preload("res://scripts/learning/word_memory.gd").shared().pick_round(make, words_of)
+	question = picked if picked is Dictionary else {}
 	if question.is_empty():
 		push_error("family_session: no question for " + tree.template_id)
 		return

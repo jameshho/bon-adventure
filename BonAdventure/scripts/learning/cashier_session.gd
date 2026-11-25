@@ -28,6 +28,14 @@ extends Node
 ## shopping registers quietly on the activity board so it blocks other games while it runs).
 ## The welcome tutorial's shop (tutorial_shop.gd) borrows the cashier with its own flow; this
 ## session ignores the shared panels while it has no basket or payment of its own.
+##
+## The zoo food booth (24 Nov 2026, Feeding Time!) is a till too, with three store options
+## (data/shops.json): "carrier" "bag" hands out the paper bag (shopping_basket.gd); "keep_paid"
+## lets the player keep the paid bag, its food in the bag's meta "food" (word key -> how many),
+## which animal_feeding.gd feeds to the animals; taking a bag again while carrying it adds to it,
+## and leaving the store's zone takes it away; and the cashier's "shared_host" means Nico, who also
+## hosts that game, talks through the game's host: zoo_feeding_session.gd creates this session with
+## its host and forwards talking and the "!" here (minigame_wiring.gd leaves such a till out).
 const Currency := preload("res://scripts/learning/currency.gd")
 const Host := preload("res://scripts/learning/minigame_host.gd")
 const Order := preload("res://scripts/learning/shop_order.gd")
@@ -47,6 +55,8 @@ const DOOR_LINE_LINGER := 2.0
 const ZONE_CHECK_INTERVAL := 0.25
 ## Free shopping: at most this many items in the basket (it shows 12, shopping_basket.gd).
 const BASKET_MAX := 12
+## The paid food a kept bag carries (word key -> how many; "keep_paid" stores).
+const FOOD_META := "food"
 
 var store_id := ""
 var dialogue
@@ -65,6 +75,9 @@ var rules: Dictionary = {}
 var host
 ## The shop door's guard (minigame_zone.gd make_door_guard()).
 var door
+## The host is the game's (cashier "shared_host"): its hooks are the game session's, which
+## forwards them here.
+var borrowed_host := false
 ## Free shopping: a basket from the rack is carried; what is in it (word key -> how many).
 var free_active := false
 var free_cart: Dictionary = {}
@@ -85,7 +98,7 @@ var _zone_timer := 0.0
 var _in_zone := false
 var _rng := RandomNumberGenerator.new()
 
-func setup(for_store: String, shop_dialogue, shop_panel, money_panel, interaction_controller, town_zones, explorer: Node3D, world: Node3D, sold_in: Dictionary = {}) -> void:
+func setup(for_store: String, shop_dialogue, shop_panel, money_panel, interaction_controller, town_zones, explorer: Node3D, world: Node3D, sold_in: Dictionary = {}, shared_host = null) -> void:
 	store_id = for_store
 	name = "CashierSession_" + for_store
 	dialogue = shop_dialogue
@@ -106,12 +119,16 @@ func setup(for_store: String, shop_dialogue, shop_panel, money_panel, interactio
 	if cashier == null:
 		push_warning("cashier_session: no cashier node '%s' for %s" % [till.get("npc", ""), for_store])
 		return
-	host = Host.new()
-	add_child(host)
-	host.setup(self, {"activity": "checkout_" + for_store, "board": false, "group": "cashier",
-			"leave_confirm": "cashier.stop_confirm", "leave_yes": "cashier.stop_yes", "leave_no": "cashier.keep_shopping",
-			"walk_away": WALK_AWAY_DISTANCE, "message_seconds": MESSAGE_SECONDS},
-			dialogue.lexicon, panel, interaction, player, cashier)
+	if shared_host != null:
+		host = shared_host
+		borrowed_host = true
+	else:
+		host = Host.new()
+		add_child(host)
+		host.setup(self, {"activity": "checkout_" + for_store, "board": false, "group": "cashier",
+				"leave_confirm": "cashier.stop_confirm", "leave_yes": "cashier.stop_yes", "leave_no": "cashier.keep_shopping",
+				"walk_away": WALK_AWAY_DISTANCE, "message_seconds": MESSAGE_SECONDS},
+				dialogue.lexicon, panel, interaction, player, cashier)
 	# Free shopping counts as a running activity (registered quietly: no game, no tile, no stars),
 	# so other games wait for it and the HUD's corner buttons make room for the cart.
 	Board.shared().register("checkout_" + for_store, self, true)
@@ -166,6 +183,11 @@ func end_activity() -> void:
 	if free_active and _free_cart_open():
 		panel.update_cart(_free_data())
 
+## A store's own wording for a till line (data/shops.json "lines": the zoo booth's bag instead of
+## the basket), else the line itself.
+func _wording(id: String) -> String:
+	return str((rules.get("lines", {}) as Dictionary).get(id, id))
+
 # --- Who is shopping ------------------------------------------------------------------------
 
 ## The store's Grocery Run session (null when left out).
@@ -193,12 +215,12 @@ func _talk() -> void:
 	var shop := _shop()
 	if _order_shopping() and Basket.carried(player) != null:
 		if shop.cart().is_empty():
-			_say_with_back("cashier.basket_empty", host.choice("keep", "cashier.keep_shopping", "check"))
+			_say_with_back(_wording("cashier.basket_empty"), host.choice("keep", "cashier.keep_shopping", "check"))
 			return
 		_check_order(shop)
 	elif free_active:
 		if free_cart.is_empty():
-			_say_with_back("cashier.basket_empty", host.choice("keep", "cashier.keep_shopping", "check"))
+			_say_with_back(_wording("cashier.basket_empty"), host.choice("keep", "cashier.keep_shopping", "check"))
 			return
 		_ask_pay("free", Order.total_of(rules, free_cart))
 	elif shop != null and shop.awaiting_return:
@@ -208,7 +230,7 @@ func _talk() -> void:
 
 ## A line with `first` and "Give back the basket" as its choices.
 func _say_with_back(id: String, first: Dictionary, line: Variant = null) -> void:
-	var choices := [first, host.choice("give_back", "cashier.give_back", "exit")]
+	var choices := [first, host.choice("give_back", _wording("cashier.give_back"), "exit")]
 	if line == null:
 		host.say(id, choices, 0.0)
 	else:
@@ -305,6 +327,10 @@ func _on_submitted(cents: int) -> void:
 		shop.paid()
 		host.show_line("cashier.correct", _join([dialogue.line("cashier.correct"), shop.return_line()]))
 	else:
+		if bool(rules.get("keep_paid", false)):
+			_keep_paid()
+			host.show_line("cashier.correct", _join([dialogue.line("cashier.correct"), dialogue.line(str(rules.get("paid_line", "zoo.bag_paid")))]))
+			return
 		_end_free()
 		host.show_line("cashier.correct", _join([dialogue.line("cashier.correct"), dialogue.line("cashier.basket_back")]))
 
@@ -314,7 +340,7 @@ func _explain() -> void:
 		parts.append(dialogue.line("cashier.short", {"diff": dialogue.money_values(due_cents - _last_given)}))
 	else:
 		parts.append(dialogue.line("cashier.over", {"diff": dialogue.money_values(_last_given - due_cents)}))
-	host.show_line("cashier.explain", _join(parts), [host.choice("retry", "cashier.try_again", "retry"), host.choice("give_back", "cashier.give_back", "exit")], 0.0)
+	host.show_line("cashier.explain", _join(parts), [host.choice("retry", "cashier.try_again", "retry"), host.choice("give_back", _wording("cashier.give_back"), "exit")], 0.0)
 
 ## Close or ✕ on the money panel: no payment now; talking to the cashier again asks again.
 func _on_money_close() -> void:
@@ -353,16 +379,20 @@ func _give_back() -> void:
 ## off). A basket with items in it must be emptied first (the check's line flashes).
 func _rack_check() -> Variant:
 	var basket := Basket.carried(player)
+	# Another game running (the zoo game, whose bag Nico hands over): no shopping meanwhile.
+	var other_game: bool = Board.shared().blocker("checkout_" + store_id) != ""
 	if basket == null:
-		return true
+		return not other_game
 	if not _unpaid_basket():
-		return false   # a paid order on its way to the clerk, or the tutorial's basket
+		# A paid bag of this store's food: take more food into it ("keep_paid"); else a paid
+		# order on its way to the clerk, or the tutorial's basket.
+		return _kept_bag() != null and not other_game
 	if _basket_items() == 0:
 		return true
-	return GameSettings.shared().inline(dialogue.line("cashier.empty_first"), panel.show_native)
+	return GameSettings.shared().inline(dialogue.line(_wording("cashier.empty_first")), panel.show_native)
 
 func _use_rack() -> void:
-	if Basket.carried(player) == null:
+	if Basket.carried(player) == null or (not free_active and _kept_bag() != null):
 		_start_free()
 		return
 	_stop_paying()
@@ -375,7 +405,7 @@ func _use_rack() -> void:
 func _start_free() -> void:
 	free_active = true
 	free_cart = {}
-	Basket.give(player)
+	Basket.give(player, str(rules.get("carrier", Basket.BASKET)))
 	interaction.clear_card()
 	interaction.pick_hook = _on_free_pick
 	panel.show_cart(_free_data())
@@ -407,7 +437,7 @@ func _on_free_pick(obj: Node3D) -> void:
 	var basket := Basket.carried(player)
 	if basket != null:
 		basket.remember(key, obj)
-		basket.show_items(free_cart)
+		_show_carried()
 
 func _on_remove(key: String) -> void:
 	if not free_active or not _free_cart_open() or not free_cart.has(key):
@@ -416,14 +446,40 @@ func _on_remove(key: String) -> void:
 	if int(free_cart[key]) <= 0:
 		free_cart.erase(key)
 	panel.update_cart(_free_data())
+	_show_carried()
+
+## What the carried basket or bag shows: its paid food ("keep_paid") and the unpaid cart.
+func _show_carried() -> void:
+	var basket := Basket.carried(player)
+	if basket == null:
+		return
+	var counts: Dictionary = (basket.get_meta(FOOD_META, {}) as Dictionary).duplicate()
+	for key in free_cart:
+		counts[key] = int(counts.get(key, 0)) + int(free_cart[key])
+	basket.show_items(counts)
+
+## The carried bag with paid food of this store ("keep_paid"), or null.
+func _kept_bag() -> Node3D:
+	var basket := Basket.carried(player)
+	if basket == null or not bool(rules.get("keep_paid", false)) or not basket.has_meta(FOOD_META):
+		return null
+	return basket
+
+## Paid ("keep_paid"): the cart becomes the bag's food and the player keeps the bag.
+func _keep_paid() -> void:
 	var basket := Basket.carried(player)
 	if basket != null:
-		basket.show_items(free_cart)
+		var food: Dictionary = (basket.get_meta(FOOD_META, {}) as Dictionary).duplicate()
+		for key in free_cart:
+			food[key] = int(food.get(key, 0)) + int(free_cart[key])
+		basket.set_meta(FOOD_META, food)
+	free_cart = {}
+	_end_free()
 
 ## The cart's ✕ while shopping freely: "stop shopping and put everything back?".
 func _on_cart_quit() -> void:
 	if free_active and _free_cart_open():
-		host.ask_leave()
+		host.ask_leave("cashier.stop_confirm", "cashier.stop_yes", "cashier.keep_shopping")
 
 func _on_leave_answered(leave: bool) -> void:
 	if leave and free_active:
@@ -439,6 +495,11 @@ func _end_free() -> void:
 		interaction.pick_hook = Callable()
 		panel.hide_cart()
 	host.cancel_leave()
+	# A kept bag keeps its paid food: only what was not paid leaves it.
+	var kept := _kept_bag()
+	if kept != null and not (kept.get_meta(FOOD_META, {}) as Dictionary).is_empty():
+		_show_carried()
+		return
 	Basket.take_back(player)
 
 ## Grocery Run starting (shop_session.start_game()): a free basket gives way to the order's
@@ -508,4 +569,9 @@ func _process(delta: float) -> void:
 				_stop_paying()
 				host.close_dialogue()
 			_end_free()
-	host.tick(delta)
+			# A kept bag stays in the store's zone (the zoo's food stays in the zoo); a game's bag
+			# (meta "game_bag") is its game's.
+			if _kept_bag() != null and not _kept_bag().has_meta("game_bag"):
+				Basket.take_back(player)
+	if not borrowed_host:
+		host.tick(delta)

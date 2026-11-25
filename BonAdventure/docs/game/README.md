@@ -40,6 +40,9 @@ web app on phones and tablets.
 older than that change; each page dates its screenshot. "Tracked" means the game records right
 and wrong answers per word in the journal. **Levels** ([how games get harder](minigames.md#how-games-get-harder),
 18 Nov): built for Grocery Run (and Pay Up! until 21 Nov); designed, not built, for the other learning games.
+**Which words come up** ([word memory](minigames.md#which-words-come-up), 24 Nov): every tracked
+game picks its words from one shared memory, so new words come in gradually and words about to
+be forgotten come back.
 
 ### Minigames
 
@@ -60,6 +63,7 @@ and wrong answers per word in the journal. **Levels** ([how games get harder](mi
 | [Wire It Up!](minigames.md#wire-it-up) | Electrical box at the home | No (pastime) | 9 Nov | 9 Nov |
 | [Library Helper](minigames.md#library-helper) | Library | Yes | 13 Nov | 21 Nov (book close-up on pick-up, bigger right-shelf burst, thanks with a zoom on Rosa, results card, new cart after walking away) |
 | [Next, Please!](minigames.md#next-please) | Bank teller window 2 | No | 18 Nov | 23 Nov (monitor and customer in one view, no toggle; paying an impostor brings the bank manager: a warning, then the player is let go) |
+| [Feeding Time!](minigames.md#feeding-time) | Zoo food booth, inside the gate | Yes | 24 Nov | 24 Nov (food booth, paper bag, free feeding, 4 levels; [screenshots](../evidence/zoo-feeding-20261124/)) |
 
 ### Start screens and app
 
@@ -67,7 +71,7 @@ and wrong answers per word in the journal. **Levels** ([how games get harder](mi
 | --- | --- | --- |
 | [Title page and profiles](playing.md#starting-up) | The Bon Adventure logo and Play, then up to three profiles, the character grid and the language page; loading bar; dialogue box | 18 Nov (new cream-and-meadow art style from the user's mockups: candy buttons, cloud titles, Fredoka font, cream dialogue box; [style guide](../guides/UI_STYLE.md)); 23 Nov: character headshots cut from the mockup, sharp at any window size) |
 | [Welcome tutorial](playing.md#welcome-tutorial) | Wake up, find the friends, buy fruit, the statue, the journal, a picnic | 21 Nov (camera pans between speakers with the box after the pan, $1.25 price and tag, cashier close-up, shorter market and journal lines, new last line, bigger picnic blanket where the friends stay to chat; checked from the market on, the house act's 20 Nov changes not re-checked) |
-| In-game screens | Settings, journal, F1 guide, HUD buttons, word card, clock, cart, game picker and minigame cards | 23 Nov (nouns show a picture of their object in the journal and on the results card; [journal](../evidence/word-pictures-20261123/journal-furniture.png)); 18 Nov (same art style in soft blue: soft blue cards and buttons with white rims, dark teal Fredoka text; [views](../evidence/ui-style-20261118/), [style guide](../guides/UI_STYLE.md)) |
+| In-game screens | Settings, journal, F1 guide, HUD buttons, word card, clock, cart, game picker and minigame cards | 24 Nov (Settings has Main volume, Music, Sound effects and Spoken words sliders; a new pastel journal icon on the HUD button and the journal's title; with a keyboard, small key circles (J, Esc, L, F9, M) on the HUD buttons; the word card's speaker button is built but hidden until spoken words are switched on; [views](../evidence/sound-ui-20261124/)); 23 Nov (nouns show a picture of their object in the journal and on the results card; [journal](../evidence/word-pictures-20261123/journal-furniture.png)); 18 Nov (same art style in soft blue: soft blue cards and buttons with white rims, dark teal Fredoka text; [views](../evidence/ui-style-20261118/), [style guide](../guides/UI_STYLE.md)) |
 | [Passport](playing.md#passport-missions-stamps-and-achievements) | Missions (3 at a time, 10-minute refresh, Go there, stars on the map), town stamps page, Exploration log of every activity, XP | 21 Nov (new; 18 stamp coins placed in the town, one per building; the bank safe opens, the chapel is bigger with a bell tower to climb and a bell to ring) |
 | [Town map and guide arrow](playing.md#finding-places) | M or the map button: a picture of the town with every building's name and a "you are here" dot; tap a place, then Go there for an arrow that points the way; Go there in the ▶ picker too | 18 Nov (new; the old live map stays off) |
 | [Vehicles](playing.md#getting-around) | Cars, trucks, buses, the scooter, the helicopter and the plane; E to get in | 23 Nov (the view from the air reaches further the higher you fly and tilts down to the town, [views](../evidence/flight-view-20261123/); one graphics setting for every device, the Settings graphics row removed; one set of flying controls for the plane and helicopter on every device, on-screen ▲ / ▼; the plane is smaller and slower with a new steady flight model, [views](../evidence/small-plane-20261123/); no hands-on play-test yet); 21 Nov (headlights for every road vehicle, siren and flashing lights for the police car, ambulance and fire truck; [night view](../evidence/vehicle-lights-20261121/night-red.png); earlier 21 Nov: cars keep turning while A/D is held, camera swings behind, [views](../evidence/car-driving-20261121/); no hands-on play-test yet) |
@@ -95,7 +99,7 @@ and wrong answers per word in the journal. **Levels** ([how games get harder](mi
 | [Warehouse](town.md#warehouse) | Hall with loading bays, reception | 23 Nov (the supply cabinet opens outside the game) |
 | [Mystery House](town.md#mystery-house) | Casa de las Estrellas, mystery room | 9 Nov |
 | [Chapel](town.md#chapel) | Rebuilt sanctuary; bell tower climbed by a ladder inside, from a doorway in the nave | 23 Nov (ladder moved inside, two pew rows removed) |
-| [Farm barn](town.md#farm-barn) | Hayloft, tools and supplies, Tomás the farmer (bear in overalls and a straw hat; farm chatter) | 23 Nov (farmer added, [view](../evidence/npc-registry-20261123/tomas-front.png)) |
+| [Farm barn](town.md#farm-barn) | Hayloft, tools and supplies, Tomás the farmer (bear in overalls and a straw hat; farm chatter); hen house with six hens and eggs to collect | 24 Nov (hen house: find eggs, carry them to the crate in the barn, [view](../evidence/hen-house-20261124/aerial.png)); 23 Nov (farmer added) |
 | [Playground](town.md#playground) | Towers, slide, rideable swings | 1 Nov |
 | [Park, zoo and coast](town.md#park-zoo-and-coast) | Public garden, four zoo zones, island; the clay animals walk; the zoo's tiger and the farm's horse are the new clay models; clay capybara walks in Wildlife Plains (word: capybara); clay rooster and clay chick on the farm lawn, clay monkey inside the zoo gate; no red motorcycles (only BonBon's teal scooter) | 23 Nov (the zoo gate opens away from you; green welcome board outside removed) |
 

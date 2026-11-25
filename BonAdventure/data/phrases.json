@@ -52,7 +52,11 @@
       "open": {"es": "Ajustes (Esc)", "en": "Settings (Esc)", "zh": "設定（Esc）", "note": "Tooltip of the gear button on the HUD."},
       "switch_profile": {"es": "Cambiar de jugador", "en": "Switch player", "zh": "切換玩家", "note": "Settings button (PWA phase 3): back to the profile select."},
       "show_fps": {"es": "Mostrar FPS", "en": "Show FPS", "zh": "顯示FPS", "note": "Settings checkbox: the perf readout (perf_readout.gd; also ?perf=1 on the web or F3). Not saved."},
-      "follow_camera": {"es": "La cámara me sigue", "en": "Camera follows me", "zh": "鏡頭跟著我", "note": "Settings checkbox (14 Nov 2026): walking sideways turns the view (player_controller.gd follow_view()). On by default."}
+      "follow_camera": {"es": "La cámara me sigue", "en": "Camera follows me", "zh": "鏡頭跟著我", "note": "Settings checkbox (14 Nov 2026): walking sideways turns the view (player_controller.gd follow_view()). On by default."},
+      "volume_master": {"es": "Volumen general", "en": "Main volume", "zh": "總音量", "note": "Settings sound sliders (24 Nov 2026; game_settings.gd VOLUME_BUSES): every sound."},
+      "volume_music": {"es": "Música", "en": "Music", "zh": "音樂", "note": "Background music (the Music bus)."},
+      "volume_effects": {"es": "Efectos de sonido", "en": "Sound effects", "zh": "音效", "note": "World, ambience and button sounds (SFX, Ambience and UI buses)."},
+      "volume_voice": {"es": "Palabras habladas", "en": "Spoken words", "zh": "詞語朗讀", "note": "The spoken words (the Voice bus, docs/guides/VOICE.md)."}
     },
     "shop": {
       "greeting_needs_help": {"es": "¡Hola! ¿Tienes un momento para ayudarme?", "en": "Hi! Do you have a moment to help me?", "zh": "你好！你有時間幫我一下嗎？"},
@@ -379,7 +383,8 @@
       "title_foreign": {"es": "Palabra en {language}", "en": "{language} word", "zh": "{language}詞語", "note": "Foreign only: {language} is the foreign language's name."},
       "foot": {"es": "Toca en cualquier lugar para cerrar", "en": "Tap anywhere to close", "zh": "點一下任何地方即可關閉", "note": "Bottom line of the word card. Since 14 Nov 2026 any click or tap closes it (it read 'Move, click again or look away to close'; moving and looking away still close it)."},
       "save": {"es": "Guardar palabra", "en": "Save word", "zh": "收藏詞語", "note": "Tooltip of the card's star."},
-      "unsave": {"es": "Quitar palabra guardada", "en": "Remove saved word", "zh": "取消收藏"}
+      "unsave": {"es": "Quitar palabra guardada", "en": "Remove saved word", "zh": "取消收藏"},
+      "say": {"es": "Escuchar la palabra", "en": "Hear the word", "zh": "聽讀音", "note": "Tooltip of the word card's speaker button (24 Nov 2026)."}
     },
     "bookmarks": {
       "open": {"es": "Diario de vocabulario y palabras guardadas (J)", "en": "Vocabulary journal and saved words (J)", "zh": "詞彙日誌和已收藏的詞語（J）", "note": "Tooltip of the book button (top right), which opens the journal; its Saved tab lists the saved words (9 Nov 2026)."},
@@ -436,7 +441,8 @@
       "teller_bank": {"es": "¡El siguiente!", "en": "Next, Please!", "zh": "下一位！", "note": "Proposed 18 Nov 2026 (bank teller game); awaiting the user's choice of name."},
       "mahjong_mei": {"es": "Club de mahjong", "en": "Mahjong Club", "zh": "雀友會"},
       "radar_patrol": {"es": "Guardianes del cielo", "en": "Radar Patrol", "zh": "天空保衛戰", "note": "Translated like the other games since 10 Nov 2026 (user; it was English in every language on 9 Nov)."},
-      "electrical_box": {"es": "Cable a cable", "en": "Wire It Up!", "zh": "駁電線", "note": "Electrical box repair, a pastime with no NPC (docs/guides/ELECTRICAL_BOX.md)."}
+      "electrical_box": {"es": "Cable a cable", "en": "Wire It Up!", "zh": "駁電線", "note": "Electrical box repair, a pastime with no NPC (docs/guides/ELECTRICAL_BOX.md)."},
+      "feeding_nico": {"es": "¡Hora de comer!", "en": "Feeding Time!", "zh": "餵食時間！", "note": "Name agreed 24 Nov 2026."}
     },
     "games_host": {
       "shop_supermarket": {"es": "Supermercado", "en": "Supermarket", "zh": "超級市場", "note": "Interface text (native language): who and where, under each game's name in the minigame picker (game_launcher.gd, 10 Nov 2026)."},
@@ -452,7 +458,8 @@
       "teller_bank": {"es": "Banquero · Banco", "en": "Banker · Bank", "zh": "銀行家 · 銀行"},
       "mahjong_mei": {"es": "Mei · Casa", "en": "Mei · Home", "zh": "美美 · 家"},
       "radar_patrol": {"es": "Torre de control", "en": "Control tower", "zh": "控制塔"},
-      "electrical_box": {"es": "Caja eléctrica · Casa", "en": "Electrical box · Home", "zh": "電箱 · 家"}
+      "electrical_box": {"es": "Caja eléctrica · Casa", "en": "Electrical box · Home", "zh": "電箱 · 家"},
+      "feeding_nico": {"es": "Nico · Zoológico", "en": "Nico · Zoo", "zh": "尼高 · 動物園"}
     },
     "games_learn": {
       "shop_supermarket": {"es": "Alimentos, productos y cantidades", "en": "Food, products and quantities", "zh": "食物、貨品和數量", "note": "Interface text (native language): what a game practises, in the minigame picker's detail bar (game_launcher.gd, 10 Nov 2026)."},
@@ -468,7 +475,8 @@
       "teller_bank": {"es": "Cuenta billetes de cien a quinientos", "en": "Count out bills from 100 to 500", "zh": "數出一百至五百元的鈔票"},
       "mahjong_mei": {"es": "Juega una mano de mahjong de Hong Kong", "en": "Play a hand of Hong Kong mahjong", "zh": "打一局香港麻雀"},
       "radar_patrol": {"es": "Arcade: toca los ovnis y salva los aviones", "en": "Arcade: tap the UFOs, save the planes", "zh": "街機：擊落飛碟，保護飛機"},
-      "electrical_box": {"es": "Conecta los cables por color", "en": "Connect the wires by color", "zh": "按顏色駁好電線"}
+      "electrical_box": {"es": "Conecta los cables por color", "en": "Connect the wires by color", "zh": "按顏色駁好電線"},
+      "feeding_nico": {"es": "Da de comer al animal que pide Nico", "en": "Feed the zoo animal Nico names", "zh": "餵尼高說的動物"}
     },
     "help": {
       "title": {"es": "Controles", "en": "Controls", "zh": "操作"},
@@ -584,7 +592,11 @@
       "garage_opening": {"es": "La puerta del garaje se abre", "en": "Garage door opening", "zh": "車房門正在打開"},
       "garage_closing": {"es": "La puerta del garaje se cierra", "en": "Garage door closing", "zh": "車房門正在關上"},
       "garage_stopped": {"es": "Puerta del garaje detenida: hay algo en la entrada", "en": "Garage door stopped: doorway occupied", "zh": "車房門已停止：門口有障礙"},
-      "doorway_occupied": {"es": "La entrada está ocupada: apártate antes de cerrar.", "en": "Doorway occupied — move clear before closing.", "zh": "門口有障礙 — 請先離開再關門。"}
+      "doorway_occupied": {"es": "La entrada está ocupada: apártate antes de cerrar.", "en": "Doorway occupied — move clear before closing.", "zh": "門口有障礙 — 請先離開再關門。"},
+      "egg_dropped": {"es": "¡Oh, no! Se te cayó el huevo.", "en": "Oh no! You dropped the egg.", "zh": "哎呀！雞蛋掉了。", "note": "An egg from the hen house was carried out of the farm (hen_house.gd, 24 Nov 2026)."},
+      "egg_in_crate": {"es": "¡Huevo en la caja! Ya hay {count}.", "en": "Egg in the crate! {count} so far.", "zh": "雞蛋放進箱子了！已經有 {count} 個。", "note": "An egg put in the barn's egg crate; {count} eggs are in it now (hen_house.gd)."},
+      "golden_egg": {"es": "¡Un huevo de oro!", "en": "A golden egg!", "zh": "一顆金蛋！", "note": "The rare golden egg put in the barn's egg crate (hen_house.gd)."},
+      "egg_crate_hint": {"es": "Busca huevos en el gallinero y tráelos aquí.", "en": "Find eggs at the hen house and bring them here.", "zh": "到雞舍找雞蛋，拿來這裡。", "note": "E on the barn's egg crate with no egg in the hand (hen_house.gd)."}
     },
     "vehicle": {
       "getting_out": {"es": "Bajando…", "en": "Getting out…", "zh": "正在下車…"},
@@ -1240,6 +1252,27 @@
       "goodbye": {"es": "¡Hasta luego! Vuelve cuando quieras.", "en": "See you later! Come back any time.", "zh": "再見！歡迎隨時再來。"},
       "not_now": {"es": "Ahora estoy ordenando libros. ¡Vuelve más tarde!", "en": "I'm sorting books right now. Come back later!", "zh": "我現在正在整理書本，請稍後再來！", "note": "Rosa is not offering the mission (data/activities.json chance)."}
     },
+    "zoo": {
+      "nico": {"es": "Nico", "en": "Nico", "zh": "尼高", "note": "The zookeeper at the zoo food booth (sheep plush, man; data/npcs.json nico). Speaker name."},
+      "greeting": {"es": "¡Hola! Soy Nico, el cuidador del zoológico. Los animales tienen hambre. ¿Me ayudas a darles de comer?", "en": "Hi! I'm Nico, the zookeeper. The animals are hungry. Can you help me feed them?", "zh": "你好！我是尼高，動物園的飼養員。動物們餓了，你可以幫我餵牠們嗎？", "note": "Feeding Time! offer (24 Nov 2026)."},
+      "play": {"es": "¡Sí, te ayudo!", "en": "Yes, I'll help!", "zh": "好，我來幫忙！"},
+      "not_now": {"es": "Ahora los animales están comiendo. Si quieres, compra comida: toma una bolsa del mostrador.", "en": "The animals are eating right now. If you like, buy some food: take a bag from the counter.", "zh": "動物們正在吃東西。想的話可以買飼料：在櫃檯拿一個袋子吧。", "note": "Nico is not offering the game (data/activities.json chance)."},
+      "goodbye": {"es": "¡Hasta luego! Si quieres, compra comida para los animales: toma una bolsa del mostrador.", "en": "See you! If you like, buy some food for the animals: take a bag from the counter.", "zh": "再見！想的話可以買飼料餵動物：在櫃檯拿一個袋子吧。"},
+      "request": {"es": "¿Puedes darle {food} a {animal}?", "en": "Can you feed this {food} to the {animal}?", "zh": "你可以把{food}餵給{animal}嗎？", "note": "One Feeding Time! request: {food} a food word (fish: zoo.fish_food), {animal} a zoo animal word; Spanish a el -> al (rules_es.gd polish)."},
+      "wrong_animal": {"es": "¡Ups! Es {wrong}. Busca a {animal}.", "en": "Oops! That's the {wrong}. Find the {animal}.", "zh": "哎呀，那是{wrong}。去找{animal}吧。", "note": "Another animal was fed than the one Nico named (a miss)."},
+      "yummy": {"es": "¡Ñam! ¡Muy bien!", "en": "Yum! Well done!", "zh": "好吃！做得好！"},
+      "complete": {"es": "¡Gracias! Todos los animales comieron. ¡Están muy contentos!", "en": "Thank you! All the animals have eaten. They're very happy!", "zh": "謝謝！所有動物都吃飽了，牠們很開心！"},
+      "keep_feeding": {"es": "Sigo dando de comer", "en": "Keep feeding", "zh": "繼續餵食"},
+      "stop": {"es": "Ya terminé", "en": "Stop feeding", "zh": "不餵了"},
+      "leave_confirm": {"es": "¿Quieres dejar de dar de comer a los animales?", "en": "Do you want to stop feeding the animals?", "zh": "你要停止餵動物嗎？"},
+      "leave_yes": {"es": "Sí, ya terminé", "en": "Yes, stop", "zh": "是，停下來"},
+      "leave_no": {"es": "No, sigo", "en": "No, keep going", "zh": "不，繼續"},
+      "fish_food": {"es": "el pescado", "en": "fish", "zh": "魚", "note": "Fish as food in a sentence (the word's Spanish text names both senses)."},
+      "bag_empty": {"es": "Tu bolsa está vacía.", "en": "Your bag is empty.", "zh": "你的袋子是空的。", "note": "The zoo booth's till (data/shops.json lines) instead of cashier.basket_empty."},
+      "give_back_bag": {"es": "Devolver la bolsa", "en": "Give back the bag", "zh": "交還袋子"},
+      "empty_first": {"es": "Primero saca la comida de la bolsa", "en": "Take the food out of the bag first", "zh": "先把袋子裡的食物拿出來"},
+      "bag_paid": {"es": "Aquí tienes tu bolsa. ¡Dales de comer a los animales!", "en": "Here's your bag. Go and feed the animals!", "zh": "這是你的袋子。去餵動物吧！", "note": "Said after paying at the zoo booth: the player keeps the bag (data/shops.json paid_line)."}
+    },
     "teller": {
       "greeting": {"es": "¡Hola! Hay muchas personas en la fila. ¿Me ayudas en la ventanilla dos?", "en": "Hi! There are lots of people in line. Can you help me at window two?", "zh": "你好！排隊的人很多。你可以幫我顧二號窗口嗎？", "note": "The bear banker at the bank's reception offers the bank teller game (teller_bank, scripts/learning/teller_session.gd, 18 Nov 2026). He speaks tú to the player; customers speak usted to the teller."},
       "play": {"es": "¡Sí, te ayudo!", "en": "Yes, I'll help!", "zh": "好，我來幫忙！"},
@@ -1458,7 +1491,9 @@
       "line_mystery_luna": {"es": "¡Abriste las puertas misteriosas de Madame Luna!", "en": "You opened Madame Luna's mystery doors!", "zh": "你打開了露娜夫人的神秘之門！"},
       "title_teller_bank": {"es": "¡Clientes atendidos!", "en": "Customers Served!", "zh": "客人都招待好了！", "note": "The user's title in all three languages (22 Nov 2026)."},
       "line_teller_bank": {"es": "¡Atendiste a todos los clientes del banco!", "en": "You served every customer at the bank!", "zh": "你招呼好了銀行的每位客人！"},
-      "xp": {"es": "+{n} XP", "en": "+{n} XP", "zh": "+{n} XP", "note": "A town mission's XP (missions.gd), on the results screen."}
+      "xp": {"es": "+{n} XP", "en": "+{n} XP", "zh": "+{n} XP", "note": "A town mission's XP (missions.gd), on the results screen."},
+      "title_feeding_nico": {"es": "¡Animales alimentados!", "en": "Animals Fed!", "zh": "動物都吃飽了！"},
+      "line_feeding_nico": {"es": "¡Ayudaste a Nico a dar de comer a los animales!", "en": "You helped Nico feed the hungry animals!", "zh": "你幫尼高餵飽了肚子餓的動物！"}
     },
     "progress": {
       "level": {"es": "Nivel {n}", "en": "Level {n}", "zh": "第 {n} 級", "note": "Interface text (native language), progression (game_progress.gd, 18 Nov 2026): a game's level on the greeting badge and the star card."},
@@ -1500,7 +1535,8 @@
       "restaurant_twinkle": {"es": "¡Toma los pedidos de Twinkle en Alta Cocina!", "en": "Take Twinkle's orders at Alta Cocina!", "zh": "喺 Alta Cocina 幫 Twinkle 落單！"},
       "evidence_mimi": {"es": "¡Ayuda a la agente Mimi a encontrar las pistas!", "en": "Help Officer Mimi feel for the clues!", "zh": "幫米米警員摸出證物！"},
       "mystery_luna": {"es": "¡Abre las puertas misteriosas de Madame Luna!", "en": "Open Madame Luna's mystery doors!", "zh": "打開露娜夫人嘅神秘之門！"},
-      "teller_bank": {"es": "¡Ayuda en el banco a atender a los clientes!", "en": "Help serve the customers at the bank!", "zh": "喺銀行幫手招呼客人！"}
+      "teller_bank": {"es": "¡Ayuda en el banco a atender a los clientes!", "en": "Help serve the customers at the bank!", "zh": "喺銀行幫手招呼客人！"},
+      "feeding_nico": {"es": "¡Ayuda a Nico a dar de comer a los animales!", "en": "Help Nico feed the hungry animals!", "zh": "幫尼高餵肚餓嘅動物！"}
     },
     "missions_desc": {
       "lineup_rocco": {"es": "Revisa las pistas y elige a la persona correcta en la comisaría.", "en": "Check the clues and pick the right person at the police station.", "zh": "睇清楚線索，喺警署揀出啱嘅人。", "note": "The line under each mission title (missions.gd, 21 Nov 2026)."},
@@ -1513,7 +1549,8 @@
       "restaurant_twinkle": {"es": "Sirve los platos correctos a los clientes.", "en": "Serve the right dishes to the guests.", "zh": "將啱嘅菜送俾客人。"},
       "evidence_mimi": {"es": "Encuentra las pruebas escondidas con las manos en la comisaría.", "en": "Find the hidden evidence by touch at the police station.", "zh": "喺警署用手摸出收埋咗嘅證物。"},
       "mystery_luna": {"es": "Elige la puerta correcta para llegar al tesoro.", "en": "Pick the right door to reach the treasure.", "zh": "揀啱道門去搵寶藏。"},
-      "teller_bank": {"es": "Cuenta bien el dinero en el banco.", "en": "Count the money right at the bank.", "zh": "喺銀行數啱啲錢。"}
+      "teller_bank": {"es": "Cuenta bien el dinero en el banco.", "en": "Count the money right at the bank.", "zh": "喺銀行數啱啲錢。"},
+      "feeding_nico": {"es": "Dale a cada animal la comida que pide Nico en el zoológico.", "en": "Feed each animal Nico names at the zoo.", "zh": "喺動物園餵尼高講嘅動物。"}
     },
     "achievements": {
       "unlocked": {"es": "Logro: {name}", "en": "Achievement: {name}", "zh": "成就：{name}", "note": "The achievement log (scripts/learning/achievements.gd, data/achievements.json, 21 Nov 2026): the toast and names of the achievements in the native language."},

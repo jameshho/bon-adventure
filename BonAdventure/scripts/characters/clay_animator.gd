@@ -128,10 +128,19 @@ const BLINK_GROUP := "clay_animals"
 @export var ear_axis := Vector3.FORWARD
 @export var ear_fan_seconds := 0.0
 
+@export_group("Eating")
+## Feeding (Feeding Time!, 24 Nov 2026): how far the head (and neck) bows to the food at full
+## `eat`, degrees, and the chewing nod on top of it.
+@export var eat_deg := 30.0
+@export var chew_deg := 6.0
+
 var skeleton: Skeleton3D
 ## Smoothed speed (model units / s); set `speed_override` >= 0 to drive it by hand (captures).
 var speed := 0.0
 var speed_override := -1.0
+## Eating (0 ... 1), set by the mover (park_animals.gd offer_food()): the head bows to the food
+## and chews; the idle looks stop meanwhile.
+var eat := 0.0
 ## The walk cycle's phase (0 ... 1, wraps) and how much of the walk is showing (0 ... 1).
 var phase := 0.0
 var walk := 0.0
@@ -219,6 +228,9 @@ func advance(dt: float) -> void:
 
 
 func _choose_look() -> void:
+	if eat > 0.01:
+		_yaw_goal = 0.0
+		return
 	if _wanderer != null and walk > 0.5 and str(_wanderer.get("state")) == "walking":
 		# Look a little toward where the walk is going.
 		var to: Vector3 = _wanderer.get("target") - _wanderer.position
@@ -306,6 +318,10 @@ func _pose() -> void:
 	# Head: the look (yaw, with a little tilt into the turn), a nod in step while walking, and a
 	# small counter-roll so the face stays level while the body rolls.
 	var nod := deg_to_rad(nod_deg * sin(2.0 * cycle + 0.6) * w)
+	# Eating: the bow (shared with the neck below) and a chew; the model faces -Z, so a bow down is
+	# a negative turn about the side axis.
+	var bow := -deg_to_rad(eat_deg) * eat
+	var chew := -deg_to_rad(chew_deg) * eat * maxf(sin(_clock * 11.0), 0.0)
 	var head_yaw := _yaw
 	var head_roll := -roll * 0.6
 	if not neck.is_empty() and neck_sway_deg != 0.0:
@@ -318,16 +334,22 @@ func _pose() -> void:
 		for k in neck.size():
 			var side := 1.0 if k % 2 == 0 else -1.0
 			_pose_bone(neck[k], Vector3.ZERO, Quaternion(Vector3.UP, _yaw * 0.5 / neck.size())
-					* Quaternion(Vector3.FORWARD, deg_to_rad(neck_sway_deg) * swing * side - (roll * 0.6 if k == 0 else 0.0)))
+					* Quaternion(Vector3.FORWARD, deg_to_rad(neck_sway_deg) * swing * side - (roll * 0.6 if k == 0 else 0.0))
+					* Quaternion(Vector3.RIGHT, bow * 0.5 / neck.size()))
+		nod += bow * 0.5
 	elif not neck.is_empty():
 		head_yaw = _yaw * (1.0 - neck_share)
 		for k in neck.size():
 			var pump := deg_to_rad(neck_pump_deg * sin(2.0 * cycle - 0.4 * k) * w + 0.4 * breathe * idle)
-			_pose_bone(neck[k], Vector3.ZERO, Quaternion(Vector3.UP, _yaw * neck_share / neck.size()) * Quaternion(Vector3.RIGHT, pump))
+			_pose_bone(neck[k], Vector3.ZERO, Quaternion(Vector3.UP, _yaw * neck_share / neck.size()) * Quaternion(Vector3.RIGHT, pump + bow * neck_share / neck.size()))
+		nod += bow * (1.0 - neck_share)
 	elif _bones.has("neck"):
 		head_yaw = _yaw * (1.0 - neck_share)
-		_pose_bone("neck", Vector3.ZERO, Quaternion(Vector3.UP, _yaw * neck_share) * Quaternion(Vector3.RIGHT, nod * neck_share))
-		nod *= 1.0 - neck_share
+		_pose_bone("neck", Vector3.ZERO, Quaternion(Vector3.UP, _yaw * neck_share) * Quaternion(Vector3.RIGHT, (nod + bow) * neck_share))
+		nod = (nod + bow) * (1.0 - neck_share)
+	else:
+		nod += bow
+	nod += chew
 	var bob_at := Vector3(0, 0, -head_bob * sin(2.0 * cycle) * w) if head_bob > 0.0 else Vector3.ZERO
 	_pose_bone("head", bob_at, Quaternion(Vector3.UP, head_yaw) * Quaternion(Vector3.FORWARD, head_roll + (_yaw if neck_sway_deg != 0.0 and not neck.is_empty() else head_yaw) * 0.15) * Quaternion(Vector3.RIGHT, nod))
 	for k in trunk.size():

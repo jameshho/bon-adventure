@@ -250,7 +250,14 @@ func generate_evidence(rng: RandomNumberGenerator, type: String = "find") -> Dic
 	var kinds: Array = (_evidence().get("objects", {}) as Dictionary).keys()
 	var clues_data: Array = (_evidence().get("clues", []) as Array).duplicate()
 	_shuffle(clues_data, rng)
-	clues_data.sort_custom(func(a, b): return int(_usage.get(a.id, 0)) < int(_usage.get(b.id, 0)))
+	# The clue whose word the word memory wants first (word_memory.gd, 24 Nov 2026: due, then
+	# allowed new, then the least well remembered), the least used among equals.
+	var ranked: Array = preload("res://scripts/learning/word_memory.gd").shared().order(words_of(clues_data), rng)
+	var rank := func(clue) -> int:
+		var words: Array = words_of([clue])
+		var i := ranked.find(str(words[0])) if not words.is_empty() else -1
+		return i if i >= 0 else ranked.size()
+	clues_data.sort_custom(func(a, b): return rank.call(a) * 1000 + int(_usage.get(a.id, 0)) < rank.call(b) * 1000 + int(_usage.get(b.id, 0)))
 	for clue in clues_data:
 		if _last_pair == [str(clue.id)] and clues_data.size() > 1:
 			continue

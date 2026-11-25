@@ -12,7 +12,7 @@ extends Node3D
 ##   player.hand.held                               # the item, or null
 ##
 ## How an item sits in the hand is a PROFILE (rotation, grip point, arm pose, sway, inspection
-## view), chosen by `kind` or the item's `hold_kind` meta/property: "book", "basket", else
+## view), chosen by `kind` or the item's `hold_kind` meta/property: "book", "basket", "bag", "egg", else
 ## "default". Add a profile for a new kind of object. The item keeps its world size; its solid
 ## collision shapes are switched off while held (pick areas stay, so a click still names it)
 ## and restored on release. Only a held item that swings (sway > 0) costs any per-frame work.
@@ -47,6 +47,14 @@ const PROFILES := {
 	# straight above (14 Nov 2026, user: see what is inside), filling the view.
 	"basket": {"rotation": Vector3(0, 90, 0), "grip": Vector3(.5, .96, .5), "offset": Vector3(0, .03, 0),
 		"arm": Vector3(.04, .45, .3), "sway": 1.0, "inspect": {"yaw": 180.0, "tilt": 80.0, "fill": 1.0}},
+	# A farm egg (hen_house.gd, 24 Nov 2026): cupped in the mitten, the arm a little forward as if
+	# carried carefully, no swing.
+	"egg": {"rotation": Vector3.ZERO, "grip": Vector3(.5, .3, .5), "offset": Vector3(-.02, .02, -.02),
+		"arm": Vector3(.38, .25, .1), "sway": 0.0, "inspect": {"yaw": 180.0, "tilt": 10.0, "fill": .55}},
+	# The zoo food booth's paper bag (shopping_basket.gd, 24 Nov 2026): held by its rim at her
+	# side, a little swing; inspected from above to see the food inside.
+	"bag": {"rotation": Vector3(0, 90, 0), "grip": Vector3(.5, .97, .5), "offset": Vector3(0, .02, 0),
+		"arm": Vector3(.06, .45, .28), "sway": .6, "inspect": {"yaw": 180.0, "tilt": 70.0, "fill": .9}},
 	"default": {"rotation": Vector3.ZERO, "grip": Vector3(.5, .5, .5), "offset": Vector3(-.05, 0, 0),
 		"arm": Vector3(.15, .55, .12), "sway": 0.0, "inspect": {"yaw": 180.0, "tilt": 12.0, "fill": .7}},
 }

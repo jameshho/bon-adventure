@@ -34,6 +34,8 @@ const PROFILE_FILES: Array[String] = [
 	"missions.json",
 	# Mei's unfinished mahjong game and its scores (mahjong_session.gd, 23 Nov 2026).
 	"mahjong.json",
+	# Which words come up in the games (word_memory.gd, FSRS by steps, 24 Nov 2026).
+	"word_memory.json",
 ]
 
 ## The active profile's folder ("user://profiles/p1"), or "" for the old flat layout.

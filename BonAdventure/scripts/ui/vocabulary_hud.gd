@@ -145,6 +145,17 @@ var cluster_cover: Callable
 ## the game's status card keeps its own lessons and leave buttons, the gear stays).
 var cluster_off := false
 var bookmark_star: Button
+## The word card's speaker (24 Nov 2026, user): says the word in the language being learned
+## (sound.gd say_word(), docs/guides/VOICE.md). Top left of the card, opposite the star; shown
+## only when the word has a clip and spoken words are on (data/sounds.json voice.enabled).
+var speaker_button: Button
+const Sound := preload("res://scripts/core/sound.gd")
+## Key hint circles (24 Nov 2026, user): a small INK circle with the button's key ("J" on the
+## journal) at a HUD button's bottom-left corner, only while playing with a keyboard (a laptop):
+## on at start without a touch screen, off after a touch, on again after a key press. The key
+## comes from the action's binding in project.godot, so the circle always matches the input map.
+var key_hints: Array = []
+var keyboard_hints := false
 ## The gear and book buttons' boxes (size and margins follow the window in _layout_hud).
 var corner_styles: Array = []
 var bookmarks: Dictionary = {}
@@ -182,6 +193,7 @@ func _ready() -> void:
     GameSettings.shared().changed.connect(func() -> void:
         set_display_mode(GameSettings.shared().display)
         refresh_language())
+    keyboard_hints = not DisplayServer.is_touchscreen_available()
     ui_root = Control.new()
     ui_root.name = "Viewport aligned HUD"
     ui_root.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -312,6 +324,7 @@ func _ready() -> void:
     style_corner_button(settings_button)
     settings_button.pressed.connect(func() -> void: settings_requested.emit())
     ui_root.add_child(settings_button)
+    add_key_hint(settings_button, "back")
     peek_button = Button.new()
     peek_button.name = "Peek native"
     peek_button.focus_mode = Control.FOCUS_NONE
@@ -326,6 +339,7 @@ func _ready() -> void:
     peek_button.button_down.connect(func() -> void: GameSettings.shared().set_peek(true))
     peek_button.button_up.connect(func() -> void: GameSettings.shared().set_peek(false))
     ui_root.add_child(peek_button)
+    add_key_hint(peek_button, "peek")
 
     room_label = Label.new()
     room_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
@@ -415,7 +429,6 @@ func _ready() -> void:
     journal_icon = TextureRect.new()
     journal_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
     journal_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-    journal_icon.modulate = BonStyle.INK
     journal_icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
     journal_header.add_child(journal_icon)
     journal_title = Label.new()
@@ -570,6 +583,9 @@ func _layout_hud() -> void:
     peek_button.add_theme_font_size_override("font_size", roundi(corner * 0.36))
     fps_label.position = Vector2(peek_button.position.x - 120.0, 16)
     bookmark_star.position = popup_panel.position + Vector2(popup_panel.size.x - bookmark_star.size.x - 12.0 * f, 12.0 * f)
+    speaker_button.custom_minimum_size = bookmark_star.size
+    speaker_button.size = bookmark_star.size
+    speaker_button.position = popup_panel.position + Vector2(12.0 * f, 12.0 * f)
     # The place and words found sit under the minimap (10 Nov 2026; were bottom right).
     minimap_side = preload("res://scripts/ui/town_minimap.gd").side_for(viewport_size) if Features.MINIMAP else 0.0
     room_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
@@ -592,8 +608,8 @@ func _layout_hud() -> void:
     card.content_margin_right = 22.0 * f
     card.content_margin_top = 16.0 * f
     card.content_margin_bottom = 16.0 * f
-    journal_icon.custom_minimum_size = Vector2(34, 34) * f
-    journal_icon.texture = UiIcons.texture("book", roundi(34 * f))
+    journal_icon.custom_minimum_size = Vector2(46, 46) * f
+    journal_icon.texture = BonStyle.icon_texture("journal", roundi(46 * f))
     journal_title.add_theme_font_size_override("font_size", roundi(28 * f))
     journal_progress_label.add_theme_font_size_override("font_size", roundi(15 * f))
     journal_progress.custom_minimum_size = Vector2(220 * f, 10 * f)
@@ -682,6 +698,7 @@ func show_name_card(character_name: String, species: String) -> void:
 func hide_card() -> void:
     popup_panel.visible = false
     bookmark_star.visible = false
+    speaker_button.visible = false
     overlay.visible = false
     reticle_group.visible = true
 
@@ -715,6 +732,8 @@ func update_card() -> void:
     bookmark_star.visible = current_character == "" and current_word_key != ""
     bookmark_star.tooltip_text = UiText.t("card.unsave") if bookmarks.has(current_word_key) else UiText.t("card.save")
     bookmark_star.queue_redraw()
+    speaker_button.visible = can_say_current_word()
+    speaker_button.tooltip_text = UiText.t("card.say")
     # Long words can expand the card's minimum size.
     call_deferred("_layout_hud")
 
@@ -771,6 +790,20 @@ func build_bookmarks() -> void:
     bookmark_star.draw.connect(_draw_bookmark_star)
     bookmark_star.pressed.connect(toggle_current_bookmark)
     ui_root.add_child(bookmark_star)
+    speaker_button = Button.new()
+    speaker_button.name = "Say word"
+    speaker_button.flat = true
+    speaker_button.focus_mode = Control.FOCUS_NONE
+    speaker_button.mouse_filter = Control.MOUSE_FILTER_STOP
+    speaker_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+    speaker_button.icon = BonStyle.icon_texture("speaker", 256)
+    speaker_button.expand_icon = true
+    speaker_button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+    for state in ["icon_normal_color", "icon_hover_color", "icon_focus_color", "icon_pressed_color", "icon_hover_pressed_color"]:
+        speaker_button.add_theme_color_override(state, Color.WHITE)
+    speaker_button.visible = false
+    speaker_button.pressed.connect(say_current_word)
+    ui_root.add_child(speaker_button)
 
     bookmark_button = Button.new()
     bookmark_button.name = "Journal book"
@@ -778,10 +811,18 @@ func build_bookmarks() -> void:
     bookmark_button.mouse_filter = Control.MOUSE_FILTER_STOP
     bookmark_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
     style_corner_button(bookmark_button)
-    bookmark_button.draw.connect(_draw_bookmark_book)
+    # The journal icon in the mockups' look (24 Nov 2026, user; was a hand-drawn coral book with a
+    # J): its own colours, so not tinted; the J shows in the key hint circle on keyboards.
+    bookmark_button.icon = BonStyle.icon_texture("journal", 256)
+    bookmark_button.expand_icon = true
+    bookmark_button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+    for state in ["icon_normal_color", "icon_hover_color", "icon_focus_color", "icon_pressed_color", "icon_hover_pressed_color"]:
+        bookmark_button.add_theme_color_override(state, Color.WHITE)
     bookmark_button.pressed.connect(func() -> void: journal_toggle_requested.emit())
     ui_root.add_child(bookmark_button)
+    add_key_hint(bookmark_button, "journal")
     map_button = _cluster_button("Map button", "map", toggle_map)
+    add_key_hint(map_button, "map")
     help_button = _cluster_button("Help button", "question", toggle_help)
 
 ## A bottom-right cluster button (style_corner_button, an icon, sized in _layout_hud).
@@ -913,6 +954,16 @@ func card_word_key(english: String, spanish: String) -> String:
             return key
     return ""
 
+## Whether the open card's word can be said now (a dictionary word with a clip in the language
+## being learned, spoken words switched on).
+func can_say_current_word() -> bool:
+    var sound = Sound.shared()
+    return current_character == "" and current_word_key != "" and sound != null and sound.has_voice(current_word_key, Lexicon.shared().foreign)
+
+func say_current_word() -> void:
+    if can_say_current_word():
+        Sound.shared().say_word(current_word_key, Lexicon.shared().foreign)
+
 func is_word_bookmarked(key: String) -> bool:
     return bookmarks.has(key)
 
@@ -949,59 +1000,6 @@ func _draw_bookmark_star() -> void:
         bookmark_star.draw_colored_polygon(points, BOOKMARK_GOLD)
     points.append(points[0])
     bookmark_star.draw_polyline(points, BOOKMARK_GOLD, 2.0 * k, true)
-
-## The journal's book (user, 17 Nov 2026: cuter, with the J easy to see; was an open book with a
-## small J on its left page): a chubby closed book with a coral cover, cream page edges, a big
-## bold J on a cream label, a ribbon peeking out at the bottom and a little sparkle. Its shapes
-## are laid out for a 40 px button and scaled by k, so it fills most of the button at any size.
-func _draw_bookmark_book() -> void:
-    var c: Vector2 = bookmark_button.size * 0.5
-    var k: float = bookmark_button.size.x / 40.0
-    var page := Color("fff3d4")
-    var page_line := Color("e2cf9f")
-    var cover := Color("f47c6a")
-    var spine := Color("d65a4b")
-    var ink := Color("2f5d6b")
-    # Ribbon first, so the book covers its top: two tails under the bottom edge.
-    var ribbon := Color("ffcf4d")
-    bookmark_button.draw_colored_polygon(PackedVector2Array([c + Vector2(4.5, 10) * k, c + Vector2(8.5, 10) * k, c + Vector2(8.5, 17.5) * k, c + Vector2(6.5, 15.6) * k, c + Vector2(4.5, 17.5) * k]), ribbon)
-    # Soft shadow, then the page block peeking out on the right and bottom.
-    _book_box(Rect2(c + Vector2(-12.5, -13) * k, Vector2(27, 28) * k), 5.0 * k, Color(0, 0, 0, 0.22))
-    _book_box(Rect2(c + Vector2(-12, -14.5) * k, Vector2(26, 27) * k), 5.0 * k, page)
-    # Page lines along the visible bottom and right edges.
-    bookmark_button.draw_line(c + Vector2(-11, 11) * k, c + Vector2(12.6, 11) * k, page_line, 0.9 * k, true)
-    bookmark_button.draw_line(c + Vector2(12.6, -12.5) * k, c + Vector2(12.6, 11) * k, page_line, 0.9 * k, true)
-    # The cover with a darker spine band on the left.
-    _book_box(Rect2(c + Vector2(-14, -16) * k, Vector2(25, 25.5) * k), 5.0 * k, cover)
-    _book_box(Rect2(c + Vector2(-14, -16) * k, Vector2(6, 25.5) * k), 5.0 * k, spine)
-    bookmark_button.draw_rect(Rect2(c + Vector2(-10, -16) * k, Vector2(2.5, 25.5) * k), spine)
-    # The label with a big bold J (the key that opens the journal; user, 13 Nov 2026).
-    var label := Rect2(c + Vector2(-5.5, -12) * k, Vector2(14, 17) * k)
-    _book_box(label, 3.5 * k, page)
-    var font: Font = bookmark_button.get_theme_font("font")
-    var font_size := roundi(16.0 * k)
-    var glyph: Vector2 = font.get_string_size("J", HORIZONTAL_ALIGNMENT_LEFT, -1, font_size)
-    var baseline := label.get_center() + Vector2(-glyph.x * 0.5, (font.get_ascent(font_size) - font.get_descent(font_size)) * 0.5)
-    # The outline in the same colour makes the J bold whatever the theme font is.
-    bookmark_button.draw_string_outline(font, baseline, "J", HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, maxi(1, roundi(2.2 * k)), ink)
-    bookmark_button.draw_string(font, baseline, "J", HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, ink)
-    # A little sparkle on the cover's top right corner.
-    var spark := c + Vector2(11.5, -15) * k
-    var star := PackedVector2Array()
-    for i in 8:
-        var radius := (4.2 if i % 2 == 0 else 1.3) * k
-        var angle := -PI * 0.5 + i * PI / 4.0
-        star.append(spark + Vector2(cos(angle), sin(angle)) * radius)
-    bookmark_button.draw_colored_polygon(star, Color("fff6c9"))
-
-## A filled rounded rectangle on the journal button (StyleBoxFlat draws the corners smoothly).
-func _book_box(rect: Rect2, radius: float, color: Color) -> void:
-    var box := StyleBoxFlat.new()
-    box.bg_color = color
-    box.set_corner_radius_all(roundi(radius))
-    box.anti_aliasing = true
-    box.draw(bookmark_button.get_canvas_item(), rect)
-
 
 ## A big light card (the journal and the F1 guide): `fill` inside a thick white rim with a soft
 ## shadow (UI art style, 18 Nov 2026). A StyleBoxFlat so _layout_hud can set its margins.
@@ -1308,7 +1306,78 @@ func _size_help_close() -> void:
 func is_help_open() -> bool:
     return help_overlay.visible
 
+## Adds a key hint circle to a HUD button for `action` (see key_hints). Other HUD owners call it
+## too (game_launcher.gd: the ▶ picker, "games").
+func add_key_hint(button: Control, action: String) -> void:
+    var key := key_label(action)
+    if key == "":
+        return
+    var hint := Control.new()
+    hint.name = "Key hint"
+    hint.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    hint.set_meta("key", key)
+    hint.draw.connect(_draw_key_hint.bind(hint))
+    hint.visible = keyboard_hints
+    button.add_child(hint)
+    button.resized.connect(_place_key_hint.bind(hint))
+    _place_key_hint(hint)
+    key_hints.append(hint)
+
+## The key bound to `action` as players read it on the keyboard: "J", "Esc", "F9"; "" if none.
+static func key_label(action: String) -> String:
+    if not InputMap.has_action(action):
+        return ""
+    for event in InputMap.action_get_events(action):
+        if event is InputEventKey:
+            var code: int = event.keycode if event.keycode != KEY_NONE else event.physical_keycode
+            var text := OS.get_keycode_string(code)
+            return "Esc" if text == "Escape" else text
+    return ""
+
+func _place_key_hint(hint: Control) -> void:
+    var button := hint.get_parent() as Control
+    var side := roundf(clampf(button.size.x * 0.4, 22.0, 48.0))
+    hint.size = Vector2(side, side)
+    hint.position = Vector2(-side * 0.22, button.size.y - side * 0.78)
+    hint.queue_redraw()
+
+func _draw_key_hint(hint: Control) -> void:
+    var side: float = hint.size.x
+    var key: String = hint.get_meta("key")
+    var center := Vector2(side, side) * 0.5
+    # A short key is a circle; a longer one ("Esc", "F9") a pill just wide enough.
+    var font: Font = BonStyle.font(700)
+    var font_size := roundi(side * (0.56 if key.length() == 1 else 0.42))
+    var text_size: Vector2 = font.get_string_size(key, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size)
+    var width := maxf(side, text_size.x + side * 0.5)
+    var box := StyleBoxFlat.new()
+    box.bg_color = BonStyle.INK
+    box.border_color = BonStyle.RIM
+    box.set_border_width_all(maxi(2, roundi(side * 0.09)))
+    box.set_corner_radius_all(roundi(side * 0.5))
+    box.anti_aliasing = true
+    box.shadow_color = Color(0.1, 0.27, 0.32, 0.25)
+    box.shadow_size = roundi(side * 0.08)
+    box.draw(hint.get_canvas_item(), Rect2(Vector2(center.x - width * 0.5, 0), Vector2(width, side)))
+    var baseline := Vector2(center.x - text_size.x * 0.5, center.y + (font.get_ascent(font_size) - font.get_descent(font_size)) * 0.5)
+    hint.draw_string(font, baseline, key, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, Color.WHITE)
+
+## Shows or hides every key hint circle (keyboard play on, touch off).
+func set_keyboard_hints(on: bool) -> void:
+    keyboard_hints = on
+    for hint in key_hints:
+        if is_instance_valid(hint):
+            hint.visible = on
+
+func _input(event: InputEvent) -> void:
+    if event is InputEventKey and event.pressed and not keyboard_hints:
+        set_keyboard_hints(true)
+    elif (event is InputEventScreenTouch or event is InputEventScreenDrag) and keyboard_hints:
+        set_keyboard_hints(false)
+
 func set_touch_mode(on: bool) -> void:
+    if on and keyboard_hints:
+        set_keyboard_hints(false)
     if touch_mode != on:
         touch_mode = on
         set_movement_mode(move_sprinting, move_hyper)

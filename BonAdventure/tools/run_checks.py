@@ -176,6 +176,9 @@ CHECKS = [
     # Grocery Run checkout and free shopping at the supermarket till (21 Nov 2026; Pay Up! retired into it).
     dict(id="grocery_checkout", script="res://docs/evidence/grocery-checkout-20261121/verify.gd", suites=["full"],
          summary=r"GROCERY CHECKOUT: \d+ checks, (?P<n>\d+) failures"),
+    # Feeding Time! and the zoo food booth: booth, paper bag, free feeding, the game (24 Nov 2026).
+    dict(id="zoo_feeding", script="res://docs/evidence/zoo-feeding-20261124/verify.gd", suites=["full"],
+         summary=r"ZOO FEEDING: \d+ checks, (?P<n>\d+) failures"),
     # Minigame progression: levels, stars, unlocks, Grocery Run (Pay Up! until 21 Nov 2026), picker (18 Nov 2026).
     dict(id="minigame_progression", script="res://docs/evidence/minigame-progression-20261118/verify.gd", suites=["full"],
          summary=r"MINIGAME PROGRESSION: \d+ checks, (?P<n>\d+) failures"),
@@ -260,6 +263,9 @@ CHECKS = [
     # line when its game is not on offer, the barn farmer. Headless writes no PNGs; isolated HOME.
     dict(id="npc_registry", script="res://docs/evidence/npc-registry-20261123/verify.gd", suites=["full"],
          summary=r"NPC REGISTRY: \d+ checks, (?P<n>\d+) failures"),
+    # Hen house and eggs at the farm: coop, hens, laying odds, carry to the crate, drop (24 Nov 2026).
+    dict(id="hen_house", script="res://docs/evidence/hen-house-20261124/verify.gd", suites=["full"],
+         summary=r"HEN HOUSE: \d+ checks, (?P<n>\d+) failures"),
     # Day-night cycle, lamp glow, indoor light and the HUD clock (9 Nov 2026).
     dict(id="day_night", script="res://docs/evidence/day-night-20261109/verify.gd", suites=["full"],
          summary=r"DAY NIGHT: \d+ checks, (?P<n>\d+) failures"),

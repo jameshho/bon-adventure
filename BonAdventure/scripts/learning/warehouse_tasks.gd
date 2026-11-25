@@ -85,7 +85,7 @@ func _placing(verb: String, pos: String, entry: String) -> Dictionary:
 		var movable := _items(func(id): return id != ref and _fits(id, goal) and not reached(id, goal) and _ref_ready(id, goal))
 		if movable.is_empty():
 			continue
-		var id: String = _pick(movable)
+		var id: String = _pick_item(movable)
 		return {"entry": entry, "kind": "place", "item": id, "goal": goal, "phrase": PLACING[verb], "values": {"item": thing(id), "place": place(goal, true)}}
 	return {}
 
@@ -123,6 +123,21 @@ func _count(keep: Callable) -> int:
 
 func _pick(options: Array) -> Variant:
 	return options[rng.randi() % options.size()]
+
+## The item whose words (the thing and its colour) the word memory wants most (word_memory.gd,
+## 24 Nov 2026): a due word, then an allowed new one; a random one among equals.
+func _pick_item(ids: Array) -> String:
+	var memory = preload("res://scripts/learning/word_memory.gd").shared()
+	var best: Array = []
+	var top := -2
+	for id in ids:
+		var score: int = memory.want(words({"item": id}))
+		if score > top:
+			top = score
+			best = [id]
+		elif score == top:
+			best.append(id)
+	return str(_pick(best))
 
 # --- The task plan (8 Nov 2026) ----------------------------------------------------------------
 

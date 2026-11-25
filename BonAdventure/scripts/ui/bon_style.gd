@@ -395,6 +395,29 @@ static func style_option(pick: OptionButton, f: float, size := 26.0) -> void:
 	popup.add_theme_icon_override("radio_checked", _sized("tick_ink", roundi(size * f)))
 	popup.add_theme_icon_override("radio_unchecked", ImageTexture.new())
 
+## A volume slider (Settings, 24 Nov 2026): a thick cream track that fills green up to a big
+## white knob with a green rim, finger-sized (touch UI) and dragged by the knob or the track.
+static func style_slider(slider: HSlider, f: float) -> void:
+	var thick := roundf(14.0 * f)
+	var track := StyleBoxFlat.new()
+	track.bg_color = CREAM_DEEP
+	track.border_color = RIM
+	track.set_border_width_all(maxi(2, roundi(3 * f)))
+	track.set_corner_radius_all(roundi(thick))
+	track.content_margin_top = thick * 0.5
+	track.content_margin_bottom = thick * 0.5
+	track.anti_aliasing = true
+	var fill := track.duplicate() as StyleBoxFlat
+	fill.bg_color = GREEN_BOTTOM
+	slider.add_theme_stylebox_override("slider", track)
+	slider.add_theme_stylebox_override("grabber_area", fill)
+	slider.add_theme_stylebox_override("grabber_area_highlight", fill)
+	var knob := _sized("knob", roundi(44 * f))
+	slider.add_theme_icon_override("grabber", knob)
+	slider.add_theme_icon_override("grabber_highlight", knob)
+	slider.add_theme_icon_override("grabber_disabled", knob)
+	slider.custom_minimum_size = Vector2(0, maxf(52.0, 56.0 * f))
+
 ## An icon drawn at exactly `px` pixels (theme icons are not scaled by the control).
 static func _sized(name: String, px: int) -> Texture2D:
 	return icon_texture(name, maxi(8, px))
@@ -720,6 +743,15 @@ const SVG := {
 	"coins": '<g stroke="#16536a" stroke-width="4"><ellipse cx="32" cy="48" rx="20" ry="8" fill="#cfe9ec"/><path d="M12 48v-8M52 48v-8" /><ellipse cx="32" cy="40" rx="20" ry="8" fill="#dff2f4"/><path d="M12 40v-8M52 40v-8"/><ellipse cx="32" cy="32" rx="20" ry="8" fill="#cfe9ec"/><path d="M14 32v-9M50 32v-9"/><ellipse cx="32" cy="22" rx="18" ry="7" fill="#eef9fa"/></g>',
 	"basket": '<path d="M22 26l8-14M42 26l-8-14" stroke="#2f87cf" stroke-width="5" stroke-linecap="round"/><path d="M8 26h48l-5 26c-.5 2.4-2.5 4-5 4H18c-2.5 0-4.5-1.6-5-4z" fill="#8fd0f2" stroke="#2f87cf" stroke-width="4.5" stroke-linejoin="round"/><path d="M24 34v14M32 34v14M40 34v14" stroke="#2f87cf" stroke-width="4" stroke-linecap="round"/><rect x="5" y="22" width="54" height="9" rx="4.5" fill="#bfe6fa" stroke="#2f87cf" stroke-width="4.5"/>',
 	# Minigame stars (progression, game_progress.gd, 18 Nov 2026): earned gold, missing pale.
+	# HUD icons in the mockups' look (24 Nov 2026, user: match the game's aesthetic): a thick INK
+	# outline with pastel fills, like the money panel's basket and bills. Not tinted: their
+	# buttons keep white icon colours. journal: the vocabulary journal (HUD button and the
+	# journal's title; no key letter on it, the key shows in a hint circle instead). speaker:
+	# say the word (the word card).
+	"journal": '<path d="M45 51v10l-4.5-3.3L36 61V51" fill="#f7cf3f" stroke="#16536a" stroke-width="3.5" stroke-linejoin="round"/><rect x="15" y="10" width="39" height="45" rx="8" fill="#fdf4e3" stroke="#16536a" stroke-width="4.5"/><path d="M50 18v30" stroke="#e2cf9f" stroke-width="3" stroke-linecap="round"/><rect x="9" y="5" width="37" height="45" rx="8" fill="#bfe6fa" stroke="#16536a" stroke-width="4.5"/><path d="M17 7v41" stroke="#16536a" stroke-width="4"/><path d="M31.0 16.5L33.7 23.3L41.0 23.8L35.4 28.4L37.2 35.5L31.0 31.6L24.8 35.5L26.6 28.4L21.0 23.8L28.3 23.3z" fill="#f7cf3f" stroke="#16536a" stroke-width="3" stroke-linejoin="round"/><path d="M24 42h14" stroke="#16536a" stroke-width="3.5" stroke-linecap="round"/>',
+	"speaker": '<path d="M9 23h10l14-12v42L19 41H9c-1.7 0-3-1.3-3-3V26c0-1.7 1.3-3 3-3z" fill="#bfe6fa" stroke="#16536a" stroke-width="4.5" stroke-linejoin="round"/><path d="M41 24.5a10.5 10.5 0 0 1 0 15" fill="none" stroke="#16536a" stroke-width="4.5" stroke-linecap="round"/><path d="M48 17a20 20 0 0 1 0 30" fill="none" stroke="#16536a" stroke-width="4.5" stroke-linecap="round"/>',
+	# The volume sliders' knob (style_slider, 24 Nov 2026).
+	"knob": '<circle cx="32" cy="32" r="26" fill="#fff" stroke="#45a83c" stroke-width="7"/><circle cx="32" cy="32" r="8" fill="#86d65e"/>',
 	"star_on": '<path d="M32 7L39.3 23.9L57.7 25.7L43.9 37.9L47.9 55.8L32 46.5L16.1 55.8L20.1 37.9L6.3 25.7L24.7 23.9z" fill="#f7cf3f" stroke="#d9661c" stroke-width="4" stroke-linejoin="round"/>',
 	"star_off": '<path d="M32 7L39.3 23.9L57.7 25.7L43.9 37.9L47.9 55.8L32 46.5L16.1 55.8L20.1 37.9L6.3 25.7L24.7 23.9z" fill="#f0fafb" stroke="#9fcfd5" stroke-width="4" stroke-linejoin="round"/>',
 	"chevron_ink": '<path d="M16 24l16 16 16-16" fill="none" stroke="#16536a" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>',

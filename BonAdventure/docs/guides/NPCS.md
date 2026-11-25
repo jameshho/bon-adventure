@@ -41,7 +41,7 @@ Other fields: `name` (display) or `name_phrase` (a `data/phrases.json` id, shown
 language), `species`, `scene` (a `scenes/characters/*_plush.tscn`), `costume` (a
 `data/plush_costumes.json` outfit; for the cast it is its own look as an avatar, and
 `work_costume` what it wears where it is placed), `gender` (`m` / `f`: its role word, "el
-vendedor" / "la vendedora"), `unit` (`data/buildings.json`), `pose` (`stand`, `sit`, `lie`),
+vendedor" / "la vendedora"), `unit` (`data/buildings.json`, or `base` for an NPC in the base world such as the zoo's Nico, 24 Nov 2026), `pose` (`stand`, `sit`, `lie`),
 `role` (`host` with its `activity` from `data/activities.json`, `ambient`, `customer`), `word`
 (its people word in `data/words.json`), `chatter` (its idle-line group), `cast`, `in_house`,
 `picker`, `home_seat`, `note`. The file's `about` is the full schema.

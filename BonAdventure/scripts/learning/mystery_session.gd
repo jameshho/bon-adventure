@@ -291,7 +291,9 @@ static func make_rounds(count: int, rng: RandomNumberGenerator, first: Array = [
 		if i == 0 and first.size() == 3:
 			made.append({"kind": kind, "doors": first.duplicate(true), "target": rng.randi_range(0, 2)})
 		else:
-			made.append(make_round(kind, rng, made.back() if not made.is_empty() else {}))
+			# A few tries for a round whose words the word memory wants (word_memory.gd, 24 Nov 2026).
+			var previous: Dictionary = made.back() if not made.is_empty() else {}
+			made.append(preload("res://scripts/learning/word_memory.gd").shared().pick_round(func(): return make_round(kind, rng, previous), tested_words))
 	return made
 
 ## One round: {"kind", "doors": [[colour, shape] x3], "target": the right door's index}.

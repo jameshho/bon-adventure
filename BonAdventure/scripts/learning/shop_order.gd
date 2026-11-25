@@ -41,8 +41,8 @@ static func build_pool(for_store: String, sold_in: Dictionary, allowed: Array = 
 	return found
 
 ## Prices (user, 21 Nov 2026: the checkout): a store's "prices" in data/shops.json are tiers of
-## word -> cents, from easy words to hard ones (whole dollars, then quarters, then quarters with
-## dimes, then any cents). 0 for a word with no price.
+## word -> cents, from easy words to hard ones (since 24 Nov 2026 each product in its word's tier,
+## data/words.json: whole dollars, then quarters, then any cents). 0 for a word with no price.
 static func price_of(store_rules: Dictionary, key: String) -> int:
 	for tier in store_rules.get("prices", []):
 		if (tier as Dictionary).has(key):
@@ -77,12 +77,9 @@ func _init(for_store: String, store_pool: Array, store_rules: Dictionary, seed_v
 func _generate_order() -> void:
 	var unique_range: Array = rules.get("unique_items", [2, 5])
 	var quantity_range: Array = rules.get("quantity_each", [1, 5])
-	var picks: Array = pool.duplicate()
-	for i in range(picks.size() - 1, 0, -1):   # Fisher-Yates with our own seedable rng
-		var j := rng.randi_range(0, i)
-		var swap = picks[i]
-		picks[i] = picks[j]
-		picks[j] = swap
+	# Due words first, then new ones as they are allowed (word_memory.gd, 24 Nov 2026; was a
+	# plain shuffle). The rng breaks ties, so a seeded order repeats.
+	var picks: Array = preload("res://scripts/learning/word_memory.gd").shared().order(pool, rng)
 	var count := clampi(rng.randi_range(int(unique_range[0]), int(unique_range[1])), 0, picks.size())
 	for i in count:
 		order[picks[i]] = rng.randi_range(int(quantity_range[0]), int(quantity_range[1]))

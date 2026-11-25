@@ -20,6 +20,7 @@ change (they key the practice log):
 | `electrical_box` | Wire It Up! | 駁電線 | Cable a cable |
 | `library_rosa` | Library Helper (user, 17 Nov 2026) | 圖書館小幫手 | Ayudante de biblioteca |
 | `teller_bank` | Next, Please! (user, 18 Nov 2026) | 下一位！ | ¡El siguiente! |
+| `feeding_nico` | Feeding Time! (24 Nov 2026) | 餵食時間！ | ¡Hora de comer! |
 
 The index below: This is an index: each game's design
 record and ownership section hold the details, so update those first and keep only the
@@ -45,6 +46,7 @@ summary here. Each game's purpose and progression design is owned by its learnin
 | **Wire It Up!** (electrical box repair) | No NPC: any electrical box (first: outside the home's garage side wall, facing the entry path) | None (pastime: connect the wires by colour) | Interface text only (native language); the box is the word *electrical box* | Built 9 Nov 2026: E nearby or a click opens it, camera close-up, wires played in 3D; repaired until reload; not tracked | [Guide](ELECTRICAL_BOX.md) |
 | **Library Helper** (library; named 17 Nov 2026, was Shelf Mission) | Rosa (samoyed plush librarian) by the NEW BOOKS display, return cart beside her | Book sorting (user design, 13 Nov 2026; reviewed 17 Nov 2026): 3–6 random books on the return cart; take one (E, the hand), put it in any gap of the bookcase for its category (right: slide, hop, sparks; wrong: a wobble, then back in the hand); picking a book up zooms in on its cover (a tap anywhere closes it); the game ends by itself when every book is home, with Rosa's thanks and a zoom on her (21 Nov 2026: no recap); the sorted books stay until the player walks away, then are borrowed and a new cart fills; talking mid-game says what is left (OK / I'll help later) | `library.*` phrases; the 18 display titles and shelf signs (`data/sign_translations.json`); `BOOK_WORDS` and the category words in `scripts/buildings/library.gd`; gaps as drop targets | Built 13 Nov 2026, reworked 17 Nov 2026, polished 21 Nov 2026 (`scripts/learning/library_session.gd`, shared host); check `docs/evidence/library-polish-20261121/verify.gd` (`library_sorting`); tracked: a book's first placement tests its topic and category words | [Design](TOWN_DESIGN_BRIEF.md#library-return-cart-and-book-sorting-game--13-november-2026) |
 | **Next, Please!** (bank teller) | The bear banker at the bank's reception hosts; the player works behind teller window 2, plush customers (house characters) walk up from the queue ropes | Spanish amounts 100–500 in words (multiples of 5) against a balance in digits; counting out $5, $10, $50 and $100 bills; declining a short account; giving change without $100 bills (user, 18 Nov 2026) | Generated amounts (`money_words()`), `teller.*` phrases (8 customer personas in `data/bank_teller.json`), `money.*` | Built 18 Nov 2026 (`scripts/learning/teller_session.gd`; shared host and zone, `money_panel.gd` with `only`, a balance screen on window 2's monitor); 5 customers per session, first-try counts; amounts get harder within the session; check `docs/evidence/bank-teller-20261118/verify.gd` (`bank_teller`); not tracked | [Design](TOWN_DESIGN_BRIEF.md#bank-teller-game--18-november-2026) |
+| **Feeding Time!** (zoo feeding) | Nico (sheep plush zookeeper) at the food booth just inside the zoo gate; he also runs its till | Recognise the zoo animals' names when asked and find the animal (user design, 24 Nov 2026) | The 17 zoo animals (tested), five foods (shown; `data/zoo_feeding.json`), `zoo.*` phrases | Built 24 Nov 2026 (`scripts/learning/zoo_feeding_session.gd`, shared host borrowed by the booth's till; `animal_feeding.gd`, `park_animals.gd` `offer_food()`); free buying with a paper bag and free feeding; 4 levels by word tier; Nico hands over the food; tracked (the named animal); check `docs/evidence/zoo-feeding-20261124/verify.gd` (`zoo_feeding`) | [Design](TOWN_DESIGN_BRIEF.md#zoo-food-booth-and-feeding-time--24-november-2026), [learning card](../game/minigames.md#feeding-time) |
 
 ## Shared systems
 
@@ -74,6 +76,7 @@ Reuse these for any new minigame instead of building parallel ones.
 | Leave question | the dialogue panel's quit card, through the host (`ask_leave()`, `leave_answered`) | all with a leave question, through the host (shop cart, cashier money panel and warehouse since 9 Nov 2026); Esc or ✕ on the question means "stay" |
 | Physics goods (pushed by weight), carrying with E or a click, lane-bound trolleys (rolled by walking into them, faster when grabbed), hinged doors, readouts, green hint marker | `scripts/learning/warehouse_goods.gd` | warehouse |
 | Practice tracking: one outcome (positive, negative, translated) per tested word per question, per learned language ([interface](ARCHITECTURE_REVIEW_PART1.md#practice-tracker)) | `scripts/learning/practice_log.gd` (`user://practice_log.json`) | shop, family (relation questions), restaurant, warehouse, flight (destination country), grammar (Chinese measure-word nouns) |
+| Word memory: which words a game asks about (FSRS on question steps, new words gradually) ([how](#word-memory)) | `scripts/learning/word_memory.gd` (`user://word_memory.json`) | shop, library, restaurant, warehouse, grammar, police evidence, family, flight, mystery |
 | Try again / tell me what went wrong | cashier (`cashier_session.gd`), warehouse (`warehouse_session.gd` `_wrong()`) | cashier, warehouse, flight (`flight_questions.gd` `explain()`) |
 
 Not available yet: coins or rewards (none exist; stars and levels since 18 Nov 2026, [progression](#progression)). Physics goods exist only in the warehouse
@@ -192,6 +195,39 @@ moment later, as the supermarket door's "pay first" (`cashier_session.gd`, `DOOR
   that went wrong. The design (what each level changes) goes on the game's learning card in
   [game/minigames.md](../game/minigames.md).
 
+## Word memory
+
+Which words a learning game asks about (24 Nov 2026; design and numbers owned by the
+[game guide](../game/minigames.md#which-words-come-up)). `scripts/learning/word_memory.gd`,
+`WordMemory.shared()`: FSRS-4.5 (default weights) on a clock of **steps**, one per question the
+[practice tracker](ARCHITECTURE_REVIEW_PART1.md#practice-tracker) records (`recorded` signal),
+`STEPS_PER_DAY` = 8. Grades: positive = Good, negative or translated = Again. New words are
+allowed by a gap in steps that grows with the words being learned (`new_gap()`, `new_allowed()`).
+
+| Call | Use |
+| --- | --- |
+| `order(pool, rng)` | the pool best first: due, allowed new (by `words.json` `tier`), known, other new. For games that pick items from a list |
+| `choose(pool, n, rng)` | the first n of `order()` |
+| `want(keys)` | 2 due, 1 allowed new, 0 known only, -1 too many new: for comparing candidate questions |
+| `pick_round(make, words_of, tries)` | for generators that build a whole round (`make` replaces the game's state each call): keeps the first round with `want() >= 1`, else the last |
+| `state(key)`, `retrievability(key)`, `is_due`, `is_new`, `learning_count()`, `step()` | inspection |
+
+Wired in: `shop_order.gd` (`_generate_order`), `library_session.gd` (`_fill_cart`),
+`restaurant_orders.gd` (`_by_memory`), `warehouse_tasks.gd` (`_pick_item`), `grammar_questions.gd`
+(`pick`), `detective_clues.gd` (evidence clue order), `family_session.gd` / `flight_session.gd`
+(`next_question`, `pick_round`) and `mystery_session.gd` (`make_rounds`, `pick_round`). Pass the
+game's own `rng` so seeded runs repeat. A new game that records practice should pick its words
+with one of these.
+
+**Save:** `word_memory.json` per profile (`PROFILE_FILES`; reset with the singletons), keyed by
+learned language: `{"es": {"step", "last_new", "words": {key: {s, d, last, reps, lapses}}}}`. A
+language without memory is seeded once from the practice log. The activity board creates the
+memory when a session begins, so it hears every recorded question.
+
+**Check:** `docs/evidence/word-memory-20261124/verify.gd` (headless, no town): FSRS updates, the
+new-word gap, order/want/pick_round, saving, seeding and reset, a 600-question simulated
+learner, and the Desk Dash, Mystery Doors and Feel the Clues pickers.
+
 ## Minigame picker
 
 The ▶ button in the HUD's top right (under the peek badge since 14 Nov 2026; it was in the bottom-right cluster), or **F9**, opens a window with every game in
@@ -219,6 +255,7 @@ undone once the game neither talks nor plays.
 | --- | --- |
 | Customer order | one order; with more than 1 the clerk asks for another after each (`shop.another_order`) |
 | Cashier, family, flight, restaurant, police, warehouse, Mystery Doors | the progress bar's target |
+| Feeding Time! | requests in the session (instead of the level's `requests`) |
 | Grammar | questions in the class |
 | Mahjong | not used since 15 Nov 2026 (user: keep playing): in `ENDLESS`, so no stepper and always "Play again" (before: hands, "Next hand" until the last, then only Leave) |
 | Radar Patrol | not used: one endless game; Play opens the screen where the player stands (no NPC: the launcher calls the session's `launch()`) |

@@ -1,7 +1,7 @@
 extends SceneTree
 ## Grocery Run checkout and free shopping (user, 21 Nov 2026; Pay Up! retired into the till).
 ## Checks: every product sold in the supermarket has one price in its tier (whole dollars, then
-## quarters, then quarters with dimes, then any cents); Pay Up! is gone from the activity board
+## quarters, then any cents; since 24 Nov 2026 three tiers, each product in its word's tier); Pay Up! is gone from the activity board
 ## and the till is no activity; the order's cart has prices and no Done button; the shop door
 ## holds back an unpaid basket; the till turns down a basket that is not exactly the list (a miss,
 ## the same basket again is no new miss, the second check names what is missing and extra),
@@ -15,6 +15,7 @@ extends SceneTree
 const Board := preload("res://scripts/learning/activity_board.gd")
 const Progress := preload("res://scripts/learning/game_progress.gd")
 const Order := preload("res://scripts/learning/shop_order.gd")
+const Lexicon := preload("res://scripts/language/lexicon.gd")
 const Basket := preload("res://scripts/world/shopping_basket.gd")
 const Interactable := preload("res://scripts/core/interactable.gd")
 const HERE := "res://docs/evidence/grocery-checkout-20261121/"
@@ -81,7 +82,7 @@ func data() -> void:
 	var words: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/words.json"))
 	words = words.get("words", words)
 	var tiers: Array = rules.prices
-	check(tiers.size() == 4, "four price tiers")
+	check(tiers.size() == 3, "three price tiers (24 Nov 2026)")
 	var sold := 0
 	var unpriced: Array = []
 	for key in words:
@@ -94,11 +95,11 @@ func data() -> void:
 	for i in tiers.size():
 		for key in tiers[i]:
 			var c := int(tiers[i][key])
-			var ok: bool = [c % 100 == 0, c % 25 == 0 and c % 100 != 0, c % 5 == 0 and c % 25 != 0 and not [5, 15].has(c % 100), c % 5 != 0][i]
+			var ok: bool = [c % 100 == 0, c % 25 == 0 and c % 100 != 0, c % 5 != 0][i] and Lexicon.shared().tier(key, "default") == i + 1
 			if not ok:
 				bad.append("%s %d (tier %d)" % [key, c, i + 1])
-	check(bad.is_empty(), "prices follow their tier: %s" % [bad])
-	check(Order.total_of(rules, {"apple": 2, "cheese": 1, "lime": 1, "garlic": 1}) == 200 + 450 + 60 + 89, "a total adds price x count")
+	check(bad.is_empty(), "prices follow their tier and each product sits in its word tier: %s" % [bad])
+	check(Order.total_of(rules, {"apple": 2, "cheese": 1, "lime": 1, "garlic": 1}) == 200 + 500 + 59 + 89, "a total adds price x count")
 	check(Order.tier_words(rules, 2).size() == (tiers[0] as Dictionary).size() + (tiers[1] as Dictionary).size(), "order_tiers 2 = the first two tiers")
 	check(not rules.has("retries"), "the order has no retries any more")
 

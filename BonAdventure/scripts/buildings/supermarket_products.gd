@@ -37,7 +37,10 @@ const FOOT = {
 	"soap":Vector3(.11,.075,.08), "sponge":Vector3(.12,.08,.06), "detergent":Vector3(.15,.1,.26), "toothbrush":Vector3(.07,.04,.2),
 	"toothpaste":Vector3(.18,.06,.05), "shampoo":Vector3(.1,.07,.23), "toilet paper":Vector3(.23,.23,.13),
 	"bread":Vector3(.22,.2,.13), "baguette":Vector3(.5,.08,.06), "croissant":Vector3(.17,.11,.07), "cake":Vector3(.3,.3,.16),
-	"cupcake":Vector3(.11,.11,.14), "donut":Vector3(.12,.12,.05)
+	"cupcake":Vector3(.11,.11,.14), "donut":Vector3(.12,.12,.05),
+	# Zoo animal food (Feeding Time!, 24 Nov 2026): not sold in the supermarket; the zoo food booth
+	# and the paper bag (shopping_basket.gd) show it.
+	"bamboo":Vector3(.14,.38,.08)
 }
 
 ## Loose produce is piled (layers from the pick height, small random turn, size and offset);
@@ -757,6 +760,17 @@ func _carrot(_v: int) -> void:
 		ring(Vector3(0, .028, -.03 + k * .05), Vector3(.05 - k * .01, .006, .05 - k * .01), "d96a14", SATIN, Vector3(PI / 2, 0, 0), .8, 8)
 	for k in 3:
 		prism(Vector3((k - 1) * .016, .034, -.135), Vector3(.022, .1, .008), "5a9a3c" if k != 1 else "3f7d3a", MATTE, Vector3(-PI / 2 + .15, (k - 1) * .3, 0))
+
+## A bundle of three bamboo canes tied with twine, leaves at one end (the zoo food booth).
+func _bamboo(_v: int) -> void:
+	for k in 3:
+		var at := Vector3((k - 1) * .042, .028 + (.03 if k == 1 else 0.0), 0)
+		cyl(at, Vector3(.04, .36, .04), "8fbf4a" if k != 1 else "7fb23f", SATIN, Vector3(PI / 2, 0, 0), 8)
+		for j in 3:
+			ring(at + Vector3(0, 0, -.12 + j * .12), Vector3(.046, .008, .046), "5f8f2f", SATIN, Vector3(PI / 2, 0, 0), .8, 8)
+		for j in 2:
+			prism(at + Vector3((j - .5) * .03, .02, -.2), Vector3(.03, .1, .006), "4f8f3a" if j == 0 else "3f7d3a", MATTE, Vector3(-PI / 2 + .25, (j - .5) * .7, 0))
+	ring(Vector3(0, .04, .05), Vector3(.14, .02, .09), KRAFT, MATTE, Vector3(PI / 2, 0, 0), .75, 10)
 
 func _broccoli(_v: int) -> void:
 	cyl(Vector3(0, .04, 0), Vector3(.045, .08, .045), "9cbf6a", MATTE, Vector3.ZERO, 6, .8)

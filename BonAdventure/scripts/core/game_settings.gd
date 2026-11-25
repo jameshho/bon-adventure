@@ -19,6 +19,8 @@ extends RefCounted
 ## ignored and dropped at the next save.
 ## Follow camera (user decision, 14 Nov 2026): on by default; the Settings checkbox "Camera
 ## follows me" turns it off (player_controller.gd follow_view(); Main hands it to the player).
+## Volumes (24 Nov 2026, user: a sound section in Settings): four sliders from 0 to 1, saved as
+## "volumes"; VOLUME_BUSES says which audio buses (default_bus_layout.tres) each one sets. 0 mutes.
 const Lexicon := preload("res://scripts/language/lexicon.gd")
 const SaveStore := preload("res://scripts/core/save_store.gd")
 
@@ -44,6 +46,11 @@ var outfit := ""
 var peeking := false
 ## Whether walking sideways turns the view (saved with the other settings).
 var follow_camera := true
+## Slider -> the buses it sets. Sound effects covers the world, ambience and interface sounds.
+const VOLUME_BUSES := {"master": ["Master"], "music": ["Music"], "effects": ["SFX", "Ambience", "UI"], "voice": ["Voice"]}
+const VOLUME_ORDER := ["master", "music", "effects", "voice"]
+## Slider -> 0..1 (1 = the bus at 0 dB).
+var volumes := {"master": 1.0, "music": 1.0, "effects": 1.0, "voice": 1.0}
 
 static var _shared
 
@@ -60,8 +67,11 @@ func load_saved() -> void:
 	display = DEFAULT_DISPLAY
 	outfit = ""
 	follow_camera = true
+	for group in VOLUME_ORDER:
+		volumes[group] = 1.0
 	var parsed: Variant = SaveStore.read_json(SaveStore.path(FILE))
 	if not parsed is Dictionary:
+		apply_volumes()
 		return
 	# Anything but NATIVE (including the removed BOTH, 2) loads as the default FOREIGN.
 	if int(parsed.get("display", -1)) == NATIVE:
@@ -76,9 +86,14 @@ func load_saved() -> void:
 	if preload("res://scripts/characters/plush_costume.gd").outfit_ids().has(worn):
 		outfit = worn
 	follow_camera = bool(parsed.get("follow_camera", true))
+	var saved_volumes: Variant = parsed.get("volumes", {})
+	if saved_volumes is Dictionary:
+		for group in VOLUME_ORDER:
+			volumes[group] = clampf(float(saved_volumes.get(group, 1.0)), 0.0, 1.0)
+	apply_volumes()
 
 func save() -> void:
-	SaveStore.write_json(SaveStore.path(FILE), {"display": display, "native": native, "foreign": foreign, "outfit": outfit, "follow_camera": follow_camera}, "  ")
+	SaveStore.write_json(SaveStore.path(FILE), {"display": display, "native": native, "foreign": foreign, "outfit": outfit, "follow_camera": follow_camera, "volumes": volumes}, "  ")
 
 ## Hands the chosen languages to the shared Lexicon (every phrase and word reads them).
 func apply() -> void:
@@ -107,6 +122,27 @@ func set_follow_camera(on: bool) -> void:
 	follow_camera = on
 	save()
 	changed.emit()
+
+## A Settings volume slider (`group` in VOLUME_BUSES): sets its buses at once; `keep` saves it
+## (the slider saves when the drag ends, not at every step).
+func set_volume(group: String, value: float, keep := true) -> void:
+	if not VOLUME_BUSES.has(group):
+		return
+	volumes[group] = clampf(value, 0.0, 1.0)
+	apply_volumes()
+	if keep:
+		save()
+
+## Sets every bus from `volumes` (a bus missing from the layout is skipped).
+func apply_volumes() -> void:
+	for group in VOLUME_BUSES:
+		var level: float = volumes.get(group, 1.0)
+		for bus_name in VOLUME_BUSES[group]:
+			var bus := AudioServer.get_bus_index(bus_name)
+			if bus < 0:
+				continue
+			AudioServer.set_bus_mute(bus, level <= 0.001)
+			AudioServer.set_bus_volume_db(bus, linear_to_db(maxf(level, 0.001)))
 
 ## The Settings checkbox "Show everything in my language".
 func set_native(on: bool) -> void:

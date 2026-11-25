@@ -127,6 +127,11 @@ it. Walking bouts last 3–8 seconds or end on reaching the destination. Zoo/far
 home radii are 2–3.5 town units; meadow/pond animals retain their smaller existing
 1.1/1.8-unit habitat ranges. Animals do not migrate between exhibits.
 
+Since 24 Nov 2026 six more hens (`hen.tscn`, the paddock hen's size) live at the farm's hen
+house in the barn unit (`Barn/Hen house/Hens`, not ParkZoo): `hen_house.gd` calls
+`configure()` with their yard (town x 73.4…84.6, z 74…82) as the habitat
+([record](TOWN_DESIGN_BRIEF.md#hen-house-and-eggs--24-november-2026)).
+
 ### Boundaries, obstacles and recovery
 
 * The final transformed zoo/farm lawn rectangles define the outer habitat. They

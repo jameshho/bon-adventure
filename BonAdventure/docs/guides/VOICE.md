@@ -11,9 +11,20 @@ made once with Amazon Polly text-to-speech. Started 24 Nov 2026 (user).
 - **Nothing plays.** `data/sounds.json` `"voice": {"enabled": false}` (user, 24 Nov 2026): no
   sound until the user says so. While it is false, `say_word()` plays nothing and `has_voice()`
   is false.
-- **Not built:** where the game says a word (a speaker button on the word card? automatically
-  when the card opens? in the journal and results card?). That is a user decision. Phrases and
-  dialogue lines are also not built; words only for now.
+- **Where words are said** (user, 24 Nov 2026): a **speaker button** at the top left of the
+  word card, opposite the star (`vocabulary_hud.gd` `speaker_button`, pastel `speaker` icon). It
+  says the word in the language being learned, and shows only when spoken words are on and the
+  word has a clip, so it is hidden for now. Not in the journal or on the results card yet.
+  Phrases and dialogue lines are not built; words only.
+- **Volume:** Settings has Main volume, Music, Sound effects and Spoken words sliders (user,
+  24 Nov 2026; `game_settings.gd` `VOLUME_BUSES`, saved per profile). Spoken words sets the Voice
+  bus. A Music bus was added for later background music, which has none yet.
+- **Web audio** (user, 24 Nov 2026: the tab always showed a speaker icon). Godot keeps its
+  AudioContext running and sends silence. The Web preset's head script keeps every AudioContext
+  suspended and lets Godot's own `resume()` through only while `window.bonAudioWanted` is true.
+  `sound.gd` sets that flag and resumes just before a sound plays, then suspends again within
+  about 0.5 s of the last sound ending. Every game sound goes through `sound.gd`, so a new sound
+  must too.
 
 ## Decisions (user, 24 Nov 2026)
 
@@ -97,8 +108,19 @@ cost cents and fit the Polly free tier. `--jobs N` (default 4) makes N clips at 
   including Zhiyu with `x-amazon-pinyin` on Traditional characters.
 - Done 24 Nov 2026: the game's clips are made and imported (user: "Yes, make all clips").
 - **P1:** switch `enabled` on, only when the user says so.
-- **P1:** decide where the game says words (word card, journal, results card; button or
-  automatic) and add a voice volume or mute setting.
+- Done 24 Nov 2026: the speaker button on the word card and the volume sliders in Settings
+  (`docs/evidence/sound-ui-20261124/verify.gd`: 30 checks, 0 failures, with views).
+- 24 Nov 2026, web check: a Web export (`tools/deploy_web.py --out`, not published) served on
+  localhost in the app's built-in Chromium. The one AudioContext stayed `suspended` on the title
+  screen and after clicking Play (Godot's own resume was held back). Resuming with
+  `bonAudioWanted` true gave `running`, and a Godot-style resume while it was false stayed
+  `suspended`. The console showed no errors. **Not tried:** a real sound playing on the web
+  (nothing may play yet), Safari, and a phone. `index.pck` is now 91.4 MB, of which about 20 MB
+  is the clips; GitHub's limit is 100 MB per file.
+- **P1:** the Web pack is near GitHub's 100 MB file limit. Ship only the language being learned,
+  or split the clips out of `index.pck`, before adding more audio or music.
+- **P2:** decide whether to also say words in the journal and on the results card, and whether
+  the card should say the word by itself when it opens.
 - **P2:** web size. All three languages are in the Web export (about 20 MB in total). Consider
   shipping or downloading only the language being learned.
 - **P3:** review the English clips by ear. The Spanish and Chinese ones were only spot-checked

@@ -87,8 +87,11 @@ resizes `StyleBoxFlat` fields uses `BonStyle.flat()` / `flat_button()`.
 | **Section band** | `BAND` rounded strip with heading (`INK`, 30) and hint (`INK_SOFT`, 20) | `BonStyle.band(...)` |
 | **Progress bar** | Cream track with a dark `INK` outline; green fill with lighter diagonal stripes that drift slowly; on the loading screen it sits low with the line above it in light Fredoka with an `INK` edge, no panel behind | `BonStyle.StripedBar` |
 | **Dialogue box** | Cream, white rim, radius 28, a small tail pointing up to the speaker; the speaker's name in a blue pill *inside* the top-left; line in `INK` 600; replies are primary pills | `shop_order_panel.gd` |
+| **Pastel icon** | The mockups' icon look (user, 24 Nov 2026): a thick `INK` outline (4.5 of 64) with pastel fills (sky blue `bfe6fa`, cream, a gold accent), never tinted by the button. The journal (a book with a gold star and ribbon; HUD button and the journal's title) and the speaker (the word card) | `BonStyle.icon_texture("journal" / "speaker")` |
+| **Key hint** | A small `INK` circle (a pill for "Esc", "F9") with a white rim and a white key letter on a HUD button's bottom-left corner. Only while playing with a keyboard (user, 24 Nov 2026): hidden after a touch, back after a key press; the key is read from the input map | `vocabulary_hud.gd` `add_key_hint()` |
+| **Slider** | Thick cream track that fills green up to a big white knob with a green rim; finger-sized | `BonStyle.style_slider(slider, f)` |
 
-Decorations (sprout, daisy, check badge, flags, gamepad, plus) are SVG text in
+Decorations (sprout, daisy, check badge, flags, gamepad, plus, journal, speaker, knob) are SVG text in
 `bon_style.gd`, rasterised at the needed size like `ui_icons.gd`: no image files, crisp at every
 scale. Shapes (pills, cards, cloud banner, bushes) are drawn by `scripts/ui/bon_box.gd`
 (a StyleBox) and `BonStyle` controls.

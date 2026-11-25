@@ -15,6 +15,9 @@ extends Control
 ## UI art style (user, 18 Nov 2026; docs/guides/UI_STYLE.md): a mint BonStyle card with a meadow
 ## over a light teal veil, a dark teal title, cream checkboxes that turn green, cream drop-downs,
 ## cream Switch / Replay pills and a green Close.
+## Sound (24 Nov 2026, user): Main volume, Music, Sound effects and Spoken words sliders in a
+## 2 x 2 grid (GameSettings.set_volume; game_settings.gd VOLUME_BUSES); a drag sets the sound at
+## once and saves when it ends.
 const GameSettings := preload("res://scripts/core/game_settings.gd")
 const Lexicon := preload("res://scripts/language/lexicon.gd")
 const UiIcons := preload("res://scripts/ui/ui_icons.gd")
@@ -40,6 +43,9 @@ var _profile_row: HBoxContainer
 var _x_button: Button
 var _show_fps: CheckBox
 var _follow_camera: CheckBox
+var _sound_grid: GridContainer
+## Slider group ("master", ...) -> [title Label, HSlider].
+var _volume_rows: Dictionary = {}
 var _factor := 1.0
 
 func _init() -> void:
@@ -109,6 +115,27 @@ func _init() -> void:
 	_follow_camera.toggled.connect(func(on: bool) -> void: GameSettings.shared().set_follow_camera(on))
 	_stack.add_child(_follow_camera)
 	_stack.move_child(_follow_camera, mode_row.get_index() + 1)
+	_sound_grid = GridContainer.new()
+	_sound_grid.columns = 2
+	_stack.add_child(_sound_grid)
+	for group in GameSettings.VOLUME_ORDER:
+		var cell := VBoxContainer.new()
+		cell.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		_sound_grid.add_child(cell)
+		var title := _label(DIM)
+		cell.add_child(title)
+		var slider := HSlider.new()
+		slider.name = "Volume " + group
+		slider.min_value = 0.0
+		slider.max_value = 1.0
+		slider.step = 0.05
+		slider.focus_mode = Control.FOCUS_NONE
+		slider.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+		slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		slider.value_changed.connect(func(value: float) -> void: GameSettings.shared().set_volume(group, value, false))
+		slider.drag_ended.connect(func(_changed: bool) -> void: GameSettings.shared().set_volume(group, slider.value))
+		cell.add_child(slider)
+		_volume_rows[group] = [title, slider]
 	# Profile actions on one row: Switch profile, and the welcome tutorial again (app.gd
 	# replay_tutorial(), PWA phase 6).
 	_profile_row = HBoxContainer.new()
@@ -168,6 +195,9 @@ func refresh() -> void:
 			pick.set_item_metadata(pick.item_count - 1, str(code))
 	_native_pick.select(lexicon.playable_codes().find(settings.native))
 	_foreign_pick.select(lexicon.playable_codes().find(settings.foreign))
+	for group in _volume_rows:
+		_volume_rows[group][0].text = lexicon.phrase("settings.volume_" + group, lang)
+		_volume_rows[group][1].set_value_no_signal(settings.volumes.get(group, 1.0))
 	_show_fps.text = lexicon.phrase("settings.show_fps", lang)
 	var readout := PerfReadout.find(get_tree())
 	_show_fps.visible = readout != null
@@ -202,6 +232,11 @@ func _apply_layout(screen: Vector2) -> void:
 	_title.add_theme_font_size_override("font_size", roundi(40 * f))
 	for label in [_native_title, _foreign_title]:
 		label.add_theme_font_size_override("font_size", roundi(24 * f))
+	_sound_grid.add_theme_constant_override("h_separation", roundi(28 * f))
+	_sound_grid.add_theme_constant_override("v_separation", roundi(6 * f))
+	for group in _volume_rows:
+		_volume_rows[group][0].add_theme_font_size_override("font_size", roundi(22 * f))
+		BonStyle.style_slider(_volume_rows[group][1], f)
 	for check in [_native_mode, _follow_camera, _show_fps]:
 		BonStyle.style_check(check, f, 24 if check == _show_fps else 26)
 	for pick in [_native_pick, _foreign_pick]:

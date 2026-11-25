@@ -87,6 +87,23 @@ var probe_count := 0
 var _to_town := Transform3D.IDENTITY
 var _from_town := Transform3D.IDENTITY
 var _ground_offset := 0.0
+## Feeding (Feeding Time!, 24 Nov 2026; animal_feeding.gd calls offer_food()): the animal walks
+## to the food (state "coming"), then eats it, head down and chewing (clay_animator.gd `eat`, or a
+## bow of the whole body for an unrigged animal) and hops with joy (state "eating"), or sniffs and
+## shakes its head at a food it does not eat ("refusing"). It stays in its habitat and keeps its
+## home and picking areas; afterwards it rests and wanders from where it stands. food_done follows.
+signal food_done(ate: bool)
+const EAT_SECONDS := 3.2
+const REFUSE_SECONDS := 2.0
+## How much faster than its wander an animal walks to food.
+const COME_SPEED := 1.6
+var _food := Vector3.ZERO
+var _will_eat := true
+var _feed_clock := 0.0
+var _feed_y := 0.0
+var _feed_turn := 0.0
+var _animator: Node
+var _animator_found := false
 
 func _ready() -> void:
     home=position
@@ -228,6 +245,85 @@ func _stop(duration := -1.0) -> void:
     _timer=duration if duration>=0 else _rng.randf_range(pause*.5,pause*1.5)*(3.0 if state=="resting" else 1.0)
     _direction=Vector3.ZERO
 
+## Brings the animal to food at `point` (parent-local, the ground where it lies): it eats it
+## when `eats`, else sniffs and refuses. Ignored until the wander is configured.
+func offer_food(point: Vector3, eats: bool) -> void:
+    if not _configured: return
+    _food=point
+    _will_eat=eats
+    var to:=Vector3(point.x-position.x,0,point.z-position.z)
+    # Stop with the mouth over the food: the footprint reaches from the centre to the nose.
+    var reach:=footprint*.8
+    var stand:=point-to.normalized()*reach if to.length()>reach else position
+    stand.y=position.y
+    if habitat.has_area():
+        stand.x=clampf(stand.x,habitat.position.x,habitat.end.x)
+        stand.z=clampf(stand.z,habitat.position.y,habitat.end.y)
+    _set_eat(0.0)
+    target=stand
+    state="coming"
+    _timer=8.0
+    _direction=Vector3.ZERO
+
+## Whether the animal is busy with food (coming, eating or refusing).
+func feeding() -> bool:
+    return state in ["coming","eating","refusing"]
+
+func _feed_step(dt: float) -> void:
+    if state=="coming":
+        var offset:=target-position
+        offset.y=0
+        if offset.length()<.06 or _timer<=0:
+            state="eating" if _will_eat else "refusing"
+            _feed_clock=0.0
+            _feed_y=position.y
+            _feed_turn=rotation.y
+            return
+        var dir:=offset.normalized()
+        position+=dir*minf(speed*COME_SPEED*dt,offset.length())
+        if ground.is_valid(): position.y=ground.call(position)
+        rotation.y=lerp_angle(rotation.y,atan2(dir.x,dir.z),minf(1,dt*5.0))
+        return
+    _feed_clock+=dt
+    var total:=EAT_SECONDS if state=="eating" else REFUSE_SECONDS
+    var t:=_feed_clock/total
+    var face:=Vector3(_food.x-position.x,0,_food.z-position.z)
+    var facing:=atan2(face.x,face.z) if face.length()>.02 else rotation.y
+    if state=="eating":
+        # Bow in, chew, lift the head, then a happy hop.
+        var bow:=smoothstep(0.0,.15,t)*(1.0-smoothstep(.72,.82,t))
+        _set_eat(bow)
+        rotation.y=lerp_angle(rotation.y,facing,minf(1,dt*5.0))
+        var hop:=sin(PI*clampf((t-.84)/.16,0.0,1.0))
+        position.y=_feed_y+hop*maxf(.12,footprint*.18)
+    else:
+        # Sniff, then shake the head (the whole body turns a little each way) and look away.
+        var sniff:=smoothstep(0.0,.2,t)*(1.0-smoothstep(.4,.5,t))*.55
+        _set_eat(sniff)
+        var shake:=sin(clampf((t-.45)/.4,0.0,1.0)*TAU*2.0)*.28*(1.0-smoothstep(.8,.85,t)) if t>.45 else 0.0
+        _feed_turn=lerp_angle(_feed_turn,facing,minf(1,dt*5.0))
+        rotation.y=_feed_turn+shake
+    if t>=1.0:
+        var ate:=state=="eating"
+        position.y=_feed_y
+        _set_eat(0.0)
+        _stop(pause)
+        food_done.emit(ate)
+
+## Head down for eating: the clay rig's animator when there is one, else a bow of the whole animal
+## (it faces +Z here, so a bow is a positive turn about its side axis).
+func _set_eat(amount: float) -> void:
+    if not _animator_found:
+        _animator_found=true
+        for node in find_children("*","Node",true,false):
+            if node.get_script()!=null and "eat" in node and "skeleton" in node:
+                _animator=node
+                break
+    if _animator!=null and is_instance_valid(_animator):
+        _animator.set("eat",amount)
+    else:
+        rotation.x=amount*.22
+
 func _process(delta: float) -> void:
     if not _configured: return
     # Clamp long frames: no tunnelling or catch-up spikes after a pause.
@@ -235,6 +331,9 @@ func _process(delta: float) -> void:
     clock+=dt
     _timer-=dt
     _probe_timer-=dt
+    if feeding():
+        _feed_step(dt)
+        return
     if state!="walking":
         if _timer<=0 and _probe_timer<=0:
             _probe_timer=.1

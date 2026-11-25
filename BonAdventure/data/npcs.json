@@ -1101,6 +1101,31 @@
    "role": "ambient",
    "chatter": "farm",
    "note": "The farmer in the barn, by the tool rack, looking toward the doors (23 Nov 2026, user). Placed from this registry at load (npc_registry.gd); never baked into the barn scene."
+  },
+  {
+   "id": "nico",
+   "name": "Nico",
+   "name_phrase": "zoo.nico",
+   "species": "Sheep",
+   "scene": "res://scenes/characters/sheep_plush.tscn",
+   "costume": "zookeeper",
+   "gender": "m",
+   "unit": "base",
+   "placement": "registry",
+   "node": "ParkZoo/ZooKeeper",
+   "pose": "stand",
+   "at": [
+    -73.75,
+    0.13,
+    124.1
+   ],
+   "facing": [
+    -1.0,
+    0.0
+   ],
+   "role": "host",
+   "activity": "feeding_nico",
+   "note": "The zookeeper behind the zoo food booth's counter just inside the gate, looking across it to the path (24 Nov 2026, Feeding Time!). Sells the animal food (data/shops.json cashier 'zoo') and hosts the game. Placed from this registry at load; never baked."
   }
  ]
 }

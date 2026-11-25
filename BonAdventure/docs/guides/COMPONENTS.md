@@ -16,7 +16,7 @@ Audited and consolidated 13 November 2026 (user request). Evidence: `docs/eviden
 | Something owns E for a while (driving, seated, carrying) | `interaction.claim(id, wants, use, click)` | `interaction_controller.gd` | [Interaction](#interaction) |
 | A door, drawer, cabinet door or curtain | a `door_state` meta; the shared door scenes for walk-through doors | `scripts/core/door_animator.gd`, `scripts/world/door.gd` | [Things that open](#things-that-open) |
 | The player holds a small item | `player.hand.hold(item)`, `HandHold.toggle(item)` | `scripts/player/hand_hold.gd` | [Holding items](#holding-items) |
-| A shopping basket the player carries while shopping, showing what was picked | `ShoppingBasket.give(node)`, `basket.remember(key, picked)` + `show_items(counts)`, `ShoppingBasket.take_back(node)` | `scripts/world/shopping_basket.gd` (holds through `hand_hold.gd`) | [Holding items](#holding-items) |
+| A shopping basket the player carries while shopping, showing what was picked (or, since 24 Nov 2026, the zoo booth's paper bag: `give(node, ShoppingBasket.BAG)`) | `ShoppingBasket.give(node)`, `basket.remember(key, picked)` + `show_items(counts)`, `ShoppingBasket.take_back(node)` | `scripts/world/shopping_basket.gd` (holds through `hand_hold.gd`) | [Holding items](#holding-items) |
 | An invisible wall in a doorway while a game runs (with a "leave?" or "not yet" zone inside it) | `MinigameZone.make_door_guard()` | `scripts/learning/minigame_zone.gd` | [Minigames](MINIGAMES.md#building-a-minigame); users: Mystery House, Alta Cocina, the welcome tutorial's store door (until paid, 14 Nov 2026) |
 | Words of the language being learned inside a native-language dialogue line, coloured, tap for the meaning | `Lexicon.native_line(id, {slot: {"learn": value}}, extra_terms)` (line `terms`) | `scripts/language/lexicon.gd`, drawn by `scripts/ui/shop_order_panel.gd` | [Coloured words](#coloured-words-in-the-dialogue-box) |
 | A one-line "what to do now" instruction, top centre, apart from speech (with an optional "1/2") | `InstructionStrip`: `show_text(line, note)`, `clear()`, `hidden_when` | `scripts/ui/instruction_strip.gd` | [Instruction strip](#instruction-strip) |
@@ -31,6 +31,7 @@ Audited and consolidated 13 November 2026 (user request). Evidence: `docs/eviden
 | A small move: hop, shake, nod, lean | `PlushLife.play(host, figure, kind)` | `scripts/characters/plush_life.gd` | [Plush characters](#plush-characters) |
 | An NPC that talks, calls with "!" and gets a face close-up | `minigame_host.gd`, `npc_presence.gd` (spec `"board": false` for an NPC that talks through the host but is no activity, the supermarket till since 21 Nov 2026; meta `talk_face_drop` for a hat; meta `talk_camera_at`, a global point, fixes the close-up camera where walls block the automatic one, 13 Nov 2026) | `scripts/learning/` | [Minigames](MINIGAMES.md#building-a-minigame) |
 | Animals that wander | `park_animals.gd` profiles | `scripts/world/park_animals.gd` | [Animal system](ANIMAL_SYSTEM.md) |
+| An animal comes to food and eats it (or sniffs and refuses it) (24 Nov 2026) | `animal.offer_food(parent_local_point, eats)` and its `food_done(ate)` signal (`park_animals.gd`); the head bows through `clay_animator.gd` `eat` (an unrigged animal bows its whole body); feeding from a carried bag: `animal_feeding.gd` | `scripts/world/park_animals.gd`, `scripts/characters/clay_animator.gd`, `scripts/world/animal_feeding.gd` | [Feeding Time!](../game/minigames.md#feeding-time) |
 | A clay animal walks, breathes, turns its head (the 17 clay zoo animals, 16 Nov 2026, and the tiger, 17 Nov; a new species needs its own `tools/build_<prefab>_clay_rig.gd` bone spec; a display that already has `LeftEye`/`RightEye` nodes lists them in `on_head`) | `clay_rig.gd` at bake time, then `clay_animator.gd` at run time; blinking through `PlushLife.follow_group("clay_animals")` | `scripts/characters/clay_rig.gd`, `scripts/characters/clay_animator.gd` | [Clay animal animation](ANIMAL_SYSTEM.md#clay-animal-animation-16-nov-2026) |
 | A window: glass, frame, sill; a real opening in a wall (18 Nov 2026: frame presets HOUSE / SHOPFRONT / CIVIC / ARCHED in the game palette) | `scenes/props/window.tscn`; `GlassWindows.real_window(town, unit, parent, centre, outward, look)` in a building step | `scripts/world/glass_window.gd`, `scripts/buildings/glass_windows.gd` | [Windows](WINDOWS.md#real-windows--18-november-2026) |
 | Praise for a right answer on a 3D object: a hop and gold sparks (21 Nov 2026) | `SuccessBurst.celebrate(node, at, viewer)`, `SuccessBurst.sparks(parent, frame)` | `scripts/world/success_burst.gd` | Users: the library game (a book shelved right), the welcome tutorial's shopping list |
@@ -119,7 +120,11 @@ with `ShoppingBasket.take_back(node)` (only a basket that `give()` handed out). 
 tutorial's shop (`tutorial_shop.gd`) and the customer order game of stores with `"basket": true`
 in `data/shops.json` (`shop_session.gd`: the supermarket), and since 21 Nov 2026 free shopping at
 the supermarket (`cashier_session.gd`: E on a basket stack, an Interactable on each `basket_racks`
-node, gives a basket; an empty one goes back the same way). A pick hook should ignore objects with
+node, gives a basket; an empty one goes back the same way). Since 24 Nov 2026 the zoo food booth
+(Feeding Time!) uses the same component as a **paper bag**: `give(node, BAG)` (meta `carrier`,
+word *shopping bag*, hand profile `bag`, its items peek out of the top; `is_bag()`), handed out by
+the booth's till (`data/shops.json` store `zoo`: `"carrier": "bag"`, `"keep_paid": true` keeps the
+paid bag, its food in meta `food`) and fed to the animals by `animal_feeding.gd`. A pick hook should ignore objects with
 a `hold_kind` meta (the held basket's own pick area).
 
 Since 18 Nov 2026 (user) the body is one closed tapered tub (no slits at the corners or the

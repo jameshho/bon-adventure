@@ -118,6 +118,11 @@
       {"piece": "shirt", "color": "7a3f6e", "layer": 1, "sleeve": 0.8, "bottom": 0.42, "v": true, "dip": 0.34, "dip_width": 0.55, "hem": 0.02, "buttons": "e2c27a", "button_count": 3, "pockets": ["left_hip", "right_hip"]},
       {"piece": "name_tag", "at": "left_badge", "layer": 1, "stripe": "2f7d57"}
     ]},
+    "zookeeper": {"note": "Nico, the zookeeper at the zoo food booth (sheep plush, 24 Nov 2026; data/npcs.json): a khaki shirt, olive work overalls and a khaki wide-brimmed hat. The farmer's pieces in zoo colours.", "pieces": [
+      {"piece": "shirt", "color": "c9b27c", "sleeve": 0.45, "bottom": 0.5, "collar": true},
+      {"piece": "overalls", "color": "5f7a3a", "buttons": "d9a84a", "bib": 0.34},
+      {"piece": "straw_hat", "color": "b89a5e", "band": "4f6a2f", "brim": 0.92}
+    ]},
     "farmer": {"note": "Tomás, the barn farmer (bear plush, 23 Nov 2026; data/npcs.json): a red work shirt under blue denim overalls with brass buttons, and a wide straw hat. Built from the gardener's pieces.", "pieces": [
       {"piece": "shirt", "color": "b8412f", "sleeve": 0.45, "bottom": 0.5, "collar": true},
       {"piece": "overalls", "color": "3f6a9e", "buttons": "d9a84a", "bib": 0.34},
