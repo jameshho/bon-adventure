@@ -6,6 +6,10 @@ extends RefCounted
 # never written again, so it stays as a backup. Bookmarks stay one shared list (below).
 # The files live in the active profile's folder (save_store.gd). LANGUAGE_FILE, PROGRESS_FILE
 # and BOOKMARKS_FILE are where they are without a profile (what checks read and write).
+# Keys that are not in the vocabulary (a word removed from words.json, or renamed without an
+# alias) are left out in memory only: saving writes them back unchanged, so they count again if
+# the word returns (25 Nov 2026; before, every load deleted them from the save). A file that does
+# not parse is kept as a backup by save_store.gd before it can be replaced.
 const SaveStore := preload("res://scripts/core/save_store.gd")
 const LANGUAGE_FILE := "user://vocabulary_progress_by_language.json"
 const PROGRESS_FILE := "user://vocabulary_apartment_progress.json"
@@ -43,8 +47,8 @@ static func load_studied_words(valid_vocabulary: Dictionary = {}, aliases: Dicti
     var saved: Dictionary = _read_languages()
     if saved.get(language) is Array:
         var studied: Dictionary = normalize_studied_words(saved[language], valid_vocabulary, aliases)
-        # Persist canonical vocabulary keys, including aliases in older saves.
-        if studied.keys() != saved[language]:
+        # Persist canonical vocabulary keys, including aliases in older saves (unknown keys stay).
+        if normalize_studied_words(saved[language], {}, aliases).keys() != saved[language]:
             save_studied_words(studied, valid_vocabulary, aliases, language)
         return studied
     if language == LEGACY_LANGUAGE:
@@ -55,10 +59,22 @@ static func load_studied_words(valid_vocabulary: Dictionary = {}, aliases: Dicti
             return studied
     return {}
 
+## Saves one language's words; the other languages and this language's unknown keys are kept.
 static func save_studied_words(studied_words: Dictionary, valid_vocabulary: Dictionary = {}, aliases: Dictionary = {}, language: String = LEGACY_LANGUAGE) -> void:
     var saved: Dictionary = _read_languages()
-    saved[language] = normalize_studied_words(studied_words.keys(), valid_vocabulary, aliases).keys()
+    var previous: Array = saved[language] if saved.get(language) is Array else []
+    saved[language] = _with_unknown(normalize_studied_words(studied_words.keys(), valid_vocabulary, aliases).keys(), previous, valid_vocabulary, aliases)
     SaveStore.write_json(SaveStore.path(LANGUAGE_FILE.get_file()), saved)
+
+## `keys` plus the keys of `previous` that are not in the vocabulary (kept for a later return).
+static func _with_unknown(keys: Array, previous: Array, valid_vocabulary: Dictionary, aliases: Dictionary) -> Array:
+    if valid_vocabulary.is_empty():
+        return keys
+    var result: Array = keys.duplicate()
+    for key in normalize_studied_words(previous, {}, aliases):
+        if not valid_vocabulary.has(key) and not result.has(key):
+            result.append(key)
+    return result
 
 # Bookmarked ("saved") words live beside the progress file in their own JSON
 # array of canonical word keys, so the progress array format above is unchanged
@@ -72,5 +88,6 @@ static func load_bookmarked_words(valid_vocabulary: Dictionary = {}, aliases: Di
     return normalize_studied_words(parsed, valid_vocabulary, aliases)
 
 static func save_bookmarked_words(bookmarks: Dictionary, valid_vocabulary: Dictionary = {}, aliases: Dictionary = {}) -> void:
-    var keys: Array = normalize_studied_words(bookmarks.keys(), valid_vocabulary, aliases).keys()
+    var previous: Variant = SaveStore.read_json(SaveStore.path(BOOKMARKS_FILE.get_file()))
+    var keys: Array = _with_unknown(normalize_studied_words(bookmarks.keys(), valid_vocabulary, aliases).keys(), previous if previous is Array else [], valid_vocabulary, aliases)
     SaveStore.write_json(SaveStore.path(BOOKMARKS_FILE.get_file()), keys)

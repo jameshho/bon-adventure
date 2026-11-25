@@ -2144,7 +2144,18 @@ running minigame with its NPC's goodbye, and everything else re-renders.
   `{"es": [...], "en": [...]}`. With no Spanish entry yet, the older single array
   (`user://vocabulary_apartment_progress.json`, or the v0.20 location) is copied in as
   `es`; the old file is never written again. Main keeps `progress_language` and reloads
-  `studied_words` when the foreign language changes.
+  `studied_words` when the foreign language changes. Since 25 Nov 2026 keys that are not in
+  the vocabulary (a removed word, a rename without an alias) are left out in memory only and
+  saved back unchanged, for progress and bookmarks; saving one language keeps the others.
+- Save safety (`save_store.gd`, `profile_manager.gd`; 25 Nov 2026, improvement plan C1):
+  a write that fails or comes up short removes its `.tmp` and keeps the old file; a save that
+  exists but does not parse is copied once to `<file>.corrupt-<unix time>` (with a warning)
+  before defaults can replace it; a lost or unreadable `profiles/index.json` is rebuilt from
+  the `user://profiles/p*` folders (placeholder names `P1`…, BonBon avatar), and `next` always
+  goes above every folder, so ids and folders are never reused and older flat saves are never
+  copied into an existing folder. A new `shared()` singleton that reads profile saves, or
+  listens to one that does, must be added to `ProfileManager.reset_singletons()` (SessionWords
+  was missing until 25 Nov 2026). Check: `docs/evidence/save-robustness-20261125/verify.gd`.
 - Language change: Main compares `native/foreign` in `_on_settings_changed`; on a change it
   calls `end_activity()` on every session that has one (shop: as leaving the store; cashier:
   ends the round with his goodbye; family: closes the game with Dr. Li's goodbye and renames
