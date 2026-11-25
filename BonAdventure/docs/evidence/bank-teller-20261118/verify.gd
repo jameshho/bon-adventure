@@ -8,6 +8,9 @@ extends SceneTree
 ## paid right; the money screen offers only the $5, $10, $50 and $100 bills and no coins; ✕ on a
 ## question asks to leave and "no" asks the question again; the last customer closes the window
 ## and the banker thanks the player in the lobby; leaving mid-game clears the customers.
+## Updated 24 Nov 2026 to the new flow (docs/guides/TOWN_DESIGN_BRIEF.md "Next, Please! polish"):
+## the teller sits on window 2's chair, a withdrawal is asked once in the account view (no
+## "Check the account" step), and a served customer's thanks moves on by itself (no "Next!").
 ## HOME=<scratch> VT_FOCUS=bank VT_SPAWN=none \
 ##   godot --path . --resolution 1280x800 --script res://docs/evidence/bank-teller-20261118/verify.gd
 ## (headless: checks only). With graphics it writes *.png here. Main saves only in the isolated HOME.
@@ -62,27 +65,26 @@ func run() -> void:
 	check(session.playing, "Yes starts the game")
 	await create_timer(1.2).timeout
 	var town: Node3D = game.apartment
-	var spot: Vector3 = town.to_global(Session.TELLER_SPOT)
-	check(Vector2(game.player.global_position.x - spot.x, game.player.global_position.z - spot.z).length() < 0.6, "the player stands behind window 2 (%s)" % game.player.global_position)
+	var chair: Node = session.bank.get_node_or_null(Session.TELLER_SEAT)
+	check(game.player.seated and chair != null and game.seating.current.get("node") == chair, "the player sits on window 2's chair (24 Nov 2026)")
 	check(session._monitor != null and session._monitor.visible and session._screen_idle.visible and session._screen_idle.text == lexicon.phrase("teller.screen_idle", lexicon.foreign), "the monitor shows the window number")
 	check(session._change_at == 1 and session._short_at == 2, "3 customers: change is the second, the short account the third")
-	await _until(func() -> bool: return session.step == "ask", 6.0)
+	await _until(func() -> bool: return session.step == "screen", 6.0)
 	var first: Dictionary = session.current
-	check(session.step == "ask" and host.line_id == "teller.ask" and panel.has_choices(), "the first customer walks up and asks (%s)" % session.step)
+	check(session.step == "screen" and host.line_id == str(first.ask) and panel.has_choices(), "the first customer walks up and asks, the account on the monitor (%s)" % session.step)
 	check(first.kind == "withdraw" and first.dollars % 100 == 0 and first.dollars >= 100 and first.dollars <= 500, "customer 1: whole hundreds (%d)" % first.dollars)
 	var window: Vector3 = town.to_global(Session.WINDOW_SPOT)
 	check(Vector2(first.node.global_position.x - window.x, first.node.global_position.z - window.z).length() < 0.05, "the customer stands at window 2")
 	check(str(panel.current_line().foreign).contains(lexicon.money(first.dollars * 100, lexicon.foreign)), "the request says the amount in words")
 	check(str(panel.current_line().native).contains(Currency.usd(first.dollars * 100)), "the translation shows it in digits")
 	check(not session.waiting.is_empty() and is_instance_valid(session.waiting.node), "the next customer joins the queue")
-	check(first.presence.is_zoomed(), "the camera frames the customer's face")
+	check(session._camera != null and session._camera.current, "the account view frames the customer and the monitor")
 	if graphics:
 		await _snap("customer-asks")
 	# --- the monitor and a wrong "not enough"
 	first.balance = first.dollars + 125
-	session._on_choice(host.choice_prefix() + "check")
-	check(session.step == "screen" and host.line_id == "teller.screen", "Check the account: the customer asks if it is enough")
-	check(session._camera != null and session._camera.current, "the monitor close-up")
+	session._on_choice(host.choice_prefix() + "check")   # shows the changed balance
+	check(session.step == "screen" and host.line_id == str(first.ask), "the request stands while the balance is read (one line)")
 	check(session._screen_amount.text == Currency.usd(first.balance * 100) and session._screen_top.text.contains(first.name), "the monitor shows the name and balance %s" % session._screen_amount.text)
 	if graphics:
 		await _snap("monitor-balance")
@@ -114,10 +116,9 @@ func run() -> void:
 	session._on_talk_closed(host.line_id)
 	check(host.is_asking_leave(), "✕ on a customer's line asks to leave")
 	host._on_quit_answered(false)
-	check(not host.is_asking_leave() and host.line_id == str(first.thanks) and panel.has_choices(), "No: the same line again")
-	# --- customer 2: change, a $100 back, then right
-	session._on_choice(host.choice_prefix() + "next")
-	await _until(func() -> bool: return session.step == "ask", 6.0)
+	check(not host.is_asking_leave() and host.line_id == str(first.thanks) and not panel.has_choices(), "No: the same line again, with no button")
+	# --- customer 2 steps up by itself: change, a $100 back, then right
+	await _next_customer(session, first.number)
 	var second: Dictionary = session.current
 	check(second.kind == "change" and second.dollars % 100 == 0 and host.line_id == "teller.ask", "customer 2 wants change (%d)" % second.dollars)
 	check(str(panel.current_line().foreign).contains(lexicon.money(second.dollars * 100, lexicon.foreign)), "the change request names the amount")
@@ -134,11 +135,9 @@ func run() -> void:
 	money._submit_button.pressed.emit()
 	check(host.line_id == "teller.change_thanks" and Board.shared().done("teller_bank") == 0, "paid in fifties: thanks (missed, so no count)")
 	# --- customer 3: short account, a right "not enough" (counts)
-	session._on_choice(host.choice_prefix() + "next")
-	await _until(func() -> bool: return session.step == "ask", 6.0)
+	await _next_customer(session, second.number)
 	var third: Dictionary = session.current
 	check(third.kind == "withdraw" and third.balance < third.dollars, "customer 3's account is short (%d of %d)" % [third.balance, third.dollars])
-	session._on_choice(host.choice_prefix() + "check")
 	session._on_choice(host.choice_prefix() + "decline")
 	check(host.line_id == "teller.no_funds" and session.step == "declined" and session._camera.current, "a right 'not enough': the teller says it, in close-up (21 Nov 2026)")
 	await _until(func() -> bool: return session.step == "served", 6.0)
@@ -147,23 +146,18 @@ func run() -> void:
 	var guard := 0
 	while not session._finished and guard < 6:
 		guard += 1
-		session._on_choice(host.choice_prefix() + "next")
-		await _until(func() -> bool: return session.step == "ask", 6.0)
+		await _next_customer(session, session.current.get("number", -1) if not session.current.is_empty() else -1)
 		var c: Dictionary = session.current
 		if c.kind == "withdraw" and c.balance < c.dollars:
-			session._on_choice(host.choice_prefix() + "check")
 			session._on_choice(host.choice_prefix() + "decline")
 			await _until(func() -> bool: return session.step == "served", 6.0)
 		else:
-			session._on_choice(host.choice_prefix() + ("count" if c.kind == "change" else "check"))
-			if c.kind == "withdraw":
-				session._on_choice(host.choice_prefix() + "count")
+			session._on_choice(host.choice_prefix() + "count")
 			_pay(money, c.dollars, c.kind == "change")
 			money._submit_button.pressed.emit()
 	check(session._finished and Board.shared().done("teller_bank") == 3, "the target is reached (%d)" % Board.shared().done("teller_bank"))
-	check(panel.current_line() == session._prompt[1] and str(session._prompt[2][0].label.foreign) == lexicon.line("teller.close_window").foreign, "the last customer: Close the window")
-	session._on_choice(host.choice_prefix() + "next")
-	await create_timer(1.4).timeout
+	check(panel.current_line() == session._prompt[1] and not panel.has_choices(), "the last customer's thanks has no button (no Close the window)")
+	await _until(func() -> bool: return not session.playing and host.line_id == "teller.complete", 10.0)
 	check(not session.playing and host.line_id == "teller.complete", "the banker thanks the player (%s)" % host.line_id)
 	check(game.player.global_position.distance_to(banker.global_position) < 3.5, "back in the lobby by the banker")
 	check(session.current.is_empty() and session.waiting.is_empty() and not session._monitor.visible, "customers and the monitor cleared")
@@ -172,7 +166,7 @@ func run() -> void:
 	# --- leaving mid-game
 	Board.shared().set_rounds("teller_bank", 5)
 	host.launch()
-	await _until(func() -> bool: return session.step == "ask", 7.0)
+	await _until(func() -> bool: return session.step in ["ask", "screen"], 7.0)
 	check(Board.shared().target("teller_bank") == 5 and session._change_at == 3 and session._short_at in [1, 2, 4], "5 customers: change is the fourth, one short account")
 	if graphics:
 		await _view("teller-view")
@@ -182,6 +176,10 @@ func run() -> void:
 	check(not session.playing and host.line_id == "teller.stopped", "leaving: the banker takes over (%s)" % host.line_id)
 	check(session.current.is_empty() and session.waiting.is_empty() and session.bank.find_children("TellerCustomer*", "", false, false).is_empty(), "no customers left behind")
 	finish()
+
+## Waits until a customer other than number `previous` stands at the window with a question.
+func _next_customer(session, previous: int) -> void:
+	await _until(func() -> bool: return not session.current.is_empty() and session.current.number != previous and session.step in ["ask", "screen"], 12.0)
 
 func _pay(money, dollars: int, change: bool) -> void:
 	money.clear()

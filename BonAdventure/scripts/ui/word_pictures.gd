@@ -167,14 +167,23 @@ func _draw_word(key: String) -> void:
 ## Copies of the meshes under `target`, placed relative to it: {"nodes": [...], "bounds": AABB},
 ## or {} when it has none or is too big (a building or a room). Hidden parts are left out, except
 ## originals the render batchers hid (their copy is drawn elsewhere); batch copies are skipped.
+## Rigged animals (24 Nov 2026, user: "the face of the animal is misplaced"): a skinned mesh's copy
+## has no skeleton, so it is drawn in its rest pose, while the eyes and face ride a
+## BoneAttachment3D on the animated head bone. Parts under an attachment are put back where they
+## sit in the rest pose, so the face stays on the head whatever the animal was doing.
 static func gather(target: Node3D) -> Dictionary:
 	var origin := target.global_transform.affine_inverse()
 	var nodes: Array = []
 	var bounds := AABB()
-	var stack: Array = [target]
+	# [node, correction]: the correction moves a part from its posed place to its rest place.
+	var stack: Array = [[target, Transform3D.IDENTITY]]
 	var seen := 0
 	while not stack.is_empty():
-		var node: Node = stack.pop_back()
+		var entry: Array = stack.pop_back()
+		var node: Node = entry[0]
+		var correction: Transform3D = entry[1]
+		if node is BoneAttachment3D:
+			correction = _rest_correction(node) * correction
 		seen += 1
 		if seen > MAX_NODES:
 			return _drop(nodes)
@@ -201,18 +210,33 @@ static func gather(target: Node3D) -> Dictionary:
 			box = node.get_aabb()
 		if copy != null:
 			copy.material_override = node.material_override
-			copy.transform = origin * (node as Node3D).global_transform
+			copy.transform = origin * correction * (node as Node3D).global_transform
 			var placed: AABB = copy.transform * box
 			bounds = placed if nodes.is_empty() else bounds.merge(placed)
 			nodes.append(copy)
 			if nodes.size() > MAX_PARTS:
 				return _drop(nodes)
 		for child in node.get_children():
-			stack.append(child)
+			stack.append([child, correction])
 	if nodes.is_empty() or bounds.size.length() < 0.001 \
 			or maxf(bounds.size.x, maxf(bounds.size.y, bounds.size.z)) > MAX_EXTENT:
 		return _drop(nodes)
 	return {"nodes": nodes, "bounds": bounds}
+
+## World transform taking a part on `attachment`'s posed bone to the same part on its rest bone
+## (identity when the attachment has no skeleton or bone).
+static func _rest_correction(attachment: BoneAttachment3D) -> Transform3D:
+	var skeleton := attachment.get_parent() as Skeleton3D
+	if attachment.use_external_skeleton:
+		skeleton = attachment.get_node_or_null(attachment.external_skeleton) as Skeleton3D
+	if skeleton == null:
+		skeleton = attachment.get_node_or_null("../Skeleton3D") as Skeleton3D
+	var bone := attachment.bone_idx
+	if skeleton == null or bone < 0 or bone >= skeleton.get_bone_count():
+		return Transform3D.IDENTITY
+	var posed := skeleton.global_transform * skeleton.get_bone_global_pose(bone)
+	var rest := skeleton.global_transform * skeleton.get_bone_global_rest(bone)
+	return rest * posed.affine_inverse()
 
 static func _drop(nodes: Array) -> Dictionary:
 	for node in nodes:

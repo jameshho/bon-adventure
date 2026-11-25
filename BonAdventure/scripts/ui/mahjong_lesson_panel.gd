@@ -130,6 +130,8 @@ func _init() -> void:
 	portrait.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	talk.add_child(portrait)
 	tail = BubbleTail.new()
+	# No speech-bubble point (user, 24 Nov 2026: no triangles on dialogue boxes).
+	tail.visible = false
 	talk.add_child(tail)
 	bubble = PanelContainer.new()
 	bubble.size_flags_vertical = Control.SIZE_EXPAND_FILL

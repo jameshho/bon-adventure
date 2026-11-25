@@ -31,7 +31,7 @@ extends Control
 ##
 ## UI art style (user, 18 Nov 2026; docs/guides/UI_STYLE.md, mockup
 ## design-references/ui/dialogue-box.webp): the dialogue box and the quit card are cream
-## (BonStyle "dialogue": white rim, soft shadow; the dialogue box has a small tail pointing up to
+## (BonStyle "dialogue": white rim, soft shadow; since 24 Nov 2026 no tail (it used to point up to
 ## the speaker), the speaker's name sits in a blue pill INSIDE the box's top left, lines are dark
 ## teal Fredoka, and every button is a BonStyle pill (first choice green, others cream, Leave
 ## coral, ✕ a cream circle). The cart card keeps its dark glass until phase 2 of the restyle.
@@ -87,9 +87,9 @@ var closable := true:
 			dialogue_close.visible = on
 		if cart_quit_button != null:
 			cart_quit_button.visible = on
-## The dialogue box's small tail pointing up to the speaker (the welcome tutorial turns it off,
-## user 20 Nov 2026).
-var tail := true:
+## The dialogue box's small tail pointing up to the speaker: off everywhere since 24 Nov 2026
+## (user: "remove the triangle in dialogue boxes, all"; the tutorial had it off since 20 Nov).
+var tail := false:
 	set(on):
 		if tail != on:
 			tail = on

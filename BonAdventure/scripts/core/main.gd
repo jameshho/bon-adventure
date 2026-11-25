@@ -68,6 +68,7 @@ var settings_panel
 var popups
 ## The Inspect button and close-up of the item in the player's hand (scripts/ui/hold_inspect_ui.gd).
 var hold_ui
+var poster_ui
 ## The town blinker (scripts/characters/plush_life.gd): every plush in group "figures".
 var plush_life
 ## Blinker for the rigged clay zoo animals (group clay_animator.gd BLINK_GROUP).
@@ -223,6 +224,9 @@ func _ready() -> void:
 	# Held items (player.hand) and their Inspect button (docs/guides/HAND_HOLD.md, 13 Nov 2026).
 	hold_ui = preload("res://scripts/ui/hold_inspect_ui.gd").new()
 	hold_ui.setup(self)
+	# A click on a word of a poster opens the poster close-up (user, 24 Nov 2026).
+	poster_ui = preload("res://scripts/ui/poster_inspect_ui.gd").new()
+	poster_ui.setup(self)
 	# Every plush NPC blinks now and then (plush_life.gd, docs/guides/COMPONENTS.md#plush-characters).
 	plush_life = PlushLife.new()
 	plush_life.blink_gap = PlushLife.TOWN_BLINK_GAP
@@ -735,7 +739,7 @@ func talk_locked() -> bool:
 	return shop_panel != null and shop_panel.has_choices()
 
 func sync_player_controls() -> void:
-	var blocked: bool = talk_locked() or hud.is_map_open() or hud.is_journal_open() or hud.is_help_open() or MinigameWiring.locks_player(self) or (settings_panel != null and settings_panel.visible) or (hold_ui != null and hold_ui.inspecting())
+	var blocked: bool = talk_locked() or hud.is_map_open() or hud.is_journal_open() or hud.is_help_open() or MinigameWiring.locks_player(self) or (settings_panel != null and settings_panel.visible) or (hold_ui != null and hold_ui.inspecting()) or (poster_ui != null and poster_ui.inspecting())
 	player.set_controls_enabled(not blocked)
 	interaction.enabled = not blocked and not is_instance_valid(active_vehicle)
 	if is_instance_valid(active_vehicle):

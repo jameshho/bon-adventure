@@ -13,12 +13,17 @@ extends Node
 ##  - the object may define on_inspect_begin(inspector) / on_inspect_end(inspector).
 ## Options (open): yaw and tilt (degrees, how the object faces the camera; yaw 180 shows its -Z
 ## side, its "front"), fill (share of the view height), seconds (glide time), gentle (ease in
-## and out instead of a quick start: a slower, natural lift, e.g. picking up a book to read it).
+## and out instead of a quick start: a slower, natural lift, e.g. picking up a book to read it),
+## fit ("sphere", the default: the bounding sphere fills `fill` of the view height; "face": a flat
+## object's front, its local x × y box, fills `fill` of the view height or width, whichever is
+## reached first: a wall poster, poster_inspect_ui.gd, 24 Nov 2026), distance (0, the default: the
+## object keeps its size and sits as far away as it needs; above 0: it sits this far in front of
+## the camera, scaled down to fill the same share, so a big object stays in front of nearby walls).
 
 signal opened(item: Node3D)
 signal closed(item: Node3D)
 
-const DEFAULTS := {"yaw": 180.0, "tilt": 10.0, "fill": .72, "seconds": .35, "gentle": false}
+const DEFAULTS := {"yaw": 180.0, "tilt": 10.0, "fill": .72, "seconds": .35, "gentle": false, "fit": "sphere", "distance": 0.0}
 ## How much the backdrop dims the world (material alpha; fades in and out with the glide).
 const BACKDROP_ALPHA := .55
 
@@ -63,7 +68,18 @@ func open(target: Node3D, view: Camera3D, options := {}) -> bool:
 	var box: AABB = preload("res://scripts/player/hand_hold.gd").local_bounds(target)
 	var size := box.size * target.global_basis.get_scale()
 	var radius := size.length() * .5
-	var distance := radius / (float(o.fill) * tan(deg_to_rad(view.fov) * .5))
+	var half_view := tan(deg_to_rad(view.fov) * .5)
+	var distance := radius / (float(o.fill) * half_view)
+	if str(o.fit) == "face":
+		var rect := view.get_viewport().get_visible_rect().size if view.get_viewport() != null else Vector2(16, 9)
+		var aspect := rect.x / maxf(rect.y, 1.0)
+		distance = maxf(size.y * .5 / (float(o.fill) * half_view), size.x * .5 / (float(o.fill) * half_view * aspect)) + size.z * .5
+	# A fixed distance: the object shrinks by the same ratio (its box and radius with it).
+	var shrink := 1.0
+	if float(o.distance) > 0.0 and distance > float(o.distance):
+		shrink = float(o.distance) / distance
+		distance = float(o.distance)
+		radius *= shrink
 	anchor = Node3D.new()
 	anchor.name = "InspectAnchor"
 	view.add_child(anchor)
@@ -78,7 +94,7 @@ func open(target: Node3D, view: Camera3D, options := {}) -> bool:
 	_from_parent.remove_child(target)
 	stage.add_child(target)
 	target.global_transform = start
-	var scale := target.basis.get_scale()
+	var scale := target.basis.get_scale() * shrink
 	var centre := box.get_center() * scale
 	var goal_basis := Basis.from_scale(scale)
 	var goal := Transform3D(goal_basis, -centre)

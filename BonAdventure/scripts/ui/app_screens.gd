@@ -298,6 +298,7 @@ func _languages_page() -> Control:
 	var lexicon = Lexicon.shared()
 	var codes: Array = lexicon.playable_codes()
 	var page := _page_box(_t("app.languages"), true)
+	var exploring := bool(_draft.get("explore", false))
 	for key in ["native", "foreign"]:
 		var grid := GridContainer.new()
 		grid.columns = codes.size() if codes.size() <= 4 else 3
@@ -306,10 +307,19 @@ func _languages_page() -> Control:
 		for code in codes:
 			var spec: Dictionary = lexicon.languages.get(str(code), {})
 			var choice := BonStyle.choice(BonStyle.flag(str(spec.get("flag", ""))), _t("language." + str(code)), str(_draft[key]) == str(code), _factor)
-			choice.pressed.connect(func() -> void: _pick_language(key, str(code)))
+			choice.pressed.connect(func() -> void:
+				# A tap on the greyed "I want to learn" row turns Just explore! back off.
+				if key == "foreign":
+					_draft.explore = false
+				_pick_language(key, str(code)))
 			grid.add_child(choice)
 		var hint := "(%s)" % _t("app.i_speak_hint" if key == "native" else "app.i_learn_hint")
-		page.add_child(BonStyle.band(_t("app.i_speak" if key == "native" else "app.i_learn"), hint, grid, _factor))
+		var band := BonStyle.band(_t("app.i_speak" if key == "native" else "app.i_learn"), hint, grid, _factor)
+		# Just explore! plays in the "I speak" language only, so "I want to learn" is greyed out
+		# (user, 24 Nov 2026: the choice was confusing while that row still looked active).
+		if key == "foreign" and exploring:
+			band.modulate = Color(0.72, 0.72, 0.72, 0.45)
+		page.add_child(band)
 	page.add_child(_explore_choice())
 	var back := BonStyle.button(_t("app.back"), "back", "arrow_left", _factor)
 	back.pressed.connect(func() -> void: _show("avatar"))

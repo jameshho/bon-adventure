@@ -4320,7 +4320,7 @@ x 150.0; the `bank` zone (`data/zones.json`) now reaches x 151.
 | Vault room | The old vault (its round-door entrance and three lockers kept) opens into a room behind the teller area (town x 141.6–145.0, z 102.1–109.4): two steel shelves of banknote bundles; the round **wall safe** (wheel, door, drum) moved onto its back wall, and the Bank's stamp coin with it (`data/achievements.json` at/face) |
 | Safe-deposit room | Through a steel door with a glass panel in the vault room's back wall (town x 145.15–149.8, full width): steel cabinets of **528 small boxes** on the back, both side walls and the front (big boxes in the bottom row), a steel table in the middle. No words; two baked MultiMeshes per cabinet (`baked_multimesh.gd`; merged meshes would have added 1.2 MB to the scene) |
 | Manager's office | The old office opens into the annex (to town x 145.0): its desk, chair and computer turned round at the back, a bookshelf of binders, the window. The manager stands beside her desk |
-| Staff door | A wooden door in the office's side wall (town x 139.0–139.95, z 109.5), behind window 3's chair: lobby → office door → staff door → behind the counter. It swings into the office, hinged on its back jamb so the open leaf stays out of both walks |
+| Staff door | A wooden door in the office's side wall (town x 139.0–139.95, z 109.5), behind window 3's chair: lobby → office door → staff door → behind the counter. It swings into the office, hinged on its back jamb so the open leaf stays out of both walks. *Too narrow for BonBon; widened to 1.3 on 24 Nov 2026 ([polish](#next-please-polish--24-november-2026)).* |
 | Heavy vault door | The vault entrance (`door.tscn`) gets `swing_seconds` 3.2 and a 0.2 leaf: it opens over 3.2 s, barely moving for the first second (9% open after 1 s), then settles. New `door.gd` export, read by `door_animator.gd` (no parallel door) |
 | Teller monitor | Window 2's monitor moved toward window 1 and turned 19° toward the teller (`teller_side_monitor`; `MONITOR_CENTRE`, `MONITOR_YAW`) |
 
@@ -4347,6 +4347,8 @@ x 150.0; the `bank` zone (`data/zones.json`) now reaches x 151.
   again; the banker offers the game again on a later visit. Nothing is saved.
 - "Not enough" for an impostor still brings the banker's hint; **Call the police** still brings
   the officer and counts.
+  *Since 24 Nov 2026 the police come from a hidden red alarm button, not a reply, and the
+  request is asked once in the account view ([polish](#next-please-polish--24-november-2026)).*
 
 **Verification (23 Nov 2026, isolated HOME, `VT_FOCUS=bank`, not the full town).**
 `docs/evidence/bank-rework-20261123/verify.gd` (graphics, 1280 × 800) **54 checks, 0 failures**:
@@ -4365,6 +4367,50 @@ earlier runs failed on route test points (one through the office door's jamb, on
 table) and on the open staff-door leaf crossing the manager's path, fixed by her path and the
 hinge side. `tools/run_checks.py`: `bank_rework` replaces `bank_impostor` (its toggle and
 banker-on-payout steps no longer exist). Size: `bank.scn` 180 KB → 319 KB.
+
+## Next, Please! polish — 24 November 2026
+
+**Request (user, from a screenshot of the bank game).** (1) No click after a customer's thanks.
+(2) No triangle on dialogue boxes, anywhere. (3) The player sits during the bank game. (4) The
+door behind the counter is too small to walk through. (5) The seats behind the counter become real
+seats. (6) One natural request line instead of two ("I want $300, I want cake" then "I want $300,
+do I have enough?"). (7) "Call the police" becomes a hidden surprise, not a reply beside "Count out
+the cash" and "Not enough". Code: `scripts/learning/teller_session.gd`; `scripts/buildings/bank.gd`
+steps `wider_staff_door`, `teller_seats` (baked into `scenes/town/bank.scn`);
+`scripts/ui/shop_order_panel.gd` `tail`; phrases in `data/phrases.json` group `teller`.
+
+| Change | Built |
+| --- | --- |
+| Thanks move on | A served customer's last line (thanks, "That's impossible!", the officer's "Please come with me now") has no button; after its reading time (`_read_time`, at most 4 s) the customer leaves and the next steps up, or the window closes after the last. While the leave question is open it waits. Phrases `teller.next` and `teller.close_window` removed |
+| No tail | The dialogue box's tail is off by default (`shop_order_panel.gd` `tail`, the tutorial no longer switches it), and the Mahjong lesson bubble's point is hidden |
+| Seated teller | The game seats the player on window 2's chair (`seating.sit_at`, `TELLER_SEAT`); standing up at the end looks for room at `TELLER_SPOT`. BonBon's model is hidden in the teller's own views (the account view's eye is where the head is) and shown in the teller's close-up (now from the lobby side, through the glass: `PLAYER_FACE_EYE` x 136.25) and the manager's walk. During the game E does nothing (an input claim `teller`), so it cannot stand the teller up by accident |
+| Staff door | 0.95 wide (about 1.24 m in the world) was narrower than BonBon's capsule (1.52 m); the 23 Nov route check used a 0.5-wide box and missed it. Rebuilt 1.3 wide (the vault door's width): town x 138.85–140.15 in the wall at z 109.525, clear of window 3's chair (x 138.15) and the back counter (x 140.8). The manager's path follows its middle (x 139.5) |
+| Teller seats | The three teller chairs were baked with `sit_disabled`; their seat parts are now named `Teller chair seat 1–3` (window 1 at z 106.5) with `sit_enabled`, facing the glass (from the chair back, as for any chair) |
+| One request | A withdrawal is asked once, in the account view (monitor and face together), with the replies **Count out the cash** and **Not enough**. "Check the account" and `teller.enough_q` are gone; "Look again" after a mistake shows the request again. A change customer is unchanged |
+| Hidden alarm | A small red button (dark base, coral cap; runtime prop `TellerAlarm` at town (137.2, 1.15, 108.2)) on the teller's side of the counter, left of window 2's keyboard, visible in the account view. A click or tap within 2.4 button radii of it (`alarm_aimed`, the pointer ray against the cap, no physics body), while a customer waits for an answer, calls the police as the old reply did: right for an impostor, a mistake for anyone else. The banker's hint after "not enough" to an impostor and the manager's second warning now name it: "Wait! Look at the photo. It's not the same face. Press the red button!" / "If it's not the same face, press the red button. If it happens again, you can't work here anymore." `teller.call_police` removed |
+
+**Why the alarm is a button on the counter.** Banks have a silent alarm under the counter, so it
+fits the place; a player who looks around the account view can find it; and whoever misses it
+learns about it from the banker's or the manager's warning, so the surprise never blocks the game.
+Not decided: whether it should glow or wobble now and then as a hint.
+
+**Verification (24 Nov 2026, isolated HOME, `VT_FOCUS=bank`, not the full town).**
+`docs/evidence/bank-teller-polish-20261124/verify.gd` (graphics, 1280 × 800) **36 checks, 0
+failures** on its second run; the first (34 of 35) found the player still seated after leaving
+the game, fixed by standing up at once behind the fade (`_stand_up`). Covered: no tail; the staff
+door 1.30 wide with a clear walk for the player's own capsule from the office to window 2; the
+three seats facing the glass; the removed and changed phrases; seated at window 2 with the model
+hidden; one request and two replies; the alarm on screen above the box, a click on it calling the
+police and a click 160 px away missing; the thanks and the officer's line moving on without a
+click; the teller's close-up showing BonBon; standing, visible and back by the banker after
+leaving. The Godot process was killed at exit (code 137) after printing its summary, in both runs.
+Pictures inspected: `account-view`, `thanks-no-button`, `teller-close-up`, `officer`,
+`staff-door-from-office`, `staff-door-from-teller-side`, `sitting-at-window-3`. The older
+`bank_teller` and `bank_rework` scripts were then updated to this flow: `bank_teller` 85 / 0;
+`bank_rework` found the manager's walk crossing the end of the wider door's open leaf (her turn
+in the office, `MANAGER_DOOR`, moved to z 111.6); details in
+[FINAL_VERIFICATION.md](FINAL_VERIFICATION.md#next-please-polish--24-november-2026). Noticed:
+sitting down at the start of the game earns the *Take a seat* achievement.
 
 ## Zoo food booth and Feeding Time — 24 November 2026
 

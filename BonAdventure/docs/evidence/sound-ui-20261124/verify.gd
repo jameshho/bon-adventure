@@ -86,7 +86,8 @@ func run():
 	check(hud.keyboard_hints and hints_shown(hud) == hud.key_hints.size(), "shown again after a key press")
 
 	# --- The word card's speaker ---------------------------------------------------------------
-	check(not sound.voice_enabled(), "spoken words are still off (user)")
+	var was_on: bool = sound.voice_enabled()  # on since 24 Nov 2026 (user); the check turns it off first
+	sound.voice["enabled"] = false
 	hud.show_card("apple", "la manzana", "Food & Drink", "apple")
 	await process_frame
 	check(not hud.speaker_button.visible, "no speaker while spoken words are off")
@@ -102,7 +103,7 @@ func run():
 	check(not hud.speaker_button.visible, "no speaker on a character's name card")
 	hud.hide_card()
 	check(not hud.speaker_button.visible, "the speaker hides with the card")
-	sound.voice["enabled"] = false
+	sound.voice["enabled"] = was_on
 	check(not sound.is_playing() and sound.get_child_count() == 0, "nothing played")
 
 	# --- Journal ------------------------------------------------------------------------------

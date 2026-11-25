@@ -11,6 +11,9 @@ extends SceneTree
 ## face above the dialogue box, the warning scene (walk out, two lines, "sorry", walk back, the
 ## game goes on with another impostor later), and the firing (two lines, the card, no replay, the
 ## banker no longer offering). With graphics it writes *.png here.
+## Updated 24 Nov 2026 to the new flow (docs/guides/TOWN_DESIGN_BRIEF.md "Next, Please! polish"):
+## a withdrawal is asked once in the account view (no "Check the account" step) and a served
+## customer moves on by itself (no "Next!"); the staff door is wider (its route is unchanged).
 ## HOME=<scratch> VT_FOCUS=bank VT_SPAWN=none \
 ##   godot --path . --resolution 1280x800 --script res://docs/evidence/bank-rework-20261123/verify.gd
 const OUT := "res://docs/evidence/bank-rework-20261123"
@@ -119,10 +122,12 @@ func run() -> void:
 	session.data["impostor_chance"] = 1.0
 	Board.shared().set_rounds("teller_bank", 5)
 	host.launch()
-	await _until(func() -> bool: return session.step == "ask", 8.0)
-	session._on_choice(host.choice_prefix() + "check")
+	await _until(func() -> bool: return session.step in ["ask", "screen"], 8.0)
+	if session.current.kind == "change":
+		await _pay(session, money, host)
+		await _until(func() -> bool: return session.step in ["ask", "screen"] and not session.current.is_empty() and session.current.kind != "change", 12.0)
 	await create_timer(0.6).timeout
-	check(session._camera != null and session._camera.current and session.step == "screen", "Check the account: the account view")
+	check(session._camera != null and session._camera.current and session.step == "screen", "a withdrawal: straight to the account view")
 	var framing := _framing(session._camera, session._monitor.global_position, session.current.node)
 	check(framing.ok, "one view shows the monitor and the customer's face, above the dialogue box %s" % framing)
 	if graphics:
@@ -161,8 +166,8 @@ func run() -> void:
 	if graphics:
 		await _snap("manager-warns-2")
 	session._on_choice(host.choice_prefix() + "sorry")
-	await _until(func() -> bool: return session.step == "ask", 10.0)
-	check(session.step == "ask" and session.playing, "the manager walks back and the game goes on")
+	await _until(func() -> bool: return session.step in ["ask", "screen"], 10.0)
+	check(session.step in ["ask", "screen"] and session.playing, "the manager walks back and the game goes on")
 	await _until(func() -> bool: return not bool(game.doors[staff_leaf].open), 6.0)
 	check(not bool(game.doors[staff_leaf].open), "the staff door closes behind her")
 	# The second impostor, paid too: the player is let go.
@@ -238,29 +243,24 @@ func _framing(camera: Camera3D, monitor: Vector3, customer: Node3D) -> Dictionar
 ## Serves customers right until an impostor stands at the window.
 func _to_impostor(session, money, host) -> void:
 	for guard in 8:
-		await _until(func() -> bool: return session.step in ["ask", "served"], 12.0)
+		await _until(func() -> bool: return session.step in ["ask", "screen", "served"], 12.0)
 		if session.step == "served":
-			session._on_choice(host.choice_prefix() + "next")
+			# The thanks moves on by itself (24 Nov 2026).
+			await _until(func() -> bool: return session.step != "served", 8.0)
 			continue
 		if session.current.get("impostor", false):
 			return
 		var c: Dictionary = session.current
-		if c.kind == "withdraw":
-			session._on_choice(host.choice_prefix() + "check")
-			if c.balance < c.dollars:
-				session._on_choice(host.choice_prefix() + "decline")
-				await _until(func() -> bool: return session.step == "served", 6.0)
-				session._on_choice(host.choice_prefix() + "next")
-				continue
-		await _pay(session, money, host, false)
+		if c.kind == "withdraw" and c.balance < c.dollars:
+			session._on_choice(host.choice_prefix() + "decline")
+			await _until(func() -> bool: return session.step == "served", 6.0)
+			continue
+		await _pay(session, money, host)
 		await _until(func() -> bool: return session.step == "served", 3.0)
-		session._on_choice(host.choice_prefix() + "next")
 
 ## Counts out the exact amount for the customer at the window.
-func _pay(session, money, host, check_first := true) -> void:
+func _pay(session, money, host) -> void:
 	var c: Dictionary = session.current
-	if check_first and c.kind == "withdraw":
-		session._on_choice(host.choice_prefix() + "check")
 	session._on_choice(host.choice_prefix() + "count")
 	money.clear()
 	var left: int = c.dollars

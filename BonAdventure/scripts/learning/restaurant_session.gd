@@ -15,14 +15,17 @@ extends Node
 ##   4. The order tablet (restaurant_panel.gd): the player inspects dishes, chooses one per
 ##      course asked and sends the order; the tablet shows "Order sent!" and closes by itself
 ##      (SENT_SECONDS).
-##   5. The customer says thanks, and VERDICT_SECONDS later "Excellent!..." or "Oh no, this
-##      is not what I ordered." Twinkle shows the "!" again.
-##   6. Back at Twinkle: "Good job!" (a visit with every dish right counts towards
-##      data/activities.json restaurant_twinkle) or what went wrong, one sentence per wrong dish
-##      ("X wanted something sweet, but you served the lemon fish. They also wanted ...") with
-##      "Next customer" / "Stop serving"; Twinkle never names the next customer ("See if any
-##      customers are ready to order"; user, 11 Nov 2026). At the target, the last report
-##      offers the words practised on the tablet, and Finish ends the game.
+##   5. The customer says thanks, and VERDICT_SECONDS later "Excellent!..." (Twinkle shows the
+##      "!" again) or, with any dish wrong, "Oh no, this is not what I ordered. Can you try
+##      again?" and RETRY_SECONDS later the tablet opens again on the same order: the right
+##      dishes stay on the slip, each wrong dish is marked ✗ and cannot be chosen again for
+##      that course (user, 24 Nov 2026: feedback at once, not after walking back to Twinkle).
+##      Only the first send is tracked (practice_log.gd first answer).
+##   6. Back at Twinkle (only after a right order): "Good job!" (the visit counts towards
+##      data/activities.json restaurant_twinkle, retries included) with "Next customer" /
+##      "Stop serving"; Twinkle never names the next customer ("See if any customers are ready
+##      to order"; user, 11 Nov 2026). At the target, the last report offers the words
+##      practised on the tablet, and Finish ends the game.
 ## The other customer meanwhile is "still looking at the menu"; customers are replaced after a
 ## game. Today's menu is chosen when the town loads and after each game, so the menu book on
 ## the table by the host stand (RestaurantMenuBook, restaurant_menu_book.gd) shows the dishes
@@ -56,6 +59,8 @@ const MESSAGE_SECONDS := 9.0
 ## (user request: "maybe 2 seconds").
 const SENT_SECONDS := 1.1
 const VERDICT_SECONDS := 2.0
+## The customer's "this is not what I ordered, can you try again?" before the tablet opens again.
+const RETRY_SECONDS := 2.5
 ## The customer's "I'd like to order a starter and a drink" before the requests (user: "wait 2
 ## seconds").
 const INTRO_SECONDS := 2.0
@@ -101,8 +106,10 @@ var current := -1
 ## The dishes sent (course → dish id) and whether every one was right.
 var sent: Dictionary = {}
 var sent_right := false
-## The wrong dishes of the last order: [[requirement missed, dish word], ...].
-var _misses: Array = []
+## The visit's wrong dishes so far (course → [dish ids]), marked ✗ on the tablet; and how many
+## orders were sent back.
+var wrong: Dictionary = {}
+var tries := 0
 ## The customer has said which courses they want (the requests follow).
 var _heard := false
 ## The last report reached the progress target.
@@ -437,7 +444,8 @@ func _next_visit() -> void:
 	_recent = _recent.slice(maxi(0, _recent.size() - RECENT))
 	sent.clear()
 	sent_right = false
-	_misses.clear()
+	wrong.clear()
+	tries = 0
 	_heard = false
 	step = Step.TO_CUSTOMER
 	_twinkle_say("restaurant.go_to_customer", {}, [], MESSAGE_SECONDS)
@@ -457,7 +465,9 @@ func open_tablet() -> void:
 	if not playing or step != Step.TO_CUSTOMER:
 		return
 	interaction.clear_card()
-	PracticeLog.shared().begin(ACTIVITY, _targets())
+	# A retry is not a new question: the first send was the answer.
+	if tries == 0:
+		PracticeLog.shared().begin(ACTIVITY, _targets())
 	panel.show_native = dialogue_panel.show_native
 	panel.set_progress(Board.shared().done(ACTIVITY), Board.shared().target(ACTIVITY))
 	panel.open(_panel_data())
@@ -481,7 +491,16 @@ func _panel_data() -> Dictionary:
 		"send": lexicon.line("restaurant.send"),
 		"sent": lexicon.line("restaurant.sent"),
 		"finish": lexicon.line("restaurant.finish"),
+		"wrong": wrong.duplicate(true),
 	}, true)
+	if tries > 0:
+		# Sent back: the customer's complaint in the bubble, the right dishes still on the slip.
+		data["order"] = lexicon.line("restaurant.verdict_wrong")
+		var kept := {}
+		for course in sent:
+			if not wrong.get(course, []).has(str(sent[course])):
+				kept[course] = str(sent[course])
+		data["picks"] = kept
 	return data
 
 func _line(ref: Dictionary) -> Dictionary:
@@ -505,20 +524,25 @@ func _on_send(picks: Dictionary) -> void:
 		if entry.is_empty() or str(entry.course) != str(request.course):
 			return
 	sent = picks.duplicate()
-	_misses.clear()
+	sent_right = true
 	var answers := {}
 	for request in requests:
-		var entry := Orders.dish(str(picks[str(request.course)]))
-		var miss := Orders.first_miss(entry, request.reqs)
+		var course := str(request.course)
+		var entry := Orders.dish(str(picks[course]))
+		var right := Orders.first_miss(entry, request.reqs).is_empty()
 		var target := str(Orders.dish(str(request.target)).word)
-		answers[target] = miss.is_empty()
-		if not miss.is_empty():
-			_misses.append([miss, str(entry.word)])
+		answers[target] = right
+		if not right:
+			sent_right = false
+			var list: Array = wrong.get(course, [])
+			if not list.has(str(entry.id)):
+				list.append(str(entry.id))
+			wrong[course] = list
 		for req in request.reqs:
 			_practise(Orders.word_of(req))
 		_practise(target)
-		_served.append(str(request.target))
-	sent_right = _misses.is_empty()
+		if tries == 0:
+			_served.append(str(request.target))
 	if PracticeLog.shared().game_id() == ACTIVITY:
 		PracticeLog.shared().first_answer(answers)
 		PracticeLog.shared().complete()
@@ -534,14 +558,28 @@ func _on_send(picks: Dictionary) -> void:
 	await get_tree().create_timer(VERDICT_SECONDS).timeout
 	if visit != _visit_id:
 		return
-	step = Step.TO_HOST
-	_customer_say(i, "restaurant.verdict_right" if sent_right else "restaurant.verdict_wrong")
+	if sent_right:
+		step = Step.TO_HOST
+		_customer_say(i, "restaurant.verdict_right")
+		return
+	# Sent back: the complaint, then the tablet again on the same order.
+	tries += 1
+	_customer_say(i, "restaurant.verdict_wrong", [], RETRY_SECONDS + 0.5)
+	_zoom_customer(tables[i].presence)
+	await get_tree().create_timer(RETRY_SECONDS).timeout
+	if visit != _visit_id or step != Step.WAITING:
+		return
+	step = Step.TO_CUSTOMER
+	if host.owns_dialogue() and host.line_id == "restaurant.verdict_wrong":
+		host.close_dialogue()
+	_zoom_customer(null)
+	open_tablet()
 
-## Back at Twinkle: praise, or what the dish missed; then the next customer, or the end.
+## Back at Twinkle (after a right order): praise; then the next customer, or the end.
 func _report() -> void:
 	_visit_id += 1
 	step = Step.NONE
-	finished = sent_right and Board.shared().add_success(ACTIVITY)
+	finished = Board.shared().add_success(ACTIVITY)
 	if finished:
 		offered = false
 	_show_report()
@@ -550,8 +588,6 @@ func _report() -> void:
 func _show_report() -> void:
 	var name_value := _name(current)
 	var ref := {"phrase": "restaurant.report_last" if finished else "restaurant.report_right", "values": {"name": name_value}}
-	if not sent_right:
-		ref = Orders.report_ref(_misses, name_value)
 	var choices: Array = [host.choice("words", "restaurant.see_words", "check")] if finished else _next_choices()
 	_zoom_customer(null)
 	host.zoom(true)

@@ -3,7 +3,7 @@ extends RefCounted
 ## bank unit (scenes/town/bank.scn).
 ## Bake:  godot --headless --path . --script res://tools/bake_unit.gd -- bank
 ## Never rename or remove a baked step (add a new one that undoes it).
-const STEPS := ["coplanar_gaps", "coplanar_gaps_2", "glass_windows", "palette_interior", "shared_doors", "door_labels", "atm_art", "vault_art", "chair_backs", "vault_safe", "rear_annex", "deposit_boxes", "staff_door", "heavy_vault_door", "teller_side_monitor", "coplanar_gaps_3"]
+const STEPS := ["coplanar_gaps", "coplanar_gaps_2", "glass_windows", "palette_interior", "shared_doors", "door_labels", "atm_art", "vault_art", "chair_backs", "vault_safe", "rear_annex", "deposit_boxes", "staff_door", "heavy_vault_door", "teller_side_monitor", "coplanar_gaps_3", "wider_staff_door", "teller_seats"]
 
 ## Faces that shared a plane and flickered are set apart (10 Nov 2026,
 ## scripts/buildings/coplanar_gaps.gd).
@@ -640,13 +640,17 @@ const STAFF_DOOR_Z := Vector2(50.0, 50.95)
 func staff_door(town: Node3D, game) -> void:
 	var bank := _bank(town)
 	_remove(game, bank.get_node_or_null("Manager divider"))
+	_build_staff_door(bank, game, STAFF_DOOR_Z)
+
+## The divider wall pieces and the hinged staff door in the opening `span` (site z).
+func _build_staff_door(bank: Node3D, game, span: Vector2) -> void:
 	var cream := Palette.WALL_CREAM
-	_span(bank, game, "Manager divider", Vector3(SPLIT_X.x, 0.0, 47.9), Vector3(SPLIT_X.y, 3.0, STAFF_DOOR_Z.x), cream)
-	_span(bank, game, "Manager divider back", Vector3(SPLIT_X.x, 0.0, STAFF_DOOR_Z.y), Vector3(SPLIT_X.y, 3.0, OLD_BACK.x), cream)
-	_span(bank, game, "Staff door head", Vector3(SPLIT_X.x, 2.2, STAFF_DOOR_Z.x), Vector3(SPLIT_X.y, 3.0, STAFF_DOOR_Z.y), cream)
+	_span(bank, game, "Manager divider", Vector3(SPLIT_X.x, 0.0, 47.9), Vector3(SPLIT_X.y, 3.0, span.x), cream)
+	_span(bank, game, "Manager divider back", Vector3(SPLIT_X.x, 0.0, span.y), Vector3(SPLIT_X.y, 3.0, OLD_BACK.x), cream)
+	_span(bank, game, "Staff door head", Vector3(SPLIT_X.x, 2.2, span.x), Vector3(SPLIT_X.y, 3.0, span.y), cream)
 	var door: Node3D = preload("res://scenes/props/door.tscn").instantiate()
 	door.name = "Staff door"
-	door.width = STAFF_DOOR_Z.y - STAFF_DOOR_Z.x
+	door.width = span.y - span.x
 	door.height = 2.2
 	door.wall_thickness = SPLIT_X.y - SPLIT_X.x
 	door.leaf_name = "Staff door leaf"
@@ -654,7 +658,7 @@ func staff_door(town: Node3D, game) -> void:
 	door.frame_color = Palette.TRIM
 	door.handle_color = Palette.IRON
 	door.swing_to_front = false   # local front (+Z) is the teller side (+x): it swings into the office
-	door.transform = Transform3D(Basis(Vector3.UP, PI / 2.0), Vector3((SPLIT_X.x + SPLIT_X.y) * 0.5, 0.0, (STAFF_DOOR_Z.x + STAFF_DOOR_Z.y) * 0.5))
+	door.transform = Transform3D(Basis(Vector3.UP, PI / 2.0), Vector3((SPLIT_X.x + SPLIT_X.y) * 0.5, 0.0, (span.x + span.y) * 0.5))
 	bank.add_child(door, true)
 	door.owner = bank.owner
 
@@ -704,3 +708,42 @@ func teller_side_monitor(town: Node3D, _game) -> void:
 ## Faces the annex brought into one plane (coplanar_gaps.gd, third pass).
 func coplanar_gaps_3(town: Node3D, _game) -> void:
 	preload("res://scripts/buildings/coplanar_gaps.gd").separate(town, "bank", 3)
+
+## The staff door was 0.95 wide (about 1.24 m in the world), narrower than BonBon's body (1.52 m):
+## the player could not get behind the counter (user, 24 Nov 2026). Rebuilt 1.3 wide, as the
+## vault door: town x 138.85-140.15, clear of window 3's chair (x 138.15) and the back counter
+## (x 140.8). teller_session.gd MANAGER_DOOR / MANAGER_SPOT follow its middle.
+const WIDE_STAFF_DOOR_Z := Vector2(49.85, 51.15)
+
+func wider_staff_door(town: Node3D, game) -> void:
+	var bank := _bank(town)
+	for title in ["Staff door", "Manager divider", "Manager divider back", "Staff door head"]:
+		var node := bank.get_node_or_null(title)
+		if node == null:
+			push_error("bank wider_staff_door: no " + title)
+		_remove(game, node)
+	_build_staff_door(bank, game, WIDE_STAFF_DOOR_Z)
+
+## The three teller chairs become seats (user, 24 Nov 2026: "make those seats behind the counter
+## actual seats"; the teller game seats the player on window 2's, teller_session.gd). They were
+## baked with sit_disabled while the teller side could not be reached. The seat parts are named
+## by window (1 at town z 106.5, 2 at 107.7, 3 at 108.9); the chair back behind each seat gives
+## the facing (the glass, -x), as for any chair (seating_controller.gd).
+func teller_seats(town: Node3D, _game) -> void:
+	var interior := _bank(town).get_node("Interior")
+	var to_town := town.global_transform.affine_inverse()
+	var found := 0
+	for child in interior.get_children():
+		if not child is Node3D or not child.has_meta("sit_disabled"):
+			continue
+		var at: Vector3 = (to_town * (child as Node3D).global_transform).origin
+		if absf(at.x - 137.9) > 0.05 or absf(at.y - 0.51) > 0.05:
+			continue   # a chair back
+		var window := 1 + roundi((at.z - 106.5) / 1.2)
+		child.name = "Teller chair seat %d" % window
+		child.remove_meta("sit_disabled")
+		child.set_meta("sit_enabled", true)
+		found += 1
+	if found != 3:
+		push_error("bank teller_seats: expected 3 teller chair seats, found %d" % found)
+	print("BANK teller_seats: %d seats" % found)

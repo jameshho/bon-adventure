@@ -101,6 +101,10 @@ const SUN_SLIDE_SECONDS := 1.0
 ## (user, 9 Nov 2026).
 const CALL_POP_AT := 0.78      # out from the table centre toward the seat (felt edge 0.92)
 const CALL_POP_HEIGHT := 0.22  # above the table top
+## Where an opponent's nameplate is anchored (table-local): out toward their chair and above the
+## table top, at their chest, so the plate sits below the face and clear of the felt.
+const NAMEPLATE_OUT := 1.45
+const NAMEPLATE_HEIGHT := 0.35
 const CALL_POP_LANGUAGE := "en"
 ## A pastel outline per call.
 const CALL_POP_OUTLINE := {"pung": Color("ff5f9e"), "chow": Color("3aa6ff"), "kong": Color("9a73ff"), "win": Color("ff9f1c"), "self_win": Color("ff9f1c")}
@@ -520,6 +524,12 @@ func _refresh() -> void:
 		lexicon.line("mahjong.seat_wind", {"wind": {"phrase": _wind_phrase(game.seat_winds[0])}}),
 	], [-1, game.seat_winds[0]])
 	_update_scores()
+	# The opponents' nameplates (UI polish, 24 Nov 2026): under each one's chest on screen, lit
+	# on their turn.
+	panel.camera = camera
+	panel.seat_points = [0, 1, 2, 3].map(func(seat: int) -> Vector3:
+		return view.to_global(View.outward(seat) * NAMEPLATE_OUT + Vector3.UP * (Home.MAHJONG_TOP + NAMEPLATE_HEIGHT)))
+	panel.set_turn(game.turn if game.phase != "over" else -1)
 	view.show_counter(game.wall_left(), game.prevailing, lexicon.phrase("mahjong.counter_word", lexicon.foreign))
 	if not game.last_call.is_empty() and game.last_call != _shown_call:
 		_shown_call = game.last_call.duplicate()

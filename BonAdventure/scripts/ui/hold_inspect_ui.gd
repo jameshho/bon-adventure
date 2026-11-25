@@ -129,7 +129,8 @@ func _refresh() -> void:
 ## Inspect while paying).
 func _covered() -> bool:
 	var paying: bool = main.get("money_panel") != null and main.money_panel.visible
-	return hud.is_map_open() or hud.is_journal_open() or hud.is_help_open() or paying
+	var poster: bool = main.get("poster_ui") != null and main.poster_ui.inspecting()
+	return hud.is_map_open() or hud.is_journal_open() or hud.is_help_open() or paying or poster
 
 func _under_dialogue(button: Control) -> bool:
 	if not hud.cluster_cover.is_valid():

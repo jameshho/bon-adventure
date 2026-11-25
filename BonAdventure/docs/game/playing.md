@@ -24,7 +24,9 @@ where the player was and comes back at that building's entrance or on clear grou
 (14 Nov). Since 18 Nov the screens follow the user's mockups ([UI art style](../guides/UI_STYLE.md)):
 a saved player is picked (green, check mark) and played with Next; the character grid shows eight
 plushes (not Sunny), whose headshots are cut from the mockup since 23 Nov (the 22 Nov vtracer traces looked pixelated); the language page has round flags and **Just explore!**, which starts the new
-player with "Show everything in my language" on.
+player with "Show everything in my language" on. Since 24 Nov the "I want to learn" row is greyed
+out while Just explore! is ticked; tapping one of its languages turns exploring off
+([screenshot](../evidence/explore-greyed-20261124/languages_explore.png)).
 [Project README](../../README.md) (startup flow) ·
 [recorded checks](../guides/FINAL_VERIFICATION.md) (search `app_flow`). There is no separate startup guide yet.
 
@@ -110,12 +112,18 @@ Chinese shows pinyin under the text.
 *Screenshot 8 Nov.*
 
 Click or tap almost any object to see a **word card** with the word in both languages; that
-counts as studying it (also while walking or jumping, since 23 Nov). Some objects can be **picked up** (books, baskets) and inspected in
+counts as studying it (also while walking or jumping, since 23 Nov). A word on a **poster**
+(school, airport, restaurants, warehouse, police, Mystery House) or a menu board opens a
+**close-up of the whole poster** instead (24 Nov): tap a word on it for its card, tap beside it,
+the ✕, Esc or E to go back ([view](../evidence/poster-closeup-20261124/restaurant-menu-board-closeup.png)). Some objects can be **picked up** (books, baskets) and inspected in
 BonBon's hand. The **journal** (J, or the book button top right) lists every word, by category or
 by area, with ★ saved words, ✓ studied words and the right and wrong answers from the tracked
 minigames. Since 23 Nov each noun shows a small picture of its object in the journal and on the
 results card after a game ([journal](../evidence/word-pictures-20261123/journal-furniture.png),
 [results](../evidence/word-pictures-20261123/results.png)); the word card in town stays text only.
+Since 24 Nov a **speaker** on the word card, on every journal row and in a word's journal page
+says the word in the language you are learning ([journal](../evidence/journal-speaker-20261124/journal-rows.png),
+[word page](../evidence/journal-speaker-20261124/journal-detail.png)).
 [Vocabulary book](../guides/ARCHITECTURE_REVIEW_PART1.md#vocabulary-book) ·
 [word pictures](../guides/ARCHITECTURE_REVIEW_PART1.md#word-pictures) ·
 [holding things](../guides/HAND_HOLD.md)

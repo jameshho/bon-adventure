@@ -8,13 +8,16 @@ made once with Amazon Polly text-to-speech. Started 24 Nov 2026 (user).
 - **Built:** the voice settings, the runtime lookup (`say_word`), the manifest of what to say,
   the Polly generator and **every word's clip**: 799 words × Spanish, Chinese and English, 2,397
   clips in `audio/voice/<lang>/`, imported (made 24 Nov 2026 after the user approved the samples).
-- **Nothing plays.** `data/sounds.json` `"voice": {"enabled": false}` (user, 24 Nov 2026): no
-  sound until the user says so. While it is false, `say_word()` plays nothing and `has_voice()`
-  is false.
+- **Switched on** (user, 24 Nov 2026: "ok switch it on"): `data/sounds.json` `"voice":
+  {"enabled": true}`. Words are said only when the player taps the speaker. Set it to false to
+  silence every word: `say_word()` then plays nothing and `has_voice()` is false.
 - **Where words are said** (user, 24 Nov 2026): a **speaker button** at the top left of the
   word card, opposite the star (`vocabulary_hud.gd` `speaker_button`, pastel `speaker` icon). It
   says the word in the language being learned, and shows only when spoken words are on and the
-  word has a clip, so it is hidden for now. Not in the journal or on the results card yet.
+  word has a clip. Since 24 Nov 2026 (user: "there should be a speak icon on the word journal")
+  the journal has one too: a speaker column at the end of every row and a speaker beside the
+  star in the word's detail view (`vocabulary_book.gd` `SPEAKER_CELL`, `detail_speaker`; the
+  column is left out while spoken words are off). Not on the results card yet.
   Phrases and dialogue lines are not built; words only.
 - **Volume:** Settings has Main volume, Music, Sound effects and Spoken words sliders (user,
   24 Nov 2026; `game_settings.gd` `VOLUME_BUSES`, saved per profile). Spoken words sets the Voice
@@ -107,7 +110,7 @@ cost cents and fit the Polly free tier. `--jobs N` (default 4) makes N clips at 
 - Done 24 Nov 2026: the user listened to the Spanish and Chinese samples and approved them,
   including Zhiyu with `x-amazon-pinyin` on Traditional characters.
 - Done 24 Nov 2026: the game's clips are made and imported (user: "Yes, make all clips").
-- **P1:** switch `enabled` on, only when the user says so.
+- Done 24 Nov 2026: `enabled` switched on (user).
 - Done 24 Nov 2026: the speaker button on the word card and the volume sliders in Settings
   (`docs/evidence/sound-ui-20261124/verify.gd`: 30 checks, 0 failures, with views).
 - 24 Nov 2026, web check: a Web export (`tools/deploy_web.py --out`, not published) served on
@@ -119,7 +122,7 @@ cost cents and fit the Polly free tier. `--jobs N` (default 4) makes N clips at 
   is the clips; GitHub's limit is 100 MB per file.
 - **P1:** the Web pack is near GitHub's 100 MB file limit. Ship only the language being learned,
   or split the clips out of `index.pck`, before adding more audio or music.
-- **P2:** decide whether to also say words in the journal and on the results card, and whether
+- **P2:** decide whether to also say words on the results card, and whether
   the card should say the word by itself when it opens.
 - **P2:** web size. All three languages are in the Web export (about 20 MB in total). Consider
   shipping or downloading only the language being learned.

@@ -27,6 +27,9 @@ extends Control
 ## - The dish page keeps "Choose this dish" pinned under it for every dish shown (disabled for a
 ##   course not ordered), and the tablet never grows past its frame: the customer column's text
 ##   shrinks until it fits (_fit_left; 23 Nov 2026, user: the button went missing).
+## - Sent back (24 Nov 2026, user): open() again with `wrong` and `picks`: the bubble holds the
+##   customer's complaint, the right dishes stay on the slip, and each wrong dish is marked ✗
+##   (red row in the list, "✗ dish" on its slip row) and cannot be chosen again for that course.
 ## - Layout scales with min(window height / 800, window width / 1100) (UI decision,
 ##   4 Nov 2026: large tap targets, text that scales with a laptop window).
 const GameSettings := preload("res://scripts/core/game_settings.gd")
@@ -50,6 +53,8 @@ const CREAM := Color("fff4dc")
 const GOLD := Color("e9c46a")
 const SIDE := Color("ebe3d2")
 const RIGHT := Color("3f7d4a")
+const WRONG := Color("b5473a")
+const WRONG_FILL := Color("f8e3df")
 const PAGE := Color("fffdf8")
 const INK := Color("2b2420")
 const RULE := Color("ddd2bc")
@@ -64,7 +69,8 @@ var show_native := false
 ## line}, hint (line),
 ## pick_course (line), courses [{id, title (line)}], wanted [course ids asked, in order], menu
 ## {course: [dish]}, schema {tastes [[id, colour]], temperature_colors, tags [ids in display
-## order]}, choose, send, sent, close, finish (lines)}. A dish: {id, name (line), price, art,
+## order]}, choose, send, sent, close, finish (lines), and after a sent-back order wrong
+## {course: [dish ids]} and picks {course: id} (the right dishes kept)}. A dish: {id, name (line), price, art,
 ## taste {id: level}, temperature, has [tags]}.
 var ui: Dictionary = {}
 ## The open menu section and the chosen dish (kept across refreshes).
@@ -299,11 +305,16 @@ func _build() -> void:
 func open(lines: Dictionary) -> void:
 	ui = lines
 	sent = {}
-	picks = {}
+	picks = ui.get("picks", {}).duplicate()
 	summary = {}
 	feedback = {}
-	var wanted: Array = ui.get("wanted", [])
+	var wanted: Array = _wanted()
 	tab = str(wanted[0]) if not wanted.is_empty() else ""
+	# The first course still without a dish (after a sent-back order: the wrong one).
+	for course in wanted:
+		if not picks.has(course):
+			tab = course
+			break
 	inspected = ""
 	_bubble_scale = 1.0
 	visible = true
@@ -345,9 +356,14 @@ func inspect(id: String) -> void:
 	inspected = id
 	_refresh()
 
-## Whether "Choose this dish" works: a dish of a course asked, not already chosen.
+## Whether "Choose this dish" works: a dish of a course asked, not already chosen, not one the
+## customer sent back for this course.
 func can_choose() -> bool:
-	return sent.is_empty() and summary.is_empty() and _wanted().has(tab) and not _dish(inspected).is_empty() and str(picks.get(tab, "")) != inspected
+	return sent.is_empty() and summary.is_empty() and _wanted().has(tab) and not _dish(inspected).is_empty() and str(picks.get(tab, "")) != inspected and not is_wrong(tab, inspected)
+
+## A dish the customer sent back for `course`.
+func is_wrong(course: String, id: String) -> bool:
+	return ui.get("wrong", {}).get(course, []).has(id)
 
 ## Puts the inspected dish on the slip and opens the next course asked without a dish.
 func choose() -> void:
@@ -642,15 +658,27 @@ func _fill_list() -> void:
 		price.size_flags_vertical = Control.SIZE_FILL
 		_set_font(price, 18)
 		row.add_child(price)
+		var sent_back := is_wrong(tab, id)
+		if sent_back:
+			# Sent back by the customer: a red ✗ instead of the price.
+			price.text = "✗"
+			price.add_theme_color_override("font_color", WRONG)
+			_set_font(price, 30)
+			picture.modulate.a = 0.55
+			name_label.add_theme_color_override("font_color", WRONG.darkened(0.2))
 		for state in ["normal", "hover", "pressed"]:
 			var fill := Color.WHITE
 			var border := RULE
 			var width := 1
 			if state == "hover":
 				fill = Color("f7f2e8")
+			if sent_back:
+				fill = WRONG_FILL
+				border = WRONG
+				width = 2
 			if id == inspected:
-				fill = Color("e6f0ec")
-				border = HEADER
+				fill = WRONG_FILL if sent_back else Color("e6f0ec")
+				border = WRONG if sent_back else HEADER
 				width = 3
 			button.add_theme_stylebox_override(state, _style(fill, border, width, int(10 * f)))
 		_list.add_child(button)
@@ -767,6 +795,17 @@ func _fill_slip() -> void:
 			native.text = str(shown[1])
 			_set_font(native, 15 * k)
 			column.add_child(native)
+		# The dishes sent back for this course, crossed out, until another is chosen.
+		var back: Array = ui.get("wrong", {}).get(course, [])
+		if entry.is_empty() and not back.is_empty():
+			var crossed := Label.new()
+			crossed.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			crossed.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+			crossed.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+			crossed.add_theme_color_override("font_color", WRONG)
+			crossed.text = "  ".join(back.map(func(id): return "✗ " + str(GameSettings.shared().view(_dish(str(id)).get("name", {}), false)[0])))
+			_set_font(crossed, 17 * k)
+			column.add_child(crossed)
 		var dish_row := HBoxContainer.new()
 		dish_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		dish_row.alignment = BoxContainer.ALIGNMENT_END

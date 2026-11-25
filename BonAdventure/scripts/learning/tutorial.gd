@@ -323,8 +323,6 @@ func start(from_act: int) -> void:
 	main.hud.tutorial_pulse = {}
 	# No ✕ on the dialogue box (its lines move on by themselves) and no clock (user, 18 Nov 2026).
 	panel.closable = false
-	# Nor the box's tail (user, 20 Nov 2026).
-	panel.tail = false
 	_hide_clock(true)
 	# The shower curtain stays shut until the hunt (_find()).
 	_lock_curtain(act == 0)
@@ -1748,7 +1746,6 @@ func _stop() -> void:
 	main.hud.tutorial_hidden = {}
 	main.hud.tutorial_pulse = {}
 	panel.closable = true
-	panel.tail = true
 	_hide_clock(false)
 	_apply_gate()
 	_clear_picnic()

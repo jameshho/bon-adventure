@@ -48,8 +48,8 @@
     }
   },
   "voice": {
-    "_comment": "Spoken words (24 Nov 2026): one clip per word and language at <folder>/<lang>/<file>.ogg, where <file> is sound.gd voice_file(key). 'enabled' is the master switch: while false, sound.gd say_word() plays nothing (user, 24 Nov 2026: no sound until the user has listened to samples). tools/voice_manifest.gd lists what to say; tools/voice_generate.py makes the clips with Amazon Polly. 'languages' gives each language's Polly voice. Guide: docs/guides/VOICE.md.",
-    "enabled": false,
+    "_comment": "Spoken words (24 Nov 2026): one clip per word and language at <folder>/<lang>/<file>.ogg, where <file> is sound.gd voice_file(key). 'enabled' is the master switch: while false, sound.gd say_word() plays nothing. Switched on 24 Nov 2026 (user). tools/voice_manifest.gd lists what to say; tools/voice_generate.py makes the clips with Amazon Polly. 'languages' gives each language's Polly voice. Guide: docs/guides/VOICE.md.",
+    "enabled": true,
     "folder": "res://audio/voice",
     "bus": "Voice",
     "volume_db": 0.0,

@@ -4,16 +4,22 @@ extends Node
 ## bank's reception asks the player to cover teller window 2. The screen fades and the player
 ## stands behind the window; plush customers (house characters) come up from the queue ropes one
 ## at a time:
-##   - a withdrawal: the customer asks for an amount in words ($100-$500, multiples of 5).
-##     "Check the account" turns the camera to the window's monitor, which shows the balance in
-##     digits; the teller then counts out the cash (the shared money screen, $5/$10/$50/$100
-##     bills only) or says "not enough" (one customer per session is short);
+##   - a withdrawal: the customer asks for an amount in words ($100-$500, multiples of 5) while
+##     the window's monitor shows the account (since 24 Nov 2026, user: one request line, no
+##     "Check the account" step and no second "Do I have enough?"); the teller counts out the
+##     cash (the shared money screen, $5/$10/$50/$100 bills only) or says "not enough" (one
+##     customer per session is short);
 ##   - change (one customer per session): whole hundreds paid back without $100 bills;
 ##   - an impostor (user, 21 Nov 2026; at most one per session, data/bank_teller.json
 ##     impostor_chance): the monitor shows each account's name, balance and the owner's headshot
 ##     (plush_portraits.gd); an impostor claims another character's account, so the photo is a
-##     different animal. "Call the police" brings a police officer (the beagle in the police
-##     costume, like the police station's) who escorts the impostor out of the bank.
+##     different animal. The hidden alarm (user, 24 Nov 2026: a surprise, no longer a reply
+##     button) is a red button on the counter beside the keyboard; pressing it brings a police
+##     officer (the beagle in the police costume, like the police station's) who escorts the
+##     impostor out of the bank. The banker's and the manager's warnings name the red button.
+## The player sits on window 2's chair for the whole game (user, 24 Nov 2026; bank.gd
+## teller_seats); BonBon's model is hidden in the teller's own views and shown in the close-up
+## of the teller and the manager's walk. A served customer's thanks moves on by itself.
 ## Since 23 Nov 2026 (user) one view shows both: window 2's monitor stands to the side of the
 ## window, turned toward the teller, so the account (photo, name, balance) and the customer's face
 ## behind the glass are on screen together (the camera toggle of 21 Nov is gone). The monitor's
@@ -23,7 +29,7 @@ extends Node
 ## door, says it was wrong and warns the player, walks back, and the game goes on; another
 ## impostor comes later in the session. A second payout in one session: she lets the player go;
 ## the session ends with a "let go" results card (no Play again; the banker offers the game
-## again on a later visit). Nothing is saved. "Call the police" stays the right answer.
+## again on a later visit). Nothing is saved. The alarm stays the right answer.
 ## 70% of withdrawals give a reason (a persona story); the rest just ask and say thanks.
 ## The customer reacts in character (data/phrases.json group "teller", personas in
 ## data/bank_teller.json). A customer counts when served right the first time; at the
@@ -62,6 +68,13 @@ const BANKER := "BearBanker"
 ## and 109.5 between x 132.5 and 134.6.
 const TELLER_SPOT := Vector3(139.25, 0.03, 107.7)
 const TELLER_LOOK := Vector3(-1, 0, 0)
+## Window 2's chair (bank.gd teller_seats): the player sits here for the game; standing up
+## starts looking for room at TELLER_SPOT.
+const TELLER_SEAT := "Interior/Teller chair seat 2"
+## The hidden alarm (24 Nov 2026): a red button on the teller's side of the counter top (top
+## 1.15), left of window 2's keyboard as the teller sees it, in the account view.
+const ALARM_AT := Vector3(137.2, 1.15, 108.2)
+const ALARM_RADIUS := 0.045
 const WINDOW_SPOT := Vector3(135.75, 0.03, 107.7)
 const QUEUE_SPOT := Vector3(133.2, 0.03, 107.75)
 const DOOR_SPOT := Vector3(127.6, 0.03, 108.0)
@@ -91,9 +104,10 @@ const VIEW_AT := Vector3(136.0, 1.0, 107.38)
 const VIEW_FOV := 50.0
 ## The bank manager (23 Nov 2026): a crocodile in a suit ("la jefa", word boss) who stands by
 ## her desk at the back of the office (bank.gd rear_annex), facing the office door. She walks
-## to the staff door (bank.gd staff_door: town x 139.0-139.95 in the wall at z 109.525; its open
-## leaf lies along x 139.95 up to z 110.55, so she passes beyond it), through it and stops beside
-## the teller, north of window 2.
+## to the staff door (bank.gd wider_staff_door since 24 Nov 2026: town x 138.85-140.15 in the
+## wall at z 109.525; its open leaf lies along x 140.15 up to z 110.9, so she passes beside it),
+## through it and stops beside the teller, north of window 2. MANAGER_DOOR (the turn in the office)
+## lies north of the open leaf's end (z 110.9) so her walk from the desk passes beyond it.
 ## Her plush, outfit, word, gender, desk spot and facing are her entry in the NPC registry
 ## (data/npcs.json "bank_manager", town frame; 23 Nov 2026).
 const MANAGER_ID := "bank_manager"
@@ -104,8 +118,8 @@ static var MANAGER_WORD := str(NpcRegistry.spec(MANAGER_ID).get("word", "boss"))
 static var MANAGER_GENDER := str(NpcRegistry.spec(MANAGER_ID).get("gender", "f"))
 static var MANAGER_HOME: Vector3 = NpcRegistry.point(NpcRegistry.spec(MANAGER_ID).get("at", [143.5, 0.03, 110.3]))
 static var MANAGER_LOOK: Vector3 = NpcRegistry.direction(NpcRegistry.spec(MANAGER_ID).get("facing", "-x"))
-const MANAGER_DOOR := Vector3(139.475, 0.03, 111.0)
-const MANAGER_SPOT := Vector3(139.475, 0.03, 108.75)
+const MANAGER_DOOR := Vector3(139.5, 0.03, 111.6)
+const MANAGER_SPOT := Vector3(139.5, 0.03, 108.75)
 const MANAGER_FACE_CAMERA_AT := Vector3(139.1, 2.3, 107.35)
 const STAFF_DOOR_LEAF := "Staff door/Staff door leaf"
 ## The cutscene camera while she walks: high in the corner by the back counter at the vault end
@@ -113,10 +127,11 @@ const STAFF_DOOR_LEAF := "Staff door/Staff door leaf"
 const SCENE_EYE := Vector3(140.45, 2.9, 106.1)
 const SCENE_AT := Vector3(139.2, 0.9, 109.4)
 const SCENE_FOV := 62.0
-## The teller's own close-up (saying "not enough"): from just behind the glass, a little to the
-## side, PLAYER_FACE_LIFT above the face, with a wider lens; the face sits PLAYER_FACE_SCREEN_Y
-## of the way down the screen (as npc_presence.gd frames NPCs), clear of the dialogue box.
-const PLAYER_FACE_EYE := Vector3(137.15, 0.0, 107.35)
+## The teller's own close-up (saying "not enough"): from the customer's side, through the glass
+## (since 24 Nov 2026 the teller sits close to it), a little to the side, PLAYER_FACE_LIFT above
+## the face, with a wider lens; the face sits PLAYER_FACE_SCREEN_Y of the way down the screen
+## (as npc_presence.gd frames NPCs), clear of the dialogue box.
+const PLAYER_FACE_EYE := Vector3(136.25, 0.0, 107.35)
 const PLAYER_FACE_LIFT := 0.35
 const PLAYER_FACE_FOV := 55.0
 const PLAYER_FACE_SCREEN_Y := 0.34
@@ -197,6 +212,10 @@ var manager: Node3D
 var _manager_presence
 var _camera: Camera3D
 var _previous_camera: Camera3D
+## The hidden alarm button (made on the first game) and whether the current view shows the
+## teller (BonBon's model visible while seated).
+var _alarm: Node3D
+var _self_view := false
 var _rng := RandomNumberGenerator.new()
 
 func setup(shop_dialogue, shop_panel, money_panel, interaction_controller, explorer: Node3D, world: Node3D, game) -> void:
@@ -228,6 +247,9 @@ func setup(shop_dialogue, shop_panel, money_panel, interaction_controller, explo
 	host.leave_answered.connect(_on_leave_answered)
 	money.submitted.connect(_on_submitted)
 	money.close_requested.connect(_on_money_close)
+	# During the game a click goes to the alarm test first and E does nothing (the seat's own
+	# claim would stand the teller up).
+	interaction.claim("teller", func() -> bool: return playing, func() -> void: pass, _on_world_click)
 	_add_manager()
 
 ## The bank manager at her desk (a runtime character, like the customers; not a word to learn
@@ -285,7 +307,9 @@ func start_game() -> void:
 	_plan()
 	await zone.fade_through(func() -> void:
 		zone.place_player(town, TELLER_SPOT, TELLER_LOOK)
-		_show_monitor())
+		_sit_down()
+		_show_monitor()
+		_show_alarm())
 	if not playing:
 		return
 	host.say("teller.start", [], 4.0)
@@ -438,25 +462,25 @@ func _arrived() -> void:
 			if not waiting.is_empty() and is_instance_valid(waiting.node):
 				waiting.node.global_basis = Basis.looking_at(_town_direction(Vector3.RIGHT), Vector3.UP))
 
-## The customer's request.
+## The customer's request. A withdrawal is asked once, in the account view (24 Nov 2026, user:
+## the old second line "I want $300. Do I have enough?" repeated it).
 func _ask() -> void:
 	step = "ask"
 	if current.kind == "change":
 		_customer_say("teller.ask", lexicon.line("teller.change_ask", {"amount": _amount(current.dollars)}),
 				[host.choice("count", "teller.count_change", "money")])
 	else:
-		_customer_say("teller.ask", lexicon.line(str(current.ask), {"amount": _amount(current.dollars)}),
-				[host.choice("check", "teller.check", "look")])
+		_check_account()
 
-## "Check the account": the monitor shows the name, the balance and the account holder's photo;
-## the customer asks whether it is enough. "Call the police" is offered to every customer, so
+## The account view: the monitor shows the name, the balance and the account holder's photo
+## while the customer asks (again, after "Look again"). The replies are the cash and "not
+## enough"; the alarm on the counter is no reply (user, 24 Nov 2026: a surprise to find), so
 ## only the photo tells an impostor apart.
 func _check_account() -> void:
 	step = "screen"
 	_set_screen(true)
-	_customer_say("teller.screen", lexicon.line("teller.enough_q", {"amount": _amount(current.dollars)}),
-			[host.choice("count", "teller.pay", "money"), host.choice("decline", "teller.decline", "no"),
-			host.choice("police", "teller.call_police", "police")], true)
+	_customer_say(str(current.ask), lexicon.line(str(current.ask), {"amount": _amount(current.dollars)}),
+			[host.choice("count", "teller.pay", "money"), host.choice("decline", "teller.decline", "no")], true)
 
 func _on_choice(id: String) -> void:
 	if not playing:
@@ -472,7 +496,10 @@ func _on_choice(id: String) -> void:
 		return
 	match id.trim_prefix(host.choice_prefix()):
 		"check", "again":
-			_check_account()
+			if current.kind == "change":
+				_ask()
+			else:
+				_check_account()
 		"police":
 			_call_police()
 		"count":
@@ -508,8 +535,8 @@ func _decline() -> void:
 		PlushLife.play(self, current.node, "shake")
 		_served("teller.impossible"))
 
-## "Call the police": right for an impostor, who owns up; a police officer walks in from the door
-## and stops beside them. An honest customer protests ("Look at the photo!").
+## The alarm: right for an impostor, who owns up; a police officer walks in from the door and
+## stops beside them. An honest customer protests ("Look at the photo!").
 func _call_police() -> void:
 	if not current.get("impostor", false):
 		_miss()
@@ -577,6 +604,8 @@ func _player_speaker() -> Dictionary:
 ## A close-up of the player behind the window, from the customer's side of the desk.
 func _player_close_up() -> void:
 	_close_up(null)
+	_self_view = true
+	_show_self()
 	var model := player.get("visual") as Node3D
 	var top := player.global_position.y + 1.2
 	if model != null:
@@ -593,6 +622,7 @@ func _player_close_up() -> void:
 	var drop := eye.distance_to(face) * tan(deg_to_rad(PLAYER_FACE_FOV) * 0.5) * (0.5 - PLAYER_FACE_SCREEN_Y) * 2.0
 	var at := face - Vector3(0, drop, 0)
 	_camera_at(Transform3D(Basis.looking_at(at - eye, Vector3.UP), eye), PLAYER_FACE_FOV)
+	_self_view = true
 
 ## "Not enough" for an impostor: the banker steps in and points at the photo; the customer no
 ## longer counts. (Counting out the cash for one is _impostor_paid().)
@@ -709,6 +739,7 @@ func _scene_camera() -> void:
 	var eye := town.to_global(SCENE_EYE)
 	var at := town.to_global(SCENE_AT)
 	_camera_at(Transform3D(Basis.looking_at(at - eye, Vector3.UP), eye), SCENE_FOV)
+	_self_view = true
 
 ## Turns the player (behind the counter) to face `direction` (global).
 func _turn_player(direction: Vector3) -> void:
@@ -782,16 +813,26 @@ func _on_submitted(cents: int) -> void:
 
 ## Served right (paid exactly, a short account declined, an impostor caught): counts when right
 ## the first time; at the target the window closes after this customer. `speaker` / `presence`:
-## someone other than the customer says the line (the police officer).
+## someone other than the customer says the line (the police officer). The line has no button
+## and moves on by itself after its reading time (user, 24 Nov 2026: no "Next!" click).
 func _served(id: String, speaker: Variant = null, presence: Variant = null) -> void:
 	step = "served"
 	if not current.missed and Board.shared().add_success(ACTIVITY):
 		_finished = true
-	var choices := [host.choice("next", "teller.close_window" if _finished else "teller.next", "next")]
+	var line: Dictionary = lexicon.line(id)
 	if speaker == null:
-		_customer_say(id, lexicon.line(id), choices)
+		_customer_say(id, line, [])
 	else:
-		_say_as(speaker, presence, id, lexicon.line(id), choices)
+		_say_as(speaker, presence, id, line, [])
+	_send_off_after(_read_time(line))
+
+## "Next!" by itself after `seconds`; while the leave question is open it waits for the answer.
+func _send_off_after(seconds: float) -> void:
+	_later(seconds, "served", func() -> void:
+		if host.is_asking_leave():
+			_send_off_after(0.5)
+		else:
+			_send_off())
 
 ## "Next!": the customer walks out; the next one steps up, or the game ends.
 func _send_off() -> void:
@@ -841,6 +882,11 @@ func _finish(complete: bool, speak := true, fired := false) -> void:
 		_leaving.clear()
 		_walkers.clear()
 		_hide_monitor()
+		if _alarm != null:
+			_alarm.visible = false
+		_self_view = false
+		_show_self()
+		_stand_up()
 		host.place_player_near()
 	if not speak:
 		clear.call()
@@ -907,6 +953,7 @@ func _customer_say(id: String, line: Dictionary, choices: Array, monitor := fals
 ## `speaker` says `line`; the camera frames `presence`'s face (null: none), or the monitor.
 func _say_as(speaker: Variant, presence: Variant, id: String, line: Dictionary, choices: Array, monitor := false) -> void:
 	_prompt = [id, line, choices, monitor, speaker, presence]
+	_self_view = false
 	host.show_line(id, line, choices, 0.0, speaker)
 	_close_up(null if monitor else presence)
 	_monitor_camera(monitor)
@@ -1053,6 +1100,106 @@ func _hide_monitor() -> void:
 	if _monitor != null:
 		_monitor.visible = false
 
+# --- The teller's chair and the alarm ----------------------------------------------------------
+
+## Seats the player on window 2's chair (behind the fade). Without the chair (an older bank
+## scene) the player stands at TELLER_SPOT as before.
+func _sit_down() -> void:
+	var chair := bank.get_node_or_null(TELLER_SEAT) as Node3D
+	if chair == null or main.get("seating") == null:
+		push_warning("teller_session: no seat " + TELLER_SEAT)
+		return
+	main.seating.sit_at(chair, chair.to_local(town.to_global(TELLER_SPOT)))
+
+## Off the chair at once at the end of the game, behind the fade (the seat's own standing up is a
+## short slide toward a free spot, which would pull the player back after they are placed by
+## the banker).
+func _stand_up() -> void:
+	if not player.get("seated") and not player.get("sit_transition"):
+		return
+	var slide = player.get("sit_tween")
+	if slide is Tween and slide.is_valid():
+		slide.kill()
+	player.finish_standing()
+	if main.get("seating") != null:
+		main.seating.current = {}
+
+## BonBon's model: hidden while seated in the teller's own views (the account view sits where
+## the head is), shown otherwise.
+func _show_self() -> void:
+	var model := player.get("visual") as Node3D
+	if model != null:
+		model.visible = _self_view or not playing or not player.get("seated")
+
+## The red alarm button on the counter: a dark base and a red cap (a runtime prop like the
+## monitor's screen; no word, no collision: a click is tested against it directly).
+func _show_alarm() -> void:
+	if _alarm == null:
+		_alarm = Node3D.new()
+		_alarm.name = "TellerAlarm"
+		bank.add_child(_alarm)
+		var base := MeshInstance3D.new()
+		var base_mesh := CylinderMesh.new()
+		base_mesh.top_radius = ALARM_RADIUS * 1.5
+		base_mesh.bottom_radius = ALARM_RADIUS * 1.6
+		base_mesh.height = 0.02
+		base.mesh = base_mesh
+		base.position.y = 0.01
+		base.material_override = main.material_for(Color("2d2f3a"))
+		_alarm.add_child(base)
+		var cap := MeshInstance3D.new()
+		var cap_mesh := SphereMesh.new()
+		cap_mesh.radius = ALARM_RADIUS
+		cap_mesh.height = ALARM_RADIUS * 1.2
+		cap.mesh = cap_mesh
+		cap.position.y = 0.022
+		var red := StandardMaterial3D.new()
+		red.albedo_color = BonStyle.CORAL_BOTTOM
+		red.emission_enabled = true
+		red.emission = BonStyle.CORAL_BOTTOM
+		red.emission_energy_multiplier = 0.25
+		cap.material_override = red
+		_alarm.add_child(cap)
+	_alarm.global_transform = town.global_transform * Transform3D(Basis(), ALARM_AT)
+	_alarm.visible = true
+
+## A click or tap in the world while the game runs: on the alarm, while a customer waits for an
+## answer at the window, it calls the police; elsewhere nothing.
+func _on_world_click() -> void:
+	if not playing or current.is_empty() or not (step in ["screen", "fix"]) or _alarm == null:
+		return
+	if alarm_aimed(get_viewport().get_camera_3d(), _pointer()):
+		_press_alarm()
+
+## The pointer (the screen centre while the mouse is captured), as the interaction controller aims.
+func _pointer() -> Vector2:
+	if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+		return get_viewport().get_visible_rect().size * 0.5
+	return interaction.pointer_position
+
+## Whether `view`'s ray through `pointer` passes within ALARM_HIT radii of the button's cap (a
+## generous target, easy to tap on a phone).
+const ALARM_HIT := 2.4
+
+func alarm_aimed(view: Camera3D, pointer: Vector2) -> bool:
+	if view == null or _alarm == null or not _alarm.visible:
+		return false
+	var origin := view.project_ray_origin(pointer)
+	var direction := view.project_ray_normal(pointer)
+	var to := _alarm.to_global(Vector3(0, 0.022, 0)) - origin
+	var along := to.dot(direction)
+	if along <= 0.0:
+		return false
+	var reach := ALARM_RADIUS * ALARM_HIT * _alarm.global_basis.get_scale().x
+	return (to - direction * along).length() <= reach
+
+func _press_alarm() -> void:
+	var cap := _alarm.get_child(1) as Node3D
+	var press := create_tween()
+	press.tween_property(cap, "position:y", 0.012, 0.08)
+	press.tween_property(cap, "position:y", 0.022, 0.15)
+	_call_police()
+
 # --- Walking ---------------------------------------------------------------------------------
 
 ## A direction given in town coordinates, as a flat global direction.
@@ -1096,4 +1243,6 @@ func _process(delta: float) -> void:
 		return
 	if not _walkers.is_empty():
 		_step_walkers(delta)
+	if playing:
+		_show_self()
 	host.tick(delta)

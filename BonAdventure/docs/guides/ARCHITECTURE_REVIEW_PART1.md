@@ -745,6 +745,11 @@ the detail view) and on the [results screen](MINIGAMES.md#results-screen) word r
   interactables included). Only the target's meshes are copied into a SubViewport (no scripts
   run, the town is untouched); hidden parts are left out except originals the render batchers
   hid. `Label3D` text is never copied (it would give the word away).
+- **Rigged animals (24 Nov 2026, user: "the face of the animal is misplaced"):** the skinned body
+  is copied without its skeleton, so it is drawn in its rest pose, while the eyes and face ride a
+  `BoneAttachment3D` on the animated head. `gather()` puts parts under an attachment back at
+  the bone's rest place (`_rest_correction()`), so a picture taken while an animal walks or looks
+  around keeps the face on the head.
 - **No picture:** words of `NO_PICTURE_CATEGORIES` (Time & Directions, Colors & Descriptions,
   Actions: not nouns; Places & Rooms: their object is the place's name sign, a blank board
   without its text), words marked `"picture": false` in `data/words.json`, and targets over

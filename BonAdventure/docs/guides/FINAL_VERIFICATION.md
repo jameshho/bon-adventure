@@ -8283,3 +8283,19 @@ labels are compared below.
 
 Not run: the full suite, the web export, touch, a hands-on play-test (the checks call the egg's
 and crate's actions directly rather than pressing E).
+
+## Next, Please! polish — 24 November 2026
+
+Seated teller, one request line, thanks that move on by themselves, a hidden red alarm button
+instead of "Call the police", teller chairs as seats, a wider staff door, no dialogue-box tail
+([record](TOWN_DESIGN_BRIEF.md#next-please-polish--24-november-2026)). Bank baked
+(`tools/bake_unit.gd -- bank`, steps `wider_staff_door`, `teller_seats`). Run with
+`VT_FOCUS=bank` (not the full town), isolated HOME, graphics 1280 × 800.
+
+| Result | Check |
+| --- | --- |
+| PASS (killed at exit, 137, after the summary) | `bank_teller_polish` (new): **36 checks, 0 failures** (second run; the first, 34 / 1, found the player still seated after leaving, fixed) |
+| PASS (exit abort 134 after the summary) | `bank_teller` (18 Nov script, updated 24 Nov to the new flow: seated, one request, no "Check the account", no "Next!"): **85 checks, 0 failures** (86 before: the separate "monitor close-up" label merged into the account view). Its first run stopped on a parse error in the edit (a `:=` on an untyped value), fixed |
+| FAIL 5 / 54, then a diagnostic run 0 / 54 | `bank_rework` (23 Nov script, updated 24 Nov the same way). First run: the manager's walk crossed the end of the wider staff door's open leaf (a real issue: her turn in the office, `MANAGER_DOOR`, moved from z 111.0 to 111.6), and four manager-scene labels failed (door opens, warning 1, the manager's close-up, warning 2) while the second visit and the firing passed. A copy of the script that logged the scene every 0.5 s after the payout (not the committed script) passed **54 checks, 0 failures**: she opened the door, walked out and gave both warnings. The four failures were not reproduced; the committed script was not run again (no re-runs for a pass). **P3:** watch for a timing race in the manager scene's first visit |
+
+Not run: the full suite, `runtime_resources`, the web export, touch, a hands-on play-test.

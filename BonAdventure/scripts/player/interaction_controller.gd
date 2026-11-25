@@ -53,6 +53,10 @@ var pick_hook: Callable = Callable()
 ## a click on a plain vocabulary object then shows no card and studies nothing. The pick hook
 ## and interactables still work.
 var word_cards := true
+## Optional (word: Node3D) -> bool: a clicked word that would open its card goes here first;
+## true = handled, no card (a word on a poster opens the poster close-up instead, user 24 Nov
+## 2026; poster_inspect_ui.gd).
+var poster_hook: Callable
 ## Off while the welcome tutorial's control steps or a line of its dialogue hold the player's
 ## interactions back (tutorial.gd "controls", 17 Nov 2026, user): nothing can be focused or
 ## clicked; input claims (standing up from the bed with E) still work.
@@ -416,6 +420,9 @@ func click() -> void:
         selected_while_moving = player.velocity.length() > MOVING_SPEED
         var hit: Dictionary = aimed_hit()
         selected_point = hit["position"] if not hit.is_empty() else selected.global_position
+        if poster_hook.is_valid() and not word_filter.is_valid() and poster_hook.call(obj):
+            selected = null
+            return
         look_away_seconds = 0.0
         _card_age = 0.0
         show_word(obj)

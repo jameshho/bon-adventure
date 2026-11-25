@@ -1,7 +1,8 @@
 extends SceneTree
 ## 24 Nov 2026: the hand bar's hide/show button (docs/guides/MAHJONG.md, "Your turn"): ▾ tucks
 ## the hand away so the player's own tiles on the table show, ▴ brings it back, and the player's
-## next turn brings it back by itself. Plays until the player has an exposed set (or 30 turns),
+## next turn brings it back by itself. Updated 24 Nov 2026 (UI polish): the button is now a pull
+## tab centred on the tray's top edge that slides the tray (0.22 s) and waits at the bottom edge. Plays until the player has an exposed set (or 30 turns),
 ## then checks the button and, with graphics, saves hand-shown.png and hand-hidden.png.
 ## HOME=<scratch> VT_FOCUS=home VT_SPAWN=none godot --path . --resolution 1280x800 --script res://docs/evidence/mahjong-hand-toggle-20261124/verify.gd
 const AI := preload("res://scripts/learning/mahjong_ai.gd")
@@ -73,25 +74,25 @@ func run():
 	session.set_process(false)
 	await frames(5)
 	var toggle: Button = panel.hand_toggle
-	check(panel.hand_bar.visible and toggle.visible, "the hand and its ▾ button show")
+	check(panel.hand_bar.visible and toggle.visible, "the hand and its ▾ tab show")
 	var bar: Rect2 = panel.hand_bar.get_global_rect()
 	var at: Rect2 = toggle.get_global_rect()
-	check(at.end.y <= bar.position.y and at.end.x <= bar.end.x + 1.0 and at.end.x >= bar.end.x - 1.0, "▾ sits just above the bar's right end (%s, bar %s)" % [at, bar])
-	check(at.size.x >= 48.0, "the button is finger-sized (%.0f px)" % at.size.x)
+	check(absf(at.get_center().x - bar.get_center().x) < 2.0 and absf(at.end.y - bar.position.y - 3.0) < 2.0, "▾ is centred on the tray's top edge (%s, bar %s)" % [at, bar])
+	check(at.size.x >= 48.0 and at.size.y >= 44.0, "the tab's touch area is finger-sized (%s)" % at.size)
 	await shot("hand-shown.png")
 	toggle.pressed.emit()
-	await frames(3)
+	await create_timer(0.35).timeout
 	var screen: Vector2 = panel.get_viewport_rect().size
 	at = toggle.get_global_rect()
-	check(not panel.hand_bar.visible and toggle.visible and panel.hand_hidden, "▾ tucks the hand away")
-	check(at.end.x > screen.x - 40.0 and at.end.y > screen.y - 40.0, "▴ waits in the bottom right corner (%s)" % at)
+	check(not panel.hand_bar.visible and toggle.visible and panel.hand_hidden, "▾ slides the hand away")
+	check(absf(at.end.y - screen.y) < 1.0 and absf(at.get_center().x - screen.x * 0.5) < 2.0, "▴ waits at the bottom edge, centred (%s)" % at)
 	await shot("hand-hidden.png")
 	toggle.pressed.emit()
-	await frames(3)
-	check(panel.hand_bar.visible and not panel.hand_hidden, "▴ brings the hand back")
+	await create_timer(0.35).timeout
+	check(panel.hand_bar.visible and not panel.hand_hidden and absf(panel.hand_bar.get_global_rect().position.y - bar.position.y) < 1.0, "▴ slides the hand back")
 	# Tucked away, then the player's turn comes: the hand returns.
 	toggle.pressed.emit()
-	await frames(2)
+	await create_timer(0.35).timeout
 	for i in 2000:
 		if g.phase == "over" or (g.phase == "turn" and g.turn == 0):
 			break
@@ -99,7 +100,7 @@ func run():
 			session._on_action("pass", -1)
 		session._process(0.5)
 	session._process(0.01)   # the session redraws the panel for the new turn
-	await frames(3)
+	await create_timer(0.35).timeout
 	check(g.phase == "over" or (panel.hand_bar.visible and not panel.hand_hidden), "the player's turn brings the hand back")
 	finish()
 

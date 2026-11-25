@@ -8,11 +8,12 @@ extends Control
 ## showing your points), translate and leave at the top right beside the HUD's own buttons
 ## (16 Nov 2026: the top centre stays clear for Awoo's face), the scoreboard card that button opens (10 Nov 2026,
 ## user: each player's wind and points this visit), no message line (user, 9 Nov 2026), and the result card at the end (who won,
-## each scoring hand with its fan, the total, Play again and Leave). A round ▾ button over the
-## hand bar's right end tucks the hand away to see the player's own tiles on the table under it
-## (exposed sets, discards; user, 24 Nov 2026); ▴ at the bottom right brings it back, and so
-## does the start of the player's next turn. It only draws what
-## mahjong_session.gd gives it and emits signals; it knows no rules.
+## each scoring hand with its fan, the total, Play again and Leave). A small cream pull tab on
+## the hand tray's top edge (▾) slides the tray away to see the player's own tiles on the table
+## under it (exposed sets, discards; user, 24 Nov 2026); the tab stays at the bottom edge (▴) to
+## bring it back, and so does the start of the player's next turn. A small nameplate by each
+## opponent shows their name, seat wind and points, softly lit on their turn (UI polish, user,
+## 24 Nov 2026). It only draws what mahjong_session.gd gives it and emits signals; it knows no rules.
 ##
 ## Lines are {"foreign", "native"} dictionaries; GameSettings decides what shows. Layout scales
 ## with min(window height / 800, window width / 1100), like money_panel.gd (user decision,
@@ -47,9 +48,25 @@ const WIN_INK := Color("b3202a")
 const WIN_PULSE := 1.06
 # The money panel's pattern (user's mockup, design-references/ui/money-panel.webp, 18 Nov 2026):
 # green for the calls, cream pills for Pass / Keep / Leave and the hand's tray, soft blue cards.
+## UI polish (user, 24 Nov 2026): the calls are soft pastel green with a green outline (the
+## primary choice), Pass / Keep / Leave cream with a pale outline (secondary); thin outlines, light
+## shadows and the same corner radii everywhere.
 const CALL := BonStyle.GREEN_BOTTOM
 const PASS := Color("fbf1e1")
 const TRAY := Color("fbf1e1")
+const CALL_FILL := Color("e6f5d8")
+const CALL_INK := Color("2f7a2a")
+const QUIET_EDGE := Color("e3d3b4")
+## The well holding a call button's tile picture.
+const WELL := Color("fffdf6")
+const CARD_RADIUS := 20
+const BUTTON_RADIUS := 16
+const LINE := 3
+const SOFT_SHADOW := Color(0.1, 0.27, 0.32, 0.14)
+## The tray's slide (seconds) when the tab tucks it away or brings it back.
+const TRAY_SLIDE := 0.22
+## Nameplates: soft gold outline and glow on the player whose turn it is.
+const TURN_GLOW := Color("f2b53a")
 ## The scoreboard's change after a hand: points won, points paid.
 const GAIN := Color("3f9a35")
 const LOSS := Color("d0523f")
@@ -63,21 +80,24 @@ const HAND_GROWTH := 1.3
 ## The status card at the top left (text, small tiles, buttons and their icons) is 50 % larger
 ## than the rest of the panel (user, 16 Nov 2026). Everything in it, the icons included, scales
 ## with the window, so on a phone it stays clear of the far discards (user, 16 Nov 2026).
-const INFO_GROWTH := 1.5
-## The status card's largest height as a share of the screen's (it is scaled down past that).
-const INFO_MAX_HEIGHT := 0.19
+const INFO_GROWTH := 1.1
+## The status card's height as a share of the screen's: INFO_HEIGHT_PHONE on a phone (390 px
+## tall), INFO_HEIGHT_LAPTOP at 800 px and above, in between on the way. About 25 % smaller than
+## before the UI polish (user, 24 Nov 2026: 0.19 at most, which made about 107 px at 1280 x 800).
+const INFO_HEIGHT_PHONE := 0.14
+const INFO_HEIGHT_LAPTOP := 0.10
 ## The top centre is left clear for the face of the player across the table (Awoo; user,
 ## 16 Nov 2026: "make the top status bar easy to read but not block awoo's face"). His face is
 ## about the same share of the screen's height at any window size (the game camera keeps its
 ## vertical FOV), so the clear band reaches FACE_CLEAR x the screen's height to each side of
 ## the centre: about 0.21 of the height measured at 844x390 and 1280x800. The status card and
 ## the corner card (translate, leave) are scaled to stay outside it, and the status card grows
-## up to INFO_MAX_GROW where there is room (a phone), always within INFO_MAX_HEIGHT.
+## to its INFO_HEIGHT_* share of the screen (at most INFO_MAX_GROW times its own size).
 const FACE_CLEAR := 0.23
 ## The status card's two lines (and the wind tile) are larger than its buttons, so together they
 ## fill the buttons' height and read on a phone (16 Nov 2026).
-const INFO_TEXT_GROWTH := 1.85
-const INFO_MAX_GROW := 1.4
+const INFO_TEXT_GROWTH := 1.45
+const INFO_MAX_GROW := 2.0
 
 var show_native := false
 var letters: Array = []
@@ -89,6 +109,7 @@ var _hand: Array = []
 var _drawn := -1
 var _discarding := false
 var _actions: Array = []
+var _actions_key: Array = []
 var _result: Dictionary = {}
 var _places := HAND_SLOTS
 ## The tile marked to play on the player's next turn (-1: none); one slot of that kind shows it.
@@ -96,7 +117,16 @@ var _queued := -1
 ## The hand bar tucked away (hand_toggle); shown again on open() and when a turn of the player's
 ## begins.
 var hand_hidden := false
-var hand_toggle: Button
+var hand_toggle: TrayHandle
+## 0: the tray up, 1: slid below the screen (tweened over TRAY_SLIDE).
+var _tray_t := 0.0
+var _tray_tween: Tween
+## Opponents' nameplates (seats 1-3): where each sits in the world (`seat_points`, set by the
+## session with its `camera`) and whose turn it is (set_turn()).
+var seat_points: Array = []
+var camera: Camera3D
+var _plates: Array = [null, null, null, null]
+var _turn := -1
 
 var info_card: PanelContainer
 var info_rows: VBoxContainer
@@ -178,10 +208,8 @@ func _init() -> void:
 	hand_row = HBoxContainer.new()
 	hand_row.alignment = BoxContainer.ALIGNMENT_BEGIN
 	hand_bar.add_child(hand_row)
-	hand_toggle = Button.new()
+	hand_toggle = TrayHandle.new()
 	hand_toggle.name = "Hand toggle"
-	hand_toggle.focus_mode = Control.FOCUS_NONE
-	hand_toggle.expand_icon = false
 	hand_toggle.pressed.connect(func() -> void: set_hand_hidden(not hand_hidden))
 	add_child(hand_toggle)
 	action_row = HBoxContainer.new()
@@ -205,6 +233,10 @@ func _init() -> void:
 	add_child(score_card)
 	score_stack = VBoxContainer.new()
 	score_card.add_child(score_stack)
+	for seat in range(1, 4):
+		_plates[seat] = _make_plate(seat)
+		add_child(_plates[seat])
+	move_child(score_card, -1)
 	move_child(result_card, -1)
 	visible = false
 	resized.connect(_rescale)
@@ -222,12 +254,12 @@ func _card() -> PanelContainer:
 	var style := StyleBoxFlat.new()
 	style.bg_color = Color(FILL, .96)
 	style.border_color = EDGE
-	style.set_border_width_all(5)
-	style.set_corner_radius_all(26)
+	style.set_border_width_all(LINE)
+	style.set_corner_radius_all(CARD_RADIUS)
 	style.anti_aliasing = true
-	style.shadow_color = Color(0.1, 0.27, 0.32, 0.25)
-	style.shadow_size = 10
-	style.shadow_offset = Vector2(0, 4)
+	style.shadow_color = SOFT_SHADOW
+	style.shadow_size = 5
+	style.shadow_offset = Vector2(0, 2)
 	style.set_content_margin_all(10)
 	card.add_theme_stylebox_override("panel", style)
 	return card
@@ -279,6 +311,7 @@ func _hold_width(control: Control, line: Variant) -> void:
 
 func open() -> void:
 	hand_hidden = false
+	_snap_tray()
 	_result = {}
 	result_card.visible = false
 	visible = true
@@ -330,8 +363,9 @@ func _build_info() -> void:
 ## discards now, and how many places the hand has besides the drawn tile (13 less 3 for each
 ## exposed set).
 func set_hand(hand: Array, drawn: int, discarding: bool, places: int = HAND_SLOTS) -> void:
-	if discarding and not _discarding:
+	if discarding and not _discarding and hand_hidden:
 		hand_hidden = false   # the player's turn: the hand is needed to play
+		_slide_tray()
 	_hand = hand.duplicate()
 	_drawn = drawn
 	_discarding = discarding
@@ -352,6 +386,7 @@ func set_scores(rows: Array) -> void:
 		return
 	_scores = rows.duplicate(true)
 	score_button.text = str(_scores[0].total) if not _scores.is_empty() else ""
+	_build_plates()
 	if score_card.visible:
 		_build_scores()
 
@@ -409,15 +444,40 @@ func _build_hand() -> void:
 		var mark := not marked and kind >= 0 and kind == _queued
 		marked = marked or mark
 		_show_slot(_slots[i], kind, mark)
-	hand_bar.visible = not _hand.is_empty() and not hand_hidden
+	hand_bar.visible = not _hand.is_empty() and (not hand_hidden or _tray_t < 1.0)
 	hand_toggle.visible = not _hand.is_empty()
-	hand_toggle.icon = UiIcons.texture("up" if hand_hidden else "down", roundi(40 * _factor * INFO_GROWTH))
+	hand_toggle.up = hand_hidden
+	hand_toggle.queue_redraw()
 	_place.call_deferred()
 
-## Tucks the hand bar away (true) or brings it back.
+## Tucks the hand bar away (true) or brings it back, sliding.
 func set_hand_hidden(hidden: bool) -> void:
+	if hidden == hand_hidden:
+		return
 	hand_hidden = hidden
+	_slide_tray()
 	_build_hand()
+
+## Slides the tray toward hand_hidden over TRAY_SLIDE (from wherever it is now).
+func _slide_tray() -> void:
+	if _tray_tween != null:
+		_tray_tween.kill()
+	var goal := 1.0 if hand_hidden else 0.0
+	if not is_inside_tree() or not visible or is_equal_approx(goal, _tray_t):
+		_snap_tray()
+		return
+	hand_bar.visible = not _hand.is_empty()
+	_tray_tween = create_tween()
+	_tray_tween.tween_method(func(t: float) -> void:
+		_tray_t = t
+		_place(), _tray_t, goal, TRAY_SLIDE * absf(goal - _tray_t)).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	_tray_tween.tween_callback(_build_hand)
+
+func _snap_tray() -> void:
+	if _tray_tween != null:
+		_tray_tween.kill()
+		_tray_tween = null
+	_tray_t = 1.0 if hand_hidden else 0.0
 
 func _ensure_slots() -> void:
 	if _slots.size() == HAND_SLOTS + 1 and _slots[0].custom_minimum_size == _hand_tile:
@@ -456,40 +516,68 @@ func _show_slot(tile: TileButton, kind: int, queued := false) -> void:
 	tile.mouse_filter = Control.MOUSE_FILTER_STOP if kind >= 0 else Control.MOUSE_FILTER_IGNORE
 	tile.queue_redraw()
 
-## A flat rounded button in `color` (lighter under the mouse, darker when pressed), white text.
-func _button(text: String, color: Color, font_size: int, min_size: Vector2, margin := 10.0) -> Button:
+## A rounded button: CALL draws a call (pastel green, green outline, green words), anything else
+## a cream secondary button with a pale outline and dark teal words. Thin outline, light shadow;
+## it lifts a little under the mouse and squashes when pressed (_animate()).
+func _button(text: String, color: Color, font_size: int, min_size: Vector2, margin := 10.0, animate := true) -> Button:
 	var button := Button.new()
 	button.focus_mode = Control.FOCUS_NONE
-	for state in ["normal", "hover", "pressed"]:
-		var box := StyleBoxFlat.new()
-		box.bg_color = color.lightened(0.15) if state == "hover" else color.darkened(0.2) if state == "pressed" else color
-		box.set_corner_radius_all(18)
-		box.border_color = BonStyle.RIM
-		box.set_border_width_all(4)
-		box.anti_aliasing = true
-		box.set_content_margin_all(margin)
-		button.add_theme_stylebox_override(state, box)
-	# White words on blue, dark teal on soft blue (UI art style, 18 Nov 2026).
-	var ink: Color = Color.WHITE if color.get_luminance() < 0.6 else BonStyle.INK
-	for name in ["font_color", "font_hover_color", "font_pressed_color", "icon_normal_color", "icon_hover_color", "icon_pressed_color"]:
-		button.add_theme_color_override(name, ink)
+	button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	var call := color == CALL
+	_soft_look(button, CALL_FILL if call else PASS, CALL if call else QUIET_EDGE, margin * _factor)
+	_ink(button, CALL_INK if call else BonStyle.INK)
+	button.add_theme_font_override("font", BonStyle.font(700))
 	button.add_theme_font_size_override("font_size", roundi(font_size * _factor))
 	button.custom_minimum_size = min_size * _factor
 	button.text = text
+	if animate:
+		_animate(button)
 	return button
+
+## Every state of `button` as a flat `fill` box with a thin `edge` outline (lighter under the
+## mouse, a shade darker when pressed) and a light shadow.
+func _soft_look(button: Button, fill: Color, edge: Color, margin: float, radius := BUTTON_RADIUS) -> void:
+	var line := maxi(2, roundi(LINE * minf(_factor, 1.0)))
+	for state in ["normal", "hover", "pressed", "hover_pressed", "disabled"]:
+		var box := StyleBoxFlat.new()
+		box.bg_color = fill.lightened(0.35) if state == "hover" else fill.darkened(0.06) if state in ["pressed", "hover_pressed"] else fill
+		box.border_color = edge.darkened(0.08) if state in ["pressed", "hover_pressed"] else edge
+		box.set_border_width_all(line)
+		box.set_corner_radius_all(roundi(radius * maxf(_factor, 0.6)))
+		box.anti_aliasing = true
+		box.shadow_color = SOFT_SHADOW
+		box.shadow_size = 0 if state in ["pressed", "hover_pressed"] else roundi(4 * _factor)
+		box.shadow_offset = Vector2(0, 2 * _factor)
+		box.set_content_margin_all(margin)
+		button.add_theme_stylebox_override(state, box)
+	button.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
+
+static func _ink(button: Button, ink: Color) -> void:
+	for name in ["font_color", "font_hover_color", "font_pressed_color", "font_hover_pressed_color", "icon_normal_color", "icon_hover_color", "icon_pressed_color", "icon_hover_pressed_color"]:
+		button.add_theme_color_override(name, ink)
+
+## Gentle motion: a small lift under the mouse, a squash while pressed (UI_STYLE.md).
+static func _animate(button: Control, lift := 1.04) -> void:
+	if button.has_meta("animated"):
+		return
+	button.set_meta("animated", true)
+	button.resized.connect(func() -> void: button.pivot_offset = button.size * 0.5)
+	var go := func(to: float) -> void:
+		var tween := button.create_tween()
+		tween.tween_property(button, "scale", Vector2.ONE * to, 0.1).set_trans(Tween.TRANS_SINE)
+	button.mouse_entered.connect(go.bind(lift))
+	button.mouse_exited.connect(go.bind(1.0))
+	if button is BaseButton:
+		(button as BaseButton).button_down.connect(go.bind(0.95))
+		(button as BaseButton).button_up.connect(func() -> void:
+			go.call(lift if button.get_global_rect().has_point(button.get_global_mouse_position()) else 1.0))
 
 ## The big Mahjong! button and the hand's worth under it.
 func _build_win_offer(action: Dictionary) -> void:
-	var button := _button(_text(action.label), WIN_FILL, 46, Vector2(330, 96), 14.0)
-	for state in ["normal", "hover", "pressed"]:
-		var box: StyleBoxFlat = button.get_theme_stylebox(state)
-		box.border_color = WIN_INK
-		box.set_border_width_all(roundi(4 * _factor))
-		box.set_corner_radius_all(roundi(22 * _factor))
-		box.shadow_color = Color(0, 0, 0, 0.35)
-		box.shadow_size = roundi(8 * _factor)
-	for color_name in ["font_color", "font_hover_color", "font_pressed_color"]:
-		button.add_theme_color_override(color_name, WIN_INK)
+	var button := _button(_text(action.label), WIN_FILL, 46, Vector2(330, 96), 14.0, false)
+	# The main choice: gold with red words, the same shape as the calls (UI polish, 24 Nov 2026).
+	_soft_look(button, WIN_FILL, Color("e09a1a"), 14.0 * _factor, BUTTON_RADIUS + 4)
+	_ink(button, WIN_INK)
 	button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	button.pressed.connect(func() -> void: action_pressed.emit("win", -1))
 	win_offer.add_child(button)
@@ -504,6 +592,7 @@ func _build_win_offer(action: Dictionary) -> void:
 		win_offer.add_child(worth)
 	# A gentle pulse around the button's centre; the tween dies with the button.
 	button.resized.connect(func() -> void: button.pivot_offset = button.size * 0.5)
+	# (No hover lift on it: that would fight the pulse.)
 	var pulse := button.create_tween().set_loops()
 	pulse.tween_property(button, "scale", Vector2.ONE * WIN_PULSE, 0.45).set_trans(Tween.TRANS_SINE)
 	pulse.tween_property(button, "scale", Vector2.ONE, 0.45).set_trans(Tween.TRANS_SINE)
@@ -528,31 +617,53 @@ func _build_actions() -> void:
 			row.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			row.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 			# Wider and shorter than the hand's tiles (user, 9 Nov 2026).
-			var small := Vector2(0.72, 0.72 * 1.22) * TILE.x * _factor
+			var small := Vector2(0.66, 0.66 * 1.22) * TILE.x * _factor
 			row.custom_minimum_size = Vector2(small.x * tiles.size(), small.y)
+			# The tiles in their own light well at the button's right, apart from the word
+			# (UI polish, user, 24 Nov 2026).
+			var well := PanelContainer.new()
+			well.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			var look := StyleBoxFlat.new()
+			look.bg_color = WELL
+			look.set_corner_radius_all(roundi(10 * maxf(_factor, 0.6)))
+			look.anti_aliasing = true
+			look.set_content_margin_all(5 * _factor)
+			well.add_theme_stylebox_override("panel", look)
+			well.add_child(row)
 			var box := HBoxContainer.new()
 			box.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			box.alignment = BoxContainer.ALIGNMENT_CENTER
-			box.add_theme_constant_override("separation", int(8 * _factor))
+			box.add_theme_constant_override("separation", int(12 * _factor))
 			box.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 			var text := Label.new()
 			text.text = button.text
+			text.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 			text.add_theme_font_size_override("font_size", roundi(24 * _factor))
 			text.add_theme_color_override("font_color", button.get_theme_color("font_color"))
 			box.add_child(text)
-			box.add_child(row)
+			box.add_child(well)
 			button.text = ""
 			button.add_child(box)
 			# As wide as the label in either language: holding EN never resizes it.
 			var label_width := _widest(action.label, text)
 			text.custom_minimum_size.x = label_width
-			button.custom_minimum_size = Vector2(row.custom_minimum_size.x + maxf(110 * _factor, label_width + 40 * _factor), small.y + 20 * _factor)
+			var well_size := row.custom_minimum_size + Vector2(10, 10) * _factor
+			button.custom_minimum_size = Vector2(well_size.x + label_width + 52 * _factor, well_size.y + 18 * _factor)
 		else:
 			_hold_width(button, action.label)
 		var data := int(action.get("data", -1))
 		button.pressed.connect(func() -> void: action_pressed.emit(id, data))
 		action_row.add_child(button)
-	action_row.add_theme_constant_override("separation", int(14 * _factor))
+	action_row.add_theme_constant_override("separation", int(12 * _factor))
+	# The buttons come in with a short fade (only when the choices change).
+	var key := _actions.map(func(a: Dictionary) -> String: return "%s:%s" % [a.id, a.get("data", -1)])
+	if key != _actions_key and not _actions.is_empty() and is_inside_tree():
+		action_row.modulate.a = 0.0
+		win_offer.modulate.a = 0.0
+		var tween := create_tween().set_parallel()
+		tween.tween_property(action_row, "modulate:a", 1.0, 0.16)
+		tween.tween_property(win_offer, "modulate:a", 1.0, 0.16)
+	_actions_key = key
 	_place.call_deferred()
 
 func _build_result() -> void:
@@ -677,28 +788,148 @@ func refresh_display() -> void:
 			_build_result()
 	_place.call_deferred()
 
+# --- Opponents' nameplates (UI polish, user, 24 Nov 2026) ----------------------------------
+
+## Lights the nameplate of the player whose turn it is (-1 or 0: none lit).
+func set_turn(seat: int) -> void:
+	if seat == _turn:
+		return
+	_turn = seat
+	for plate_seat in range(1, 4):
+		_style_plate(plate_seat)
+
+## A small cream plate: the seat wind as a little tile, the name, the points.
+func _make_plate(seat: int) -> PanelContainer:
+	var plate := PanelContainer.new()
+	plate.name = "Nameplate %d" % seat
+	plate.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	plate.visible = false
+	var row := HBoxContainer.new()
+	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	plate.add_child(row)
+	var wind := TileStrip.new()
+	wind.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	wind.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	row.add_child(wind)
+	for color in [GOLD, DIM]:
+		var label := _label(18, color)
+		label.autowrap_mode = TextServer.AUTOWRAP_OFF
+		label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		row.add_child(label)
+	return plate
+
+## Nameplates keep a readable size on a phone (the rest of the panel scales lower).
+func _plate_factor() -> float:
+	return maxf(_factor, 0.7)
+
+func _style_plate(seat: int) -> void:
+	var plate: PanelContainer = _plates[seat]
+	if plate == null:
+		return
+	var f := _plate_factor()
+	var lit := seat == _turn
+	var look := StyleBoxFlat.new()
+	look.bg_color = Color(PASS, 0.95)
+	look.border_color = TURN_GLOW if lit else QUIET_EDGE
+	look.set_border_width_all(3 if lit else 2)
+	look.set_corner_radius_all(roundi(14 * f))
+	look.anti_aliasing = true
+	look.shadow_color = Color(TURN_GLOW, 0.4) if lit else SOFT_SHADOW
+	look.shadow_size = roundi((9 if lit else 3) * f)
+	look.shadow_offset = Vector2.ZERO if lit else Vector2(0, 1.5 * f)
+	look.content_margin_left = 8 * f
+	look.content_margin_right = 12 * f
+	look.content_margin_top = 4 * f
+	look.content_margin_bottom = 4 * f
+	plate.add_theme_stylebox_override("panel", look)
+	(plate.get_child(0) as HBoxContainer).add_theme_constant_override("separation", roundi(6 * f))
+	if lit and plate.is_visible_in_tree():
+		# A soft bump as the turn arrives, nothing that keeps moving.
+		plate.pivot_offset = plate.size * 0.5
+		var tween := plate.create_tween()
+		tween.tween_property(plate, "scale", Vector2.ONE * 1.06, 0.12).set_trans(Tween.TRANS_SINE)
+		tween.tween_property(plate, "scale", Vector2.ONE, 0.16).set_trans(Tween.TRANS_SINE)
+
+func _build_plates() -> void:
+	var f := _plate_factor()
+	for seat in range(1, 4):
+		var plate: PanelContainer = _plates[seat]
+		plate.visible = seat < _scores.size()
+		if not plate.visible:
+			continue
+		var data: Dictionary = _scores[seat]
+		var row := plate.get_child(0) as HBoxContainer
+		var wind := row.get_child(0) as TileStrip
+		var kind := int(data.get("wind", -1))
+		wind.visible = kind >= 0
+		wind.tiles = [kind] if kind >= 0 else []
+		wind.letters = letters
+		wind.custom_minimum_size = Vector2(0.32, 0.32 * 1.3) * TILE.x * f
+		wind.queue_redraw()
+		var name_label := row.get_child(1) as Label
+		name_label.text = _text(data.name)
+		name_label.add_theme_font_size_override("font_size", roundi(18 * f))
+		_hold_width(name_label, data.name)
+		var points := row.get_child(2) as Label
+		points.text = str(data.total)
+		points.add_theme_font_size_override("font_size", roundi(18 * f))
+	_place.call_deferred()
+
+## Each plate under its player's point on screen (`seat_points` through `camera`), kept on the
+## screen and below the top cards.
+func _place_plates(screen: Vector2, margin: float) -> void:
+	for seat in range(1, 4):
+		var plate: PanelContainer = _plates[seat]
+		if not plate.visible:
+			continue
+		if camera == null or not is_instance_valid(camera) or seat >= seat_points.size() or camera.is_position_behind(seat_points[seat]):
+			plate.position = Vector2(-1000, -1000)
+			continue
+		plate.reset_size()
+		var plate_size := plate.size
+		var at := camera.unproject_position(seat_points[seat]) - plate_size * 0.5
+		at.x = clampf(at.x, margin, screen.x - margin - plate_size.x)
+		var top := margin
+		for card in [info_card, corner_card]:
+			var r := Rect2(card.position, card.size * card.scale)
+			if at.x < r.end.x and at.x + plate_size.x > r.position.x:
+				top = maxf(top, r.end.y + margin * 0.6)
+		at.y = clampf(at.y, top, screen.y * 0.6)
+		plate.position = at
+
 # --- Layout --------------------------------------------------------------------------------
 
 func _rescale() -> void:
 	var screen := get_viewport_rect().size if is_inside_tree() else DESIGN
 	_factor = minf(screen.y / DESIGN.y, screen.x / DESIGN.x)
 	var grown := _factor * INFO_GROWTH
-	# Lessons, scoreboard and leave: cream round buttons with dark teal icons (money panel's ✕).
-	for button in [lessons_button, score_button, leave_button, hand_toggle]:
-		BonStyle.style_button(button, "minor", grown, 22)
-		for name in ["font_color", "font_hover_color", "font_pressed_color", "font_hover_pressed_color", "icon_normal_color", "icon_hover_color", "icon_pressed_color", "icon_hover_pressed_color"]:
-			button.add_theme_color_override(name, GOLD)
-	leave_button.custom_minimum_size = Vector2(56, 56) * grown
-	lessons_button.custom_minimum_size = Vector2(56, 56) * grown
-	score_button.custom_minimum_size = Vector2(56, 56) * grown
-	hand_toggle.custom_minimum_size = Vector2(56, 56) * grown
+	# Lessons, scoreboard and leave: small cream rounded buttons with a thin outline and dark
+	# teal icons (UI polish, user, 24 Nov 2026: no thick round rims or heavy shadows).
+	for button in [lessons_button, score_button, leave_button]:
+		var saved := _factor
+		_factor = grown
+		_soft_look(button, PASS, QUIET_EDGE, 6.0 * grown, 14)
+		_factor = saved
+		_ink(button, GOLD)
+		button.add_theme_font_override("font", BonStyle.font(700))
+		button.add_theme_constant_override("h_separation", roundi(6 * grown))
+		_animate(button, 1.06)
+	leave_button.custom_minimum_size = Vector2(52, 52) * grown
+	lessons_button.custom_minimum_size = Vector2(52, 52) * grown
+	score_button.custom_minimum_size = Vector2(52, 52) * grown
 	score_button.add_theme_font_size_override("font_size", roundi(22 * grown))
 	translate_button.refresh(show_native, grown)
-	info_card.get_theme_stylebox("panel").set_content_margin_all(10 * grown)
-	corner_card.get_theme_stylebox("panel").set_content_margin_all(10 * grown)
-	lessons_button.icon = UiIcons.texture("book", roundi(64 * grown))
-	score_button.icon = UiIcons.texture("star", roundi(40 * grown))
-	leave_button.icon = UiIcons.texture("exit", roundi(64 * grown))
+	info_card.get_theme_stylebox("panel").set_content_margin_all(7 * grown)
+	(info_card.get_theme_stylebox("panel") as StyleBoxFlat).content_margin_left = 14 * grown
+	corner_card.get_theme_stylebox("panel").set_content_margin_all(7 * grown)
+	(info_card.get_child(0) as HBoxContainer).add_theme_constant_override("separation", roundi(8 * grown))
+	lessons_button.icon = UiIcons.texture("book", roundi(40 * grown))
+	score_button.icon = UiIcons.texture("star", roundi(26 * grown))
+	leave_button.icon = UiIcons.texture("exit", roundi(40 * grown))
+	hand_toggle.factor = maxf(_factor, 0.6)
+	hand_toggle.custom_minimum_size = Vector2(150, 50) * hand_toggle.factor
+	for seat in range(1, 4):
+		_style_plate(seat)
 	# The whole bar (14 tiles, 13 gaps of 2, the 18 gap before the drawn tile, the card's
 	# margins) at HAND_GROWTH, or as large as fits between the screen's side margins.
 	var natural := TILE.x * (HAND_SLOTS + 1) + 2.0 * HAND_SLOTS + 18.0
@@ -710,6 +941,7 @@ func _rescale() -> void:
 		_build_result()
 		if score_card.visible:
 			_build_scores()
+		_build_plates()
 	_place.call_deferred()
 
 func _scale_font(label: Label) -> void:
@@ -724,9 +956,10 @@ func _place() -> void:
 	var face_right := screen.x * 0.5 + screen.y * FACE_CLEAR
 	info_card.reset_size()
 	info_card.position = Vector2(margin, margin)
-	# Never taller than INFO_MAX_HEIGHT of the screen (about its height at 1280 x 800), so on a
-	# phone it stays clear of the far discards (user, 16 Nov 2026: "fit on phone").
-	info_card.scale = Vector2.ONE * minf(minf(INFO_MAX_GROW, screen.y * INFO_MAX_HEIGHT / maxf(info_card.size.y, 1.0)),
+	# A set share of the screen's height (INFO_HEIGHT_*), so on a phone it reads and stays clear
+	# of the far discards (user, 16 Nov 2026: "fit on phone"), and outside Awoo's face.
+	var share := lerpf(INFO_HEIGHT_PHONE, INFO_HEIGHT_LAPTOP, clampf((screen.y - 390.0) / 410.0, 0.0, 1.0))
+	info_card.scale = Vector2.ONE * minf(minf(INFO_MAX_GROW, screen.y * share / maxf(info_card.size.y, 1.0)),
 			(face_left - margin) / maxf(info_card.size.x, 1.0))
 	corner_card.reset_size()
 	var right := screen.x - margin
@@ -736,17 +969,19 @@ func _place() -> void:
 	corner_card.scale = Vector2.ONE * minf(info_card.scale.x, (right - face_right) / maxf(corner_card.size.x, 1.0))
 	corner_card.position = Vector2(right - corner_card.size.x * corner_card.scale.x, margin)
 	hand_bar.reset_size()
-	hand_bar.position = Vector2((screen.x - hand_bar.size.x) * 0.5, screen.y - hand_bar.size.y - margin)
-	# The hide/show button: just above the bar's right end, or in the bottom right corner while
-	# the bar is tucked away.
+	# The tray slides from its place to just below the screen (_tray_t 0 -> 1).
+	var tray_up := screen.y - hand_bar.size.y - margin
+	var tray_y := lerpf(tray_up, screen.y + 2.0, _tray_t)
+	hand_bar.position = Vector2((screen.x - hand_bar.size.x) * 0.5, tray_y)
+	# The pull tab: centred on the tray's top edge (it covers the tray's rim there, so they read
+	# as one piece), and left at the screen's bottom edge while the tray is away.
 	hand_toggle.reset_size()
-	if hand_bar.visible:
-		hand_toggle.position = Vector2(hand_bar.position.x + hand_bar.size.x - hand_toggle.size.x, hand_bar.position.y - hand_toggle.size.y - margin * 0.5)
-	else:
-		hand_toggle.position = screen - hand_toggle.size - Vector2(margin, margin)
+	var tab_bottom := minf(tray_y + LINE, screen.y) if not _hand.is_empty() else screen.y
+	hand_toggle.position = Vector2((screen.x - hand_toggle.size.x) * 0.5, tab_bottom - hand_toggle.size.y)
 	action_row.reset_size()
-	var above := hand_bar.position.y if hand_bar.visible else screen.y - margin
-	action_row.position = Vector2((screen.x - action_row.size.x) * 0.5, above - action_row.size.y - margin)
+	# The calls sit above the tab (its drawn part, not its larger touch area), with room.
+	var above := (tab_bottom - hand_toggle.tab_height()) if hand_toggle.visible else screen.y - margin
+	action_row.position = Vector2((screen.x - action_row.size.x) * 0.5, above - action_row.size.y - margin * 1.2)
 	win_offer.reset_size()
 	var over := action_row.position.y if not _actions.is_empty() and action_row.get_child_count() > 0 else above
 	win_offer.position = Vector2((screen.x - win_offer.size.x) * 0.5, over - win_offer.size.y - margin)
@@ -755,6 +990,58 @@ func _place() -> void:
 	result_card.custom_minimum_size.x = 460 * _factor
 	result_card.reset_size()
 	result_card.position = (screen - result_card.size) * Vector2(0.5, 0.42)
+	_place_plates(screen, margin)
+
+# --- The tray's pull tab --------------------------------------------------------------------
+
+## A small cream tab on the hand tray's top edge with a dark teal chevron (▾: tuck the tray
+## away; ▴ at the screen's bottom edge: bring it back). The Button is larger than the drawn tab,
+## an invisible finger-sized target around it (UI polish, user, 24 Nov 2026).
+class TrayHandle extends Button:
+	var up := false
+	var factor := 1.0
+	var _hover := false
+	func _init() -> void:
+		focus_mode = Control.FOCUS_NONE
+		flat = true
+		mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+		for state in ["normal", "hover", "pressed", "hover_pressed", "disabled", "focus"]:
+			add_theme_stylebox_override(state, StyleBoxEmpty.new())
+		mouse_entered.connect(func() -> void:
+			_hover = true
+			queue_redraw())
+		mouse_exited.connect(func() -> void:
+			_hover = false
+			queue_redraw())
+		button_down.connect(queue_redraw)
+		button_up.connect(queue_redraw)
+	## The drawn tab's height (above the tray's top edge).
+	func tab_height() -> float:
+		return 24.0 * factor
+	func _draw() -> void:
+		var h := tab_height()
+		var w := 84.0 * factor
+		var rect := Rect2((size.x - w) * 0.5, size.y - h, w, h)
+		var look := StyleBoxFlat.new()
+		look.bg_color = TRAY.darkened(0.04) if is_pressed() else TRAY.lightened(0.4) if _hover else TRAY
+		look.border_color = EDGE
+		look.border_width_top = LINE
+		look.border_width_left = LINE
+		look.border_width_right = LINE
+		look.border_width_bottom = 0
+		look.corner_radius_top_left = roundi(h * 0.6)
+		look.corner_radius_top_right = roundi(h * 0.6)
+		look.anti_aliasing = true
+		draw_style_box(look, rect)
+		var centre := rect.get_center() + Vector2(0, LINE * 0.5)
+		var half := h * 0.36
+		var rise := h * 0.17 * (-1.0 if up else 1.0)
+		var points := PackedVector2Array([centre + Vector2(-half, -rise), centre + Vector2(0, rise), centre + Vector2(half, -rise)])
+		var width := maxf(2.5, h * 0.15)
+		var ink := BonStyle.INK_SOFT if _hover else BonStyle.INK
+		draw_polyline(points, ink, width, true)
+		for point in points:
+			draw_circle(point, width * 0.5, ink, true, -1.0, true)
 
 # --- Tiles ---------------------------------------------------------------------------------
 

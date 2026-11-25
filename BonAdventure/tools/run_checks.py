@@ -258,6 +258,13 @@ CHECKS = [
     # warning no longer exist). Headless writes no PNGs; isolated HOME.
     dict(id="bank_rework", script="res://docs/evidence/bank-rework-20261123/verify.gd", suites=["full"],
          summary=r"BANK REWORK: \d+ checks, (?P<n>\d+) failures"),
+    # Next, Please! polish (24 Nov 2026): one request line in the account view, two replies, the
+    # hidden red alarm button for the police, thanks that move on by themselves, the player seated
+    # on window 2's chair, the teller chairs as seats, the wider staff door (the player's own
+    # capsule), no dialogue-box tail. bank_teller and bank_rework were updated to this flow the
+    # same day. Headless writes no PNGs; isolated HOME.
+    dict(id="bank_teller_polish", script="res://docs/evidence/bank-teller-polish-20261124/verify.gd", suites=["full"],
+         summary=r"BANK TELLER POLISH: \d+ checks, (?P<n>\d+) failures"),
     # NPC registry (23 Nov 2026): data/npcs.json is complete, every character in the town is in it
     # and stands at its registry spot in its costume, idle chatter and brush-offs, a host's idle
     # line when its game is not on offer, the barn farmer. Headless writes no PNGs; isolated HOME.

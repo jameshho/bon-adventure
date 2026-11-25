@@ -25,6 +25,7 @@ const UiText := preload("res://scripts/language/ui_text.gd")
 const PinyinText := preload("res://scripts/ui/pinyin_text.gd")
 const UiIcons := preload("res://scripts/ui/ui_icons.gd")
 const BonStyle := preload("res://scripts/ui/bon_style.gd")
+const Sound := preload("res://scripts/core/sound.gd")
 const WordPictures := preload("res://scripts/ui/word_pictures.gd")
 
 ## Light palette (UI art style, 18 Nov 2026; was the dark HUD colours).
@@ -58,9 +59,14 @@ const NUMBER_WIDTH := 96.0
 const PICTURE_WIDTH := 52.0
 ## The detail view's picture (square, at scale 1).
 const DETAIL_PICTURE := 132.0
-## Row cells: star, picture, foreign, native, then the three score columns.
+## Row cells: star, picture, foreign, native, the three score columns, then the speaker.
 const FOREIGN_CELL := 2
 const SCORE_CELLS := [4, 5, 6]
+## The speaker (24 Nov 2026, user: "there should be a speak icon on the word journal"): says the
+## word in the learned language (sound.gd say_word); the column shows while spoken words are on,
+## and a word without a clip leaves its cell empty.
+const SPEAKER_CELL := 7
+const SPEAKER_WIDTH := 52.0
 
 ## A row's star was clicked: the HUD toggles and saves the bookmark, then calls refresh_rows().
 signal bookmark_toggled(word_key: String)
@@ -121,6 +127,7 @@ var scaled_styles: Array = []
 var detail: VBoxContainer
 var back_button: Button
 var detail_star: Button
+var detail_speaker: Button
 var detail_picture: TextureRect
 var detail_foreign: Label
 var detail_reading: Label
@@ -461,7 +468,11 @@ func _make_row(is_header: bool) -> Control:
 			cell.add_theme_color_override("font_color", TEXT)   # its translation
 		line.add_child(cell)
 	if is_header:
+		line.add_child(_cell(SPEAKER_WIDTH))
 		return line
+	var speaker := _speaker_button(func() -> String: return str(line.get_meta("key", "")))
+	speaker.set_meta("base_width", SPEAKER_WIDTH)
+	line.add_child(speaker)
 	# Word rows are flat buttons (the whole row opens the detail view); the star sits on top.
 	var row := Button.new()
 	row.focus_mode = Control.FOCUS_NONE
@@ -507,6 +518,46 @@ func _make_row(is_header: bool) -> Control:
 			open_detail(key))
 	return row
 
+## A flat speaker button (BonStyle's icon) that says the word `key_of` returns. STOP, like the
+## row star: a press says the word and never opens the detail; the wheel still scrolls the list.
+func _speaker_button(key_of: Callable) -> Button:
+	var speaker := Button.new()
+	speaker.name = "Say"
+	speaker.flat = true
+	speaker.focus_mode = Control.FOCUS_NONE
+	speaker.mouse_filter = Control.MOUSE_FILTER_STOP
+	speaker.gui_input.connect(_on_list_input)
+	speaker.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	speaker.icon = BonStyle.icon_texture("speaker", 128)
+	speaker.expand_icon = true
+	speaker.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	for state in ["icon_normal_color", "icon_hover_color", "icon_pressed_color", "icon_focus_color"]:
+		speaker.add_theme_color_override(state, Color.WHITE)
+	speaker.tooltip_text = UiText.t("card.say")
+	speaker.pressed.connect(func() -> void: say(key_of.call()))
+	return speaker
+
+## Spoken words are switched on (sounds.json "voice"); otherwise no speaker column.
+func voices_on() -> bool:
+	var sound = Sound.shared()
+	return sound != null and sound.voice_enabled()
+
+func can_say(key: String) -> bool:
+	var sound = Sound.shared()
+	return key != "" and sound != null and sound.has_voice(key, Lexicon.shared().foreign)
+
+## Says `key` in the language being learned (nothing without a clip).
+func say(key: String) -> void:
+	if can_say(key):
+		Sound.shared().say_word(key, Lexicon.shared().foreign)
+
+## A speaker that is there for this word, or an empty cell that keeps the column.
+func _show_speaker(speaker: Button, key: String) -> void:
+	var ok := can_say(key)
+	speaker.disabled = not ok
+	speaker.modulate.a = 1.0 if ok else 0.0
+	speaker.mouse_filter = Control.MOUSE_FILTER_STOP if ok else Control.MOUSE_FILTER_IGNORE
+
 func _build_detail() -> void:
 	detail = VBoxContainer.new()
 	detail.name = "Word detail"
@@ -546,6 +597,9 @@ func _build_detail() -> void:
 	detail_star.add_theme_color_override("font_color", GOLD)
 	detail_star.add_theme_color_override("font_hover_color", GOLD.lightened(0.25))
 	detail_star.pressed.connect(func() -> void: bookmark_toggled.emit(detail_key))
+	detail_speaker = _speaker_button(func() -> String: return detail_key)
+	detail_speaker.name = "Say word"
+	top.add_child(detail_speaker)
 	top.add_child(detail_star)
 	detail_tiles = HBoxContainer.new()
 	detail_tiles.add_theme_constant_override("separation", 10)
@@ -795,6 +849,7 @@ func _apply_columns(line: HBoxContainer) -> void:
 	var cells := line.get_children()
 	for i in SCORE_CELLS:
 		cells[i].visible = show_scores
+	cells[SPEAKER_CELL].visible = voices_on()
 
 # --- Virtual rows ----------------------------------------------------------------------------
 
@@ -826,6 +881,7 @@ func _draw_rows() -> void:
 	var height := row_height()
 	var first := int(floor(scroll.value / height))
 	var offset := -fmod(scroll.value, height)
+	header.get_child(SPEAKER_CELL).visible = voices_on()
 	for i in rows.size():
 		var row: Button = rows[i]
 		var index := first + i
@@ -868,6 +924,9 @@ func _draw_rows() -> void:
 		cells[5].add_theme_color_override("font_color", RIGHT if word.positive > 0 else DIM)
 		cells[6].text = str(word.negative)
 		cells[6].add_theme_color_override("font_color", WRONG if word.negative > 0 else DIM)
+		# Rows made before the sound service existed did not know whether voices are on.
+		cells[SPEAKER_CELL].visible = voices_on()
+		_show_speaker(cells[SPEAKER_CELL], key)
 
 ## Shows `key`'s picture in `rect` (now or once drawn); empty without the picture maker or one.
 func _show_picture(rect: TextureRect, key: String) -> bool:
@@ -931,6 +990,7 @@ func _render_detail() -> void:
 	detail_native.text = word.native + "  ·  " + UiText.named("categories", str(categories.get(key, "Everyday")))
 	var saved := bookmarks.has(key)
 	detail_star.text = "★" if saved else "☆"
+	detail_speaker.visible = can_say(key)
 	detail_star.tooltip_text = UiText.t("card.unsave" if saved else "card.save")
 	var games := games_for(key)
 	var sums := {"positive": 0, "negative": 0, "translated": 0}
@@ -1061,6 +1121,8 @@ func _scale_detail() -> void:
 	detail_picture.custom_minimum_size = Vector2.ONE * DETAIL_PICTURE * f
 	detail_star.custom_minimum_size = Vector2(60, 60) * f
 	detail_star.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+	detail_speaker.custom_minimum_size = Vector2(60, 60) * f
+	detail_speaker.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	for tile in detail_tiles.get_children():
 		(tile.get_theme_stylebox("panel") as StyleBoxFlat).set_content_margin_all(10 * f)
 		var labels: Array = tile.get_child(0).get_children()

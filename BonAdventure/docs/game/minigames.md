@@ -440,14 +440,17 @@ bank reception; played at teller window 2**
 
 The regular teller is on a break, so the banker asks you to cover window 2. Plush customers walk
 up from the queue, each with a story (a new bike, cakes for the grandchildren, a telescope…), and
-ask for an amount in words. Check their account on the teller monitor, then count out the cash
-with $5, $10, $50 and $100 bills, or tell them politely that there is not enough money. One
+ask once for an amount in words while their account shows on the teller monitor; count out the
+cash with $5, $10, $50 and $100 bills, or tell them politely that there is not enough money.
+You sit on window 2's chair for the whole game, and a customer's thanks moves on to the next one
+by itself (24 Nov; [screenshots](../evidence/bank-teller-polish-20261124/)). One
 customer a session only wants change and must get no $100 bills back. Since 21 Nov the monitor
 shows the account's name, balance and the owner's photo (its words follow EN); since 23 Nov it
 stands beside the window, so one view shows the photo and the customer's face together
 ([screenshot](../evidence/bank-rework-20261123/teller-account-view.png)). Now and then an
-impostor claims someone else's account (the photo is another animal): **Call the police** brings
-a police officer ("Disculpe. Venga conmigo, por favor." "¿Qué pasa?" "Venga conmigo ahora, por
+impostor claims someone else's account (the photo is another animal): the **red alarm button** on
+the counter, left of the keyboard (a hidden surprise since 24 Nov, no longer a reply button;
+the banker's and the manager's warnings name it) brings a police officer ("Disculpe. Venga conmigo, por favor." "¿Qué pasa?" "Venga conmigo ahora, por
 favor.") who escorts them out of the bank. Pay an impostor instead and the money is gone: the bank
 manager (La jefa, a crocodile in a suit) walks out of her office to warn you
 ([screenshot](../evidence/bank-rework-20261123/manager-warns-2.png)); pay a second one in the same
@@ -463,7 +466,7 @@ Lines are short and simple (21 Nov). Not tracked.
 | Purpose | Understand spoken amounts from 100 to 500 (cien … quinientos, ciento cincuenta, trescientos sesenta y cinco), compare them with a balance written in digits, and count them out in bills of 5, 10, 50 and 100. Check who is asking: the photo on the account must be the customer at the window (user, 21 Nov 2026); paying an impostor has a consequence: the manager's warning, then being let go (user, 23 Nov 2026). |
 | Words | [Generated list](words.md#next-please) (amounts are generated language, not word-list words) |
 | Tracked in the journal | No (amounts are generated language, like Pay Up!) |
-| Session | 5 customers (`data/activities.json`); a customer counts when served right the first time (the exact cash, a correct "not enough", or the police for an impostor). A paid impostor does not count; a second one in a session ends it early (`payouts_to_fire`, `data/bank_teller.json`; no Play again, nothing saved) |
+| Session | 5 customers (`data/activities.json`); a customer counts when served right the first time (the exact cash, a correct "not enough", or the alarm for an impostor). A paid impostor does not count; a second one in a session ends it early (`payouts_to_fire`, `data/bank_teller.json`; no Play again, nothing saved) |
 | Progression | Within a session (user, 18 Nov 2026): first whole hundreds (cien … quinientos), then hundreds and fifty, then any multiple of 5 that needs the $10 and $5 bills; one customer is short of money (a balance a little under the request) and one wants change for whole hundreds; in most sessions (`impostor_chance` 0.75, `data/bank_teller.json`) another withdrawal customer is an impostor whose account photo is a different animal (user, 21 Nov 2026); after a paid impostor and the manager's warning, another impostor comes later in the session (`impostor_again`, user 23 Nov 2026). Not yet across sessions |
 
 ## Feeding Time!

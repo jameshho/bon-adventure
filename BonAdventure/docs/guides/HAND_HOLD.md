@@ -112,6 +112,29 @@ Without changing `object_inspector.gd`:
 - The inspected object may define `on_inspect_begin(inspector)` / `on_inspect_end(inspector)`
   (for example, a book could open its cover).
 - `opened(item)` / `closed(item)` signals.
+- Options `fit: "face"` (a flat object's x × y front fills `fill` of the view height or width,
+  not its bounding sphere) and `distance` (the stage sits this close to the camera and the object
+  is scaled down to match, so a big object stays in front of nearby walls); 24 Nov 2026.
+
+### Poster close-up — 24 November 2026
+
+User request: some vocabulary posters are too small to read, so a click on one of their words
+opens a zoomed view of the poster instead of the word card. `scripts/ui/poster_inspect_ui.gd`
+(`Main.poster_ui`): `interaction_controller.gd click()` hands a word that would open its card to
+`poster_hook` first; a word whose parent is named "… poster …" or "… menu board" and holds at
+least two word cards is on a poster. A copy of the poster (batched originals shown, picking areas
+and distance fade off, the restaurant icon sheets shared) glides to 0.7 m in front of the camera
+with `fit: "face"`, `fill` 0.8, gentle; the wall poster hides meanwhile and the copy is freed on
+closing. The game buttons hide (`hud.hide_for_game(true, "poster")`), movement and word clicks are
+off (`Main.sync_player_controls`). Input claim `poster`: a tap closes an open card, else a tap on a
+word of the copy (its screen box) shows that word's card and studies it, a tap off the poster
+closes; E, Esc (popup stack) and the ✕ (the Inspect button's place) close. Not in minigames or
+while the tutorial holds word cards back (as word cards).
+Check: `docs/evidence/poster-closeup-20261124/verify.gd` (isolated HOME,
+`VT_FOCUS=school,police,restaurants,warehouse,airport`, graphics): **71 checks, 0 failures** on
+the family, evidence, Pizza menu board, warehouse verbs and airport "when" posters; renders
+`*-closeup.png`, `*-card.png`. Not checked: the Mystery House posters (Chinese titles; same rule),
+a real touch tap (the check calls `click()` with a pointer position).
 
 ## Verification — 13 November 2026
 

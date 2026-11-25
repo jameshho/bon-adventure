@@ -281,13 +281,19 @@ func _process(_delta: float) -> void:
 
 # --- The table-centre counter (user, 10 Nov 2026) ------------------------------------------
 
-## A low dark console in the empty square between the discards, as on an automatic table: the
-## round wind as a real tile lying face up, and the tiles left in the wall beside it (cream
-## numerals, a small word under them), tilted a little toward the player's seat.
-const COUNTER_SIZE := Vector3(0.3, 0.012, 0.16)
+## A low plaque in the empty square between the discards: the round wind as a real tile lying
+## face up, and the tiles left in the wall beside it (numerals, a small word under them), tilted
+## a little toward the player's seat. Since 24 Nov 2026 (user, UI polish) a small cream rounded
+## plaque with dark teal words and a slightly darker lip (was a dark navy box), so it matches the
+## panel and does not pull the eye from the discards.
+const COUNTER_SIZE := Vector3(0.28, 0.01, 0.14)
 const COUNTER_TILT := 0.35   # radians up from flat, toward the player (+Z)
-## The whole counter (console, wind tile, number and word) drawn 30 % larger (user, 16 Nov 2026).
-const COUNTER_GROWTH := 1.3
+## The whole counter drawn larger than its model size (30 % since 16 Nov 2026, user; 20 % since
+## the cream plaque, 24 Nov 2026).
+const COUNTER_GROWTH := 1.2
+const COUNTER_FILL := Color("fdf4e3")    # BonStyle.CREAM
+const COUNTER_LIP := Color("e2cfa8")
+const COUNTER_INK := Color("16536a")     # BonStyle.INK
 var _counter: Node3D
 var _counter_tile: MeshInstance3D
 var _counter_number: Label3D
@@ -312,16 +318,9 @@ func _build_counter() -> void:
 	_counter.position = Vector3(0.0, SURFACE, 0.0)
 	_counter.scale = Vector3.ONE * COUNTER_GROWTH
 	add_child(_counter)
-	var console := MeshInstance3D.new()
-	var box := BoxMesh.new()
-	box.size = COUNTER_SIZE
-	console.mesh = box
-	var dark := StandardMaterial3D.new()
-	dark.albedo_color = Color("142a38")
-	dark.roughness = 0.35
-	console.material_override = dark
-	console.position.y = COUNTER_SIZE.y * 0.5
-	_counter.add_child(console)
+	# A pill: a box with a half-round at each end, on a slightly larger, lower, darker lip.
+	_counter_pill(COUNTER_SIZE + Vector3(0.012, -COUNTER_SIZE.y * 0.4, 0.012), COUNTER_LIP)
+	_counter_pill(COUNTER_SIZE, COUNTER_FILL)
 	var top := COUNTER_SIZE.y + 0.0006
 	# The round wind: a tile's face lying on the console, its top toward the far side.
 	_counter_tile = MeshInstance3D.new()
@@ -341,12 +340,39 @@ func _build_counter() -> void:
 	_counter_word = _counter_label(26, Vector3(0, -0.04, 0.002))
 	reading.add_child(_counter_word)
 
+## One rounded plaque shape (`size`: length, height, depth) in `color`, standing on the table.
+func _counter_pill(size: Vector3, color: Color) -> void:
+	var material := StandardMaterial3D.new()
+	material.albedo_color = color
+	material.roughness = 0.8
+	var middle := MeshInstance3D.new()
+	var box := BoxMesh.new()
+	box.size = Vector3(size.x - size.z, size.y, size.z)
+	middle.mesh = box
+	middle.material_override = material
+	middle.position.y = size.y * 0.5
+	middle.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	_counter.add_child(middle)
+	for side in [-1.0, 1.0]:
+		var end := MeshInstance3D.new()
+		var round_end := CylinderMesh.new()
+		round_end.top_radius = size.z * 0.5
+		round_end.bottom_radius = size.z * 0.5
+		round_end.height = size.y
+		round_end.radial_segments = 24
+		round_end.rings = 1
+		end.mesh = round_end
+		end.material_override = material
+		end.position = Vector3(side * (size.x - size.z) * 0.5, size.y * 0.5, 0.0)
+		end.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		_counter.add_child(end)
+
 func _counter_label(px: int, at: Vector3) -> Label3D:
 	var label := Label3D.new()
 	label.font_size = px
 	label.pixel_size = 0.0013
 	label.outline_size = 0
-	label.modulate = Color("fff1c5")
+	label.modulate = COUNTER_INK
 	label.position = at
 	label.double_sided = false
 	return label
