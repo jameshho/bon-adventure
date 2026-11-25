@@ -283,6 +283,27 @@ CHECKS = [
     # Day-night cycle, lamp glow, indoor light and the HUD clock (9 Nov 2026).
     dict(id="day_night", script="res://docs/evidence/day-night-20261109/verify.gd", suites=["full"],
          summary=r"DAY NIGHT: \d+ checks, (?P<n>\d+) failures"),
+    # Registered 25 Nov 2026 (improvement plan QA-01): checks that existed but the runner never ran.
+    # Save robustness (C1): failed writes, corrupt files backed up, broken profile index, unknown
+    # studied keys, SessionWords after a reset. Headless, no town; isolated HOME.
+    dict(id="save_robustness", script="res://docs/evidence/save-robustness-20261125/verify.gd", suites=["quick", "full"],
+         summary=r"SAVE ROBUSTNESS: \d+ checks, (?P<n>\d+) failures"),
+    # Word memory (FSRS steps, 24 Nov; per-game gating and Feeding Time! due words, C4 25 Nov). No town.
+    dict(id="word_memory", script="res://docs/evidence/word-memory-20261124/verify.gd", suites=["quick", "full"],
+         summary=r"WORD MEMORY CHECK: \d+ checks, (?P<n>\d+) failures"),
+    # Spoken-word backbone (24 Nov 2026, docs/guides/VOICE.md). No town.
+    dict(id="voice_backbone", script="res://docs/evidence/voice-backbone-20261124/verify.gd", suites=["quick", "full"],
+         summary=r"VOICE BACKBONE CHECK: \d+ checks, (?P<n>\d+) failures"),
+    # Speaker button, sound icons and volume sliders (24 Nov 2026). Loads the town.
+    dict(id="sound_ui", script="res://docs/evidence/sound-ui-20261124/verify.gd", suites=["full"],
+         summary=r"SOUND UI CHECK: \d+ checks, (?P<n>\d+) failures"),
+    # Passport, missions, stamp coins and the achievement log (21 Nov 2026). Headless writes no PNGs.
+    dict(id="passport_missions", script="res://docs/evidence/passport-missions-20261121/verify.gd", suites=["full"],
+         summary=r"passport_missions: \d+ checks, (?P<n>\d+) failures"),
+    # Game exits (C2, 25 Nov 2026): Library Helper walk-away and leave question, Esc asks the running
+    # game, radar/electrical box "finish first", touch Jump stands up. Headless writes no PNGs.
+    dict(id="game_exits", script="res://docs/evidence/game-exits-20261125/verify.gd", suites=["full"],
+         summary=r"GAME EXITS: \d+ checks, (?P<n>\d+) failures"),
 ]
 # Not listed on purpose: check_animals.gd (writes docs/evidence/animals-review/measurements.json),
 # capture_*/render_*/feature capture scripts (overwrite PNGs).

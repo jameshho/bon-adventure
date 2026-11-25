@@ -18,6 +18,11 @@
       "known": [
         {"regex": "^Walkable normal above (Barn roof lining Barn interior|MainRoof Barn)$", "count": 2, "since": "2026-11-07", "reason": "The barn's taller gambrel roof (user, 1 Nov 2026, approved) is steeper than the walkable normal 0.7, by design (Barn roof lining, MainRoof)"}
       ]
+    },
+    "voice_backbone": {
+      "known": [
+        {"regex": "^every word has a clip in every voice language \\(\\d+ missing\\)$", "since": "2026-11-25", "reason": "'bamboo' (added 24 Nov with Feeding Time!) has no Polly clip in es/en/zh yet; needs tools/voice_generate.py with the user's AWS sign-in (docs/guides/VOICE.md). P3"}
+      ]
     }
   }
 }

@@ -109,7 +109,7 @@ func run():
 			centre /= count
 			player.global_position = centre + Vector3(0, 1.0, -18.0)
 			# Face the animals (the first run's yaw 0 looked away from them, 25 Nov).
-			var look := centre - player.global_position
+			var look: Vector3 = centre - player.global_position
 			player.rotation.y = atan2(-look.x, -look.z)
 			player.camera_yaw = player.rotation.y
 			player.reset_camera()

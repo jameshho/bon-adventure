@@ -1,7 +1,8 @@
 extends SceneTree
 ## Spoken-word backbone check (24 Nov 2026, docs/guides/VOICE.md). Headless, loads no town and
 ## plays no sound: sound.gd voice_file() / voice_path(), and that has_voice() and say_word()
-## stay silent while "voice.enabled" is false and when a clip is missing. The manifest itself is
+## stay silent while "voice.enabled" is false and when a clip is missing (spoken words are on
+## by default since 24 Nov 2026, commit eee74d1f; the check switches them off itself, 25 Nov). The manifest itself is
 ## checked by tools/voice_manifest.gd.
 ##   HOME=<scratch>/home godot --headless --path . --script res://docs/evidence/voice-backbone-20261124/verify.gd
 
@@ -18,7 +19,9 @@ func _initialize() -> void:
 	_check(Sound.voice_file("T-Shirt") == "t_shirt", "voice_file T-Shirt")
 	var sound = Sound.new()
 	_check(not sound.voice.is_empty(), "sounds.json has a voice section")
-	_check(sound.voice_enabled() == false, "spoken words are off (user, 24 Nov 2026)")
+	_check(sound.voice_enabled() == true, "spoken words are on (user, 24 Nov 2026, eee74d1f)")
+	var players: int = sound.get_child_count()
+	sound.voice["enabled"] = false
 	_check(sound.voice_path("apple pie", "es") == "res://audio/voice/es/apple_pie.ogg", "voice_path")
 	var langs: Dictionary = sound.voice.get("languages", {})
 	_check(str(langs.get("es", {}).get("language_code", "")) == "es-MX", "Spanish is Latin American (es-MX)")
@@ -30,7 +33,7 @@ func _initialize() -> void:
 	sound.voice["enabled"] = true
 	_check(sound.has_voice("no such word", "es") == false, "has_voice false for a missing clip")
 	_check(sound.say_word("no such word", "es") == false, "say_word silent for a missing clip")
-	_check(sound.get_child_count() == 0, "no audio player was created")
+	_check(sound.get_child_count() == players, "no audio player was created")
 	# The game's clips (made 24 Nov 2026): every word in every voice language loads as Ogg
 	# Vorbis, not looping, and is found once switched on. say_word() is never called on a real
 	# clip here, so nothing plays.
@@ -41,6 +44,7 @@ func _initialize() -> void:
 			var path: String = sound.voice_path(str(key), lang)
 			if not sound.has_voice(str(key), lang):
 				missing += 1
+				print("MISSING CLIP: %s %s" % [lang, key])
 				continue
 			var clip = load(path)
 			if not clip is AudioStreamOggVorbis or clip.loop:
@@ -49,7 +53,7 @@ func _initialize() -> void:
 	_check(bad == 0, "every clip is non-looping Ogg Vorbis (%d bad)" % bad)
 	sound.voice["enabled"] = false
 	_check(sound.has_voice("apple", "es") == false, "has_voice false again once switched off")
-	_check(sound.get_child_count() == 0, "still no audio player")
+	_check(sound.get_child_count() == players, "still no audio player")
 	var tokens: Array = Lexicon.shared().reading_tokens("蘋果", "zh")
 	_check(tokens.size() == 1 and tokens[0]["reading"] == "píngguǒ", "reading_tokens 蘋果")
 	sound.free()
