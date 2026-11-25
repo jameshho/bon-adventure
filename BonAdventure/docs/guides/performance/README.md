@@ -1090,3 +1090,31 @@ browser: WebGL 2 uses the same GLES3 code path, so the saving should carry over,
 **Not measured:** an iPhone (`?perf=1`); fill-rate cost of 2x MSAA on a phone GPU; the mahjong
 table during a real game in a graphical run.
 
+
+## Building shell kept at a distance — 25 November 2026
+
+User report (25 Nov 2026, screenshot of the Home from the street: "the house looks broken when not
+rendered properly, and it is a common issue across buildings"). Cause: the render trim's
+mid-tier rule gave every 1–3 m piece under `Buildings`, `RelocatedSites`, `Restaurants` and
+`Airport` `MID_PROP_RANGE` 70 m, cut to 31.5 m by `RANGE_SHARE`. That rule was meant for indoor
+clutter, but it also caught the building's outside: the wall under each window ("Window sill
+wall", 2.2 m), the glazing, mullions, deep sills and outside door slabs. Beyond 31.5 m the windows
+looked like holes down to the floor.
+
+Fix (`render_culling.gd` `_faces_outdoors()`): before giving a 1–3 m building piece the mid-tier
+range, a level ray from its centre along each of the town's four axes looks for open sky (at
+least 1.5 m clear, then no roof above where it stops, within 12 m). A piece that sees the outdoors
+is building shell and keeps no range (the 130 m view and fog end it, as other building parts).
+Rays ignore the body they start in, so a wall piece sees past its own wall; indoor props meet
+walls, solid glazing or a ceiling and keep their range. Main waits one physics frame before
+`build()` and `add_parts()` so the collision is in the space. Pieces under 1 m (the small rule)
+are unchanged.
+
+Full town (`VT_FOCUS=all`, Mac M5): 693 pieces kept, the rays cost 146 ms once at load (on the web
+each unit pays its share as it loads). Yard props under building roots that see the sky (pool
+loungers, planters by the door) are now kept too, as outdoor props of the base world are. Views (Home only
+loaded, four sides at street distance, noon): `docs/evidence/building-ranges-20261125/`
+(`capture.gd`; `before-home.png`, `after-home.png`): the walls under the windows are back. The
+full-town run printed the counts above but stalled while taking views (the window stopped
+drawing), so other buildings were not looked at. **Not measured:** draw calls and frame time;
+a phone; a web build.

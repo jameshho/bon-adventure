@@ -261,6 +261,8 @@ func _ready() -> void:
 	if not get_meta("editing_snapshot", false):
 		await _loading_step("rest")
 		preload("res://scripts/world/garden_rendering.gd").new().build(apartment)
+		# The render trim's building-shell rays need the town's collision in the physics space.
+		await get_tree().physics_frame
 		render_culling = preload("res://scripts/world/render_culling.gd").new()
 		render_culling.build(self)
 		# Inside a building only it, its yard and the street outside are drawn (14 Nov 2026).
@@ -711,6 +713,8 @@ func add_unit(key: String) -> void:
 		day_night.bind_lamps(part)
 	await get_tree().process_frame
 	if render_culling != null:
+		# The render trim's building-shell rays need the unit's collision in the physics space.
+		await get_tree().physics_frame
 		render_culling.add_parts(self, parts, key)
 	_adding_unit = false
 	var jobs: Array = _unit_jobs.get(key, [])

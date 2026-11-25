@@ -7,6 +7,11 @@ extends RefCounted
 ## - Small static props (largest AABB side under SMALL_PROP_SIZE) stop casting sun
 ##   shadows and are hidden beyond SMALL_PROP_RANGE metres; other props under
 ##   RANGED_MAX_SIZE are hidden once they shrink below ~1/SIZE_RANGE_RATIO radians.
+## - Building shell (25 Nov 2026, user: "the house looks broken" from the street): a 1-3 m piece
+##   in a building root that faces the outdoors (_faces_outdoors(): the wall under a window, the
+##   glazing, mullions, sills, an outside door) is not indoor clutter, so it gets no MID_PROP_RANGE
+##   and stays to the view distance. Before, those hid beyond 31.5 m and the windows looked like
+##   holes down to the floor.
 ## - Vehicles, animals, characters and other moving objects are sized as a whole:
 ##   their silhouette parts hide under ~1/OBJECT_RANGE_RATIO radians, small details
 ##   sooner; plush characters beyond PLUSH_RANGE (they live indoors).
@@ -79,6 +84,12 @@ const LABEL_OUTLINE_STEP := 2
 const MIN_SEGMENTS := 16
 const MAX_SEGMENTS := 32
 const BATCH_CELL := 24.0
+## _faces_outdoors(): how far (metres) a level ray from a piece looks for the outdoors, the least
+## run that counts (a ray stopped sooner, e.g. by a porch post, says nothing), and the height an
+## up ray from the ray's end checks for a roof.
+const OUTDOOR_REACH := 12.0
+const OUTDOOR_MIN_RUN := 1.5
+const SKY_CHECK := 60.0
 const MID_ROOTS: Array[String] = ["Buildings", "RelocatedSites", "Restaurants", "Airport"]
 # Vehicle prefabs are skipped wherever they are parked (e.g. Subi under RelocatedSites).
 const SKIPPED_SCENE_DIRS: Array[String] = ["res://scenes/animals/", "res://scenes/characters/", "res://scenes/props/vehicles/"]
@@ -98,6 +109,10 @@ var _unit_meshes := {}
 var _light_cells := {}
 var _max_lights := 8
 var _triangle_counts := {}
+var shell_kept := 0
+var shell_usec := 0
+var _space: PhysicsDirectSpaceState3D
+var _axes: Array[Vector3] = []
 
 const PerfReadout := preload("res://scripts/ui/perf_readout.gd")
 
@@ -125,6 +140,7 @@ func build(game: Node3D) -> void:
 	apply_web_3d_scale(viewport)
 	if OS.has_feature("web"):
 		viewport.size_changed.connect(apply_web_3d_scale.bind(viewport))
+	_start_outdoor_rays(game)
 	for child in game.apartment.get_children():
 		if child.name in SKIPPED_ROOTS:
 			for item in child.get_children():
@@ -136,7 +152,7 @@ func build(game: Node3D) -> void:
 	merge_door_leaves(game.apartment, game.doors)
 	if OS.has_feature("web"):
 		share_label_sizes(game)
-	print("Render culling: %d props trimmed, %d round meshes simplified, %d meshes in %d static batches, %d door-leaf meshes in %d" % [affected, simplified, merged, batches, leaf_merged, leaf_meshes])
+	print("Render culling: %d props trimmed, %d building shell pieces kept (%.0f ms), %d round meshes simplified, %d meshes in %d static batches, %d door-leaf meshes in %d" % [affected, shell_kept, shell_usec / 1000.0, simplified, merged, batches, leaf_merged, leaf_meshes])
 	_apply_ranges(_note_ranged(game.apartment))
 	apply_view(game)
 	PerfReadout.attach(game)
@@ -207,6 +223,7 @@ func _apply_ranges(nodes: Array[GeometryInstance3D]) -> void:
 func add_parts(game: Node3D, parts: Array, key: String) -> void:
 	var town: Node3D = game.apartment
 	var roots: Array = []
+	_start_outdoor_rays(game)
 	for part in parts:
 		var top: Node = part
 		while top.get_parent() != town and top.get_parent() != null:
@@ -322,13 +339,53 @@ func _trim(node: Node, mid_tier: bool) -> void:
 				mesh_node.visibility_range_end = SMALL_PROP_RANGE
 				affected += 1
 			elif mid_tier and largest < MID_PROP_SIZE:
-				mesh_node.visibility_range_end = MID_PROP_RANGE
-				affected += 1
+				# Building shell (see the header): left to the view distance, as big building parts.
+				var started := Time.get_ticks_usec()
+				var outdoors := _faces_outdoors(mesh_node)
+				shell_usec += Time.get_ticks_usec() - started
+				if outdoors:
+					shell_kept += 1
+				else:
+					mesh_node.visibility_range_end = MID_PROP_RANGE
+					affected += 1
 			elif largest < RANGED_MAX_SIZE:
 				mesh_node.visibility_range_end = maxf(SMALL_PROP_RANGE, largest * SIZE_RANGE_RATIO)
 				affected += 1
 	for child in node.get_children():
 		_trim(child, mid_tier)
+
+
+# The physics space and the town's level axes for _faces_outdoors(). Collision must be in the
+# space: Main waits a physics frame before build() and add_parts().
+func _start_outdoor_rays(game: Node3D) -> void:
+	_space = game.get_world_3d().direct_space_state
+	var basis: Basis = game.apartment.global_transform.basis
+	var x := Vector3(basis.x.x, 0.0, basis.x.z).normalized()
+	var z := Vector3(basis.z.x, 0.0, basis.z.z).normalized()
+	_axes = [x, -x, z, -z]
+
+
+# True when the piece looks out at open sky: a level ray from its centre along one of the town's
+# four axes runs at least OUTDOOR_MIN_RUN through no collision (word areas are not collision;
+# rays ignore a body they start in, so a wall piece sees past its own wall) and an up ray from
+# where it stops meets no roof. Indoor props see walls, glazing (solid) or a ceiling instead.
+func _faces_outdoors(mesh_node: MeshInstance3D) -> bool:
+	if _space == null:
+		return false
+	var centre := (mesh_node.global_transform * mesh_node.get_aabb()).get_center()
+	var query := PhysicsRayQueryParameters3D.new()
+	for axis in _axes:
+		query.from = centre
+		query.to = centre + axis * OUTDOOR_REACH
+		var hit := _space.intersect_ray(query)
+		var end: Vector3 = query.to if hit.is_empty() else (hit.position as Vector3) - axis * 0.2
+		if centre.distance_to(end) < OUTDOOR_MIN_RUN:
+			continue
+		query.from = end
+		query.to = end + Vector3.UP * SKY_CHECK
+		if _space.intersect_ray(query).is_empty():
+			return true
+	return false
 
 
 # Vehicles, animals, characters and other moving objects keep their shadows and
