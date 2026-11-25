@@ -502,6 +502,7 @@
       "zoom": {"es": "Acercar y alejar", "en": "Zoom in and out", "zh": "放大和縮小"},
       "fly": {"es": "Volar arriba / abajo (atravesar paredes)", "en": "Noclip fly up / down", "zh": "穿牆模式飛上／飛下"},
       "study": {"es": "Estudiar la palabra señalada", "en": "Study a pointed-at word", "zh": "學習指着的詞語"},
+      "drop": {"es": "Soltar lo que llevas en la mano (un huevo)", "en": "Drop what you're holding (an egg)", "zh": "放下手上的東西（雞蛋）", "note": "F1 guide row and the Drop button's tooltip (hold_inspect_ui.gd, 24 Nov 2026)."},
       "use": {"es": "Puertas, verjas, vehículos, asientos, inodoros, llaves de agua", "en": "Doors, gates, vehicles, seats, toilets, faucets", "zh": "門、閘、車輛、座位、座廁、水龍頭"},
       "journal": {"es": "Diario de vocabulario", "en": "Vocabulary journal", "zh": "詞彙日誌"},
       "map": {"es": "Mapa del pueblo", "en": "Town map", "zh": "小鎮地圖"},
@@ -593,10 +594,11 @@
       "garage_closing": {"es": "La puerta del garaje se cierra", "en": "Garage door closing", "zh": "車房門正在關上"},
       "garage_stopped": {"es": "Puerta del garaje detenida: hay algo en la entrada", "en": "Garage door stopped: doorway occupied", "zh": "車房門已停止：門口有障礙"},
       "doorway_occupied": {"es": "La entrada está ocupada: apártate antes de cerrar.", "en": "Doorway occupied — move clear before closing.", "zh": "門口有障礙 — 請先離開再關門。"},
-      "egg_dropped": {"es": "¡Oh, no! Se te cayó el huevo.", "en": "Oh no! You dropped the egg.", "zh": "哎呀！雞蛋掉了。", "note": "An egg from the hen house was carried out of the farm (hen_house.gd, 24 Nov 2026)."},
-      "egg_in_crate": {"es": "¡Huevo en la caja! Ya hay {count}.", "en": "Egg in the crate! {count} so far.", "zh": "雞蛋放進箱子了！已經有 {count} 個。", "note": "An egg put in the barn's egg crate; {count} eggs are in it now (hen_house.gd)."},
-      "golden_egg": {"es": "¡Un huevo de oro!", "en": "A golden egg!", "zh": "一顆金蛋！", "note": "The rare golden egg put in the barn's egg crate (hen_house.gd)."},
-      "egg_crate_hint": {"es": "Busca huevos en el gallinero y tráelos aquí.", "en": "Find eggs at the hen house and bring them here.", "zh": "到雞舍找雞蛋，拿來這裡。", "note": "E on the barn's egg crate with no egg in the hand (hen_house.gd)."}
+      "egg_dropped": {"es": "¡Oh, no! Se te cayó el huevo.", "en": "Oh no! You dropped the egg.", "zh": "哎呀！雞蛋掉了。", "note": "An egg from the hen house was carried out of the farm or dropped with the Drop button (hen_house.gd, 24 Nov 2026)."},
+      "egg_in_crate": {"es": "¡Huevo en la caja! Ya hay {count}.", "en": "Egg in the crate! {count} so far.", "zh": "雞蛋放進箱子了！已經有 {count} 個。", "note": "An egg put in the egg crate by the hen house door; {count} eggs are in it now (hen_house.gd)."},
+      "golden_egg": {"es": "¡Un huevo de oro!", "en": "A golden egg!", "zh": "一顆金蛋！", "note": "The rare golden egg put in the egg crate (hen_house.gd)."},
+      "egg_crate_hint": {"es": "Busca huevos en el gallinero y tráelos aquí.", "en": "Find eggs at the hen house and bring them here.", "zh": "到雞舍找雞蛋，拿來這裡。", "note": "E on the egg crate (outside the hen house door since 24 Nov 2026) with no egg in the hand (hen_house.gd)."},
+      "egg_take_to_crate": {"es": "¡Un huevo! Llévalo a la caja junto a la puerta del gallinero.", "en": "An egg! Take it to the crate by the hen house door.", "zh": "一顆雞蛋！把它拿到雞舍門旁的箱子。", "note": "The player just took an egg in the hand; an arrow bobs over the crate (hen_house.gd, 24 Nov 2026)."}
     },
     "vehicle": {
       "getting_out": {"es": "Bajando…", "en": "Getting out…", "zh": "正在下車…"},

@@ -263,8 +263,10 @@ CHECKS = [
     # line when its game is not on offer, the barn farmer. Headless writes no PNGs; isolated HOME.
     dict(id="npc_registry", script="res://docs/evidence/npc-registry-20261123/verify.gd", suites=["full"],
          summary=r"NPC REGISTRY: \d+ checks, (?P<n>\d+) failures"),
-    # Hen house and eggs at the farm: coop, hens, laying odds, carry to the crate, drop (24 Nov 2026).
-    dict(id="hen_house", script="res://docs/evidence/hen-house-20261124/verify.gd", suites=["full"],
+    # Hen house and eggs at the farm: walk-in coop, hens, laying odds, carry to the crate (arrow),
+    # Drop button, dropping off the farm (24 Nov 2026; the first coop's check is
+    # hen-house-20261124/verify.gd, kept as dated evidence).
+    dict(id="hen_house", script="res://docs/evidence/hen-house-walkin-20261124/verify.gd", suites=["full"],
          summary=r"HEN HOUSE: \d+ checks, (?P<n>\d+) failures"),
     # Day-night cycle, lamp glow, indoor light and the HUD clock (9 Nov 2026).
     dict(id="day_night", script="res://docs/evidence/day-night-20261109/verify.gd", suites=["full"],

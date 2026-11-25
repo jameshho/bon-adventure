@@ -3,8 +3,8 @@ extends Node3D
 ## docs/guides/TOWN_DESIGN_BRIEF.md#hen-house-and-eggs--24-november-2026). Built in code, never
 ## baked: hen_house.gd makes one per laid egg at its spot and frees it when it is delivered or
 ## dropped. E, a click or a tap (its Interactable) takes it in the player's left hand (hand_hold.gd
-## profile "egg"); on the egg in the hand, puts it back in its nest. The egg crate in the barn takes
-## it from the hand. A golden egg (rare) shines; it is otherwise the same.
+## profile "egg"); on the egg in the hand, puts it back in its nest. The egg crate by the coop door takes
+## it from the hand; the Drop button (drop()) breaks it. A golden egg (rare) shines; it is otherwise the same.
 const Interactable := preload("res://scripts/core/interactable.gd")
 const HandHold := preload("res://scripts/player/hand_hold.gd")
 const SELF := preload("res://scripts/world/farm_egg.gd")
@@ -21,6 +21,8 @@ var golden := false
 var spot := -1
 ## In the crate: no longer picked up.
 var delivered := false
+## The hen house that laid it (hen_house.gd sets it): the Drop button breaks it through there.
+var house: Node
 
 static var _materials := {}
 
@@ -72,6 +74,11 @@ func _ready() -> void:
 ## the hand goes back to its nest.
 func use() -> void:
 	HandHold.toggle(self)
+
+## The Drop button (hold_inspect_ui.gd, G) while the egg is in the hand: it falls and breaks.
+func drop() -> void:
+	if house != null and is_instance_valid(house):
+		house.drop_held(self)
 
 func can_interact() -> Variant:
 	return not delivered

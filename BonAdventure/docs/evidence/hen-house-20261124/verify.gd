@@ -1,4 +1,5 @@
 extends SceneTree
+## STALE since 24 Nov 2026 (walk-in coop; the runner uses ../hen-house-walkin-20261124/verify.gd).
 ## Hen house and eggs (24 Nov 2026, user): scripts/world/hen_house.gd, farm_egg.gd, the barn step
 ## `hen_house` (scripts/buildings/barn.gd). Checks: the coop, 11 egg spots, 12 crate cups and 6
 ## hens are in the barn unit; the hens wander inside their yard; a fresh profile finds eggs; the

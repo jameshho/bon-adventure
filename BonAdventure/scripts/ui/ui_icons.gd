@@ -31,6 +31,8 @@ const SHAPES := {
 	"question": '<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.6 2.2c-.7.4-1.1 1-1.1 1.8v.5"/><circle cx="12" cy="17.2" r=".6" fill="#ffffff"/>',
 	"back": '<path d="M20 12H5M11 6l-6 6 6 6"/>',
 	"play": '<path d="M8 5.5v13l10.5-6.5z"/>',
+	# Let go of what is in the hand (hold_inspect_ui.gd Drop button, 24 Nov 2026).
+	"drop": '<path d="M12 3v11.5M7 10l5 5 5-5"/><path d="M5 20.5h14"/>',
 	"look": '<circle cx="10" cy="10" r="6.5"/><path d="M15 15l6.5 6.5"/><path d="M7 8.5a3.5 3.5 0 0 1 3-2"/>',
 	"touch": '<path d="M9 13V4.5a1.6 1.6 0 0 1 3.2 0V11"/><path d="M12.2 10.5a1.6 1.6 0 0 1 3.2 0v1"/><path d="M15.4 11.2a1.6 1.6 0 0 1 3.1.3v3.5c0 3.6-2.4 6.5-6 6.5h-1c-2.2 0-3.6-1-4.8-2.8L4 14.6c-.7-1 .5-2.4 1.6-1.6L9 15.5"/>',
 	"ear": '<path d="M7 9a5.5 5.5 0 0 1 11 0c0 3.2-2.5 4.4-3.4 6.3-.8 1.8-1.2 3.7-3.6 4.2-1.8.4-3.2-.6-3.6-2"/><path d="M10 9.5a2.5 2.5 0 0 1 5 0c0 1.4-1.3 1.9-1.8 3"/>',

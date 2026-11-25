@@ -1097,6 +1097,7 @@ func help_sections() -> Array:
             ["help.learn", Color("2f87cf"), [
                 [["Left-click"], "help.study"],
                 [["E"], "help.use"],
+                [["G"], "help.drop"],
                 [["J"], "help.journal"],
                 [["M"], "help.map"] if Features.FULL_MAP else [],
                 [["hold", "L"], "help.peek"],

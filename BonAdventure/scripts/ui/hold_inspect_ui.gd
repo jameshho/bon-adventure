@@ -8,9 +8,13 @@ extends Control
 ## An item whose hold profile says "auto" (books, user 21 Nov 2026) opens by itself when the
 ## player picks it up (hand_hold.gd picked_up), after the profile's "delay"; with "tap_close" a
 ## press anywhere closes it and there is no ✕.
+## The Drop button (user, 24 Nov 2026: "add a button for me to drop it"), above Inspect, shows
+## while the held item can be dropped (it has a drop() method: farm_egg.gd, which breaks); G does
+## the same (`drop` action).
 
 const Inspector := preload("res://scripts/player/object_inspector.gd")
 const UiIcons := preload("res://scripts/ui/ui_icons.gd")
+const UiText := preload("res://scripts/language/ui_text.gd")
 
 var main: Node
 var hud
@@ -18,6 +22,7 @@ var hand: Node3D
 var inspector: Node
 var inspect_button: Button
 var close_button: Button
+var drop_button: Button
 ## The open inspection closes on a press anywhere (its profile's "tap_close"; no ✕ then).
 var tap_close := false
 
@@ -37,6 +42,9 @@ func setup(game: Node) -> void:
 	close_button = _button("Close inspection button", "close", close_inspection)
 	close_button.tooltip_text = "Close"
 	game.popups.watch(close_button, close_inspection)
+	drop_button = _button("Drop button", "drop", drop_held)
+	drop_button.tooltip_text = UiText.t("help.drop")
+	hud.add_key_hint(drop_button, "drop")
 	game.interaction.claim("inspect", inspecting, close_inspection)
 	inspector.closed.connect(func(_item): _refresh(); main.sync_player_controls())
 	hand.held_changed.connect(func(_item): _refresh())
@@ -74,6 +82,15 @@ func _on_picked_up(item: Node3D) -> void:
 	if is_instance_valid(item) and hand.held == item and not _covered():
 		open_inspection()
 
+## The held item can be dropped (it says how: its drop()).
+func can_drop() -> bool:
+	return hand.is_holding() and hand.held.has_method("drop")
+
+func drop_held() -> void:
+	if can_drop() and not inspector.is_open():
+		hand.held.drop()
+		_refresh()
+
 func close_inspection() -> void:
 	inspector.close()
 	_refresh()
@@ -91,6 +108,10 @@ func _input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("drop") and not event.is_echo() and drop_button.visible:
+		drop_held()
+		get_viewport().set_input_as_handled()
+		return
 	if inspector.is_open() and inspector.handle_input(event):
 		get_viewport().set_input_as_handled()
 
@@ -101,6 +122,7 @@ func _refresh() -> void:
 	var open: bool = inspector.is_open()
 	inspect_button.visible = hand.is_holding() and not open and not _covered() and not _under_dialogue(inspect_button)
 	close_button.visible = open and not tap_close
+	drop_button.visible = inspect_button.visible and can_drop() and not _under_dialogue(drop_button)
 	set_process(hand.is_holding() or open)
 
 ## The map, journal, help or money panel is open (the money panel: user, 18 Nov 2026, no
@@ -115,7 +137,8 @@ func _under_dialogue(button: Control) -> bool:
 	var cover: Rect2 = hud.cluster_cover.call()
 	return cover.has_area() and cover.intersects(Rect2(button.position, button.size))
 
-## Left of the jump button in the bottom-right corner (14 Nov 2026), the cluster buttons' size.
+## Left of the jump button in the bottom-right corner (14 Nov 2026), the cluster buttons' size;
+## Drop above it.
 func _layout() -> void:
 	var slot: Rect2 = hud.bottom_slot(1)
 	var gap: float = hud.bottom_slot(0).position.x - slot.end.x
@@ -123,6 +146,8 @@ func _layout() -> void:
 	var rect := Rect2(Vector2(jump.position.x - gap - slot.size.x, jump.end.y - slot.size.y), slot.size)
 	for button in [inspect_button, close_button]:
 		hud.size_corner_button(button, rect)
+	# Drop above Inspect (Run takes the place left of it, touch_controls.gd).
+	hud.size_corner_button(drop_button, Rect2(rect.position - Vector2(0, gap + rect.size.y), rect.size))
 
 func _button(title: String, icon: String, handler: Callable) -> Button:
 	var button := Button.new()

@@ -8240,6 +8240,30 @@ Not run: the full suite, the web export, a hands-on play-test. The sports store 
 scenes were not re-baked (the registry moves the two NPCs at load).
 
 
+## Walk-in hen house — 24 November 2026
+
+User request (same day): the hen house at least 3× bigger and walk-in, a clear place to deposit
+eggs, a button to drop one ([record](TOWN_DESIGN_BRIEF.md#walk-in-hen-house-crate-by-the-door-and-drop-button--24-november-2026)).
+Barn re-baked (`tools/bake_unit.gd -- barn`, step `walk_in_hen_house`); the barn's box in
+`data/nearby_units.json` set from a fresh `tools/nearby_units_data.gd` run (only the barn entry
+taken, 59.4…88.8 × 73.4…85.7: the run also picked up other sessions' uncommitted changes). The
+runner's `hen_house` check now runs `docs/evidence/hen-house-walkin-20261124/verify.gd`.
+Runner with the whole town (`dev_focus.txt` = `all`, isolated HOME):
+
+| Result | Check |
+| --- | --- |
+| PASS (exit abort) | `hen_house`: **66 checks, 0 failures**: floor 35 = 6.5× the old coop; BonBon's capsule fits outside the door, in the doorway, inside and by the nest boxes, not through the back wall; 11 spots, 12 cups, 6 hens (2 inside) in their yard; odds as before; every spot clear and reachable; taking an egg shows the toast, the crate arrow and the Drop button; crate delivery saved, arrow and Drop gone with an empty hand; Drop breaks the egg (toast, broken egg, no longer laid); carried off the farm: dropped, crate emptied. A first headless run had 1 failure (the arrow refreshed only every 0.25 s after delivery; `deliver()` now updates it at once) |
+| PASS (exit abort) | `barn` 56 checks, 0 failures |
+| PASS | `runtime_resources`, `interaction` |
+
+"Exit abort" = the known `recursive_mutex lock failed` abort after the summary line (signal 6,
+shown as CRASH by the runner); labels compared. Views (windowed run, VT_FOCUS=barn):
+66 / 0 (exit 137 at teardown); `aerial`, `coop-door`, `inside`, `inside-to-door`,
+`carrying-arrow`, `carrying-hud` (arrow over the crate, Drop button with its G badge, the toast)
+and `dropped` inspected. An earlier windowed run stalled mid-pictures and was stopped. Not run: the full suite, the web
+export, a touch device, a hands-on play-test (the checks call the egg's, crate's and Drop
+button's actions directly).
+
 ## Hen house and eggs — 24 November 2026
 
 User request: a hen house with hens that lay eggs to carry to a crate in the barn

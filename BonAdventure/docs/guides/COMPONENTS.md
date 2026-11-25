@@ -107,6 +107,10 @@ func use() -> void:
 	HandHold.toggle(self)   # take it; on the item already held, put it back where it was
 ```
 
+A held item that can be dropped gives itself a `drop()` method: the **Drop** button (above
+Inspect, key G; `hold_inspect_ui.gd`, 24 Nov 2026) then shows and calls it. The farm egg
+(`farm_egg.gd`) is the only one so far; it breaks.
+
 `HandHold.of_player(node)` returns the player's hand from anywhere in the tree. The hand is
 created once; when a profile's avatar replaces the player's model it moves to the new arm
 (`rebind()`).

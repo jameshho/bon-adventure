@@ -129,6 +129,7 @@ as a routine edit: regeneration can overwrite authored scene overrides. See the
 | FPS counter (Native mode, "Show everything in my language", is a checkbox in Settings) | F3 |
 | See the town's signs, building names and posters in the native language while held (not saved; also the badge button, e.g. "EN", left of the gear for touch; hidden in Native mode). Since 9 Nov 2026; the old L mode cycle was removed 7 Nov 2026 | hold L |
 | Minigame picker (every game, chosen rounds; a player feature since 10 Nov 2026, it was a debug-only test launcher; [guide](docs/guides/MINIGAMES.md#minigame-picker)); also the ▶ button top right, under the peek badge (bottom-right cluster until 14 Nov 2026) | F9 |
+| Drop the held item, when it can be dropped (a farm egg breaks; since 24 Nov 2026; also the Drop button above Inspect, [hand hold](docs/guides/HAND_HOLD.md)) | G |
 | Zone walls (off by default; remappable `toggle_zone_walls`) | B |
 | Noclip; rise/descend while active | N; Space/Ctrl |
 | Close the topmost window, card or minigame (its ✕); with nothing open, open Settings (Native mode checkbox, languages); release orbit | Esc |
@@ -144,7 +145,7 @@ by default (the player's choice is saved in `user://settings.json`, see
 [Shared dialogue, popups and settings](docs/guides/ARCHITECTURE_REVIEW_PART1.md#shared-dialogue-popups-and-settings--4-november-2026)).
 Since 12 Nov 2026 (PWA phase 2) the player and Main keys are InputMap actions in `project.godot`
 (`move_forward/back/left/right`, `climb_up/down`, `jump`, `descend`, `sprint`, `use`, `back`,
-`help`, `map`, `journal`, `peek`, `games`, `debug_fps/noclip/hyper/infinite_jump`, plus
+`help`, `map`, `journal`, `peek`, `games`, `drop`, `debug_fps/noclip/hyper/infinite_jump`, plus
 `toggle_zone_walls`), so touch buttons can fire the same actions; movement keys are physical
 (layout-independent) as before, the others logical. Vehicles, seats, swings and minigames still
 read their own keys. Mouse orbit, zoom and clicks are unchanged.

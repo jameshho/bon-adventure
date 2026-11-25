@@ -12,7 +12,7 @@ rotate, open, manipulate).
 | Hand holder | `scripts/player/hand_hold.gd` | `player.hand`: a socket on BonBon's left mitten, child of her `Arm` part, so the item follows every arm pose. Hold profiles per kind of object |
 | Arm pose | `scripts/player/player_controller.gd` `animate_bonbon()` | While holding, the left arm uses the profile's pose (forward lift, outward lift, share of the walking swing); the right arm is unchanged |
 | Inspector | `scripts/player/object_inspector.gd` | Generic close-up of any `Node3D`: glides it in front of the camera with a dim backdrop and back to where it came from |
-| Inspect button | `scripts/ui/hold_inspect_ui.gd` | `Main.hold_ui`: the button, the close button, Esc and E, and blocking movement while inspecting |
+| Inspect button | `scripts/ui/hold_inspect_ui.gd` | `Main.hold_ui`: the button, the close button, Esc and E, and blocking movement while inspecting; since 24 Nov 2026 also the **Drop** button (above Inspect, key G, action `drop`), shown only while the held item has a `drop()` method (the farm egg: it breaks) |
 | Holdable objects | `scenes/props/book.tscn` (`hold_kind` book), `scenes/props/shopping_basket.tscn` (new: one carried basket, handles raised, word *basket*) | Any `Node3D` can be held; the meta `hold_kind` picks its profile |
 
 BonBon has no skeleton: her arms are mesh parts posed in code (`Arm` is her left arm, pivot at the

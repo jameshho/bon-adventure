@@ -3,10 +3,11 @@ extends Node3D
 ## docs/guides/TOWN_DESIGN_BRIEF.md#hen-house-and-eggs--24-november-2026). Built by the barn step
 ## `hen_house` (scripts/buildings/barn.gd) as `Barn/Hen house`, whose frame is the town's (its
 ## local coordinates are town coordinates: +X west, +Z north, Apartment scale 1.3 above it).
-## Children from the bake: "Coop" (the little red hen house in the paddock, west of the barn),
-## "Egg spots" (Marker3D: four nest boxes and seven straw nests on the ground), "Hens" (six
-## park_animals.gd hens, given their yard here) and "Egg crate" (on a table inside the barn door,
-## "Slots": one Marker3D per egg cup).
+## Children from the bake (step `walk_in_hen_house` since 24 Nov 2026, user: a walk-in coop):
+## "Coop" (the red hen house BonBon walks into, in the paddock west of the barn), "Egg spots"
+## (Marker3D: five nest boxes and a corner nest inside, five straw nests in the yard), "Hens" (six
+## park_animals.gd hens, given their yard here) and "Egg crate" (on a table outside the coop's
+## door, under the egg sign; "Slots": one Marker3D per egg cup).
 ##
 ## The hens lay over time: one roll every ROLL_SECONDS of real time, also while the game is shut
 ## (caught up at load, at most CATCH_UP rolls). Below COMMON eggs a roll lays one with chance
@@ -14,9 +15,11 @@ extends Node3D
 ## 5th now and then, rarely 6 or 7. Each egg is golden with chance P_GOLD. A new profile starts
 ## with FIRST_ROLLS rolls already made, so the first visit finds eggs.
 ##
-## The player takes one egg in the hand (farm_egg.gd, E / click / tap) and puts it in the crate
-## (E / click / tap on the crate): a hop and sparks, a toast with the count. Carried out of the
-## farm (FARM), the egg is dropped: it breaks at the player's feet and the HUD says so. The crate
+## The player takes one egg in the hand (farm_egg.gd, E / click / tap; a toast says where it goes
+## and an arrow bobs over the crate while it is carried) and puts it in the crate (E / click / tap
+## on the crate): a hop and sparks, a toast with the count. The Drop button (hold_inspect_ui.gd,
+## G) or carrying it out of the farm (FARM) drops it: it breaks at the player's feet and the HUD
+## says so. The crate
 ## is emptied when the player leaves the farm (the farmer takes the eggs). Nothing is rewarded yet
 ## (user: stars later): every delivery notes the achievement events "farm_egg" and, for a golden
 ## one, "golden_egg", so a reward can count them.
@@ -43,9 +46,13 @@ const FIRST_ROLLS := 15
 ## The farm (LA GRANJA lawn, x 42...90, z 73...109) and a little more, in town coordinates: an
 ## egg carried out of it is dropped.
 const FARM := Rect2(41.0, 72.0, 50.0, 38.0)
-## Where the hen house's hens wander (town x 73.4...84.6, z 74...82): around the coop, clear of
-## the barn wall (x 72) and the sheep's ground (from z 82.3).
-const HEN_YARD := Rect2(73.4, 74.0, 11.2, 8.0)
+## Where the hen house's hens wander (town x 73.4...88.2, z 74...82): the yard and the walk-in
+## coop (their step test keeps them out of its walls), clear of the barn wall (x 72), the fences
+## and the sheep's ground (from z 82.3).
+const HEN_YARD := Rect2(73.4, 74.0, 14.8, 8.0)
+## The arrow over the crate while an egg is carried: height above the crate, bob in metres.
+const ARROW_HEIGHT := 1.25
+const ARROW_BOB := .15
 const CHECK_SECONDS := .25
 
 var spots: Array[Node] = []
@@ -56,6 +63,8 @@ var _rng := RandomNumberGenerator.new()
 var _in_crate: Array[Node3D] = []
 var _timer := 0.0
 var _was_on_farm := false
+var _arrow: Node3D
+var _carrying: Node3D
 
 func _ready() -> void:
 	if Engine.is_editor_hint() or _baking():
@@ -73,6 +82,7 @@ func _ready() -> void:
 		"on_use": deliver,
 		"on_check": _crate_check,
 	})
+	_arrow = _make_arrow()
 	for hen in $Hens.get_children():
 		if hen.has_method("configure"):
 			hen.call_deferred("configure", hen._visible_bounds(), HEN_YARD)
@@ -135,6 +145,7 @@ func _roll(show: bool) -> void:
 func _spawn(entry: Dictionary, pop: bool) -> void:
 	var spot: Node3D = spots[int(entry.spot)]
 	var egg: Node3D = FarmEgg.make(int(entry.spot), bool(entry.get("gold", false)), bool(entry.get("brown", false)))
+	egg.house = self
 	spot.add_child(egg)
 	if pop:
 		egg.scale = Vector3.ONE * .01
@@ -181,6 +192,7 @@ func deliver() -> void:
 	var top := egg.global_position + Vector3(0, .3, 0)
 	SuccessBurst.celebrate(egg, top, camera.global_position if camera != null else top + Vector3.BACK, 1.6 if egg.golden else 1.0)
 	_toast(UiText.t("toast.golden_egg") if egg.golden else UiText.t("toast.egg_in_crate", {"count": str(_in_crate.size())}))
+	_follow_carry()
 
 func _empty_crate() -> void:
 	for egg in _in_crate:
@@ -195,6 +207,7 @@ func _process(delta: float) -> void:
 	if _timer > 0.0:
 		return
 	_timer = CHECK_SECONDS
+	_follow_carry()
 	if _now() - int(state.get("rolled_at", 0)) >= ROLL_SECONDS:
 		state.rolled_at = int(state.rolled_at) + ROLL_SECONDS
 		_roll(true)
@@ -211,6 +224,66 @@ func _process(delta: float) -> void:
 		if _was_on_farm:
 			_empty_crate()
 	_was_on_farm = on_farm
+
+## The Drop button (hold_inspect_ui.gd) on an egg in the hand: it breaks at the player's feet.
+func drop_held(egg: Node3D) -> void:
+	if _held_egg() != egg:
+		return
+	var player := get_tree().get_first_node_in_group("player") as Node3D
+	_drop(egg, to_local(player.global_position) if player != null else to_local(egg.global_position))
+	_follow_carry()
+
+## An egg just taken in the hand: a toast says where it goes. While one is carried, the arrow
+## over the crate shows and bobs (a tween, stopped when the hand is empty).
+func _follow_carry() -> void:
+	var egg := _held_egg()
+	if egg == _carrying:
+		return
+	_carrying = egg
+	if egg != null:
+		_toast(UiText.t("toast.egg_take_to_crate"))
+	_arrow.visible = egg != null
+	var tween: Tween = _arrow.get_meta("tween", null)
+	if tween != null:
+		tween.kill()
+	if egg != null:
+		_arrow.position.y = ARROW_HEIGHT
+		tween = _arrow.create_tween().set_loops()
+		tween.tween_property(_arrow, "position:y", ARROW_HEIGHT + ARROW_BOB, .45).set_trans(Tween.TRANS_SINE)
+		tween.tween_property(_arrow, "position:y", ARROW_HEIGHT, .45).set_trans(Tween.TRANS_SINE)
+		_arrow.set_meta("tween", tween)
+
+## A bright downward arrow over the crate (unshaded, no shadow), hidden until an egg is carried.
+func _make_arrow() -> Node3D:
+	var arrow := Node3D.new()
+	arrow.name = "Crate arrow"
+	crate.add_child(arrow)
+	arrow.position.y = ARROW_HEIGHT
+	var m := StandardMaterial3D.new()
+	m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	m.albedo_color = Color("ffcf3d")
+	var tip := MeshInstance3D.new()
+	var cone := CylinderMesh.new()
+	cone.top_radius = .22
+	cone.bottom_radius = 0.0
+	cone.height = .32
+	cone.radial_segments = 12
+	tip.mesh = cone
+	tip.position.y = .16
+	var shaft := MeshInstance3D.new()
+	var stick := CylinderMesh.new()
+	stick.top_radius = .08
+	stick.bottom_radius = .08
+	stick.height = .34
+	stick.radial_segments = 10
+	shaft.mesh = stick
+	shaft.position.y = .49
+	for part in [tip, shaft]:
+		part.material_override = m
+		part.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		arrow.add_child(part)
+	arrow.visible = false
+	return arrow
 
 ## The egg in the hand leaves the farm: it breaks on the ground under the hand, beside the player
 ## (`at`, the player's town point, if no ground is found).

@@ -99,7 +99,7 @@ be forgotten come back.
 | [Warehouse](town.md#warehouse) | Hall with loading bays, reception | 23 Nov (the supply cabinet opens outside the game) |
 | [Mystery House](town.md#mystery-house) | Casa de las Estrellas, mystery room | 9 Nov |
 | [Chapel](town.md#chapel) | Rebuilt sanctuary; bell tower climbed by a ladder inside, from a doorway in the nave | 23 Nov (ladder moved inside, two pew rows removed) |
-| [Farm barn](town.md#farm-barn) | Hayloft, tools and supplies, Tomás the farmer (bear in overalls and a straw hat; farm chatter); hen house with six hens and eggs to collect | 24 Nov (hen house: find eggs, carry them to the crate in the barn, [view](../evidence/hen-house-20261124/aerial.png)); 23 Nov (farmer added) |
+| [Farm barn](town.md#farm-barn) | Hayloft, tools and supplies, Tomás the farmer (bear in overalls and a straw hat; farm chatter); hen house with six hens and eggs to collect | 24 Nov (walk-in hen house: find eggs, carry them to the crate by its door, Drop button, [view](../evidence/hen-house-walkin-20261124/coop-door.png)); 23 Nov (farmer added) |
 | [Playground](town.md#playground) | Towers, slide, rideable swings | 1 Nov |
 | [Park, zoo and coast](town.md#park-zoo-and-coast) | Public garden, four zoo zones, island; the clay animals walk; the zoo's tiger and the farm's horse are the new clay models; clay capybara walks in Wildlife Plains (word: capybara); clay rooster and clay chick on the farm lawn, clay monkey inside the zoo gate; no red motorcycles (only BonBon's teal scooter) | 23 Nov (the zoo gate opens away from you; green welcome board outside removed) |
 
