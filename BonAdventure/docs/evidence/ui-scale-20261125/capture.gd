@@ -6,7 +6,7 @@ extends SceneTree
 ## and writes the pixel size of every visible button, slider and text box on each to
 ## `sizes.md`. Everything goes to docs/evidence/ui-scale-20261125/<UI_SHOTS>/ (default "shots").
 ## UI_FLAT=1 renders the UI over an empty world (no 3D), so two runs can be compared pixel for
-## pixel (compare.py). Needs graphics and an isolated HOME (it creates a profile; Main saves):
+## pixel (compare.gd). Needs graphics and an isolated HOME (it creates a profile; Main saves):
 ##   HOME=<scratch>/home VT_FOCUS=home VT_SPAWN=none UI_SHOTS=after-1280 UI_FLAT=1 \
 ##     godot --path . --resolution 1280x800 --script res://docs/evidence/ui-scale-20261125/capture.gd
 ## The phone size is --resolution 844x390. Add --fixed-fps 60 for runs to compare (animations
