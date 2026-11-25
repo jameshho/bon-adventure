@@ -162,6 +162,17 @@ house in the barn unit (`Barn/Hen house/Hens`, not ParkZoo): `hen_house.gd` call
 * Long frames are clamped to 0.05 seconds, avoiding large movement jumps. Translation
   and turning update every frame; expensive decisions are throttled. No navigation
   mesh bake, per-frame scene traversal, or per-animal mesh duplication is added.
+* Gait (25 Nov 2026, improvement plan ANIM-01/02, `_gait_step()`): an animal turns before it
+  walks. Its speed is the profile speed times `clamp(cos(heading error), 0, 1)`, so it stands
+  and turns while facing more than 90° away and never walks sideways. It reaches full speed in
+  about 0.25 s (`move_toward`, `ACCEL_SECONDS`) and slows over the last stretch before the
+  arrival radius (to at least 15 % of its speed). Turns use frame-rate independent
+  `1 - exp(-k·dt)` smoothing (`TURN_RATE` 5/s, also for feeding). The same gait walks an animal
+  to food. Wanderers are moved in `_process`, so each turns physics interpolation off on itself
+  (`physics_interpolation_mode` OFF) and is drawn where it is, without tick stutter;
+  `clay_animator.gd` still samples the root's position in `_process` for its walk speed.
+  Constants only, no new exports: nothing saved in `base.scn` changed. Render sequence:
+  [`docs/evidence/animal-gait-20261125/`](../evidence/animal-gait-20261125/).
 
 Crabs retain their existing coastal sideways scuttle/bob, with the travel axis
 normalized so enlarged body scale does not enlarge their shoreline travel radius.

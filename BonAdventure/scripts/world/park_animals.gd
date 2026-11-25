@@ -104,9 +104,20 @@ var _feed_y := 0.0
 var _feed_turn := 0.0
 var _animator: Node
 var _animator_found := false
+## Gait (25 Nov 2026, improvement plan ANIM-02): an animal turns before it walks (speed scales with
+## cos of the heading error, none while facing more than 90° away), reaches full speed in about
+## ACCEL_SECONDS, slows into its target and turns with frame-rate independent 1-exp(-k·dt) smoothing.
+const ACCEL_SECONDS := .25
+const TURN_RATE := 5.0
+## Arrivals: the animal slows down over the last stretch but never below this share of its speed.
+const ARRIVE_MIN := .15
+var _pace := 0.0
 
 func _ready() -> void:
     home=position
+    # Moved every frame in _process: render the set transform, not the physics-tick interpolation,
+    # or the motion stutters while physics interpolation is on (ANIM-01, 25 Nov 2026).
+    physics_interpolation_mode=Node.PHYSICS_INTERPOLATION_MODE_OFF
     _rng.seed=hash(str(get_path()))
     _timer=_rng.randf_range(.2,2.5)
     # The deleted startup passes (world_refinements.gd, park_terrain.gd) configured the zoo
@@ -236,6 +247,7 @@ func _choose_target() -> void:
         if not _clear_step(position+direction*speed*.2): continue
         target=candidate
         state="walking"
+        _direction=direction
         _timer=_rng.randf_range(3.0,8.0)
         return
     _stop(.5) # Bounded retry, so a blocked animal never spins or teleports.
@@ -244,6 +256,19 @@ func _stop(duration := -1.0) -> void:
     state="resting" if _rng.randf()<rest_chance else "idle"
     _timer=duration if duration>=0 else _rng.randf_range(pause*.5,pause*1.5)*(3.0 if state=="resting" else 1.0)
     _direction=Vector3.ZERO
+    _pace=0.0
+
+## Turns toward `dir` and walks up to `top` along it (no further than `room`); returns the step.
+## Speed eases in and out and is held back while the animal still faces away.
+func _gait_step(dir: Vector3, top: float, room: float, dt: float) -> Vector3:
+    var yaw:=atan2(dir.x,dir.z)
+    # Authored animals face +Z. Preserve scale and turn on the shortest arc.
+    rotation.y=lerp_angle(rotation.y,yaw,1.0-exp(-TURN_RATE*dt))
+    var accel:=top/ACCEL_SECONDS
+    var want:=top*clampf(cos(angle_difference(rotation.y,yaw)),0.0,1.0)
+    want=minf(want,maxf(sqrt(2.0*accel*room),top*ARRIVE_MIN))
+    _pace=move_toward(_pace,want,accel*dt)
+    return dir*minf(_pace*dt,room)
 
 ## Brings the animal to food at `point` (parent-local, the ground where it lies): it eats it
 ## when `eats`, else sniffs and refuses. Ignored until the wander is configured.
@@ -275,14 +300,13 @@ func _feed_step(dt: float) -> void:
         offset.y=0
         if offset.length()<.06 or _timer<=0:
             state="eating" if _will_eat else "refusing"
+            _pace=0.0
             _feed_clock=0.0
             _feed_y=position.y
             _feed_turn=rotation.y
             return
-        var dir:=offset.normalized()
-        position+=dir*minf(speed*COME_SPEED*dt,offset.length())
+        position+=_gait_step(offset.normalized(),speed*COME_SPEED,offset.length(),dt)
         if ground.is_valid(): position.y=ground.call(position)
-        rotation.y=lerp_angle(rotation.y,atan2(dir.x,dir.z),minf(1,dt*5.0))
         return
     _feed_clock+=dt
     var total:=EAT_SECONDS if state=="eating" else REFUSE_SECONDS
@@ -293,7 +317,7 @@ func _feed_step(dt: float) -> void:
         # Bow in, chew, lift the head, then a happy hop.
         var bow:=smoothstep(0.0,.15,t)*(1.0-smoothstep(.72,.82,t))
         _set_eat(bow)
-        rotation.y=lerp_angle(rotation.y,facing,minf(1,dt*5.0))
+        rotation.y=lerp_angle(rotation.y,facing,1.0-exp(-TURN_RATE*dt))
         var hop:=sin(PI*clampf((t-.84)/.16,0.0,1.0))
         position.y=_feed_y+hop*maxf(.12,footprint*.18)
     else:
@@ -301,7 +325,7 @@ func _feed_step(dt: float) -> void:
         var sniff:=smoothstep(0.0,.2,t)*(1.0-smoothstep(.4,.5,t))*.55
         _set_eat(sniff)
         var shake:=sin(clampf((t-.45)/.4,0.0,1.0)*TAU*2.0)*.28*(1.0-smoothstep(.8,.85,t)) if t>.45 else 0.0
-        _feed_turn=lerp_angle(_feed_turn,facing,minf(1,dt*5.0))
+        _feed_turn=lerp_angle(_feed_turn,facing,1.0-exp(-TURN_RATE*dt))
         rotation.y=_feed_turn+shake
     if t>=1.0:
         var ate:=state=="eating"
@@ -350,11 +374,10 @@ func _process(delta: float) -> void:
         if not _clear_step(position+_direction*minf(speed*.2,offset.length())):
             _stop(.4)
             return
-    var next:=position+_direction*minf(speed*dt,offset.length())
+    # The arrival radius counts as reached, so the ease-out ends there.
+    var next:=position+_gait_step(_direction,speed,offset.length()-.12,dt)
     if not inside(next):
         _stop(.4)
         return
     position=next
     if ground.is_valid(): position.y=ground.call(position)
-    # Authored animals face +Z. Preserve scale and turn on the shortest arc.
-    rotation.y=lerp_angle(rotation.y,atan2(_direction.x,_direction.z),minf(1,dt*4.0))
