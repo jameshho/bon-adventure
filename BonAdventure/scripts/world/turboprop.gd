@@ -262,6 +262,15 @@ func boarding_seat_scale() -> float:
 func finish_exit() -> void:
     super.finish_exit()
     engine_power=0
+    update_engine_sound()
+
+## The plane's engine sound (driveable_vehicle.gd update_engine_sound()): runs while someone flies
+## it or its engine still has power; follows the engine power or the airspeed, whichever is more.
+func engine_level() -> float:
+    return clampf(maxf(engine_power,airspeed/FAST),0.0,1.0)
+
+func engine_running() -> bool:
+    return not crashed and ((occupied and not boarding_busy()) or engine_power>.01)
 
 ## Left in the air, rolling or crashed: exits without the door sequence and glides down unpowered.
 func is_moving() -> bool:
@@ -360,6 +369,7 @@ func _process(delta: float) -> void:
 ## (the module header). With `engine` off (nobody aboard) it glides down slowly and brakes once down.
 func fly_step(delta: float,up: float,turn: float,stick: float,engine: bool=true) -> void:
     var dt:=clampf(delta,0,1.0/30)
+    update_engine_sound()
     if crashed:
         crash_tick(delta)
         return

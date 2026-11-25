@@ -6,12 +6,12 @@ extends Node3D
 ##
 ## E, a click or a tap (its interactable, badge on the rope's grip) rings it: it swings to and fro
 ## about its local X (north-south), dying away, the clapper lagging behind. A ring while it
-## swings starts a fresh swing. Silent itself: `rung` is the hook for a sound
-## (data/sounds.json "bindings", as the faucet and toilet; no cue yet). Reports "ring_bell" to the
-## achievement log.
+## swings starts a fresh swing. Silent itself: `rung` plays bell.chapel (data/sounds.json
+## "bindings", 25 Nov 2026: a ding-dong heard across the chapel square; a new ring restarts it).
+## Reports "ring_bell" to the achievement log.
 const Interactable := preload("res://scripts/core/interactable.gd")
 const Achievements := preload("res://scripts/learning/achievements.gd")
-## Emitted on every ring (for the sound cue, later).
+## Emitted on every ring (the bell.chapel sound).
 signal rung
 
 ## Swing amplitudes (radians), each reached in SWING_TIME seconds; the last returns to rest.

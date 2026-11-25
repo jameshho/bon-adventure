@@ -9,7 +9,8 @@ extends Node3D
 ## to an id of data/achievements.json "stamps". The shape is built in code (no model files); the
 ## face is assets/stamps/coin_face.svg (the user's coin picture, 21 Nov 2026: the pig head traced
 ## with vtracer, built by assets/stamps/source/build_coin_face.py), on both sides.
-## Sound-ready: a chime can hook in at collect().
+## Sound (25 Nov 2026): `collected` plays coin.stamp, a flat UI chime bound in data/sounds.json
+## (flat, because the coin frees itself before a positional sound under it would end).
 ##
 ## Cost: the spin and bob run only while the coin is on screen (VisibleOnScreenNotifier3D); a
 ## coin off screen or collected does nothing. One small Area3D for the pickup, ~200 triangles.
@@ -19,6 +20,9 @@ const SuccessBurst := preload("res://scripts/world/success_burst.gd")
 const UiIcons := preload("res://scripts/ui/ui_icons.gd")
 const FACE := preload("res://assets/stamps/coin_face.svg")
 const GROUP := "stamp_coins"
+
+## Emitted once when the coin is collected (the sound; never for a preview coin).
+signal collected
 
 ## The stamp this coin gives (data/achievements.json "stamps").
 @export var stamp_id := ""
@@ -275,6 +279,8 @@ func collect() -> void:
 		_area.set_deferred("monitoring", false)
 	if stamp_id != "" and not preview:
 		Achievements.shared().note("stamp." + stamp_id)
+	if not preview:
+		collected.emit()
 	set_process(false)
 	var tween := create_tween()
 	tween.set_parallel(true)

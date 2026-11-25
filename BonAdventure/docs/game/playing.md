@@ -267,7 +267,16 @@ BonBon's steps keep pace with her speed (quicker when running, slower when creep
   [View](../evidence/record-player-20261125/closeup.png),
   [component](../guides/COMPONENTS.md#record-player)
 - **Spoken words:** the speaker button on the word card and in the journal says the word.
-- **Effects:** toilets, faucets and the emergency vehicles' sirens. Everything else is silent
-  for now.
+- **Effects:** toilets, faucets and the emergency vehicles' sirens. Since 25 Nov 2026 also:
+  a sparkly chime when you collect a stamp coin; doors, each kind with its own open and close
+  sound (wooden room doors, sliding doors, the police cell and lockers, the warehouse cabinet,
+  the bank's safe and heavy vault, whose thud comes when it shuts, and the Pizza and Burger shop
+  bell); a ding-dong from the chapel bell, heard across the square; and in Library Helper a
+  marimba chime for the right shelf and two soft falling notes for a wrong one. Engines:
+  cars and other road vehicles hum and rise in pitch as they speed up, trucks, buses and the
+  fire truck have a deeper diesel, the helicopter's rotor winds up and down, and the plane has
+  a propeller drone. Drawers,
+  curtains, the garage, gates and vehicle doors are still silent. The Sound effects slider sets
+  them. [Effects](../guides/VOICE.md#sound-effects-25-nov-2026)
 
 [Sound and spoken words guide](../guides/VOICE.md)

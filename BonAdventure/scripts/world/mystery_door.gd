@@ -17,7 +17,8 @@ const RATTLE_SECONDS := 0.55
 const SLAM_SPEED := 4.2
 const GROUP := "mystery_doors_session"
 
-## For data/sounds.json bindings (no Mystery House sounds yet).
+## For data/sounds.json bindings: opened and slammed play the room door sounds (25 Nov 2026);
+## rattled has no sound yet.
 signal opened
 signal rattled
 signal slammed

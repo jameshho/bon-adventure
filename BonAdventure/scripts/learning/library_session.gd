@@ -44,6 +44,12 @@ extends Node
 ##      negative, a translation shown first: translated).
 ##
 ## Text: data/phrases.json group "library"; offers: data/activities.json "library_rosa".
+##
+## Sounds (25 Nov 2026): the right shelf plays answer.correct, the wrong one answer.wrong (flat UI
+## sounds bound in data/sounds.json; this script stays silent).
+signal shelved_right
+signal shelved_wrong
+
 const Host := preload("res://scripts/learning/minigame_host.gd")
 const PracticeLog := preload("res://scripts/learning/practice_log.gd")
 const Interactable := preload("res://scripts/core/interactable.gd")
@@ -478,9 +484,11 @@ func _place(gap: Node3D) -> void:
 		return
 	if str(book.get_meta("library_category")) != str(gap.get_meta("library_category")):
 		_answer(book, false)
+		shelved_wrong.emit()
 		_wobble(book, gap)
 		return
 	_answer(book, true)
+	shelved_right.emit()
 	_celebrate(book)
 	if _left() == 0 and not _finishing:
 		_finishing = true

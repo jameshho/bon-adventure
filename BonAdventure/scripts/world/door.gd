@@ -101,6 +101,13 @@ enum Sign { NONE, WOMEN, MEN }
 	set(value):
 		swing_seconds = maxf(value, 0.0)
 		_rebuild()
+## The door's sound kind (25 Nov 2026; door_animator.gd sound_kind(), cues door.<kind>.open /
+## .close in data/sounds.json): "" is the usual one (a hinged door "room", a sliding door
+## "sliding"); "glass", "vault", ... for another; "none" for a silent door.
+@export var sound := "":
+	set(value):
+		sound = value
+		_rebuild()
 @export_group("Frame")
 @export var frame_visible := true:
 	set(value):
@@ -251,6 +258,8 @@ func _leaf_parts(leaf: Node3D, x0: float, x1: float, pull: bool) -> void:
 
 ## Gives an interactive door's leaf its state (Main collects it at load).
 func _register(leaf: Node3D, state: Dictionary) -> void:
+	if sound != "":
+		state["sound"] = sound
 	if interactive:
 		leaf.set_meta("door_state", state)
 

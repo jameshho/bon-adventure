@@ -132,6 +132,75 @@ tracks on the Music bus: the loading screen, the town, and one per minigame mood
   place music (inside shops) through the same `tracks` list. Each new track adds to the Web pack
   (P1 below).
 
+## Sound effects (25 Nov 2026)
+
+User, 25 Nov 2026: sounds for the stamp coin, the doors, the chapel bell and Library Helper's
+right and wrong shelf; later the same day: "each door should have different sound". The user
+picked every sound by ear from 2–5 candidates each (cabinet, safe and vault took a second round).
+
+| Cue | When | How it plays |
+| --- | --- | --- |
+| `coin.stamp` | A stamp coin is collected (`stamp_coin.gd` signal `collected`) | Flat, UI bus, −4 dB. Flat because the coin frees itself before a sound under it would end |
+| `door.<kind>.open` / `.close` | A door is opened or closed (`door_animator.gd` `toggle()`; the teller game's staff door too). A heavy door (`seconds`, the bank vault) sounds its close when it has shut | At the door leaf, SFX bus, unit size 2–3.5 m, heard up to 16–30 m, `restart` |
+| `bell.chapel` | The chapel bell is rung (`chapel_bell.gd` signal `rung`) | At the bell, SFX bus, −6 dB, unit size 8 m, heard up to 90 m, `restart` |
+| `answer.correct` / `answer.wrong` | Library Helper: a book on the right shelf or a wrong one (`library_session.gd` signals `shelved_right`, `shelved_wrong`) | Flat, UI bus. Named for any game's right and wrong answers; only Library Helper uses them so far |
+| `vehicle.engine`, `vehicle.truck`, `vehicle.helicopter`, `vehicle.plane` | A vehicle is driven or flown (`driveable_vehicle.gd` `update_engine_sound()` each drive step) | A loop at the vehicle, SFX bus, pitch and volume rise with speed (see Engines) |
+
+- **Door kinds:** `door_animator.gd` `sound_kind()` reads the door state's `"sound"`, else a
+  hinged door is `room` and a sliding door (`safe_slide`) `sliding`; drawers and curtains have
+  none and stay silent, and `"none"` silences any door. Kinds set by building steps
+  (`door_sounds` in police, warehouse, bank and restaurants, baked 25 Nov 2026): the holding
+  cell `cell`, the two police lockers `locker`, the warehouse supply cabinet `cabinet`, the bank
+  safe `safe`, the bank vault `vault` and the Pizza and Burger double door `glass`. A door scene
+  (`door.gd`) has a `sound` export; a step sets other doors with
+  `DoorAnimator.set_sound_kind(game, node, kind)`. Mystery House doors play the room sounds
+  through their own `opened` and `slammed` signals (bindings). Not included (user, 25 Nov 2026):
+  garage, vehicle doors, zoo and farm gates, lift doors.
+- **Engines** (user, 25 Nov 2026: a sound for driving, then the helicopter, plane and truck;
+  each picked by ear from four CC0 Freesound loops). `sound.gd` `engine(vehicle, running, speed,
+  kind)` starts the cue's loop under the vehicle, sets `pitch_scale` from the cue's
+  `engine.pitch_idle` (stopped) to `pitch_top` (top speed) times its `types` factor for that
+  kind, and the volume from `idle_db` up to the cue's `volume_db`; when the engine stops it fades
+  out over 0.25 s. `engine_cue(kind)` picks the cue whose `engine.vehicles` lists the kind, else
+  the `default` one (`vehicle.engine`, the car). Kinds come from `engine_kind()`: `plane` for the
+  fixed-wing plane, `helicopter`, else the vehicle's word key (car, taxi, police car, ambulance and
+  motorcycle → car engine; truck, bus, school bus and fire truck → truck). Level
+  (`engine_level()`): road speed over top speed; the helicopter's `rotor_power`, so the rotor
+  winds up on take-off and down after landing; the plane's engine power or airspeed
+  (`turboprop.gd`). It runs while someone is in it and boarding is done, while the rotor or
+  propeller still turns, and never after a crash. Sirens are separate cues and play on top.
+- **`sound.gd`:** `play_ui(cue)` plays a cue once, flat; a bound signal plays flat when its cue
+  has no `distance` or the node is not in 3D; a cue with `"restart": true` stops the same cue
+  still sounding at that node first, so a door or bell used quickly does not pile up. Every play
+  wakes the page's audio on the web as before. Bound signals carry no arguments.
+- **Files:** `audio/sfx/doors/<kind>_open.wav` / `_close.wav`, `audio/sfx/chapel/bell.wav`,
+  `audio/sfx/ui/coin_stamp.wav`, `answer_correct.wav`, `answer_wrong.wav`. Mono 22.05 kHz 16-bit,
+  peak −1 dBFS, imported as QOA without a loop (about 231 KB in all once imported). Engines:
+  `audio/sfx/vehicles/engine.wav`, `truck.wav`, `helicopter.wav`, `plane.wav`, 1.1–3 s seamless
+  loops (an equal-power crossfade of the tail into the head, 40 Hz high-pass), imported as QOA
+  forward loops (about 88 KB).
+- **Sources:** the doors and the bell are CC0 Freesound recordings (HQ previews, the licence
+  checked on each sound's own page), trimmed and faded; each cue's `source` and `licence` in
+  `data/sounds.json` name the page and the cut. The bell is one strike made into a lower
+  ding-dong. The coin and the right and wrong sounds are original, synthesised by
+  `tools/make_sfx.py` (pure Python): `--out <folder outside the project>` makes every candidate,
+  `--write` remakes the chosen ones (`CHOSEN`) into `audio/sfx/ui/`. The review folder
+  `~/Desktop/sfx-review/` (outside the project) keeps every candidate, the downloads and the cut
+  lists.
+- **Check:** `docs/evidence/sfx-20261125/verify.gd` (`run_checks.py` id `sfx`, quick; headless,
+  silent, no town): the 20 cues (bus, flat or positional, QOA, mono, no loop, length, source and
+  licence), every cue's licence, the bindings' signals (no arguments) and cues, the door kinds
+  and the kinds baked into the four unit scenes, a stamp coin bound when added, and the four
+  engine loops (forward loop, QOA, mono, length, `engine_cue()` for every vehicle kind, one
+  default, the hooks in `driveable_vehicle.gd` and `turboprop.gd`). 25 Nov 2026: 372 checks,
+  0 failures. Town checks that open doors or flush a toilet still make players on
+  the headless dummy driver, as before (the bath fixtures check counts them).
+- **Not verified:** how they sound in the game (levels against the music, distances, the vault's
+  timing, the engines' pitch range at real speeds and with several vehicles running), the web
+  build (whether `pitch_scale` changes on the web's sample playback) and phones.
+- **Open (P3):** drawers, curtains, garage, gates, vehicle and lift doors; a rattle for the
+  Mystery House's locked doors (`rattled` is unbound); the right and wrong sounds in other games.
+
 ## Decisions (user, 24 Nov 2026)
 
 - Generated with **Amazon Polly** (neural voices), not taken from the web, with no live calls
@@ -224,7 +293,9 @@ cost cents and fit the Polly free tier. `--jobs N` (default 4) makes N clips at 
   (nothing may play yet), Safari, and a phone. `index.pck` is now 91.4 MB, of which about 20 MB
   is the clips; GitHub's limit is 100 MB per file.
 - **P1:** the Web pack is near GitHub's 100 MB file limit. Ship only the language being learned,
-  or split the clips out of `index.pck`, before adding more audio or music.
+  or split the clips out of `index.pck`, before adding more audio or music. Since 25 Nov 2026
+  (commit 5525310a) the pack is 65.5 MB; the sound effects add about 0.32 MB (engines included) and the five mood
+  tracks more (not measured here).
 - **P2:** decide whether to also say words on the results card, and whether
   the card should say the word by itself when it opens.
 - **P2:** web size. All three languages are in the Web export (about 20 MB in total). Consider

@@ -298,6 +298,10 @@ CHECKS = [
     # (25 Nov 2026, docs/guides/VOICE.md "Background music"). No town; plays nothing.
     dict(id="lofi_music", script="res://docs/evidence/lofi-music-20261125/verify.gd", suites=["quick", "full"],
          summary=r"LOFI MUSIC: (?P<n>\d+) failures"),
+    # Sound effects: coin, eight door kinds, chapel bell, Library Helper right/wrong; cues, bindings,
+    # baked door kinds (25 Nov 2026, docs/guides/VOICE.md "Sound effects"). No town; plays nothing.
+    dict(id="sfx", script="res://docs/evidence/sfx-20261125/verify.gd", suites=["quick", "full"],
+         summary=r"SFX CHECK: \d+ checks, (?P<n>\d+) failures"),
     # Speaker button, sound icons and volume sliders (24 Nov 2026). Loads the town.
     dict(id="sound_ui", script="res://docs/evidence/sound-ui-20261124/verify.gd", suites=["full"],
          summary=r"SOUND UI CHECK: \d+ checks, (?P<n>\d+) failures"),

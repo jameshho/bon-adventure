@@ -731,6 +731,9 @@ func _manager_speaker() -> Dictionary:
 func _staff_door(open: bool) -> void:
 	var leaf := bank.get_node_or_null(STAFF_DOOR_LEAF)
 	if leaf != null and main.doors.has(leaf):
+		if bool(main.doors[leaf]["open"]) != open:
+			# The door's own sound, as when the player uses it (door_animator.gd, 25 Nov 2026).
+			preload("res://scripts/core/door_animator.gd").play_sound(leaf, main.doors[leaf], open)
 		main.doors[leaf]["open"] = open
 
 ## The cutscene camera along the teller area.

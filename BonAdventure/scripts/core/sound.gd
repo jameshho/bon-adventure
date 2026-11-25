@@ -9,6 +9,9 @@ extends Node
 ## Main adds it (Sound.new()) after the world is built, unless one is already there (App adds it
 ## before the loading screen, 25 Nov 2026, for the loading music); it binds every node already in
 ## the tree and any added later. Elsewhere: Sound.shared().play_at("cue.id", node).
+## Sound effects (25 Nov 2026; guide docs/guides/VOICE.md "Sound effects"): a cue with no
+## "distance" is flat (play_ui(): the stamp coin, right and wrong answers); a bound node that is
+## not in 3D plays flat too. Doors play door.<kind>.open/close from door_animator.gd toggle().
 ##
 ## Spoken words (24 Nov 2026, guide docs/guides/VOICE.md): the catalogue's "voice" section names
 ## one clip per word and language, <folder>/<lang>/<voice_file(key)>.ogg, made by
@@ -153,7 +156,7 @@ func _bind(node: Node) -> void:
 	node.set_meta("sound_bound", true)
 	var binding: Dictionary = bindings[script.resource_path]
 	for signal_name in binding.get("play", {}):
-		node.connect(signal_name, play_at.bind(binding["play"][signal_name], node))
+		node.connect(signal_name, _play_bound.bind(binding["play"][signal_name], node))
 	for signal_name in binding.get("start", {}):
 		node.connect(signal_name, start_loop.bind(binding["start"][signal_name], node))
 	for signal_name in binding.get("stop", {}):
@@ -167,8 +170,42 @@ func stream(cue_id: String) -> AudioStream:
 			push_warning("sound.gd: no sound for cue " + cue_id)
 	return _streams[cue_id]
 
+## A bound signal's cue: positional at the node when the cue has a "distance" and the node is in
+## 3D, else flat (play_ui). Bound signals carry no arguments (the cue and node are bound after).
+func _play_bound(cue_id: String, node: Node) -> void:
+	if node is Node3D and cues.get(cue_id, {}).has("distance"):
+		play_at(cue_id, node)
+	else:
+		play_ui(cue_id)
+
+## Plays a cue once, not positional (UI and reward sounds: the coin, right and wrong answers;
+## 25 Nov 2026). Freed when done. Returns the player, or null when the cue has no sound.
+func play_ui(cue_id: String) -> AudioStreamPlayer:
+	var sound := stream(cue_id)
+	if sound == null or not is_inside_tree():
+		return null
+	var cue: Dictionary = cues[cue_id]
+	var player := AudioStreamPlayer.new()
+	player.stream = sound
+	player.bus = str(cue.get("bus", "UI"))
+	player.volume_db = float(cue.get("volume_db", 0.0))
+	player.set_meta("sound_cue", cue_id)
+	add_child(player)
+	_players.append(player)
+	player.finished.connect(player.queue_free)
+	_web_wake()
+	player.play()
+	return player
+
 ## Plays a cue once from `at` (a positional player under it, freed when done). Returns the player.
+## A cue with "restart": true first stops the same cue still sounding at `at` (a door or bell
+## used again quickly does not pile its sounds up).
 func play_at(cue_id: String, at: Node3D) -> AudioStreamPlayer3D:
+	if bool(cues.get(cue_id, {}).get("restart", false)) and is_instance_valid(at):
+		for child in at.get_children():
+			if child is AudioStreamPlayer3D and str(child.get_meta("sound_cue", "")) == cue_id and not child.has_meta("sound_loop"):
+				child.stop()
+				child.queue_free()
 	var player := _player(cue_id, at)
 	if player != null:
 		player.finished.connect(player.queue_free)
@@ -184,6 +221,7 @@ func start_loop(cue_id: String, at: Node3D) -> AudioStreamPlayer3D:
 	var player := _player(cue_id, at)
 	if player != null:
 		player.name = _loop_name(cue_id)
+		player.set_meta("sound_loop", true)
 		_web_wake()
 		player.play()
 	return player
@@ -193,6 +231,52 @@ func stop_loop(cue_id: String, at: Node3D) -> void:
 	if player != null:
 		player.stop()
 		player.queue_free()
+
+## --- Vehicle engines ----------------------------------------------------------------------------
+
+## Engines (25 Nov 2026, user: a sound for driving): a looping cue with an "engine" section names
+## the vehicle word keys it sounds for ("vehicles"; the cue with "default": true for any other).
+## engine() keeps it looping at the vehicle while `running`, its pitch from pitch_idle to pitch_top
+## and its volume from idle_db to 0 dB (on top of volume_db) as `speed` goes 0 -> 1, times the
+## key's factor in "types". Stopping fades out over ENGINE_FADE s (no click).
+const ENGINE_FADE := 0.25
+
+## The engine cue for a vehicle word key ("" when none).
+func engine_cue(kind: String) -> String:
+	var fallback := ""
+	for cue_id in cues:
+		var tune: Dictionary = cues[cue_id].get("engine", {})
+		if tune.is_empty():
+			continue
+		if kind in tune.get("vehicles", []):
+			return cue_id
+		if bool(tune.get("default", false)):
+			fallback = cue_id
+	return fallback
+
+func engine(vehicle: Node3D, running: bool, speed: float, kind := "car") -> void:
+	var cue_id := engine_cue(kind)
+	if cue_id == "" or not is_instance_valid(vehicle):
+		return
+	var player := looping(cue_id, vehicle)
+	if not running:
+		if player != null:
+			# Renamed first, so looping() no longer finds it and a restart makes a new one.
+			player.name = _loop_name(cue_id) + " stopping"
+			var fade := player.create_tween()
+			fade.tween_property(player, "volume_db", -60.0, ENGINE_FADE)
+			fade.tween_callback(player.queue_free)
+		return
+	if player == null:
+		player = start_loop(cue_id, vehicle)
+		if player == null:
+			return
+	var cue: Dictionary = cues[cue_id]
+	var tune: Dictionary = cue.get("engine", {})
+	var s := clampf(speed, 0.0, 1.0)
+	var factor := float(tune.get("types", {}).get(kind, 1.0))
+	player.pitch_scale = maxf(0.05, factor * lerpf(float(tune.get("pitch_idle", 1.0)), float(tune.get("pitch_top", 1.0)), s))
+	player.volume_db = float(cue.get("volume_db", 0.0)) + lerpf(float(tune.get("idle_db", 0.0)), 0.0, s)
 
 ## The looping player of a cue at a node, else null.
 func looping(cue_id: String, at: Node3D) -> AudioStreamPlayer3D:

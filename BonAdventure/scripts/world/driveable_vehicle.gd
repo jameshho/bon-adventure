@@ -86,7 +86,11 @@ var tail_rotor_rest := Basis.IDENTITY
 var flight_velocity := Vector3.ZERO
 var landed := false
 var flight_hulls: Array[Dictionary] = []
-var occupied := false
+var occupied := false:
+    set(value):
+        occupied = value
+        # A driver getting out (or the controls taken by a panel) stops a road engine at once.
+        if not value and is_inside_tree(): update_engine_sound()
 var current_speed := 0.0
 var original_world_y := 0.0
 var collision_exceptions: Array[RID] = []
@@ -330,6 +334,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func drive_step(delta: float, gas: float, steering: float, lift: float, stabilize: bool = false) -> void:
     if helicopter:
+        update_engine_sound()
         if advance_boarding(clampf(delta,0,.25)):
             update_driver_door()
             return
@@ -344,6 +349,7 @@ func drive_step(delta: float, gas: float, steering: float, lift: float, stabiliz
         elif coasting: settle(delta,landed and rotor_power<=0.0)
         return
     if road_physics==null: return
+    update_engine_sound()
     if advance_boarding(clampf(delta,0,.25)):
         update_driver_door()
         return
@@ -362,6 +368,28 @@ func drive_step(delta: float, gas: float, steering: float, lift: float, stabiliz
             park_road_vehicle()
         elif settle(delta,road_physics.supported and planar<.08 and absf(road_physics.yaw_velocity)<.05):
             park_road_vehicle()
+
+## Engine sound (user, 25 Nov 2026: sounds for driving and flying; sound.gd engine(), the engine
+## cues in data/sounds.json): a road vehicle while someone drives it (pitch and loudness follow the
+## speed), the helicopter while its rotor turns (following the rotor, so it winds down after the
+## pilot leaves), the plane while its engine runs (turboprop.gd). Silent itself: sound.gd plays it.
+func engine_kind() -> String:
+    if fixed_wing: return "plane"
+    if helicopter: return "helicopter"
+    return str(get_meta("word_key","car"))
+
+## 0 (idle) .. 1 (flat out).
+func engine_level() -> float:
+    if helicopter: return rotor_power
+    return clampf(absf(current_speed)/maxf(top_speed,1.0),0.0,1.0)
+
+func engine_running() -> bool:
+    if helicopter: return rotor_power>.01 and not crashed
+    return occupied and not boarding_busy() and not crashed
+
+func update_engine_sound() -> void:
+    var sound=preload("res://scripts/core/sound.gd").shared()
+    if sound!=null: sound.engine(self,engine_running(),engine_level(),engine_kind())
 
 ## Counts the time a coasting vehicle has been still; parks it (coasting off) after SETTLE_TIME.
 func settle(delta: float, still: bool) -> bool:

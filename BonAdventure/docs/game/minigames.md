@@ -420,8 +420,8 @@ the NEW BOOKS display**
 *Screenshot 17 Nov.*
 
 Three to six books wait on the return cart. Take each one to a gap in the shelf for its category
-(animals, sports, music, food, vehicles, plants): the right shelf sparkles, a wrong one wobbles the
-book back into your hand. Picking a book up zooms in on its cover (tap anywhere to close). When
+(animals, sports, music, food, vehicles, plants): the right shelf sparkles with a marimba chime, a
+wrong one wobbles the book back into your hand with two soft falling notes (sounds 25 Nov). Picking a book up zooms in on its cover (tap anywhere to close). When
 every book is home the camera turns to Rosa, who thanks you, then the results card shows the words
 practiced and discovered; once you have
 walked away the books are borrowed and a new cart of 3–6 arrives. Tracked: each book's first try.
