@@ -46,6 +46,8 @@ var electrical_box_panel
 var electrical_box_session
 ## The elevator floor picker: E at a cabin panel (scripts/ui/elevator_floor_picker.gd).
 var elevator_floor_picker
+## The record player panel: E at a record player (scripts/ui/record_player_panel.gd).
+var record_player_panel
 ## The minigame picker, F9 or the ▶ corner button (scripts/ui/game_launcher.gd).
 var game_launcher
 ## The Passport: missions, town stamps, the achievement log (scripts/ui/passport_panel.gd).
@@ -244,7 +246,7 @@ func _ready() -> void:
 	# the service earlier (loading music) and plays the town music itself.
 	if Sound.shared() == null:
 		add_child(Sound.new())
-		Sound.shared().play_music("town")
+		Sound.shared().play_town()
 	# Lamp glow materials go on before the batchers below; the HUD clock opens the time panel.
 	day_night.bind_town(apartment, player)
 	day_clock = preload("res://scripts/ui/day_clock.gd").new()

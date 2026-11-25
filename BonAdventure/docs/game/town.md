@@ -31,6 +31,9 @@ bathroom with working toilet and faucets, living room, kitchen, garage, a sunken
 tub. Outside are Mei's mahjong table and the electrical box for Wire It Up!. Since 14 Nov only
 BonBon, Leo and Sunny live in the house, and the walkways were cleared. Since 23 Nov the garage
 has no bicycle ([record](../guides/TOWN_DESIGN_BRIEF.md#civic-fixes-garage-school-police-lockers-warehouse-cabinet-zoo-gate--23-november-2026)).
+Since 25 Nov a record player on a walnut stand sits beside the living room TV: it plays any of
+the game's songs ([view](../evidence/record-player-20261125/room.png),
+[how it works](../guides/COMPONENTS.md#record-player)).
 [Reference home](../guides/REFERENCE_HOME.md) ·
 [14 Nov change](../guides/REFERENCE_HOME.md#fewer-plushes-and-clear-walkways--14-november-2026)
 

@@ -630,6 +630,18 @@
       "roof_key": {"es": "{n} (azotea)", "en": "{n} (roof)", "zh": "{n}（天台）", "note": "The roof's key in elevator.inside."},
       "choose_floor": {"es": "Elige una planta", "en": "Choose a floor", "zh": "選擇樓層", "note": "Title of the elevator floor picker (E at the cabin panel)."}
     },
+    "record_player": {
+      "title": {"es": "Tocadiscos", "en": "Record Player", "zh": "黑膠唱機", "note": "Title of the record player card (the home's living room; scripts/ui/record_player_panel.gd)."},
+      "now_playing": {"es": "Suena: {song}", "en": "Now playing: {song}", "zh": "正在播放：{song}", "note": "Record player card: {song} is a song title (record_player.song_*)."},
+      "stopped": {"es": "Elige una canción", "en": "Pick a song", "zh": "揀一首歌", "note": "Record player card while the record is stopped."},
+      "song_town": {"es": "Pueblo soleado", "en": "Sunny Town", "zh": "陽光小鎮", "note": "Song title: the town's background music (data/sounds.json music.tracks town)."},
+      "song_loading": {"es": "Ensueño", "en": "Daydream", "zh": "白日夢", "note": "Song title: the loading screen's music (track loading)."},
+      "song_quiz": {"es": "Hora del quiz", "en": "Quiz Time", "zh": "問答時間", "note": "Song title: the quiz games' music (track quiz)."},
+      "song_errands": {"es": "De recados", "en": "Busy Errands", "zh": "忙碌跑腿", "note": "Song title: the shop and errand games' music (track errands)."},
+      "song_mystery": {"es": "Noche de misterio", "en": "Mystery Night", "zh": "神秘之夜", "note": "Song title: the mystery games' music (track mystery)."},
+      "song_focus": {"es": "Mente tranquila", "en": "Quiet Focus", "zh": "專心一刻", "note": "Song title: the puzzle games' music (track focus)."},
+      "song_outdoors": {"es": "Aire libre", "en": "Fresh Air", "zh": "清新空氣", "note": "Song title: the outdoor games' music (track outdoors)."}
+    },
     "map": {
       "title": {"es": "Bon Adventure", "en": "Bon Adventure", "zh": "Bon Adventure", "note": "The full town map's title: the game's name, never translated (user, 16 Nov 2026)."},
       "legend": {"es": "Flecha: tú   |   Arena: playas   |   Líneas claras: caminos", "en": "Arrow: you   |   Sand: beaches   |   Pale lines: walking paths", "zh": "箭咀：你   |   沙色：沙灘   |   淺色線：行人路"},

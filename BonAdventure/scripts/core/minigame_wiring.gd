@@ -35,6 +35,8 @@ const PANELS := [
 	["electrical_box_panel", "close_requested", true],
 	# The elevator floor picker (docs/guides/HOSPITAL_THREE_FLOORS.md): Esc closes the panel close-up.
 	["elevator_floor_picker", "close_requested", true],
+	# The home's record player (docs/guides/COMPONENTS.md "Record player"): Esc closes the close-up.
+	["record_player_panel", "close_requested", true],
 	# The minigame test launcher (debug builds; docs/guides/MINIGAMES.md#test-launcher).
 	["game_launcher", "close_requested", true],
 	# The Passport (scripts/ui/passport_panel.gd): Esc closes it.
@@ -177,6 +179,12 @@ static func build(main) -> void:
 	main.elevator_floor_picker.main = main
 	main.hud.ui_root.add_child(main.elevator_floor_picker)
 	main.elevator_floor_picker.visibility_changed.connect(main.sync_player_controls)
+	# Record players (the home's living room, 25 Nov 2026): E zooms onto the turntable and a card
+	# picks the background music.
+	main.record_player_panel = preload("res://scripts/ui/record_player_panel.gd").new()
+	main.record_player_panel.main = main
+	main.hud.ui_root.add_child(main.record_player_panel)
+	main.record_player_panel.visibility_changed.connect(main.sync_player_controls)
 	# The minigame picker (F9 or its ▶ corner button; a player feature since 10 Nov 2026): starts
 	# any game above with a chosen number of rounds.
 	main.game_launcher = preload("res://scripts/ui/game_launcher.gd").new()

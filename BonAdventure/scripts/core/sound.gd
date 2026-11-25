@@ -25,6 +25,10 @@ extends Node
 ## Minigames (25 Nov 2026, user: "different songs for different activity"): while a game runs
 ## (activity_board.gd started / ended) its data/activities.json "music" track plays, then town
 ## again. Five moods: quiz, errands, mystery, focus, outdoors.
+## The home's record player (25 Nov 2026, user; scripts/world/record_player.gd) lets the player
+## pick any track: pick_record(track) plays it and makes it `town_track`, the track the town
+## returns to after a game and after loading (play_town()); pick_record("") stops the music
+## until the next pick. music_changed tells the turntable what is asked for.
 ## While a word is said (say_word) the music dips by DUCK_DB, through its own bus DUCK_BUS (sent
 ## to Music), so the Music slider is left alone.
 ##
@@ -42,6 +46,9 @@ const DUCK_DB := -9.0
 
 static var _shared
 
+## The track play_music() or stop_music() now asks for ("" = quiet); the record player follows it.
+signal music_changed(track: String)
+
 var cues: Dictionary = {}
 ## script resource path -> binding dictionary (play / start / stop: signal -> cue id).
 var bindings: Dictionary = {}
@@ -53,6 +60,8 @@ var music: Dictionary = {}
 var _music_players: Dictionary = {}
 ## The track play_music() last asked for ("" after stop_music()).
 var _music_now := ""
+## What the town plays when no game runs: "town", or the record player's pick ("" = stopped).
+var town_track := "town"
 var _duck_tween: Tween
 var _streams: Dictionary = {}
 var _voice_player: AudioStreamPlayer
@@ -223,6 +232,7 @@ func play_music(track: String) -> bool:
 	_kill_fade(current)
 	current.volume_db = -40.0 if fade > 0.0 else target
 	_music_now = track
+	music_changed.emit(track)
 	_web_wake()
 	current.play()
 	if fade > 0.0:
@@ -241,7 +251,28 @@ func _on_activity_started(id: String) -> void:
 
 func _on_activity_ended(_id: String, _summary: Dictionary) -> void:
 	if _music_now != "loading":
-		play_music("town")
+		play_town()
+
+## The town's own music: `town_track` (the record player's pick), or quiet after its Stop.
+func play_town() -> bool:
+	if town_track == "":
+		stop_music()
+		return false
+	return play_music(town_track)
+
+## The record player's choice (record_player_panel.gd): plays `track` now and keeps it as the
+## town's music; "" stops the music until the next pick.
+func pick_record(track: String) -> void:
+	town_track = track
+	play_town()
+
+## The track asked for last, playing or still fading in ("" = none or stopped).
+func music_wanted() -> String:
+	return _music_now
+
+## The music tracks in catalogue order (the record player's songs).
+func track_names() -> Array:
+	return (music.get("tracks", {}) as Dictionary).keys()
 
 ## DUCK_BUS, made once and sent to `to`, else `to` itself when it cannot be made.
 func _duck_bus(to: String) -> String:
@@ -269,8 +300,11 @@ func duck_music(seconds: float) -> void:
 
 ## Fades every music track out.
 func stop_music() -> void:
+	var was := _music_now
 	_music_now = ""
 	_fade_out_music("")
+	if was != "":
+		music_changed.emit("")
 
 ## The track asked for last, while it plays; else "".
 func music_track() -> String:

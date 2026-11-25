@@ -260,6 +260,12 @@ BonBon's steps keep pace with her speed (quicker when running, slower when creep
   is spoken. All are demo placeholders made for the game, until licensed or commissioned music
   replaces them. The Music slider in Settings sets their volume (0 mutes them).
   [Tracks](../guides/VOICE.md#background-music-25-nov-2026)
+- **Record player** (25 Nov 2026): next to the TV in the home's living room. E (or a tap) zooms
+  onto the turntable; pick any of the seven songs, skip with ◀ / ▶ or stop the record, then ✕.
+  The picked song stays the town's music, also after games, until you change it (not kept
+  after closing the game). The record spins and its label shows the song's colour.
+  [View](../evidence/record-player-20261125/closeup.png),
+  [component](../guides/COMPONENTS.md#record-player)
 - **Spoken words:** the speaker button on the word card and in the journal says the word.
 - **Effects:** toilets, faucets and the emergency vehicles' sirens. Everything else is silent
   for now.

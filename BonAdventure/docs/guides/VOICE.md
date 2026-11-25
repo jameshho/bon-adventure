@@ -77,8 +77,15 @@ tracks on the Music bus: the loading screen, the town, and one per minigame mood
   (Main keeps it) and plays `loading`, then `town` when the screen lifts; the second loading
   screen after the tutorial (`_load_rest_now`) does the same. Main run on its own plays `town`.
   Not positional. The tutorial's title cutscene is not a loading screen and keeps the town music.
+- **Record player** (25 Nov 2026, user): the home's record player
+  ([component](COMPONENTS.md#record-player)) lists every track of `tracks` by its title
+  (phrases `record_player.song_<track>`) and plays the one picked with `pick_record(track)`. That
+  track becomes `town_track`, which `play_town()` plays wherever the town music used to be named
+  (after a game, after a loading screen, Main on its own); `pick_record("")` stops the music until
+  the next pick. Not saved: a new launch starts with `town`. `music_changed(track)` tells the
+  turntable what is asked for ("" = stopped); `music_wanted()`, `track_names()`.
 - **Minigames:** each game's `data/activities.json` `"music"` names its track. `sound.gd` listens
-  to the activity board: `started(id)` plays the game's track, `ended` plays `town` (also while
+  to the activity board: `started(id)` plays the game's track, `ended` plays `town_track` (also while
   the results card shows). A game is "running" when its `activity_running()` is true, which for
   some games includes an open order (Grocery Run's list). Loading music is never interrupted.
   A new game only adds `"music"` ([MINIGAMES.md](MINIGAMES.md#building-a-minigame)); a favourite

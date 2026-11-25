@@ -186,7 +186,7 @@ func _on_town_ready() -> void:
 	await _warm_up(director)
 	loading.finish()
 	loading = null
-	Sound.shared().play_music("town")
+	Sound.shared().play_town()
 	if is_instance_valid(director):
 		director.release()
 	if web_resume != null:
@@ -290,7 +290,7 @@ func _load_rest_now(town: Node) -> void:
 		await get_tree().process_frame
 		await town.add_unit(town.pending_units[0])
 	screen.finish()
-	Sound.shared().play_music("town")
+	Sound.shared().play_town()
 
 ## Draws the town behind the loading screen until it runs smoothly: the camera looks in
 ## WARM_HEADINGS directions around the player, one drawn frame each (the first draw of each

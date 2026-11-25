@@ -40,6 +40,7 @@ Audited and consolidated 13 November 2026 (user request). Evidence: `docs/eviden
 | The end of a minigame: what the player achieved, the words practiced and discovered, a small reward (21 Nov 2026) | Nothing in the game: `results_flow.gd` shows it for every game that ends `completed` (`Board.complete(id)` for a game whose end is not a round count); `show_results({...})` directly for anything else | `scripts/ui/results_screen.gd`, `scripts/learning/results_flow.gd`, `scripts/learning/session_words.gd` | [Results screen](MINIGAMES.md#results-screen); every learning game |
 | "Click / tap this" on a 3D object: a pulsing ring with a mouse pointer or fingertip (21 Nov 2026) | `tap_hint.gd` `point_at(node, touch, up)`, `clear()` on a full-screen CanvasLayer | `scripts/ui/tap_hint.gd` | User: the welcome tutorial's apple (after 3 s without a click) |
 | Something found once and kept, like an achievement: a floating gold coin with BonBon's face, collected by walking into it (21 Nov 2026) | `StampCoin.make(stamp_id)` or `scenes/props/stamp_coin.tscn`; any one-off activity: `Achievements.shared().note(event)` | `scripts/world/stamp_coin.gd`, `scripts/learning/achievements.gd`; placed in the town from `data/achievements.json` by `scripts/world/stamp_places.gd` (`gate`: a door that must be open first) | [Passport guide](ACHIEVEMENTS.md#town-stamps) |
+| A record player: pick, stop and skip the background music; the disc spins with the playing track's label (25 Nov 2026) | `scenes/props/record_player.tscn` (a stand and turntable built in code, back to a wall, front +Z); its E opens `record_player_panel.gd` (`Main.record_player_panel`); music through `sound.gd` `pick_record()` | `scripts/world/record_player.gd`, `scripts/ui/record_player_panel.gd` | [Record player](#record-player); user: the home's living room, beside the TV |
 | A bell (or anything) that swings when used and signals for a sound (21 Nov 2026) | `chapel_bell.gd` on a node with a `Bell clapper` child; signal `rung` | `scripts/world/chapel_bell.gd` | [Chapel record](TOWN_DESIGN_BRIEF.md#stamp-places-storage-room-bank-safe-grand-chapel--21-november-2026) |
 | A road vehicle's headlights; a siren with flashing red / blue lights (21 Nov 2026) | `vehicle.toggle_headlights()` / `toggle_siren()`, or `Headlights.of(vehicle)` / `EmergencyLights.of(vehicle)` with `set_on()`, `toggle()`, `is_on`, `switched` | `scripts/world/vehicle_headlights.gd`, `scripts/world/emergency_lights.gd` | [Vehicle lights](ZOO_VEHICLE_IMPLEMENTATION.md#headlights-siren-and-flashing-lights--21-november-2026); users: every road vehicle; the police car, ambulance and fire truck |
 | Lettering on a sign, board or tag in the town (readable size, translation, contrast) | `WorldSign.make(...)` / `WorldSign.restyle(label, {"read": metres, ...})`, `WorldSign.fit_board(...)` | `scripts/world/world_sign.gd` (translation: `scripts/world/sign_language.gd`) | [World signs](#world-signs) |
@@ -333,3 +334,30 @@ in every language and prints which buildings still have small labels.
 | Low | The player's arm swing uses BonBon's shoulder point; measure it when another plush needs to walk |
 | Low | Static `lie` characters in `data/npcs.json` keep their eyes open; a `hold_eyes()` call would shut them if wanted |
 | Low | Zoo gate and warehouse cabinet could join `door_animator.gd` at the cost of a small timing change |
+
+## Record player
+
+User, 25 Nov 2026: "a record player next to the TV" that plays the game's background music,
+lets the player choose any song, switch songs and leave, with the disc turning.
+
+- **Model** (`scripts/world/record_player.gd`, `scenes/props/record_player.tscn`): a low walnut
+  stand on tapered legs (top 0.86, 0.95 × 0.58; a shelf of record sleeves, one per track colour,
+  and a door) with a turntable on it: plinth, platter, black record with grooves and a coloured
+  label, a tone arm on a pivot, a speed knob and a green "on" lamp. Built at load (as the
+  electrical box), meta `keep_own_draw` keeps the moving parts out of the static batches. The
+  label colour is the track's (`LABELS`); the disc spins at 33⅓ rpm, easing up and down.
+  `show_track(track, play)` puts a record on: a different record while one plays lifts the arm,
+  slows the disc, swaps the label and drops the needle again (signals `needle_up`,
+  `needle_down(track)`, hooks for sounds). It follows `sound.gd` `music_changed`, so it also
+  shows a minigame's or the loading screen's track while that plays.
+- **Use**: an Interactable (E, a click or a tap from in front; "finish the other task first"
+  while a game runs). It opens `scripts/ui/record_player_panel.gd`: the camera glides to a
+  close-up of the turntable (as the elevator floor picker), and a BonStyle card on the left (clear
+  of the HUD's EN and Settings buttons) lists
+  every song as a pill with a small record in its colour (the playing one green with a tick),
+  "Now playing: …" or "Pick a song", and ◀, a green ▶ / ⏸ and ▶. A tap on a song plays it, ◀ / ▶
+  step round the list, the green button (or a tap on the turntable) stops and plays again; the
+  ✕ or Esc glides back, and the music keeps playing. Popup stack and control lock: `PANELS`.
+- **Music**: `sound.gd` `pick_record(track)` (see [VOICE.md](VOICE.md#background-music-25-nov-2026)).
+- **Placed**: the home's living room, against the west wall just north of the TV's media
+  console (home step `record_player`). Evidence and check: `docs/evidence/record-player-20261125/`.

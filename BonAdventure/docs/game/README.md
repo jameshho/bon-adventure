@@ -82,7 +82,7 @@ be forgotten come back.
 
 | Place | What is there | Last change |
 | --- | --- | --- |
-| [Home](town.md#home) | BonBon's house, pool, garage, mahjong table, electrical box; tutorial rooms | 23 Nov (no bicycle in the garage) |
+| [Home](town.md#home) | BonBon's house, pool, garage, mahjong table, electrical box, record player; tutorial rooms | 25 Nov (a record player beside the living room TV: pick, skip or stop the music, [view](../evidence/record-player-20261125/closeup.png)); 23 Nov (no bicycle in the garage) |
 | [Supermarket](town.md#supermarket) | Nine departments, every product a word, cashier and clerk | 18 Nov (compact layout with a staff wall and a cold wall; bigger, clay-toy products; real front windows) |
 | [Library](town.md#library) | Six category shelves (3 books each), NEW BOOKS display at the rear wall, return cart, cosy reading corner | 17 Nov (new categories, desks removed, interior refresh, readable signs) |
 | [Restaurants](town.md#restaurants) | Alta Cocina, Pizza and Burger, Taquería | 23 Nov (taller facade signs, Pizza and Burger glass double door, no tray at the taquería waiter's face) |
