@@ -309,6 +309,8 @@ func _warehouse_next_tracked(session) -> bool:
 
 ## A warehouse task with a wrong attempt (negative), one with the card's bubble (translated),
 ## then leaving the game (nothing).
+## The word followed is the task's colour (the boxes have no word of their own since 21 Nov
+## 2026; since 25 Nov a wrong box misses the colour and the position word is judged apart).
 func warehouse_game(game) -> void:
 	var session = game.get_node_or_null("WarehouseSession")
 	check(session != null, "warehouse session exists")
@@ -325,7 +327,7 @@ func warehouse_game(game) -> void:
 				await session.end_game("")
 			continue
 		var task: Dictionary = session.tasks[session.current]
-		var word: String = session.goods.items[task.item].get_meta("word_key", "")
+		var word: String = str(session.writer.words(task)[0])
 		check(log.game_id() == id, "a task naming %s begins a question" % word)
 		var before := now(word, id)
 		if not tested.wrong:
@@ -339,7 +341,7 @@ func warehouse_game(game) -> void:
 					await session.end_game("")
 				continue
 			task = session.tasks[session.current]
-			word = session.goods.items[task.item].get_meta("word_key", "")
+			word = str(session.writer.words(task)[0])
 			before = now(word, id)
 		session.card.toggle_translation()
 		await frames(2)

@@ -41,9 +41,12 @@ const PLAN_TRIES := 40
 const Plan := preload("res://scripts/learning/warehouse_plan.gd")
 const Goods := preload("res://scripts/learning/warehouse_goods.gd")
 ## Practice words (practice_log.gd) of the colours in task sentences (tools/vocabulary_report.gd
-## reads these two tables).
+## reads these three tables).
 const COLOR_WORDS := {"red": "red", "blue": "blue", "green": "green", "yellow": "yellow"}
 const SIZE_WORDS := {}
+## The position word each kind of task practises (user, 25 Nov 2026: Stack & Pack also tracks
+## its positions). "en el estante de arriba" practises "up" (arriba).
+const POSITION_WORDS := {"on": "on", "next_to": "next to", "right": "right", "top_shelf": "up"}
 
 var goods
 var boss: Node3D
@@ -71,13 +74,16 @@ func next() -> Dictionary:
 	return {}
 
 ## A task for one entry in the current arrangement, or {} when none can be done now.
-func make(entry: String) -> Dictionary:
+## `prefer_wanted`: the box the word memory wants most (_pick_item()); false picks any box, so
+## the plan's retries can vary when the wanted box breaks its rules (25 Nov 2026: a due colour
+## made every retry pick the same box and plans of 5 failed).
+func make(entry: String, prefer_wanted := true) -> Dictionary:
 	if not entry in POSITIONS:
 		return {}
-	return _placing("put", entry, entry)
+	return _placing("put", entry, entry, prefer_wanted)
 
 ## A placing task (verb + item + place) whose goal is not already met, or {}.
-func _placing(verb: String, pos: String, entry: String) -> Dictionary:
+func _placing(verb: String, pos: String, entry: String, prefer_wanted := true) -> Dictionary:
 	var refs := _refs_for(pos)
 	refs.shuffle()
 	for ref in refs:
@@ -85,7 +91,7 @@ func _placing(verb: String, pos: String, entry: String) -> Dictionary:
 		var movable := _items(func(id): return id != ref and _fits(id, goal) and not reached(id, goal) and _ref_ready(id, goal))
 		if movable.is_empty():
 			continue
-		var id: String = _pick_item(movable)
+		var id: String = _pick_item(movable) if prefer_wanted else str(_pick(movable))
 		return {"entry": entry, "kind": "place", "item": id, "goal": goal, "phrase": PLACING[verb], "values": {"item": thing(id), "place": place(goal, true)}}
 	return {}
 
@@ -210,7 +216,7 @@ func _planned(list: Array, count: int, strict: bool) -> Dictionary:
 		_shuffle(pool)
 		for entry in pool:
 			for variant in 3:
-				var task := make(entry)
+				var task := make(entry, variant == 0)
 				if not task.is_empty() and _allowed(task, used, last, share_limit(count), strict):
 					_unused.erase(entry)
 					return task
@@ -298,20 +304,44 @@ func backup(list: Array, index: int) -> Dictionary:
 		_shuffle(pool)
 		for entry in pool:
 			for variant in 3:
-				var task := make(entry)
+				var task := make(entry, variant == 0)
 				if not task.is_empty() and _allowed(task, used, last, share_limit(list.size()), strict):
 					return task
 	return {}
 
 ## The words a task practises (practice_log.gd): its thing's word, if it has one (the boxes
-## have none since 21 Nov 2026), plus the colour its sentence names. [] when no thing is named.
+## have none since 21 Nov 2026), plus the colour its sentence names, plus the position word of
+## its kind (place_word(); since 25 Nov 2026). [] when no thing is named.
 func words(task: Dictionary) -> Array:
 	var item := str(task.get("item", ""))
 	if item == "" or not goods.items.has(item):
 		return []
 	var keys: Array = [str(goods.items[item].get_meta("word_key", ""))]
 	keys.append(COLOR_WORDS.get(item.get_slice("_", 1), ""))
+	keys.append(place_word(task))
 	return keys.filter(func(key): return key != "")
+
+## The position word of a task ("" when it has none). The session judges it apart from the
+## thing's words: a wrong box misses the colour, the right box put down in a wrong place misses
+## the position (warehouse_session.gd).
+static func place_word(task: Dictionary) -> String:
+	return str(POSITION_WORDS.get(str(task.get("entry", "")), ""))
+
+## Whether the task's thing, let go and resting, stands in a named place that is not its goal:
+## on the table, on a shelf level, or beside the wall bay's box on the wrong side. Anywhere
+## else on the floor is not judged (the player may just set it down on the way).
+func wrong_place(task: Dictionary) -> bool:
+	var id := str(task.get("item", ""))
+	if str(task.get("kind", "")) != "place" or not goods.items.has(id) or not goods.resting(id):
+		return false
+	if reached(id, task.goal):
+		return false
+	if goods.on_table(id) or not goods.rack_spot(id).is_empty():
+		return true
+	for ref in goods.items:
+		if ref != id and goods.bay_of(ref) >= 0 and goods.beside(id, ref, "next_to"):
+			return true
+	return false
 
 # --- Hints (8 Nov 2026) ------------------------------------------------------------------------
 
