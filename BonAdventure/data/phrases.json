@@ -1253,7 +1253,10 @@
       "all_back": {"es": "¡Todos los libros están en su sitio! Vuelve más tarde.", "en": "All the books are back. Come back later!", "zh": "所有的書都放回去了！請稍後再來。", "note": "Talking to Rosa while the sorted books rest on the shelves (17 Nov 2026; since 21 Nov 2026 until the player walks away, then they are borrowed and a new cart fills)."},
       "rosa": {"es": "Rosa", "en": "Rosa", "zh": "羅莎", "note": "The librarian (samoyed plush, woman) by the library's NEW BOOKS display and return cart; hosts the book-sorting game (scripts/learning/library_session.gd, 11 Nov 2026; game 13 Nov 2026). Speaker name in the dialogue box."},
       "goodbye": {"es": "¡Hasta luego! Vuelve cuando quieras.", "en": "See you later! Come back any time.", "zh": "再見！歡迎隨時再來。"},
-      "not_now": {"es": "Ahora estoy ordenando libros. ¡Vuelve más tarde!", "en": "I'm sorting books right now. Come back later!", "zh": "我現在正在整理書本，請稍後再來！", "note": "Rosa is not offering the mission (data/activities.json chance)."}
+      "not_now": {"es": "Ahora estoy ordenando libros. ¡Vuelve más tarde!", "en": "I'm sorting books right now. Come back later!", "zh": "我現在正在整理書本，請稍後再來！", "note": "Rosa is not offering the mission (data/activities.json chance)."},
+      "leave_confirm": {"es": "¿Quieres dejar de ayudar a Rosa? No vas a terminar.", "en": "Do you want to stop helping Rosa? You won't finish.", "zh": "你想停止幫羅莎嗎？你不會完成。", "note": "The shared leave question (minigame_host.gd ask_leave): walking out of the library or Esc / back during the book-sorting game (25 Nov 2026)."},
+      "leave_yes": {"es": "Sí, salir", "en": "Yes, leave", "zh": "是，離開"},
+      "leave_no": {"es": "No, seguir", "en": "No, keep going", "zh": "不，繼續"}
     },
     "zoo": {
       "nico": {"es": "Nico", "en": "Nico", "zh": "尼高", "note": "The zookeeper at the zoo food booth (sheep plush, man; data/npcs.json nico). Speaker name."},

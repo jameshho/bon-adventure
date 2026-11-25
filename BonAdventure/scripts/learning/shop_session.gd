@@ -371,6 +371,16 @@ func _ask_quit() -> void:
 	if order != null and order.state == Order.State.SHOPPING:
 		host.ask_leave()
 
+## Esc / back with no popup open while an order runs (Main, the request_leave() contract,
+## docs/guides/MINIGAMES.md; 25 Nov 2026): the in-world part (shopping with the basket, or the
+## paid basket on its way back to the clerk) asks the shared leave question. True when taken.
+func request_leave() -> bool:
+	if host == null or not activity_running():
+		return false
+	if not host.is_asking_leave():
+		host.ask_leave()
+	return true
+
 func _on_leave_answered(leave: bool) -> void:
 	var at_edge := _asked_at_edge
 	_asked_at_edge = false
@@ -379,9 +389,9 @@ func _on_leave_answered(leave: bool) -> void:
 			_step_back_in()
 		if get_parent() != null and get_parent().has_method("sync_player_controls"):
 			get_parent().sync_player_controls()
-		if leave and awaiting_return:
-			_left()
-			return
+	if leave and awaiting_return:
+		_left()
+		return
 	if leave and order != null and order.state == Order.State.SHOPPING:
 		order.cancel()
 		host.abandon_practice()

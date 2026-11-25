@@ -762,8 +762,10 @@ func _unhandled_input(event: InputEvent) -> void:
 	# Keys, and the same actions fired by the touch buttons (scripts/ui/touch_controls.gd).
 	if (event is InputEventKey or event is InputEventAction) and event.is_pressed() and not event.is_echo():
 		if event.is_action_pressed("back"):
-			# The topmost popup closes; with nothing open, Esc opens Settings.
-			if not popups.close_top():
+			# The topmost popup closes; with nothing open, a running game may take it to ask the
+			# shared leave question (its request_leave() -> bool, docs/guides/MINIGAMES.md; 25 Nov
+			# 2026), else Esc opens Settings.
+			if not popups.close_top() and not _request_leave():
 				open_settings()
 			player.release_orbit()
 		elif event.is_action_pressed("help"):
@@ -799,6 +801,13 @@ func _unhandled_input(event: InputEvent) -> void:
 		# its "E" badge, and shows a plain word's card (interaction_controller.gd click()).
 		interaction.click()
 		sync_player_controls()
+
+## Esc / back with no popup open: the running game's request_leave() (true when it asked its
+## leave question). Games without it let Settings open as before.
+func _request_leave() -> bool:
+	var running: String = Board.shared().blocker("")
+	var session: Object = Board.shared().session(running) if running != "" else null
+	return session != null and session.has_method("request_leave") and bool(session.request_leave())
 
 ## The E key: the input claim that holds it (driving, seated, the warehouse game while carrying)
 ## or the focused interactable (docs/guides/ARCHITECTURE_REVIEW_PART1.md#interaction-system).

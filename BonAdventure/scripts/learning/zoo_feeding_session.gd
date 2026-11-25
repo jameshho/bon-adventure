@@ -17,7 +17,10 @@ extends Node
 ## instruction strip shows the request and "2/5". Levels (data/activities.json "levels") pick the
 ## animals by word tier (Lexicon.tier()) and say how many requests a session has. Practice: one
 ## question per request, the named animal's word (practice_log.gd).
-## Leaving the zoo during the game asks whether to stop; talking to Nico repeats the request.
+## Leaving the zoo during the game asks whether to stop (25 Nov 2026, GAME-03: on foot the player
+## is first put back just inside, facing Nico, and stands still until they answer, as the grocery
+## clerk's and Library Helper's walk-away; "stay" keeps them inside). Esc / back asks the same
+## (request_leave(), called by Main). Talking to Nico repeats the request.
 const Host := preload("res://scripts/learning/minigame_host.gd")
 const Board := preload("res://scripts/learning/activity_board.gd")
 const Progress := preload("res://scripts/learning/game_progress.gd")
@@ -37,6 +40,9 @@ const WALK_AWAY_DISTANCE := 12.0
 ## Seconds between a right feed and the next request.
 const NEXT_DELAY := 1.4
 const ZONE_CHECK_INTERVAL := 0.25
+## The player's last places inside the zoo (one per zone check) during a game, oldest first:
+## walking out puts them back at the oldest.
+const INSIDE_SPOTS := 3
 
 var lexicon
 var dialogue
@@ -59,6 +65,9 @@ var missed := false
 var game_food: Dictionary = {}
 var _zone_timer := 0.0
 var _in_zoo := true
+var _inside_spots: Array = []
+## The leave question was asked because the player walked out and was put back (not by Esc).
+var _asked_at_edge := false
 var _rng := RandomNumberGenerator.new()
 ## Whether Nico offers the game now (kept on the host; the checks read and set it).
 var offered: bool:
@@ -237,6 +246,10 @@ func _stop_game() -> void:
 	feeder.judge = Callable()
 	strip.clear()
 	host.cancel_leave()
+	if _asked_at_edge:
+		_asked_at_edge = false
+		if get_parent() != null and get_parent().has_method("sync_player_controls"):
+			get_parent().sync_player_controls()
 	var bag := Basket.carried(player)
 	if bag != null and bag.has_meta("game_bag"):
 		var left := {}
@@ -267,8 +280,47 @@ func _on_choice(id: String) -> void:
 			stop_game()
 
 func _on_leave_answered(leave: bool) -> void:
+	var at_edge := _asked_at_edge
+	_asked_at_edge = false
+	if at_edge:
+		if not leave and zones.resolve_global(player.global_position) != ZONE:
+			_step_back_in()
+		if get_parent() != null and get_parent().has_method("sync_player_controls"):
+			get_parent().sync_player_controls()
 	if leave and playing:
 		stop_game()
+
+## Esc / back while the game runs (Main, the request_leave() contract, docs/guides/MINIGAMES.md):
+## asks the shared leave question. True when the press was taken.
+func request_leave() -> bool:
+	if host == null or not playing:
+		return false
+	if not host.is_asking_leave():
+		host.ask_leave("zoo.leave_confirm")
+	return true
+
+## Walked out of the zoo mid-game: on foot, back inside first; in a vehicle or seat, just ask.
+func _ask_at_edge() -> void:
+	var main := get_parent()
+	var riding: bool = player.seated or (main != null and is_instance_valid(main.get("active_vehicle")))
+	if not riding and not _inside_spots.is_empty():
+		_step_back_in()
+		_asked_at_edge = true
+		player.set_controls_enabled(false)
+	host.ask_leave("zoo.leave_confirm")
+
+## Puts the player at their oldest remembered spot inside the zoo, facing Nico.
+func _step_back_in() -> void:
+	if _inside_spots.is_empty():
+		return
+	player.global_position = _inside_spots[0]
+	player.velocity = Vector3.ZERO
+	var look: Vector3 = keeper.global_position - player.global_position if is_instance_valid(keeper) else Vector3.ZERO
+	if Vector2(look.x, look.z).length() > 0.1:
+		var yaw := atan2(-look.x, -look.z)
+		player.rotation.y = yaw
+		player.camera_yaw = yaw
+	player.reset_camera()
 
 ## A language change in Settings ends the game; Nico's name follows the new languages.
 func end_activity() -> void:
@@ -287,7 +339,14 @@ func _process(delta: float) -> void:
 		return
 	_zone_timer = 0.0
 	var inside: bool = zones.resolve_global(player.global_position) == ZONE
-	# Walking out of the zoo mid-game asks whether to stop (once per exit).
+	if playing and inside:
+		_inside_spots.append(player.global_position)
+		if _inside_spots.size() > INSIDE_SPOTS:
+			_inside_spots.pop_front()
+	elif not playing:
+		_inside_spots.clear()
+	# Walking out of the zoo mid-game asks whether to stop (once per exit; put back inside first).
 	if playing and _in_zoo and not inside and not host.is_asking_leave():
-		host.ask_leave("zoo.leave_confirm")
+		_ask_at_edge()
+		inside = zones.resolve_global(player.global_position) == ZONE
 	_in_zoo = inside

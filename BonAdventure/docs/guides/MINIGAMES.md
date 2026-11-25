@@ -172,7 +172,19 @@ moment later, as the supermarket door's "pay first" (`cashier_session.gd`, `DOOR
 - Can the player walk out of the game's room mid-game? For a game played by walking around a
   room with a clear exit, use the door guard (above) and a `<group>.leave_*` question; games at
   one spot or in one panel ask through ✕ / Esc instead (user, 11 Nov 2026: consider it for every
-  game, not a rule).
+  game, not a rule). A game in a building with no doorway to guard may instead ask when the
+  player walks out of its zone (`data/zones.json`): put them back at a spot just inside, facing
+  the NPC, and `host.ask_leave()` (the grocery clerk `_ask_at_edge` in `shop_session.gd`,
+  Library Helper `_check_zone` in `library_session.gd`, Feeding Time! `_ask_at_edge` in
+  `zoo_feeding_session.gd`, 25 Nov 2026).
+- **Required (25 Nov 2026): `request_leave() -> bool`.** Esc / back with no popup open calls it
+  on the running game (`Main._request_leave()`, through `Board.shared().blocker("")` and
+  `session(id)`) before Settings opens. While the game runs in the world, ask the leave question
+  (`host.ask_leave()`, once) and return `true`; return `false` when nothing runs, so Settings
+  opens. A game that is all in one panel gets Esc from the panel's `PANELS` entry instead.
+  Built: `library_session.gd`, `shop_session.gd` (the basket in the world and on its way back),
+  `zoo_feeding_session.gd` (Feeding Time!; walking out of the zoo also puts the player back inside
+  first, GAME-03). Not yet: the other in-world games (follow-up).
 - `data/activities.json`: offer chance and progress target ([activity board](ARCHITECTURE_REVIEW_PART1.md#shared-dialogue-popups-and-settings--4-november-2026));
   a `progress_bar.gd` in the game's panel or card.
 - `data/phrases.json` group `<group>` in every language (es, en, zh), plus `games.<activity>`

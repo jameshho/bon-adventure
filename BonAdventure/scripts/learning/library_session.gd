@@ -33,7 +33,12 @@ extends Node
 ##      Meanwhile Rosa shows no "!" and says library.all_back. Then the shelved books are
 ##      "borrowed" (they leave the gaps), a new cart of 3-6 random books fills and Rosa offers
 ##      again when the player comes back. Runtime only, nothing saved.
-##   7. Practice (user, 17 Nov 2026): a book's first placement in a cart is one question testing
+##   7. Leaving (25 Nov 2026, GAME-01/02): walking out of the library's zone during the game puts
+##      the player back inside, facing Rosa, and asks the shared leave question (the host's
+##      ask_leave(), library.leave_confirm; the shop's walk-away pattern); Esc / back asks the same
+##      (request_leave(), called by Main). Yes ends the game like "I'll help later" (the HUD and
+##      word cards come back when activity_running() turns false); No, Esc or ✕ keeps it.
+##   8. Practice (user, 17 Nov 2026): a book's first placement in a cart is one question testing
 ##      its topic word and its category's word (BOOK_WORDS and CATEGORIES in library.gd), opened
 ##      when the book is first taken in the hand (practice_log.gd: right shelf positive, wrong
 ##      negative, a translation shown first: translated).
@@ -74,6 +79,12 @@ const WOBBLES := 3
 const WOBBLE_SWING := .07
 ## Seconds from the last right book to Rosa's thanks (the slide and hop take .41 s).
 const FINISH_DELAY := .5
+## The library's zone (data/zones.json) and how often the player's place in it is checked.
+const ZONE := "library"
+const ZONE_CHECK_INTERVAL := .25
+## The player's last places inside the zone (one per zone check) during a game, oldest first:
+## walking out puts them back at the oldest.
+const INSIDE_SPOTS := 3
 
 var host
 var playing := false
@@ -95,6 +106,10 @@ var resting := false
 var _asked: Array = []
 var _asking: Node3D
 var _hand: Node3D
+var _zone_timer := 0.0
+var _inside_spots: Array = []
+## The leave question was asked because the player walked out (not by Esc).
+var _asked_at_edge := false
 
 func setup(lexicon, dialogue_panel, interaction, player: Node3D, world: Node3D) -> void:
 	name = "LibrarySession"
@@ -109,6 +124,7 @@ func setup(lexicon, dialogue_panel, interaction, player: Node3D, world: Node3D) 
 	host.play_chosen.connect(_start)
 	host.choice_made.connect(_on_choice)
 	host.talk_closed.connect(_on_talk_closed)
+	host.leave_answered.connect(_on_leave_answered)
 	var shelves := librarian.get_parent().get_node_or_null("CategoryShelves") as Node3D
 	if shelves == null:
 		return
@@ -158,6 +174,8 @@ func _start() -> void:
 		return
 	met = true
 	resting = false
+	_asked_at_edge = false
+	_inside_spots.clear()
 	_asked.clear()
 	playing = true
 	_finishing = false
@@ -220,11 +238,15 @@ func _on_choice(id: String) -> void:
 		"ok":
 			host.close_dialogue()
 		"later":
-			host.abandon_practice()
-			_clear_books()
-			playing = false
-			_finishing = false
-			host.say("library.stopped")
+			_stop()
+
+## The game ends unfinished ("I'll help later", or yes on the leave question): the books go away.
+func _stop() -> void:
+	host.abandon_practice()
+	_clear_books()
+	playing = false
+	_finishing = false
+	host.say("library.stopped")
 
 ## A line closed (auto-close, ✕ or walking away): the start's second line follows the first.
 func _on_talk_closed(line_id: String) -> void:
@@ -294,6 +316,8 @@ func end_activity() -> void:
 		playing = false
 		_fill_cart()
 	_finishing = false
+	_asked_at_edge = false
+	host.cancel_leave()
 	host.close_dialogue()
 	host.refresh_name()
 
@@ -301,9 +325,76 @@ func _process(delta: float) -> void:
 	if host == null:
 		return
 	_watch_hand()
+	_check_zone(delta)
 	if resting and not busy() and _walked_away():
 		replenish()
 	host.tick(delta)
+
+# --- Leaving --------------------------------------------------------------------------------
+
+## Esc / back while the game runs (Main, the request_leave() contract, docs/guides/MINIGAMES.md):
+## asks the shared leave question. True when the press was taken.
+func request_leave() -> bool:
+	if host == null or not playing or _finishing:
+		return false
+	if not host.is_asking_leave():
+		host.ask_leave()
+	return true
+
+func _on_leave_answered(leave: bool) -> void:
+	var at_edge := _asked_at_edge
+	_asked_at_edge = false
+	if at_edge:
+		if not leave and _zones() != null and _zones().resolve_global(host.player.global_position) != ZONE:
+			_step_back_in()
+		if get_parent() != null and get_parent().has_method("sync_player_controls"):
+			get_parent().sync_player_controls()
+	if leave and playing:
+		_stop()
+
+## Main's town zones (null before they exist or without Main).
+func _zones() -> Object:
+	return get_parent().get("zones") if get_parent() != null else null
+
+## During a game, remembers where the player stands inside the library and asks to leave when
+## they walk out.
+func _check_zone(delta: float) -> void:
+	_zone_timer += delta
+	if _zone_timer < ZONE_CHECK_INTERVAL:
+		return
+	_zone_timer = 0.0
+	var zones := _zones()
+	if not playing or zones == null or not is_instance_valid(host.player):
+		_inside_spots.clear()
+		return
+	if zones.resolve_global(host.player.global_position) == ZONE:
+		_inside_spots.append(host.player.global_position)
+		if _inside_spots.size() > INSIDE_SPOTS:
+			_inside_spots.pop_front()
+	elif not _finishing and not _inside_spots.is_empty():
+		_ask_at_edge()
+
+func _ask_at_edge() -> void:
+	_step_back_in()
+	if _asked_at_edge or host.is_asking_leave():
+		return
+	_asked_at_edge = true
+	host.player.set_controls_enabled(false)
+	host.ask_leave()
+
+## Puts the player at their oldest remembered spot inside the library, facing Rosa.
+func _step_back_in() -> void:
+	if _inside_spots.is_empty():
+		return
+	var player: Node3D = host.player
+	player.global_position = _inside_spots[0]
+	player.velocity = Vector3.ZERO
+	var look: Vector3 = host.npc.global_position - player.global_position
+	if Vector2(look.x, look.z).length() > 0.1:
+		var yaw := atan2(-look.x, -look.z)
+		player.rotation.y = yaw
+		player.camera_yaw = yaw
+	player.reset_camera()
 
 # --- Practice -------------------------------------------------------------------------------
 
