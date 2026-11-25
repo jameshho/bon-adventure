@@ -49,7 +49,9 @@ func fixtures(parent: Node) -> Array:
 ## Points a probe camera (given to the picking controller; the player's spring arm would move
 ## its own) from `eye` at `target` (toilet-local) with the pointer in the middle, waits a frame
 ## for the camera to take the new view, then returns what the player would aim at (the real
-## picking ray, as E and a click use it).
+## picking ray, as E and a click use it). The probe is made the current camera: since 20 Nov 2026
+## the controller casts from the viewport's camera (aimed_hit(), the tutorial's close-ups), so a
+## probe that is not current left the ray on the player's camera (25 Nov 2026 failure).
 var probe: Camera3D
 func aim(game, space: Node3D, eye: Vector3, target: Vector3) -> Node3D:
 	if probe == null:
@@ -61,6 +63,7 @@ func aim(game, space: Node3D, eye: Vector3, target: Vector3) -> Node3D:
 	game.interaction.camera = probe
 	probe.global_position = space.to_global(eye)
 	probe.look_at(space.to_global(target))
+	probe.make_current()
 	probe.reset_physics_interpolation()
 	game.interaction.pointer_position = game.get_viewport().get_visible_rect().size * .5
 	await process_frame
