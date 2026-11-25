@@ -57,6 +57,12 @@ const SCROLL_WIDTH := 24.0
 const STAR_WIDTH := 52.0
 const NUMBER_WIDTH := 96.0
 const PICTURE_WIDTH := 52.0
+## Drag to scroll (25 Nov 2026, improvement plan UI-03): a press on the list (a row, its star or
+## speaker, or the empty space) that travels more than this many pixels at scale 1 (at least
+## DRAG_SLOP_MIN) scrolls the list with the finger and is no longer a tap, so the row, star or
+## speaker under it does nothing on release. Shorter presses are taps, as in touch_controls.gd.
+const DRAG_SLOP := 12.0
+const DRAG_SLOP_MIN := 10.0
 ## The detail view's picture (square, at scale 1).
 const DETAIL_PICTURE := 132.0
 ## Row cells: star, picture, foreign, native, the three score columns, then the speaker.
@@ -116,6 +122,12 @@ var scroll: VScrollBar
 ## Keeps the header columns over the row columns while the scroll bar shows.
 var header_gap: Control
 var rows: Array = []
+## The press being followed on the list: where it started (viewport pixels), the scroll value
+## then, and whether it has become a drag.
+var _drag_from := Vector2.ZERO
+var _drag_scroll := 0.0
+var _drag_held := false
+var dragging := false
 ## "No words match" / the Saved tab's how-to-save note, centred over the empty table.
 var empty_label: Label
 var footer_bar: HBoxContainer
@@ -444,7 +456,7 @@ func _make_row(is_header: bool) -> Control:
 		star.add_theme_color_override("font_hover_color", GOLD.lightened(0.25))
 		star.pressed.connect(func() -> void:
 			var key := str(line.get_meta("key", ""))
-			if key != "":
+			if key != "" and not dragging:
 				bookmark_toggled.emit(key))
 		line.add_child(star)
 	# The word's picture (empty when it has none); the header keeps its column free.
@@ -512,9 +524,11 @@ func _make_row(is_header: bool) -> Control:
 	row.set_meta("line", line)
 	row.set_meta("heading", heading)
 	row.set_meta("stripe", stripe)
+	# The row takes the press, so it also follows a drag (see _on_list_input()).
+	row.gui_input.connect(_on_list_input)
 	row.pressed.connect(func() -> void:
 		var key := str(line.get_meta("key", ""))
-		if key != "":
+		if key != "" and not dragging:
 			open_detail(key))
 	return row
 
@@ -534,7 +548,9 @@ func _speaker_button(key_of: Callable) -> Button:
 	for state in ["icon_normal_color", "icon_hover_color", "icon_pressed_color", "icon_focus_color"]:
 		speaker.add_theme_color_override(state, Color.WHITE)
 	speaker.tooltip_text = UiText.t("card.say")
-	speaker.pressed.connect(func() -> void: say(key_of.call()))
+	speaker.pressed.connect(func() -> void:
+		if not dragging:
+			say(key_of.call()))
 	return speaker
 
 ## Spoken words are switched on (sounds.json "voice"); otherwise no speaker column.
@@ -936,14 +952,44 @@ func _show_picture(rect: TextureRect, key: String) -> bool:
 		return false
 	return pictures.fill(rect, key)
 
+## Wheel and drag scrolling for the list area and every row, star and speaker in it (a touch
+## arrives as the left mouse button). Positions are taken in viewport pixels, since the row under
+## the finger is reused for other words while the list moves. The press itself is left to the
+## button, which only acts on release when the press stayed a tap (`dragging` false).
 func _on_list_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.pressed:
+	if event is InputEventMouseButton:
+		var button := event as InputEventMouseButton
+		if button.button_index == MOUSE_BUTTON_LEFT:
+			if button.pressed:
+				_drag_from = button.global_position
+				_drag_scroll = scroll.value
+				_drag_held = true
+				dragging = false
+			else:
+				_drag_held = false
+				# Cleared after the button's own release has run (its pressed signal checks it).
+				if dragging:
+					(func() -> void: dragging = false).call_deferred()
+			return
+		if not button.pressed:
+			return
 		var step := row_height() * 3.0
-		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
+		if button.button_index == MOUSE_BUTTON_WHEEL_UP:
 			scroll.value -= step
 			accept_event()
-		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+		elif button.button_index == MOUSE_BUTTON_WHEEL_DOWN:
 			scroll.value += step
+			accept_event()
+	elif event is InputEventMouseMotion and _drag_held:
+		var motion := event as InputEventMouseMotion
+		if motion.button_mask & MOUSE_BUTTON_MASK_LEFT == 0:
+			_drag_held = false
+			return
+		var travel := motion.global_position.y - _drag_from.y
+		if not dragging and absf(travel) >= maxf(DRAG_SLOP_MIN, DRAG_SLOP * factor):
+			dragging = true
+		if dragging:
+			scroll.value = _drag_scroll - travel
 			accept_event()
 
 ## The row control showing `key`, or null when it is scrolled out of view (for checks).
