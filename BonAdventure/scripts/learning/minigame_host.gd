@@ -227,6 +227,7 @@ func _on_talk(who: Node3D) -> void:
 	interaction.clear_card()
 	if who == npc:
 		presence.zoom_to_face(true)
+		preload("res://scripts/characters/plush_life.gd").face_while(self, npc, player, func() -> bool: return talker == npc and dialogue_panel.is_dialogue_visible())
 	if session.has_method("_host_talk") and session._host_talk(who):
 		return
 	if not gate():

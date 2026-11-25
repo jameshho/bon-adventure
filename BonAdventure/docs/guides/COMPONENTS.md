@@ -30,6 +30,7 @@ Audited and consolidated 13 November 2026 (user request). Evidence: `docs/eviden
 | Any NPC: its id, spot, costume, role; idle chatter and brush-offs when it has no game on offer | `data/npcs.json` via `npc_registry.gd` (`spec()`, `place()`, `spawn()`, `make()`); `npc_chatter.gd` (`main.npc_chatter`) | `scripts/characters/` | [NPCs](NPCS.md) (23 Nov 2026) |
 | Eyes: blink, shut, sleep | `PlushLife` | `scripts/characters/plush_life.gd` | [Plush characters](#plush-characters) |
 | A small move: hop, shake, nod, lean | `PlushLife.play(host, figure, kind)` | `scripts/characters/plush_life.gd` | [Plush characters](#plush-characters) |
+| An NPC turns to face the player while talking, then back (25 Nov 2026) | `PlushLife.face_while(host, figure, player, keep)` | `scripts/characters/plush_life.gd` | [Plush characters](#plush-characters) |
 | An NPC that talks, calls with "!" and gets a face close-up | `minigame_host.gd`, `npc_presence.gd` (spec `"board": false` for an NPC that talks through the host but is no activity, the supermarket till since 21 Nov 2026; meta `talk_face_drop` for a hat; meta `talk_camera_at`, a global point, fixes the close-up camera where walls block the automatic one, 13 Nov 2026) | `scripts/learning/` | [Minigames](MINIGAMES.md#building-a-minigame) |
 | Animals that wander | `park_animals.gd` profiles | `scripts/world/park_animals.gd` | [Animal system](ANIMAL_SYSTEM.md) |
 | An animal comes to food and eats it (or sniffs and refuses it) (24 Nov 2026) | `animal.offer_food(parent_local_point, eats)` and its `food_done(ate)` signal (`park_animals.gd`); the head bows through `clay_animator.gd` `eat` (an unrigged animal bows its whole body); feeding from a carried bag: `animal_feeding.gd` | `scripts/world/park_animals.gd`, `scripts/characters/clay_animator.gd`, `scripts/world/animal_feeding.gd` | [Feeding Time!](../game/minigames.md#feeding-time) |
@@ -95,6 +96,7 @@ Two mechanics, on purpose:
 
 - **In the hand** (`hand_hold.gd`, [guide](HAND_HOLD.md)): hand-sized things that ride on
   BonBon's left arm. A new kind of object is one new entry in `PROFILES` and a `hold_kind` meta.
+  A hanging item's pendulum steps on physics ticks (25 Nov 2026).
 - **Carried in front** (`warehouse_goods.gd`): big physics goods that float ahead of the
   player with a put-down preview, and trolleys driven with W / S. Used only inside the
   Warehouse Worker game. Do not use it for small items, and do not copy it.
@@ -245,7 +247,20 @@ PlushLife.hold_eyes(figure, true)       # asleep: shut until hold_eyes(figure, f
 PlushLife.set_eyes_open(figure, 0.4)    # a slow close, 0 shut ... 1 open
 PlushLife.breath_scale(rest, breath)    # torso scale for a sleeper's breath, -1 ... 1
 PlushLife.play(self, figure, "nod")     # "hop", "shake", "nod", "tilt"; returns the Tween
+# Face the player while keep() is true, then ease back (whole figure, yaw only):
+PlushLife.face_while(self, npc, player, func() -> bool: return panel.is_dialogue_visible())
 ```
+
+Facing the player (ANIM-07, user decision D12, 25 Nov 2026; no other idle moves): a `Facing`
+node under `host` turns the figure's `rotation.y` toward the player on physics ticks (at most
+75°, `FACE_MAX_TURN`), and eases back to the yaw it had once `keep` is false or the player is
+more than 5 m away. It skips a seated, lying or napping figure (meta `seat_point` / `napping`,
+or not upright) and one with held eyes; it waits while the figure is `calling` or in a gesture.
+A turn that would bring a wall or fixture closer than 0.55 m in front or 0.45 m behind (and
+closer than it already was) is shortened through the sweep, or skipped (`facing_yaw()`).
+Callers: `npc_chatter.gd` `talk()` (while its line shows) and `minigame_host.gd` `_on_talk()`
+(the host NPC, while its line shows). Gesture tweens run on physics ticks (ANIM-01) and record
+themselves in meta `gesture_tween`.
 
 Who uses it:
 
@@ -265,9 +280,10 @@ One writer per property. When two want it, the higher row wins and the lower one
 | --- | --- | --- |
 | Eye transform | `plush_life.gd` only. Never scale or move an eye node elsewhere | A hold (`hold_eyes`) beats a blink: a held figure is skipped and a blink in progress does not reopen it |
 | A figure's blinking | The `PlushLife` whose set it is in (meta `plush_life_owned`) | The town blinker skips owned figures |
-| An NPC's position and rotation | `npc_presence.gd` while it calls with its "!" (the hop) | `PlushLife` makes no gesture on a calling figure; one gesture at a time per figure |
+| An NPC's position and rotation | `npc_presence.gd` while it calls with its "!" (the hop, and since 25 Nov 2026 its ease back down; physics interpolation off meanwhile) | `PlushLife` makes no gesture on a calling figure and its facing waits; one gesture at a time per figure |
+| An NPC's yaw while talking | `PlushLife.face_while()` (`Facing`, meta `facing_turner`) | Waits for calling and gestures; no random gesture starts on a facing figure. It restores the yaw it found, so a session that turns its NPC itself during a talk must not use it |
 | `Head` node transform | Nobody. Leave it at rest | — |
-| The player's body parts (`Arm`, `Foot`, `Visual`) | `player_controller.gd`, one state per frame in this order: seated or lying, riding (`animate_boarding`, `motorcycle_rider.gd`), walking (`animate_bonbon`) | The hand only supplies an arm pose to `animate_bonbon` (`hand.arm_pose()`); it never writes the arm |
+| The player's body parts (`Arm`, `Foot`, `Visual`) | `player_controller.gd`, one state per frame in this order: seated or lying, riding (`animate_boarding`, `motorcycle_rider.gd`), walking (`animate_bonbon`; since 25 Nov 2026 the gait phase follows the ground covered, `GAIT_STRIDE`) | The hand only supplies an arm pose to `animate_bonbon` (`hand.arm_pose()`); it never writes the arm |
 | The player's `Visual` scale | `mystery_session.gd` during the toad sequence only | — |
 
 Adding a gesture: a new `match` branch in `PlushLife.play()` that tweens the figure's
