@@ -21,13 +21,59 @@ made once with Amazon Polly text-to-speech. Started 24 Nov 2026 (user).
   Phrases and dialogue lines are not built; words only.
 - **Volume:** Settings has Main volume, Music, Sound effects and Spoken words sliders (user,
   24 Nov 2026; `game_settings.gd` `VOLUME_BUSES`, saved per profile). Spoken words sets the Voice
-  bus. A Music bus was added for later background music, which has none yet.
+  bus. The Music slider sets the Music bus, which plays the demo background music (below).
 - **Web audio** (user, 24 Nov 2026: the tab always showed a speaker icon). Godot keeps its
   AudioContext running and sends silence. The Web preset's head script keeps every AudioContext
   suspended and lets Godot's own `resume()` through only while `window.bonAudioWanted` is true.
   `sound.gd` sets that flag and resumes just before a sound plays, then suspends again within
   about 0.5 s of the last sound ending. Every game sound goes through `sound.gd`, so a new sound
   must too.
+
+## Background music (25 Nov 2026)
+
+User, 25 Nov 2026: "add a lofi BGM just for the demo for now", then "add a different soundtrack
+for loading screen". **Built:** two looping demo tracks on the Music bus: one while the loading
+screen shows, one in the town.
+
+- **Tracks** (`audio/music/`), original music synthesised by `tools/make_lofi_demo.py` (pure
+  Python, no samples or third-party material; one `TRACKS` entry each). Both are mono 22.05 kHz,
+  wrap their note tails so the loop seam is smooth, and are imported as QOA forward loops.
+  - `town_lofi_demo.wav`: Fmaj7–Em7–Dm7–Cmaj7 electric-piano chords (Dm9–G7 turnaround), bass,
+    a sparse pentatonic melody, swung boom-bap drums, a soft sidechain dip, low-pass and vinyl
+    crackle. 16 bars at 72 BPM, 53.3 s, about 0.48 MB in the pack.
+  - `loading_lofi_demo.wav`: dreamy, in A (Amaj9–F#m9–Dmaj9–E6sus), a music-box arpeggio,
+    soft brushes and a shaker with no kick, long-ringing keys with a slow, wide wobble, a dark
+    dotted-eighth echo on the keys and music box (not the bass), the same bass and vinyl.
+    8 bars at 56 BPM, 34.3 s, about 0.31 MB. Made slower and dreamier the same day (user: "make
+    it a bit slower and dreamier"; it was 66 BPM with no echo).
+  To try another take, change a track's `seed`, `bpm` or chords, rerun the tool
+  (`--track town|loading` for one), then `godot --headless --path . --import` with your normal
+  `HOME` (with an isolated `HOME` the editor has no Blender path, and on 25 Nov 2026 that error
+  stopped a changed WAV from being reimported).
+- **Playing:** `data/sounds.json` cues `music.town` and `music.loading` (bus Music, −8 dB) and the
+  `"music"` section (`enabled`, `tracks`, `fade_in` 4 s, `fade_out` 1.5 s). `sound.gd`
+  `play_music(track)` fades the playing track out and the new one in; `stop_music()`,
+  `music_track()`, `music_playing()`. App adds the sound service when the loading screen opens
+  (Main keeps it) and plays `loading`, then `town` when the screen lifts; the second loading
+  screen after the tutorial (`_load_rest_now`) does the same. Main run on its own plays `town`.
+  Never plays when the tree runs a script, so checks stay silent. Not positional; the town track
+  keeps playing through minigames and buildings. The tutorial's title cutscene is not a loading
+  screen and keeps the town music.
+- **Web:** music goes through `sound.gd`, so it wakes the page's AudioContext; the tab's speaker
+  icon then shows while music plays. It starts after the player has pressed Play, so browsers
+  allow it. The web build has no threads and reads the town scene in one blocking load, so the
+  loading music may stall or stutter for that moment (not tried).
+- **Check:** `docs/evidence/lofi-music-20261125/verify.gd` (`run_checks.py` id `lofi_music`,
+  quick; headless, silent, no town): both cues, Music bus, QOA forward loops of the right length,
+  and `play_music()` refuses in a check. 25 Nov 2026: 0 failures. A throwaway probe scene (Dummy
+  audio driver) confirmed in a normal run: loading plays, `town` fades it out and fades in
+  (−24 dB halfway), and `stop_music()` stops it; app.gd and main.gd parse. Quick suite the same
+  day: PASS 9, KNOWN 1 (voice_backbone, expected). **Not verified:** how they sound (Claude
+  cannot listen; the user auditions them), a real start-up through the loading screen with
+  sound, the web build and phones.
+- **Open (P2):** placeholders. Replace them with licensed loops or commissioned music when the
+  user chooses; maybe a title-screen track, per-place music or a quieter mix during minigames.
+  Each new track adds to the Web pack (P1 below).
 
 ## Decisions (user, 24 Nov 2026)
 

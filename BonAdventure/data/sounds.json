@@ -45,7 +45,30 @@
       "distance": {"unit_size": 6.0, "max_distance": 70.0},
       "source": "Synthesised for this game (21 Nov 2026): low wail 400-1000 Hz, 5 s cycle",
       "licence": "Original, no third-party material; 22.05 kHz 16-bit mono"
+    },
+    "music.town": {
+      "file": "res://audio/music/town_lofi_demo.wav",
+      "bus": "Music",
+      "volume_db": -8.0,
+      "loop": true,
+      "source": "Synthesised for this game by tools/make_lofi_demo.py (25 Nov 2026): demo lofi loop, 16 bars at 72 BPM, 53 s",
+      "licence": "Original, no third-party material; 22.05 kHz 16-bit mono, imported as a QOA forward loop"
+    },
+    "music.loading": {
+      "file": "res://audio/music/loading_lofi_demo.wav",
+      "bus": "Music",
+      "volume_db": -8.0,
+      "loop": true,
+      "source": "Synthesised for this game by tools/make_lofi_demo.py --track loading (25 Nov 2026): demo dreamy lofi loop in A, music-box arpeggio, soft echo and brushes, 8 bars at 56 BPM, 34 s",
+      "licence": "Original, no third-party material; 22.05 kHz 16-bit mono, imported as a QOA forward loop"
     }
+  },
+  "music": {
+    "_comment": "Background music (25 Nov 2026, user: a lofi BGM for the demo, and a different soundtrack for the loading screen). tracks: name -> cue; sound.gd play_music(name) fades the playing track out over 'fade_out' s and the new one in over 'fade_in' s, on its cue's bus, not positional. App plays 'loading' with the loading screen and 'town' when it lifts. 'enabled' false silences all music. Placeholders until licensed or commissioned music. Checks (a SceneTree script) never play it.",
+    "enabled": true,
+    "tracks": {"town": "music.town", "loading": "music.loading"},
+    "fade_in": 4.0,
+    "fade_out": 1.5
   },
   "voice": {
     "_comment": "Spoken words (24 Nov 2026): one clip per word and language at <folder>/<lang>/<file>.ogg, where <file> is sound.gd voice_file(key). 'enabled' is the master switch: while false, sound.gd say_word() plays nothing. Switched on 24 Nov 2026 (user). tools/voice_manifest.gd lists what to say; tools/voice_generate.py makes the clips with Amazon Polly. 'languages' gives each language's Polly voice. Guide: docs/guides/VOICE.md.",

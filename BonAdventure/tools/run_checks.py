@@ -294,6 +294,10 @@ CHECKS = [
     # Spoken-word backbone (24 Nov 2026, docs/guides/VOICE.md). No town.
     dict(id="voice_backbone", script="res://docs/evidence/voice-backbone-20261124/verify.gd", suites=["quick", "full"],
          summary=r"VOICE BACKBONE CHECK: \d+ checks, (?P<n>\d+) failures"),
+    # Demo background music: town and loading tracks, loops, Music bus, silent in checks
+    # (25 Nov 2026, docs/guides/VOICE.md "Background music"). No town; plays nothing.
+    dict(id="lofi_music", script="res://docs/evidence/lofi-music-20261125/verify.gd", suites=["quick", "full"],
+         summary=r"LOFI MUSIC: (?P<n>\d+) failures"),
     # Speaker button, sound icons and volume sliders (24 Nov 2026). Loads the town.
     dict(id="sound_ui", script="res://docs/evidence/sound-ui-20261124/verify.gd", suites=["full"],
          summary=r"SOUND UI CHECK: \d+ checks, (?P<n>\d+) failures"),

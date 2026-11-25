@@ -6,14 +6,22 @@ extends Node
 ## "bindings" say which script's signal plays, starts or stops which cue. Sounds play from an
 ## AudioStreamPlayer3D placed at the object, so they come from where it is.
 ##
-## Main adds it (Sound.new()) after the world is built; it binds every node already in the tree
-## and any added later. Elsewhere: Sound.shared().play_at("cue.id", node).
+## Main adds it (Sound.new()) after the world is built, unless one is already there (App adds it
+## before the loading screen, 25 Nov 2026, for the loading music); it binds every node already in
+## the tree and any added later. Elsewhere: Sound.shared().play_at("cue.id", node).
 ##
 ## Spoken words (24 Nov 2026, guide docs/guides/VOICE.md): the catalogue's "voice" section names
 ## one clip per word and language, <folder>/<lang>/<voice_file(key)>.ogg, made by
 ## tools/voice_generate.py. say_word() plays it on the Voice bus, not positional, one word at a
 ## time. While "voice.enabled" is false (user, 24 Nov 2026) it plays nothing and has_voice() is
 ## false, so no speaker button or automatic word ever shows or sounds.
+##
+## Background music (25 Nov 2026, user: a lofi BGM for the demo, and a different soundtrack for
+## the loading screen): the catalogue's "music" section names one looping cue per track ("town",
+## "loading"). play_music(track) fades the playing track out and the new one in, on the Music bus
+## (Settings' Music slider), not positional. App plays "loading" with the loading screen and
+## "town" when it lifts; Main run on its own plays "town". Never plays when the tree runs a script
+## (checks), so checks stay silent.
 ##
 ## Web (24 Nov 2026, user: the tab always showed a speaker icon): Godot's AudioContext runs and
 ## sends silence the whole time. The Web preset's head script keeps window.bonAudioContexts; while
@@ -29,6 +37,12 @@ var cues: Dictionary = {}
 var bindings: Dictionary = {}
 ## The catalogue's "voice" section (enabled, folder, bus, volume_db, languages).
 var voice: Dictionary = {}
+## The catalogue's "music" section (enabled, tracks: name -> cue id, fade_in, fade_out).
+var music: Dictionary = {}
+## Track name -> its AudioStreamPlayer (reused, not freed; a track starts from the top each time).
+var _music_players: Dictionary = {}
+## The track play_music() last asked for ("" after stop_music()).
+var _music_now := ""
 var _streams: Dictionary = {}
 var _voice_player: AudioStreamPlayer
 ## Every player this service made (looping and one-shot), to know whether anything plays.
@@ -50,6 +64,7 @@ func _init() -> void:
 		return
 	cues = data.get("cues", {})
 	voice = data.get("voice", {})
+	music = data.get("music", {})
 	for binding in data.get("bindings", []):
 		bindings[str(binding["script"])] = binding
 
@@ -154,6 +169,76 @@ func stop_loop(cue_id: String, at: Node3D) -> void:
 func looping(cue_id: String, at: Node3D) -> AudioStreamPlayer3D:
 	var player := at.get_node_or_null(NodePath(_loop_name(cue_id)))
 	return player if player is AudioStreamPlayer3D and not player.is_queued_for_deletion() else null
+
+## --- Background music --------------------------------------------------------------------------
+
+## Plays a music track ("town", "loading"; the catalogue's music.tracks), fading out the one
+## playing. Asking for the track already playing keeps it going. Returns false and plays nothing
+## while music is off, in a check (the tree runs a script) or when the track has no sound.
+func play_music(track: String) -> bool:
+	if not bool(music.get("enabled", false)) or get_tree() == null or get_tree().get_script() != null:
+		return false
+	var current: AudioStreamPlayer = _music_players.get(track)
+	if track == _music_now and current != null and current.playing:
+		return true
+	var cue_id := str(music.get("tracks", {}).get(track, ""))
+	var clip := stream(cue_id) if cue_id != "" else null
+	if clip == null:
+		return false
+	_fade_out_music(track)
+	if current == null:
+		current = AudioStreamPlayer.new()
+		current.name = "Music " + track
+		# Keeps playing (and fading) whatever pauses the game.
+		current.process_mode = Node.PROCESS_MODE_ALWAYS
+		add_child(current)
+		_players.append(current)
+		_music_players[track] = current
+	var cue: Dictionary = cues[cue_id]
+	current.stream = clip
+	current.bus = str(cue.get("bus", "Music"))
+	current.set_meta("sound_cue", cue_id)
+	var target := float(cue.get("volume_db", 0.0))
+	var fade := float(music.get("fade_in", 0.0))
+	_kill_fade(current)
+	current.volume_db = -40.0 if fade > 0.0 else target
+	_music_now = track
+	_web_wake()
+	current.play()
+	if fade > 0.0:
+		var tween := current.create_tween()
+		tween.tween_property(current, "volume_db", target, fade)
+		current.set_meta("music_fade", tween)
+	return true
+
+## Fades every music track out.
+func stop_music() -> void:
+	_music_now = ""
+	_fade_out_music("")
+
+## The track asked for last, while it plays; else "".
+func music_track() -> String:
+	var player: AudioStreamPlayer = _music_players.get(_music_now)
+	return _music_now if player != null and player.playing else ""
+
+func music_playing() -> bool:
+	return music_track() != ""
+
+func _fade_out_music(keep: String) -> void:
+	for track in _music_players:
+		var player: AudioStreamPlayer = _music_players[track]
+		if track == keep or not player.playing:
+			continue
+		_kill_fade(player)
+		var tween := player.create_tween()
+		tween.tween_property(player, "volume_db", -40.0, float(music.get("fade_out", 1.0)))
+		tween.tween_callback(player.stop)
+		player.set_meta("music_fade", tween)
+
+func _kill_fade(player: AudioStreamPlayer) -> void:
+	var tween: Tween = player.get_meta("music_fade", null)
+	if tween != null and tween.is_valid():
+		tween.kill()
 
 ## --- Spoken words -----------------------------------------------------------------------------
 

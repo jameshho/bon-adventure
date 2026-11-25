@@ -77,6 +77,7 @@ var clay_life
 var day_night
 var day_clock
 const GameSettings := preload("res://scripts/core/game_settings.gd")
+const Sound := preload("res://scripts/core/sound.gd")
 ## Interface text in the native language (data/phrases.json; UI Stage 3).
 const UiText := preload("res://scripts/language/ui_text.gd")
 const Lexicon := preload("res://scripts/language/lexicon.gd")
@@ -239,8 +240,11 @@ func _ready() -> void:
 	clay_life.follow_group(ClayAnimator.BLINK_GROUP)
 	clay_life.name = "ClayLife"
 	area_vocabulary.drop_interactables(apartment)
-	# Sounds (scripts/core/sound.gd, data/sounds.json): binds the fixtures already built.
-	add_child(preload("res://scripts/core/sound.gd").new())
+	# Sounds (scripts/core/sound.gd, data/sounds.json): binds the fixtures already built. App adds
+	# the service earlier (loading music) and plays the town music itself.
+	if Sound.shared() == null:
+		add_child(Sound.new())
+		Sound.shared().play_music("town")
 	# Lamp glow materials go on before the batchers below; the HUD clock opens the time panel.
 	day_night.bind_town(apartment, player)
 	day_clock = preload("res://scripts/ui/day_clock.gd").new()

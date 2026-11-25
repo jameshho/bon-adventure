@@ -247,4 +247,12 @@ shows its name.
 
 ## Sound
 
-Only a few sounds exist so far (toilets and faucets); the rest of the game is silent for now.
+- **Music** (25 Nov 2026): a dreamy music-box lofi loop plays on the loading screen, then fades
+  into a gentle lofi loop in the town. Both are demo placeholders made for the game, until
+  licensed or commissioned music replaces them. The Music slider in Settings sets their volume
+  (0 mutes them).
+- **Spoken words:** the speaker button on the word card and in the journal says the word.
+- **Effects:** toilets, faucets and the emergency vehicles' sirens. Everything else is silent
+  for now.
+
+[Sound and spoken words guide](../guides/VOICE.md)
