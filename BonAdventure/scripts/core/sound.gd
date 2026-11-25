@@ -22,6 +22,11 @@ extends Node
 ## (Settings' Music slider), not positional. App plays "loading" with the loading screen and
 ## "town" when it lifts; Main run on its own plays "town". Never plays when the tree runs a script
 ## (checks), so checks stay silent.
+## Minigames (25 Nov 2026, user: "different songs for different activity"): while a game runs
+## (activity_board.gd started / ended) its data/activities.json "music" track plays, then town
+## again. Five moods: quiz, errands, mystery, focus, outdoors.
+## While a word is said (say_word) the music dips by DUCK_DB, through its own bus DUCK_BUS (sent
+## to Music), so the Music slider is left alone.
 ##
 ## Web (24 Nov 2026, user: the tab always showed a speaker icon): Godot's AudioContext runs and
 ## sends silence the whole time. The Web preset's head script keeps window.bonAudioContexts; while
@@ -29,6 +34,11 @@ extends Node
 ## _web_wake() resumes it before any play. Every game sound goes through this service.
 const PATH := "res://data/sounds.json"
 const WEB_IDLE_CHECK := 0.5
+const Board := preload("res://scripts/learning/activity_board.gd")
+## Music players play here; it sends to their cue's bus (Music). Added at run time.
+const DUCK_BUS := "MusicDuck"
+## How far the music dips while a word is said.
+const DUCK_DB := -9.0
 
 static var _shared
 
@@ -43,6 +53,7 @@ var music: Dictionary = {}
 var _music_players: Dictionary = {}
 ## The track play_music() last asked for ("" after stop_music()).
 var _music_now := ""
+var _duck_tween: Tween
 var _streams: Dictionary = {}
 var _voice_player: AudioStreamPlayer
 ## Every player this service made (looping and one-shot), to know whether anything plays.
@@ -75,6 +86,9 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	for node in get_tree().root.find_children("*", "", true, false):
 		_bind(node)
+	var board = Board.shared()
+	board.started.connect(_on_activity_started)
+	board.ended.connect(_on_activity_ended)
 
 func _process(delta: float) -> void:
 	if not _web:
@@ -113,6 +127,12 @@ func _web_wake() -> void:
 func _exit_tree() -> void:
 	if get_tree().node_added.is_connected(_bind):
 		get_tree().node_added.disconnect(_bind)
+	# The board outlives the town: never leave it holding this service.
+	var board = Board.shared()
+	if board.started.is_connected(_on_activity_started):
+		board.started.disconnect(_on_activity_started)
+	if board.ended.is_connected(_on_activity_ended):
+		board.ended.disconnect(_on_activity_ended)
 	if _shared == self:
 		_shared = null
 
@@ -196,7 +216,7 @@ func play_music(track: String) -> bool:
 		_music_players[track] = current
 	var cue: Dictionary = cues[cue_id]
 	current.stream = clip
-	current.bus = str(cue.get("bus", "Music"))
+	current.bus = _duck_bus(str(cue.get("bus", "Music")))
 	current.set_meta("sound_cue", cue_id)
 	var target := float(cue.get("volume_db", 0.0))
 	var fade := float(music.get("fade_in", 0.0))
@@ -210,6 +230,42 @@ func play_music(track: String) -> bool:
 		tween.tween_property(current, "volume_db", target, fade)
 		current.set_meta("music_fade", tween)
 	return true
+
+## A game's track while it runs (its activities.json "music"; none: town).
+func activity_track(id: String) -> String:
+	return str(Board.shared().activities.get(id, {}).get("music", "town"))
+
+func _on_activity_started(id: String) -> void:
+	if _music_now != "loading":
+		play_music(activity_track(id))
+
+func _on_activity_ended(_id: String, _summary: Dictionary) -> void:
+	if _music_now != "loading":
+		play_music("town")
+
+## DUCK_BUS, made once and sent to `to`, else `to` itself when it cannot be made.
+func _duck_bus(to: String) -> String:
+	if AudioServer.get_bus_index(DUCK_BUS) < 0:
+		if AudioServer.get_bus_index(to) < 0:
+			return to
+		AudioServer.add_bus()
+		var index := AudioServer.bus_count - 1
+		AudioServer.set_bus_name(index, DUCK_BUS)
+		AudioServer.set_bus_send(index, to)
+	return DUCK_BUS
+
+## Dips the music for `seconds` (a spoken word), then brings it back.
+func duck_music(seconds: float) -> void:
+	var index := AudioServer.get_bus_index(DUCK_BUS)
+	if index < 0:
+		return
+	if _duck_tween != null and _duck_tween.is_valid():
+		_duck_tween.kill()
+	var set_db := func(db: float) -> void: AudioServer.set_bus_volume_db(index, db)
+	_duck_tween = create_tween()
+	_duck_tween.tween_method(set_db, AudioServer.get_bus_volume_db(index), DUCK_DB, 0.12)
+	_duck_tween.tween_interval(seconds)
+	_duck_tween.tween_method(set_db, DUCK_DB, 0.0, 0.6)
 
 ## Fades every music track out.
 func stop_music() -> void:
@@ -236,7 +292,8 @@ func _fade_out_music(keep: String) -> void:
 		player.set_meta("music_fade", tween)
 
 func _kill_fade(player: AudioStreamPlayer) -> void:
-	var tween: Tween = player.get_meta("music_fade", null)
+	# has_meta first: get_meta() with a null default still logs an error when the key is missing.
+	var tween: Tween = player.get_meta("music_fade") if player.has_meta("music_fade") else null
 	if tween != null and tween.is_valid():
 		tween.kill()
 
@@ -291,6 +348,7 @@ func say_word(key: String, lang: String) -> bool:
 	_voice_player.set_meta("sound_cue", cue_id)
 	_web_wake()
 	_voice_player.play()
+	duck_music(clip.get_length())
 	return true
 
 func _loop_name(cue_id: String) -> String:

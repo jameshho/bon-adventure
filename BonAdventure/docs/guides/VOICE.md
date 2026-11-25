@@ -32,48 +32,98 @@ made once with Amazon Polly text-to-speech. Started 24 Nov 2026 (user).
 ## Background music (25 Nov 2026)
 
 User, 25 Nov 2026: "add a lofi BGM just for the demo for now", then "add a different soundtrack
-for loading screen". **Built:** two looping demo tracks on the Music bus: one while the loading
-screen shows, one in the town.
+for loading screen", then "there should be different songs for different activity" (the user
+chose five mood tracks shared by the games, not one per game). **Built:** seven looping demo
+tracks on the Music bus: the loading screen, the town, and one per minigame mood.
 
-- **Tracks** (`audio/music/`), original music synthesised by `tools/make_lofi_demo.py` (pure
-  Python, no samples or third-party material; one `TRACKS` entry each). Both are mono 22.05 kHz,
-  wrap their note tails so the loop seam is smooth, and are imported as QOA forward loops.
-  - `town_lofi_demo.wav`: Fmaj7–Em7–Dm7–Cmaj7 electric-piano chords (Dm9–G7 turnaround), bass,
-    a sparse pentatonic melody, swung boom-bap drums, a soft sidechain dip, low-pass and vinyl
-    crackle. 16 bars at 72 BPM, 53.3 s, about 0.48 MB in the pack.
-  - `loading_lofi_demo.wav`: dreamy, in A (Amaj9–F#m9–Dmaj9–E6sus), a music-box arpeggio,
-    soft brushes and a shaker with no kick, long-ringing keys with a slow, wide wobble, a dark
-    dotted-eighth echo on the keys and music box (not the bass), the same bass and vinyl.
-    8 bars at 56 BPM, 34.3 s, about 0.31 MB. Made slower and dreamier the same day (user: "make
-    it a bit slower and dreamier"; it was 66 BPM with no echo).
-  To try another take, change a track's `seed`, `bpm` or chords, rerun the tool
-  (`--track town|loading` for one), then `godot --headless --path . --import` with your normal
-  `HOME` (with an isolated `HOME` the editor has no Blender path, and on 25 Nov 2026 that error
-  stopped a changed WAV from being reimported).
-- **Playing:** `data/sounds.json` cues `music.town` and `music.loading` (bus Music, −8 dB) and the
-  `"music"` section (`enabled`, `tracks`, `fade_in` 4 s, `fade_out` 1.5 s). `sound.gd`
-  `play_music(track)` fades the playing track out and the new one in; `stop_music()`,
+| Track | Feel | Plays | Loop |
+| --- | --- | --- | --- |
+| `loading` | dreamy music box, brushes, soft echo (A, 56 BPM) | loading screens | 34.3 s |
+| `town` | calm lofi: electric piano, boom-bap (F, 72 BPM) | walking around | 53.3 s |
+| `quiz` | upbeat: keyboard stabs, octave bass, marimba hook, claps (D, 104 BPM) | Desk Dash, Who's Who?, Flight Finder, Next, Please!, On the Menu | 36.9 s |
+| `errands` | cozy shopping jazz: walking bass, vibes, swung brushes (Bb, 92 BPM) | Grocery Run, Stack & Pack, Library Helper | 41.7 s |
+| `mystery` | sneaky: pizzicato, woodblock, falling bass, soft pad (A minor, 92 BPM) | Spot the Suspect, Feel the Clues, Mystery Doors | 41.7 s |
+| `focus` | calm puzzles: slow soft chords, a few bells, quiet shaker (D, 60 BPM) | Mahjong Club, Wire It Up!, Radar Patrol | 64.0 s |
+| `outdoors` | playful: ukulele strum, oom-pah bass, hopping marimba (F, 108 BPM) | Feeding Time! | 35.6 s |
+
+- **Files:** `audio/music/<track>_lofi_demo.wav`, original music synthesised by
+  `tools/make_lofi_demo.py` (pure Python, no samples or third-party material; one `TRACKS` entry
+  and one arrangement function per style). Mono 44.1 kHz; note tails, echoes and filters wrap
+  around the loop, so the seam is smooth. Imported as QOA forward loops: about 5.5 MB in the
+  pack for all seven (0.61–1.14 MB each).
+- **Clean sound** (25 Nov 2026, user: "a little grainy and fuzzy, with some radio-like background
+  static. fix it please"). The first takes had vinyl hiss and crackle (the "static"), notes cut
+  off while still sounding (hundreds of tiny clicks: the grain), 22.05 kHz with raw white-noise
+  hi-hats and claps (gritty), a tanh soft clip on the loudest hits and a heavy low-pass (muffled,
+  radio-like). Now: no hiss or crackle; every note fades out over its last 12 ms (`FADE`);
+  44.1 kHz; hats are 5–11 kHz and claps 0.9–3.5 kHz band noise; plain normalising to −3 dBFS
+  with the DC offset removed; low-pass cutoffs about doubled (town 5.5 kHz, loading 4.5,
+  quiz 8, errands 6.5, mystery 6, focus 5, outdoors 8; drums 9–10 kHz). The largest
+  sample-to-sample step fell from up to 0.64 to 0.04–0.35 of full scale. The tracks' tunes,
+  tempos and lengths are unchanged. To try another take, change a track's `seed`, `bpm` or
+  chords, rerun the tool (`--track <name>` for one; all seven take about 50 s), then
+  `godot --headless --path . --import` with your normal `HOME` (with an isolated `HOME` the editor
+  has no Blender path, and on 25 Nov 2026 that error stopped a changed WAV from being reimported).
+  The loading track was made slower and dreamier the same day (user: "make it a bit slower and
+  dreamier"; it was 66 BPM with no echo). The town and loading tracks were approved by ear
+  ("Sounds good"); the five mood tracks wait for the user's listen.
+- **Loudness:** each cue's `volume_db` evens the tracks out (town −8 dB, loading −8, quiz −9.5,
+  errands −10, mystery −5, focus −9, outdoors −8.5), from each file's average level (RMS
+  −16.4 to −21.2 dBFS after the clean-up), so a switch neither jumps nor drops.
+- **Playing:** `data/sounds.json` cues `music.<track>` (bus Music) and the `"music"` section
+  (`enabled`, `tracks`, `fade_in` 4 s, `fade_out` 1.5 s). `sound.gd` `play_music(track)` fades the
+  playing track out and the new one in, and a track starts from the top; `stop_music()`,
   `music_track()`, `music_playing()`. App adds the sound service when the loading screen opens
   (Main keeps it) and plays `loading`, then `town` when the screen lifts; the second loading
   screen after the tutorial (`_load_rest_now`) does the same. Main run on its own plays `town`.
-  Never plays when the tree runs a script, so checks stay silent. Not positional; the town track
-  keeps playing through minigames and buildings. The tutorial's title cutscene is not a loading
-  screen and keeps the town music.
+  Not positional. The tutorial's title cutscene is not a loading screen and keeps the town music.
+- **Minigames:** each game's `data/activities.json` `"music"` names its track. `sound.gd` listens
+  to the activity board: `started(id)` plays the game's track, `ended` plays `town` (also while
+  the results card shows). A game is "running" when its `activity_running()` is true, which for
+  some games includes an open order (Grocery Run's list). Loading music is never interrupted.
+  A new game only adds `"music"` ([MINIGAMES.md](MINIGAMES.md#building-a-minigame)); a favourite
+  game can get its own track by adding one to `TRACKS` and `tracks` and naming it.
+- **Under spoken words:** `say_word()` dips the music by 9 dB (`DUCK_DB`) for the clip's length,
+  then brings it back over 0.6 s. Music players play on a bus `MusicDuck` that `sound.gd` adds at
+  run time and sends to Music, so the dip never touches the Music slider.
+- **Hitches** (25 Nov 2026, user: in the Godot app, the music got "stuck at a tune" when the game
+  froze). Throwaway probes on the user's Mac (CoreAudio, music on, Master captured and then
+  silenced at −80 dB), none reproducing it:
+  - a 1.5 s block of the main thread: 1.5 s of music still mixed;
+  - the whole town built by `main.tscn` (frames of 9.5 s and 2 s): 56.5 s of music in 56.5 s;
+  - the loop point of the loading, town and focus tracks: each wrapped to 0:00 with no gap;
+  - the app's order (loading music, town built, crossfade to town, a game's quiz music, a word
+    dip, town again; a 4 s frame): 21.9 s of music in 21.9 s, no hang.
+  So the music keeps playing through game freezes. A stuck or repeating sound means the audio
+  thread missed its turn, which happens when the whole machine is starved: at the time, other
+  sessions ran heavy Godot captures and a 52-minute town check on the MacBook Air (load average
+  about 6). Mitigation: `project.godot` `audio/driver/output_latency=50` (was the default 15 ms;
+  the web already uses 50), a bigger cushion before an underrun is heard. The user's runs at
+  13:56 also logged errors from another session's sound-effect bindings in progress, and
+  `play_music()`'s fade lookup logged "does not have any 'meta' values with the key
+  'music_fade'" on every switch (fixed: has_meta first). **Not verified:** that the stuck sound
+  is gone (it was never reproduced); the user should report if it comes back, with what was
+  running at the time.
 - **Web:** music goes through `sound.gd`, so it wakes the page's AudioContext; the tab's speaker
   icon then shows while music plays. It starts after the player has pressed Play, so browsers
   allow it. The web build has no threads and reads the town scene in one blocking load, so the
   loading music may stall or stutter for that moment (not tried).
-- **Check:** `docs/evidence/lofi-music-20261125/verify.gd` (`run_checks.py` id `lofi_music`,
-  quick; headless, silent, no town): both cues, Music bus, QOA forward loops of the right length,
-  and `play_music()` refuses in a check. 25 Nov 2026: 0 failures. A throwaway probe scene (Dummy
-  audio driver) confirmed in a normal run: loading plays, `town` fades it out and fades in
-  (−24 dB halfway), and `stop_music()` stops it; app.gd and main.gd parse. Quick suite the same
-  day: PASS 9, KNOWN 1 (voice_backbone, expected). **Not verified:** how they sound (Claude
-  cannot listen; the user auditions them), a real start-up through the loading screen with
-  sound, the web build and phones.
+- **Checks:** `docs/evidence/lofi-music-20261125/verify.gd` (`run_checks.py` id `lofi_music`,
+  quick; headless, silent, no town): all seven cues on the Music bus as QOA forward loops of the
+  right length, every game naming a track that exists, every mood used, and in a check
+  `play_music()` and a game starting play nothing and add no duck bus. 25 Nov 2026: 0 failures.
+  Throwaway probe scenes (Dummy audio driver, normal run) confirmed: loading then town with the
+  crossfade; each mood starts with its game (Desk Dash → quiz, Grocery Run → errands, Spot the
+  Suspect → mystery, Mahjong → focus, Feeding Time! → outdoors) and town comes back when it ends;
+  the duck bus sends to Music, dips to −9 dB and returns to 0; a game starting during loading
+  keeps the loading music; a freed service leaves no connection on the board. Quick suite the
+  same day: PASS 10, KNOWN 1 (voice_backbone, expected). **Not verified:** how the five mood
+  tracks sound (the user auditions them), a real game started in the town with sound on, the web
+  build and phones.
 - **Open (P2):** placeholders. Replace them with licensed loops or commissioned music when the
-  user chooses; maybe a title-screen track, per-place music or a quieter mix during minigames.
-  Each new track adds to the Web pack (P1 below).
+  user chooses (fewer, better tracks cost less than one per game); maybe a title-screen track and
+  place music (inside shops) through the same `tracks` list. Each new track adds to the Web pack
+  (P1 below).
 
 ## Decisions (user, 24 Nov 2026)
 

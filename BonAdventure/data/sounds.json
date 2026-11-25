@@ -52,7 +52,7 @@
       "volume_db": -8.0,
       "loop": true,
       "source": "Synthesised for this game by tools/make_lofi_demo.py (25 Nov 2026): demo lofi loop, 16 bars at 72 BPM, 53 s",
-      "licence": "Original, no third-party material; 22.05 kHz 16-bit mono, imported as a QOA forward loop"
+      "licence": "Original, no third-party material; 44.1 kHz 16-bit mono, clean (no hiss or crackle), imported as a QOA forward loop"
     },
     "music.loading": {
       "file": "res://audio/music/loading_lofi_demo.wav",
@@ -60,13 +60,54 @@
       "volume_db": -8.0,
       "loop": true,
       "source": "Synthesised for this game by tools/make_lofi_demo.py --track loading (25 Nov 2026): demo dreamy lofi loop in A, music-box arpeggio, soft echo and brushes, 8 bars at 56 BPM, 34 s",
-      "licence": "Original, no third-party material; 22.05 kHz 16-bit mono, imported as a QOA forward loop"
+      "licence": "Original, no third-party material; 44.1 kHz 16-bit mono, clean (no hiss or crackle), imported as a QOA forward loop"
+    },
+    "music.quiz": {
+      "file": "res://audio/music/quiz_lofi_demo.wav",
+      "bus": "Music",
+      "volume_db": -9.5,
+      "loop": true,
+      "source": "Synthesised for this game by tools/make_lofi_demo.py --track quiz (25 Nov 2026): demo upbeat quiz loop in D: keyboard stabs, octave bass, marimba hook, claps, 16 bars at 104 BPM, 37 s",
+      "licence": "Original, no third-party material; 44.1 kHz 16-bit mono, clean (no hiss or crackle), imported as a QOA forward loop"
+    },
+    "music.errands": {
+      "file": "res://audio/music/errands_lofi_demo.wav",
+      "bus": "Music",
+      "volume_db": -10.0,
+      "loop": true,
+      "source": "Synthesised for this game by tools/make_lofi_demo.py --track errands (25 Nov 2026): demo cozy shopping jazz in Bb: walking bass, Charleston comping, vibraphone notes, swung brushes, 16 bars at 92 BPM, 42 s",
+      "licence": "Original, no third-party material; 44.1 kHz 16-bit mono, clean (no hiss or crackle), imported as a QOA forward loop"
+    },
+    "music.mystery": {
+      "file": "res://audio/music/mystery_lofi_demo.wav",
+      "bus": "Music",
+      "volume_db": -5.0,
+      "loop": true,
+      "source": "Synthesised for this game by tools/make_lofi_demo.py --track mystery (25 Nov 2026): demo sneaky loop in A minor: soft pad, pizzicato, woodblock ticks, falling bass, 16 bars at 92 BPM, 42 s",
+      "licence": "Original, no third-party material; 44.1 kHz 16-bit mono, clean (no hiss or crackle), imported as a QOA forward loop"
+    },
+    "music.focus": {
+      "file": "res://audio/music/focus_lofi_demo.wav",
+      "bus": "Music",
+      "volume_db": -9.0,
+      "loop": true,
+      "source": "Synthesised for this game by tools/make_lofi_demo.py --track focus (25 Nov 2026): demo calm puzzle loop in D: slow soft chords, long bass notes, a few bells, a quiet shaker, 16 bars at 60 BPM, 64 s",
+      "licence": "Original, no third-party material; 44.1 kHz 16-bit mono, clean (no hiss or crackle), imported as a QOA forward loop"
+    },
+    "music.outdoors": {
+      "file": "res://audio/music/outdoors_lofi_demo.wav",
+      "bus": "Music",
+      "volume_db": -8.5,
+      "loop": true,
+      "source": "Synthesised for this game by tools/make_lofi_demo.py --track outdoors (25 Nov 2026): demo playful loop in F: ukulele strum, oom-pah bass, hopping marimba, claps and woodblock, 16 bars at 108 BPM, 36 s",
+      "licence": "Original, no third-party material; 44.1 kHz 16-bit mono, clean (no hiss or crackle), imported as a QOA forward loop"
     }
   },
   "music": {
-    "_comment": "Background music (25 Nov 2026, user: a lofi BGM for the demo, and a different soundtrack for the loading screen). tracks: name -> cue; sound.gd play_music(name) fades the playing track out over 'fade_out' s and the new one in over 'fade_in' s, on its cue's bus, not positional. App plays 'loading' with the loading screen and 'town' when it lifts. 'enabled' false silences all music. Placeholders until licensed or commissioned music. Checks (a SceneTree script) never play it.",
+    "_comment": "Background music (25 Nov 2026, user: a lofi BGM for the demo, and a different soundtrack for the loading screen). tracks: name -> cue; sound.gd play_music(name) fades the playing track out over 'fade_out' s and the new one in over 'fade_in' s, on its cue's bus, not positional. App plays 'loading' with the loading screen and 'town' when it lifts. A minigame plays its activities.json 'music' track while it runs and the town track after (25 Nov 2026, user: different songs for different activities). Each cue's volume_db evens out the tracks' loudness (about -26.5 dB average with the cue's volume). 'enabled' false silences all music. Placeholders until licensed or commissioned music. Checks (a SceneTree script) never play it.",
     "enabled": true,
-    "tracks": {"town": "music.town", "loading": "music.loading"},
+    "tracks": {"town": "music.town", "loading": "music.loading", "quiz": "music.quiz", "errands": "music.errands",
+               "mystery": "music.mystery", "focus": "music.focus", "outdoors": "music.outdoors"},
     "fade_in": 4.0,
     "fade_out": 1.5
   },

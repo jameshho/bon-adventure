@@ -248,9 +248,14 @@ shows its name.
 ## Sound
 
 - **Music** (25 Nov 2026): a dreamy music-box lofi loop plays on the loading screen, then fades
-  into a gentle lofi loop in the town. Both are demo placeholders made for the game, until
-  licensed or commissioned music replaces them. The Music slider in Settings sets their volume
-  (0 mutes them).
+  into a gentle lofi loop in the town. Each minigame plays the music of its mood while it runs,
+  then the town music comes back: upbeat for quiz games (Desk Dash, Who's Who?, Flight Finder,
+  Next, Please!, On the Menu), cozy jazz for errands (Grocery Run, Stack & Pack, Library Helper),
+  sneaky for the mysteries (police games, Mystery Doors), calm for puzzles (Mahjong Club,
+  Wire It Up!, Radar Patrol) and playful at the zoo (Feeding Time!). The music dips while a word
+  is spoken. All are demo placeholders made for the game, until licensed or commissioned music
+  replaces them. The Music slider in Settings sets their volume (0 mutes them).
+  [Tracks](../guides/VOICE.md#background-music-25-nov-2026)
 - **Spoken words:** the speaker button on the word card and in the journal says the word.
 - **Effects:** toilets, faucets and the emergency vehicles' sirens. Everything else is silent
   for now.
