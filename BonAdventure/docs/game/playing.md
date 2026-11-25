@@ -236,8 +236,9 @@ driver, teacher, gardener, pilot, businessman, chef) and keeps one.
 
 ## Day and night
 
-A day lasts 20 minutes, with sun, moon, sky, street lamps and indoor lights. The clock at the
-top centre can jump an hour forward or back. Since 25 Nov the sun's light fades out indoors the
+A day lasts 48 minutes (since 25 Nov; was 30), with sun, moon, sky, street lamps and indoor lights.
+The clock at the top centre moves on every half hour, about once a minute, and can jump an hour
+forward or back. Since 25 Nov the sun's light fades out indoors the
 way the moon's does, so rooms look the same by day as at night, with a slightly warmer fill.
 [Day-night cycle](../guides/performance/README.md#day-night-cycle--9-november-2026)
 

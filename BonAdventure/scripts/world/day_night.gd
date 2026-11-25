@@ -43,15 +43,15 @@ signal paused_changed(paused: bool)
 const DATA_PATH := "res://data/day_night.json"
 const GameClock := preload("res://scripts/learning/game_clock.gd")
 const DAY_MINUTES := 1440.0
-## Seconds of real time between lighting refreshes while the clock runs. At the default 30-minute
-## day the sun moves about 0.08 degrees per refresh.
+## Seconds of real time between lighting refreshes while the clock runs. At the default 48-minute
+## day the sun moves about 0.05 degrees per refresh.
 const REFRESH_INTERVAL := 0.25
 ## The sun (and moon) turns in steps of this many game minutes, not with every refresh: each turn
 ## re-renders the shadow map from a new angle, and small continuous turns made shadow edges
 ## shimmer (user, 9 Nov 2026: flicker in the background). Five minutes is about 1 degree
-## (yaw_per_hour 12), a jump about every 6 s at the default 30-minute day (user, 9 Nov 2026:
-## 30 minutes, was 20). Colours, sky and lamps still blend at every refresh. (No sun shadows since
-## 23 Nov 2026; the steps stay.)
+## (yaw_per_hour 12), a jump every 10 s at the default 48-minute day (user: 30 minutes on
+## 9 Nov 2026, was 20; 48 on 25 Nov 2026). Colours, sky and lamps still blend at every refresh.
+## (No sun shadows since 23 Nov 2026; the steps stay.)
 const SUN_STEP_MINUTES := 5.0
 ## A game can ask for rarer, sliding steps while it holds the player in one view
 ## (set_sun_steps(); mahjong: about every 30 s with a 1 s slide). Time itself runs the same.
@@ -125,8 +125,13 @@ const SKY_CURVE := 0.15
 const FLIGHT_SKY_CURVE := 0.6
 const FLIGHT_FOG_SKY := 0.3
 
-## Real minutes for one full game day (data/day_night.json cycle_minutes).
-var cycle_minutes := 30.0
+## Real minutes for one full game day (data/day_night.json cycle_minutes; user, 25 Nov 2026: 48,
+## a little slower than 30, so the HUD clock ticks half an hour every real minute).
+var cycle_minutes := 48.0
+## The HUD clock shows the time in steps of this many game minutes (user, 25 Nov 2026: a tick
+## every 30 minutes instead of a changing minute). The time itself, the light and clock_minute()
+## stay continuous; only shown_minute() and the time_changed signal step.
+const CLOCK_TICK_MINUTES := 30
 ## Game time of day in minutes after midnight, 0 <= minutes < 1440.
 var minutes := 720.0
 var paused := false
@@ -374,9 +379,14 @@ func set_cycle_minutes(value: float) -> void:
 	cycle_minutes = maxf(value, 0.1)
 
 
-## The whole game minute shown on clocks (0-1439).
+## The whole game minute (0-1439), exact (headlights, checks).
 func clock_minute() -> int:
 	return int(minutes) % int(DAY_MINUTES)
+
+
+## The minute the HUD clock shows: clock_minute() rounded down to CLOCK_TICK_MINUTES (8:00, 8:30).
+func shown_minute() -> int:
+	return clock_minute() / CLOCK_TICK_MINUTES * CLOCK_TICK_MINUTES
 
 
 ## Whether the sun is down (the moon is up) at `hour` (0-24).
@@ -499,7 +509,7 @@ func _apply() -> void:
 		_lamp_level = level
 		for material in lamp_materials:
 			material.emission_energy_multiplier = level * _lamp_energy
-	var minute := clock_minute()
+	var minute := shown_minute()
 	if minute != _shown_minute:
 		_shown_minute = minute
 		time_changed.emit(minute)
@@ -717,7 +727,7 @@ func _write(target: Object, property: StringName, value: Variant) -> void:
 
 func _load(path: String) -> void:
 	var data: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(path))
-	cycle_minutes = float(data.get("cycle_minutes", 30.0))
+	cycle_minutes = float(data.get("cycle_minutes", 48.0))
 	_sun_path = data.sun
 	_indoor_color = Color(str(data.indoor.ambient_color))
 	_indoor_energy = float(data.indoor.ambient_energy)

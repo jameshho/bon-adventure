@@ -42,7 +42,8 @@ func run() -> void:
 	check(suns == 1, "one directional light in the town world (found %d)" % suns)
 	check(cycle.find_children("*", "Light3D", true, false).is_empty(), "the cycle adds no other lights")
 	check(absf(cycle.minutes - GameClock.shared().now) < 5.0, "starts at the shared now (%s vs %s)" % [GameClock.clock(int(cycle.minutes)), GameClock.clock(GameClock.shared().now)])
-	check(is_equal_approx(cycle.cycle_minutes, 30.0), "default cycle is 30 minutes")
+	# 48 since 25 Nov 2026 (user; was 30).
+	check(is_equal_approx(cycle.cycle_minutes, 48.0), "default cycle is 48 minutes")
 	check(is_equal_approx(game.get_viewport().scaling_3d_scale, 1.0), "desktop keeps full 3D resolution (the web-only scale is off)")
 
 	# One graphics setting (23 Nov 2026, render_culling.gd apply_view()): no sun shadows and depth
@@ -135,14 +136,18 @@ func run() -> void:
 	check(cycle.clock_minute() == 23 * 60 + 30, "00:30 − 1 h = 23:30")
 	cycle.set_time(11 * 60 + 15)
 	cycle.step_hours(1)
-	check(game.day_clock.time_text().contains("12:15"), "noon hour shows 12:15 (%s)" % game.day_clock.time_text())
+	# The HUD ticks every half hour (25 Nov 2026): 12:15 shows 12:00, 12:45 shows 12:30.
+	check(cycle.clock_minute() == 12 * 60 + 15 and cycle.shown_minute() == 12 * 60, "12:15 is shown as 12:00 (shown %s)" % GameClock.clock(cycle.shown_minute()))
+	check(game.day_clock.time_text().contains("12:00"), "noon hour shows 12:00 (%s)" % game.day_clock.time_text())
+	cycle.set_time(12 * 60 + 45)
+	check(game.day_clock.time_text().contains("12:30"), "12:45 shows 12:30 (%s)" % game.day_clock.time_text())
 	var held: float = cycle.minutes
 	await wait(0.6)
 	check(cycle.minutes == held, "paused time does not move")
 	cycle.resume()
 	await wait(0.6)
 	var moved: float = cycle.minutes - held
-	check(moved > 0.3 and moved < 2.0, "resumed time moves at the 30-minute day (%.2f game minutes in 0.6 s)" % moved)
+	check(moved > 0.15 and moved < 1.2, "resumed time moves at the 48-minute day (%.2f game minutes in 0.6 s)" % moved)
 
 	# The clock panel.
 	var clock = game.day_clock

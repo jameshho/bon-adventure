@@ -1,7 +1,8 @@
 extends Control
 ## The HUD clock (9 Nov 2026; guide: docs/guides/performance/README.md#day-night-cycle--9-november-2026).
 ## A pill at the top centre shows the game time in 12-hour form ("8:30 PM", native language via
-## hud.clock_am / clock_pm) with a sun, moon or pause icon. Clicking it opens a compact panel:
+## hud.clock_am / clock_pm) with a sun, moon or pause icon, ticking every half hour (day_night.gd
+## shown_minute(), user 25 Nov 2026). Clicking it opens a compact panel:
 ## − / + move the time one hour (and pause the cycle, day_night.gd step_hours()), Resume starts
 ## it again, Close (or Esc, Main's popup stack) hides the panel and keeps the chosen time.
 ## Sizes follow the window like the other HUD panels: f = min(height / 800, width / 1100).
@@ -64,9 +65,9 @@ func toggle() -> void:
 	panel.visible = not panel.visible
 
 
-## The shown time, e.g. "8:30 PM" (native language).
+## The shown time, e.g. "8:30 PM" (native language), on the half hour.
 func time_text() -> String:
-	var minute: int = day_night.clock_minute()
+	var minute: int = day_night.shown_minute()
 	return UiText.t("hud.clock_am" if GameClock.is_am(minute) else "hud.clock_pm", {"time": GameClock.clock12(minute)})
 
 
@@ -223,7 +224,7 @@ func _refresh() -> void:
 	var text := time_text()
 	pill.text = text
 	time_label.text = text
-	var icon := "pause" if day_night.paused else ("moon" if day_night.is_night(day_night.minutes / 60.0) else "sun")
+	var icon := "pause" if day_night.paused else ("moon" if day_night.is_night(day_night.shown_minute() / 60.0) else "sun")
 	pill.icon = UiIcons.texture(icon, roundi(26.0 * _scale))
 	status_label.text = UiText.t("hud.clock_paused" if day_night.paused else "hud.clock_running")
 	resume_button.disabled = not day_night.paused

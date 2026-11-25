@@ -68,7 +68,7 @@ checks and the measured frame-time cost are in the
 
 ## Day-night cycle — 9 November 2026
 
-User request: a 20-minute day (30 minutes since 9 Nov 2026, user) with sunrise, midday, golden sunset and a cool blue night,
+User request: a 20-minute day (30 minutes since 9 Nov 2026 and 48 since 25 Nov 2026, user) with sunrise, midday, golden sunset and a cool blue night,
 keeping the cute, colorful look. Performance comes first. The old daylight is the
 baseline, made slightly softer (sun 0.62 → 0.56, ambient 0.50 → 0.54).
 
@@ -87,7 +87,7 @@ baseline, made slightly softer (sun 0.62 → 0.56, ambient 0.50 → 0.54).
   (energy 0.16) without shadows. The light is at zero energy at both switch times, so the
   jump in direction is never visible.
 - The sun turns in steps of 5 game minutes (`SUN_STEP_MINUTES`). That is about 1°, a jump about
-  every 6 s at the 30-minute day. Turning it a little at every refresh (4 times a second)
+  every 10 s at the 48-minute day. Turning it a little at every refresh (4 times a second)
   re-rendered the shadows from a new angle each time, and shadow edges shimmered (user,
   9 Nov 2026: flicker in the background). Colours, sky and lamps still blend at every refresh.
 - A game that holds the player in one view can ask for rarer steps that slide:
@@ -155,12 +155,14 @@ baseline, made slightly softer (sun 0.62 → 0.56, ambient 0.50 → 0.54).
   that changed. A paused clock writes nothing except an indoor blend. Night has no sun
   shadows, so it is cheaper than day.
 - **Clock:** the cycle starts at `game_clock.gd`'s launch "now", so the airport board and
-  the HUD agree at launch. The board keeps that launch time; the HUD clock then runs on
+  the HUD agree at launch. Since 25 Nov 2026 (user) the HUD pill ticks every half hour
+  (`CLOCK_TICK_MINUTES`, `shown_minute()`; about once a real minute at the 48-minute day);
+  the light and `clock_minute()` stay continuous. The board keeps that launch time; the HUD clock then runs on
   its own. The time is not saved.
 - **Time panel:** − / + move exactly one hour (wrapping at midnight) and pause the cycle.
   Resume restarts it; Close and Esc keep the chosen time.
 - **API:** `set_time(minutes)`, `step_hours(n)`, `pause()`, `resume()`,
-  `set_cycle_minutes(m)`, `sample(hour)`, `is_night(hour)`, and the `time_changed(minute)`
+  `set_cycle_minutes(m)`, `clock_minute()`, `shown_minute()`, `sample(hour)`, `is_night(hour)`, and the `time_changed(minute)`
   and `paused_changed(paused)` signals.
 
 **Web build (9 Nov 2026):** `export_presets.cfg` has a single-threaded **Web** preset (export: `godot --headless --path . --export-release "Web" <folder>/index.html`; serve the folder with any static server). On an M5 in headless Chrome it ran at 58 FPS at noon and 72 at midnight at 2× pixel density, and 132 / 153 at 1×. Since the same day, web builds draw the 3D at the page's CSS pixel size (`render_culling.gd` `apply_web_3d_scale()`: scale = 1 / density, at least 0.5; the HUD stays sharp; desktop unchanged), which gives 125 / 148 FPS at 2× ([record](../FINAL_VERIFICATION.md#web-build-of-the-day-night-cycle--9-november-2026)). Since 12 Nov 2026 the preset is also an installable web app (PWA) and exports scenes as text (see the [README](../../../README.md#web-app-pwa)).
