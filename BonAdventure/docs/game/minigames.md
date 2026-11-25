@@ -214,7 +214,7 @@ clock times and countries. Tracked.
 Five placing tasks in the warehouse hall: "Put the blue box on the table", "next to the green
 box", "to the right of", "on the top shelf". Pick up the right coloured box and put it in the
 right place; hints and "tell me" help when stuck. Teaches positions, colours and placing verbs.
-Tracked. Simplified on 14 Nov (it used to have trolleys, weighing and measuring). 21 Nov: four
+Tracked: colours and positions (25 Nov). Simplified on 14 Nov (it used to have trolleys, weighing and measuring). 21 Nov: four
 coloured boxes (no cardboard box), a shelf with two clear levels, and a tap anywhere on a level
 puts the box there ([details](../guides/WAREHOUSE.md#shelf-and-placing-21-nov-2026)).
 [Warehouse guide](../guides/WAREHOUSE.md#minigame-14-nov-2026)
@@ -223,7 +223,7 @@ puts the box there ([details](../guides/WAREHOUSE.md#shelf-and-placing-21-nov-20
 | --- | --- |
 | Purpose | Follow placing instructions: positions, colours, placing verbs. |
 | Words | [Generated list](words.md#stack--pack) |
-| Tracked in the journal | Yes: the colour of the box named in each task |
+| Tracked in the journal | Yes: the colour of the box and the position word of each task (on, next to, right, up), judged apart. A wrong box, or the hint that marks the box, misses the colour; the right box put down in a wrong place (the table, a shelf, the wrong side of the green box), or the hint that marks the place, misses the position word (25 Nov) |
 | Session | 5 tasks, a task counts when done |
 | Progression | Designed 18 Nov, not built: L1 *on* and the top shelf · L2 + next to · L3 + to the right of (today) · L4 hints only after a wrong try |
 
@@ -505,7 +505,9 @@ bag goes away when it is empty or when you leave the zoo.
 are learning, and hands you a bag with the food for the whole session (user, 24 Nov: the keeper
 always hands the food over, so the game is only about the animal names). Find the named animal and
 feed it; the next request follows at once. Feeding a different animal is a miss: it comes over and
-sniffs, Nico says which animal that was and asks again.
+sniffs, Nico says which animal that was and asks again. Walking out of the zoo on foot during
+the game puts you back just inside, facing Nico, and asks whether to stop; Esc asks the same
+(25 Nov).
 
 | Learning card | |
 | --- | --- |

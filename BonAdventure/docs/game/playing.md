@@ -132,12 +132,14 @@ says the word in the language you are learning ([journal](../evidence/journal-sp
 
 - **Laptop:** WASD to walk, Space to jump, Shift or the Run button to run, E to use things
   (doors, seats, vehicles, toilets, faucets), drag or right-mouse to look around, wheel to zoom,
-  Esc for Settings or to close the top window. F1 shows every key.
+  Esc for Settings or to close the top window; during Library Helper, Grocery Run or Feeding
+  Time! Esc asks whether to stop the game instead (25 Nov). F1 shows every key.
 - **Camera follows me** (on by default since 14 Nov): walking sideways slowly turns the view,
   so one hand can steer.
 - **Climb** ladders with W and S (or the stick toward / away from the wall); at the top of a
   ladder, walk into the hatch or hold S to climb down; **sit** on chairs, sofas and swings; swivel chairs turn with
-  A and D.
+  A and D. Jump (Space or the touch Jump button) stands you up from a seat, swing or see-saw
+  (25 Nov).
 
 [All controls](../../README.md#controls-and-learning)
 
@@ -235,14 +237,16 @@ driver, teacher, gardener, pilot, businessman, chef) and keeps one.
 ## Day and night
 
 A day lasts 20 minutes, with sun, moon, sky, street lamps and indoor lights. The clock at the
-top centre can jump an hour forward or back.
+top centre can jump an hour forward or back. Since 25 Nov the sun's light fades out indoors the
+way the moon's does, so rooms look the same by day as at night, with a slightly warmer fill.
 [Day-night cycle](../guides/performance/README.md#day-night-cycle--9-november-2026)
 
 ## Characters
 
 The town's people are plush animals: BonBon the pig (the player), the house friends, shop staff in
 outfits, and the minigame hosts. They blink and make small gestures. Clicking a house friend
-shows its name.
+shows its name. Since 25 Nov whoever you talk to turns to face you while their line shows, and
+BonBon's steps keep pace with her speed (quicker when running, slower when creeping).
 [Plush characters](../guides/COMPONENTS.md#plush-characters)
 
 ## Sound

@@ -1,19 +1,23 @@
 # Final verification — 20 October 2026
 
-## Current state — 18 November 2026
+## Current state — 25 November 2026
 
 Read this first; everything below is a dated log, and each entry describes only its own run.
 
-- **Last full suite:** 16 Nov 2026, `run_checks.py full`, `dev_focus.txt` = `all`: PASS 47,
+- **Last full suite:** 25 Nov 2026 afternoon, after the improvement plan's fast track
+  (`dfd2be4c` plus another session's uncommitted sound, door and sheep work):
+  **PASS 73, KNOWN 3, NEW 1, CRASH 1** of 78
+  ([record](#full-suite-after-the-fast-track--25-november-2026)). NEW: `bank_rework` (the
+  manager-scene timing race seen on 24 Nov, P2). CRASH: `app_flow` segfaulted once in the loading
+  screen and passed alone (P2: watch).
+- **Before that:** 16 Nov 2026, `run_checks.py full`, `dev_focus.txt` = `all`: PASS 47,
   NEW 6, TIMEOUT 3 ([record](#docs-reorganised-into-game--guides--evidence--archive--16-november-2026)).
   All 9 were traced to game changes and their checks fixed; the 9 re-run once: **PASS 7, KNOWN 2,
   NEW 0** ([triage](#triage-of-the-16-november-full-run-failures--16-november-2026)).
-- **Since then:** only targeted checks per change (each entry lists them and what was not run).
-  No full suite has been run on the 17–18 Nov changes.
 - **Known failures:** [`data/expected_check_failures.json`](../../data/expected_check_failures.json)
   is the list (each with a date, reason and priority): `map_facades` (a street ray hits the
   hospital's glass front before its facade, P3) and `rooftops` (the barn's gambrel roof is
-  steeper than walkable, by design). Open low-priority noise: `day_night` logs engine errors from
+  steeper than walkable, by design), `voice_backbone` (no bamboo clips yet, P3). Open low-priority noise: `day_night` logs engine errors from
   `verify.gd:90` (P4).
 - **How to run:** [README Verification](../../README.md#verification).
 - **Order:** entries from 14–16 Nov are at the top (newest first); entries from 12–18 Nov were
@@ -8312,3 +8316,66 @@ instead of "Call the police", teller chairs as seats, a wider staff door, no dia
 | FAIL 5 / 54, then a diagnostic run 0 / 54 | `bank_rework` (23 Nov script, updated 24 Nov the same way). First run: the manager's walk crossed the end of the wider staff door's open leaf (a real issue: her turn in the office, `MANAGER_DOOR`, moved from z 111.0 to 111.6), and four manager-scene labels failed (door opens, warning 1, the manager's close-up, warning 2) while the second visit and the firing passed. A copy of the script that logged the scene every 0.5 s after the payout (not the committed script) passed **54 checks, 0 failures**: she opened the door, walked out and gave both warnings. The four failures were not reproduced; the committed script was not run again (no re-runs for a pass). **P3:** watch for a timing race in the manager scene's first visit |
 
 Not run: the full suite, `runtime_resources`, the web export, touch, a hands-on play-test.
+
+## Improvement plan fast track: nine sessions — 25 November 2026
+
+The [improvement plan](improvement-plan/MASTER_PLAN.md#fast-track-small-chunks-user-25-nov-2026)'s
+Wave 1 and most of Wave 2, built by parallel sessions sharing this checkout, each committed after
+the user's own yes. Every check below was run once by its session, by hand or through
+`run_checks.py --only`, with an isolated HOME and `VT_FOCUS=all` unless noted, on a working tree
+that held other sessions' uncommitted edits. A Godot exit abort after the summary
+(`recursive_mutex lock failed`, exit 134/137/-6) is the known crash; labels were read from the
+summary. The full suite that followed is the [next entry](#full-suite-after-the-fast-track--25-november-2026).
+
+| Chunk | Commit | What changed | Checks |
+| --- | --- | --- | --- |
+| C0 runner | `cd9a6d62` | `run_checks.py` judges by the summary when Godot aborts on exit | the 25 Nov morning suite re-judged |
+| M0 probe | `cd9a6d62` | [desktop baseline](improvement-plan/PERFORMANCE_BASELINE.md) | 4 runs (3 broken by setup, recorded) |
+| C3 web pack | `5525310a` | 20 unused static clay folders left out: 91.4 → 65.5 MB | web build served locally: town and zoo load, no missing resources |
+| P3-01 part | `e8a8edfe` | settled zoo gate stops processing; crab caches the player, one shared material | `zoo_vehicles` PASS |
+| QA-01 | `83433a41` | 6 checks registered; CJK font subset rebuilt (22 characters); stale `voice_backbone` and `passport_missions` checks fixed | `results_screen`, `passport_missions` PASS; `voice_backbone` KNOWN (bamboo clips, P3) |
+| C1 save safety | `1505f82a` | checked temp writes, corrupt-save backups, profile-index recovery, unknown studied words kept, SessionWords reset | `save_robustness` (new) 34/0, `profiles` 38/0, `app_flow` 24/0 |
+| C4 word flow | `0bf1851f`, `dfd2be4c` | new words gated per game pool; seeded words start learned; Feeding Time! asks due animals first; word-less rounds no longer starve Hospital Helper's word questions | `word_memory` 44/0, `zoo_feeding` 52/0, `practice_log` 80/0 |
+| C2 game exits, GAME-03/04 | `aec3ae2a` | `request_leave()` contract; Library Helper, Grocery Run and Feeding Time! ask before stopping (walk-out and Esc); radar and electrical box say "finish first" | `game_exits` (new) 33/0, `library_sorting` 134/0, `shop_basket` 13/0, `zoo_feeding` 52/0 |
+| C8 touch Jump | `a0ae5a25` | Jump stands you up from seats, swings, see-saws | `seats_swan_boats` 0 failures; no real phone press |
+| Peek fix | `89f59536` | `translate_button.gd` tested its always-hidden bubble, so flight-game peeks never counted as translated (since 23 Nov) | `practice_log` updated |
+| Check fixes | `9c50003c`, `a0cbb1a5`, `9b7eccd6`, `e9f83cc6`, `0f487588`, `fd618a76`, `0fb2e45f` | stale checks: `electrical_box`, `bath_fixtures` (probe camera made current), `compact_layout` (Turboprop SIZE), `mahjong_ui_polish` (redeal), `tutorial` (20/21 Nov reviews), hand-hold (book tap-to-close), `touch_controls` (Passport, results lock) | each PASS (tutorial 166/0, compact_layout 618, hand-hold 23/0) |
+| Zoo booth sign | `f1d77134` | sign fit width in world metres, two lines, taller board; base baked (4 differences, booth only) | `world_signs` PASS |
+| C14 word pools | `ab47d0ae` | Stack & Pack tracks colours and position words (4 → 8); plan retries vary the box; Feel the Clues unchanged (user) | `warehouse_game` 108/0, `word-pools` (new) 21/0, `police_detective` 130/0, `vocabulary_report` 0 failures; `warehouse` 105/1 ("truck backed up to bay A", vehicle, unrelated) |
+| C10 NPCs | `c4c7c7ea`, `65385841` | NPCs face the player while talking (never `Head`); hop eases down; gestures and carried-item swing on physics ticks | `characters-20261125/verify.gd` (`VT_FOCUS=barn, school`) 23/0, `npc_registry` 29/0, `plush_life` 22/0, `minigame_launcher` 201/0 |
+| C16 gait | `1f737622` | BonBon's step cadence follows distance (walk unchanged; sprint quicker, slow stick slower) | before/after strips; user kept it |
+| C13 UI scale | `65385841` (UI-01, see the [commit note](improvement-plan/SESSION_HANDOFF.md#commit-history-note-25-nov-2026-user-leave-it)), `aa99be5f`, `b6b98c3a` | one `BonStyle.factor()`; HUD status texts scale (3/4 size on a phone) | laptop control sizes identical before/after; 844 × 390 sizes [measured](../evidence/ui-scale-20261125/README.md) (no floor yet, D5) |
+| P3-15 veil | `9298019b` | cream veil instead of the dark shades | before/after renders, user approved |
+| C7 light | `634bc575` | sun fades indoors; flight horizon blends into fog above 130 m | `day_night` 62/0; café, home, flight renders |
+| C6 animals | `e24d9cea` | animals turn before they walk, ease in and out | `part2` 1349/0, `zoo_vehicles` 218/0, turn render (pig only) |
+| C5 journal | `5ce06b9e` | drag the word list to scroll | `journal-drag-20261125/verify.gd` 22/0 at 1280 × 800 and 844 × 390 (emulated touch) |
+
+**Removed:** C9 contact shadows were built and measured (+1.4–4 % draws), then removed uncommitted
+after the user saw a dark wedge from the zoo plants (D6 reversed). The `day_night` check now
+expects 48 lamps (the chapel tower lantern, `fc65299a`).
+
+**Not verified:** a real phone or the web build for any of these (touch was emulated); the
+hospital interior light; flight above 100 m; frame time for the animal and NPC changes.
+The old `family-game-20261104/verify_town.gd` (not in the runner) is stale: it calls the removed
+`interaction_controller.action_hint_text` and hangs (P3: retire or update).
+**Open:** `request_leave()` in the other in-world games; the phone size floor (UI-02, needs the
+user's phone check); the bamboo voice clips.
+
+## Full suite after the fast track — 25 November 2026
+
+`python3 tools/run_checks.py full --jobs 2` at `dfd2be4c`, `dev_focus.txt` = `all`, isolated HOME,
+615 s. The working tree also held another session's uncommitted work (sound effects and music,
+door sounds with a bank `door_sounds` bake step, the sheep model). Totals: **PASS 73, KNOWN 3,
+NEW 1, CRASH 1** (78 checks; the runner's exit-crash rule judged the rest by their summaries).
+
+| Result | Check | Reading |
+| --- | --- | --- |
+| KNOWN | `map_facades`, `rooftops`, `voice_backbone` | as listed in `expected_check_failures.json` |
+| NEW 4 / 54 | `bank_rework` | the same four manager-scene labels as the first 24 Nov run (staff door opens, the manager comes over, her close-up, the first warning); later labels pass. The uncommitted door-sound edit in `teller_session.gd` only plays a sound in `_staff_door`. **P2:** trace the timing race in the manager's first visit |
+| CRASH (signal 11, 2 s) | `app_flow` | headless segfault in the loading screen's `_process` (`loading_screen.gd:165`) before any label; run once more alone: **PASS** (15 s). Not reproduced; possibly two Godot runs at once or the uncommitted loading music. **P2:** watch |
+
+All checks that failed this morning now pass, among them `language`, `results_screen`,
+`world_signs`, `bath_fixtures`, `electrical_box`, `practice_log`, `touch_controls`,
+`compact_layout`, `mahjong_ui_polish`, `day_night` and `tutorial`, and the four bank and NPC
+checks that ran against an unparseable `main.gd` this morning (`bank_teller`, `bank_teller_polish`,
+`npc_registry` PASS). Not run: the web build, a phone, renders.

@@ -31,7 +31,7 @@ The common rollback for every task is to revert that milestone's single commit. 
 
 ## P0: data-loss risks
 
-### ARCH-01 Checked temp writes (A7, C, status: Ready)
+### ARCH-01 Checked temp writes (A7, C, status: Completed 25 Nov, `1505f82a`)
 - **Objective:** a failed or short write never replaces a good save.
 - **Files:** `scripts/core/save_store.gd` (`write_text`, around line 70).
 - **Plan:**
@@ -44,7 +44,7 @@ The common rollback for every task is to revert that milestone's single commit. 
 - **Dependencies:** none.
 - **Rollback:** revert.
 
-### ARCH-02 Back up unparseable saves (A7, C/S trigger, status: Ready)
+### ARCH-02 Back up unparseable saves (A7, C/S trigger, status: Completed 25 Nov, `1505f82a`)
 - **Objective:** a corrupt file is kept for recovery instead of being silently replaced with defaults on the next save.
 - **Files:**
   - `scripts/core/save_store.gd` (`read_json`).
@@ -57,7 +57,7 @@ The common rollback for every task is to revert that milestone's single commit. 
 - **Tests:** the save-robustness check, `practice_log`, `minigame_progression`.
 - **Dependencies:** none.
 
-### ARCH-03 Profile-index recovery (A7, C/S trigger, status: Pending, needs ARCH-02)
+### ARCH-03 Profile-index recovery (A7, C/S trigger, status: Completed 25 Nov, `1505f82a`)
 - **Objective:** a broken or lost `profiles/index.json` never reuses `p1` and never copies the flat legacy saves over an existing profile folder.
 - **Files:** `scripts/core/profile_manager.gd` (`load_index`, `create`, `has_legacy_saves`).
 - **Plan:**
@@ -70,7 +70,7 @@ The common rollback for every task is to revert that milestone's single commit. 
 
 ## P1
 
-### ARCH-04 Keep unknown studied-word keys (A7, C, Ready)
+### ARCH-04 Keep unknown studied-word keys (A7, C, Completed 25 Nov, `1505f82a`)
 - **Objective:** a word that leaves `words.json`, or is renamed without an alias, no longer deletes progress from every profile.
 - **Files:** `scripts/learning/vocabulary_progress.gd` (lines 18, 47), `scripts/core/main.gd:181` (read only).
 - **Plan:**
@@ -80,7 +80,7 @@ The common rollback for every task is to revert that milestone's single commit. 
 - **Acceptance:** an unknown key survives load→save, and the journal count ignores it.
 - **Tests:** `vocabulary_book`, `practice_log`, the save-robustness check.
 
-### ARCH-05 Reset SessionWords on a profile switch (A7, C, Ready)
+### ARCH-05 Reset SessionWords on a profile switch (A7, C, Completed 25 Nov, `1505f82a`)
 - **Objective:** the second player's results card lists their words. Today it stays connected to the freed PracticeLog of the first player.
 - **Files:** `scripts/core/profile_manager.gd` (`reset_singletons`, lines 170–180); comment in `save_store.gd` `PROFILE_FILES`.
 - **Plan:**
@@ -90,10 +90,10 @@ The common rollback for every task is to revert that milestone's single commit. 
 - **Acceptance:** after a switch, record one question and `SessionWords.summary()` is not empty.
 - **Tests:** `results_screen`; a switch-profile step in `app_flow`.
 
-### QA-00 / C0 Runner judges by the summary when Godot aborts on exit (A8, C, Under Review: built 25 Nov)
+### QA-00 / C0 Runner judges by the summary when Godot aborts on exit (A8, C, Completed 25 Nov, `cd9a6d62`)
 - `tools/run_checks.py`: a SIGABRT after the summary line (`recursive_mutex lock failed`, Godot 4.7.2 on this Mac since 25 Nov) is judged by the summary and noted. Verified by re-judging the 25 Nov suite logs (CRASH 55 → PASS 53, KNOWN 2, NEW 10).
 
-### QA-01 Register unregistered checks + save check (A8, C, Ready)
+### QA-01 Register unregistered checks + save check (A8, C, Completed 25 Nov, `83433a41`)
 - **Objective:** regressions in persisted learner data get caught.
 - **Files:** `tools/run_checks.py` (CHECKS); new save-robustness verify (written in M1).
 - **Plan:** register these checks:
@@ -105,7 +105,7 @@ The common rollback for every task is to revert that milestone's single commit. 
 - **Acceptance:** each runs once from the runner; results go in TEST_RESULTS.
 - **Notes:** each new registration needs one run to set its baseline. Ask the user first.
 
-### PERF-01 Repeatable performance probe + phone procedure (A1, C gap, Blocked: user approval for the run)
+### PERF-01 Repeatable performance probe + phone procedure (A1, C gap, Completed on desktop 25 Nov, `cd9a6d62`; web and phone runs not done)
 - **Objective:** a baseline that every later change can be compared against.
 - **Files:**
   - New `docs/evidence/perf-baseline-<date>/probe.gd` writing to `user://`. It never writes into the repo, unlike the old `benchmark.gd`.
@@ -119,7 +119,7 @@ The common rollback for every task is to revert that milestone's single commit. 
 - **Acceptance:** numbers are recorded in [PERFORMANCE_BASELINE.md](PERFORMANCE_BASELINE.md) with conditions. The phone numbers are taken by the user on their device.
 - **Dependencies:** M0 known revision; `dev_focus.txt` = `all`.
 
-### PERF-02 Drop unused static clay meshes from the web pack (A1, C, Under Review: built 25 Nov)
+### PERF-02 Drop unused static clay meshes from the web pack (A1, C, Completed 25 Nov, `5525310a`: 91.4 → 65.5 MB)
 - **Result (25 Nov):** 20 static folders excluded (sheep kept); `deploy_web.py` now refuses a build whose scenes name anything the preset excludes (tested by pretending `hen/` is excluded: base.scn caught). Web export: `index.pck` **91.4 → 65.5 MB**; the build loads in the browser with no missing-file errors and the zoo animals drawn. Waiting for the user's commit approval.
 - **Objective:** `index.pck` 91 → about 64 MB (−27 MB), well under GitHub's 100 MB file limit.
 - **Files:** `export_presets.cfg` (`exclude_filter`), `tools/deploy_web.py` (`excluded_references` must refuse a build whose exported scenes name an excluded mesh).
@@ -144,7 +144,7 @@ The common rollback for every task is to revert that milestone's single commit. 
 - **Risk:** medium (offline PWA cache, language switch).
 - **Tests:** offline, Safari, language switch.
 
-### LEARN-01 New-word gating counts the current pool only (A6, C, Ready)
+### LEARN-01 New-word gating counts the current pool only (A6, C, Completed 25 Nov, `0bf1851f`; `dfd2be4c` stops word-less rounds starving word questions)
 - **Objective:** existing profiles with 12 or more logged words get new words again.
 - **Files:** `scripts/learning/word_memory.gd` (`learning_count`, around lines 120–125; seeding, lines 79–90).
 - **Plan:**
@@ -154,7 +154,7 @@ The common rollback for every task is to revert that milestone's single commit. 
 - **Tests:** `word-memory-20261124/verify.gd` plus the new simulation case.
 - **Dependencies:** best after ARCH-05 (same results flow); no file overlap.
 
-### GAME-01 Library Helper can be left (A4, C, Ready)
+### GAME-01 Library Helper can be left (A4, C, Completed 25 Nov, `aec3ae2a`)
 - **Objective:** walking away from or leaving the library ends or asks to end the game, so the HUD, word cards and other games come back.
 - **Files:**
   - `scripts/learning/library_session.gd`
@@ -164,7 +164,7 @@ The common rollback for every task is to revert that milestone's single commit. 
 - **Acceptance:** leaving mid-game asks; "yes" restores the HUD; "stay" puts the player back.
 - **Tests:** the library check; one render.
 
-### UI-01 `BonStyle.factor()` (A5, C, Ready)
+### UI-01 `BonStyle.factor()` (A5, C, Completed 25 Nov: the code is in `65385841`, not `aa99be5f`; see [SESSION_HANDOFF](SESSION_HANDOFF.md#commit-history-note-25-nov-2026-user-leave-it))
 - **Objective:** one scale formula instead of about 17 copies with different floors. There is no visual change: each caller keeps its floor as a parameter.
 - **Files:** `scripts/ui/bon_style.gd` plus the copies listed in the UI audit:
   - `day_clock`, `game_launcher`, `passport_panel`, `results_screen`, `town_map_panel`, `star_card`, `town_minimap`, `vocabulary_hud`
@@ -174,7 +174,7 @@ The common rollback for every task is to revert that milestone's single commit. 
   2. Then the rest.
 - **Acceptance:** screenshots at 1280×800 and 844×390 are identical before and after.
 
-### UI-02 Touch-size floor on phones (A5, C arithmetic / S real device, Pending: UI-01, then phone render + user's phone check per D5)
+### UI-02 Touch-size floor on phones (A5, C arithmetic / S real device, Pending: the user's phone check per D5; the 844 × 390 render and sizes are done, [evidence](../../evidence/ui-scale-20261125/README.md#d5-phone-render-at-844--390-no-floor-added))
 - **Objective:** buttons and rows are never below a finger size (about 44 px) on a landscape phone. With no stretch mode, `min(h/800, w/1100)` gives 0.5 at 844×390.
 - **Files:** `bon_style.gd`, then panels one by one: `vocabulary_hud`, `vocabulary_book`, `settings_panel`, `results_screen`, `app_screens` …
 - **Plan:**
@@ -185,14 +185,14 @@ The common rollback for every task is to revert that milestone's single commit. 
   - Laptop screenshots are unchanged.
   - First confirm the size on a real phone, because the browser's pixel ratio decides the window size.
 
-### UI-03 Journal drag-to-scroll (A5, C, Ready)
+### UI-03 Journal drag-to-scroll (A5, C, Completed 25 Nov, `5ce06b9e`)
 - **Note (25 Nov 2026):** the user approved a [journal redesign](../JOURNAL.md) with paged stickers and no scrolling list. Skip this task if that is built first.
 - **Files:** `scripts/ui/vocabulary_book.gd` (`_on_list_input`, around lines 939–947).
 - **Plan:** a drag on the rows moves `scroll.value`, with a tap slop as in `touch_controls`. Taps on the star and speaker still work.
 - **Acceptance:** dragging scrolls, a tap opens the row, the wheel still works.
 - **Tests:** a touch-emulated run; screenshots.
 
-### ANIM-01 Interpolation-safe movers (A3, C/S, Ready)
+### ANIM-01 Interpolation-safe movers (A3, C/S, Completed 25 Nov: animals `e24d9cea`, hop/gestures/swing `c4c7c7ea` + `65385841`)
 - **Objective:** no stutter from nodes moved in `_process` while physics interpolation is on.
 - **Files:**
   - `scripts/world/park_animals.gd` (around lines 327–360)
@@ -203,7 +203,7 @@ The common rollback for every task is to revert that milestone's single commit. 
 - **Plan:** per mover, either `physics_interpolation_mode = OFF` or physics-process tweens and steps. Check `clay_animator` speed sampling.
 - **Acceptance:** a frame-time sweep at 60/120 Hz shows smooth motion, and the zoo and NPC renders are unchanged.
 
-### ANIM-02 Animals turn before they walk; ease in and out (A3, C, Ready; includes ANIM-03's sibling P2 "start/stop slide")
+### ANIM-02 Animals turn before they walk; ease in and out (A3, C, Completed 25 Nov, `e24d9cea`)
 - **Files:** `scripts/world/park_animals.gd` (around lines 241 and 349–360). Check whether exported defaults are saved in `base.scn` (a bake may be needed).
 - **Plan:**
   - Speed is multiplied by `clamp(cos(heading_error),0,1)`.
@@ -212,7 +212,7 @@ The common rollback for every task is to revert that milestone's single commit. 
 - **Acceptance:** a render sequence shows no crab-walk; the part2 animal check and `zoo_vehicles` pass.
 - **Conflict:** PERF items in `park_animals.gd` wait until this is done (see [ownership](FILE_OWNERSHIP.md)).
 
-### GFX-01 Contact shadows (A2, C, Pending: PERF-01; D6 approved rollout everywhere)
+### GFX-01 Contact shadows (A2, C, Deferred: built 25 Nov, then removed uncommitted at the user's request after a zoo play-test, D6 reversed)
 - **Objective:** characters, animals and props stop floating. Sun shadows stay off.
 - **Files:**
   - One new shared material/shader in `materials/`
@@ -231,37 +231,39 @@ Owner, evidence and status are given for each. Each task is specified fully only
 
 | ID | Owner | Ev. | Status | Objective | Files | Acceptance / tests |
 | --- | --- | --- | --- | --- | --- | --- |
-| GAME-02 | A4 | C | Pending (GAME-01) | Esc/✕ calls `request_leave()` on any running game before opening Settings | `main.gd` (back handler), `library_session`, `zoo_feeding_session`, `shop_session` | `activity_lifecycle` + each game's check |
-| GAME-03 | A4 | C | Pending (GAME-02) | Feeding Time! "stay" outside the zoo puts the player back, or asks again | `zoo_feeding_session.gd` (around lines 280–291) | zoo feeding check |
-| GAME-04 | A4 | C | Ready | Radar and electrical box say "finish first" instead of a dead E | `scripts/objects/radar_console.gd`, `scripts/world/electrical_box.gd` (`can_interact`) | `interaction` check |
+| GAME-02 | A4 | C | Completed (`aec3ae2a`) | Esc/✕ calls `request_leave()` on any running game before opening Settings | `main.gd` (back handler), `library_session`, `zoo_feeding_session`, `shop_session` | `activity_lifecycle` + each game's check |
+| GAME-03 | A4 | C | Completed (`aec3ae2a`) | Feeding Time! "stay" outside the zoo puts the player back, or asks again | `zoo_feeding_session.gd` (around lines 280–291) | zoo feeding check |
+| GAME-04 | A4 | C | Completed (`aec3ae2a`) | Radar and electrical box say "finish first" instead of a dead E | `scripts/objects/radar_console.gd`, `scripts/world/electrical_box.gd` (`can_interact`) | `interaction` check |
 | GAME-05 | A4 | S | Pending | A last-resort unstuck from a blocked seat or vehicle exit; a respawn ends the running game | `player_place.gd`, `main.gd` (around lines 856–862), `seating_controller.gd`, `driveable_vehicle.gd` | `player_place`, `vehicle_arcade` |
-| LEARN-02 | A6 | C | Ready | Feeding Time! orders its pool with `WordMemory.order` | `zoo_feeding_session.gd` (lines 149–171) | targeted check (a due animal first) |
+| LEARN-02 | A6 | C | Completed (`0bf1851f`) | Feeding Time! orders its pool with `WordMemory.order` | `zoo_feeding_session.gd` (lines 149–171) | targeted check (a due animal first) |
 | LEARN-03 | A6 | C | Ready (D8) | Wall-clock term in review timing (an additive `last_played_unix`) | `word_memory.gd` | word-memory check |
 | LEARN-04 | A6 | C | Ready (D9) | One meaning of "known" (stability ≥ learned), shown in the journal and results | `vocabulary_book.gd`, `results_screen.gd`, `session_words.gd` | screenshots |
-| LEARN-05 | A6 | C | Ready (D10: Stack & Pack, Feel the Clues) | Grow tiny pools (Stack & Pack 4, Feel the Clues 6, Mystery Doors 11) from the data files, never hand lists | game data files, `activities.json`, then `vocabulary_report.gd -- --write` | per game |
+| LEARN-05 | A6 | C | Completed for Stack & Pack (`ab47d0ae`, 4 → 8 words); Feel the Clues left as it is (user) | Grow tiny pools (Stack & Pack 4, Feel the Clues 6, Mystery Doors 11) from the data files, never hand lists | game data files, `activities.json`, then `vocabulary_report.gd -- --write` | per game |
 | LEARN-06 | A6 | C | Ready (D11: all designed levels) | Build designed levels for more games | `data/activities.json`, sessions | `minigame_progression` |
 | UI-04 | A5 | C | Pending (UI-01) | F1 guide scales and has a touch version (from Settings) | `vocabulary_hud.gd` (around lines 1135–1290), `settings_panel.gd` | screenshots at both sizes |
 | UI-05 | A5 | C | Pending (UI-01) | `corner_button`, `style_scrollbar`, `keycap` in BonStyle; local helpers go through `BonStyle.flat()` | `bon_style.gd`, `vocabulary_hud`, `touch_controls`, `vocabulary_book`, `family_panel`, `flight_panel`, `outfit_picker`, `day_clock`, `electrical_box_panel`, `elevator_floor_picker` | before/after screenshots of every HUD state |
-| UI-06 | A5 | C | Pending (UI-01) | HUD status texts scale | `vocabulary_hud.gd` (`_layout_hud`) | screenshots |
+| UI-06 | A5 | C | Completed (`b6b98c3a`) | HUD status texts scale | `vocabulary_hud.gd` (`_layout_hud`) | screenshots |
 | UI-07 | A5 | C/S | Ready | Tutorial progress (act n/3); confirm before Skip (Stay green left, Skip coral right) | `tutorial.gd`, `data/tutorial.json`, `phrases.json` | timed playthrough, screenshots |
-| ANIM-03 | A3 | C | Ready (D13: renders reviewed by user before keeping) | BonBon's gait phase follows distance (cadence only, poses unchanged) | `player_controller.gd` (around lines 646–668) | walk/sprint/slow-stick render strip |
-| ANIM-04 | A3 | C | Ready | The calling NPC eases down from its hop | `npc_presence.gd` (lines 68–70) | host check, render |
-| ANIM-05 | A3 | C | Ready | Carried-item pendulum on physics ticks | `hand_hold.gd` (lines 245–260) | carry check |
+| ANIM-03 | A3 | C | Completed (`1f737622`, user kept it after renders) | BonBon's gait phase follows distance (cadence only, poses unchanged) | `player_controller.gd` (around lines 646–668) | walk/sprint/slow-stick render strip |
+| ANIM-04 | A3 | C | Completed (`65385841`) | The calling NPC eases down from its hop | `npc_presence.gd` (lines 68–70) | host check, render |
+| ANIM-05 | A3 | C | Completed (`65385841`) | Carried-item pendulum on physics ticks | `hand_hold.gd` (lines 245–260) | carry check |
 | ANIM-06 | A3/A1 | C | Pending (PERF-01) | Clay animator at a reduced rate beyond about 25 m | `clay_animator.gd` (lines 190–195) | zoo perf capture |
-| ANIM-07 | A3 | C | Ready (D12: facing only) | NPCs face the player when talked to (whole-figure yaw, never Head); no idle gestures | `plush_life.gd`, `npc_chatter.gd`, COMPONENTS.md | NPC registry check, renders |
+| ANIM-07 | A3 | C | Completed (`c4c7c7ea`) | NPCs face the player when talked to (whole-figure yaw, never Head); no idle gestures | `plush_life.gd`, `npc_chatter.gd`, COMPONENTS.md | NPC registry check, renders |
 | GFX-02 | A2/A1 | C | Pending (PERF-01) | Dither fade at plush and prop range ends; LODs for heavy clay meshes if Compatibility allows | `render_culling.gd`, clay mesh bakes | walk-in frame sequence, draws |
-| GFX-03 | A2 | C | Ready | Sun fades indoors as the moon does; indoor fill adjusted | `day_night.gd` (`_apply_fill`), `data/day_night.json` | café, home, hospital at 08/12/18:30 |
-| GFX-04 | A2 | C | Ready | No horizon seam while flying (`fog_sky_affect` / `sky_curve` above 130 m) | `day_night.gd`, maybe `vehicle_controls.gd` | flight captures 40/100/200 m, day and night |
+| GFX-03 | A2 | C | Completed (`634bc575`) | Sun fades indoors as the moon does; indoor fill adjusted | `day_night.gd` (`_apply_fill`), `data/day_night.json` | café, home, hospital at 08/12/18:30 |
+| GFX-04 | A2 | C | Completed (`634bc575`) | No horizon seam while flying (`fog_sky_affect` / `sky_curve` above 130 m) | `day_night.gd`, maybe `vehicle_controls.gd` | flight captures 40/100/200 m, day and night |
 | GFX-05 | A2 | S | Ready | Near plane grows with flight height | `vehicle_controls.gd` | flicker diff at 100 m |
 | PERF-05 | A1 | C/S | Pending (PERF-01) | Measure flight on a phone; lower `FLIGHT_VIEW_MAX` or the ranges if slow | `vehicle_controls.gd`, `render_culling.gd` | flight captures |
 | PERF-06 | A1 | C/S | Pending (PERF-01) | Warm up material variants for late buildings | `app.gd`, `main.gd` (`add_unit`) | cold web timing |
 | PERF-07 | A1 | C | Pending (PERF-01) | Free or hide far plushes in long web sessions (option C) | `nearby_units.gd`, plush code | video MB over a session; high risk |
 | ARCH-06 | A7 | C/S | Pending (M1) | `practice_log` checks shapes before typed assignment; `"v"` field on the next format change | `practice_log.gd` (lines 62–70) | `practice_log` |
-| QA-02 | A8 | C | Blocked (user approval) | FINAL_VERIFICATION "Current state" states the gap since 16 Nov; one full suite with `dev_focus=all` | `FINAL_VERIFICATION.md` | suite labels against the expected-failures list |
+| QA-02 | A8 | C | Completed (25 Nov suite at `dfd2be4c`: PASS 73, KNOWN 3, NEW 1, CRASH 1) | FINAL_VERIFICATION "Current state" states the gap since 16 Nov; one full suite with `dev_focus=all` | `FINAL_VERIFICATION.md` | suite labels against the expected-failures list |
 
 ## P3: optional
 
 All of these are **Pending**. Each is small and taken up when its file is already open for a higher task.
+
+Done on 25 Nov: P3-01 in part (settled zoo gate, cached player in the crab: `e8a8edfe`), P3-04 (`a0ae5a25`), P3-15 (`9298019b`), and P3-17's bug (a peek in the flight game now counts as translated: `89f59536`; the bridge refactor is still open).
 
 | ID | Owner | Ev. | Item | Files |
 | --- | --- | --- | --- | --- |

@@ -14,6 +14,7 @@
 | 25 Nov 2026 | D3: approve one performance probe run and one full suite | user | M0 baseline |
 | 25 Nov 2026 | D5 phone sizes: render at 844×390 and check on the user's phone first, then add the ≈44 px floor and compact layouts panel by panel | user | UI-02 |
 | 25 Nov 2026 | D6 contact shadows: **roll out everywhere** (characters, animals, vehicles, props), measuring draw cost as it goes | user | GFX-01 |
+| 25 Nov 2026 | D6 **reversed**: no contact shadows. After playing the zoo build the user saw a dark sideways wedge from the plants and chose to remove them rather than fix them ("doesn't really affect the gameplay feel"); the C9 work was reverted uncommitted | user | GFX-01 |
 | 25 Nov 2026 | D7 voice: per-language packs downloaded when a language is chosen, cached for offline | user | PERF-04 |
 | 25 Nov 2026 | D8 review timing: add a capped real-time term (additive save field) | user | LEARN-03 |
 | 25 Nov 2026 | D9 known words: known = remembered well by the word memory; shown in the journal and on the results card | user | LEARN-04 |

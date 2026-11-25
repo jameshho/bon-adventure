@@ -53,11 +53,12 @@ func run() -> void:
 		"depth fog is opaque at the camera's far plane (%.0f m)" % game.player.camera.far)
 
 	# Lamps: 19 streetlight heads and 8 bridge globes, the zoo zones' 4 lamp posts and 2 gate
-	# lanterns (base step zoo_zones, 12 Nov 2026) and the chapel's 2 door lanterns and 12
-	# chandelier bulbs (chapel.gd night_lights, 11-12 Nov 2026): 47 heads, one glow material per
+	# lanterns (base step zoo_zones, 12 Nov 2026), the chapel's 2 door lanterns and 12
+	# chandelier bulbs (chapel.gd night_lights, 11-12 Nov 2026) and its bell-tower lantern
+	# (chapel.gd "Tower lamp", 23 Nov 2026): 48 heads, one glow material per
 	# original material (4).
 	var glowing: Array = game.apartment.find_children("*", "MeshInstance3D", true, false).filter(func(m): return m.has_meta("night_glow"))
-	check(glowing.size() == 47, "47 lamp heads glow at night (found %d)" % glowing.size())
+	check(glowing.size() == 48, "48 lamp heads glow at night (found %d)" % glowing.size())
 	check(cycle.lamp_materials.size() >= 1 and cycle.lamp_materials.size() <= 4, "lamps share %d glow material(s)" % cycle.lamp_materials.size())
 	var batched_glow := 0
 	for batch in game.apartment.find_children("*", "MultiMeshInstance3D", true, false):
@@ -65,7 +66,7 @@ func run() -> void:
 		if batch.material_override is StandardMaterial3D and batch.material_override in cycle.lamp_materials:
 			batched_glow += batch.multimesh.instance_count
 	var unbatched_glow := glowing.filter(func(m): return m.is_visible_in_tree()).size()
-	check(batched_glow + unbatched_glow == 47, "every lamp head is drawn with a glow material (batched %d, own %d)" % [batched_glow, unbatched_glow])
+	check(batched_glow + unbatched_glow == 48, "every lamp head is drawn with a glow material (batched %d, own %d)" % [batched_glow, unbatched_glow])
 
 	# Noon: the original daylight, softened; shadows on, lamps off.
 	cycle.pause()
