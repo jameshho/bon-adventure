@@ -126,12 +126,14 @@ least two word cards is on a poster. A copy of the poster (batched originals sho
 and distance fade off, the restaurant icon sheets shared) glides to 0.7 m in front of the camera
 with `fit: "face"`, `fill` 0.8, gentle; the wall poster hides meanwhile and the copy is freed on
 closing. The game buttons hide (`hud.hide_for_game(true, "poster")`), movement and word clicks are
-off (`Main.sync_player_controls`). Input claim `poster`: a tap closes an open card, else a tap on a
+off (`Main.sync_player_controls`). Input claim `poster`: taps do nothing until the glide in has
+ended (`zoomed_in()`; user, 24 Nov 2026: no word card before the poster has zoomed in, which a
+double click or a web tap seen as touch and mouse caused); then a tap closes an open card, else a tap on a
 word of the copy (its screen box) shows that word's card and studies it, a tap off the poster
 closes; E, Esc (popup stack) and the ✕ (the Inspect button's place) close. Not in minigames or
 while the tutorial holds word cards back (as word cards).
 Check: `docs/evidence/poster-closeup-20261124/verify.gd` (isolated HOME,
-`VT_FOCUS=school,police,restaurants,warehouse,airport`, graphics): **71 checks, 0 failures** on
+`VT_FOCUS=school,police,restaurants,warehouse,airport`, graphics): **81 checks, 0 failures** (with clicks during the zoom-in) on
 the family, evidence, Pizza menu board, warehouse verbs and airport "when" posters; renders
 `*-closeup.png`, `*-card.png`. Not checked: the Mystery House posters (Chinese titles; same rule),
 a real touch tap (the check calls `click()` with a pointer position).
