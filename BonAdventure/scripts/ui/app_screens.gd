@@ -150,7 +150,7 @@ func _rebuild() -> void:
 		_content.queue_free()
 	_content = null
 	var screen := get_viewport_rect().size
-	_factor = clampf(minf(screen.y / DESIGN.y, screen.x / DESIGN.x), 0.6, 3.0)
+	_factor = BonStyle.factor(screen, 0.6)
 	_stamp.add_theme_font_size_override("font_size", roundi(18 * _factor))
 	_stamp.add_theme_constant_override("outline_size", roundi(5 * _factor))
 	_stamp.offset_right = -14.0 * _factor

@@ -94,7 +94,7 @@ func badge_hit_area(camera: Camera3D) -> Dictionary:
 	if not badge.visible or camera == null or camera.is_position_behind(badge.global_position):
 		return {}
 	var view := camera.get_viewport().get_visible_rect().size
-	var scale_ui := minf(view.y / 800.0, view.x / 1100.0)
+	var scale_ui := BonStyle.factor(view, 0.0, INF)
 	return {"center": camera.unproject_position(badge.global_position), "radius": maxf(TAP_RADIUS * scale_ui, 22.0)}
 
 ## Places the discovery icons for this pass: `bangs` and `dots` are world points.

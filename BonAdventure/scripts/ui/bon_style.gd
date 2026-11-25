@@ -47,6 +47,15 @@ static var _fonts := {}
 static var _textures := {}
 static var _theme: Theme
 
+# --- Window scale ----------------------------------------------------------------------------
+
+## The window factor `f` for a window (or viewport) of `view` pixels: min(h / 800, w / 1100),
+## clamped to [low, high] (UI_STYLE.md#window-scale). The one copy of the formula; each caller
+## keeps its own floor: 0.5 for the HUD and in-game panels, 0.6 for the start screens, the
+## loading screen and the tutorial's cues.
+static func factor(view: Vector2, low := 0.5, high := 3.0) -> float:
+	return clampf(minf(view.y / 800.0, view.x / 1100.0), low, high)
+
 # --- Type ------------------------------------------------------------------------------------
 
 ## Fredoka at `weight` (300-700): 700 titles and buttons, 600 body. Chinese falls back to Noto

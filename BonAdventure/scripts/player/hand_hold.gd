@@ -81,7 +81,7 @@ func setup(arm: Node3D, arm_rest: Transform3D, visual: Node3D) -> void:
 	swing = Node3D.new()
 	swing.name = "Swing"
 	add_child(swing)
-	set_process(false)
+	set_physics_process(false)
 
 ## Moves the socket onto another model's left arm (a profile's avatar replaces BonBon's model:
 ## player_controller.gd set_avatar()).
@@ -121,7 +121,7 @@ func hold(item: Node3D, kind := "") -> Node3D:
 	swing.rotation = Vector3.ZERO
 	_last_pos = global_position
 	_last_vel = Vector3.ZERO
-	set_process(float(profile.sway) > 0.0)
+	set_physics_process(float(profile.sway) > 0.0)
 	held_changed.emit(item)
 	return previous
 
@@ -136,7 +136,7 @@ func release(target: Node = null, global_xf: Variant = null, put_down := true) -
 	releasing.emit(item)
 	var now := item.global_transform
 	held = null
-	set_process(false)
+	set_physics_process(false)
 	swing.rotation = Vector3.ZERO
 	swing.remove_child(item)
 	_restore_solids()
@@ -242,7 +242,10 @@ func _restore_solids() -> void:
 
 ## A hanging item swings about the palm like a pendulum, pushed by the hand's forward and
 ## backward acceleration (walking, stopping, turning) and settling when she stands still.
-func _process(delta: float) -> void:
+## On physics ticks (ANIM-05, 25 Nov 2026): the hand moves with BonBon's physics step, so its
+## speed and push are measured per tick (steady at any frame rate) and the swing is smoothed by
+## physics interpolation between ticks.
+func _physics_process(delta: float) -> void:
 	if delta <= 0.0 or not is_holding():
 		return
 	var pos := global_position

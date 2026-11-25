@@ -89,7 +89,7 @@ func _words() -> Dictionary:
 
 func _factor() -> float:
 	var view: Vector2 = get_viewport().get_visible_rect().size
-	return clampf(minf(view.y / 800.0, view.x / 1100.0), 0.5, 3.0)
+	return BonStyle.factor(view)
 
 func _build() -> void:
 	if card != null:

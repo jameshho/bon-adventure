@@ -1701,7 +1701,7 @@ func _process(_delta: float) -> void:
 		return
 	# Finger sized and scaled with the window (money_panel.gd's rule), top centre.
 	var screen := get_viewport().get_visible_rect().size
-	var f := clampf(minf(screen.y / 800.0, screen.x / 1100.0), 0.6, 3.0)
+	var f := BonStyle.factor(screen, 0.6)
 	var text: String = lexicon.phrase("tutorial.skip", lexicon.native)
 	if _skip_button.text != text or not is_equal_approx(_skip_scale, f):
 		_skip_button.text = text

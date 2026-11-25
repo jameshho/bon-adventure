@@ -86,7 +86,7 @@ func _process(delta: float) -> void:
 ## Scaled like money_panel.gd (min(height / 800, width / 1100)), centred near the top.
 func _layout() -> void:
 	var view: Vector2 = get_viewport().get_visible_rect().size
-	var f := clampf(minf(view.y / 800.0, view.x / 1100.0), 0.5, 3.0)
+	var f := BonStyle.factor(view)
 	var look := BonStyle.flat(BonStyle.SKY, roundi(24 * f), roundi(4 * f))
 	look.set_content_margin_all(18.0 * f)
 	look.content_margin_left = 36.0 * f

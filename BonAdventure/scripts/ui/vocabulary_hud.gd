@@ -545,7 +545,7 @@ func _layout_hud() -> void:
     reticle_group.position = center
     # The journal and the top-right buttons scale with the window like the minigame panels
     # (money_panel.gd). The gear and book are 60 px at 1100 x 800 (were 46 x 44, 9 Nov 2026).
-    var f: float = clampf(minf(viewport_size.y / 800.0, viewport_size.x / 1100.0), 0.5, 3.0)
+    var f: float = BonStyle.factor(viewport_size)
     # The word card scales with the window too (14 Nov 2026, user: bigger, for phones; it was a
     # fixed 560 x 258 with a 40 px word). Assign its size, then recenter even on window resize.
     var card_box: StyleBoxFlat = popup_panel.get_theme_stylebox("panel")
@@ -842,7 +842,7 @@ func _cluster_button(title: String, icon: String, handler: Callable) -> Button:
 
 func _hud_factor() -> float:
     var view: Vector2 = get_viewport().get_visible_rect().size
-    return clampf(minf(view.y / 800.0, view.x / 1100.0), 0.5, 3.0)
+    return BonStyle.factor(view)
 
 ## The top-right peek badge and gear: 90 px at 1100 x 800 (TOP_SCALE x 60), never under 52.
 func top_button_size() -> float:

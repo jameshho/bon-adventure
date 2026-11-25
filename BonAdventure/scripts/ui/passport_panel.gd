@@ -447,7 +447,7 @@ func _wait_text(seconds: int) -> String:
 
 func _layout() -> void:
 	var view: Vector2 = get_viewport().get_visible_rect().size
-	_factor = clampf(minf(view.y / 800.0, view.x / 1100.0), 0.5, 3.0)
+	_factor = BonStyle.factor(view)
 	var f := _factor
 	# Top right, left of the map button (the HUD's second row: journal, picker, map, passport).
 	main.hud.size_corner_button(corner_button, main.hud.top_slot(3))

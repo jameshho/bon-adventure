@@ -504,7 +504,7 @@ func _process(delta: float) -> void:
 
 func _layout() -> void:
 	var view: Vector2 = get_viewport().get_visible_rect().size
-	_factor = clampf(minf(view.y / 800.0, view.x / 1100.0), 0.5, 3.0)
+	_factor = BonStyle.factor(view)
 	var f := _factor
 	# Top right, left of the journal under the gear row (14 Nov 2026, user; was in the
 	# bottom-right cluster since 10 Nov 2026).

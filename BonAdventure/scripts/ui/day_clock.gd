@@ -169,7 +169,7 @@ func _box(fill: Color, edge: Color, radius: int) -> StyleBoxFlat:
 
 func _layout() -> void:
 	var view: Vector2 = get_viewport().get_visible_rect().size
-	_scale = clampf(minf(view.y / 800.0, view.x / 1100.0), 0.5, 3.0)
+	_scale = BonStyle.factor(view)
 	var f := _scale
 	var height := roundf(clampf(52.0 * f, 46.0, 104.0))
 	for style in _styles:
