@@ -7,8 +7,9 @@ Read this first; everything below is a dated log, and each entry describes only 
 - **Last full suite:** 25 Nov 2026 afternoon, after the improvement plan's fast track
   (`dfd2be4c` plus another session's uncommitted sound, door and sheep work):
   **PASS 73, KNOWN 3, NEW 1, CRASH 1** of 78
-  ([record](#full-suite-after-the-fast-track--25-november-2026)). NEW: `bank_rework` (the
-  manager-scene timing race seen on 24 Nov, P2). CRASH: `app_flow` segfaulted once in the loading
+  ([record](#full-suite-after-the-fast-track--25-november-2026)). NEW: `bank_rework`, traced the same day to the check
+  paying an impostor before it reached the window, and fixed
+  ([record](#bank_rework-manager-failure-traced--25-november-2026)). CRASH: `app_flow` segfaulted once in the loading
   screen and passed alone (P2: watch).
 - **Before that:** 16 Nov 2026, `run_checks.py full`, `dev_focus.txt` = `all`: PASS 47,
   NEW 6, TIMEOUT 3 ([record](#docs-reorganised-into-game--guides--evidence--archive--16-november-2026)).
@@ -8371,7 +8372,7 @@ NEW 1, CRASH 1** (78 checks; the runner's exit-crash rule judged the rest by the
 | Result | Check | Reading |
 | --- | --- | --- |
 | KNOWN | `map_facades`, `rooftops`, `voice_backbone` | as listed in `expected_check_failures.json` |
-| NEW 4 / 54 | `bank_rework` | the same four manager-scene labels as the first 24 Nov run (staff door opens, the manager comes over, her close-up, the first warning); later labels pass. The uncommitted door-sound edit in `teller_session.gd` only plays a sound in `_staff_door`. **P2:** trace the timing race in the manager's first visit |
+| NEW 4 / 54 | `bank_rework` | the same four manager-scene labels as the first 24 Nov run (staff door opens, the manager comes over, her close-up, the first warning); later labels pass. Cause found and fixed afterwards: a check bug ([trace](#bank_rework-manager-failure-traced--25-november-2026)) |
 | CRASH (signal 11, 2 s) | `app_flow` | headless segfault in the loading screen's `_process` (`loading_screen.gd:165`) before any label; run once more alone: **PASS** (15 s). Not reproduced; possibly two Godot runs at once or the uncommitted loading music. **P2:** watch |
 
 All checks that failed this morning now pass, among them `language`, `results_screen`,
@@ -8379,3 +8380,22 @@ All checks that failed this morning now pass, among them `language`, `results_sc
 `compact_layout`, `mahjong_ui_polish`, `day_night` and `tutorial`, and the four bank and NPC
 checks that ran against an unparseable `main.gd` this morning (`bank_teller`, `bank_teller_polish`,
 `npc_registry` PASS). Not run: the web build, a phone, renders.
+
+## `bank_rework` manager failure traced — 25 November 2026
+
+The four manager-scene labels that failed on 24 Nov and in the 25 Nov full suite came from the
+check, not the game. `_to_impostor` served customers for at most 8 turns of its loop, and each
+customer takes two (asking, then the thanks). When the random order put the impostor fifth
+(customer 4), the loop ran out while the impostor was still walking up. The check then paid it
+with step `""` (a player cannot: there is no Pay button before the customer asks). The impostor
+then reached the window and asked again (step `screen`), so the game's own "paid_out" timer
+correctly did not bring the manager. The game went on, and the second payout fired the player as
+designed.
+
+Found with a step log in the check. Failing run: `PAY #4 at ""`, `paid_out` at 22.04 s, `screen`
+for the same customer at 23.31 s. It reproduced in 3 of 9 runs; 2 earlier runs passed, one of
+them alongside two heavy checks. Game code was traced temporarily and restored exactly.
+**Fix** (`docs/evidence/bank-rework-20261123/verify.gd`): 24 turns, then wait until the
+impostor asks before paying. A one-line DIAG print stays for a missed manager visit. Result:
+`bank_rework` **54 checks, 0 failures** (one run, `dev_focus` all, isolated HOME). The
+`bank_teller_polish` loop already waits for each customer to ask, so it is not affected.
