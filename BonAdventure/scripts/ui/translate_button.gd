@@ -73,8 +73,12 @@ func _sync() -> void:
 	on = want
 	pressed.emit()
 
+## The bubble itself is always hidden since 23 Nov 2026 (one toggle), so its panel's visibility
+## decides (25 Nov 2026: is_visible_in_tree() on the bubble was always false, so a peek in a
+## panel that relies on the bubble, such as the flight game's, was never recorded as translated).
 func _report_shown() -> void:
-	if on and is_visible_in_tree():
+	var panel := get_parent() as CanvasItem
+	if on and panel != null and panel.is_visible_in_tree():
 		PracticeLog.shared().translation_shown.emit(word_key)
 
 func _draw() -> void:
