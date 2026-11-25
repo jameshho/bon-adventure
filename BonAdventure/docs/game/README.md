@@ -62,7 +62,7 @@ be forgotten come back.
 | [Radar Patrol](minigames.md#radar-patrol) | Airport control tower | No (pastime) | 9 Nov | 15 Nov (easier taps) |
 | [Wire It Up!](minigames.md#wire-it-up) | Electrical box at the home | No (pastime) | 9 Nov | 9 Nov |
 | [Library Helper](minigames.md#library-helper) | Library | Yes | 13 Nov | 21 Nov (book close-up on pick-up, bigger right-shelf burst, thanks with a zoom on Rosa, results card, new cart after walking away) |
-| [Next, Please!](minigames.md#next-please) | Bank teller window 2 | No | 18 Nov | 23 Nov (monitor and customer in one view, no toggle; paying an impostor brings the bank manager: a warning, then the player is let go) |
+| [Next, Please!](minigames.md#next-please) | Bank teller window 2 | No | 18 Nov | 24 Nov (seated at window 2, one request line, thanks move on by themselves, a hidden red alarm button instead of "Call the police"; [screenshots](../evidence/bank-teller-polish-20261124/); 23 Nov: monitor and customer in one view, the bank manager) |
 | [Feeding Time!](minigames.md#feeding-time) | Zoo food booth, inside the gate | Yes | 24 Nov | 24 Nov (food booth, paper bag, free feeding, 4 levels; [screenshots](../evidence/zoo-feeding-20261124/)) |
 
 ### Start screens and app
@@ -91,7 +91,7 @@ be forgotten come back.
 | [Clothing store](town.md#clothing-store) | Racks, checkout, fitting rooms with outfits | 18 Nov (shop-row storefront: rose pink) |
 | [Electronics store](town.md#electronics-store) | Computers, phones, cameras, audio, TV wall, gaming corner, appliances (toaster, kettle, blender and rice cooker are words), plush clerk | 23 Nov (small products 20% bigger; small appliances became words) |
 | [Furniture store](town.md#furniture-store) | Living, bedroom, dining, office and lighting showrooms | 18 Nov (shop-row storefront: teal) |
-| [Bank](town.md#bank) | Tellers, vault, safe-deposit room, manager's office, ATMs, bear banker, manager | 23 Nov (grown backward: bigger vault room, safe-deposit room, office; staff door behind the counter; slow heavy vault door) |
+| [Bank](town.md#bank) | Tellers, vault, safe-deposit room, manager's office, ATMs, bear banker, manager | 24 Nov (wider staff door, teller chairs to sit on; 23 Nov: grown backward: bigger vault room, safe-deposit room, office; staff door behind the counter; slow heavy vault door) |
 | [Police station](town.md#police-station) | Lobby, lineup room, evidence room, cell; real front windows | 23 Nov (two separate lockers whose doors open, [views](../evidence/civic-fixes-20261123/)) |
 | [Airport and control tower](town.md#airport-and-control-tower) | Terminal, restrooms, walkable tower with deck, airfield | 23 Nov (deck floor, ladder, stair rails) |
 | [School](town.md#school) | Grammar classroom and teaching areas | 23 Nov (science room: mountain picture and continent chart instead of the wall triangle and green blob, named plaques; the CLASSROOM and MAIN HALL plaques now face the room, notes on the notice board) |
@@ -101,7 +101,7 @@ be forgotten come back.
 | [Chapel](town.md#chapel) | Rebuilt sanctuary; bell tower climbed by a ladder inside, from a doorway in the nave | 23 Nov (ladder moved inside, two pew rows removed) |
 | [Farm barn](town.md#farm-barn) | Hayloft, tools and supplies, Tomás the farmer (bear in overalls and a straw hat; farm chatter); hen house with six hens and eggs to collect | 24 Nov (walk-in hen house: find eggs, carry them to the crate by its door, Drop button, [view](../evidence/hen-house-walkin-20261124/coop-door.png)); 23 Nov (farmer added) |
 | [Playground](town.md#playground) | Towers, slide, rideable swings | 1 Nov |
-| [Park, zoo and coast](town.md#park-zoo-and-coast) | Public garden, four zoo zones, island; the clay animals walk; the zoo's tiger and the farm's horse are the new clay models; clay capybara walks in Wildlife Plains (word: capybara); clay rooster and clay chick on the farm lawn, clay monkey inside the zoo gate; no red motorcycles (only BonBon's teal scooter) | 23 Nov (the zoo gate opens away from you; green welcome board outside removed) |
+| [Park, zoo and coast](town.md#park-zoo-and-coast) | Public garden, four zoo zones, island; the clay animals walk; the zoo's tiger and the farm's horse are the new clay models; clay capybara walks in Wildlife Plains (word: capybara); clay rooster, chick and hen on the farm lawn, clay monkey inside the zoo gate; no red motorcycles (only BonBon's teal scooter) | 24 Nov (clay hen on the farm lawn) |
 
 ## Open items worth knowing while reviewing
 

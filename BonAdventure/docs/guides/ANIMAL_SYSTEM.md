@@ -1155,6 +1155,37 @@ the base. The belly reads paler than the sheet's peach cream. An occasional sing
 appears in studio renders; the meshes scan clean (no dark vertices, zero normals or flipped
 triangles), and the cause was not found. Not done: rigging, walking, blinking, a word.
 
+## Clay hen display (24 Nov 2026, approved by the user and placed on the farm)
+
+`scenes/animals/hen_clay.tscn` is the
+[clay rooster](#clay-rooster-display-17-nov-2026-approved-by-the-user-and-placed-on-the-farm)
+tweaked toward the user's "Hen Character Blueprint" (user's direction, 24 Nov 2026, after a
+first pass traced from the hen sheet alone: follow the rooster's design and make slight
+changes). Built by `tools/build_hen_clay.gd` from `scripts/characters/hen_clay.gd`, which
+extends `rooster_clay.gd` and inherits its head, cape, body, legs, beak, eyes and mesher. The
+tweaks: cream all over (no orange head or red-brown saddle); a smaller, lower comb (0.78) and
+smaller wattles (0.82); no eyebrows; a pink blush on each cheek; wings shaded cream at the top
+to warm brown at the bottom; a short upright brown tail fan (the rooster's sickles cut short
+with round ends); 0.5 town units to the top of the comb (provisional), about 116,000 triangles.
+Part names are the rooster's. The old piece-built `scenes/animals/hen.tscn` and the barn
+paddock's hens are unchanged.
+
+Approved by the user on 24 Nov 2026 and placed: one instance, `ParkZoo/HenClayDisplay`, stands
+on the farm lawn at town (70.9, 0.12, 103.6), in a row with the clay rooster and chick (0.8 town
+units past the chick, the chick's spacing from the rooster), facing the gate like them (base step
+`hen_clay_display`, which also stores it as plain nodes with `unpack_clay_animals`). It has a box
+footprint and no word, movement, animation or interaction.
+
+Renders: `docs/evidence/hen-clay-20261124/` (`capture.gd` loads only the hen scene:
+`compare.png` = each hen-sheet view above the model's, `face.png`, `details.png`,
+`overlay.png`, `turnaround.png`; `reference.png` is the user's hen sheet). Being the rooster's
+body, it is slimmer than the sheet's round hen, with the rooster's eyes and lid lines and its
+hackle tongues instead of the sheet's round scallops. Town views (`capture.gd -- zoo`, isolated
+`HOME`, `VT_FOCUS=all VT_SPAWN=none`, `dev_focus.txt` = `all`, once): `zoo-close.png`,
+`zoo-front.png`, `zoo-side.png`, `zoo-location.png`; printed display y 0.156 world, physics
+ground beside it -0.046, the offset the other clay displays use; the feet meet the grass in the
+views. The bake applied 1 step. No test suite was run.
+
 ## Zoo zones (12 Nov 2026)
 
 User design (see the [design record](TOWN_DESIGN_BRIEF.md#zoo-zones--12-november-2026)): the 16

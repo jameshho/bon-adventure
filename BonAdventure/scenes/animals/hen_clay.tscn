@@ -1,0 +1,84 @@
+[gd_scene format=3]
+
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/hen/body.res" id="1_17dat"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/hen/beak.res" id="2_0wt1u"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/hen/beak_lower.res" id="3_4nkxh"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/hen/comb.res" id="4_lfsfk"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/hen/wattles.res" id="5_qame7"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/hen/wings.res" id="6_2bgq6"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/hen/tail.res" id="7_u0nnl"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/hen/left_eye.res" id="8_axs05"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/hen/right_eye.res" id="9_icldd"]
+[ext_resource type="ArrayMesh" path="res://scenes/animals/clay_meshes/hen/face_details.res" id="10_eboof"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u8tmo"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.86
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eapgr"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.3
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jx1rn"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+roughness = 0.75
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_owys2"]
+size = Vector3(0.27559054, 0.4737533, 0.45406824)
+
+[node name="HenClayDisplay" type="Node3D" unique_id=981098745]
+metadata/source = "Clay rooster tweaked toward the user's Hen Character Blueprint (24 Nov 2026)"
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=428339036]
+material_override = SubResource("StandardMaterial3D_u8tmo")
+mesh = ExtResource("1_17dat")
+
+[node name="Beak" type="MeshInstance3D" parent="." unique_id=2011994654]
+material_override = SubResource("StandardMaterial3D_u8tmo")
+mesh = ExtResource("2_0wt1u")
+
+[node name="Beak lower" type="MeshInstance3D" parent="." unique_id=258089366]
+material_override = SubResource("StandardMaterial3D_u8tmo")
+mesh = ExtResource("3_4nkxh")
+
+[node name="Comb" type="MeshInstance3D" parent="." unique_id=1645936982]
+material_override = SubResource("StandardMaterial3D_u8tmo")
+mesh = ExtResource("4_lfsfk")
+
+[node name="Wattles" type="MeshInstance3D" parent="." unique_id=781005751]
+material_override = SubResource("StandardMaterial3D_u8tmo")
+mesh = ExtResource("5_qame7")
+
+[node name="Wings" type="MeshInstance3D" parent="." unique_id=1542033904]
+material_override = SubResource("StandardMaterial3D_u8tmo")
+mesh = ExtResource("6_2bgq6")
+
+[node name="Tail" type="MeshInstance3D" parent="." unique_id=1417744556]
+material_override = SubResource("StandardMaterial3D_u8tmo")
+mesh = ExtResource("7_u0nnl")
+
+[node name="LeftEye" type="MeshInstance3D" parent="." unique_id=2019624878]
+transform = Transform3D(-0.71021354, 0.14729662, -0.68840426, 0, 0.977866, 0.20923221, 0.7039863, 0.14859957, -0.69449365, -0.046587925, 0.35564306, -0.11371276)
+material_override = SubResource("StandardMaterial3D_eapgr")
+cast_shadow = 0
+mesh = ExtResource("8_axs05")
+
+[node name="RightEye" type="MeshInstance3D" parent="." unique_id=271204979]
+transform = Transform3D(-0.7100366, -0.14734343, 0.68857676, 0, 0.9778631, 0.20924567, -0.7041648, 0.14857207, -0.69431853, 0.046587925, 0.35564306, -0.11368752)
+material_override = SubResource("StandardMaterial3D_eapgr")
+cast_shadow = 0
+mesh = ExtResource("9_icldd")
+
+[node name="Face details" type="MeshInstance3D" parent="." unique_id=1771618387]
+material_override = SubResource("StandardMaterial3D_jx1rn")
+cast_shadow = 0
+mesh = ExtResource("10_eboof")
+
+[node name="Footprint" type="StaticBody3D" parent="." unique_id=495255600]
+
+[node name="@CollisionShape3D@2" type="CollisionShape3D" parent="Footprint" unique_id=910180358]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.23687665, 0.04855647)
+shape = SubResource("BoxShape3D_owys2")

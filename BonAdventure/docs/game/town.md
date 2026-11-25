@@ -167,7 +167,9 @@ Since 23 Nov the bank reaches further back: the vault leads (through a slow, hea
 bigger vault room with the round safe and on into a safe-deposit room lined with small boxes; the
 manager's office is bigger, the crocodile manager works there, and a staff door in it leads
 behind the teller counter ([plan](../evidence/bank-rework-20261123/plan.png),
-[deposit room](../evidence/bank-rework-20261123/deposit-room.png)).
+[deposit room](../evidence/bank-rework-20261123/deposit-room.png)). Since 24 Nov that staff door is
+wide enough for BonBon (it was narrower than BonBon) and the three teller chairs are seats
+([views](../evidence/bank-teller-polish-20261124/)).
 [Design record](../guides/TOWN_DESIGN_BRIEF.md#bank-interior--28-october-2026),
 [refresh](../guides/TOWN_DESIGN_BRIEF.md#bank-interior-refresh--18-november-2026),
 [rework](../guides/TOWN_DESIGN_BRIEF.md#bank-rework--23-november-2026)
@@ -310,12 +312,14 @@ ride (E to sit, W/S to kick).
   [walking](../evidence/horse-anim-20261117/zoo-walk.png)). Since 17 Nov a clay rooster stands
   on the farm lawn by the farm gate ([view](../evidence/rooster-clay-20261116/zoo-close.png)),
   since 18 Nov with a clay chick beside it
-  ([view](../evidence/chick-clay-20261116/zoo-close.png)),
+  ([view](../evidence/chick-clay-20261116/zoo-close.png)) and since 24 Nov a clay hen on the
+  chick's other side, the rooster's design in cream with a brown fan tail
+  ([view](../evidence/hen-clay-20261124/zoo-front.png)),
   and a clay capybara waddles and blinks in Wildlife Plains and teaches *capybara*
   ([view](../evidence/capybara-anim-20261117/zoo-close.png),
   [walking](../evidence/capybara-anim-20261117/zoo-walk.png)); just inside the zoo gate sits
   a clay baby monkey, in front of the Bamboo Grove
-  ([view](../evidence/monkey-clay-20261117/zoo-close.png)); the rooster, the chick and the monkey
+  ([view](../evidence/monkey-clay-20261117/zoo-close.png)); the rooster, the chick, the hen and the monkey
   are still displays with no word yet (the zoo's own piece-built monkey is unchanged).
   [Zoo zones](../guides/TOWN_DESIGN_BRIEF.md#zoo-zones--12-november-2026) ·
   [animal sizes and movement](../guides/ANIMAL_SYSTEM.md)
