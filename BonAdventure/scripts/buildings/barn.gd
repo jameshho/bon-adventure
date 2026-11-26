@@ -5,7 +5,7 @@ extends RefCounted
 ## 12 x 9 foundation. Barn frame: town units (Apartment scale 1.3 applies), door on local -Z,
 ## walls centred on x +-6 and z +-4.5. The constants were moved here from the deleted startup
 ## pass barn_interior.gd (6 Nov 2026); docs/evidence/barn-20261101/verify.gd uses them.
-const STEPS := ["coplanar_gaps", "coplanar_gaps_2", "glass_windows", "hen_house", "walk_in_hen_house", "roomier_hen_house"]
+const STEPS := ["coplanar_gaps", "coplanar_gaps_2", "glass_windows", "hen_house", "walk_in_hen_house", "roomier_hen_house", "palette_snap"]
 
 const W2 := 6.0
 const D2 := 4.5
@@ -706,3 +706,10 @@ func _part(game, parent: Node3D, title: String, pos: Vector3, size: Vector3, col
     part.reparent(parent, false)
     part.position = pos
     return part
+
+
+## Colours snapped to the game palette with the hue guard (P3-22, decision D14: approved by the
+## user 26 Nov 2026 after the library/police trial; scripts/buildings/palette_snap.gd,
+## docs/evidence/pastel-20261125/).
+func palette_snap(town: Node3D, _game) -> void:
+    preload("res://scripts/buildings/palette_snap.gd").snap(town, "barn")

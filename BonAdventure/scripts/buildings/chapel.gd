@@ -17,7 +17,7 @@ extends RefCounted
 ## the exterior word "church" and carry no collision except the tower's RoofSolid
 ## (docs/evidence/town-checks/check_map_facades.gd); the front wall's collision is a thin body in the site, behind
 ## the glass, so a street ray still picks the facade.
-const STEPS := ["solid_roofs", "coplanar_gaps", "coplanar_gaps_2", "rebuild", "grand_chapel", "inner_ladder"]
+const STEPS := ["solid_roofs", "coplanar_gaps", "coplanar_gaps_2", "rebuild", "grand_chapel", "inner_ladder", "palette_snap"]
 
 const Geo := preload("res://scripts/buildings/mystery.gd")
 const SITE := "RelocatedSites/Chapel"
@@ -1074,3 +1074,10 @@ func _sphere_mesh(radius: float) -> SphereMesh:
 		m.rings = 6
 		_materials[key] = m
 	return _materials[key]
+
+
+## Colours snapped to the game palette with the hue guard (P3-22, decision D14: approved by the
+## user 26 Nov 2026 after the library/police trial; scripts/buildings/palette_snap.gd,
+## docs/evidence/pastel-20261125/).
+func palette_snap(town: Node3D, _game) -> void:
+	preload("res://scripts/buildings/palette_snap.gd").snap(town, "chapel")

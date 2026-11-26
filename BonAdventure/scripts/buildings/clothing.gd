@@ -3,7 +3,7 @@ extends RefCounted
 ## clothing unit (scenes/town/clothing.scn).
 ## Bake:  godot --headless --path . --script res://tools/bake_unit.gd -- clothing
 ## Never rename or remove a baked step (add a new one that undoes it).
-const STEPS := ["coplanar_gaps", "coplanar_gaps_2", "glass_windows", "shop_row_style"]
+const STEPS := ["coplanar_gaps", "coplanar_gaps_2", "glass_windows", "shop_row_style", "palette_snap"]
 
 ## Faces that shared a plane and flickered are set apart (10 Nov 2026,
 ## scripts/buildings/coplanar_gaps.gd).
@@ -26,3 +26,10 @@ func glass_windows(town: Node3D, _game) -> void:
 func shop_row_style(town: Node3D, game) -> void:
 	var ShopRow := preload("res://scripts/buildings/shop_row.gd")
 	print("shop_row clothing: ", ShopRow.restyle(town, game, "clothing"))
+
+
+## Colours snapped to the game palette with the hue guard (P3-22, decision D14: approved by the
+## user 26 Nov 2026 after the library/police trial; scripts/buildings/palette_snap.gd,
+## docs/evidence/pastel-20261125/).
+func palette_snap(town: Node3D, _game) -> void:
+	preload("res://scripts/buildings/palette_snap.gd").snap(town, "clothing")

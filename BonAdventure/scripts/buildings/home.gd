@@ -3,7 +3,7 @@ extends RefCounted
 ## home unit (scenes/town/home.scn).
 ## Bake:  godot --headless --path . --script res://tools/bake_unit.gd -- home
 ## Never rename or remove a baked step (add a new one that undoes it).
-const STEPS := ["solid_roofs", "bath_fixtures", "mahjong_table", "mahjong_chair_back", "toilet_flush_control", "electrical_box", "coplanar_gaps", "coplanar_gaps_2", "interaction_metas", "house_expansion", "house_furnishing", "door_heights", "family_bath_layout", "family_bath_window", "family_bath_door_inward", "clear_walkway_plants", "garage_bicycle_removed", "record_player"]
+const STEPS := ["solid_roofs", "bath_fixtures", "mahjong_table", "mahjong_chair_back", "toilet_flush_control", "electrical_box", "coplanar_gaps", "coplanar_gaps_2", "interaction_metas", "house_expansion", "house_furnishing", "door_heights", "family_bath_layout", "family_bath_window", "family_bath_door_inward", "clear_walkway_plants", "garage_bicycle_removed", "record_player", "palette_snap"]
 ## The mahjong table in the front yard (user request, 9 Nov 2026; docs/guides/MAHJONG.md): its centre in
 ## town coordinates (west of the entry path, north of the front door, near the spawn point),
 ## sizes in town units. Seat 0 (the player's, Mei's until a game starts) is on the north side;
@@ -373,3 +373,10 @@ func record_player(town: Node3D, _game) -> void:
 	player.position = RECORD_PLAYER_AT
 	player.rotation = Vector3(0, PI * 0.5, 0)
 	print("record_player: at %s beside the console at %s" % [player.position, console.position])
+
+
+## Colours snapped to the game palette with the hue guard (P3-22, decision D14: approved by the
+## user 26 Nov 2026 after the library/police trial; scripts/buildings/palette_snap.gd,
+## docs/evidence/pastel-20261125/).
+func palette_snap(town: Node3D, _game) -> void:
+	preload("res://scripts/buildings/palette_snap.gd").snap(town, "home")

@@ -3,7 +3,7 @@ extends RefCounted
 ## playground unit (scenes/town/playground.scn).
 ## Bake:  godot --headless --path . --script res://tools/bake_unit.gd -- playground
 ## Never rename or remove a baked step (add a new one that undoes it).
-const STEPS := ["solid_roofs", "coplanar_gaps", "coplanar_gaps_2"]
+const STEPS := ["solid_roofs", "coplanar_gaps", "coplanar_gaps_2", "palette_snap"]
 
 ## Collision for the decorative roofs and canopies (7 Nov 2026; scripts/buildings/roof_solids.gd).
 func solid_roofs(town: Node3D, _game) -> void:
@@ -23,3 +23,10 @@ func coplanar_gaps(town: Node3D, _game) -> void:
 ## text (10 Nov 2026, scripts/buildings/coplanar_gaps.gd).
 func coplanar_gaps_2(town: Node3D, _game) -> void:
 	preload("res://scripts/buildings/coplanar_gaps.gd").separate(town, "playground", 2)
+
+
+## Colours snapped to the game palette with the hue guard (P3-22, decision D14: approved by the
+## user 26 Nov 2026 after the library/police trial; scripts/buildings/palette_snap.gd,
+## docs/evidence/pastel-20261125/).
+func palette_snap(town: Node3D, _game) -> void:
+	preload("res://scripts/buildings/palette_snap.gd").snap(town, "playground")

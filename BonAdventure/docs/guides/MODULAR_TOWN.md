@@ -219,6 +219,19 @@ elevator lamps, rotor blur, zone, hover and highlight materials are all built by
 `garden_rendering.gd` and `render_culling.gd` batch by colour or material identity, so shared
 materials batch across units as they did in the single saved town.
 
+**Snapping to the game palette (P3-22, 26 Nov 2026, user decision D14):** `tools/palette_report.gd`
+lists each town scene's plain colours by area, clusters them in OKLab and measures them against
+`scripts/core/game_palette.gd` (`-- [unit ...] --out <file.md>`; reads only). The step `palette_snap`
+(`scripts/buildings/palette_snap.gd`, in every unit's script) recolours each plain colour within
+0.06 of a palette colour **of the same hue** (`MaterialPalette.compatible()`: within 20°, at most
++0.04 chroma, so greys stay grey) to that colour, through a copy (the bake shares it again). Left
+as they are: word roots other than "Building Parts" (colour words, products, posters), instanced prefabs and
+characters, glass, lights, textures. A new building, or new colours added later, can be snapped
+the same way with a new step (`palette_snap_2`, calling `snap()` again). Pastel ground (P3-23): grass and sand in
+`shaders/grass.tres` / `sand.tres`; road and paving materials stored in `base.scn` were recoloured by the
+base step `pastel_ground`. Bakes also save the staff NPCs' runtime `npc_id` and a few millimetres of
+drift; harmless, since `npc_registry.gd` places them again at every load.
+
 Unused palette files are not deleted automatically. To prune after a building drops a look: a
 palette file that no `scenes/town/*.scn` depends on and nothing else references (`rg` over
 `scenes/` and `scripts/`). List a scene's palette files with

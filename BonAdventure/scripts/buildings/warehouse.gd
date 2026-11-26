@@ -2,7 +2,7 @@ extends RefCounted
 ## Warehouse own script (docs/guides/MODULAR_TOWN.md, "Changing a building"); saved in scenes/town/warehouse.scn.
 ## The hall and reception are built by scripts/world/warehouse.gd and the minigame scripts; this
 ## file only holds baked steps.
-const STEPS := ["drivable_truck", "coplanar_gaps", "coplanar_gaps_2", "entrance_ramp", "glass_windows", "glass_windows_2", "half_depth_redesign", "two_level_shelf", "openable_cabinet", "door_sounds"]
+const STEPS := ["drivable_truck", "coplanar_gaps", "coplanar_gaps_2", "entrance_ramp", "glass_windows", "glass_windows_2", "half_depth_redesign", "two_level_shelf", "openable_cabinet", "door_sounds", "palette_snap"]
 const W := preload("res://scripts/world/warehouse.gd")
 
 ## The delivery truck (box_truck.tscn) became a DriveableVehicle on 8 Nov 2026. Its scene root now
@@ -442,3 +442,10 @@ func door_sounds(town: Node3D, game) -> void:
 	if tagged != 2:
 		push_error("warehouse door_sounds: expected 2 doors, tagged %d" % tagged)
 	print("WAREHOUSE door_sounds: %d doors" % tagged)
+
+
+## Colours snapped to the game palette with the hue guard (P3-22, decision D14: approved by the
+## user 26 Nov 2026 after the library/police trial; scripts/buildings/palette_snap.gd,
+## docs/evidence/pastel-20261125/).
+func palette_snap(town: Node3D, _game) -> void:
+	preload("res://scripts/buildings/palette_snap.gd").snap(town, "warehouse")

@@ -9,7 +9,7 @@ extends RefCounted
 ## with its own pick area; repeated items reuse the vocabulary prefabs (scenes/props/vocabulary,
 ## models in sports_props.gd); shelving and table blockers are on FIGURE_LAYER (they stop the
 ## player but not the pointer), so goods on and in fixtures can all be clicked.
-const STEPS := ["interior_refit", "second_pass", "coplanar_gaps", "coplanar_gaps_2", "glass_windows", "shop_row_style"]
+const STEPS := ["interior_refit", "second_pass", "coplanar_gaps", "coplanar_gaps_2", "glass_windows", "shop_row_style", "palette_snap"]
 
 const Art := preload("res://scripts/buildings/supermarket_products.gd")
 const Props := preload("res://scripts/buildings/sports_props.gd")
@@ -889,3 +889,10 @@ func shop_row_style(town: Node3D, game) -> void:
 	var ShopRow := preload("res://scripts/buildings/shop_row.gd")
 	print("shop_row sports: ", ShopRow.restyle(town, game, "sports"))
 	print("shop_row sports awning pieces: ", ShopRow.add_awnings(town, game, "sports"))
+
+
+## Colours snapped to the game palette with the hue guard (P3-22, decision D14: approved by the
+## user 26 Nov 2026 after the library/police trial; scripts/buildings/palette_snap.gd,
+## docs/evidence/pastel-20261125/).
+func palette_snap(town: Node3D, _game) -> void:
+	preload("res://scripts/buildings/palette_snap.gd").snap(town, "sports")

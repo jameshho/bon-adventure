@@ -16,9 +16,9 @@ seamless = true
 [resource]
 render_priority = 0
 shader = ExtResource("1")
-shader_parameter/base_color = Color(0.470588, 0.588235, 0.372549, 1)
-shader_parameter/lush_color = Color(0.36, 0.52, 0.28, 1)
-shader_parameter/dry_color = Color(0.6, 0.64, 0.38, 1)
+shader_parameter/base_color = Color(0.54902, 0.74902, 0.415686, 1)
+shader_parameter/lush_color = Color(0.454902, 0.678431, 0.341176, 1)
+shader_parameter/dry_color = Color(0.709804, 0.8, 0.470588, 1)
 shader_parameter/grain_strength = 0.2
 shader_parameter/grain_fade_start = 6.0
 shader_parameter/grain_fade_end = 38.0

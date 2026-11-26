@@ -3,7 +3,7 @@ extends RefCounted
 ## library unit (scenes/town/library.scn).
 ## Bake:  godot --headless --path . --script res://tools/bake_unit.gd -- library
 ## Never rename or remove a baked step (add a new one that undoes it).
-const STEPS := ["coplanar_gaps", "coplanar_gaps_2", "category_shelves", "glass_windows", "big_books", "return_cart", "cart_frame", "cart_spot", "six_categories", "new_titles", "rear_display", "cosy_room", "readable_signs"]
+const STEPS := ["coplanar_gaps", "coplanar_gaps_2", "category_shelves", "glass_windows", "big_books", "return_cart", "cart_frame", "cart_spot", "six_categories", "new_titles", "rear_display", "cosy_room", "readable_signs", "palette_snap"]
 
 ## Faces that shared a plane and flickered are set apart (10 Nov 2026,
 ## scripts/buildings/coplanar_gaps.gd).
@@ -1151,3 +1151,9 @@ func _widen(board: MeshInstance3D, label: Label3D, ratio: float) -> void:
 	var right := (board.global_transform.basis.inverse() * label.global_transform.basis.x).abs()
 	right /= right.length()
 	board.scale *= Vector3.ONE + right * (ratio - 1.0)
+
+
+## Colours snapped to the game palette (P3-22 trial, decision D14, 25 Nov 2026:
+## scripts/buildings/palette_snap.gd; before/after in docs/evidence/pastel-20261125/).
+func palette_snap(town: Node3D, _game) -> void:
+	preload("res://scripts/buildings/palette_snap.gd").snap(town, "library")

@@ -3,7 +3,7 @@ extends RefCounted
 ## airport unit (scenes/town/airport.scn).
 ## Bake:  godot --headless --path . --script res://tools/bake_unit.gd -- airport
 ## Never rename or remove a baked step (add a new one that undoes it).
-const STEPS := ["solid_roofs", "move_pilot_awoo", "restrooms", "remove_pilot_awoo", "toilet_flush_control", "radar_patrol_screens", "coplanar_gaps", "coplanar_gaps_2", "widen_tower_elevator", "remove_tower_void_guard", "glass_windows", "tower_deck", "glass_windows_2", "interaction_metas", "tower_deck_floors", "tower_hatch_carpet", "tower_stair_rails"]
+const STEPS := ["solid_roofs", "move_pilot_awoo", "restrooms", "remove_pilot_awoo", "toilet_flush_control", "radar_patrol_screens", "coplanar_gaps", "coplanar_gaps_2", "widen_tower_elevator", "remove_tower_void_guard", "glass_windows", "tower_deck", "glass_windows_2", "interaction_metas", "tower_deck_floors", "tower_hatch_carpet", "tower_stair_rails", "palette_snap"]
 const BathFixtures := preload("res://scripts/world/bath_fixtures.gd")
 
 ## Collision for the decorative roofs and canopies (7 Nov 2026; scripts/buildings/roof_solids.gd).
@@ -945,3 +945,10 @@ func tower_stair_rails(town: Node3D, game) -> void:
 	post.call(Vector3(STAIR_B_X, top, 1.6), top + STAIR_RAIL_H + .03, .07, white)
 	post.call(Vector3(-.75, top, 1.6), top + STAIR_RAIL_H + .03, .07, white)
 	print("tower_stair_rails: removed %d old rail parts, %d new parts" % [removed, holder.get_child_count()])
+
+
+## Colours snapped to the game palette with the hue guard (P3-22, decision D14: approved by the
+## user 26 Nov 2026 after the library/police trial; scripts/buildings/palette_snap.gd,
+## docs/evidence/pastel-20261125/).
+func palette_snap(town: Node3D, _game) -> void:
+	preload("res://scripts/buildings/palette_snap.gd").snap(town, "airport")

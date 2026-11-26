@@ -4,7 +4,7 @@ extends RefCounted
 ## Bake:  godot --headless --path . --script res://tools/bake_unit.gd -- supermarket
 ## Never rename or remove a baked step (add a new one that undoes it).
 ## Record: docs/guides/TOWN_DESIGN_BRIEF.md "Supermarket product art — 8 November 2026".
-const STEPS := ["product_models", "fixture_finish", "checkout_props", "seafood_ice", "surface_gaps", "coplanar_gaps", "coplanar_gaps_2", "coplanar_envelope", "glass_windows", "tutorial_fruit", "world_signs", "clear_sections", "compact_layout", "clay_products", "real_windows", "price_sign", "storage_room"]
+const STEPS := ["product_models", "fixture_finish", "checkout_props", "seafood_ice", "surface_gaps", "coplanar_gaps", "coplanar_gaps_2", "coplanar_envelope", "glass_windows", "tutorial_fruit", "world_signs", "clear_sections", "compact_layout", "clay_products", "real_windows", "price_sign", "storage_room", "palette_snap"]
 const Products = preload("res://scripts/buildings/supermarket_products.gd")
 const WorldSign = preload("res://scripts/world/world_sign.gd")
 const INTERIOR := "RelocatedSites/Supermarket/MarketInterior"
@@ -1047,3 +1047,10 @@ func storage_room(town: Node3D, game) -> void:
 		_part(room, game, "Lamp panel", Vector3(lx, 5.5, 56.5), Vector3(1.4, .04, .45), "fffaf0")
 		(room.get_child(room.get_child_count() - 1) as MeshInstance3D).material_override = glow
 	print("SUPERMARKET storage_room: door at x %.2f, %d parts in the room" % [STAFF_DOOR_X, room.get_child_count()])
+
+
+## Colours snapped to the game palette with the hue guard (P3-22, decision D14: approved by the
+## user 26 Nov 2026 after the library/police trial; scripts/buildings/palette_snap.gd,
+## docs/evidence/pastel-20261125/).
+func palette_snap(town: Node3D, _game) -> void:
+	preload("res://scripts/buildings/palette_snap.gd").snap(town, "supermarket")

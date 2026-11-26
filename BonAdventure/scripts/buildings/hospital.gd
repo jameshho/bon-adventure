@@ -3,7 +3,7 @@ extends RefCounted
 ## hospital unit (scenes/town/hospital.scn).
 ## Bake:  godot --headless --path . --script res://tools/bake_unit.gd -- hospital
 ## Never rename or remove a baked step (add a new one that undoes it).
-const STEPS := ["solid_roofs", "coplanar_gaps", "coplanar_gaps_2", "rename_doctor_plush"]
+const STEPS := ["solid_roofs", "coplanar_gaps", "coplanar_gaps_2", "rename_doctor_plush", "palette_snap"]
 
 ## Collision for the decorative roofs and canopies (7 Nov 2026; scripts/buildings/roof_solids.gd).
 func solid_roofs(town: Node3D, _game) -> void:
@@ -27,3 +27,10 @@ func coplanar_gaps_2(town: Node3D, _game) -> void:
 ## the code (user: no trace of it), so a new run does nothing; nothing looks it up by name.
 func rename_doctor_plush(_town: Node3D, _game) -> void:
 	pass
+
+
+## Colours snapped to the game palette with the hue guard (P3-22, decision D14: approved by the
+## user 26 Nov 2026 after the library/police trial; scripts/buildings/palette_snap.gd,
+## docs/evidence/pastel-20261125/).
+func palette_snap(town: Node3D, _game) -> void:
+	preload("res://scripts/buildings/palette_snap.gd").snap(town, "hospital")
