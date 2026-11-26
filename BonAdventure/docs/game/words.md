@@ -2,7 +2,7 @@
 
 [← Minigames](minigames.md) · [Game guide](README.md)
 
-Generated 2026-11-24 by `tools/vocabulary_report.gd -- --write` from the game data. **Do not edit by hand**: words live in `data/words.json` and each game's data file; rerun the report after changing them. "Tested" words are the ones a question checks and the journal tracks; "shown" words appear in the game without being checked one at a time. Phrases (dialogue) are not listed. Words are sorted by their [tier](minigames.md#word-tiers) (1 starter, 2 everyday, 3 wider, 4 specialist; a language with its own tier shows it in brackets). Where each word is placed in town: [vocabulary report](../guides/vocabulary-report/summary.md).
+Generated 2026-11-25 by `tools/vocabulary_report.gd -- --write` from the game data. **Do not edit by hand**: words live in `data/words.json` and each game's data file; rerun the report after changing them. "Tested" words are the ones a question checks and the journal tracks; "shown" words appear in the game without being checked one at a time. Phrases (dialogue) are not listed. Words are sorted by their [tier](minigames.md#word-tiers) (1 starter, 2 everyday, 3 wider, 4 specialist; a language with its own tier shows it in brackets). Where each word is placed in town: [vocabulary report](../guides/vocabulary-report/summary.md).
 
 ## Grocery Run
 
@@ -121,7 +121,7 @@ Activity id `family_dr_li`. Tested: 19 · shown only: 12. Tested by tier 1–4: 
 
 ## Stack & Pack
 
-Activity id `warehouse_ramon`. Tested: 4 · shown only: 0. Tested by tier 1–4: 4 · 0 · 0 · 0.
+Activity id `warehouse_ramon`. Tested: 8 · shown only: 0. Tested by tier 1–4: 7 · 1 · 0 · 0.
 
 **Tested**
 
@@ -129,8 +129,12 @@ Activity id `warehouse_ramon`. Tested: 4 · shown only: 0. Tested by tier 1–4:
 | ---: | --- | --- | --- |
 | 1 | blue | azul | 藍色 |
 | 1 | green | verde | 綠色 |
+| 1 | on | sobre | 在…上 |
 | 1 | red | rojo | 紅色 |
+| 1 | right | a la derecha | 右邊 |
+| 1 | up | arriba | 上面 |
 | 1 | yellow | amarillo | 黃色 |
+| 2 | next to | al lado de | 在…旁邊 |
 
 ## Flight Finder
 

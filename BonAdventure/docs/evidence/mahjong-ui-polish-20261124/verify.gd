@@ -2,8 +2,8 @@ extends SceneTree
 ## 24 Nov 2026: the Mahjong UI polish (docs/guides/MAHJONG.md, "The screen"): the compact status
 ## card and the soft call buttons above the tray's pull tab (the nameplates and the cream table
 ## counter it first checked were reverted on 25 Nov 2026, user). Plays until the player may
-## claim a discard with Pung / Chow / Kong (or 40 turns), checks the layout and, with graphics,
-## saves actions.png, then an opponent's turn (turn.png) and the tray slid away (tray-hidden.png),
+## claim a discard with Pung / Chow / Kong (dealing again when a hand ends first, up to five
+## hands), checks the layout and, with graphics, saves actions.png, then an opponent's turn (turn.png) and the tray slid away (tray-hidden.png),
 ## named with the window size when it is not 1280x800.
 ## HOME=<scratch> VT_FOCUS=home VT_SPAWN=none godot --path . --resolution 1280x800 --script res://docs/evidence/mahjong-ui-polish-20261124/verify.gd
 const AI := preload("res://scripts/learning/mahjong_ai.gd")
@@ -64,16 +64,24 @@ func run():
 	var g = session.game
 	check(g != null and panel.visible, "a game started")
 	session.set_process(false)
+	# A deal may end (a win or a drawn wall) before the player is offered a claim (25 Nov 2026: a
+	# hand over at turn 36): deal another, up to five hands.
+	var hands := 1
 	for i in 4000:
 		if g.phase == "over":
-			break
+			if hands >= 5:
+				break
+			session._new_hand()
+			g = session.game
+			hands += 1
+			continue
 		if g.turns_played >= 4 and g.phase == "claim" and g.waiting.has(0):
 			var options: Dictionary = g.waiting[0]
 			if options.has("pung") or options.has("kong") or not options.get("chows", []).is_empty():
 				break
 		_player_move()
 		session._process(0.5)
-	check(g.phase == "claim" and g.waiting.has(0), "the player may claim a discard (turn %d)" % g.turns_played)
+	check(g.phase == "claim" and g.waiting.has(0), "the player may claim a discard (hand %d, turn %d)" % [hands, g.turns_played])
 	session._refresh()
 	await create_timer(0.4).timeout
 	session.view.finish_slides()

@@ -26,6 +26,7 @@ const BonStyle := preload("res://scripts/ui/bon_style.gd")
 const Sound := preload("res://scripts/core/sound.gd")
 const WordPictures := preload("res://scripts/ui/word_pictures.gd")
 const GameSettings := preload("res://scripts/core/game_settings.gd")
+const WordMemory := preload("res://scripts/learning/word_memory.gd")
 
 const PLACE_INDEX := "res://data/journal_places.json"
 ## A word found in this many places or more has its own Around town chapter (user, 25 Nov 2026)
@@ -64,6 +65,8 @@ const TRANSLATED := Color("4f86b0")
 const PAGE := BonStyle.CREAM
 const STICKER := BonStyle.RIM
 const SLOT := BonStyle.CREAM_DEEP
+## The known daisy on a found sticker's picture (square, at scale 1; decision D9, LEARN-04).
+const KNOWN_BADGE := 24.0
 ## A word not found yet: its picture as a flat soft shape (colour removed).
 const SILHOUETTE_SHADER := "shader_type canvas_item;\nuniform vec4 tint : source_color = vec4(0.48, 0.60, 0.64, 0.5);\nvoid fragment() {\n\tCOLOR = vec4(tint.rgb, texture(TEXTURE, UV).a * tint.a);\n}\n"
 
@@ -362,6 +365,7 @@ func _make_sticker(index: int) -> Button:
 	art.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	art.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	sticker.add_child(art)
+	art.add_child(known_badge())
 	var mark := Label.new()
 	mark.name = "Mark"
 	mark.text = "?"
@@ -613,12 +617,13 @@ func set_data(new_studied: Dictionary, new_dictionary: Dictionary, new_categorie
 	found_words = studied.duplicate()
 	for key in PracticeLog.shared().counts.get(lexicon.foreign, {}):
 		found_words[str(key)] = true
+	var memory = WordMemory.shared()
 	for key in places:
 		if not dictionary.has(key):
 			continue
 		var foreign := UiText.word(str(key), lexicon.foreign)
 		var native := UiText.word(str(key), lexicon.native)
-		words[key] = {"foreign": foreign, "native": native, "search": fold(foreign + "\n" + native), "tier": lexicon.tier(str(key), lexicon.foreign)}
+		words[key] = {"foreign": foreign, "native": native, "search": fold(foreign + "\n" + native), "tier": lexicon.tier(str(key), lexicon.foreign), "known": memory != null and memory.is_known(str(key))}
 		if found_words.has(key):
 			total_found += 1
 		var where: Array = places[key]
@@ -705,6 +710,38 @@ func games_for(key: String) -> Dictionary:
 ## A readable game name (data/phrases.json games.<id>); the id when there is none.
 static func game_name(id: String) -> String:
 	return UiText.t("games." + id) if UiText.has("games." + id) else id
+
+## How many of the journal's words are known (word_memory.gd is_known()).
+func known_total() -> int:
+	return words.keys().filter(func(k): return bool(words[k].get("known", false))).size()
+
+## The small daisy that marks a known word, for a picture (its parent): bottom-right corner,
+## hidden until show_known() turns it on (decision D9, 25 Nov 2026, LEARN-04).
+static func known_badge() -> TextureRect:
+	var daisy := TextureRect.new()
+	daisy.name = "Known"
+	daisy.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	daisy.texture = BonStyle.icon_texture("daisy", 64)
+	daisy.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	daisy.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	daisy.visible = false
+	daisy.anchor_left = 1.0
+	daisy.anchor_top = 1.0
+	daisy.anchor_right = 1.0
+	daisy.anchor_bottom = 1.0
+	return daisy
+
+## Shows or hides `cell`'s known daisy, sized for the window scale `f`.
+static func show_known(cell: Control, known: bool, f: float) -> void:
+	var daisy: Control = cell.get_node_or_null("Known")
+	if daisy == null:
+		return
+	daisy.visible = known
+	var px := KNOWN_BADGE * f
+	daisy.offset_left = -px
+	daisy.offset_top = -px
+	daisy.offset_right = 0.0
+	daisy.offset_bottom = 0.0
 
 func voices_on() -> bool:
 	var sound = Sound.shared()
@@ -1000,6 +1037,7 @@ func _draw_sticker(sticker: Button, key: String) -> void:
 	var has_picture := _show_picture(art, key)
 	art.visible = has_picture
 	art.material = null if found else silhouette
+	show_known(art, found and bool(word.get("known", false)), factor)
 	var native: bool = (flipped_key == key or GameSettings.shared().peeking) and found
 	pin.visible = bookmarks.has(key)
 	# Restyled only when found or the window scale changes (no new boxes on every page turn).
@@ -1052,6 +1090,8 @@ func _render_detail() -> void:
 	detail_foreign.text = word.foreign
 	PinyinText.show(detail_reading, {"foreign": word.foreign})
 	detail_native.text = word.native
+	if bool(word.get("known", false)):
+		detail_native.text += "  ·  " + UiText.t("journal.known_tag")
 	var has_picture := _show_picture(detail_picture, key, WordPictures.BIG)
 	detail_picture.visible = has_picture
 	detail_tag.visible = not has_picture

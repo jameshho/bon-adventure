@@ -1,6 +1,9 @@
 {
   "about": "Pinyin (Mandarin, tone marks) shown under Traditional Chinese text when Chinese is the language being learned (Stage 4c, 4 Nov 2026; see docs/guides/ARCHITECTURE_REVIEW_PART1.md#adding-or-changing-a-language). Read by the Lexicon and turned into a reading by rules_zh.gd reading(): text is split into the longest entries of 'words' (and the zh names in names.json); runs of numerals become number words; any other character uses 'chars'. 'chars' gives each character's default reading (citation tone); 'words' gives whole words, including neutral tones (爸爸 bàba), the right reading of characters with several (年長 niánzhǎng, 做得好 zuò de hǎo) and capitals for proper nouns. Tone changes of 一 and 不 are not written (citation tones). The language check fails when a character of the Chinese text has no reading. Claude's draft for review.",
   "chars": {
+    "掉": "diào",
+    "顆": "kē",
+    "舍": "shè",
     "逛": "guàng",
     "原": "yuán",
     "笛": "dí",
@@ -1334,6 +1337,11 @@
     "矮": "ǎi",
     "濕": "shī",
     "樣": "yàng",
+    "播": "bō",
+    "首": "shǒu",
+    "歌": "gē",
+    "碌": "lù",
+    "刻": "kè",
     "偵": "zhēn",
     "歡": "huān",
     "迎": "yíng",

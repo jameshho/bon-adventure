@@ -66,6 +66,20 @@ All colours live in `scripts/ui/bon_style.gd` (`BonStyle`); use the names, never
 - Titles sit on a cloud banner; button text is white with a soft darker shadow; nothing has a
   thick outline except text over a photo.
 
+### Window scale
+
+Every 2D size is a design size times the window factor `f`. Get it from
+`BonStyle.factor(view_size, low := 0.5, high := 3.0)` (since 25 Nov 2026, improvement plan
+UI-01); never write `min(h/800, w/1100)` again. Keep the caller's floor: 0.5 for the HUD and
+in-game panels, 0.6 for the start screens (`app_screens.gd`), the loading screen and the
+tutorial's strip, cues and Skip button. `interact_badge.gd` passes `0.0, INF` (unclamped; its tap
+radius has its own 22 px minimum). At 844 × 390 (a landscape phone) `f` is 0.5, so 0.5-floored
+parts are half their laptop size; measured sizes and renders are in
+[ui-scale-20261125](../evidence/ui-scale-20261125/). A touch-size floor (UI-02) waits for the
+user's phone check (decision D5). The HUD's status texts (FPS, flight, sprint, noclip, quest
+toast) scale with `maxf(f, 0.75)` so they stay readable on a phone (UI-06), and so does the F1
+controls guide (UI-04), which pages its cards instead of shrinking them further.
+
 ## Parts
 
 Build with `BonStyle`; never style a Button or panel by hand again.
@@ -108,7 +122,9 @@ scale. Shapes (pills, cards, cloud banner, bushes) are drawn by `scripts/ui/bon_
 - Text on cream or mint is `INK` / `BROWN`, never white; white text only on green, blue, coral.
 - A page card should sit in proportion to the screen, not fill its whole height: the language
   page is built at 0.8 scale with a plain title (no cloud or sprout; user, 18 Nov 2026).
-- Keep the scene bright: no dark full-screen shades behind cards.
+- Keep the scene bright: no dark full-screen shades behind cards. The veil behind Settings, the map,
+  the journal and the word card is `BonStyle.SHADE`, a light cream veil (`CREAM` at 32 %; it was a
+  teal shade until 25 Nov 2026, P3-15: [before/after](../evidence/ui-scale-20261125/README.md#p3-15-light-veil-d14-beforeafter)).
 - In-game screens (everything after the start screens) use soft blue (`SKY`, kinds `"soft"`) where the start screens use cream; green stays for on/selected/go. Cream stays on the start screens (exact mockups) and the dialogue box.
 - Motion is gentle: Play breathes (scale 1.04, 0.9 s), the bar's stripes drift, a press squashes
   to 0.96. Nothing flashes.

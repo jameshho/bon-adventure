@@ -1,19 +1,25 @@
 # Final verification — 20 October 2026
 
-## Current state — 18 November 2026
+## Current state — 25 November 2026
 
 Read this first; everything below is a dated log, and each entry describes only its own run.
 
-- **Last full suite:** 16 Nov 2026, `run_checks.py full`, `dev_focus.txt` = `all`: PASS 47,
+- **Last full suite:** 25 Nov 2026 evening, after merging five wave 2b branches (`d12ba83a`
+  plus other sessions' uncommitted sheep and journal-note work): **PASS 70, KNOWN 3, NEW 5** of 78
+  ([record](#wave-2b-merged-and-full-suite--25-november-2026)). All five NEW were stale checks or
+  missing data, fixed the same evening; the five plus the new `unstuck` check re-run once: **PASS 6**.
+- **Before that:** 25 Nov 2026 afternoon, `dfd2be4c`: PASS 73, KNOWN 3, NEW 1, CRASH 1
+  ([record](#full-suite-after-the-fast-track--25-november-2026)). NEW `bank_rework` traced and fixed
+  ([record](#bank_rework-manager-failure-traced--25-november-2026)); CRASH `app_flow` segfaulted once
+  in the loading screen, 16 later runs alone passed (P3: engine crash).
+- **Earlier:** 16 Nov 2026, `run_checks.py full`, `dev_focus.txt` = `all`: PASS 47,
   NEW 6, TIMEOUT 3 ([record](#docs-reorganised-into-game--guides--evidence--archive--16-november-2026)).
   All 9 were traced to game changes and their checks fixed; the 9 re-run once: **PASS 7, KNOWN 2,
   NEW 0** ([triage](#triage-of-the-16-november-full-run-failures--16-november-2026)).
-- **Since then:** only targeted checks per change (each entry lists them and what was not run).
-  No full suite has been run on the 17–18 Nov changes.
 - **Known failures:** [`data/expected_check_failures.json`](../../data/expected_check_failures.json)
   is the list (each with a date, reason and priority): `map_facades` (a street ray hits the
   hospital's glass front before its facade, P3) and `rooftops` (the barn's gambrel roof is
-  steeper than walkable, by design). Open low-priority noise: `day_night` logs engine errors from
+  steeper than walkable, by design), `voice_backbone` (no bamboo clips yet, P3). Open low-priority noise: `day_night` logs engine errors from
   `verify.gd:90` (P4).
 - **How to run:** [README Verification](../../README.md#verification).
 - **Order:** entries from 14–16 Nov are at the top (newest first); entries from 12–18 Nov were
@@ -8253,6 +8259,36 @@ Not run: the full suite, the web export, a hands-on play-test. The sports store 
 scenes were not re-baked (the registry moves the two NPCs at load).
 
 
+## Roomier hen house and clay hens — 25 November 2026
+
+User request: the clay hen replaces every old hen (old files removed); the hen house 20% bigger
+with an improved interior; the flickering nest boxes fixed
+([record](TOWN_DESIGN_BRIEF.md#roomier-hen-house-and-clay-hens--25-november-2026),
+[animals](ANIMAL_SYSTEM.md#farm-hens-are-the-clay-hen-25-nov-2026)). Baked once each, base first:
+`tools/bake_unit.gd -- base` (step `hen_clay_roams`: old hen 0.975 tall, clay hen 0.975 at the
+same home and soles) and `-- barn` (step `roomier_hen_house`: 6 hens, 11 egg spots; baked a
+second time from the pre-step `barn.scn` after the flicker scan found slivers in the first
+version, with the old `hen.tscn` restored for that load only and deleted again). Neither saved
+scene names `hen.tscn` or `hen_clay.tscn` (the clay hen is stored as plain nodes sharing
+`clay_meshes/hen/`). The barn's box in `data/nearby_units.json` taken from a fresh
+`tools/nearby_units_data.gd` run (barn entry only: 59.4…89.8 × 72.9…85.7; the run also picked up
+other sessions' uncommitted changes in other units). The runner's `hen_house` check now runs
+`docs/evidence/hen-house-roomier-20261125/verify.gd`. `dev_focus.txt` = `all`, isolated HOME.
+
+| Result | Check |
+| --- | --- |
+| PASS (exit abort) | `hen-house-roomier-20261125/verify.gd`, headless, VT_FOCUS=barn: **78 checks, 0 failures**: every coop size 1.2× the walk-in coop's; BonBon fits outside the door, in the doorway, inside and by the nest boxes, not through the back wall; 11 spots, 12 cups, 6 hens (2 inside); ParkZoo/Hen and all six hen-house hens are clay hens with the word *hen*, a picking area and the same 0.975 height; the clay display and `hen.tscn` are gone and nothing instances it; **flicker scan: 165 axis-aligned parts of the saved hen house, 0 overlapping same-plane face pairs of different colours** (the same scan finds 37 in the old walk-in hen house, nest-box shelf, dividers and lip among them, and 45 in this step's first version); odds as before; every spot clear and reachable; egg carry, crate, Drop and off-farm drop as before |
+| PASS | runner `runtime_resources` |
+| PASS (exit abort) | runner `barn`: 56 checks, 0 failures |
+
+Views (windowed run, VT_FOCUS=barn): `aerial`, `coop-door`, `inside` inspected (coop clear of
+the west and south fences, hay bale and crate outside, interior parts in place, clay hens in
+the yard and inside). That run stalled at its fourth picture (as the walk-in run once did) and
+was stopped; the other views (`inside-to-door`, `nest-boxes`, `roost`, `feeder-dust-bath`,
+`farm-hen`, carrying, dropped) were not taken. A still picture cannot show flicker; the scan is
+the evidence. Not run: the full suite, the web export, a hands-on play-test. The clay hens are
+not rigged (they glide, no blinking); seven hens of about 116,000 triangles each on the farm.
+
 ## Walk-in hen house — 24 November 2026
 
 User request (same day): the hen house at least 3× bigger and walk-in, a clear place to deposit
@@ -8313,6 +8349,118 @@ instead of "Call the police", teller chairs as seats, a wider staff door, no dia
 
 Not run: the full suite, `runtime_resources`, the web export, touch, a hands-on play-test.
 
+## Improvement plan fast track: nine sessions — 25 November 2026
+
+The [improvement plan](improvement-plan/MASTER_PLAN.md#fast-track-small-chunks-user-25-nov-2026)'s
+Wave 1 and most of Wave 2, built by parallel sessions sharing this checkout, each committed after
+the user's own yes. Every check below was run once by its session, by hand or through
+`run_checks.py --only`, with an isolated HOME and `VT_FOCUS=all` unless noted, on a working tree
+that held other sessions' uncommitted edits. A Godot exit abort after the summary
+(`recursive_mutex lock failed`, exit 134/137/-6) is the known crash; labels were read from the
+summary. The full suite that followed is the [next entry](#full-suite-after-the-fast-track--25-november-2026).
+
+| Chunk | Commit | What changed | Checks |
+| --- | --- | --- | --- |
+| C0 runner | `cd9a6d62` | `run_checks.py` judges by the summary when Godot aborts on exit | the 25 Nov morning suite re-judged |
+| M0 probe | `cd9a6d62` | [desktop baseline](improvement-plan/PERFORMANCE_BASELINE.md) | 4 runs (3 broken by setup, recorded) |
+| C3 web pack | `5525310a` | 20 unused static clay folders left out: 91.4 → 65.5 MB | web build served locally: town and zoo load, no missing resources |
+| P3-01 part | `e8a8edfe` | settled zoo gate stops processing; crab caches the player, one shared material | `zoo_vehicles` PASS |
+| QA-01 | `83433a41` | 6 checks registered; CJK font subset rebuilt (22 characters); stale `voice_backbone` and `passport_missions` checks fixed | `results_screen`, `passport_missions` PASS; `voice_backbone` KNOWN (bamboo clips, P3) |
+| C1 save safety | `1505f82a` | checked temp writes, corrupt-save backups, profile-index recovery, unknown studied words kept, SessionWords reset | `save_robustness` (new) 34/0, `profiles` 38/0, `app_flow` 24/0 |
+| C4 word flow | `0bf1851f`, `dfd2be4c` | new words gated per game pool; seeded words start learned; Feeding Time! asks due animals first; word-less rounds no longer starve Hospital Helper's word questions | `word_memory` 44/0, `zoo_feeding` 52/0, `practice_log` 80/0 |
+| C2 game exits, GAME-03/04 | `aec3ae2a` | `request_leave()` contract; Library Helper, Grocery Run and Feeding Time! ask before stopping (walk-out and Esc); radar and electrical box say "finish first" | `game_exits` (new) 33/0, `library_sorting` 134/0, `shop_basket` 13/0, `zoo_feeding` 52/0 |
+| C8 touch Jump | `a0ae5a25` | Jump stands you up from seats, swings, see-saws | `seats_swan_boats` 0 failures; no real phone press |
+| Peek fix | `89f59536` | `translate_button.gd` tested its always-hidden bubble, so flight-game peeks never counted as translated (since 23 Nov) | `practice_log` updated |
+| Check fixes | `9c50003c`, `a0cbb1a5`, `9b7eccd6`, `e9f83cc6`, `0f487588`, `fd618a76`, `0fb2e45f` | stale checks: `electrical_box`, `bath_fixtures` (probe camera made current), `compact_layout` (Turboprop SIZE), `mahjong_ui_polish` (redeal), `tutorial` (20/21 Nov reviews), hand-hold (book tap-to-close), `touch_controls` (Passport, results lock) | each PASS (tutorial 166/0, compact_layout 618, hand-hold 23/0) |
+| Zoo booth sign | `f1d77134` | sign fit width in world metres, two lines, taller board; base baked (4 differences, booth only) | `world_signs` PASS |
+| C14 word pools | `ab47d0ae` | Stack & Pack tracks colours and position words (4 → 8); plan retries vary the box; Feel the Clues unchanged (user) | `warehouse_game` 108/0, `word-pools` (new) 21/0, `police_detective` 130/0, `vocabulary_report` 0 failures; `warehouse` 105/1 ("truck backed up to bay A", vehicle, unrelated) |
+| C10 NPCs | `c4c7c7ea`, `65385841` | NPCs face the player while talking (never `Head`); hop eases down; gestures and carried-item swing on physics ticks | `characters-20261125/verify.gd` (`VT_FOCUS=barn, school`) 23/0, `npc_registry` 29/0, `plush_life` 22/0, `minigame_launcher` 201/0 |
+| C16 gait | `1f737622` | BonBon's step cadence follows distance (walk unchanged; sprint quicker, slow stick slower) | before/after strips; user kept it |
+| C13 UI scale | `65385841` (UI-01, see the [commit note](improvement-plan/SESSION_HANDOFF.md#commit-history-note-25-nov-2026-user-leave-it)), `aa99be5f`, `b6b98c3a` | one `BonStyle.factor()`; HUD status texts scale (3/4 size on a phone) | laptop control sizes identical before/after; 844 × 390 sizes [measured](../evidence/ui-scale-20261125/README.md) (no floor yet, D5) |
+| P3-15 veil | `9298019b` | cream veil instead of the dark shades | before/after renders, user approved |
+| C7 light | `634bc575` | sun fades indoors; flight horizon blends into fog above 130 m | `day_night` 62/0; café, home, flight renders |
+| C6 animals | `e24d9cea` | animals turn before they walk, ease in and out | `part2` 1349/0, `zoo_vehicles` 218/0, turn render (pig only) |
+| C5 journal | `5ce06b9e` | drag the word list to scroll | `journal-drag-20261125/verify.gd` 22/0 at 1280 × 800 and 844 × 390 (emulated touch) |
+
+**Removed:** C9 contact shadows were built and measured (+1.4–4 % draws), then removed uncommitted
+after the user saw a dark wedge from the zoo plants (D6 reversed). The `day_night` check now
+expects 48 lamps (the chapel tower lantern, `fc65299a`).
+
+**Not verified:** a real phone or the web build for any of these (touch was emulated); the
+hospital interior light; flight above 100 m; frame time for the animal and NPC changes.
+The old `family-game-20261104/verify_town.gd` (not in the runner) is stale: it calls the removed
+`interaction_controller.action_hint_text` and hangs (P3: retire or update).
+**Open:** `request_leave()` in the other in-world games; the phone size floor (UI-02, needs the
+user's phone check); the bamboo voice clips.
+
+## Full suite after the fast track — 25 November 2026
+
+`python3 tools/run_checks.py full --jobs 2` at `dfd2be4c`, `dev_focus.txt` = `all`, isolated HOME,
+615 s. The working tree also held another session's uncommitted work (sound effects and music,
+door sounds with a bank `door_sounds` bake step, the sheep model). Totals: **PASS 73, KNOWN 3,
+NEW 1, CRASH 1** (78 checks; the runner's exit-crash rule judged the rest by their summaries).
+
+| Result | Check | Reading |
+| --- | --- | --- |
+| KNOWN | `map_facades`, `rooftops`, `voice_backbone` | as listed in `expected_check_failures.json` |
+| NEW 4 / 54 | `bank_rework` | the same four manager-scene labels as the first 24 Nov run (staff door opens, the manager comes over, her close-up, the first warning); later labels pass. Cause found and fixed afterwards: a check bug ([trace](#bank_rework-manager-failure-traced--25-november-2026)) |
+| CRASH (signal 11, 2 s) | `app_flow` | headless segfault inside the engine (main thread, a 2D item setter in the loading screen's `_process`, `loading_screen.gd:165`) while `main.tscn` was read on the loader thread, before any label. Afterwards **16 runs alone, all PASS** (1 + 15 in a row). The official build has no symbols, so the engine frame is unknown. Seen only in headless runs (dummy renderer) with two Godot checks at once; the web build loads without a thread. **P3:** if it recurs, test the loading screen writing its picture properties only when they change |
+
+All checks that failed this morning now pass, among them `language`, `results_screen`,
+`world_signs`, `bath_fixtures`, `electrical_box`, `practice_log`, `touch_controls`,
+`compact_layout`, `mahjong_ui_polish`, `day_night` and `tutorial`, and the four bank and NPC
+checks that ran against an unparseable `main.gd` this morning (`bank_teller`, `bank_teller_polish`,
+`npc_registry` PASS). Not run: the web build, a phone, renders.
+
+## `bank_rework` manager failure traced — 25 November 2026
+
+The four manager-scene labels that failed on 24 Nov and in the 25 Nov full suite came from the
+check, not the game. `_to_impostor` served customers for at most 8 turns of its loop, and each
+customer takes two (asking, then the thanks). When the random order put the impostor fifth
+(customer 4), the loop ran out while the impostor was still walking up. The check then paid it
+with step `""` (a player cannot: there is no Pay button before the customer asks). The impostor
+then reached the window and asked again (step `screen`), so the game's own "paid_out" timer
+correctly did not bring the manager. The game went on, and the second payout fired the player as
+designed.
+
+Found with a step log in the check. Failing run: `PAY #4 at ""`, `paid_out` at 22.04 s, `screen`
+for the same customer at 23.31 s. It reproduced in 3 of 9 runs; 2 earlier runs passed, one of
+them alongside two heavy checks. Game code was traced temporarily and restored exactly.
+**Fix** (`docs/evidence/bank-rework-20261123/verify.gd`): 24 turns, then wait until the
+impostor asks before paying. A one-line DIAG print stays for a missed manager visit. Result:
+`bank_rework` **54 checks, 0 failures** (one run, `dev_focus` all, isolated HOME). The
+`bank_teller_polish` loop already waits for each customer to ask, so it is not affected.
+
+## Wave 2b merged and full suite — 25 November 2026
+
+Five worktree branches merged into `main` with `git merge --no-ff` (user: "merge all six"):
+known words LEARN-04 (`38879640` → `9a429f85`), capped real-time review LEARN-03 (`b1d3987f` →
+`c89ad4e4`; `word_memory.gd` `_on_recorded` and its check combined by hand), leave question in every
+in-world game GAME-02b (`e7a45549` → `251bd912`), last-resort unstuck GAME-05 (`916f4558` →
+`cb3982bd`), F1 controls guide UI-04 (`2af58e72` → `d12ba83a`). The sixth, tutorial progress UI-07
+(`claude/tutorial-progress-c8eee1`), had no commit yet and is not merged. Each session's own checks
+are in its tracker row ([tracker](improvement-plan/TASK_TRACKER.md)).
+
+**Full suite**, `d12ba83a`, `dev_focus.txt` = `all`, `python3 tools/run_checks.py full` (1141 s), with
+other sessions' uncommitted sheep model and journal-note docs in the working tree:
+**PASS 70, KNOWN 3, NEW 5** of 78 (KNOWN: `map_facades`, `rooftops`, `voice_backbone`).
+
+| NEW | Cause | Fix |
+| --- | --- | --- |
+| `language` | no zh reading for 播 首 歌 碌 刻 (record player, music titles) | readings added to `data/pinyin_zh.json`; the CJK font subset was also missing 播歌碌首, rebuilt (`tools/build_cjk_font.py`, 0 missing) |
+| `touch_controls` | the check's locking-panel list lacked `record_player_panel` (57f1d7fb) | list updated |
+| `vehicle_doors` (27) | "no temporary geometry" counted every child node; the engine sound (d5011886) leaves a fading `AudioStreamPlayer3D` under the vehicle | the check counts `Node3D` geometry, not sound players |
+| `mahjong_table` | "sun steps rarely" expected > 20 game minutes; the fixed 30 s real step is 15 game minutes since the 48-minute day (fd2def38) | the check compares with twice the normal step |
+| `hen_house` (2) | egg toast and crate arrow not yet shown after 30 frames: the hen house polls every 0.25 s and the check ran without fixed fps | `fps=True` in `run_checks.py`; also fixed a real error on the first carry (`get_meta("tween", null)` with no tween) in `hen_house.gd` |
+
+Also: the new `unstuck` check (GAME-05) is registered in `run_checks.py` (full suite). Re-run once,
+`run_checks.py --only language,touch_controls,vehicle_doors,mahjong_table,hen_house,unstuck`:
+**PASS 6** (61 s). Not covered: renders of the merged UI, web and phone, the tutorial-progress branch.
+
+**UI-07 merged afterwards:** tutorial progress and Skip confirm (`3a3713d7` → `e443af33`; game guide row
+combined by hand). `run_checks.py --only tutorial,app_flow,touch_controls,language` on `e443af33`,
+`dev_focus.txt` = `all`: **PASS 4** (79 s). All six wave 2b branches are now in `main`.
+
 ## Vocabulary journal: sticker book, Places tab — 25 November 2026
 
 [What was built and its rules](JOURNAL.md#built-so-far-25-nov-2026). `dev_focus.txt` = `all`;
@@ -8354,3 +8502,15 @@ the search placeholder capitalises language names in Spanish ("Chino o Español"
 `language.*` names). Old evidence scripts that drove the table no longer run and are not in
 `run_checks.py`: `word-pictures-20261123/verify.gd`, `journal-speaker-20261124/capture.gd`,
 `vocabulary-book-20261108/verify.gd` (and older ones using `set_journal_view`).
+
+### Merged into main (same day)
+
+`claude/modest-murdock-aa66fa` merged with `main` (`3d176900`) for the web build (user: "merge and
+publish"). Conflicts resolved by hand: `vocabulary_book.gd` keeps the sticker book and takes main's
+known words (LEARN-04: the daisy now sits on a found sticker, the word page says "You know this
+word"; the table's known count and drag-to-scroll went with the table); `phrases.json`, the game
+guide and this file keep both sides. `run_checks.py --only journal_sticker_book,language,touch_controls,tutorial`
+(`dev_focus.txt` = `all`): **PASS 3, NEW 1** — the sticker check's "word and translation" label
+expected the bare translation, and apple is now known from the start (C4 seeded words); the check
+now allows the tag and checks it follows the word memory: **PASS** on its re-run. Not run: the full
+suite, renders of the merged journal.

@@ -92,6 +92,11 @@ var ladder_wait_release := false
 var consecutive_jumps := 0
 var gait_phase := 0.0
 var gait_weight := 0.0
+## Metres of ground per radian of gait phase (animate_bonbon()): at walk_speed 7.2 m/s the old
+## cadence was 11.8 rad/s, so 7.2 / 11.8. One full step cycle (TAU) covers about 3.8 m.
+const GAIT_STRIDE := 0.61
+## The fastest the gait phase may turn (rad/s), for hyper speed.
+const GAIT_MAX_RATE := 22.0
 var jump_pose := 0.0
 var riding_vehicle: DriveableVehicle
 var saved_collision_layer := 1
@@ -646,7 +651,10 @@ func animate_boarding(delta: float) -> void:
 func animate_bonbon(delta: float, speed: float) -> void:
     var grounded := is_on_floor() and not noclip_enabled
     gait_weight = lerpf(gait_weight, clampf(speed / sprint_speed, 0.0, 1.0) if grounded else 0.0, 1.0 - exp(-12.0 * delta))
-    gait_phase += delta * lerpf(7.0, 15.0, clampf(speed / sprint_speed, 0, 1))
+    # The phase follows the ground covered (ANIM-03, 25 Nov 2026), so the feet never skate: a slow
+    # stick push steps slowly, a sprint quickly. GAIT_STRIDE keeps walk_speed's cadence as it was
+    # (7 + 8 * walk/sprint rad/s); GAIT_MAX_RATE stops hyper speed from blurring the feet.
+    gait_phase += minf(speed / GAIT_STRIDE, GAIT_MAX_RATE) * delta
     jump_pose = move_toward(jump_pose, 0.0 if grounded else 0.55, delta * 5.0)
     visual.position.y = absf(sin(gait_phase)) * 0.055 * gait_weight
     for key in parts:

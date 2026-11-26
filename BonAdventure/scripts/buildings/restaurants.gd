@@ -3,7 +3,7 @@ extends RefCounted
 ## restaurants unit (scenes/town/restaurants.scn).
 ## Bake:  godot --headless --path . --script res://tools/bake_unit.gd -- restaurants
 ## Never rename or remove a baked step (add a new one that undoes it).
-const STEPS := ["solid_roofs", "dining_room_refresh", "pizza_burger_refit", "coplanar_gaps", "coplanar_gaps_2", "dining_game_tables", "glass_windows", "glass_windows_2", "fine_dining_dark_glass", "fine_dining_dark_glass_2", "fine_dining_real_windows", "fine_dining_real_windows_2", "fine_dining_real_windows_3", "fine_dining_single_glass", "fine_dining_single_glass_2", "facade_sign_padding", "pizza_burger_door", "taqueria_tray"]
+const STEPS := ["solid_roofs", "dining_room_refresh", "pizza_burger_refit", "coplanar_gaps", "coplanar_gaps_2", "dining_game_tables", "glass_windows", "glass_windows_2", "fine_dining_dark_glass", "fine_dining_dark_glass_2", "fine_dining_real_windows", "fine_dining_real_windows_2", "fine_dining_real_windows_3", "fine_dining_single_glass", "fine_dining_single_glass_2", "facade_sign_padding", "pizza_burger_door", "taqueria_tray", "door_sounds"]
 
 ## Alta Cocina dining room (Restaurants/Pizza, local frame): inside faces of the walls at
 ## x = ±14.70 and z = ±7.70, floor y .09, ceiling y 6.44. Front wall (entrance, z < 0) has the
@@ -981,3 +981,14 @@ func taqueria_tray(town: Node3D, game) -> void:
 			continue
 		taqueria.remove_child(node)
 		node.free()
+
+## Door sounds (user, 25 Nov 2026: "each door should have different sound"): the Pizza and
+## Burger glass double door rings a shop bell (door.gd sound "glass"; cues door.glass.* in
+## data/sounds.json).
+func door_sounds(town: Node3D, game) -> void:
+	var DoorAnimator := preload("res://scripts/core/door_animator.gd")
+	var door := town.get_node(PB).get_node_or_null("Pizza and Burger entrance")
+	if not DoorAnimator.set_sound_kind(game, door, "glass"):
+		push_error("restaurants door_sounds: no Pizza and Burger entrance")
+		return
+	print("RESTAURANTS door_sounds: 1 door")

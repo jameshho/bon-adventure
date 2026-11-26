@@ -21,8 +21,10 @@ Word lists are **not** written here: [words.md](words.md) is generated from the 
 *Since 21 Nov 2026 (user design).* When a learning game is finished (not left early), a results
 card follows the character's thanks: a title for that game (*Case Closed!*, *Books Sorted!*…), one
 line of what you did, the words you **practiced** and **discovered for the first time** (up to
-four, new and tricky ones first, "See all" for the rest), and a town mission it completed with its
-XP. No scores or percentages; a replay with no new words says *Great Practice!* instead of "0 new
+four, new and tricky ones first, "See all" for the rest), the words you **now know** (since 25 Nov:
+a daisy *Known* tag and a *Words you now know* bubble when the word memory counts a word as known
+for the first time; [view](../evidence/known-words-20261125/results-known-laptop.png)), and a town
+mission it completed with its XP. No scores or percentages; a replay with no new words says *Great Practice!* instead of "0 new
 words". Buttons: **Continue exploring** and **Play again**. Details:
 [MINIGAMES.md → Results screen](../guides/MINIGAMES.md#results-screen).
 
@@ -71,12 +73,18 @@ reviews the ones they are about to forget. The code is in
   long it is remembered) and a difficulty, and its recall chance drops as other questions pass.
   A right first answer makes the word last longer; a wrong one or a shown translation makes it
   come back soon.
+- **Time away counts too, up to a week** *(25 Nov 2026, user decision D8)*. Each real day since
+  a word was last answered counts as one more memory day, but a break longer than a week counts
+  as a week. So a word learned last week can come back after a few days away, while words known
+  well are not asked again. After a long break at most 8 such words come back per session
+  (a session starts after 3 hours without a question), most forgotten first; the rest wait for
+  later sessions and new words keep coming.
 - **New words come in gradually.** At most 3 at a time. After a new word, the next one waits 3
   questions, plus 1 for every 3 words still being learned; with 12 words still being learned no
   new word comes until some are known. A player who keeps getting words right meets new ones
   often; one who struggles reviews first.
 - **Order of words in a round:** words about to be forgotten first, then the new words allowed
-  now (lowest [word tier](#word-tiers) first), then known words least well remembered first,
+  now (lowest [word tier](#word-tiers) first), then other words you have met, least well remembered first,
   then the other new words (so a game always has enough).
 - **Per game:** Grocery Run, Library Helper and On the Menu order their items by it; Stack & Pack
   picks the box; Desk Dash puts the wanted nouns' questions first; Feel the Clues picks the clue;
@@ -86,8 +94,11 @@ reviews the ones they are about to forget. The code is in
   record (each word once).
 - Simulated learner (check, 24 Nov): about 21 new words per 100 questions, all 120 met by 600,
   86% right.
-- **Not yet:** day-based review (time between sessions); showing a word's memory in the journal;
-  tuning the numbers by play.
+- **Known words** (25 Nov, user decision D9): a word is *known* when the memory says it is
+  remembered well (stability of at least 4 FSRS days, usually two right answers some questions
+  apart). The journal marks it with a daisy and counts it; the results card names the words that
+  became known in that game.
+- **Not yet:** tuning the numbers by play.
 
 ## Word tiers
 
@@ -214,7 +225,7 @@ clock times and countries. Tracked.
 Five placing tasks in the warehouse hall: "Put the blue box on the table", "next to the green
 box", "to the right of", "on the top shelf". Pick up the right coloured box and put it in the
 right place; hints and "tell me" help when stuck. Teaches positions, colours and placing verbs.
-Tracked. Simplified on 14 Nov (it used to have trolleys, weighing and measuring). 21 Nov: four
+Tracked: colours and positions (25 Nov). Simplified on 14 Nov (it used to have trolleys, weighing and measuring). 21 Nov: four
 coloured boxes (no cardboard box), a shelf with two clear levels, and a tap anywhere on a level
 puts the box there ([details](../guides/WAREHOUSE.md#shelf-and-placing-21-nov-2026)).
 [Warehouse guide](../guides/WAREHOUSE.md#minigame-14-nov-2026)
@@ -223,7 +234,7 @@ puts the box there ([details](../guides/WAREHOUSE.md#shelf-and-placing-21-nov-20
 | --- | --- |
 | Purpose | Follow placing instructions: positions, colours, placing verbs. |
 | Words | [Generated list](words.md#stack--pack) |
-| Tracked in the journal | Yes: the colour of the box named in each task |
+| Tracked in the journal | Yes: the colour of the box and the position word of each task (on, next to, right, up), judged apart. A wrong box, or the hint that marks the box, misses the colour; the right box put down in a wrong place (the table, a shelf, the wrong side of the green box), or the hint that marks the place, misses the position word (25 Nov) |
 | Session | 5 tasks, a task counts when done |
 | Progression | Designed 18 Nov, not built: L1 *on* and the top shelf · L2 + next to · L3 + to the right of (today) · L4 hints only after a wrong try |
 
@@ -238,9 +249,13 @@ puts the box there ([details](../guides/WAREHOUSE.md#shelf-and-placing-21-nov-20
 Twinkle sends you to a seated customer, who orders two or three courses by taste, temperature,
 intensity (*un poco*, *muy*) and ingredients. Choose the dishes on a tablet and send
 them; the customer reacts and Twinkle reports back. A menu book on a table shows every dish.
-Four fully right orders win. Tracked. Since 23 Nov the tablet sits below the HUD's EN badge
+Four orders right at the first send win. Tracked. Since 23 Nov the tablet sits below the HUD's EN badge
 (hold it, or L, for the translation) and keeps "Choose this dish" under every dish shown
-([record](../guides/TOWN_DESIGN_BRIEF.md#restaurant-fixes--23-november-2026)).
+([record](../guides/TOWN_DESIGN_BRIEF.md#restaurant-fixes--23-november-2026)). Since 24 Nov a
+wrong order is sent back at once ("Can you try again?"): the tablet reopens with the right dishes
+kept and each wrong dish marked ✗ and blocked; a fixed order does not count
+([record](../guides/TOWN_DESIGN_BRIEF.md#on-the-menu-sent-back-orders--24-november-2026)).
+Since 25 Nov Esc mid-game asks whether to stop, as the entrance does, instead of opening Settings.
 [Design](../guides/TOWN_DESIGN_BRIEF.md#alta-cocina-restaurant-game--6-november-2026) ·
 [11 Nov flow](../guides/TOWN_DESIGN_BRIEF.md#restaurant-game-reception-tables-and-order-tablet--11-november-2026)
 
@@ -249,7 +264,7 @@ Four fully right orders win. Tracked. Since 23 Nov the tablet sits below the HUD
 | Purpose | Dish names, courses and describing food (taste, temperature, intensity, ingredients). |
 | Words | [Generated list](words.md#on-the-menu) |
 | Tracked in the journal | Yes: the dish served |
-| Session | One meal of 4 courses, a course counts when right |
+| Session | 4 orders of 2-3 courses; an order counts when every dish is right at the first send; a wrong order is sent back and retried (wrong dishes blocked) but does not count; only the first send is tracked |
 | Progression | Designed 18 Nov, not built: L1 two courses, one need each · L2 + *un poco* / *muy* (today) · L3 three courses with a *no* / *sin* · L4 three needs per course |
 
 ## Spot the Suspect
@@ -417,8 +432,8 @@ the NEW BOOKS display**
 *Screenshot 17 Nov.*
 
 Three to six books wait on the return cart. Take each one to a gap in the shelf for its category
-(animals, sports, music, food, vehicles, plants): the right shelf sparkles, a wrong one wobbles the
-book back into your hand. Picking a book up zooms in on its cover (tap anywhere to close). When
+(animals, sports, music, food, vehicles, plants): the right shelf sparkles with a marimba chime, a
+wrong one wobbles the book back into your hand with two soft falling notes (sounds 25 Nov). Picking a book up zooms in on its cover (tap anywhere to close). When
 every book is home the camera turns to Rosa, who thanks you, then the results card shows the words
 practiced and discovered; once you have
 walked away the books are borrowed and a new cart of 3–6 arrives. Tracked: each book's first try.
@@ -446,7 +461,8 @@ up from the queue, each with a story (a new bike, cakes for the grandchildren, a
 ask once for an amount in words while their account shows on the teller monitor; count out the
 cash with $5, $10, $50 and $100 bills, or tell them politely that there is not enough money.
 You sit on window 2's chair for the whole game, and a customer's thanks moves on to the next one
-by itself (24 Nov; [screenshots](../evidence/bank-teller-polish-20261124/)). One
+by itself (24 Nov; [screenshots](../evidence/bank-teller-polish-20261124/)); since 25 Nov getting
+up (Space or Jump) sits you back down and asks whether to stop, and so does Esc. One
 customer a session only wants change and must get no $100 bills back. Since 21 Nov the monitor
 shows the account's name, balance and the owner's photo (its words follow EN); since 23 Nov it
 stands beside the window, so one view shows the photo and the customer's face together
@@ -502,7 +518,9 @@ bag goes away when it is empty or when you leave the zoo.
 are learning, and hands you a bag with the food for the whole session (user, 24 Nov: the keeper
 always hands the food over, so the game is only about the animal names). Find the named animal and
 feed it; the next request follows at once. Feeding a different animal is a miss: it comes over and
-sniffs, Nico says which animal that was and asks again.
+sniffs, Nico says which animal that was and asks again. Walking out of the zoo on foot during
+the game puts you back just inside, facing Nico, and asks whether to stop; Esc asks the same
+(25 Nov).
 
 | Learning card | |
 | --- | --- |

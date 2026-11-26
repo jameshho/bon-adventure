@@ -13,7 +13,7 @@ extends RefCounted
 ## the checks in docs/police-*/ use them.
 const STEPS := ["solid_roofs", "evidence_poster_words", "evidence_shelf_objects", "lobby_layout", "reception_officer_chairs",
 	"interiors_polish",
-	"coplanar_gaps", "coplanar_gaps_2", "glass_windows", "real_windows", "two_lockers"]
+	"coplanar_gaps", "coplanar_gaps_2", "glass_windows", "real_windows", "two_lockers", "door_sounds"]
 
 const LEFT := 33.12
 const RIGHT := 52.88
@@ -648,3 +648,19 @@ func _locker_part(game, parent: Node3D, title: String, pos: Vector3, size: Vecto
 	part.reparent(parent, false)
 	part.position = pos
 	return part
+
+## Door sounds (user, 25 Nov 2026: "each door should have different sound"): the holding cell
+## rings like a cell door, the two lockers like lockers (door_animator.gd set_sound_kind; cues
+## door.cell.* and door.locker.* in data/sounds.json). The other doors keep the usual room and
+## sliding sounds.
+func door_sounds(town: Node3D, game) -> void:
+	var DoorAnimator := preload("res://scripts/core/door_animator.gd")
+	var site: Node3D = town.get_node("RelocatedSites/Police")
+	var tagged := 0
+	for path in ["Holding cell"]:
+		tagged += int(DoorAnimator.set_sound_kind(game, site.get_node_or_null(path), "cell"))
+	for path in ["Interior/Police locker A/Locker door", "Interior/Police locker B/Locker door"]:
+		tagged += int(DoorAnimator.set_sound_kind(game, site.get_node_or_null(path), "locker"))
+	if tagged != 3:
+		push_error("police door_sounds: expected 3 doors, tagged %d" % tagged)
+	print("POLICE door_sounds: %d doors" % tagged)

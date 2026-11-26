@@ -351,7 +351,7 @@ func _refresh_side() -> void:
 ## shape on the left, the side column on the right.
 func _layout() -> void:
 	var view: Vector2 = get_viewport().get_visible_rect().size
-	_factor = clampf(minf(view.y / 800.0, view.x / 1100.0), 0.5, 3.0)
+	_factor = BonStyle.factor(view)
 	var f := _factor
 	size = view
 	var pad := roundf(16 * f)

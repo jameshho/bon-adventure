@@ -139,7 +139,10 @@ as a routine edit: regeneration can overwrite authored scene overrides. See the
 | Touch: look around / zoom / click (the "E" badge, an interactable, a word card) | drag one finger on the world / pinch / tap |
 
 The F1 guide (`build_help_content` in `scripts/ui/vocabulary_hud.gd`) lists every key above
-in grouped cards. Its TOGGLES card shows live ON/OFF pills for sprint, hyper speed, infinite jump,
+in grouped cards; since 25 Nov 2026 (improvement plan UI-04) it also has a Touch view of the
+on-screen controls (opened by default on a touch device, and from Settings' **Controls** button),
+scales with the window and is paged instead of scrolled
+([renders](docs/evidence/f1-guide-20261125/README.md)). Its TOGGLES card shows live ON/OFF pills for sprint, hyper speed, infinite jump,
 noclip, zone walls and FPS; defaults are all off (infinite jump was on until 14 Nov 2026; the hyper speed row is left out while [hidden](#hidden-features); the M row is back since 18 Nov 2026 with the baked town map). Native mode is off
 by default (the player's choice is saved in `user://settings.json`, see
 [Shared dialogue, popups and settings](docs/guides/ARCHITECTURE_REVIEW_PART1.md#shared-dialogue-popups-and-settings--4-november-2026)).

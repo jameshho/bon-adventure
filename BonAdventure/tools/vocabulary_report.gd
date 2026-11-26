@@ -198,9 +198,10 @@ func _game_words() -> void:
 	for match in found:
 		use(tests, "warehouse_ramon", match.get_string(1))
 	# The colours and sizes task sentences name (8 Nov 2026: brown and medium are words; the
-	# colour question tests its colour). warehouse_tasks.gd COLOR_WORDS / SIZE_WORDS.
+	# colour question tests its colour), and since 25 Nov 2026 the position word of each kind of
+	# task. warehouse_tasks.gd COLOR_WORDS / SIZE_WORDS / POSITION_WORDS.
 	var tasks_script = load("res://scripts/learning/warehouse_tasks.gd")
-	for raw in tasks_script.COLOR_WORDS.values() + tasks_script.SIZE_WORDS.values():
+	for raw in tasks_script.COLOR_WORDS.values() + tasks_script.SIZE_WORDS.values() + tasks_script.POSITION_WORDS.values():
 		use(tests, "warehouse_ramon", str(raw))
 	for raw in _json("res://data/flight_game.json").get("countries", []):
 		use(tests, "flight_bruno", str(raw))

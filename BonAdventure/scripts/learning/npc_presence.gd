@@ -12,6 +12,8 @@ extends Node
 ## "Calling" animation: the NPC hops (the "!" bobs above the head, interact_badge.gd).
 const HOP_HEIGHT := 0.14
 const HOP_SPEED := 3.6
+## Easing back down when the calling stops (1/s): about 0.3 s to rest.
+const SETTLE_RATE := 14.0
 ## Talking camera: a close-up of the NPC's face, eased in and out (angle chosen 8 Nov 2026 from
 ## renders of every minigame NPC, docs/evidence/talk-camera-20261108/): FACE_ELEVATION degrees above
 ## the face, looking down, with the face FACE_SCREEN_Y of the way down the screen so the
@@ -46,6 +48,9 @@ var rest_position := Vector3.ZERO
 var marker_rest_y := 0.0
 var calling := false
 var _animation_time := 0.0
+## True while animate() moves the NPC (hopping or settling); its interpolation mode meanwhile.
+var _moving := false
+var _interpolation := Node.PHYSICS_INTERPOLATION_MODE_INHERIT
 var _talk_camera: Camera3D
 var _previous_camera: Camera3D
 var _zoom_tween: Tween
@@ -58,20 +63,46 @@ func setup(for_npc: Node3D, explorer: Node3D) -> void:
 	rest_position = npc.position
 	marker_rest_y = InteractIcons.head_height(npc)
 
-## Shows the "!" (through the NPC's Interactable) and hops while `calling`; otherwise puts the
-## NPC back at rest.
+## Shows the "!" (through the NPC's Interactable) and hops while `calling`; otherwise eases the
+## NPC back down to rest (ANIM-04, 25 Nov 2026: it used to snap) within about 0.3 s (SETTLE_RATE).
+## The session calls this from _process, once per rendered frame, so while the NPC hops or
+## settles its physics interpolation is off (ANIM-01: an interpolated node moved per frame
+## stutters); at rest it is back on.
 func animate(delta: float, now_calling: bool) -> void:
 	var item := Interactable.on(npc)
 	if item != null:
 		item.calling = now_calling
 	if calling != now_calling:
 		calling = now_calling
-		if not now_calling:
-			npc.position = rest_position
+		if now_calling:
+			# Start the hop from the height it has now (0 at rest, or mid-settle), not a jump.
+			var height := clampf((npc.position.y - rest_position.y) / HOP_HEIGHT, 0.0, 1.0)
+			_animation_time = asin(height) / HOP_SPEED
+			_set_moving(true)
 	if now_calling:
 		_animation_time += delta
 		var hop := absf(sin(_animation_time * HOP_SPEED)) * HOP_HEIGHT
 		npc.position = rest_position + Vector3(0, hop, 0)
+	elif _moving:
+		var lift := npc.position - rest_position
+		if lift.length() < 0.002:
+			npc.position = rest_position
+			_set_moving(false)
+		else:
+			npc.position = rest_position + lift * exp(-SETTLE_RATE * delta)
+
+## Turns the NPC's physics interpolation off while this node moves it each frame, and back to
+## what it was at rest (reset, so it does not glide from a stale pose).
+func _set_moving(on: bool) -> void:
+	if on == _moving:
+		return
+	_moving = on
+	if on:
+		_interpolation = npc.physics_interpolation_mode
+		npc.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
+	else:
+		npc.physics_interpolation_mode = _interpolation
+		npc.reset_physics_interpolation()
 
 ## Eases a camera in front of the NPC's face while it talks, and back to the player's
 ## camera afterwards. The player's own camera is never moved.

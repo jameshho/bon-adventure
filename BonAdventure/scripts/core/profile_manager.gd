@@ -11,7 +11,10 @@ extends RefCounted
 ## Main calls use_default() at startup: with nothing selected it takes the last used profile,
 ## and with no profiles at all the saves stay in user:// (checks, tools, a first launch).
 ## The first profile created adopts those older user:// saves as copies; the originals stay
-## as a backup.
+## as a backup (never copied into a folder that already exists).
+## A lost or unreadable index (save_store.gd backs a corrupt one up) is rebuilt from the
+## user://profiles/p* folders, with placeholder names, and "next" always goes above every
+## existing folder, so no folder is reused (25 Nov 2026).
 const SaveStore := preload("res://scripts/core/save_store.gd")
 const INDEX_PATH := "user://profiles/index.json"
 const MAX_PROFILES := 3
@@ -38,6 +41,18 @@ func load_index() -> void:
 	if not index.get("profiles") is Array:
 		index["profiles"] = []
 	index["last"] = str(index.get("last", ""))
+	var folders := profile_folders()
+	var rebuilt := false
+	if not parsed is Dictionary and not folders.is_empty():
+		push_warning("profile_manager: %s is missing or unreadable; rebuilt from %d profile folders" % [INDEX_PATH, folders.size()])
+		for number in folders:
+			index.profiles.append({"id": "p%d" % number, "name": "P%d" % number, "profile_name": "P%d" % number, "avatar": DEFAULT_AVATAR})
+		rebuilt = true
+	if not folders.is_empty() and int(index.next) <= int(folders.max()):
+		index["next"] = int(folders.max()) + 1
+		rebuilt = true
+	if rebuilt:
+		save_index()
 	# A saved avatar that is no longer a house character (e.g. the pig's id before the BonBon
 	# rename, 16 Nov 2026) loads as DEFAULT_AVATAR, and the list is saved that way.
 	var known := avatar_ids()
@@ -78,6 +93,17 @@ static func avatar_ids() -> Array:
 static func clean_name(text: String) -> String:
 	return text.strip_edges().left(MAX_NAME_LENGTH)
 
+## The numbers of the user://profiles/p<n> folders, ascending.
+static func profile_folders() -> Array:
+	var numbers: Array = []
+	if not DirAccess.dir_exists_absolute(SaveStore.PROFILES_DIR):
+		return numbers
+	for folder in DirAccess.get_directories_at(SaveStore.PROFILES_DIR):
+		if folder.begins_with("p") and folder.substr(1).is_valid_int():
+			numbers.append(folder.substr(1).to_int())
+	numbers.sort()
+	return numbers
+
 ## True when user:// still has saves from before profiles (they move into the first profile).
 func has_legacy_saves() -> bool:
 	if not index.profiles.is_empty():
@@ -94,9 +120,10 @@ func create(player_name: String, profile_name: String, avatar: String = DEFAULT_
 	profile_name = clean_name(profile_name)
 	if player_name == "" or profile_name == "" or not can_create() or not avatar_ids().has(avatar):
 		return ""
-	var adopt := has_legacy_saves()
 	var id := "p%d" % index.next
 	var dir := SaveStore.PROFILES_DIR.path_join(id)
+	# Never copy the older saves over a folder that already holds a profile's saves.
+	var adopt := has_legacy_saves() and not DirAccess.dir_exists_absolute(dir)
 	if not SaveStore.read_only:
 		DirAccess.make_dir_recursive_absolute(dir)
 	if adopt and not SaveStore.read_only:
@@ -168,7 +195,9 @@ func use_default() -> void:
 
 ## Drops the shared() objects that read profile saves or hold session state, so the next
 ## shared() call builds them again (the Lexicon keeps its data; GameSettings.apply() resets
-## its languages).
+## its languages). A NEW shared() singleton that reads a profile save, or listens to one that
+## does (as SessionWords listens to PracticeLog), must be added here. Nodes that connect to a
+## singleton (star_card.gd to GameProgress) are rebuilt with the town after a switch.
 static func reset_singletons() -> void:
 	preload("res://scripts/core/game_settings.gd")._shared = null
 	preload("res://scripts/learning/practice_log.gd")._shared = null
@@ -178,3 +207,4 @@ static func reset_singletons() -> void:
 	preload("res://scripts/learning/game_progress.gd")._shared = null
 	preload("res://scripts/learning/achievements.gd")._shared = null
 	preload("res://scripts/learning/missions.gd")._shared = null
+	preload("res://scripts/learning/session_words.gd")._shared = null

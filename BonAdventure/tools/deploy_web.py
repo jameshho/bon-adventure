@@ -33,6 +33,7 @@ The build works from any sub-path (https://<user>.github.io/<repo>/): every path
 relative. Pages cannot send COOP/COEP headers, so the preset is single-threaded.
 """
 import argparse
+import fnmatch
 import json
 import os
 import re
@@ -49,6 +50,9 @@ DISPLAY_NAME = "Bon Adventure: Little Town of Words"
 SHORT_NAME = "Bon Adventure"
 # Left out of the web pack by export_presets.cfg's exclude_filter; no scene may name them.
 EXCLUDED_SCENE = re.compile(rb"res://scenes/animals/[A-Za-z0-9_]+_clay\.t?scn")
+# Any res:// path under scenes/animals/ a scene names; checked against the preset's exclude_filter
+# (since 25 Nov 2026 the static clay mesh folders the town no longer uses are left out too).
+ANIMAL_PATH = re.compile(rb"res://(scenes/animals/[A-Za-z0-9_./-]+)")
 BRANCH = "gh-pages"
 # Pages custom domain (user, 16 Nov 2026), written to the build's CNAME file.
 CUSTOM_DOMAIN = "boomingpodcast.com"
@@ -137,16 +141,32 @@ def main() -> int:
     return 0
 
 
+def animal_excludes(project):
+    """The Web preset's exclude_filter patterns under scenes/animals/."""
+    with open(os.path.join(project, "export_presets.cfg")) as presets:
+        m = re.search(r'^exclude_filter="([^"]*)"', presets.read(), re.M)
+    return [p.strip() for p in (m.group(1).split(",") if m else []) if p.strip().startswith("scenes/animals/")]
+
+
 def excluded_references(project):
-    """Scenes (other than the excluded files themselves) that name an excluded clay animal."""
+    """Scenes (other than the excluded files themselves) that name an excluded clay animal, or
+    any file under scenes/animals/ that the preset's exclude_filter leaves out."""
+    patterns = animal_excludes(project)
     found = []
     for folder, _dirs, files in os.walk(os.path.join(project, "scenes")):
         for name in files:
             if not name.endswith((".scn", ".tscn")) or re.search(r"_clay\.t?scn$", name):
                 continue
             path = os.path.join(folder, name)
+            if "clay_meshes" in os.path.relpath(path, project).split(os.sep) and \
+                    any(fnmatch.fnmatch(os.path.relpath(path, project), p) for p in patterns):
+                continue
             with open(path, "rb") as scene:
-                hits = sorted(set(EXCLUDED_SCENE.findall(scene.read())))
+                data = scene.read()
+            hits = set(EXCLUDED_SCENE.findall(data))
+            hits |= {b"res://" + m for m in ANIMAL_PATH.findall(data)
+                     if any(fnmatch.fnmatch(m.decode(errors="replace"), p) for p in patterns)}
+            hits = sorted(hits)
             if hits:
                 found.append(os.path.relpath(path, project) + ": " + ", ".join(h.decode() for h in hits))
     return found

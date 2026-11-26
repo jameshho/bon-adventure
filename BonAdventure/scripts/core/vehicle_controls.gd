@@ -8,6 +8,7 @@ extends RefCounted
 const ModularTown := preload("res://scripts/world/modular_town.gd")
 const UiText := preload("res://scripts/language/ui_text.gd")
 const Interactable := preload("res://scripts/core/interactable.gd")
+const PlayerPlace := preload("res://scripts/core/player_place.gd")
 ## Metres from the cabin or driver door within which E boards (as closest_vehicle used, to 12 Nov).
 const BOARD_DISTANCE := 5.2
 ## Horizontal metres from a zoo / farm gate's centre within which E swings it.
@@ -96,6 +97,9 @@ static func toggle_vehicle(main) -> bool:
 	if is_instance_valid(main.active_vehicle):
 		var vehicle: DriveableVehicle = main.active_vehicle
 		var exit_result: Dictionary = vehicle.safe_exit(player)
+		if exit_result.get("blocked", false):
+			unstuck(main, vehicle)
+			return true
 		if not exit_result.ok:
 			hud.flash_quest_message(exit_result.reason)
 			return true
@@ -151,6 +155,21 @@ static func complete_vehicle_exit(main, vehicle: DriveableVehicle, point: Vector
 	main.active_vehicle = null
 	main.interaction.clear_card()
 	main.hud.flash_quest_message(UiText.t("toast.exited"))
+
+## A stopped vehicle with every exit blocked (GAME-05, 25 Nov 2026): the last-resort unstuck
+## instead of a dead E. Out at a clear spot further off on the same floor and in sight
+## (PlayerPlace.rescue_spot()), else respawned outside (Main.respawn(), which ends a running game).
+static func unstuck(main, vehicle: DriveableVehicle) -> void:
+	var ray := PhysicsRayQueryParameters3D.create(vehicle.global_position + Vector3.UP * 0.5, vehicle.global_position - Vector3.UP * 4.0, PlayerPlace.PLAYER_MASK)
+	ray.exclude = vehicle.collision_exceptions + [main.player.get_rid()]
+	var hit: Dictionary = main.get_world_3d().direct_space_state.intersect_ray(ray)
+	var floor_y: float = hit.position.y if not hit.is_empty() else vehicle.global_position.y
+	var spot := PlayerPlace.rescue_spot(main, vehicle.global_position, floor_y, vehicle.collision_exceptions)
+	complete_vehicle_exit(main, vehicle, spot.position)
+	main.player.rotation.y = spot.yaw
+	if spot.how != "nearby":
+		main.respawn(spot.position, spot.yaw)
+		main.hud.flash_quest_message(UiText.t("toast.unstuck"))
 
 ## The leaves open away from the player (23 Nov 2026, zoo_gate.gd).
 static func toggle_gate(main, gate: ZooGate) -> void:

@@ -16,12 +16,14 @@ const PUPIL := Color("262a2e")
 const SIZE := 0.72
 
 static var _mesh: ArrayMesh
+static var _material: StandardMaterial3D
 
 var home := Vector3.ZERO
 var clock := 0.0
 @export_range(0.0, 3.0) var radius := 0.7
 @export_range(0.0, 3.0) var speed := 0.5
 var _body: MeshInstance3D
+var _player: Node3D
 
 func _ready() -> void:
     set_meta("word_key", "crab")
@@ -29,10 +31,11 @@ func _ready() -> void:
     _body = MeshInstance3D.new()
     _body.name = "Body"
     _body.mesh = body_mesh()
-    var material := StandardMaterial3D.new()
-    material.vertex_color_use_as_albedo = true
-    material.roughness = .7
-    _body.material_override = material
+    if _material == null:
+        _material = StandardMaterial3D.new()
+        _material.vertex_color_use_as_albedo = true
+        _material.roughness = .7
+    _body.material_override = _material
     add_child(_body)
     var area := Area3D.new()
     area.name = "VocabularyArea"
@@ -51,7 +54,9 @@ func _process(delta: float) -> void:
     # scuttle into the learner and shove them.
     var next_clock := clock + delta * speed
     var next := home + basis.x.normalized() * sin(next_clock) * radius
-    var player := get_tree().get_first_node_in_group("player") as Node3D
+    if not is_instance_valid(_player):
+        _player = get_tree().get_first_node_in_group("player") as Node3D
+    var player := _player
     if player != null and is_inside_tree() and get_parent() is Node3D:
         var gap: Vector3 = (get_parent() as Node3D).to_global(next) - player.global_position
         if absf(gap.y) < 2.5 and Vector2(gap.x, gap.z).length() < 1.4 and Vector2(gap.x, gap.z).length() < Vector2(global_position.x - player.global_position.x, global_position.z - player.global_position.z).length():

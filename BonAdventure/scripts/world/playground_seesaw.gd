@@ -54,8 +54,9 @@ func _physics_process(delta: float) -> void:
         # Keep the rider upright; only their position follows the seat.
         rider.global_position=rider_end.seat.global_transform.orthonormalized()*rider_offset
 
+## Space or the touch Jump button (the "jump" action) gets off like E.
 func _unhandled_input(event: InputEvent) -> void:
     if rider==null or not is_instance_valid(rider) or not rider.seated or rider.sit_transition or not rider.controls_enabled: return
-    if event is InputEventKey and event.pressed and not event.echo and event.keycode==KEY_SPACE:
+    if event.is_action_pressed("jump"):
         get_viewport().set_input_as_handled()
         game.seating.stand()

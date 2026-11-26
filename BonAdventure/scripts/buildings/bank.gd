@@ -3,7 +3,7 @@ extends RefCounted
 ## bank unit (scenes/town/bank.scn).
 ## Bake:  godot --headless --path . --script res://tools/bake_unit.gd -- bank
 ## Never rename or remove a baked step (add a new one that undoes it).
-const STEPS := ["coplanar_gaps", "coplanar_gaps_2", "glass_windows", "palette_interior", "shared_doors", "door_labels", "atm_art", "vault_art", "chair_backs", "vault_safe", "rear_annex", "deposit_boxes", "staff_door", "heavy_vault_door", "teller_side_monitor", "coplanar_gaps_3", "wider_staff_door", "teller_seats"]
+const STEPS := ["coplanar_gaps", "coplanar_gaps_2", "glass_windows", "palette_interior", "shared_doors", "door_labels", "atm_art", "vault_art", "chair_backs", "vault_safe", "rear_annex", "deposit_boxes", "staff_door", "heavy_vault_door", "teller_side_monitor", "coplanar_gaps_3", "wider_staff_door", "teller_seats", "door_sounds"]
 
 ## Faces that shared a plane and flickered are set apart (10 Nov 2026,
 ## scripts/buildings/coplanar_gaps.gd).
@@ -747,3 +747,15 @@ func teller_seats(town: Node3D, _game) -> void:
 	if found != 3:
 		push_error("bank teller_seats: expected 3 teller chair seats, found %d" % found)
 	print("BANK teller_seats: %d seats" % found)
+
+## Door sounds (user, 25 Nov 2026: "each door should have different sound"): the safe's dial
+## and handle, the vault's heavy creak and thud (door_animator.gd set_sound_kind; cues door.safe.*
+## and door.vault.* in data/sounds.json; the vault's thud plays when it has shut).
+func door_sounds(town: Node3D, game) -> void:
+	var DoorAnimator := preload("res://scripts/core/door_animator.gd")
+	var bank := _bank(town)
+	var tagged := int(DoorAnimator.set_sound_kind(game, bank.get_node_or_null("Vault safe door"), "safe"))
+	tagged += int(DoorAnimator.set_sound_kind(game, bank.get_node_or_null("Vault entrance"), "vault"))
+	if tagged != 2:
+		push_error("bank door_sounds: expected 2 doors, tagged %d" % tagged)
+	print("BANK door_sounds: %d doors" % tagged)

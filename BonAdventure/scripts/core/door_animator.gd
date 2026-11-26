@@ -38,10 +38,58 @@ static func toggle(main, node: Node3D) -> void:
 	main.doors[node] = state
 	if state["open"]:
 		preload("res://scripts/learning/achievements.gd").shared().note("open_door")
+	# A heavy door sounds its close when it shuts (_heavy_swing), the others at once. A double
+	# door sounds once, from the leaf that was used.
+	if state["open"] or float(state.get("seconds", 0.0)) <= 0.0:
+		play_sound(node, state, bool(state["open"]))
 	# A double door's leaves move together (scripts/world/double_door.gd).
 	for partner in node.get_meta("door_partners", []):
 		if is_instance_valid(partner) and main.doors.has(partner):
 			main.doors[partner]["open"] = state["open"]
+
+## Door sounds (user, 25 Nov 2026: "each door should have different sound"): a door's kind is its
+## state "sound" (door.gd `sound`, or a building step: "locker", "cell", "cabinet", "safe",
+## "vault", "glass"), else hinge doors are "room" and sliding doors ("safe_slide") "sliding".
+## Drawers and curtains have none (silent); "none" silences any door. The cues are
+## data/sounds.json door.<kind>.open / door.<kind>.close, played at the leaf (sound.gd).
+static func sound_kind(state: Dictionary) -> String:
+	if state.has("sound"):
+		var kind := str(state["sound"])
+		return "" if kind == "none" else kind
+	match str(state.get("type", "")):
+		"hinge":
+			return "room"
+		"slide":
+			return "sliding" if bool(state.get("safe_slide", false)) else ""
+	return ""
+
+## The cue a door plays when it opens (true) or closes, or "" for a silent door.
+static func sound_cue(state: Dictionary, opening: bool) -> String:
+	var kind := sound_kind(state)
+	return "" if kind == "" else "door.%s.%s" % [kind, "open" if opening else "close"]
+
+## For building steps: gives the door_state on `node` (a door scene root: its `sound`) a sound
+## kind. Returns false when there is no such door.
+static func set_sound_kind(game, node: Node, kind: String) -> bool:
+	if node == null:
+		return false
+	if node.get_script() != null and "sound" in node and node.has_method("leaves"):
+		node.sound = kind
+		return true
+	if not node.has_meta("door_state"):
+		return false
+	var state: Dictionary = node.get_meta("door_state").duplicate(true)
+	state["sound"] = kind
+	node.set_meta("door_state", state)
+	if game != null and game.get("doors") is Dictionary and game.doors.has(node):
+		game.doors[node]["sound"] = kind
+	return true
+
+static func play_sound(node: Node3D, state: Dictionary, opening: bool) -> void:
+	var cue := sound_cue(state, opening)
+	var sound = preload("res://scripts/core/sound.gd").shared()
+	if cue != "" and sound != null and sound.cues.has(cue):
+		sound.play_at(cue, node)
 
 ## Collects every saved door_state below `node` into main.doors, closed.
 static func restore_editor_door_states(main, node: Node) -> void:
@@ -120,6 +168,9 @@ static func _heavy_swing(obj: Node3D, state: Dictionary, delta: float) -> void:
 	t = move_toward(t, goal, delta / float(state["seconds"]))
 	state["swing"] = t
 	obj.rotation.y = float(state.get("angle", -1.75)) * heavy_curve(t)
+	if t == 0.0:
+		# Shut: the heavy door's close sound (toggle() leaves it until now).
+		play_sound(obj, state, false)
 
 ## The heavy swing's shape: 0 -> 0, 1 -> 1, flat at both ends; a slow, creaking first third.
 static func heavy_curve(t: float) -> float:

@@ -23,6 +23,9 @@ extends RefCounted
 ## spawn. Indoors means a static roof overhead and static walls on 3 of 4 sides (as
 ## indoor_visibility.gd); the building is the unit (data/buildings.json) owning the roof's
 ## collider, else the town zone (data/zones.json) there.
+##
+## The last-resort unstuck (GAME-05, 25 Nov 2026) reuses this: rescue_spot() for a seat or vehicle
+## with no clear exit (seating_controller.gd, vehicle_controls.gd), then Main.respawn().
 const SaveStore := preload("res://scripts/core/save_store.gd")
 const ProfileManager := preload("res://scripts/core/profile_manager.gd")
 const ModularTown := preload("res://scripts/world/modular_town.gd")
@@ -48,6 +51,11 @@ const UNDER_LAYERS := 8
 const LIFT := 0.15
 ## The player's collision mask on foot (player_controller.gd: world 1 + figures).
 const PLAYER_MASK := 1 | 256
+## Last-resort unstuck (GAME-05, rescue_spot()): the search radius around a blocked seat or
+## vehicle, the floor step a spot may differ by, and the waist height of the sight line.
+const RESCUE_RADIUS := 6.0
+const LEVEL_STEP := 0.6
+const LEVEL_SIGHT := 1.2
 ## Town zones whose id is not the unit key (scripts/world/town_zones.gd, data/zones.json).
 const ZONE_UNITS := {
 	"farm": "barn", "church": "chapel", "mystery_house": "mystery", "fine_dining": "restaurants",
@@ -183,18 +191,52 @@ static func spawn_for(main, place: Dictionary) -> Dictionary:
 	return {"position": found, "yaw": float(place.yaw), "how": "nearby"}
 
 
+## Last-resort unstuck (GAME-05, 25 Nov 2026): where to put a player whose seat or vehicle has no
+## clear exit (seating_controller.gd stand(), vehicle_controls.gd toggle_vehicle()). `origin` is
+## the seat or vehicle (world), `floor_y` the floor height there, `sight_ignore` the bodies of the
+## seat or vehicle itself (the sight line starts inside them). First a clear spot on the same
+## floor within RESCUE_RADIUS and in sight of `origin` (indoors too): {"position", "how": "nearby"}.
+## Else the respawn as on reopening a save (spawn_for(): outside the building's entrance, or the
+## nearest safe spot outdoors), else the usual spawn: "how" is then "entrance", "nearby_far" or
+## "spawn", and the caller respawns there through Main.respawn() (which ends a running game).
+static func rescue_spot(main, origin: Vector3, floor_y: float, sight_ignore: Array[RID] = []) -> Dictionary:
+	var near: Variant = safe_spot(main, origin, RESCUE_RADIUS, floor_y, sight_ignore)
+	if near != null:
+		var away: Vector3 = near - origin
+		var yaw: float = atan2(-away.x, -away.z) if Vector2(away.x, away.z).length() > 0.1 else float(main.player.get("camera_yaw"))
+		return {"position": near, "yaw": yaw, "how": "nearby"}
+	var local: Vector3 = main.apartment.to_local(Vector3(origin.x, floor_y, origin.z))
+	var place := {"x": local.x, "y": local.y, "z": local.z, "yaw": float(main.player.get("camera_yaw")),
+		"entrance": entrance_at(main, Vector3(origin.x, floor_y, origin.z))}
+	var spot := spawn_for(main, place)
+	if not spot.is_empty():
+		if spot.how == "nearby":
+			spot.how = "nearby_far"
+		return spot
+	return {"position": main.spawn_position(), "yaw": main.spawn_yaw(), "how": "spawn"}
+
+
 ## The nearest spot to `origin` (world) within `radius` where the player can stand: walkable
 ## ground below (not a roof or deck, not the sea), no roof overhead, the capsule clear of walls,
 ## vehicles and props, and (when the player could stand at `origin`) in sight of it at waist
 ## height, so the search never passes through a wall. null when there is none.
-static func safe_spot(main, origin: Vector3, radius: float) -> Variant:
+## With `floor_y` (GAME-05 level mode, for a seat or vehicle indoors): the ground must be within
+## LEVEL_STEP of that floor, a roof overhead is fine, and the sight line starts at `origin`'s
+## waist height on that floor, through `sight_ignore`.
+static func safe_spot(main, origin: Vector3, radius: float, floor_y: float = NAN, sight_ignore: Array[RID] = []) -> Variant:
+	var level := not is_nan(floor_y)
 	var space: PhysicsDirectSpaceState3D = main.get_world_3d().direct_space_state
 	var exclude := _exclusions(main)
 	var capsule: CollisionShape3D = main.player.get_node("PlayerCollision")
-	var start := _ground(main, space, origin, origin.y, exclude)
 	var sight: Variant = null
-	if not start.is_empty() and start.safe and origin.y - start.point.y < 3.0:
-		sight = start.point + Vector3.UP
+	if level:
+		sight = Vector3(origin.x, floor_y + LEVEL_SIGHT, origin.z)
+	else:
+		var start := _ground(main, space, origin, origin.y, exclude)
+		if not start.is_empty() and start.safe and origin.y - start.point.y < 3.0:
+			sight = start.point + Vector3.UP
+	var through: Array[RID] = exclude.duplicate()
+	through.append_array(sight_ignore)
 	var candidates: Array[Vector3] = [origin]
 	var ring := RING_STEP
 	while ring <= radius + 0.01:
@@ -203,21 +245,23 @@ static func safe_spot(main, origin: Vector3, radius: float) -> Variant:
 			candidates.append(origin + Vector3.FORWARD.rotated(Vector3.UP, TAU * i / count) * ring)
 		ring += RING_STEP
 	for candidate in candidates:
-		var ground := _ground(main, space, candidate, origin.y, exclude)
+		var ground := _level_ground(main, space, candidate, floor_y, exclude) if level \
+				else _ground(main, space, candidate, origin.y, exclude)
 		if ground.is_empty() or not ground.safe:
 			continue
 		var spot: Vector3 = ground.point + Vector3.UP * LIFT
-		if not _ray(space, spot + Vector3.UP, spot + Vector3.UP * ROOF_RAY, exclude).is_empty():
+		if not level and not _ray(space, spot + Vector3.UP, spot + Vector3.UP * ROOF_RAY, exclude).is_empty():
 			continue
 		var query := PhysicsShapeQueryParameters3D.new()
 		query.shape = capsule.shape
 		query.transform = Transform3D(Basis.IDENTITY, spot) * capsule.transform
 		query.collision_mask = PLAYER_MASK
-		query.exclude = exclude
+		# The vehicle being left still stands there: only the player passes through.
+		query.exclude = [main.player.get_rid()]
 		if not space.intersect_shape(query, 1).is_empty():
 			continue
 		if sight != null and candidate != origin \
-				and not _ray(space, sight, spot + Vector3.UP, exclude).is_empty():
+				and not _ray(space, sight, spot + Vector3.UP, through).is_empty():
 			continue
 		return spot
 	return null
@@ -248,6 +292,19 @@ static func _ground(main, space: PhysicsDirectSpaceState3D, at: Vector3, top: fl
 			lowest = under.position
 			below.append(under.rid)
 		safe = point.y - lowest.y <= MAX_DROP
+	return {"point": point, "safe": safe}
+
+
+## Level mode (GAME-05): the floor below `at` within LEVEL_STEP of `floor_y`, walkable and not the
+## sea; looked for from just under a ceiling (LEVEL_SIGHT + LEVEL_STEP above the floor).
+static func _level_ground(main, space: PhysicsDirectSpaceState3D, at: Vector3, floor_y: float, exclude: Array[RID]) -> Dictionary:
+	var hit := _ray(space, Vector3(at.x, floor_y + LEVEL_SIGHT + LEVEL_STEP, at.z), Vector3(at.x, floor_y - LEVEL_STEP, at.z), exclude)
+	if hit.is_empty():
+		return {}
+	var point: Vector3 = hit.position
+	var safe: bool = hit.normal.y > MIN_NORMAL_Y and absf(point.y - floor_y) <= LEVEL_STEP
+	if safe and main.get("zones") != null and main.zones.resolve_global(point) == "coast":
+		safe = false
 	return {"point": point, "safe": safe}
 
 

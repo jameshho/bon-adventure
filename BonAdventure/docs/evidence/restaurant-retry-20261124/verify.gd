@@ -4,8 +4,8 @@ extends SceneTree
 ## Twinkle -> customer -> tablet -> a wrong dish for the first course -> Order sent -> thanks ->
 ## "Oh no, this is not what I ordered. Can you try again?" -> the tablet opens again by itself:
 ## the complaint in the bubble, the right dishes still on the slip, the wrong dish marked ✗ and
-## not choosable -> the target sent -> "Excellent!" -> Twinkle's "Good job!" (the visit
-## counts). Also: only the first send is tracked (negative), the retry opens no new question.
+## not choosable -> the target sent -> "Excellent!" -> Twinkle's "in the end..." (the visit
+## does not count; user, 24 Nov 2026) -> a first-try order next -> "Good job!" (counts). Also: only the first send is tracked (negative), the retry opens no new question.
 ## Views: the verdict line and the reopened tablet (list and slip). Uses Main (saves): run with
 ## an isolated HOME (README).
 ## HOME=<scratch>/home VT_FOCUS=restaurants VT_SPAWN=none godot --path . --resolution 1400x900 --script res://docs/evidence/restaurant-retry-20261124/verify.gd
@@ -55,12 +55,12 @@ func run():
 	panel = game.restaurant_panel
 	stand(STAND_TWINKLE)
 	session.offered = true
-	game.interaction.clerk_activated.emit(session.twinkle)
+	session.host._on_talk(session.twinkle)
 	box.choice_pressed.emit("restaurant_play")
 	check(session.playing and session.step == session.Step.TO_CUSTOMER, "Yes starts a visit")
 	var i: int = session.current
 	stand(STAND_TABLES[i])
-	game.interaction.clerk_activated.emit(session.tables[i].node)
+	session.host._on_talk(session.tables[i].node)
 	await create_timer(session.INTRO_SECONDS + 0.3).timeout
 	box.choice_pressed.emit("restaurant_tablet")
 	check(panel.visible, "Open the tablet shows the order tablet")
@@ -91,7 +91,7 @@ func run():
 	await create_timer(session.VERDICT_SECONDS + 0.1).timeout
 	check(line_text() == session.lexicon.line("restaurant.verdict_wrong").foreign and session.step == session.Step.WAITING, "the customer sends it back at once: %s" % line_text())
 	session._process(0.05)
-	check(not session.twinkle.get_node("NeedsHelpMarker").visible, "Twinkle does not call for a report")
+	check(not session._host_calling(), "Twinkle does not call for a report")
 	await frame("1-sent-back", 10)
 	await create_timer(session.RETRY_SECONDS + 0.2).timeout
 	check(panel.visible and session.step == session.Step.TO_CUSTOMER and not box.is_dialogue_visible(), "the tablet opens again by itself")
@@ -118,10 +118,26 @@ func run():
 	await create_timer(session.SENT_SECONDS + session.VERDICT_SECONDS + 0.4).timeout
 	check(line_text() == session.lexicon.line("restaurant.verdict_right").foreign and session.step == session.Step.TO_HOST, "the fixed order: %s" % line_text())
 	stand(STAND_TWINKLE)
-	game.interaction.clerk_activated.emit(session.twinkle)
-	check(Board.shared().done(ACTIVITY) == done_before + 1, "the visit counts after the retry")
-	check(line_text() == session._line({"phrase": "restaurant.report_right", "values": {"name": session._name(i)}}).foreign, "Twinkle: Good job (%s)" % line_text())
+	session.host._on_talk(session.twinkle)
+	check(Board.shared().done(ACTIVITY) == done_before and Board.shared().misses(ACTIVITY) == 1, "a retried visit does not count (one miss)")
+	check(line_text() == session._line({"phrase": "restaurant.report_retry", "values": {"name": session._name(i)}}).foreign, "Twinkle: in the end (%s)" % line_text())
 	box.choice_pressed.emit("restaurant_next")
 	check(session.tries == 0 and session.wrong.is_empty(), "the next visit starts clean")
+	# A first-try order still counts.
+	var j: int = session.current
+	stand(STAND_TABLES[j])
+	session.host._on_talk(session.tables[j].node)
+	await create_timer(session.INTRO_SECONDS + 0.3).timeout
+	box.choice_pressed.emit("restaurant_tablet")
+	for request in session.requests:
+		panel.show_tab(str(request.course))
+		panel.inspect(str(request.target))
+		panel.choose()
+	panel._send.pressed.emit()
+	await create_timer(session.SENT_SECONDS + session.VERDICT_SECONDS + 0.4).timeout
+	stand(STAND_TWINKLE)
+	session.host._on_talk(session.twinkle)
+	check(Board.shared().done(ACTIVITY) == done_before + 1, "a first-try order counts")
+	check(line_text() == session._line({"phrase": "restaurant.report_right", "values": {"name": session._name(j)}}).foreign, "Twinkle: Good job (%s)" % line_text())
 	print("%d checks, %d failures" % [checks, failures])
 	quit(1 if failures > 0 else 0)

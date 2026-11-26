@@ -3,7 +3,7 @@ extends RefCounted
 ## home unit (scenes/town/home.scn).
 ## Bake:  godot --headless --path . --script res://tools/bake_unit.gd -- home
 ## Never rename or remove a baked step (add a new one that undoes it).
-const STEPS := ["solid_roofs", "bath_fixtures", "mahjong_table", "mahjong_chair_back", "toilet_flush_control", "electrical_box", "coplanar_gaps", "coplanar_gaps_2", "interaction_metas", "house_expansion", "house_furnishing", "door_heights", "family_bath_layout", "family_bath_window", "family_bath_door_inward", "clear_walkway_plants", "garage_bicycle_removed"]
+const STEPS := ["solid_roofs", "bath_fixtures", "mahjong_table", "mahjong_chair_back", "toilet_flush_control", "electrical_box", "coplanar_gaps", "coplanar_gaps_2", "interaction_metas", "house_expansion", "house_furnishing", "door_heights", "family_bath_layout", "family_bath_window", "family_bath_door_inward", "clear_walkway_plants", "garage_bicycle_removed", "record_player"]
 ## The mahjong table in the front yard (user request, 9 Nov 2026; docs/guides/MAHJONG.md): its centre in
 ## town coordinates (west of the entry path, north of the front door, near the spawn point),
 ## sizes in town units. Seat 0 (the player's, Mei's until a game starts) is on the north side;
@@ -355,3 +355,21 @@ func garage_bicycle_removed(town: Node3D, _game) -> void:
 			removed += 1
 	assert(removed == 1, "garage_bicycle_removed: expected 1 bicycle, found %d" % removed)
 	print("garage_bicycle_removed: removed %d" % removed)
+
+## A record player on its own walnut stand beside the TV's media console (user request, 25 Nov
+## 2026; scripts/world/record_player.gd, docs/guides/COMPONENTS.md "Record player"): against the
+## living room's west wall (x -5), north of the console (z 2.8..6.0), clear of the family
+## bathroom door (z 8.46..10.54); its front (+Z) faces the room (+X). E, a click or a tap opens
+## the song card.
+const RECORD_PLAYER_SCENE := preload("res://scenes/props/record_player.tscn")
+const RECORD_PLAYER_AT := Vector3(-4.6, 0.03, 6.7)
+func record_player(town: Node3D, _game) -> void:
+	var site: Node3D = town.get_node("RelocatedSites/Home")
+	var console := site.get_node_or_null("Media console") as Node3D
+	assert(console != null, "record_player: no Media console in the home")
+	var player: Node3D = RECORD_PLAYER_SCENE.instantiate()
+	player.name = "Record player"
+	site.add_child(player, true)
+	player.position = RECORD_PLAYER_AT
+	player.rotation = Vector3(0, PI * 0.5, 0)
+	print("record_player: at %s beside the console at %s" % [player.position, console.position])

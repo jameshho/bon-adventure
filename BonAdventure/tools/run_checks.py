@@ -9,7 +9,8 @@ data/expected_check_failures.json and prints one table:
   PASS        no failures
   KNOWN       only failures listed in the expected-failures file
   NEW         failures not in the file (labels are printed)
-  CRASH       exited on a signal, or no summary line was printed
+  CRASH       exited on a signal, or no summary line was printed (a Godot abort on exit AFTER the
+              summary line, "recursive_mutex lock failed" since 25 Nov 2026, is judged by the summary)
   TIMEOUT     killed after the check's timeout
               (a SCRIPT ERROR raised in the check's own script, or another script under docs/,
               usually ends its coroutine and leaves Godot idle: when the log then stays quiet
@@ -165,6 +166,9 @@ CHECKS = [
     # the real session (Main saves: isolated HOME).
     dict(id="mystery_house", script="res://docs/evidence/mystery-house-20261109/verify.gd", suites=["full"],
          summary=r"MYSTERY HOUSE: \d+ checks, (?P<n>\d+) failures"),
+    # The mystery doors can be used from the floor, not only mid-jump (25 Nov 2026 bug).
+    dict(id="mystery_door_reach", script="res://docs/evidence/mystery-door-reach-20261125/verify.gd", suites=["full"],
+         summary=r"MYSTERY DOOR REACH: \d+ checks, (?P<n>\d+) failures"),
     # The fitting room outfit picker (9 Nov 2026); writes user://settings.json (isolated HOME).
     # Headless here; with graphics the same script also renders its PNGs.
     dict(id="fitting_room", script="res://docs/evidence/fitting-room-20261109/verify.gd", suites=["full"],
@@ -275,14 +279,47 @@ CHECKS = [
     # line when its game is not on offer, the barn farmer. Headless writes no PNGs; isolated HOME.
     dict(id="npc_registry", script="res://docs/evidence/npc-registry-20261123/verify.gd", suites=["full"],
          summary=r"NPC REGISTRY: \d+ checks, (?P<n>\d+) failures"),
-    # Hen house and eggs at the farm: walk-in coop, hens, laying odds, carry to the crate (arrow),
-    # Drop button, dropping off the farm (24 Nov 2026; the first coop's check is
-    # hen-house-20261124/verify.gd, kept as dated evidence).
-    dict(id="hen_house", script="res://docs/evidence/hen-house-walkin-20261124/verify.gd", suites=["full"],
+    # Hen house and eggs at the farm: the roomier walk-in coop with clay hens (25 Nov 2026), no
+    # flickering faces, laying odds, carry to the crate (arrow), Drop button, dropping off the farm
+    # (the earlier coops' checks, hen-house-20261124/ and hen-house-walkin-20261124/, are kept as
+    # dated evidence).
+    dict(id="hen_house", script="res://docs/evidence/hen-house-roomier-20261125/verify.gd", suites=["full"], fps=True,
          summary=r"HEN HOUSE: \d+ checks, (?P<n>\d+) failures"),
     # Day-night cycle, lamp glow, indoor light and the HUD clock (9 Nov 2026).
     dict(id="day_night", script="res://docs/evidence/day-night-20261109/verify.gd", suites=["full"],
          summary=r"DAY NIGHT: \d+ checks, (?P<n>\d+) failures"),
+    # Registered 25 Nov 2026 (improvement plan QA-01): checks that existed but the runner never ran.
+    # Save robustness (C1): failed writes, corrupt files backed up, broken profile index, unknown
+    # studied keys, SessionWords after a reset. Headless, no town; isolated HOME.
+    dict(id="save_robustness", script="res://docs/evidence/save-robustness-20261125/verify.gd", suites=["quick", "full"],
+         summary=r"SAVE ROBUSTNESS: \d+ checks, (?P<n>\d+) failures"),
+    # Word memory (FSRS steps, 24 Nov; per-game gating and Feeding Time! due words, C4 25 Nov). No town.
+    dict(id="word_memory", script="res://docs/evidence/word-memory-20261124/verify.gd", suites=["quick", "full"],
+         summary=r"WORD MEMORY CHECK: \d+ checks, (?P<n>\d+) failures"),
+    # Spoken-word backbone (24 Nov 2026, docs/guides/VOICE.md). No town.
+    dict(id="voice_backbone", script="res://docs/evidence/voice-backbone-20261124/verify.gd", suites=["quick", "full"],
+         summary=r"VOICE BACKBONE CHECK: \d+ checks, (?P<n>\d+) failures"),
+    # Demo background music: town and loading tracks, loops, Music bus, silent in checks
+    # (25 Nov 2026, docs/guides/VOICE.md "Background music"). No town; plays nothing.
+    dict(id="lofi_music", script="res://docs/evidence/lofi-music-20261125/verify.gd", suites=["quick", "full"],
+         summary=r"LOFI MUSIC: (?P<n>\d+) failures"),
+    # Sound effects: coin, eight door kinds, chapel bell, Library Helper right/wrong; cues, bindings,
+    # baked door kinds (25 Nov 2026, docs/guides/VOICE.md "Sound effects"). No town; plays nothing.
+    dict(id="sfx", script="res://docs/evidence/sfx-20261125/verify.gd", suites=["quick", "full"],
+         summary=r"SFX CHECK: \d+ checks, (?P<n>\d+) failures"),
+    # Speaker button, sound icons and volume sliders (24 Nov 2026). Loads the town.
+    dict(id="sound_ui", script="res://docs/evidence/sound-ui-20261124/verify.gd", suites=["full"],
+         summary=r"SOUND UI CHECK: \d+ checks, (?P<n>\d+) failures"),
+    # Passport, missions, stamp coins and the achievement log (21 Nov 2026). Headless writes no PNGs.
+    dict(id="passport_missions", script="res://docs/evidence/passport-missions-20261121/verify.gd", suites=["full"],
+         summary=r"passport_missions: \d+ checks, (?P<n>\d+) failures"),
+    # Game exits (C2, 25 Nov 2026): Library Helper walk-away and leave question, Esc asks the running
+    # game, radar/electrical box "finish first", touch Jump stands up. Headless writes no PNGs.
+    dict(id="game_exits", script="res://docs/evidence/game-exits-20261125/verify.gd", suites=["full"],
+         summary=r"GAME EXITS: \d+ checks, (?P<n>\d+) failures"),
+    # GAME-05 (25 Nov 2026): last-resort unstuck from a blocked seat or vehicle; a respawn ends the game.
+    dict(id="unstuck", script="res://docs/evidence/unstuck-20261125/verify.gd", suites=["full"], fps=True,
+         summary=r"UNSTUCK: \d+ checks, (?P<n>\d+) failures"),
 ]
 # Not listed on purpose: check_animals.gd (writes docs/evidence/animals-review/measurements.json),
 # capture_*/render_*/feature capture scripts (overwrite PNGs).
@@ -473,11 +510,33 @@ def own_script_error(check: dict, text: str) -> str:
     return ""
 
 
+EXIT_CRASH = "recursive_mutex lock failed"
+
+
+def exit_crash_after_summary(check: dict, log: str) -> bool:
+    """True when the log's summary line is followed by Godot's shutdown abort (EXIT_CRASH) and
+    nothing from the check itself: the check finished and only the engine's exit failed."""
+    text = open(log, errors="replace").read()
+    summary = re.compile(check["summary"], re.M) if check.get("summary") else None
+    if summary is None:
+        return False
+    last = None
+    for last in summary.finditer(text):
+        pass
+    return last is not None and EXIT_CRASH in text[last.end():]
+
+
 def classify(result: dict, check: dict, expected: dict) -> dict:
     entry = expected.get(check["id"], {})
     known = entry.get("known", [])
     rc = result["rc"]
     notes: list[str] = []
+    # Since 25 Nov 2026 Godot (4.7.2 on this Mac) aborts while shutting down, after the check has
+    # printed its summary ("recursive_mutex lock failed", SIGABRT). The summary is then the result:
+    # judge it as a normal exit and say so in the notes.
+    if rc is not None and rc != 0 and result["summary_found"] and exit_crash_after_summary(check, result["log"]):
+        notes.append(f"Godot crashed on exit after the summary (exit {rc}); judged by the summary")
+        rc = 1 if (result["count"] or result["labels"]) else 0
     new, fixed, cnotes = compare(result["labels"], known)
     notes += cnotes
     if result["status"] == "TIMEOUT":

@@ -106,7 +106,7 @@ func _process(delta: float) -> void:
 		return
 	_age += delta
 	var screen: Vector2 = get_viewport().get_visible_rect().size
-	var f := clampf(minf(screen.y / 800.0, screen.x / 1100.0), 0.6, 3.0)
+	var f := BonStyle.factor(screen, 0.6)
 	for label in [_label, _progress]:
 		label.add_theme_font_size_override("font_size", roundi(26 * f))
 	_icon.custom_minimum_size = Vector2(18, 30) * f

@@ -22,6 +22,7 @@ const Registry := preload("res://scripts/characters/npc_registry.gd")
 const Interactable := preload("res://scripts/core/interactable.gd")
 const InteractIcons := preload("res://scripts/ui/interact_badge.gd")
 const Board := preload("res://scripts/learning/activity_board.gd")
+const PlushLife := preload("res://scripts/characters/plush_life.gd")
 ## Metres within which E (or a click / tap) talks: the minigame host's talk distance.
 const TALK_DISTANCE := 3.5
 ## Ordinary lines a player gets in a row before the brush-offs start.
@@ -36,6 +37,7 @@ static var current
 var lexicon
 var panel
 var interaction
+var player: Node3D
 var dialogue
 ## Seconds since start; checks may move it forward to test the reset.
 var clock := 0.0
@@ -50,6 +52,7 @@ func setup(main) -> void:
 	current = self
 	panel = main.shop_panel
 	interaction = main.interaction
+	player = main.player
 	dialogue = preload("res://scripts/learning/shop_dialogue.gd").new()
 	lexicon = dialogue.lexicon
 	_rng.randomize()
@@ -108,6 +111,10 @@ func talk(npc: Node3D) -> void:
 	_line = said.line
 	panel.translate_text = lexicon.line("common.show_translation")
 	panel.show_dialogue(speaker(npc), _line, [], MESSAGE_SECONDS)
+	# It turns to face the player while its line shows (ANIM-07, D12), then back.
+	var shown := _line
+	if player != null:
+		PlushLife.face_while(self, npc, player, func() -> bool: return panel.is_dialogue_visible() and panel.current_line() == shown)
 	var entry := Registry.of_node(npc)
 	var word := str(npc.get_meta("word_key", entry.get("word", "")))
 	if word != "" and not npc.has_meta("character_name") and interaction.has_signal("word_studied"):

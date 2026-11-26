@@ -16,8 +16,12 @@ const RATTLE_SECONDS := 0.55
 ## slam(): the right door shutting behind the player in the endless hall, faster than a swing.
 const SLAM_SPEED := 4.2
 const GROUP := "mystery_doors_session"
+## Where reach is measured, in the leaf's local y (its origin is the middle of the 3 m box,
+## so -0.5 is 1 m above the leaf's foot, before the house's scale).
+const REACH_Y := -0.5
 
-## For data/sounds.json bindings (no Mystery House sounds yet).
+## For data/sounds.json bindings: opened and slammed play the room door sounds (25 Nov 2026);
+## rattled has no sound yet.
 signal opened
 signal rattled
 signal slammed
@@ -34,10 +38,15 @@ func _ready() -> void:
 	_swing = float(get_meta("swing", 1.0))
 	set_process(true)
 	# E, a click or a tap uses it (interaction system, 12 Nov 2026); the session decides.
+	# The badge sits mid-leaf, but reach is measured at hand height: in the scaled house the
+	# leaf's middle is about 2.8 m above the floor, past the controller's MAX_RISE, so the door
+	# could only be used mid-jump (bug, 25 Nov 2026).
+	var centre := InteractIcons.local_center(self)
 	Interactable.attach(self, {
 		"kind": Interactable.Kind.OPEN,
 		"prompt_distance": 2.6,
-		"badge_offset": InteractIcons.local_center(self),
+		"badge_offset": centre,
+		"on_point": func(_from: Vector3) -> Vector3: return to_global(Vector3(centre.x, REACH_Y, centre.z)),
 	})
 
 func use() -> void:

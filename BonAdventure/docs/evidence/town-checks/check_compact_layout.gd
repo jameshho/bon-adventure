@@ -1,6 +1,7 @@
 extends SceneTree
 ## Current structural layout invariants; run with the README's isolated user directory.
 const ZooAnimals:=preload("res://scripts/world/park_animals.gd")
+const Turboprop:=preload("res://scripts/world/turboprop.gd")
 var failures:=0
 var checks:=0
 func _initialize(): run.call_deferred()
@@ -53,6 +54,11 @@ func run():
         if node.get_parent().name=="ParkZoo" and ZooAnimals.ANIMAL_HEIGHTS.has(String(node.name)):
             var ratio: Vector3=node.basis.get_scale()/before.basis.get_scale()
             check(is_equal_approx(ratio.x,ratio.y) and is_equal_approx(ratio.y,ratio.z),"zoo animal scaled uniformly "+String(node.get_path()))
+            continue
+        # The plane is shown at turboprop.gd SIZE, set in its _ready() (user 23 Nov 2026: a smaller
+        # plane), not by the compact move (25 Nov 2026).
+        if node.get_script()==Turboprop:
+            check(node.scale.is_equal_approx(Vector3.ONE*Turboprop.SIZE),"the plane is shown at its SIZE "+String(node.get_path()))
             continue
         check(before.basis.get_scale().is_equal_approx(node.basis.get_scale()),"rigid move preserves scale "+String(node.get_path()))
     var entries: Array=town.get_meta("reference_map_sites")

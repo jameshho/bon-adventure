@@ -47,6 +47,15 @@ static var _fonts := {}
 static var _textures := {}
 static var _theme: Theme
 
+# --- Window scale ----------------------------------------------------------------------------
+
+## The window factor `f` for a window (or viewport) of `view` pixels: min(h / 800, w / 1100),
+## clamped to [low, high] (UI_STYLE.md#window-scale). The one copy of the formula; each caller
+## keeps its own floor: 0.5 for the HUD and in-game panels, 0.6 for the start screens, the
+## loading screen and the tutorial's cues.
+static func factor(view: Vector2, low := 0.5, high := 3.0) -> float:
+	return clampf(minf(view.y / 800.0, view.x / 1100.0), low, high)
+
 # --- Type ------------------------------------------------------------------------------------
 
 ## Fredoka at `weight` (300-700): 700 titles and buttons, 600 body. Chinese falls back to Noto
@@ -336,9 +345,10 @@ static func squash_on_press(node: Control) -> void:
 		(node as BaseButton).button_down.connect(bounce.bind(0.96))
 		(node as BaseButton).button_up.connect(bounce.bind(1.0))
 
-## The shade behind an in-game window (Settings, the journal): a light teal veil, never dark
-## (UI_STYLE.md: keep the scene bright).
-const SHADE := Color(0.1, 0.27, 0.32, 0.38)
+## The veil behind an in-game window (Settings, the map, the journal, the word card): a light
+## cream veil, never dark (UI_STYLE.md: keep the scene bright). It was a teal shade at 38 %
+## (0.1, 0.27, 0.32) until 25 Nov 2026 (improvement plan P3-15, decision D14).
+const SHADE := Color(CREAM, 0.32)
 
 ## A toggle button (one of a pair or group such as Low / High): a cream pill, green with
 ## white words when pressed.

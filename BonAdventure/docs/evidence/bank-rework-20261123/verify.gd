@@ -153,6 +153,13 @@ func run() -> void:
 	await create_timer(0.8).timeout
 	var staff_leaf := bank.get_node_or_null(Session.STAFF_DOOR_LEAF)
 	check(staff_leaf != null and bool(game.doors[staff_leaf].open), "the staff door opens for the manager")
+	if session.step != "manager":
+		# The state when the manager's first visit is missed (the 24-25 Nov failures: the impostor
+		# was paid while walking up, see _to_impostor).
+		print("DIAG manager visit: step '%s', line '%s', payouts %d, playing %s, current (number, impostor, kind) %s, manager valid %s at %s, door open %s" % [
+				session.step, host.line_id, session._payouts, session.playing, [session.current.get("number"), session.current.get("impostor"), session.current.get("kind")],
+				is_instance_valid(manager), manager.global_position if is_instance_valid(manager) else Vector3.ZERO,
+				bool(game.doors[staff_leaf].open) if staff_leaf != null else false])
 	if graphics:
 		await _snap("manager-walks-out")
 	await _until(func() -> bool: return host.line_id == "teller.manager_warn_1", 8.0)
@@ -240,16 +247,19 @@ func _framing(camera: Camera3D, monitor: Vector3, customer: Node3D) -> Dictionar
 	return {"ok": not camera.is_position_behind(monitor) and not camera.is_position_behind(face) and inside.call(m) and inside.call(f),
 			"monitor": m.snapped(Vector2(0.01, 0.01)), "face": f.snapped(Vector2(0.01, 0.01))}
 
-## Serves customers right until an impostor stands at the window.
+## Serves customers right until an impostor stands at the window. Each customer takes two turns
+## of the loop (asking, then the thanks), so the guard allows a whole session; the impostor is
+## paid only once it has reached the window and asks (25 Nov 2026: with 8 turns an impostor that
+## came fifth was paid while still walking up; it then asked again, so the manager never came).
 func _to_impostor(session, money, host) -> void:
-	for guard in 8:
+	for guard in 24:
 		await _until(func() -> bool: return session.step in ["ask", "screen", "served"], 12.0)
 		if session.step == "served":
 			# The thanks moves on by itself (24 Nov 2026).
 			await _until(func() -> bool: return session.step != "served", 8.0)
 			continue
 		if session.current.get("impostor", false):
-			return
+			break
 		var c: Dictionary = session.current
 		if c.kind == "withdraw" and c.balance < c.dollars:
 			session._on_choice(host.choice_prefix() + "decline")
@@ -257,6 +267,7 @@ func _to_impostor(session, money, host) -> void:
 			continue
 		await _pay(session, money, host)
 		await _until(func() -> bool: return session.step == "served", 3.0)
+	await _until(func() -> bool: return session.step in ["ask", "screen"], 12.0)
 
 ## Counts out the exact amount for the customer at the window.
 func _pay(session, money, host) -> void:

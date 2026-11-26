@@ -236,6 +236,11 @@ Steps 1 and 2 of the suggested order. Check and views:
   Around town first, the places by name, ★ Pocket last (26 places + 2 shelves = 2 spreads).
   A card: a round badge with a line icon (`ui_icons.gd`; **placeholder** until places get drawn
   icons), the name (one or two lines, sized to fit), "12 of 28" and a small bar.
+- **Known words** (merged with main's LEARN-04, 25 Nov 2026): a found sticker whose word the word
+  memory knows (`word_memory.gd` `is_known()`) has a small daisy at its picture's corner
+  (`known_badge()` / `show_known()`), and its word page adds "You know this word". This stands in
+  for the plant stages until they are built; the old table's "N known" footer and drag-to-scroll
+  list (C5) went with the table.
 - **Chapters:** 4 stickers a page (2 × 2), two pages a spread (8); "‹ Places" back, the chapter's
   name and "5 of 83"; "1 / 11" at the bottom right.
 - **Stickers:** found = white sticker with the word picture (`word_pictures.gd`) and the foreign

@@ -3,6 +3,7 @@ extends Control
 ## when drawn (UI Stage 3).
 const UiText := preload("res://scripts/language/ui_text.gd")
 const ModularTown := preload("res://scripts/world/modular_town.gd")
+const BonStyle := preload("res://scripts/ui/bon_style.gd")
 # Cached 2D projection of the actual town meshes. No second 3D render pass.
 var full_map := false
 var MAP_SIZE := Vector2(208,208)
@@ -23,7 +24,7 @@ var on_tap: Callable
 ## The minimap's side for a window of `view` px: 268 px at 1100 x 800, scaled like the other
 ## HUD parts (was a fixed 208 px; user, 10 Nov 2026: slightly bigger), never under 208.
 static func side_for(view: Vector2) -> float:
-    var f: float = clampf(minf(view.y / 800.0, view.x / 1100.0), 0.5, 3.0)
+    var f: float = BonStyle.factor(view)
     return roundf(clampf(268.0 * f, 208.0, 420.0))
 
 func setup(town: Node3D, explorer: Node3D) -> void:

@@ -93,7 +93,10 @@ func run() -> void:
 	for page in ["missions", "stamps", "explore"]:
 		passport.show_page(page)
 		await settle()
-		check(passport.window.get_rect().end.y <= root.get_visible_rect().size.y + 1.0, "%s page fits the window (%.0f px)" % [page, passport.window.size.y])
+		# On-screen fit needs a real window: headless runs have a fixed 64 x 64 root viewport
+		# (README "Verification"), so the fit is checked only with graphics (25 Nov 2026).
+		if DisplayServer.get_name() != "headless":
+			check(passport.window.get_rect().end.y <= root.get_visible_rect().size.y + 1.0, "%s page fits the window (%.0f px)" % [page, passport.window.size.y])
 	passport.close()
 	if game.town_map != null:
 		game.hud.toggle_map()

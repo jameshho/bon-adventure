@@ -6,6 +6,9 @@ extends Node3D
 ## calls use(); the session (radar_patrol_session.gd, group "radar_patrol") opens the arcade screen.
 const Interactable := preload("res://scripts/core/interactable.gd")
 const InteractIcons := preload("res://scripts/ui/interact_badge.gd")
+const Board := preload("res://scripts/learning/activity_board.gd")
+## radar_patrol_session.gd ID (its activity board id).
+const ACTIVITY := "radar_patrol"
 
 func _ready() -> void:
 	Interactable.attach(self, {
@@ -15,6 +18,11 @@ func _ready() -> void:
 		"priority": 0.5,
 		"badge_offset": InteractIcons.local_center(self) + Vector3(0, 0.35, 0),
 	})
+
+## While another game runs, E says "finish the other task first" instead of doing nothing
+## (interactable.gd reason line; GAME-04, 25 Nov 2026).
+func can_interact() -> Variant:
+	return "common.finish_first" if Board.shared().blocker(ACTIVITY) != "" else true
 
 func use() -> bool:
 	for session in get_tree().get_nodes_in_group("radar_patrol"):

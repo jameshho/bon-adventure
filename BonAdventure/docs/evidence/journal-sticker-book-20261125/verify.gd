@@ -225,7 +225,10 @@ func run():
 	book.open_chapter(Book.AROUND)
 	book.open_detail("apple")
 	await process_frame
-	check(book.detail_foreign.text == book.words["apple"].foreign and book.detail_native.text == book.words["apple"].native, "word page: word and translation")
+	check(book.detail_foreign.text == book.words["apple"].foreign and book.detail_native.text.begins_with(book.words["apple"].native), "word page: word and translation")
+	# Known words (LEARN-04, merged 25 Nov 2026): the page says so exactly when the word memory knows it.
+	var apple_known: bool = book.words["apple"].known
+	check(book.detail_native.text.contains(UiText.t("journal.known_tag")) == apple_known, "word page: the known tag follows the word memory (known: %s)" % apple_known)
 	var chips: Array = book.found_places.get_children().map(func(c): return c.name)
 	check(chips.has("Place " + Book.AROUND) and chips.has("Place supermarket"), "Found in lists Around town and its places: %s" % [chips])
 	if game.get("word_pictures") != null:

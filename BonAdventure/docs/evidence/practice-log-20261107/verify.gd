@@ -27,6 +27,11 @@ func check(ok: bool, label: String) -> void:
 		failures += 1
 		print("FAIL: " + label)
 
+## The translation is seen by peeking (holding the HUD's EN or L), since the one EN button
+## (103bc60a): the panels' own toggle no longer counts (updated 25 Nov 2026).
+func _peek(on: bool) -> void:
+	GameSettings.shared().set_peek(on)
+
 func frames(n: int) -> void:
 	for i in n:
 		await process_frame
@@ -122,8 +127,10 @@ func run():
 	print("PRACTICE LOG: %d checks, %d failures" % [checks, failures])
 	quit(1 if failures > 0 else 0)
 
-## A shop order: the first Done has one item missing, the retry completes it; then a second
-## order with the translate bubble on; then an order quit.
+## A shop order: the till's first check (check_cart(), the checkout since 21 Nov 2026; the
+## Done button and _on_done() are gone) finds one item missing, the second matches and paid()
+## completes the question; then a second order with the translate bubble on; then an order quit.
+## (Updated 25 Nov 2026 to the till's paid flow, as shop-basket-20261114/verify.gd.)
 func shop_game(game) -> void:
 	var shop = game.find_child("ShopSession_supermarket", true, false)
 	check(shop != null, "shop session exists")
@@ -141,14 +148,14 @@ func shop_game(game) -> void:
 		if key != missing:
 			for n in int(shop.order.order[key]):
 				shop.order.add_to_cart(key)
-	shop._on_done()
-	check(shop._result.state == ShopOrder.State.RETRY_OFFER, "first Done misses one item")
-	check(log.game_id() == id, "a retry offer keeps the question open")
-	shop.order.accept_retry()
-	for n in int(shop.order.remaining[missing]):
+	var first: Dictionary = shop.check_cart()
+	check(not first.match and first.missing.has(missing), "the till's first check misses one item")
+	check(log.game_id() == id, "a basket turned down keeps the question open")
+	for n in int(shop.order.order[missing]):
 		shop.order.add_to_cart(missing)
-	shop._on_done()
-	check(shop._result.state == ShopOrder.State.COMPLETE and not log.is_open(), "the retry completes the question")
+	check(shop.check_cart().match, "the second check matches")
+	shop.paid()
+	check(shop.awaiting_return and not log.is_open(), "paying completes the question")
 	for key in keys:
 		expect(before[key], key, "negative" if key == missing else "positive", "shop item %s" % key, id)
 	shop.awaiting_return = false
@@ -160,16 +167,16 @@ func shop_game(game) -> void:
 	before = {}
 	for key in keys:
 		before[key] = now(key, id)
-	if not shop.panel.show_native:
-		shop.panel.toggle_translation()
+	_peek(true)
 	await frames(2)
 	for key in keys:
 		for n in int(shop.order.order[key]):
 			shop.order.add_to_cart(key)
-	shop._on_done()
+	shop.check_cart()
+	shop.paid()
 	for key in keys:
 		expect(before[key], key, "translated", "shop bubble: %s translated" % key, id)
-	shop.panel.toggle_translation()
+	_peek(false)
 	shop.awaiting_return = false
 	shop._finish_order()
 	shop.panel.hide_dialogue()
@@ -194,6 +201,11 @@ func family_game(game) -> void:
 	check(family != null, "family session exists")
 	if family == null:
 		return
+	# Word memory (word_memory.gd, 24 Nov 2026) allows a new word only every few practice steps,
+	# and the grocery orders above have just brought new ones: Hospital Helper's relation question
+	# (all new words here) would then lose to its untracked kinds, which record no step, so it
+	# would never come. Start as a learner who met no new word lately (updated 25 Nov 2026).
+	preload("res://scripts/learning/word_memory.gd").shared()._memory().last_new = -1000
 	family.open_game()
 	var found := false
 	for i in 60:
@@ -225,12 +237,11 @@ func family_game(game) -> void:
 	if str(family.question.get("kind", "")) == "relation":
 		word = family.question.word
 		before = now(word, "family_dr_li")
-		if not family.panel.show_native:
-			family.panel.toggle_translation()
+		_peek(true)
 		await frames(2)
 		family._on_answer(str(family.question.answer))
 		expect(before, word, "translated", "family: bubble on -> translated", "family_dr_li")
-		family.panel.toggle_translation()
+		_peek(false)
 	family.next_question()
 	family.close_game()
 	check(not log.is_open(), "closing the game leaves no open question")
@@ -258,12 +269,11 @@ func restaurant_game(game) -> void:
 	picks = _restaurant_picks(session, Orders, false)
 	word = str(Orders.dish(str(session.requests[0].target)).word)
 	before = now(word, id)
-	if not session.panel.show_native:
-		session.panel.toggle_translation()
+	_peek(true)
 	await frames(2)
 	session._on_send(picks)
 	expect(before, word, "translated", "restaurant: bubble on -> translated", id)
-	session.panel.toggle_translation()
+	_peek(false)
 	session._next_visit()
 	session.open_tablet()
 	check(log.game_id() == id, "the next order begins a question")
@@ -309,6 +319,8 @@ func _warehouse_next_tracked(session) -> bool:
 
 ## A warehouse task with a wrong attempt (negative), one with the card's bubble (translated),
 ## then leaving the game (nothing).
+## The word followed is the task's colour (the boxes have no word of their own since 21 Nov
+## 2026; since 25 Nov a wrong box misses the colour and the position word is judged apart).
 func warehouse_game(game) -> void:
 	var session = game.get_node_or_null("WarehouseSession")
 	check(session != null, "warehouse session exists")
@@ -325,7 +337,7 @@ func warehouse_game(game) -> void:
 				await session.end_game("")
 			continue
 		var task: Dictionary = session.tasks[session.current]
-		var word: String = session.goods.items[task.item].get_meta("word_key", "")
+		var word: String = str(session.writer.words(task)[0])
 		check(log.game_id() == id, "a task naming %s begins a question" % word)
 		var before := now(word, id)
 		if not tested.wrong:
@@ -339,14 +351,14 @@ func warehouse_game(game) -> void:
 					await session.end_game("")
 				continue
 			task = session.tasks[session.current]
-			word = session.goods.items[task.item].get_meta("word_key", "")
+			word = str(session.writer.words(task)[0])
 			before = now(word, id)
-		session.card.toggle_translation()
+		_peek(true)
 		await frames(2)
 		_warehouse_done(session)
 		expect(before, word, "translated", "warehouse: card bubble on -> translated", id)
 		tested.bubble = true
-		session.card.toggle_translation()
+		_peek(false)
 		await frames(2)
 		if session.in_game():
 			check(not _warehouse_tracked(session) or log.game_id() == id, "the next task begins its question")
@@ -420,12 +432,12 @@ func flight_game(game) -> void:
 		var word: String = FlightQuestions.time_key(session.question)
 		var before_word := now(word, id)
 		var before_country := now(country, id)
-		session.panel.toggle_translation()
+		_peek(true)
 		await frames(2)
 		session._on_flight(str(session.question.target))
 		expect(before_word, word, "translated", "flight: bubble on -> time word translated", id)
 		expect(before_country, country, "translated", "flight: bubble on -> country translated", id)
-		session.panel.toggle_translation()
+		_peek(false)
 		await frames(2)
 	session.next_question()
 	session._on_finish()
@@ -493,7 +505,7 @@ func grammar_game(game) -> void:
 		check(word != "" and log.game_id() == id, "a Chinese question tests its noun %s" % word)
 		var before := now(word, id)
 		if outcome == "translated":
-			session.card.toggle_translation()
+			_peek(true)
 			await frames(2)
 		if outcome != "":
 			var ok: bool = await _sit(game, session, _desk_of(session, str(question.answer), outcome != "negative"))
@@ -507,7 +519,7 @@ func grammar_game(game) -> void:
 		session.submit()
 		expect(before, word, outcome, "grammar zh: %s" % (outcome if outcome != "" else "unanswered -> nothing"), id)
 		if outcome == "translated":
-			session.card.toggle_translation()
+			_peek(false)
 		session._next_question()
 		await frames(2)
 	check(log.game_id() == id, "the next Chinese question is open")

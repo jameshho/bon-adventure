@@ -42,6 +42,7 @@ const ProfileManager := preload("res://scripts/core/profile_manager.gd")
 const GameSettings := preload("res://scripts/core/game_settings.gd")
 const AppScreens := preload("res://scripts/ui/app_screens.gd")
 const LoadingScreen := preload("res://scripts/ui/loading_screen.gd")
+const Sound := preload("res://scripts/core/sound.gd")
 const Tutorial := preload("res://scripts/learning/tutorial.gd")
 const Lexicon := preload("res://scripts/language/lexicon.gd")
 const WebResume := preload("res://scripts/core/web_resume.gd")
@@ -131,6 +132,11 @@ func start_town(id: String) -> void:
 	screens = null
 	loading = LoadingScreen.new()
 	add_child(loading)
+	# The sound service from here on (Main then keeps it), for the loading screen's own music
+	# (25 Nov 2026, user: a different soundtrack for the loading screen); town music when it lifts.
+	if Sound.shared() == null:
+		add_child(Sound.new())
+	Sound.shared().play_music("loading")
 	# Let the first shot draw before the scene file loads (a stall without threads).
 	await get_tree().process_frame
 	await get_tree().process_frame
@@ -180,6 +186,7 @@ func _on_town_ready() -> void:
 	await _warm_up(director)
 	loading.finish()
 	loading = null
+	Sound.shared().play_town()
 	if is_instance_valid(director):
 		director.release()
 	if web_resume != null:
@@ -276,12 +283,14 @@ func _load_rest_now(town: Node) -> void:
 	var screen := LoadingScreen.new()
 	add_child(screen)
 	screen.set_text(Lexicon.shared().phrase("app.getting_ready", Lexicon.shared().native))
+	Sound.shared().play_music("loading")
 	var total := float(town.pending_units.size())
 	while is_instance_valid(town) and not town.pending_units.is_empty():
 		screen.set_progress(1.0 - town.pending_units.size() / total)
 		await get_tree().process_frame
 		await town.add_unit(town.pending_units[0])
 	screen.finish()
+	Sound.shared().play_town()
 
 ## Draws the town behind the loading screen until it runs smoothly: the camera looks in
 ## WARM_HEADINGS directions around the player, one drawn frame each (the first draw of each

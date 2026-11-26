@@ -101,9 +101,9 @@ func carry() -> void:
     var rest := rest_seat_transform()*rider_offset
     rider.seat_focus = rider.global_position.lerp(rest,0.5)+Vector3.UP*2.1
 
-## Space gets off like E: the seating controller brakes the swing, then stands the rider.
+## Space or the touch Jump button (the "jump" action) gets off like E: the seating controller brakes the swing, then stands the rider.
 func _unhandled_input(event: InputEvent) -> void:
     if rider == null or not is_instance_valid(rider) or not rider.seated or rider.sit_transition or not rider.controls_enabled: return
-    if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_SPACE:
+    if event.is_action_pressed("jump"):
         get_viewport().set_input_as_handled()
         game.seating.stand()

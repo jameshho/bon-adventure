@@ -36,6 +36,7 @@ once a newer record or guide covers the same thing. Add a line here, not a parag
 
 | Task | Read | Key files |
 | --- | --- | --- |
+| Whole-game improvement programme (25 Nov 2026 audit, task tracker, ownership; **proposed**) | [Improvement plan](guides/improvement-plan/MASTER_PLAN.md), [handoff](guides/improvement-plan/SESSION_HANDOFF.md) | |
 | Code ownership, coordinates, assets, data | [Architecture and editing rules](guides/ARCHITECTURE_REVIEW_PART1.md#current-editing-rules-parts-23) (the opening assessment is dated history) | |
 | World structure, focus mode, changing a building | [Modular town](guides/MODULAR_TOWN.md), [changing a building](guides/MODULAR_TOWN.md#changing-a-building) | `scenes/town/`, `scripts/buildings/<unit>.gd`, `tools/bake_unit.gd`, `dev_focus.txt` |
 | Main entry point: minigame panels, vehicles, gates, doors, room names | [Ownership](guides/ARCHITECTURE_REVIEW_PART1.md#architecture-and-ownership) | `scripts/core/main.gd`, `minigame_wiring.gd`, `vehicle_controls.gd`, `scripts/world/room_names.gd` |

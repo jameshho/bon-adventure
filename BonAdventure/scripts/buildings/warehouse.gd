@@ -2,7 +2,7 @@ extends RefCounted
 ## Warehouse own script (docs/guides/MODULAR_TOWN.md, "Changing a building"); saved in scenes/town/warehouse.scn.
 ## The hall and reception are built by scripts/world/warehouse.gd and the minigame scripts; this
 ## file only holds baked steps.
-const STEPS := ["drivable_truck", "coplanar_gaps", "coplanar_gaps_2", "entrance_ramp", "glass_windows", "glass_windows_2", "half_depth_redesign", "two_level_shelf", "openable_cabinet"]
+const STEPS := ["drivable_truck", "coplanar_gaps", "coplanar_gaps_2", "entrance_ramp", "glass_windows", "glass_windows_2", "half_depth_redesign", "two_level_shelf", "openable_cabinet", "door_sounds"]
 const W := preload("res://scripts/world/warehouse.gd")
 
 ## The delivery truck (box_truck.tscn) became a DriveableVehicle on 8 Nov 2026. Its scene root now
@@ -429,3 +429,16 @@ func _cabinet_part(game, parent: Node3D, title: String, pos: Vector3, size: Vect
 	part.reparent(parent, false)
 	part.position = pos
 	return part
+
+## Door sounds (user, 25 Nov 2026: "each door should have different sound"): the supply
+## cabinet's two steel doors sound like a steel cabinet (door_animator.gd set_sound_kind; cues
+## door.cabinet.* in data/sounds.json).
+func door_sounds(town: Node3D, game) -> void:
+	var DoorAnimator := preload("res://scripts/core/door_animator.gd")
+	var cabinet: Node3D = town.get_node("Warehouse/Hall/Supply cabinet")
+	var tagged := 0
+	for path in ["Cabinet hinge west", "Cabinet hinge east"]:
+		tagged += int(DoorAnimator.set_sound_kind(game, cabinet.get_node_or_null(path), "cabinet"))
+	if tagged != 2:
+		push_error("warehouse door_sounds: expected 2 doors, tagged %d" % tagged)
+	print("WAREHOUSE door_sounds: %d doors" % tagged)

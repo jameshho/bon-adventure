@@ -25,6 +25,7 @@ var swing_keys := Vector2.ZERO
 var swing_exit := false
 ## Seats whose node has meta "swivel" turn with A / D while seated (rad/s).
 const UiText := preload("res://scripts/language/ui_text.gd")
+const PlayerPlace := preload("res://scripts/core/player_place.gd")
 const Interactable := preload("res://scripts/core/interactable.gd")
 ## Ranking: a seat behind the player that faces them (between rows) counts this many metres
 ## farther, unless the player faces it (7 Nov 2026).
@@ -343,7 +344,11 @@ func sit_on(node: Node3D) -> bool:
         game.player.seat_focus = point+Vector3.UP*1.2
         game.hud.flash_quest_message(UiText.maybe(seat.node.get_meta("sit_message","seats.lying")))
         return true
-    game.hud.flash_quest_message(UiText.maybe(seat.node.get_meta("sit_message","")) if seat.node.has_meta("sit_message") else UiText.t("seats.sitting",{"swivel":UiText.t("seats.swivel_note") if seat.node.get_meta("swivel",false) else ""}))
+    var message: String = seat.node.get_meta("sit_message","")
+    # On a touch screen a message with a "_touch" variant (the swing's) names the joystick, not keys.
+    if game.hud.touch_mode and UiText.has(message+"_touch"):
+        message = message+"_touch"
+    game.hud.flash_quest_message(UiText.maybe(message) if seat.node.has_meta("sit_message") else UiText.t("seats.sitting",{"swivel":UiText.t("seats.swivel_note") if seat.node.get_meta("swivel",false) else ""}))
     return true
 
 ## Seats the player on `node`'s seat from a script (a minigame's table, minigame_table.gd):
@@ -405,7 +410,7 @@ func stand() -> void:
         return
     var exit := safe_stand_position()
     if exit.is_empty():
-        game.hud.flash_quest_message(UiText.t("seats.blocked"))
+        unstuck(swing)
         return
     if swing:
         swing.release()
@@ -415,10 +420,31 @@ func stand() -> void:
     game.player.end_sitting(exit.point)
     game.hud.flash_quest_message(UiText.t("seats.standing"))
 
-## Space gets up like E from any seat or bed. Swings and seesaws (meta playground_swing)
-## take Space themselves; vehicles never reach here (the player is not seated in them).
+## No clear spot beside the seat (GAME-05, 25 Nov 2026): the last-resort unstuck instead of a dead
+## E. A clear spot further off on the same floor and in sight (PlayerPlace.rescue_spot()), else a
+## respawn outside the building (Main.respawn(), which also ends a running game).
+func unstuck(swing) -> void:
+    var ignore: Array[RID] = []
+    ignore.append_array(current.get("rids", []))
+    var spot := PlayerPlace.rescue_spot(game, current.point, return_position.y, ignore)
+    if swing:
+        swing.release()
+        swing_exit = false
+    game.player.rotation = Vector3(0, spot.yaw, 0)
+    if spot.how == "nearby":
+        game.player.end_sitting(spot.position)
+        game.hud.flash_quest_message(UiText.t("seats.standing"))
+        return
+    if game.player.sit_tween: game.player.sit_tween.kill()
+    game.player.finish_standing()
+    game.respawn(spot.position, spot.yaw)
+    game.hud.flash_quest_message(UiText.t("toast.unstuck"))
+
+## Space (the "jump" action, so the touch Jump button too) gets up like E from any seat or
+## bed. Swings and seesaws (meta playground_swing) take it themselves; vehicles never reach
+## here (the player is not seated in them).
 func _unhandled_input(event: InputEvent) -> void:
-    if not (event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_SPACE): return
+    if not event.is_action_pressed("jump"): return
     if not game.player.seated or not game.player.controls_enabled or current_swing() != null: return
     get_viewport().set_input_as_handled()
     stand()
@@ -433,10 +459,14 @@ func _physics_process(delta: float) -> void:
                 swing.braking = false
                 stand()
             return
-        # W / S (or Up / Down): one kick per press, forward or backward.
+        # W / S (or Up / Down): one kick per press, forward or backward. The touch joystick
+        # sends only move_forward / move_back (with strength), so pushing it more than halfway
+        # up or down counts as a press too (25 Nov 2026: the swing did nothing on mobile).
         var keys := Vector2.ZERO
         if game.player.controls_enabled:
-            keys = Vector2(float(Input.is_action_pressed("climb_up")),float(Input.is_action_pressed("climb_down")))
+            keys = Vector2(
+                float(Input.is_action_pressed("climb_up") or Input.get_action_strength("move_forward") > 0.5),
+                float(Input.is_action_pressed("climb_down") or Input.get_action_strength("move_back") > 0.5))
         if keys.x > swing_keys.x: swing.kick(1.0)
         elif keys.y > swing_keys.y: swing.kick(-1.0)
         swing_keys = keys

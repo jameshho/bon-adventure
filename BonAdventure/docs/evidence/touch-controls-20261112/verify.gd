@@ -177,7 +177,7 @@ func run():
 	await dialogue_and_help(game, view)
 	# The locks flag in PANELS.
 	var locking: Array = MinigameWiring.PANELS.filter(func(spec) -> bool: return spec.size() > 2 and spec[2]).map(func(spec): return spec[0])
-	check(locking == ["money_panel", "family_panel", "flight_panel", "restaurant_panel", "restaurant_menu_book", "detective_card", "mahjong_panel", "mahjong_lessons", "radar_panel", "electrical_box_panel", "elevator_floor_picker", "game_launcher"], "the locks flag marks the old LOCKING panels (plus the elevator floor picker, 14 Nov 2026): %s" % str(locking))
+	check(locking == ["money_panel", "family_panel", "flight_panel", "restaurant_panel", "restaurant_menu_book", "detective_card", "mahjong_panel", "mahjong_lessons", "radar_panel", "electrical_box_panel", "elevator_floor_picker", "record_player_panel", "game_launcher", "passport", "results_screen"], "the locks flag marks the old LOCKING panels (plus the elevator floor picker, 14 Nov 2026, the Passport and results screen, 21 Nov 2026, and the record player, 25 Nov 2026): %s" % str(locking))
 	game.warehouse_card.visible = true
 	check(not MinigameWiring.locks_player(game), "the warehouse card does not lock the player")
 	game.warehouse_card.visible = false

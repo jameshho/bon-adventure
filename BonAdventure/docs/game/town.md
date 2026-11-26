@@ -31,6 +31,9 @@ bathroom with working toilet and faucets, living room, kitchen, garage, a sunken
 tub. Outside are Mei's mahjong table and the electrical box for Wire It Up!. Since 14 Nov only
 BonBon, Leo and Sunny live in the house, and the walkways were cleared. Since 23 Nov the garage
 has no bicycle ([record](../guides/TOWN_DESIGN_BRIEF.md#civic-fixes-garage-school-police-lockers-warehouse-cabinet-zoo-gate--23-november-2026)).
+Since 25 Nov a record player on a walnut stand sits beside the living room TV: it plays any of
+the game's songs ([view](../evidence/record-player-20261125/room.png),
+[how it works](../guides/COMPONENTS.md#record-player)).
 [Reference home](../guides/REFERENCE_HOME.md) ·
 [14 Nov change](../guides/REFERENCE_HOME.md#fewer-plushes-and-clear-walkways--14-november-2026)
 
@@ -273,12 +276,13 @@ animal stalls); farm animals graze outside. Tomás the farmer (a bear in overall
 straw hat) stands by the tool rack and chats about farm life (23 Nov, [NPCs](../guides/NPCS.md)).
 [Design record](../guides/TOWN_DESIGN_BRIEF.md#farm-barn-gambrel-roof-hayloft-and-supplies-interior--1-november-2026)
 
-**Hen house** (24 Nov): a big red walk-in coop beside the barn where six hens lay eggs over
+**Hen house** (24 Nov; 20% bigger with a fuller inside and clay hens since 25 Nov): a big red walk-in coop beside the barn where six hens lay eggs over
 time (about 3–4 after 15 minutes away, rarely up to 7; now and then a golden one). Walk in and
 pick an egg up from a nest box or a straw nest; an arrow then bobs over the egg crate outside the
 coop door: put it there. The Drop button (or G) drops the egg, and so does carrying it out of
-the farm. Just for fun for now (stars may come later).
-[Views](../evidence/hen-house-walkin-20261124/), [record](../guides/TOWN_DESIGN_BRIEF.md#walk-in-hen-house-crate-by-the-door-and-drop-button--24-november-2026)
+the farm. Just for fun for now (stars may come later). Inside: nest boxes on a stand with a
+little ladder, a roost, a hanging feeder, a waterer, a dust bath, hay and a lantern.
+[Views](../evidence/hen-house-roomier-20261125/), [record](../guides/TOWN_DESIGN_BRIEF.md#roomier-hen-house-and-clay-hens--25-november-2026)
 
 ## Playground
 
@@ -312,9 +316,9 @@ ride (E to sit, W/S to kick).
   [walking](../evidence/horse-anim-20261117/zoo-walk.png)). Since 17 Nov a clay rooster stands
   on the farm lawn by the farm gate ([view](../evidence/rooster-clay-20261116/zoo-close.png)),
   since 18 Nov with a clay chick beside it
-  ([view](../evidence/chick-clay-20261116/zoo-close.png)) and since 24 Nov a clay hen on the
-  chick's other side, the rooster's design in cream with a brown fan tail
-  ([view](../evidence/hen-clay-20261124/zoo-front.png)),
+  ([view](../evidence/chick-clay-20261116/zoo-close.png)); since 25 Nov the farm's hen (word:
+  hen) and the hen house's hens are the clay hen, the rooster's design in cream with a brown fan
+  tail ([view](../evidence/hen-house-roomier-20261125/coop-door.png)),
   and a clay capybara waddles and blinks in Wildlife Plains and teaches *capybara*
   ([view](../evidence/capybara-anim-20261117/zoo-close.png),
   [walking](../evidence/capybara-anim-20261117/zoo-walk.png)); just inside the zoo gate sits

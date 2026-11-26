@@ -138,7 +138,7 @@ func finish() -> void:
 
 func _factor() -> float:
 	var screen := _root.get_viewport_rect().size
-	return clampf(minf(screen.y / 800.0, screen.x / 1100.0), 0.6, 3.0)
+	return BonStyle.factor(screen, 0.6)
 
 func _process(delta: float) -> void:
 	_time += delta

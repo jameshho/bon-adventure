@@ -41,7 +41,7 @@ func _process(_delta: float) -> void:
 
 func _scale() -> float:
 	var screen := get_viewport_rect().size
-	return clampf(minf(screen.y / 800.0, screen.x / 1100.0), 0.6, 3.0)
+	return BonStyle.factor(screen, 0.6)
 
 func _draw() -> void:
 	if not is_instance_valid(target) or not target.is_inside_tree():

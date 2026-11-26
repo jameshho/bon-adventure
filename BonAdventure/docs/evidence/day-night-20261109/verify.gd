@@ -42,7 +42,8 @@ func run() -> void:
 	check(suns == 1, "one directional light in the town world (found %d)" % suns)
 	check(cycle.find_children("*", "Light3D", true, false).is_empty(), "the cycle adds no other lights")
 	check(absf(cycle.minutes - GameClock.shared().now) < 5.0, "starts at the shared now (%s vs %s)" % [GameClock.clock(int(cycle.minutes)), GameClock.clock(GameClock.shared().now)])
-	check(is_equal_approx(cycle.cycle_minutes, 30.0), "default cycle is 30 minutes")
+	# 48 since 25 Nov 2026 (user; was 30).
+	check(is_equal_approx(cycle.cycle_minutes, 48.0), "default cycle is 48 minutes")
 	check(is_equal_approx(game.get_viewport().scaling_3d_scale, 1.0), "desktop keeps full 3D resolution (the web-only scale is off)")
 
 	# One graphics setting (23 Nov 2026, render_culling.gd apply_view()): no sun shadows and depth
@@ -53,11 +54,12 @@ func run() -> void:
 		"depth fog is opaque at the camera's far plane (%.0f m)" % game.player.camera.far)
 
 	# Lamps: 19 streetlight heads and 8 bridge globes, the zoo zones' 4 lamp posts and 2 gate
-	# lanterns (base step zoo_zones, 12 Nov 2026) and the chapel's 2 door lanterns and 12
-	# chandelier bulbs (chapel.gd night_lights, 11-12 Nov 2026): 47 heads, one glow material per
+	# lanterns (base step zoo_zones, 12 Nov 2026), the chapel's 2 door lanterns and 12
+	# chandelier bulbs (chapel.gd night_lights, 11-12 Nov 2026) and its bell-tower lantern
+	# (chapel.gd "Tower lamp", 23 Nov 2026): 48 heads, one glow material per
 	# original material (4).
 	var glowing: Array = game.apartment.find_children("*", "MeshInstance3D", true, false).filter(func(m): return m.has_meta("night_glow"))
-	check(glowing.size() == 47, "47 lamp heads glow at night (found %d)" % glowing.size())
+	check(glowing.size() == 48, "48 lamp heads glow at night (found %d)" % glowing.size())
 	check(cycle.lamp_materials.size() >= 1 and cycle.lamp_materials.size() <= 4, "lamps share %d glow material(s)" % cycle.lamp_materials.size())
 	var batched_glow := 0
 	for batch in game.apartment.find_children("*", "MultiMeshInstance3D", true, false):
@@ -65,7 +67,7 @@ func run() -> void:
 		if batch.material_override is StandardMaterial3D and batch.material_override in cycle.lamp_materials:
 			batched_glow += batch.multimesh.instance_count
 	var unbatched_glow := glowing.filter(func(m): return m.is_visible_in_tree()).size()
-	check(batched_glow + unbatched_glow == 47, "every lamp head is drawn with a glow material (batched %d, own %d)" % [batched_glow, unbatched_glow])
+	check(batched_glow + unbatched_glow == 48, "every lamp head is drawn with a glow material (batched %d, own %d)" % [batched_glow, unbatched_glow])
 
 	# Noon: the original daylight, softened; shadows on, lamps off.
 	cycle.pause()
@@ -134,14 +136,18 @@ func run() -> void:
 	check(cycle.clock_minute() == 23 * 60 + 30, "00:30 − 1 h = 23:30")
 	cycle.set_time(11 * 60 + 15)
 	cycle.step_hours(1)
-	check(game.day_clock.time_text().contains("12:15"), "noon hour shows 12:15 (%s)" % game.day_clock.time_text())
+	# The HUD ticks every half hour (25 Nov 2026): 12:15 shows 12:00, 12:45 shows 12:30.
+	check(cycle.clock_minute() == 12 * 60 + 15 and cycle.shown_minute() == 12 * 60, "12:15 is shown as 12:00 (shown %s)" % GameClock.clock(cycle.shown_minute()))
+	check(game.day_clock.time_text().contains("12:00"), "noon hour shows 12:00 (%s)" % game.day_clock.time_text())
+	cycle.set_time(12 * 60 + 45)
+	check(game.day_clock.time_text().contains("12:30"), "12:45 shows 12:30 (%s)" % game.day_clock.time_text())
 	var held: float = cycle.minutes
 	await wait(0.6)
 	check(cycle.minutes == held, "paused time does not move")
 	cycle.resume()
 	await wait(0.6)
 	var moved: float = cycle.minutes - held
-	check(moved > 0.3 and moved < 2.0, "resumed time moves at the 30-minute day (%.2f game minutes in 0.6 s)" % moved)
+	check(moved > 0.15 and moved < 1.2, "resumed time moves at the 48-minute day (%.2f game minutes in 0.6 s)" % moved)
 
 	# The clock panel.
 	var clock = game.day_clock
@@ -178,13 +184,16 @@ func run() -> void:
 	var probe: ReflectionProbe = cycle.room_probe
 	var head: Vector3 = game.player.global_position + Vector3.UP * 1.6
 	check(probe != null and probe.visible and cycle.in_room_fill(head), "indoors at night: the indoor fill box is shown around the player")
-	check(probe != null and absf(probe.ambient_color_energy - 0.54) < 0.01, "indoors at night: warm ambient fill inside the box (%.2f)" % (probe.ambient_color_energy if probe != null else 0.0))
+	# The fill strength is data/day_night.json "indoor" (0.54 until 25 Nov 2026, then 0.62 with the sun fading indoors).
+	check(probe != null and absf(probe.ambient_color_energy - cycle._indoor_energy) < 0.01, "indoors at night: warm ambient fill inside the box (%.2f)" % (probe.ambient_color_energy if probe != null else 0.0))
 	check(cycle.environment.ambient_light_color.is_equal_approx(cycle.sample(0.0).ambient_color), "indoors at night: the global ambient keeps the night colour")
 	check(not cycle.in_room_fill(market.to_global(Vector3(-33.0, 1.7, 22.0))), "indoors at night: the street outside the door is outside the fill box")
 	check(cycle.sun.light_energy < 0.01 and not cycle.sun.shadow_enabled, "indoors at night: no moonlight through the roof, no noon sun")
 	check(cycle.environment.sky.sky_material.sky_top_color.v < 0.5, "indoors at night: the sky stays night")
 	cycle.set_time(12 * 60)
-	check(absf(cycle.sun.light_energy - 0.56) < 0.01, "indoors by day: the sun is unchanged")
+	# Since 25 Nov 2026 (improvement plan GFX-03) the sun fades indoors like the moon (no shadows
+	# stop it at the roof); its direction and colour, and the sky, stay the time of day's.
+	check(cycle.sun.light_energy < 0.01 and cycle.sun.rotation_degrees.is_equal_approx(cycle.sun_rotation(12.0)), "indoors by day: the sun fades through the roof, its direction unchanged")
 	cycle.set_time(0)
 	game.player.global_position = market.to_global(Vector3(-33.0, 0.1, 22.0))
 	await wait(1.6)

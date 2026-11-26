@@ -47,6 +47,23 @@ const HELD_META := "eyes_held"
 const REST_META := "rest"
 ## Seconds between the town blinker's looks at its group for new figures.
 const FOLLOW_SECONDS := 2.0
+## A figure's running gesture Tween (play()); face_while() waits for it.
+const GESTURE_META := "gesture_tween"
+## A figure's Facing turner while it faces the player (face_while()).
+const FACING_META := "facing_turner"
+## Facing the player (ANIM-07, user decision D12, 25 Nov 2026): the largest turn from the
+## figure's own facing (radians, about 75°), how fast the turn eases (1/s), the smallest turn
+## worth making, and the room the turned figure needs in front (snout) and behind (tail), in
+## metres, at FACE_RAY_HEIGHTS above its feet. A turn that would bring a wall or fixture closer
+## than that (and closer than it already was) is made smaller, or skipped.
+const FACE_MAX_TURN := 1.3
+const FACE_RATE := 7.0
+const FACE_MIN_TURN := 0.12
+const FACE_ROOM_FRONT := 0.55
+const FACE_ROOM_BACK := 0.45
+const FACE_RAY_HEIGHTS := [0.35, 0.9]
+## Metres beyond which the player has walked off and the figure turns back.
+const FACE_MAX_DISTANCE := 5.0
 
 ## Seconds between one figure's blinks (min, max).
 @export var blink_gap := BLINK_GAP
@@ -152,7 +169,7 @@ func _process(delta: float) -> void:
 			set_eyes_open(figure, 0.0)
 	if gestures and _time >= _next_gesture:
 		_next_gesture = _time + _rng.randf_range(gesture_gap.x, gesture_gap.y)
-		var ready: Array = figures.filter(func(f) -> bool: return is_instance_valid(f) and f.is_visible_in_tree() and not _busy.has(f) and not _calling(f))
+		var ready: Array = figures.filter(func(f) -> bool: return is_instance_valid(f) and f.is_visible_in_tree() and not _busy.has(f) and not _calling(f) and not facing(f))
 		if not ready.is_empty():
 			gesture(ready[_rng.randi() % ready.size()], GESTURES[_rng.randi() % GESTURES.size()])
 
@@ -190,7 +207,11 @@ func moving(figure: Node3D) -> bool:
 static func play(host: Node, figure: Node3D, kind: String, strength := 1.0, side := 1.0) -> Tween:
 	if not kind in GESTURES or not is_instance_valid(figure):
 		return null
-	var tween := host.create_tween()
+	# Physics ticks (ANIM-01, 25 Nov 2026): the figure is physics-interpolated, so a move written
+	# each rendered frame would stutter; written on ticks it is smoothed between them.
+	var tween := host.create_tween().set_process_mode(Tween.TWEEN_PROCESS_PHYSICS)
+	# face_while() waits for a running gesture (both turn the figure).
+	figure.set_meta(GESTURE_META, tween)
 	match kind:
 		"hop":
 			var y := figure.position.y
@@ -213,6 +234,157 @@ static func play(host: Node, figure: Node3D, kind: String, strength := 1.0, side
 			tween.tween_interval(0.6)
 			tween.tween_property(figure, "rotation:z", roll, 0.3).set_trans(Tween.TRANS_SINE)
 	return tween
+
+## Facing the player while talking (ANIM-07, user decision D12, 25 Nov 2026: the whole figure
+## turns by yaw, eased, and turns back afterwards; no other idle moves). `figure` turns toward
+## `toward` (the player) while `keep` returns true and `toward` stays within FACE_MAX_DISTANCE,
+## then eases back to the yaw it had. A Facing node under `host` does it on physics ticks and
+## frees itself. Calling again while it faces just takes the new `keep`.
+## Skipped (false): a seated, lying or napping figure (meta `seat_point` / `napping`, or not
+## upright), shut eyes (asleep), or no room to turn (FACE_ROOM_*). A figure that is `calling`
+## (npc_presence.gd hops it) or making a gesture is waited for: it turns once it stops.
+## Only rotation.y of the figure is written, never "Head".
+static func face_while(host: Node, figure: Node3D, toward: Node3D, keep: Callable) -> bool:
+	if host == null or not is_instance_valid(figure) or not is_instance_valid(toward) or not figure.is_inside_tree():
+		return false
+	if bool(figure.get_meta("napping", false)) or figure.has_meta("seat_point") or eyes_held(figure):
+		return false
+	if figure.global_basis.y.normalized().dot(Vector3.UP) < 0.97:
+		return false
+	var turner = figure.get_meta(FACING_META) if figure.has_meta(FACING_META) else null
+	if turner != null and is_instance_valid(turner):
+		turner.toward = toward
+		turner.keep = keep
+		turner.returning = false
+		return true
+	turner = Facing.new()
+	turner.name = "Facing"
+	turner.figure = figure
+	turner.toward = toward
+	turner.keep = keep
+	turner.wait = func() -> bool: return _calling(figure) or _gesturing(figure)
+	turner.aim = func() -> float: return facing_yaw(figure, toward.global_position, [toward])
+	host.add_child(turner)
+	figure.set_meta(FACING_META, turner)
+	return true
+
+## Whether `figure` is turned toward the player now, or turning to or from it.
+static func facing(figure: Node3D) -> bool:
+	return is_instance_valid(figure) and figure.has_meta(FACING_META) and is_instance_valid(figure.get_meta(FACING_META))
+
+static func _gesturing(figure: Node3D) -> bool:
+	var tween = figure.get_meta(GESTURE_META) if figure.has_meta(GESTURE_META) else null
+	return tween is Tween and (tween as Tween).is_valid() and (tween as Tween).is_running()
+
+## The yaw (figure.rotation.y) that turns `figure` toward `point`, at most FACE_MAX_TURN from its
+## yaw now and shortened until the turn keeps FACE_ROOM_FRONT / FACE_ROOM_BACK clear of walls
+## and fixtures (or as clear as the figure stands now). NAN: no turn worth making.
+## `ignore`: nodes whose bodies the room rays pass through (the player).
+static func facing_yaw(figure: Node3D, point: Vector3, ignore: Array = []) -> float:
+	var parent := figure.get_parent() as Node3D
+	var local := (parent.to_local(point) if parent != null else point) - figure.position
+	if Vector2(local.x, local.z).length() < 0.05:
+		return NAN
+	# A plush faces -Z.
+	var now := figure.rotation.y
+	var turn := clampf(angle_difference(now, atan2(-local.x, -local.z)), -FACE_MAX_TURN, FACE_MAX_TURN)
+	if absf(turn) < FACE_MIN_TURN:
+		return NAN
+	var excluded: Array[RID] = []
+	for node in [figure] + ignore:
+		if node is CollisionObject3D:
+			excluded.append((node as CollisionObject3D).get_rid())
+		for body in (node as Node).find_children("*", "CollisionObject3D", true, false):
+			excluded.append((body as CollisionObject3D).get_rid())
+	var space := figure.get_world_3d().direct_space_state
+	var forward := -figure.global_basis.z
+	forward.y = 0.0
+	forward = forward.normalized()
+	var front_now := _room(space, figure.global_position, forward, FACE_ROOM_FRONT, excluded)
+	var back_now := _room(space, figure.global_position, -forward, FACE_ROOM_BACK, excluded)
+	# The whole sweep must keep its room (a tail swings through every angle on the way), so
+	# step through it and stop at the last clear angle.
+	var steps := maxi(int(ceil(absf(turn) / 0.2)), 1)
+	var allowed := 0.0
+	for i in range(1, steps + 1):
+		var angle := turn * i / steps
+		var ahead := forward.rotated(Vector3.UP, angle)
+		if _room(space, figure.global_position, ahead, FACE_ROOM_FRONT, excluded) < minf(front_now, FACE_ROOM_FRONT) - 0.02:
+			break
+		if _room(space, figure.global_position, -ahead, FACE_ROOM_BACK, excluded) < minf(back_now, FACE_ROOM_BACK) - 0.02:
+			break
+		allowed = angle
+	if absf(allowed) < FACE_MIN_TURN:
+		return NAN
+	return now + allowed
+
+## How far (up to `reach` metres) the floor-level rays from `feet` along `direction` stay clear.
+static func _room(space: PhysicsDirectSpaceState3D, feet: Vector3, direction: Vector3, reach: float, excluded: Array[RID]) -> float:
+	var clear := reach
+	for height: float in FACE_RAY_HEIGHTS:
+		var start := feet + Vector3(0, height, 0)
+		var query := PhysicsRayQueryParameters3D.create(start, start + direction * reach)
+		query.exclude = excluded
+		var hit := space.intersect_ray(query)
+		if not hit.is_empty():
+			clear = minf(clear, start.distance_to(hit.position))
+	return clear
+
+## Turns one figure toward the player and back (face_while()). Runs on physics ticks, so the
+## physics-interpolated figure turns smoothly; returns the figure to its yaw if freed midway.
+class Facing extends Node:
+	var figure: Node3D
+	var toward: Node3D
+	var keep: Callable
+	## True while the figure may not turn yet (calling or in a gesture).
+	var wait: Callable
+	## The yaw to turn to, or NAN (facing_yaw()).
+	var aim: Callable
+	var returning := false
+	var _started := false
+	var _rest_yaw := 0.0
+	var _goal_yaw := 0.0
+
+	func _physics_process(delta: float) -> void:
+		if not is_instance_valid(figure):
+			queue_free()
+			return
+		var hold := not returning and is_instance_valid(toward) and keep.is_valid() and bool(keep.call()) \
+				and figure.global_position.distance_to(toward.global_position) <= FACE_MAX_DISTANCE
+		if not _started:
+			if not hold:
+				_finish()
+				return
+			if bool(wait.call()):
+				return
+			_rest_yaw = figure.rotation.y
+			_goal_yaw = float(aim.call())
+			if is_nan(_goal_yaw):
+				_finish()
+				return
+			_started = true
+		if not hold:
+			returning = true
+		var goal := _rest_yaw if returning else _goal_yaw
+		figure.rotation.y = lerp_angle(figure.rotation.y, goal, 1.0 - exp(-FACE_RATE * delta))
+		if returning and absf(angle_difference(figure.rotation.y, _rest_yaw)) < 0.004:
+			figure.rotation.y = _rest_yaw
+			_finish()
+
+	func _exit_tree() -> void:
+		if _started and is_instance_valid(figure):
+			figure.rotation.y = _rest_yaw
+		_started = false
+		_release()
+
+	func _finish() -> void:
+		_started = false
+		_release()
+		queue_free()
+
+	func _release() -> void:
+		if is_instance_valid(figure) and figure.has_meta(FACING_META) and figure.get_meta(FACING_META) == self:
+			figure.remove_meta(FACING_META)
 
 ## How open `figure`'s eyes are: 1 open, 0 shut (a slit SHUT of the eye's height). The eye mesh
 ## is centred on its node (pig_sculpt.gd _put), so it is squashed in place.

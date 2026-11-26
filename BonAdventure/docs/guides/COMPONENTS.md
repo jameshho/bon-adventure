@@ -30,6 +30,7 @@ Audited and consolidated 13 November 2026 (user request). Evidence: `docs/eviden
 | Any NPC: its id, spot, costume, role; idle chatter and brush-offs when it has no game on offer | `data/npcs.json` via `npc_registry.gd` (`spec()`, `place()`, `spawn()`, `make()`); `npc_chatter.gd` (`main.npc_chatter`) | `scripts/characters/` | [NPCs](NPCS.md) (23 Nov 2026) |
 | Eyes: blink, shut, sleep | `PlushLife` | `scripts/characters/plush_life.gd` | [Plush characters](#plush-characters) |
 | A small move: hop, shake, nod, lean | `PlushLife.play(host, figure, kind)` | `scripts/characters/plush_life.gd` | [Plush characters](#plush-characters) |
+| An NPC turns to face the player while talking, then back (25 Nov 2026) | `PlushLife.face_while(host, figure, player, keep)` | `scripts/characters/plush_life.gd` | [Plush characters](#plush-characters) |
 | An NPC that talks, calls with "!" and gets a face close-up | `minigame_host.gd`, `npc_presence.gd` (spec `"board": false` for an NPC that talks through the host but is no activity, the supermarket till since 21 Nov 2026; meta `talk_face_drop` for a hat; meta `talk_camera_at`, a global point, fixes the close-up camera where walls block the automatic one, 13 Nov 2026) | `scripts/learning/` | [Minigames](MINIGAMES.md#building-a-minigame) |
 | Animals that wander | `park_animals.gd` profiles | `scripts/world/park_animals.gd` | [Animal system](ANIMAL_SYSTEM.md) |
 | An animal comes to food and eats it (or sniffs and refuses it) (24 Nov 2026) | `animal.offer_food(parent_local_point, eats)` and its `food_done(ate)` signal (`park_animals.gd`); the head bows through `clay_animator.gd` `eat` (an unrigged animal bows its whole body); feeding from a carried bag: `animal_feeding.gd` | `scripts/world/park_animals.gd`, `scripts/characters/clay_animator.gd`, `scripts/world/animal_feeding.gd` | [Feeding Time!](../game/minigames.md#feeding-time) |
@@ -38,8 +39,9 @@ Audited and consolidated 13 November 2026 (user request). Evidence: `docs/eviden
 | Praise for a right answer on a 3D object: a hop and gold sparks (21 Nov 2026) | `SuccessBurst.celebrate(node, at, viewer)`, `SuccessBurst.sparks(parent, frame)` | `scripts/world/success_burst.gd` | Users: the library game (a book shelved right), the welcome tutorial's shopping list |
 | The end of a minigame: what the player achieved, the words practiced and discovered, a small reward (21 Nov 2026) | Nothing in the game: `results_flow.gd` shows it for every game that ends `completed` (`Board.complete(id)` for a game whose end is not a round count); `show_results({...})` directly for anything else | `scripts/ui/results_screen.gd`, `scripts/learning/results_flow.gd`, `scripts/learning/session_words.gd` | [Results screen](MINIGAMES.md#results-screen); every learning game |
 | "Click / tap this" on a 3D object: a pulsing ring with a mouse pointer or fingertip (21 Nov 2026) | `tap_hint.gd` `point_at(node, touch, up)`, `clear()` on a full-screen CanvasLayer | `scripts/ui/tap_hint.gd` | User: the welcome tutorial's apple (after 3 s without a click) |
-| Something found once and kept, like an achievement: a floating gold coin with BonBon's face, collected by walking into it (21 Nov 2026) | `StampCoin.make(stamp_id)` or `scenes/props/stamp_coin.tscn`; any one-off activity: `Achievements.shared().note(event)` | `scripts/world/stamp_coin.gd`, `scripts/learning/achievements.gd`; placed in the town from `data/achievements.json` by `scripts/world/stamp_places.gd` (`gate`: a door that must be open first) | [Passport guide](ACHIEVEMENTS.md#town-stamps) |
-| A bell (or anything) that swings when used and signals for a sound (21 Nov 2026) | `chapel_bell.gd` on a node with a `Bell clapper` child; signal `rung` | `scripts/world/chapel_bell.gd` | [Chapel record](TOWN_DESIGN_BRIEF.md#stamp-places-storage-room-bank-safe-grand-chapel--21-november-2026) |
+| Something found once and kept, like an achievement: a floating gold coin with BonBon's face, collected by walking into it (21 Nov 2026) | `StampCoin.make(stamp_id)` or `scenes/props/stamp_coin.tscn` (signal `collected` plays the `coin.stamp` chime, 25 Nov 2026); any one-off activity: `Achievements.shared().note(event)` | `scripts/world/stamp_coin.gd`, `scripts/learning/achievements.gd`; placed in the town from `data/achievements.json` by `scripts/world/stamp_places.gd` (`gate`: a door that must be open first) | [Passport guide](ACHIEVEMENTS.md#town-stamps) |
+| A record player: pick, stop and skip the background music; the disc spins with the playing track's label (25 Nov 2026) | `scenes/props/record_player.tscn` (a stand and turntable built in code, back to a wall, front +Z); its E opens `record_player_panel.gd` (`Main.record_player_panel`); music through `sound.gd` `pick_record()` | `scripts/world/record_player.gd`, `scripts/ui/record_player_panel.gd` | [Record player](#record-player); user: the home's living room, beside the TV |
+| A bell (or anything) that swings when used and signals for a sound (21 Nov 2026) | `chapel_bell.gd` on a node with a `Bell clapper` child; signal `rung` (plays `bell.chapel` since 25 Nov 2026) | `scripts/world/chapel_bell.gd` | [Chapel record](TOWN_DESIGN_BRIEF.md#stamp-places-storage-room-bank-safe-grand-chapel--21-november-2026) |
 | A road vehicle's headlights; a siren with flashing red / blue lights (21 Nov 2026) | `vehicle.toggle_headlights()` / `toggle_siren()`, or `Headlights.of(vehicle)` / `EmergencyLights.of(vehicle)` with `set_on()`, `toggle()`, `is_on`, `switched` | `scripts/world/vehicle_headlights.gd`, `scripts/world/emergency_lights.gd` | [Vehicle lights](ZOO_VEHICLE_IMPLEMENTATION.md#headlights-siren-and-flashing-lights--21-november-2026); users: every road vehicle; the police car, ambulance and fire truck |
 | Lettering on a sign, board or tag in the town (readable size, translation, contrast) | `WorldSign.make(...)` / `WorldSign.restyle(label, {"read": metres, ...})`, `WorldSign.fit_board(...)` | `scripts/world/world_sign.gd` (translation: `scripts/world/sign_language.gd`) | [World signs](#world-signs) |
 
@@ -77,7 +79,7 @@ func can_interact() -> Variant:      # optional: true, false (no badge) or a rea
 
 | Mechanism | Owner | Why it is separate |
 | --- | --- | --- |
-| Hinged doors, sliding doors and drawers, shower curtains | `door_animator.gd`: one registry (`main.doors`), types `hinge`, `slide`, `curtain`; every entry is an interactable | The standard. A new door or drawer is a node with a `door_state` meta. A hinge door may name a `spin` child (and `spin_angle`): that wheel turns first and the door waits for it (the bank safe, 21 Nov 2026). A hinge door with `seconds` (door scenes: `swing_seconds`) swings slowly and heavily over that time (the bank vault, 23 Nov 2026) |
+| Hinged doors, sliding doors and drawers, shower curtains | `door_animator.gd`: one registry (`main.doors`), types `hinge`, `slide`, `curtain`; every entry is an interactable | The standard. A new door or drawer is a node with a `door_state` meta. A hinge door may name a `spin` child (and `spin_angle`): that wheel turns first and the door waits for it (the bank safe, 21 Nov 2026). A hinge door with `seconds` (door scenes: `swing_seconds`) swings slowly and heavily over that time (the bank vault, 23 Nov 2026). Sound (25 Nov 2026): `toggle()` plays `door.<kind>.open` / `.close` at the leaf; the kind is the state's `sound` (door scenes: `sound`; steps: `set_sound_kind()`), else hinge `room`, sliding `sliding`, drawers and curtains silent ([sound effects](VOICE.md#sound-effects-25-nov-2026)) |
 | Walk-through doors (frame, leaf, handles, sign) | `scenes/props/door.tscn`, `double_door.tscn`, `sliding_door.tscn` ([Doors guide](DOORS.md)) | Build the door and register its leaf with the animator. **Paused 13 Nov 2026: built, no building migrated yet** |
 | Garage door | `scripts/world/garage_door.gd` | Sectional panels on a curved track; reverses mid-travel |
 | Zoo and farm gates | `scripts/world/zoo_gate.gd` | Two leaves at their own speed. Could move to the animator, but its swing speed would change; left as it is (user, 13 Nov 2026). Since 23 Nov 2026 `toggle_gate(from)` opens the leaves away from the opener (the player's position) |
@@ -95,6 +97,7 @@ Two mechanics, on purpose:
 
 - **In the hand** (`hand_hold.gd`, [guide](HAND_HOLD.md)): hand-sized things that ride on
   BonBon's left arm. A new kind of object is one new entry in `PROFILES` and a `hold_kind` meta.
+  A hanging item's pendulum steps on physics ticks (25 Nov 2026).
 - **Carried in front** (`warehouse_goods.gd`): big physics goods that float ahead of the
   player with a put-down preview, and trolleys driven with W / S. Used only inside the
   Warehouse Worker game. Do not use it for small items, and do not copy it.
@@ -190,7 +193,9 @@ card, the translation lines while EN is held) everything inside shrinks to fit (
 | Who | Owner | How |
 | --- | --- | --- |
 | Player | `seating_controller.gd` finds and offers seats; `player_controller.gd` `begin_sitting()` / `end_sitting()` blends the pose | Seats are found by word or meta; nothing to write per chair |
+| Player on a playground swing (meta `playground_swing`, `scripts/world/playground_swing.gd`) | `seating_controller.gd` `_physics_process()` feeds one kick per press | W / S (`climb_up` / `climb_down`), or on a touch screen the joystick pushed more than halfway up / down (`move_forward` / `move_back`; 25 Nov 2026, it did nothing on mobile). A seat's `sit_message` with a `<id>_touch` phrase shows that on a touch screen (`seats.swing_message_touch`). Check: [swing-touch-20261125](../evidence/swing-touch-20261125/verify.gd) |
 | Player, from a script | `seating.sit_at(node, stand_back)` | Minigame tables (`minigame_table.gd`) |
+| Player, no clear spot to stand up or leave a vehicle (GAME-05, 25 Nov 2026) | `seating.unstuck()` / `VehicleControls.unstuck()` through `PlayerPlace.rescue_spot()`; a far move goes through `Main.respawn()` | Never a dead E: the nearest clear spot on the same floor in sight, else outside the building's entrance, else the spawn. `Main.respawn()` (also the fall below `FALL_RESPAWN_Y`) ends a running game through its `end_activity()` |
 | NPC | `house_characters.gd` `_sit()` computes a seated pose from the figure's own meshes; `seated()` places one on any seat; `Bedtime` moves nappers between seat and bed while unseen | NPCs snap into the pose, they do not animate |
 
 The two poses are different by nature (the player's blends each frame, an NPC's is computed
@@ -245,7 +250,20 @@ PlushLife.hold_eyes(figure, true)       # asleep: shut until hold_eyes(figure, f
 PlushLife.set_eyes_open(figure, 0.4)    # a slow close, 0 shut ... 1 open
 PlushLife.breath_scale(rest, breath)    # torso scale for a sleeper's breath, -1 ... 1
 PlushLife.play(self, figure, "nod")     # "hop", "shake", "nod", "tilt"; returns the Tween
+# Face the player while keep() is true, then ease back (whole figure, yaw only):
+PlushLife.face_while(self, npc, player, func() -> bool: return panel.is_dialogue_visible())
 ```
+
+Facing the player (ANIM-07, user decision D12, 25 Nov 2026; no other idle moves): a `Facing`
+node under `host` turns the figure's `rotation.y` toward the player on physics ticks (at most
+75°, `FACE_MAX_TURN`), and eases back to the yaw it had once `keep` is false or the player is
+more than 5 m away. It skips a seated, lying or napping figure (meta `seat_point` / `napping`,
+or not upright) and one with held eyes; it waits while the figure is `calling` or in a gesture.
+A turn that would bring a wall or fixture closer than 0.55 m in front or 0.45 m behind (and
+closer than it already was) is shortened through the sweep, or skipped (`facing_yaw()`).
+Callers: `npc_chatter.gd` `talk()` (while its line shows) and `minigame_host.gd` `_on_talk()`
+(the host NPC, while its line shows). Gesture tweens run on physics ticks (ANIM-01) and record
+themselves in meta `gesture_tween`.
 
 Who uses it:
 
@@ -265,9 +283,10 @@ One writer per property. When two want it, the higher row wins and the lower one
 | --- | --- | --- |
 | Eye transform | `plush_life.gd` only. Never scale or move an eye node elsewhere | A hold (`hold_eyes`) beats a blink: a held figure is skipped and a blink in progress does not reopen it |
 | A figure's blinking | The `PlushLife` whose set it is in (meta `plush_life_owned`) | The town blinker skips owned figures |
-| An NPC's position and rotation | `npc_presence.gd` while it calls with its "!" (the hop) | `PlushLife` makes no gesture on a calling figure; one gesture at a time per figure |
+| An NPC's position and rotation | `npc_presence.gd` while it calls with its "!" (the hop, and since 25 Nov 2026 its ease back down; physics interpolation off meanwhile) | `PlushLife` makes no gesture on a calling figure and its facing waits; one gesture at a time per figure |
+| An NPC's yaw while talking | `PlushLife.face_while()` (`Facing`, meta `facing_turner`) | Waits for calling and gestures; no random gesture starts on a facing figure. It restores the yaw it found, so a session that turns its NPC itself during a talk must not use it |
 | `Head` node transform | Nobody. Leave it at rest | — |
-| The player's body parts (`Arm`, `Foot`, `Visual`) | `player_controller.gd`, one state per frame in this order: seated or lying, riding (`animate_boarding`, `motorcycle_rider.gd`), walking (`animate_bonbon`) | The hand only supplies an arm pose to `animate_bonbon` (`hand.arm_pose()`); it never writes the arm |
+| The player's body parts (`Arm`, `Foot`, `Visual`) | `player_controller.gd`, one state per frame in this order: seated or lying, riding (`animate_boarding`, `motorcycle_rider.gd`), walking (`animate_bonbon`; since 25 Nov 2026 the gait phase follows the ground covered, `GAIT_STRIDE`) | The hand only supplies an arm pose to `animate_bonbon` (`hand.arm_pose()`); it never writes the arm |
 | The player's `Visual` scale | `mystery_session.gd` during the toad sequence only | — |
 
 Adding a gesture: a new `match` branch in `PlushLife.play()` that tweens the figure's
@@ -317,3 +336,31 @@ in every language and prints which buildings still have small labels.
 | Low | The player's arm swing uses BonBon's shoulder point; measure it when another plush needs to walk |
 | Low | Static `lie` characters in `data/npcs.json` keep their eyes open; a `hold_eyes()` call would shut them if wanted |
 | Low | Zoo gate and warehouse cabinet could join `door_animator.gd` at the cost of a small timing change |
+
+## Record player
+
+User, 25 Nov 2026: "a record player next to the TV" that plays the game's background music,
+lets the player choose any song, switch songs and leave, with the disc turning.
+
+- **Model** (`scripts/world/record_player.gd`, `scenes/props/record_player.tscn`): a low walnut
+  stand on tapered legs (top 0.86, 0.95 × 0.58; a shelf of record sleeves, one per track colour,
+  and a door) with a turntable on it: plinth, platter, black record with grooves and a coloured
+  label, a tone arm on a pivot, a speed knob and a green "on" lamp. Built at load (as the
+  electrical box), meta `keep_own_draw` keeps the moving parts out of the static batches. The
+  label colour is the track's (`LABELS`); the disc spins at 33⅓ rpm, easing up and down.
+  `show_track(track, play)` puts a record on: a different record while one plays lifts the arm,
+  slows the disc, swaps the label and drops the needle again (signals `needle_up`,
+  `needle_down(track)`, hooks for sounds). It follows `sound.gd` `music_changed`, so it also
+  shows a minigame's or the loading screen's track while that plays.
+- **Use**: an Interactable (E, a click or a tap from in front; "finish the other task first"
+  while a game runs). It opens `scripts/ui/record_player_panel.gd`: the camera glides to a
+  close-up of the turntable (as the elevator floor picker), and a BonStyle card on the left (clear
+  of the HUD's EN and Settings buttons) lists
+  every song as a pill with a small record in its colour (the playing one green with a tick),
+  "Now playing: …" or "Pick a song", and ◀, a green ▶ / ⏸ and ▶. A tap on a song plays it, ◀ / ▶
+  step round the list, the green button (or a tap on the turntable) stops and plays again; the
+  ✕ or Esc glides back, and the music keeps playing. Popup stack and control lock: `PANELS`.
+- **Music**: `sound.gd` `pick_record(track)` (see [VOICE.md](VOICE.md#background-music-25-nov-2026)).
+- **Placed**: the home's living room, against the west wall just north of the TV's media
+  console (home step `record_player`). Evidence and check: `docs/evidence/record-player-20261125/`.
+

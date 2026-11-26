@@ -117,6 +117,15 @@ func run() -> void:
 		await shot("results-practice")
 	screen.close_requested.emit()
 	check(not screen.visible and continues[0] == 1, "Esc continues")
+	# --- words that became known this session (LEARN-04, D9, 25 Nov 2026)
+	screen.show_results({"title": "Books Sorted!", "words": {"new": ["chair"], "practiced": ["dog", "cat"], "struggled": [], "known": ["dog"],
+			"all": ["chair", "dog", "cat"], "highlights": ["chair", "dog", "cat"]}})
+	await settle()
+	check(screen.shown.stats.get("known", 0) == 1, "a known-words bubble (%s)" % [screen.shown.stats])
+	var dog_row: Node = screen.card.find_child("Word dog", true, false)
+	check(dog_row != null and dog_row.find_child("Tag known", true, false) != null and screen.card.find_child("Word cat", true, false).find_child("Tag known", true, false) == null, "the known word's row has the Known tag, others not")
+	check(_text(screen.card).contains(lex.phrase("results.stat_known", lex.native)) and not _text(screen.card).contains("%"), "Words you now know, no percentage")
+	screen.close_requested.emit()
 	# --- the shared flow (results_flow.gd) for other games
 	var board = preload("res://scripts/learning/activity_board.gd").shared()
 	var flow = game.results_flow

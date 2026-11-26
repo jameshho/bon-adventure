@@ -74,6 +74,19 @@ User decisions, 23 November 2026:
 - No chatter while any minigame runs, while the box asks a question, or while a house character
   naps (meta `napping`). The player is never locked by a chatter line.
 
+## Facing the player
+
+User decision D12, 25 Nov 2026 (ANIM-07): an NPC the player talks to turns its whole figure
+(yaw only, never `Head`) toward the player while its line shows, then eases back to its own
+facing. Ambient NPCs do it through `npc_chatter.gd` `talk()`, a minigame host through
+`minigame_host.gd` `_on_talk()`; both call `PlushLife.face_while()`
+([Plush characters](COMPONENTS.md#plush-characters)). No extra idle gestures. Seated, lying and
+napping NPCs do not turn; a calling NPC turns once it stops hopping. Wall clearance: the turn
+(at most 75°) keeps 0.55 m clear in front and 0.45 m behind through its whole sweep, or as
+much as the NPC had standing at its spot; otherwise it is shortened or skipped, so the spot
+rules below still hold after a talk. A player straight in front causes no turn. Check:
+`docs/evidence/characters-20261125/verify.gd`.
+
 ## How to add an NPC
 
 1. Pick a permanent `id` (lowercase, unique, never reused) and add one entry to

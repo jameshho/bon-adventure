@@ -8,6 +8,9 @@ extends Control
 ##      with "See all" for the rest;
 ##   3. a small reward (optional): a town mission done ("Quest updated!" and its XP, results_flow.gd),
 ##      coins, stars. Coins and stars are not designed yet (user: "finalize later").
+## Known words (decision D9, 25 Nov 2026, LEARN-04): words that became known this session
+## (session_words.gd "known", from word_memory.gd is_known()) get a "Words you now know" bubble and
+## a daisy "Known" tag on their row; still no scores.
 ## With no new words the screen becomes "Great Practice!" with the familiar words practiced.
 ## Buttons: Continue exploring (green, closes) and Play again (blue, only with `replay`).
 ##
@@ -85,11 +88,11 @@ func _words() -> Dictionary:
 		var summary: Dictionary = source.summary()
 		summary["highlights"] = source.highlights(HIGHLIGHTS)
 		return summary
-	return {"new": [], "practiced": [], "struggled": [], "all": []}
+	return {"new": [], "practiced": [], "struggled": [], "known": [], "all": []}
 
 func _factor() -> float:
 	var view: Vector2 = get_viewport().get_visible_rect().size
-	return clampf(minf(view.y / 800.0, view.x / 1100.0), 0.5, 3.0)
+	return BonStyle.factor(view)
 
 func _build() -> void:
 	if card != null:
@@ -139,6 +142,9 @@ func _build() -> void:
 		if not familiar.is_empty():
 			_stat(left, "practiced", familiar.size(), UiText.t("results.stat_practiced"), f)
 		_stat(left, "new", fresh.size(), UiText.t("results.stat_new"), f)
+	var known: Array = words.get("known", [])
+	if not known.is_empty():
+		_stat(left, "known", known.size(), UiText.t("results.stat_known"), f)
 	if not quests.is_empty():
 		_stat(left, "quests", quests.size(), UiText.t("results.stat_quests"), f)
 	_rewards(left, f)
@@ -192,7 +198,7 @@ func _stat(parent: Control, id: String, value: int, text: String, f: float) -> v
 	var row := HBoxContainer.new()
 	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	row.add_theme_constant_override("separation", roundi(16 * f))
-	var number := BonStyle.label(str(value), 42, BonStyle.GREEN_TEXT if id == "new" else BonStyle.INK, f, 700)
+	var number := BonStyle.label(str(value), 42, BonStyle.GREEN_TEXT if id in ["new", "known"] else BonStyle.INK, f, 700)
 	number.custom_minimum_size.x = 70 * f
 	row.add_child(number)
 	var words := BonStyle.label(text, 22, BonStyle.INK, f, 600, HORIZONTAL_ALIGNMENT_LEFT)
@@ -274,8 +280,9 @@ func _word_band(words: Dictionary, practice: bool, f: float) -> Control:
 		list.add_child(grid)
 		shown["shown_words"] = every.duplicate()
 	else:
+		var known: Array = words.get("known", [])
 		for key in picks:
-			list.add_child(_word_row(key, fresh.has(key), f))
+			list.add_child(_word_row(key, fresh.has(key), f, known.has(key)))
 		shown["shown_words"] = picks.duplicate()
 	if every.size() > picks.size():
 		var more := BonStyle.button(UiText.t("results.see_less") if _all else UiText.t("results.see_all", {"count": every.size()}), "quiet", "", f, 20.0, Vector2(150, 44))
@@ -293,8 +300,9 @@ func _word_band(words: Dictionary, practice: bool, f: float) -> Control:
 	band.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	return band
 
-## One highlighted word: an optional picture, the foreign word, its native meaning and a "New" tag.
-func _word_row(key: String, fresh: bool, f: float) -> Control:
+## One highlighted word: an optional picture, the foreign word, its native meaning and a "New" tag
+## (or a daisy "Known" tag for a word that became known this session).
+func _word_row(key: String, fresh: bool, f: float, known := false) -> Control:
 	var lexicon = Lexicon.shared()
 	var row := HBoxContainer.new()
 	row.name = "Word " + key
@@ -326,8 +334,9 @@ func _word_row(key: String, fresh: bool, f: float) -> Control:
 	texts.add_child(BonStyle.label(lexicon.word(key, lexicon.foreign), 26, BonStyle.INK, f, 700, HORIZONTAL_ALIGNMENT_LEFT))
 	texts.add_child(BonStyle.label(lexicon.word(key, lexicon.native), 18, BonStyle.INK_SOFT, f, 600, HORIZONTAL_ALIGNMENT_LEFT))
 	row.add_child(texts)
-	if fresh:
+	if fresh or known:
 		var tag := PanelContainer.new()
+		tag.name = "Tag new" if fresh else "Tag known"
 		tag.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		var look: StyleBox = BonStyle.box("choice_on", f)
 		look.content_margin_left = 14.0 * f
@@ -336,7 +345,19 @@ func _word_row(key: String, fresh: bool, f: float) -> Control:
 		look.content_margin_bottom = 4.0 * f
 		tag.add_theme_stylebox_override("panel", look)
 		tag.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-		tag.add_child(BonStyle.label(UiText.t("results.new_tag"), 18, Color.WHITE, f, 700))
+		var inside := HBoxContainer.new()
+		inside.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		inside.add_theme_constant_override("separation", roundi(6 * f))
+		if known and not fresh:
+			var daisy := TextureRect.new()
+			daisy.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			daisy.texture = BonStyle.icon_texture("daisy", 64)
+			daisy.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+			daisy.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+			daisy.custom_minimum_size = Vector2(24, 24) * f
+			inside.add_child(daisy)
+		inside.add_child(BonStyle.label(UiText.t("results.new_tag" if fresh else "results.known_tag"), 18, Color.WHITE, f, 700))
+		tag.add_child(inside)
 		row.add_child(tag)
 	return row
 

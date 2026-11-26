@@ -74,7 +74,7 @@ func run():
         game.player.global_position=v.boarding_step_point()
         if v.fixed_wing: game.player.global_position=v.to_global(Vector3(-2.1,.1,-1.1))
         await physics_frame
-        var count_before: int = v.find_children("*","Node",true,false).size()
+        var count_before: int = v.find_children("*","Node3D",true,false).filter(func(n): return not n is AudioStreamPlayer3D).size()
         await shot(v,title+"-closed",eye,target)
         check(game.toggle_vehicle() and game.active_vehicle==v,title+" E enters actual vehicle")
         step(v,roundi(v.boarding_duration*.6*60))
@@ -97,7 +97,7 @@ func run():
             check(game.active_vehicle==null and game.player.riding_vehicle==null,title+" exit returns to walking")
             check(game.player.collision_layer!=0 and game.player.visual.visible,title+" player collision/visibility restored")
         else: game.complete_vehicle_exit(v,v.to_global(Vector3(0,0,5)))
-        check(v.find_children("*","Node",true,false).size()==count_before,title+" no temporary geometry spawned")
+        check(v.find_children("*","Node3D",true,false).filter(func(n): return not n is AudioStreamPlayer3D).size()==count_before,title+" no temporary geometry spawned")
         v.global_transform=saved
         print("DOOR CYCLE ",title)
     var truck: Node3D = game.apartment.get_node("Warehouse/Exterior/Delivery truck")

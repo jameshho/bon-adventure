@@ -47,7 +47,7 @@ dated history of rules and implementation.
 | Warehouse and Warehouse Worker minigame | **Redesign approved 14 Nov 2026 (user): 30 × 14.5, reception inside at the east end, two loading bays, divider, one shelf / table / cabinet, five placing tasks** ([record](#warehouse-redesign--14-november-2026)). Original: **new building between the school and the airport** (user request, 5 Nov 2026): silver/light-gray metal hall 30 × 22 with a 12 × 7 reception annex (desk, seated receptionist), a second door into a large, high, empty hall; a supervisor (lion plush Ramón) offers a five-task minigame in a **separate copy** of the same architecture. Decisions: no coins, no first-try counting, tú, A1–A2 daily words only. | Phase 1 (site, school move, shell, reception) Phase 2 (50 words, three reception posters, Ramón outside) Phase 3 (racks A–C, tables, scale, cabinet, conveyor, IN/OUT areas, light stock, truck) Phase 4 (game frame: copy, fade, task card, leave question) and Phase 5 (physics goods, carrying, trolleys, task generator and checks, wrong-attempt help) built 5 Nov 2026; Phase 6 full suite run 5 Nov 2026. See [record](#warehouse-and-warehouse-worker-minigame--5-november-2026) and the [warehouse guide](WAREHOUSE.md). **14 Nov 2026 redesign built (uncommitted); the lot's car and motorcycle (base world) not built.** |
 | Grammar Classroom | The school's general classroom becomes a grammar class (user brief, 6 Nov 2026): Lana (new sheep plush teacher) by one large rear-wall board; 6 desks in 2 columns × 3 rows, the front four are answer desks A–D; questions per learned language (Spanish ser/estar, Chinese shared measure words, English agreement and prepositions); points only, no coins. | Remodel baked into `school.scn` 7 Nov 2026 (`scripts/buildings/school.gd` step `grammar_classroom`). See [record](#grammar-classroom-remodel--6-november-2026) and the [guide](GRAMMAR_CLASS.md). |
 | Mystery House and Mystery Doors | **New building, "Casa de las Estrellas"** (user brief and image, 9 Nov 2026): cream stone, purple tiled roofs with gold trim, a purple gold-ribbed dome with a crystal, arched purple entrance with a gold star, stained glass, lanterns, flowers and vines, carpeted steps, a sign post. **24 × 30** (school-like frontage, deeper), in the bottom-left corner of the map (south of the bank, facing the loop road). Hall with shape and colour posters; a high mysterious room under the dome with stars and the twelve zodiac constellations (decoration only); three locked coloured doors that open only in **Mystery Doors** (Madame Luna, cat plush fortune-teller): clues by shape, then colour, then both; a wrong door turns the player into a toad for 2 s. Door wall after the user's door reference (same day). | Built 9 Nov 2026 (`scenes/town/mystery.scn`, own script `scripts/buildings/mystery.gd`; map site base step `mystery_house_site`). See [record](#mystery-house-and-mystery-doors--9-november-2026). |
-| Farm barn | **Taller gambrel barn on the unchanged 12 × 9 footprint** (user decisions, 1 November 2026, loose reference image): walls 5.0 → eave 6.0, gambrel ridge 10.5; door opening 3.4 × 4.0 (was 3.6 high) with open X-braced double doors; walkable hayloft reached by a climbable ladder; tools / hay / supplies interior with nine new words. Supplies only, no animal stalls. | Implemented 1 November 2026; see [record](#farm-barn-gambrel-roof-hayloft-and-supplies-interior--1-november-2026). Ladder turned to face the door and the paddock shelter and trough rebuilt the same day. A feed trough and the vegetable garden remain future items. **Hen house (user, 24 Nov 2026):** a separate coop in the paddock west of the barn with six hens laying eggs to collect; the same day the user asked for it **much bigger (at least 3×), walk-in**, a clear place to deposit eggs and a button to drop one: now a 7 × 5 walk-in coop with the egg crate outside its door ([record](#hen-house-and-eggs--24-november-2026), [walk-in](#walk-in-hen-house-crate-by-the-door-and-drop-button--24-november-2026)). |
+| Farm barn | **Taller gambrel barn on the unchanged 12 × 9 footprint** (user decisions, 1 November 2026, loose reference image): walls 5.0 → eave 6.0, gambrel ridge 10.5; door opening 3.4 × 4.0 (was 3.6 high) with open X-braced double doors; walkable hayloft reached by a climbable ladder; tools / hay / supplies interior with nine new words. Supplies only, no animal stalls. | Implemented 1 November 2026; see [record](#farm-barn-gambrel-roof-hayloft-and-supplies-interior--1-november-2026). Ladder turned to face the door and the paddock shelter and trough rebuilt the same day. A feed trough and the vegetable garden remain future items. **Hen house (user, 24 Nov 2026):** a separate coop in the paddock west of the barn with six hens laying eggs to collect; the same day the user asked for it **much bigger (at least 3×), walk-in**, a clear place to deposit eggs and a button to drop one: now a 7 × 5 walk-in coop with the egg crate outside its door ([record](#hen-house-and-eggs--24-november-2026), [walk-in](#walk-in-hen-house-crate-by-the-door-and-drop-button--24-november-2026)). **25 Nov 2026 (user):** 20% bigger (8.4 × 6.0), a fuller interior, the flickering nest boxes fixed, and all hens are the clay hen ([record](#roomier-hen-house-and-clay-hens--25-november-2026)). |
 | Zoo layout | **User design, 12 November 2026:** the wild-animal lawn (unchanged footprint, farm untouched, no north exit) is four fenced zones around a cross path and a cherry-tree plaza with lamps (its two benches removed, user, 23 Nov 2026): **Savanna** (giraffe, rhinoceros, deer, kangaroo, zebra), **Forest** (bear, bear cub, gorilla), **Bamboo Grove** (panda, red panda, monkey), **Wildlife Plains** (elephant, lion, tiger, flamingo, snake); Spanish zone signs (LA SABANA, EL BOSQUE, EL BAMBÚ, LAS LLANURAS) and a ZOO arch (EL ZOOLÓGICO) at the gate; full scenery kept lightweight. | Built 12 Nov 2026 (base step `zoo_zones`); see [record](#zoo-zones--12-november-2026). Each zone has a walk-in gap so every animal stays studiable. |
 | Zoo food booth and Feeding Time! | **User decisions, 24 Nov 2026:** a food booth just inside the zoo gate (on the grass strip in front of Wildlife Plains, beside the path; the zoo footprint is unchanged, the user left expanding north to the agent and it was not needed) run by **Nico, a sheep zookeeper**, who both sells and hosts the game. Five foods: meat, apple, fish, carrot, bamboo (bamboo a new word). Free buying with a paper bag that works like the supermarket basket; animals walk to the food and eat it. The minigame asks for an animal by name; Nico always hands the food over. | Designed and built 24 Nov 2026 (base step `zoo_food_booth`; check `docs/evidence/zoo-feeding-20261124/verify.gd`); see [record](#zoo-food-booth-and-feeding-time--24-november-2026) and the [learning card](../game/minigames.md#feeding-time). |
 | Home pool and sidewalks | Sunken home pool with real depth; curbed, raised sidewalks along the loop road. | Implemented 28 October 2026; see [pool and sidewalks](#home-pool-depth-and-raised-sidewalks--28-october-2026). |
@@ -1546,6 +1546,27 @@ held item has a `drop()` method — only the farm egg so far, which breaks at Bo
 "Oh no! You dropped the egg." like an egg carried off the farm. Other held items (books,
 baskets, bags) get no Drop button. Check: `docs/evidence/hen-house-walkin-20261124/verify.gd`
 (views in the same folder). Verification: [final verification](FINAL_VERIFICATION.md#walk-in-hen-house--24-november-2026).
+
+### Roomier hen house and clay hens — 25 November 2026
+
+User, 25 Nov 2026: "the new hen should replace the old ones, remove all the old ones and related
+files"; then "improve the interior of the hen house and make it bigger by 20%. also fix the
+flickering, the 'baskets' in the house is flickering". Supersedes the walk-in coop's sizes,
+interior and hens above (doorway side, crate by the door, egg rules, spots, saves and toasts
+stay). Barn step `roomier_hen_house` (`scripts/buildings/barn.gd`) replaces `Barn/Hen house`
+with the same node names and spot order (nest boxes 1–5, corner nest 6, yard nests 7–11), so
+saved eggs keep their places; base step `hen_clay_roams` makes the farm's hen clay first.
+
+| Item | Built |
+| --- | --- |
+| Coop | Every size the walk-in coop's × 1.2: centre (85.3, 76.4), x 81.1…89.5, z 73.4…79.4 (west fence x 90, south fence z 73); 8.4 × 6.0 floor, eave 3.58, ridge 5.14, doorway 2.4 × 3.1 in the east wall. Two windows on each long wall (pane, frame bars and a cross of muntins, inside and out) |
+| Inside | Plank floor with six loose straw patches; light wood wainscot (1.15 high, cream rail) on the back and side walls; three tie beams with king posts and a ridge beam; a hanging lantern; **five separate nest cubbies** on a stand against the west wall (shelf 0.74, top 1.46, red dividers, cream lip, straw in each: spots 1–5) with a perch bar and a cleated ladder plank up to it; a straw nest in the south-west corner (spot 6); a ladder roost (two rails, four rungs) leaning on the south wall; a hay bale (solid) with a feed sack; a hanging tube feeder on a bar under the tie beams, a bell waterer on a block and a sand dust bath by the north wall |
+| Flicker fix | The old nest row had its straw's underside on the shelf top and its dividers' and lip's faces in the shelf's planes (37 overlapping same-plane face pairs of different colours in the old hen house, also in the egg crate). Now no two parts of different colours share a plane where they overlap: boards meet edge to face, dividers stop 2 cm short of the shelf front, straw floats 1 cm up, window panes sit between their frame bars, door frame bars stand 0.5 cm off the wall, floor straw patches each at their own height. The check scans every axis-aligned part of the saved hen house: 0 pairs |
+| Hens | The farm hen `ParkZoo/Hen` is the approved clay hen (`scenes/animals/hen_clay.tscn`, word *hen*, wandering, 0.975 tall like the old hen; [animal record](ANIMAL_SYSTEM.md#farm-hens-are-the-clay-hen-25-nov-2026)); the still display beside the rooster and chick went. The six hen-house hens are copies of it, four in the yard, two inside; their yard (`HEN_YARD`) is x 73.4…89.2, z 73.9…82. The piece-built `scenes/animals/hen.tscn` was deleted (and its entry in the legacy `park_zoo.tscn`) |
+| Egg crate | Outside on its table against the east wall north of the doorway, (80.45, 78.6), under the egg sign; tray narrowed so it no longer shares the rails' faces |
+
+Check: `docs/evidence/hen-house-roomier-20261125/verify.gd` (views in the same folder).
+Verification: [final verification](FINAL_VERIFICATION.md#roomier-hen-house-and-clay-hens--25-november-2026).
 
 ## Hospital ward doctors — 1 November 2026
 
@@ -4434,6 +4455,11 @@ Built 24 Nov 2026. Ownership:
   facing the path, striped awning, the translated ANIMAL FOOD board, the "Paper bags" stack (the
   till's rack) and five food crates (`Booth food <key>`, word roots with pick areas). The bake
   reported nothing in the way; gate, fences and path unchanged.
+  Board fit (25 Nov 2026, base step `zoo_food_booth_sign_fit`): the sign's fit width was given in
+  town units (2.0) but `world_sign.gd` takes world metres, so English and Spanish failed
+  `world_signs`; it is now 2.52 m (the 2.1-unit board less margins), two lines allowed, and the
+  board is 0.8 units (1.04 m) tall, bottom edge unchanged. Spanish wraps to COMIDA PARA / ANIMALES
+  at the 9 m letter height ([renders](../evidence/zoo-booth-sign-20261125/)).
 - **Nico:** registry NPC `nico` (`data/npcs.json`, unit `base`, node `ParkZoo/ZooKeeper`), outfit
   `zookeeper` (`data/plush_costumes.json`).
 - **Bag:** carrier `bag` of `shopping_basket.gd` (`give(from, Basket.BAG)`, word *shopping bag*,
@@ -4456,3 +4482,23 @@ recorded, leaving the zoo mid-game). Screenshots in the same folder. Limitation:
 eating bow is mild (the elephant's trunk reaches the food), and the food in the bag only just shows
 above its rim.
 
+
+## On the Menu: sent-back orders — 24 November 2026
+
+User request (24 Nov 2026): a wrong order gave no feedback until the player walked back to Twinkle.
+New flow: Send order → "Order sent!" → the customer's "Thank you!" → "Oh no, this is not what I
+ordered. Can you try again?" (`restaurant.verdict_wrong`, reworded) → `RETRY_SECONDS` (2.5 s) later
+the tablet opens again on the same order with that line in its bubble, the right dishes kept on the
+slip, and each wrong dish marked ✗ (red row in the list, "✗ dish" on its course's slip row) and not
+choosable for that course. Retries repeat until every dish is right; then "Excellent!" and Twinkle's
+"Good job!" when it was right at the first send, which alone counts toward the target (user, 24 Nov
+2026: "Only first-try orders"); after a retry Twinkle says "{name} got what they wanted in the end.
+Next time, try to get it right the first time!" (`restaurant.report_retry`), the order does not count,
+and the visit's first wrong send adds one board miss (`add_miss`, progression stars). Only the first send is tracked in the practice log; a retry opens no
+new question. Twinkle's wrong-dish report (`report_wrong`, `miss_first`, `miss_also`,
+`Orders.report_ref`) is no longer shown. Code: `scripts/learning/restaurant_session.gd` (`wrong`,
+`tries`), `scripts/ui/restaurant_panel.gd` (`is_wrong`, `ui.wrong`, `ui.picks`).
+
+Verification (24 Nov, isolated HOME, `VT_FOCUS=restaurants`, not the full town):
+`docs/evidence/restaurant-retry-20261124/verify.gd` (a retried order, then a first-try one) **23 checks, 0 failures**; renders of the line and
+the reopened tablet in the same folder, inspected. Not run: the full suite and the practice-log check.

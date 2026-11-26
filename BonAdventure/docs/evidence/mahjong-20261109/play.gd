@@ -131,7 +131,7 @@ func run():
 	check(not session.npcs[0].visible and session.mei_standing != null, "Mei stands beside the table")
 	check(root.get_viewport().get_camera_3d() == session.camera, "the game camera is current")
 	if cycle != null:
-		check(cycle.sun_step_minutes > 20.0 and cycle.sun_slide_seconds > 0.0, "the sun steps rarely and slides while seated (%.1f game minutes)" % cycle.sun_step_minutes)
+		check(cycle.sun_step_minutes > 2.0 * cycle.SUN_STEP_MINUTES and cycle.sun_slide_seconds > 0.0, "the sun steps rarely (over twice the normal step; the real-time step is fixed, so game minutes follow the day length) and slides while seated (%.1f game minutes)" % cycle.sun_step_minutes)
 	check(session.view != null and session.view.get_child_count() >= 136, "136 tiles built")
 	check(game.mahjong_panel.visible and not game.player.controls_enabled, "panel open, player locked")
 	# 10 Nov 2026 (user): no journal / map / games / help buttons at the table.

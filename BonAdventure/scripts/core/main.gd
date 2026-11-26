@@ -46,6 +46,8 @@ var electrical_box_panel
 var electrical_box_session
 ## The elevator floor picker: E at a cabin panel (scripts/ui/elevator_floor_picker.gd).
 var elevator_floor_picker
+## The record player panel: E at a record player (scripts/ui/record_player_panel.gd).
+var record_player_panel
 ## The minigame picker, F9 or the ▶ corner button (scripts/ui/game_launcher.gd).
 var game_launcher
 ## The Passport: missions, town stamps, the achievement log (scripts/ui/passport_panel.gd).
@@ -77,6 +79,7 @@ var clay_life
 var day_night
 var day_clock
 const GameSettings := preload("res://scripts/core/game_settings.gd")
+const Sound := preload("res://scripts/core/sound.gd")
 ## Interface text in the native language (data/phrases.json; UI Stage 3).
 const UiText := preload("res://scripts/language/ui_text.gd")
 const Lexicon := preload("res://scripts/language/lexicon.gd")
@@ -239,8 +242,11 @@ func _ready() -> void:
 	clay_life.follow_group(ClayAnimator.BLINK_GROUP)
 	clay_life.name = "ClayLife"
 	area_vocabulary.drop_interactables(apartment)
-	# Sounds (scripts/core/sound.gd, data/sounds.json): binds the fixtures already built.
-	add_child(preload("res://scripts/core/sound.gd").new())
+	# Sounds (scripts/core/sound.gd, data/sounds.json): binds the fixtures already built. App adds
+	# the service earlier (loading music) and plays the town music itself.
+	if Sound.shared() == null:
+		add_child(Sound.new())
+		Sound.shared().play_town()
 	# Lamp glow materials go on before the batchers below; the HUD clock opens the time panel.
 	day_night.bind_town(apartment, player)
 	day_clock = preload("res://scripts/ui/day_clock.gd").new()
@@ -257,6 +263,8 @@ func _ready() -> void:
 	if not get_meta("editing_snapshot", false):
 		await _loading_step("rest")
 		preload("res://scripts/world/garden_rendering.gd").new().build(apartment)
+		# The render trim's building-shell rays need the town's collision in the physics space.
+		await get_tree().physics_frame
 		render_culling = preload("res://scripts/world/render_culling.gd").new()
 		render_culling.build(self)
 		# Inside a building only it, its yard and the street outside are drawn (14 Nov 2026).
@@ -554,6 +562,7 @@ func make_popups() -> void:
 	settings_panel = preload("res://scripts/ui/settings_panel.gd").new()
 	hud.ui_root.add_child(settings_panel)
 	settings_panel.visibility_changed.connect(sync_player_controls)
+	settings_panel.controls_requested.connect(open_controls_guide)
 	hud.settings_requested.connect(open_settings)
 	# The HUD's book button and the journal's ✕ work like J (the saved words are its Saved tab).
 	hud.journal_toggle_requested.connect(toggle_study_journal)
@@ -576,7 +585,14 @@ func make_popups() -> void:
 
 func open_settings() -> void:
 	if not settings_panel.visible:
+		settings_panel.controls_allowed = not hud.in_minigame
 		settings_panel.open()
+
+## Settings' "Controls" (UI-04): the F1 guide, in its touch view on a touch device.
+func open_controls_guide() -> void:
+	settings_panel.close()
+	if not hud.is_help_open() and not hud.in_minigame:
+		hud.toggle_help()
 
 ## The Display Mode or a language changed (L, the HUD button or Settings): every open text
 ## re-renders. Text already built from the old languages (a family tree in progress) keeps
@@ -708,6 +724,8 @@ func add_unit(key: String) -> void:
 		day_night.bind_lamps(part)
 	await get_tree().process_frame
 	if render_culling != null:
+		# The render trim's building-shell rays need the unit's collision in the physics space.
+		await get_tree().physics_frame
 		render_culling.add_parts(self, parts, key)
 	_adding_unit = false
 	var jobs: Array = _unit_jobs.get(key, [])
@@ -759,8 +777,10 @@ func _unhandled_input(event: InputEvent) -> void:
 	# Keys, and the same actions fired by the touch buttons (scripts/ui/touch_controls.gd).
 	if (event is InputEventKey or event is InputEventAction) and event.is_pressed() and not event.is_echo():
 		if event.is_action_pressed("back"):
-			# The topmost popup closes; with nothing open, Esc opens Settings.
-			if not popups.close_top():
+			# The topmost popup closes; with nothing open, a running game may take it to ask the
+			# shared leave question (its request_leave() -> bool, docs/guides/MINIGAMES.md; 25 Nov
+			# 2026), else Esc opens Settings.
+			if not popups.close_top() and not _request_leave():
 				open_settings()
 			player.release_orbit()
 		elif event.is_action_pressed("help"):
@@ -796,6 +816,13 @@ func _unhandled_input(event: InputEvent) -> void:
 		# its "E" badge, and shows a plain word's card (interaction_controller.gd click()).
 		interaction.click()
 		sync_player_controls()
+
+## Esc / back with no popup open: the running game's request_leave() (true when it asked its
+## leave question). Games without it let Settings open as before.
+func _request_leave() -> bool:
+	var running: String = Board.shared().blocker("")
+	var session: Object = Board.shared().session(running) if running != "" else null
+	return session != null and session.has_method("request_leave") and bool(session.request_leave())
 
 ## The E key: the input claim that holds it (driving, seated, the warehouse game while carrying)
 ## or the focused interactable (docs/guides/ARCHITECTURE_REVIEW_PART1.md#interaction-system).
@@ -854,13 +881,32 @@ func toggle_study_journal() -> void:
 ## player to the supermarket with the game still running (mystery_session.gd _guard_place).
 const FALL_RESPAWN_Y := -30.0
 
+## Puts the player at `position` (world) facing `yaw` (NAN keeps the view) as a respawn: a fall
+## below FALL_RESPAWN_Y and the last-resort unstuck from a blocked seat or vehicle (GAME-05,
+## 25 Nov 2026, PlayerPlace.rescue_spot()). A minigame running then ends through its own
+## end_activity() (the stop a language change uses, with its NPC's goodbye), so no game is left
+## half open with the player somewhere else.
+func respawn(position: Vector3, yaw: float = NAN) -> void:
+	end_running_game()
+	player.global_position = position
+	player.velocity = Vector3.ZERO
+	if not is_nan(yaw):
+		player.camera_yaw = yaw
+		player.rotation.y = yaw
+	player.reset_camera()
+
+## Ends the minigame in progress (Board.blocker("")) through its end_activity(), if it has one.
+func end_running_game() -> void:
+	var running: String = Board.shared().blocker("")
+	var session: Object = Board.shared().session(running) if running != "" else null
+	if session != null and session.has_method("end_activity"):
+		session.end_activity()
+
 func _process(delta: float) -> void:
 	# Minigame started / ended signals (activity_board.gd watch(), PWA phase 4).
 	preload("res://scripts/learning/activity_board.gd").shared().watch()
 	if player.global_position.y < FALL_RESPAWN_Y and not player.noclip_enabled and not is_instance_valid(active_vehicle):
-		player.global_position = spawn_position()
-		player.velocity = Vector3.ZERO
-		player.reset_camera()
+		respawn(spawn_position())
 	sync_minigame_hud()
 	# Also when something else (a fade's end, minigame_zone.gd) switched the controls back on.
 	if talk_locked() != player_talk_locked or (player_talk_locked and player.controls_enabled):

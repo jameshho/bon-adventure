@@ -4,6 +4,8 @@ extends SceneTree
 ## exit; with graphics it also renders the poses and the close-up into this folder.
 ## HOME=<scratch> VT_FOCUS=library VT_SPAWN=none \
 ##   godot --path . --resolution 1280x800 --script res://docs/evidence/hand-hold-20261113/verify.gd
+## 25 Nov 2026: the close checks follow the book's tap_close (a press or Esc, no ✕); the basket
+## keeps the ✕ and the popup stack.
 ## (headless works too: checks only). Writes <view>.png here with graphics; reads no saves.
 const OUT := "res://docs/evidence/hand-hold-20261113"
 var checks := 0
@@ -73,23 +75,34 @@ func run() -> void:
 		await shot(player, "book-walking", Vector3(-3.2, 1.6, -2.6))
 		_pose(player, 0.0)
 		await shot(player, "book-behind", Vector3(-1.6, 2.2, 4.2))
-	# --- inspect: zoom in, controls off, close button; exit puts it back in the hand
+	# --- inspect: zoom in, controls off; a book closes with a press anywhere or Esc (its profile's
+	# "tap_close", since 24 Nov 2026: no ✕); closing puts it back in the hand
 	_pose(player, 0.0)
 	game.camera.current = true
 	ui.open_inspection()
 	check(ui.inspecting() and book.get_parent() == ui.inspector.stage, "Inspect opens a close-up of the held book")
 	check(not player.controls_enabled, "movement off while inspecting")
 	ui._refresh()
-	check(ui.close_button.visible and not ui.inspect_button.visible, "close button replaces Inspect")
-	check(game.popups.is_open(ui.close_button), "Esc closes the inspection (popup stack)")
+	check(ui.tap_close and not ui.close_button.visible and not ui.inspect_button.visible, "a book shows no ✕ and no Inspect while open (tap_close)")
 	await create_timer(.6).timeout
 	if graphics:
 		await frame("book-inspect")
-	game.popups.close_top()
+	var press := InputEventMouseButton.new()
+	press.button_index = MOUSE_BUTTON_LEFT
+	press.pressed = true
+	ui._input(press)
 	await create_timer(.6).timeout
-	check(not ui.inspecting() and book.get_parent() == hand.swing, "closing puts the book back in the hand")
+	check(not ui.inspecting() and book.get_parent() == hand.swing, "a press anywhere closes it and puts the book back in the hand")
 	game.sync_player_controls()
 	check(player.controls_enabled, "movement back after closing")
+	ui.open_inspection()
+	var esc := InputEventAction.new()
+	esc.action = "ui_cancel"
+	esc.pressed = true
+	ui._input(esc)
+	await create_timer(.6).timeout
+	check(not ui.inspecting() and book.get_parent() == hand.swing, "Esc closes a book's close-up too")
+	game.sync_player_controls()
 	# --- swap for a basket: the book comes back detached
 	var basket: Node3D = load("res://scenes/props/shopping_basket.tscn").instantiate()
 	shelf.add_child(basket)
@@ -111,13 +124,21 @@ func run() -> void:
 		await shot(player, "basket-standing", Vector3(-3.2, 1.6, -2.6))
 		_pose(player, PI * .5, .9)
 		await shot(player, "basket-walking", Vector3(-3.2, 1.6, -2.6))
-		_pose(player, 0.0)
-		game.camera.current = true
-		ui.open_inspection()
-		await create_timer(.6).timeout
+	# --- a basket (no tap_close) keeps the ✕, which the popup stack closes (Esc)
+	_pose(player, 0.0)
+	game.camera.current = true
+	ui.open_inspection()
+	ui._refresh()
+	check(not ui.tap_close and ui.close_button.visible and not ui.inspect_button.visible, "the basket's close-up shows the ✕ instead of Inspect")
+	check(game.popups.is_open(ui.close_button), "Esc closes the basket's close-up (popup stack)")
+	await create_timer(.6).timeout
+	if graphics:
 		await frame("basket-inspect")
-		ui.close_inspection()
-		await create_timer(.6).timeout
+	game.popups.close_top()
+	await create_timer(.6).timeout
+	check(not ui.inspecting() and basket.get_parent() == hand.swing, "closing puts the basket back in the hand")
+	game.sync_player_controls()
+	check(player.controls_enabled, "movement back after the basket's close-up")
 	# --- release: back where it came from, solids on, button gone
 	var put: Node3D = hand.release()
 	await physics_frame

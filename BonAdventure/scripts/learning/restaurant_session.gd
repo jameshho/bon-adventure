@@ -22,7 +22,9 @@ extends Node
 ##      that course (user, 24 Nov 2026: feedback at once, not after walking back to Twinkle).
 ##      Only the first send is tracked (practice_log.gd first answer).
 ##   6. Back at Twinkle (only after a right order): "Good job!" (the visit counts towards
-##      data/activities.json restaurant_twinkle, retries included) with "Next customer" /
+##      data/activities.json restaurant_twinkle only when right at the first send; after a
+##      retry "X got what they wanted in the end..." and it does not count; user, 24 Nov 2026)
+##      with "Next customer" /
 ##      "Stop serving"; Twinkle never names the next customer ("See if any customers are ready
 ##      to order"; user, 11 Nov 2026). At the target, the last report offers the words
 ##      practised on the tablet, and Finish ends the game.
@@ -562,7 +564,10 @@ func _on_send(picks: Dictionary) -> void:
 		step = Step.TO_HOST
 		_customer_say(i, "restaurant.verdict_right")
 		return
-	# Sent back: the complaint, then the tablet again on the same order.
+	# Sent back: the complaint, then the tablet again on the same order. The first miss of a
+	# visit is one miss on the board (progression stars).
+	if tries == 0:
+		Board.shared().add_miss(ACTIVITY)
 	tries += 1
 	_customer_say(i, "restaurant.verdict_wrong", [], RETRY_SECONDS + 0.5)
 	_zoom_customer(tables[i].presence)
@@ -579,7 +584,8 @@ func _on_send(picks: Dictionary) -> void:
 func _report() -> void:
 	_visit_id += 1
 	step = Step.NONE
-	finished = Board.shared().add_success(ACTIVITY)
+	# Only an order right at the first send counts (user, 24 Nov 2026).
+	finished = tries == 0 and Board.shared().add_success(ACTIVITY)
 	if finished:
 		offered = false
 	_show_report()
@@ -587,7 +593,7 @@ func _report() -> void:
 ## Twinkle's report of the last visit, with its question (again, if it was walked away from).
 func _show_report() -> void:
 	var name_value := _name(current)
-	var ref := {"phrase": "restaurant.report_last" if finished else "restaurant.report_right", "values": {"name": name_value}}
+	var ref := {"phrase": "restaurant.report_last" if finished else ("restaurant.report_right" if tries == 0 else "restaurant.report_retry"), "values": {"name": name_value}}
 	var choices: Array = [host.choice("words", "restaurant.see_words", "check")] if finished else _next_choices()
 	_zoom_customer(null)
 	host.zoom(true)
@@ -635,6 +641,16 @@ func _on_close() -> void:
 	if step == Step.TO_CUSTOMER:
 		host.abandon_practice()
 		panel.hide_panel()
+
+## Esc / back with no popup open (Main, the request_leave() contract, docs/guides/MINIGAMES.md;
+## 25 Nov 2026): the leave question, as Twinkle's "stop". The door guard keeps the player in the
+## dining room meanwhile. True while a game runs.
+func request_leave() -> bool:
+	if host == null or not playing:
+		return false
+	if not host.is_asking_leave():
+		host.ask_leave()
+	return true
 
 func _on_leave_answered(leave: bool) -> void:
 	if door != null:

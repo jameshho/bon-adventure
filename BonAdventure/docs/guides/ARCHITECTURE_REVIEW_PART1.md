@@ -725,6 +725,13 @@ buttons (now section headings of the table) and the hint stay in the HUD.
   [word pictures](#word-pictures)). The ★ toggles the existing bookmark
   (`vocabulary_hud.gd` `toggle_bookmark()`, saved at once to `VocabularyProgress.BOOKMARKS_FILE`;
   the card star uses the same function).
+- **Known words** (25 Nov 2026, decision D9, improvement plan LEARN-04): a word that
+  `WordMemory.is_known()` accepts ([word memory](MINIGAMES.md#word-memory): stability at least
+  `LEARNED_STABILITY`) has a small daisy in the corner of its picture cell (static
+  `known_badge()` / `show_known()`, kept small so the sticker-book journal can reuse them), the
+  footer adds "· N known" (`known_total()`) and the detail line adds "You know this word".
+  `set_data()` reads it once per open into `words[key].known`. Check and renders:
+  `docs/evidence/known-words-20261125/verify.gd`.
 - **Filters:** All / Studied / Saved (the bookmarked words; the game calls them "saved"),
   search in either language (case and Spanish accents ignored), category, sorting (foreign
   A–Z, native A–Z, most right, most wrong; sorting is inside each section). Area sections
@@ -1489,7 +1496,7 @@ see it.
 | Hidden props | `data/tutorial.json` `hide` (node paths under the town): the mahjong table with its players (user, 14 Nov 2026) is hidden, not solid and its seats and talker are off while the tutorial runs (`tutorial.gd` `_hide()`, as for the house twins); its render-batched copies are shrunk away and back with `render_culling.gd` `show_batched()` (hiding the node alone leaves the merged copy drawn). Back when the tutorial ends or is skipped |
 | Talking to BonBon | The guide's standing plush is a TALK [interactable](#interaction-system) (`_make_guide_talker()`, the same settings as a minigame host's talker; no "!"). While a `wait` step runs, E, a click or a tap on her says that step's `where` line (`data/tutorial.json`; `where_line()`); in the shop act the trip's phase decides (`tutorial_shop.gd` `where()`: fruit, till, walk out). Not offered while a line with a Next button, the cashier's request, a fade or the cutscene is up (13 Nov 2026) |
 | Progress | The profile's `"tutorial": {"act", "done"}` (`profile_manager.gd` `update()`), saved at the start of each act (each act begins with a `place` step, so it can resume there) |
-| Skip / Replay | The "Skip tutorial" button (`tutorial.skip`, says what it skips since 14 Nov 2026; it widens to its text; top centre, below the clock, hidden behind the journal, map, help and Settings; a BonStyle soft blue pill since 18 Nov 2026, restyled only when the window scale changes) ends it and places the player at `skip_to` outside the home; Settings' "Replay the welcome tour" (`app.gd` `replay_tutorial()`) restarts it in the running town |
+| Skip / Replay | Since 25 Nov 2026 (UI-07) Skip asks first: `ask_skip()` opens the dialogue panel's shared quit card (`shop_order_panel.gd` `show_quit()`) with `tutorial.skip_confirm`, Stay (`skip_stay`, green, left) and Skip (`skip_yes`, coral, right); while it is up (`asking_skip`) `until()` holds every step, the player is held (`_apply_gate()`) and clicks do not move a line on; Stay carries on where it was. Beside the button an act marker pill (`progress_text()`, `tutorial.progress`: "Part 1 of 3", the act count from `data/tutorial.json`), shown and hidden with it ([views](../evidence/tutorial-progress-20261125/README.md); checked by `tutorial`). The "Skip tutorial" button (`tutorial.skip`, says what it skips since 14 Nov 2026; it widens to its text; top centre, below the clock, hidden behind the journal, map, help and Settings; a BonStyle soft blue pill since 18 Nov 2026, restyled only when the window scale changes) ends it and places the player at `skip_to` outside the home; Settings' "Replay the welcome tour" (`app.gd` `replay_tutorial()`) restarts it in the running town |
 | Start behind the loading screen (17 Nov 2026, user: the first dialogue boxes in the house lagged on the web; a longer first load is fine if the bar shows real progress) | `app.gd` `_on_town_ready()` starts the tutorial with `Tutorial.begin(main, false, true)` (`covered`) while the loading screen is still up: the cast is built one plush per frame (`cast_built` / `cast_total` move the bar), the act's first `place` step puts the player and the cast in place without a fade and the director holds there (`prepared`; only `place`, `door`, `lock`, `confine`, `words` steps run while covered). The warm-up then looks round from the bed and draws every view the act shows up to its cutscene (`warm_views()`: each cast member's face close-up, then four headings from each spot of the act's place, walk and wait steps, 1.8 m up, spots closer than 1.5 m merged) and the dialogue box once (`warm_dialogue()`), so their shaders compile behind the screen; then `release()` and the `open_on` close-up starts. The loading bar: scene file 0–15 % (read in the background where threads exist), town build steps to 55 % (weighted, `main.gd` `LOADING_STEP_WEIGHTS`), cast to 70 %, one share per warm-up view to 100 %. Measured: [tutorial-lag-20261117](../evidence/tutorial-lag-20261117/README.md) |
 | Cutscene | The loading screen's town pictures with the title (`loading_screen.gd` `show_title()`). Since 16 Nov 2026 (user: the house act lagged) it is also the loading screen for the buildings not loaded yet: `app.gd` `_load_rest()` adds none during the house act and all of them, one after another, while the cutscene is up; it stays at least `cutscene_seconds` (7 s) and until they are in, at most `cutscene_max_seconds` (60 s), with the progress bar under the title ([staged loading](MODULAR_TOWN.md#units-added-while-the-game-runs-home-first--13-november-2026)) |
 
@@ -1864,7 +1871,7 @@ Design record: [Alta Cocina restaurant game](TOWN_DESIGN_BRIEF.md#alta-cocina-re
 | Part | Owner |
 | --- | --- |
 | Courses, menu size, difficulty (sizes, intensity and negation chances), property schema (taste colours, temperature levels and words, ingredients with their *con / sin* phrases; textures and extras removed 11 Nov 2026), the 38 dishes with explicit properties and art | `data/restaurant_game.json` |
-| Menus, the matcher, order generation (exactly one match, partial distractors, recent properties avoided; fewer requirements when a size has no unique set, 11 Nov 2026), the missed requirement, order text, the customer's "I'd like to order ..." (`intro_ref`), several sentences in one line (`sentences`) and Twinkle's wrong-dish report, one sentence per wrong dish (`report_ref`), as Lexicon refs | `scripts/learning/restaurant_orders.gd` |
+| Menus, the matcher, order generation (exactly one match, partial distractors, recent properties avoided; fewer requirements when a size has no unique set, 11 Nov 2026), the missed requirement, order text, the customer's "I'd like to order ..." (`intro_ref`), several sentences in one line (`sentences`) and Twinkle's wrong-dish report, one sentence per wrong dish (`report_ref`; unused since 24 Nov 2026, when wrong orders are sent back at the table), as Lexicon refs | `scripts/learning/restaurant_orders.gd` |
 | Sentences (`restaurant.*`: orders, fragments, joiners, feedback, UI), poster titles (`posters.tastes_title`, `textures_title`, `ingredients_title`, `menu_title`), new words | `data/phrases.json`, `data/words.json` through the Lexicon |
 | Dish pictures, 28 property icons, bars, thermometer, poster icon sheets | `scripts/ui/food_icons.gd` |
 | Order tablet since 11 Nov 2026 (bezel and screen, customer and order bubble, four course tabs, dish list, inspection page with taste rows of pill bars, Choose this dish, the order slip (each course's request and its chosen dish; the bubble shows only the courses) and Send order, "Order sent!" with every dish, summary, translation, scaling; `taste_rows()`, `thermometer()`, `ingredient_icons()` shared with the book) | `scripts/ui/restaurant_panel.gd`, created in `minigame_wiring.gd` |
@@ -2155,7 +2162,18 @@ running minigame with its NPC's goodbye, and everything else re-renders.
   `{"es": [...], "en": [...]}`. With no Spanish entry yet, the older single array
   (`user://vocabulary_apartment_progress.json`, or the v0.20 location) is copied in as
   `es`; the old file is never written again. Main keeps `progress_language` and reloads
-  `studied_words` when the foreign language changes.
+  `studied_words` when the foreign language changes. Since 25 Nov 2026 keys that are not in
+  the vocabulary (a removed word, a rename without an alias) are left out in memory only and
+  saved back unchanged, for progress and bookmarks; saving one language keeps the others.
+- Save safety (`save_store.gd`, `profile_manager.gd`; 25 Nov 2026, improvement plan C1):
+  a write that fails or comes up short removes its `.tmp` and keeps the old file; a save that
+  exists but does not parse is copied once to `<file>.corrupt-<unix time>` (with a warning)
+  before defaults can replace it; a lost or unreadable `profiles/index.json` is rebuilt from
+  the `user://profiles/p*` folders (placeholder names `P1`…, BonBon avatar), and `next` always
+  goes above every folder, so ids and folders are never reused and older flat saves are never
+  copied into an existing folder. A new `shared()` singleton that reads profile saves, or
+  listens to one that does, must be added to `ProfileManager.reset_singletons()` (SessionWords
+  was missing until 25 Nov 2026). Check: `docs/evidence/save-robustness-20261125/verify.gd`.
 - Language change: Main compares `native/foreign` in `_on_settings_changed`; on a change it
   calls `end_activity()` on every session that has one (shop: as leaving the store; cashier:
   ends the round with his goodbye; family: closes the game with Dr. Li's goodbye and renames

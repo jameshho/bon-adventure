@@ -172,9 +172,34 @@ moment later, as the supermarket door's "pay first" (`cashier_session.gd`, `DOOR
 - Can the player walk out of the game's room mid-game? For a game played by walking around a
   room with a clear exit, use the door guard (above) and a `<group>.leave_*` question; games at
   one spot or in one panel ask through ✕ / Esc instead (user, 11 Nov 2026: consider it for every
-  game, not a rule).
+  game, not a rule). A game in a building with no doorway to guard may instead ask when the
+  player walks out of its zone (`data/zones.json`): put them back at a spot just inside, facing
+  the NPC, and `host.ask_leave()` (the grocery clerk `_ask_at_edge` in `shop_session.gd`,
+  Library Helper `_check_zone` in `library_session.gd`, Feeding Time! `_ask_at_edge` in
+  `zoo_feeding_session.gd`, 25 Nov 2026).
+- **Required (25 Nov 2026): `request_leave() -> bool`.** Esc / back with no popup open calls it
+  on the running game (`Main._request_leave()`, through `Board.shared().blocker("")` and
+  `session(id)`) before Settings opens. While the game runs in the world, ask the leave question
+  (`host.ask_leave()`, once) and return `true`; return `false` when nothing runs, so Settings
+  opens. A game that is all in one panel gets Esc from the panel's `PANELS` entry instead.
+  Built: `library_session.gd`, `shop_session.gd` (the basket in the world and on its way back),
+  `zoo_feeding_session.gd` (Feeding Time!; walking out of the zoo also puts the player back inside
+  first, GAME-03); since 25 Nov 2026 (wave 2b) also `restaurant_session.gd`, `teller_session.gd`
+  (getting up from window 2's chair mid-game sits the player back down and asks, `_keep_seated`),
+  `warehouse_session.gd`, `grammar_session.gd` and `mystery_session.gd` (these three call their
+  own `ask_leave()`, the same as the card's Leave and the doorway). Panel games need none: Who's
+  Who?, Flight Finder, the police games, Mahjong Club, Radar Patrol and Wire It Up! run only while
+  their panel or card shows, and Esc reaches it first. Check: `game_exits`
+  (`docs/evidence/game-exits-20261125/verify.gd`).
+- **Required: `end_activity()`** ends the game at once with its NPC's goodbye, no question. Main calls
+  it on a language change and, since 25 Nov 2026 (GAME-05), on any respawn (`Main.respawn()`: a fall
+  below `FALL_RESPAWN_Y`, or the last-resort unstuck from a blocked seat or vehicle), so a respawn
+  never leaves a half-open game.
 - `data/activities.json`: offer chance and progress target ([activity board](ARCHITECTURE_REVIEW_PART1.md#shared-dialogue-popups-and-settings--4-november-2026));
-  a `progress_bar.gd` in the game's panel or card.
+  a `progress_bar.gd` in the game's panel or card. Since 25 Nov 2026 also `"music"`: the
+  background track while the game runs (`quiz`, `errands`, `mystery`, `focus` or `outdoors`;
+  none = the town track). Nothing else to do: `sound.gd` switches on the board's started /
+  ended ([music](VOICE.md#background-music-25-nov-2026)).
 - `data/phrases.json` group `<group>` in every language (es, en, zh), plus `games.<activity>`
   for the vocabulary book. No text in code.
 - `scripts/core/minigame_wiring.gd` `build()`: create the panel and session; add the panel to
@@ -201,32 +226,50 @@ Which words a learning game asks about (24 Nov 2026; design and numbers owned by
 [game guide](../game/minigames.md#which-words-come-up)). `scripts/learning/word_memory.gd`,
 `WordMemory.shared()`: FSRS-4.5 (default weights) on a clock of **steps**, one per question the
 [practice tracker](ARCHITECTURE_REVIEW_PART1.md#practice-tracker) records (`recorded` signal),
-`STEPS_PER_DAY` = 8. Grades: positive = Good, negative or translated = Again. New words are
+`STEPS_PER_DAY` = 8, plus **time away** (25 Nov 2026, LEARN-03, user decision D8): the real days
+since the word was last answered, 1 FSRS day each, capped at 7 (`AWAY_DAY_WEIGHT`,
+`AWAY_DAYS_CAP`; `away_days(key)`). A word due only because of that term counts as due for at
+most `AWAY_REVIEWS_PER_SESSION` (8) per session, most forgotten first (`away_budget()`; a session
+starts after `SESSION_GAP_SECONDS`, 3 h, without a question); the others stay first among the
+known. Checks set `now_for_test` (unix seconds). Grades: positive = Good, negative or translated = Again. New words are
 allowed by a gap in steps that grows with the words being learned (`new_gap()`, `new_allowed()`).
+"Being learned" (since 25 Nov 2026, improvement plan LEARN-01): stability under
+`LEARNED_STABILITY`, a key the lexicon has, and either in the pool the game asks about
+(`order(pool)`, `want(keys)`) or answered in the last `RECENT_STEPS` (16) steps; before, every
+weak word ever logged counted, so 12 in one game stopped new words in all of them.
 
 | Call | Use |
 | --- | --- |
-| `order(pool, rng)` | the pool best first: due, allowed new (by `words.json` `tier`), known, other new. For games that pick items from a list |
+| `order(pool, rng)` | the pool best first: due, allowed new (by `words.json` `tier`), familiar (seen, not due), other new. For games that pick items from a list |
 | `choose(pool, n, rng)` | the first n of `order()` |
-| `want(keys)` | 2 due, 1 allowed new, 0 known only, -1 too many new: for comparing candidate questions |
-| `pick_round(make, words_of, tries)` | for generators that build a whole round (`make` replaces the game's state each call): keeps the first round with `want() >= 1`, else the last |
-| `state(key)`, `retrievability(key)`, `is_due`, `is_new`, `learning_count()`, `step()` | inspection |
+| `want(keys)` | 2 due, 1 allowed new, 0 familiar only, -1 too many new: for comparing candidate questions |
+| `pick_round(make, words_of, tries)` | for generators that build a whole round (`make` replaces the game's state each call): keeps the first round with `want() >= 1`, else the last. A round that tests no word is taken as it comes, but never replaces a turned-down round with words (25 Nov 2026: word-less rounds record no step, so the new-word gate could stay shut) |
+| `is_known(key)`, `known_state(state)` (static), `known_count(keys)` | **the one meaning of "known"** (decision D9, 25 Nov 2026, improvement plan LEARN-04): stability at least `LEARNED_STABILITY` (4 FSRS days). The journal and the results card ask only this |
+| `known_changed(game_id, key, known)` (signal) | a recorded answer moved a word across the threshold (runtime only); `session_words.gd` collects a session's newly known words from it |
+| `state(key)`, `retrievability(key)`, `is_due`, `is_new`, `learning_count(pool)`, `step()` | inspection |
 
 Wired in: `shop_order.gd` (`_generate_order`), `library_session.gd` (`_fill_cart`),
 `restaurant_orders.gd` (`_by_memory`), `warehouse_tasks.gd` (`_pick_item`), `grammar_questions.gd`
 (`pick`), `detective_clues.gd` (evidence clue order), `family_session.gd` / `flight_session.gd`
-(`next_question`, `pick_round`) and `mystery_session.gd` (`make_rounds`, `pick_round`). Pass the
+(`next_question`, `pick_round`), `mystery_session.gd` (`make_rounds`, `pick_round`) and, since
+25 Nov 2026, `zoo_feeding_session.gd` (`plan`: each refill of the animal bag in `order()`, still
+never the same animal twice in a row). Pass the
 game's own `rng` so seeded runs repeat. A new game that records practice should pick its words
 with one of these.
 
 **Save:** `word_memory.json` per profile (`PROFILE_FILES`; reset with the singletons), keyed by
-learned language: `{"es": {"step", "last_new", "words": {key: {s, d, last, reps, lapses}}}}`. A
-language without memory is seeded once from the practice log. The activity board creates the
+learned language: `{"es": {"step", "last_new", "unix", "away_left", "words": {key: {s, d, last, reps, lapses, unix}}}}`
+(`unix` and `away_left` since 25 Nov 2026: additive, an older build ignores them; a word without
+`unix` uses its language's, and an old save adds no time away until its next question). A
+language without memory is seeded once from the practice log; a word seeded Good starts at
+`LEARNED_STABILITY` at least (25 Nov 2026; languages seeded earlier keep their memory). The activity board creates the
 memory when a session begins, so it hears every recorded question.
 
 **Check:** `docs/evidence/word-memory-20261124/verify.gd` (headless, no town): FSRS updates, the
 new-word gap, order/want/pick_round, saving, seeding and reset, a 600-question simulated
-learner, and the Desk Dash, Mystery Doors and Feel the Clues pickers.
+learner, the Desk Dash, Mystery Doors and Feel the Clues pickers and (25 Nov 2026) a learner who
+saturates one game and still meets new words in a second, plus Feeding Time!'s due animal first,
+and (LEARN-03) 1-, 7- and 60-day gaps, the per-session cap and old saves without times.
 
 ## Minigame picker
 
@@ -327,8 +370,11 @@ locks the player while it shows, Esc = Continue) and `scripts/learning/session_w
   record ever in the learned language: a first meaningful encounter) or **practiced** (recorded
   before); **struggled** = a wrong answer or a translation shown this session. Stat bubbles show
   the counts (a zero is left out). At most **4** words are listed, new first, struggled before the
-  rest; **See all** shows every word as small chips. Mastery is not shown (it waits for a real
-  threshold, e.g. the planned FSRS work).
+  rest; **See all** shows every word as small chips. **Known** (since 25 Nov 2026, decision D9):
+  words whose word-memory stability crossed the learned threshold on this session's answers
+  (`WordMemory.is_known()`, `session_words.gd` `"known"`; a word that drops back below is taken
+  off) get a *Words you now know* bubble and a daisy *Known* tag on their row, and are listed after
+  the new and struggled words. Still no scores ([view](../evidence/known-words-20261125/results-known-laptop.png)).
 - **No new words** (a replay): the card becomes *Great Practice!* "You practiced 12 familiar
   words!" with one *Vocabulary practice* bubble, never "0 new words".
 - **Rewards**: a town mission done by this game (`missions.gd`, the user's "quests") shows as a
@@ -360,7 +406,8 @@ either. Pastimes with no target still never complete.
 Fits a landscape phone (two columns, no scrolling; checked at 844 × 390). Check:
 `docs/evidence/results-screen-20261121/verify.gd` (`results_screen`); renders `results-laptop`,
 `results-see-all`, `results-practice`, `results-quest` (Spot the Suspect with its mission),
-`results-phone` in the same folder. The stars card
+`results-phone` in the same folder; known words: `docs/evidence/known-words-20261125/verify.gd`
+(journal and results card at 1280 × 800 and 844 × 390). The stars card
 (`star_card.gd`, games with levels) still shows on its own; folding it into this card waits for the
 stars and coins design.
 

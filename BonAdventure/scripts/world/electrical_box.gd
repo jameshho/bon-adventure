@@ -13,6 +13,9 @@ extends Node3D
 ##
 ## Silent itself: these signals are the hooks for sounds (scripts/core/sound.gd, later).
 const Interactable := preload("res://scripts/core/interactable.gd")
+const Board := preload("res://scripts/learning/activity_board.gd")
+## electrical_box_session.gd ID (its activity board id).
+const ACTIVITY := "electrical_box"
 signal door_moved(opening: bool)
 signal repaired_changed(repaired: bool)
 
@@ -104,6 +107,11 @@ func palette() -> Array:
 		for i in clampi(wire_count, MIN_WIRES, MAX_WIRES):
 			out.append(PALETTE[i])
 	return out
+
+## While another game runs, E says "finish the other task first" instead of doing nothing
+## (interactable.gd reason line; GAME-04, 25 Nov 2026).
+func can_interact() -> Variant:
+	return "common.finish_first" if Board.shared().blocker(ACTIVITY) != "" else true
 
 ## Its interactable's use (E, a click or a tap): asks the session to open this box. True when it opened.
 func use() -> bool:

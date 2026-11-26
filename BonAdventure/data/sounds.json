@@ -1,5 +1,5 @@
 {
-  "_comment": "Sound cue catalogue (9 Nov 2026), read by scripts/core/sound.gd. cues: id -> file, bus (default_bus_layout.tres), volume_db, loop (the file's .import loop_mode must match), distance (unit_size / max_distance in metres), source, licence. bindings: scripts whose signals play cues; objects stay silent themselves. Record: docs/guides/TOWN_DESIGN_BRIEF.md 'Bathroom fixtures'.",
+  "_comment": "Sound cue catalogue (9 Nov 2026), read by scripts/core/sound.gd. cues: id -> file, bus (default_bus_layout.tres), volume_db, loop (the file's .import loop_mode must match), distance (unit_size / max_distance in metres), source, licence. restart (optional): a new play stops the same cue still sounding at that node. A cue with no distance is flat (sound.gd play_ui). bindings: scripts whose signals (no arguments) play cues; objects stay silent themselves. Doors are not bound: door_animator.gd plays door.<kind>.open / .close (25 Nov 2026). Record: docs/guides/TOWN_DESIGN_BRIEF.md 'Bathroom fixtures'.",
   "cues": {
     "toilet.flush": {
       "file": "res://audio/sfx/bathroom/toilet_flush.wav",
@@ -45,7 +45,332 @@
       "distance": {"unit_size": 6.0, "max_distance": 70.0},
       "source": "Synthesised for this game (21 Nov 2026): low wail 400-1000 Hz, 5 s cycle",
       "licence": "Original, no third-party material; 22.05 kHz 16-bit mono"
+    },
+    "vehicle.engine": {
+      "file": "res://audio/sfx/vehicles/engine.wav",
+      "bus": "SFX",
+      "volume_db": -8.0,
+      "loop": true,
+      "distance": {"unit_size": 4.0, "max_distance": 40.0},
+      "engine": {
+        "_comment": "sound.gd engine() (25 Nov 2026, user: a sound for driving): plays for the vehicle word keys in 'vehicles' ('default': any road vehicle without its own engine cue); pitch from pitch_idle (stopped) to pitch_top (top speed), volume from idle_db to 0 dB on top of volume_db; types: a pitch factor per vehicle word key (others 1.0).",
+        "default": true,
+        "vehicles": ["car", "taxi", "police car", "ambulance", "motorcycle"],
+        "pitch_idle": 0.85,
+        "pitch_top": 1.9,
+        "idle_db": -6.0,
+        "types": {"motorcycle": 1.35, "police car": 1.05, "ambulance": 0.85}
+      },
+      "source": "https://freesound.org/people/Dmitry_mansurev64/sounds/748027/",
+      "licence": "CC0 (Freesound, HQ preview); sedan engine loop, 2.0-5.0 s made a 3 s loop with a 0.4 s equal-power crossfade, 16-bit mono 22.05 kHz, imported as a QOA forward loop; picked by ear 25 Nov 2026"
+    },
+    "vehicle.truck": {
+      "file": "res://audio/sfx/vehicles/truck.wav",
+      "bus": "SFX",
+      "volume_db": -7.0,
+      "loop": true,
+      "distance": {"unit_size": 5.0, "max_distance": 50.0},
+      "engine": {
+        "_comment": "Big road vehicles (user pick, 25 Nov 2026); see vehicle.engine for the keys.",
+        "vehicles": ["truck", "bus", "school bus", "fire truck"],
+        "pitch_idle": 0.8,
+        "pitch_top": 1.6,
+        "idle_db": -5.0,
+        "types": {"school bus": 1.05, "bus": 1.05}
+      },
+      "source": "https://freesound.org/people/ReadeOnly/sounds/186935/",
+      "licence": "CC0 (Freesound, HQ preview, engine_idle_loop); 0.1-3.1 s made a 3 s loop with a 0.4 s equal-power crossfade, 16-bit mono 22.05 kHz, imported as a QOA forward loop; picked by ear 25 Nov 2026"
+    },
+    "vehicle.helicopter": {
+      "file": "res://audio/sfx/vehicles/helicopter.wav",
+      "bus": "SFX",
+      "volume_db": -6.0,
+      "loop": true,
+      "distance": {"unit_size": 8.0, "max_distance": 120.0},
+      "engine": {
+        "_comment": "Level is rotor_power, so the rotor winds up from slow and quiet on take-off and winds down after landing (user pick, 25 Nov 2026).",
+        "vehicles": ["helicopter"],
+        "pitch_idle": 0.55,
+        "pitch_top": 1.0,
+        "idle_db": -14.0
+      },
+      "source": "https://freesound.org/people/unikumpu/sounds/609460/",
+      "licence": "CC0 (Freesound, HQ preview, Helicopter loop); 0.05-1.15 s made a 1.1 s loop with a 0.3 s equal-power crossfade, 16-bit mono 22.05 kHz, imported as a QOA forward loop; picked by ear 25 Nov 2026"
+    },
+    "vehicle.plane": {
+      "file": "res://audio/sfx/vehicles/plane.wav",
+      "bus": "SFX",
+      "volume_db": -6.0,
+      "loop": true,
+      "distance": {"unit_size": 8.0, "max_distance": 120.0},
+      "engine": {
+        "_comment": "Propeller plane (turboprop.gd: level is the larger of engine power and airspeed; user pick, 25 Nov 2026).",
+        "vehicles": ["plane"],
+        "pitch_idle": 0.8,
+        "pitch_top": 1.3,
+        "idle_db": -6.0
+      },
+      "source": "https://freesound.org/people/straget/sounds/403316/",
+      "licence": "CC0 (Freesound, HQ preview, A small propeller plane); 8.0-11.0 s made a 3 s loop with a 0.5 s equal-power crossfade, 16-bit mono 22.05 kHz, imported as a QOA forward loop; picked by ear 25 Nov 2026"
+    },
+    "music.town": {
+      "file": "res://audio/music/town_lofi_demo.wav",
+      "bus": "Music",
+      "volume_db": -8.0,
+      "loop": true,
+      "source": "Synthesised for this game by tools/make_lofi_demo.py (25 Nov 2026): demo lofi loop, 16 bars at 72 BPM, 53 s",
+      "licence": "Original, no third-party material; 44.1 kHz 16-bit mono, clean (no hiss or crackle), imported as a QOA forward loop"
+    },
+    "music.loading": {
+      "file": "res://audio/music/loading_lofi_demo.wav",
+      "bus": "Music",
+      "volume_db": -8.0,
+      "loop": true,
+      "source": "Synthesised for this game by tools/make_lofi_demo.py --track loading (25 Nov 2026): demo dreamy lofi loop in A, music-box arpeggio, soft echo and brushes, 8 bars at 56 BPM, 34 s",
+      "licence": "Original, no third-party material; 44.1 kHz 16-bit mono, clean (no hiss or crackle), imported as a QOA forward loop"
+    },
+    "music.quiz": {
+      "file": "res://audio/music/quiz_lofi_demo.wav",
+      "bus": "Music",
+      "volume_db": -9.5,
+      "loop": true,
+      "source": "Synthesised for this game by tools/make_lofi_demo.py --track quiz (25 Nov 2026): demo upbeat quiz loop in D: keyboard stabs, octave bass, marimba hook, claps, 16 bars at 104 BPM, 37 s",
+      "licence": "Original, no third-party material; 44.1 kHz 16-bit mono, clean (no hiss or crackle), imported as a QOA forward loop"
+    },
+    "music.errands": {
+      "file": "res://audio/music/errands_lofi_demo.wav",
+      "bus": "Music",
+      "volume_db": -10.0,
+      "loop": true,
+      "source": "Synthesised for this game by tools/make_lofi_demo.py --track errands (25 Nov 2026): demo cozy shopping jazz in Bb: walking bass, Charleston comping, vibraphone notes, swung brushes, 16 bars at 92 BPM, 42 s",
+      "licence": "Original, no third-party material; 44.1 kHz 16-bit mono, clean (no hiss or crackle), imported as a QOA forward loop"
+    },
+    "music.mystery": {
+      "file": "res://audio/music/mystery_lofi_demo.wav",
+      "bus": "Music",
+      "volume_db": -5.0,
+      "loop": true,
+      "source": "Synthesised for this game by tools/make_lofi_demo.py --track mystery (25 Nov 2026): demo sneaky loop in A minor: soft pad, pizzicato, woodblock ticks, falling bass, 16 bars at 92 BPM, 42 s",
+      "licence": "Original, no third-party material; 44.1 kHz 16-bit mono, clean (no hiss or crackle), imported as a QOA forward loop"
+    },
+    "music.focus": {
+      "file": "res://audio/music/focus_lofi_demo.wav",
+      "bus": "Music",
+      "volume_db": -9.0,
+      "loop": true,
+      "source": "Synthesised for this game by tools/make_lofi_demo.py --track focus (25 Nov 2026): demo calm puzzle loop in D: slow soft chords, long bass notes, a few bells, a quiet shaker, 16 bars at 60 BPM, 64 s",
+      "licence": "Original, no third-party material; 44.1 kHz 16-bit mono, clean (no hiss or crackle), imported as a QOA forward loop"
+    },
+    "music.outdoors": {
+      "file": "res://audio/music/outdoors_lofi_demo.wav",
+      "bus": "Music",
+      "volume_db": -8.5,
+      "loop": true,
+      "source": "Synthesised for this game by tools/make_lofi_demo.py --track outdoors (25 Nov 2026): demo playful loop in F: ukulele strum, oom-pah bass, hopping marimba, claps and woodblock, 16 bars at 108 BPM, 36 s",
+      "licence": "Original, no third-party material; 44.1 kHz 16-bit mono, clean (no hiss or crackle), imported as a QOA forward loop"
+    },
+    "door.room.open": {
+      "file": "res://audio/sfx/doors/room_open.wav",
+      "bus": "SFX",
+      "volume_db": -6.0,
+      "loop": false,
+      "distance": {"unit_size": 2.5, "max_distance": 20},
+      "restart": true,
+      "source": "https://freesound.org/people/harrisonlace/sounds/876509/",
+      "licence": "CC0 (Freesound, HQ preview); Modern home wood door, open cut 0.03-0.72 s, faded, 16-bit mono 22.05 kHz; picked by ear 25 Nov 2026"
+    },
+    "door.room.close": {
+      "file": "res://audio/sfx/doors/room_close.wav",
+      "bus": "SFX",
+      "volume_db": -6.0,
+      "loop": false,
+      "distance": {"unit_size": 2.5, "max_distance": 20},
+      "restart": true,
+      "source": "https://freesound.org/people/harrisonlace/sounds/876509/",
+      "licence": "CC0 (Freesound, HQ preview); Modern home wood door, close cut 1.15-1.95 s, faded, 16-bit mono 22.05 kHz; picked by ear 25 Nov 2026"
+    },
+    "door.sliding.open": {
+      "file": "res://audio/sfx/doors/sliding_open.wav",
+      "bus": "SFX",
+      "volume_db": -8.0,
+      "loop": false,
+      "distance": {"unit_size": 2.5, "max_distance": 20},
+      "restart": true,
+      "source": "https://freesound.org/people/kijjaz/sounds/378866/",
+      "licence": "CC0 (Freesound, HQ preview); glass sliding door, open cut 0.70-2.10 s, faded, 16-bit mono 22.05 kHz; picked by ear 25 Nov 2026"
+    },
+    "door.sliding.close": {
+      "file": "res://audio/sfx/doors/sliding_close.wav",
+      "bus": "SFX",
+      "volume_db": -8.0,
+      "loop": false,
+      "distance": {"unit_size": 2.5, "max_distance": 20},
+      "restart": true,
+      "source": "https://freesound.org/people/kijjaz/sounds/378866/",
+      "licence": "CC0 (Freesound, HQ preview); glass sliding door, close cut 4.30-5.75 s, faded, 16-bit mono 22.05 kHz; picked by ear 25 Nov 2026"
+    },
+    "door.cell.open": {
+      "file": "res://audio/sfx/doors/cell_open.wav",
+      "bus": "SFX",
+      "volume_db": -6.0,
+      "loop": false,
+      "distance": {"unit_size": 3.0, "max_distance": 24},
+      "restart": true,
+      "source": "https://freesound.org/people/endritprenku/sounds/613498/",
+      "licence": "CC0 (Freesound, HQ preview); cell door: slide, then slam, open cut 0.25-1.70 s, faded, 16-bit mono 22.05 kHz; picked by ear 25 Nov 2026"
+    },
+    "door.cell.close": {
+      "file": "res://audio/sfx/doors/cell_close.wav",
+      "bus": "SFX",
+      "volume_db": -6.0,
+      "loop": false,
+      "distance": {"unit_size": 3.0, "max_distance": 24},
+      "restart": true,
+      "source": "https://freesound.org/people/TurtleLG/sounds/80449/",
+      "licence": "CC0 (Freesound, HQ preview); cell door: slide, then slam, close cut 0.08-1.55 s, faded, 16-bit mono 22.05 kHz; picked by ear 25 Nov 2026"
+    },
+    "door.locker.open": {
+      "file": "res://audio/sfx/doors/locker_open.wav",
+      "bus": "SFX",
+      "volume_db": -6.0,
+      "loop": false,
+      "distance": {"unit_size": 2.0, "max_distance": 16},
+      "restart": true,
+      "source": "https://freesound.org/people/Albaaa3/sounds/153109/",
+      "licence": "CC0 (Freesound, HQ preview); metal locker, open cut 3.25-4.00 s, faded, 16-bit mono 22.05 kHz; picked by ear 25 Nov 2026"
+    },
+    "door.locker.close": {
+      "file": "res://audio/sfx/doors/locker_close.wav",
+      "bus": "SFX",
+      "volume_db": -6.0,
+      "loop": false,
+      "distance": {"unit_size": 2.0, "max_distance": 16},
+      "restart": true,
+      "source": "https://freesound.org/people/Soundscape_Leuphana/sounds/209656/",
+      "licence": "CC0 (Freesound, HQ preview); metal locker, close cut 0.00-0.95 s, faded, 16-bit mono 22.05 kHz; picked by ear 25 Nov 2026"
+    },
+    "door.cabinet.open": {
+      "file": "res://audio/sfx/doors/cabinet_open.wav",
+      "bus": "SFX",
+      "volume_db": -6.0,
+      "loop": false,
+      "distance": {"unit_size": 2.0, "max_distance": 16},
+      "restart": true,
+      "source": "https://freesound.org/people/15FPanska_Hecl_Filip/sounds/461148/",
+      "licence": "CC0 (Freesound, HQ preview); steel cabinet door, open cut 0.00-1.40 s, faded, 16-bit mono 22.05 kHz; picked by ear 25 Nov 2026"
+    },
+    "door.cabinet.close": {
+      "file": "res://audio/sfx/doors/cabinet_close.wav",
+      "bus": "SFX",
+      "volume_db": -6.0,
+      "loop": false,
+      "distance": {"unit_size": 2.0, "max_distance": 16},
+      "restart": true,
+      "source": "https://freesound.org/people/15FPanska_Hecl_Filip/sounds/461148/",
+      "licence": "CC0 (Freesound, HQ preview); steel cabinet door, close cut 1.50-2.90 s, faded, 16-bit mono 22.05 kHz; picked by ear 25 Nov 2026"
+    },
+    "door.safe.open": {
+      "file": "res://audio/sfx/doors/safe_open.wav",
+      "bus": "SFX",
+      "volume_db": -4.0,
+      "loop": false,
+      "distance": {"unit_size": 2.5, "max_distance": 20},
+      "restart": true,
+      "source": "https://freesound.org/people/john721/sounds/202717/",
+      "licence": "CC0 (Freesound, HQ preview); safe: dial clicks and handle, then shut, open cut 3.25-4.25 s + 6.38-6.90 s, faded, 16-bit mono 22.05 kHz; picked by ear 25 Nov 2026"
+    },
+    "door.safe.close": {
+      "file": "res://audio/sfx/doors/safe_close.wav",
+      "bus": "SFX",
+      "volume_db": -4.0,
+      "loop": false,
+      "distance": {"unit_size": 2.5, "max_distance": 20},
+      "restart": true,
+      "source": "https://freesound.org/people/cognito%20perceptu/sounds/17972/",
+      "licence": "CC0 (Freesound, HQ preview); safe: dial clicks and handle, then shut, close cut 0.20-1.00 s, faded, 16-bit mono 22.05 kHz; picked by ear 25 Nov 2026"
+    },
+    "door.vault.open": {
+      "file": "res://audio/sfx/doors/vault_open.wav",
+      "bus": "SFX",
+      "volume_db": -3.0,
+      "loop": false,
+      "distance": {"unit_size": 3.5, "max_distance": 30},
+      "restart": true,
+      "source": "https://freesound.org/people/kyles/sounds/637583/",
+      "licence": "CC0 (Freesound, HQ preview); heavy vault: metal creak, then thud, open cut 0.55-2.05 s, faded, 16-bit mono 22.05 kHz; picked by ear 25 Nov 2026"
+    },
+    "door.vault.close": {
+      "file": "res://audio/sfx/doors/vault_close.wav",
+      "bus": "SFX",
+      "volume_db": -3.0,
+      "loop": false,
+      "distance": {"unit_size": 3.5, "max_distance": 30},
+      "restart": true,
+      "source": "https://freesound.org/people/kyles/sounds/407323/",
+      "licence": "CC0 (Freesound, HQ preview); heavy vault: metal creak, then thud, close cut 17.80-19.30 s, faded, 16-bit mono 22.05 kHz; picked by ear 25 Nov 2026"
+    },
+    "door.glass.open": {
+      "file": "res://audio/sfx/doors/glass_open.wav",
+      "bus": "SFX",
+      "volume_db": -6.0,
+      "loop": false,
+      "distance": {"unit_size": 2.5, "max_distance": 20},
+      "restart": true,
+      "source": "https://freesound.org/people/3bagbrew/sounds/57743/",
+      "licence": "CC0 (Freesound, HQ preview); shop door: bell jingle, then soft glass close, open cut 0.05-1.45 s, faded, 16-bit mono 22.05 kHz; picked by ear 25 Nov 2026"
+    },
+    "door.glass.close": {
+      "file": "res://audio/sfx/doors/glass_close.wav",
+      "bus": "SFX",
+      "volume_db": -6.0,
+      "loop": false,
+      "distance": {"unit_size": 2.5, "max_distance": 20},
+      "restart": true,
+      "source": "https://freesound.org/people/nvalbuena22/sounds/559754/",
+      "licence": "CC0 (Freesound, HQ preview); shop door: bell jingle, then soft glass close, close cut 0.00-1.20 s, faded, 16-bit mono 22.05 kHz; picked by ear 25 Nov 2026"
+    },
+    "bell.chapel": {
+      "file": "res://audio/sfx/chapel/bell.wav",
+      "bus": "SFX",
+      "volume_db": -6.0,
+      "loop": false,
+      "distance": {"unit_size": 8.0, "max_distance": 90.0},
+      "restart": true,
+      "source": "https://freesound.org/people/bassimat/sounds/857938/",
+      "licence": "CC0 (Freesound, HQ preview); one strike (0-1.75 s) made a ding-dong: lowered x0.667 and x0.561 (a minor third), the second at 0.85 s; 3.97 s, 16-bit mono 22.05 kHz; picked by ear 25 Nov 2026"
+    },
+    "coin.stamp": {
+      "file": "res://audio/sfx/ui/coin_stamp.wav",
+      "bus": "UI",
+      "volume_db": -4.0,
+      "loop": false,
+      "source": "Synthesised for this game by tools/make_sfx.py (coin_b, 25 Nov 2026): four-note rising bell arpeggio with sparkles, 0.95 s; flat (no distance), picked by ear",
+      "licence": "Original, no third-party material; 22.05 kHz 16-bit mono"
+    },
+    "answer.correct": {
+      "file": "res://audio/sfx/ui/answer_correct.wav",
+      "bus": "UI",
+      "volume_db": -6.0,
+      "loop": false,
+      "source": "Synthesised for this game by tools/make_sfx.py (correct_a, 25 Nov 2026): two-note rising marimba E5-A5, 0.95 s; flat (no distance), picked by ear",
+      "licence": "Original, no third-party material; 22.05 kHz 16-bit mono"
+    },
+    "answer.wrong": {
+      "file": "res://audio/sfx/ui/answer_wrong.wav",
+      "bus": "UI",
+      "volume_db": -8.0,
+      "loop": false,
+      "source": "Synthesised for this game by tools/make_sfx.py (wrong_a, 25 Nov 2026): two soft falling marimba notes A3-F3, 0.95 s; flat (no distance), picked by ear",
+      "licence": "Original, no third-party material; 22.05 kHz 16-bit mono"
     }
+  },
+  "music": {
+    "_comment": "Background music (25 Nov 2026, user: a lofi BGM for the demo, and a different soundtrack for the loading screen). tracks: name -> cue; sound.gd play_music(name) fades the playing track out over 'fade_out' s and the new one in over 'fade_in' s, on its cue's bus, not positional. App plays 'loading' with the loading screen and 'town' when it lifts. A minigame plays its activities.json 'music' track while it runs and the town track after (25 Nov 2026, user: different songs for different activities). Each cue's volume_db evens out the tracks' loudness (about -26.5 dB average with the cue's volume). 'enabled' false silences all music. Placeholders until licensed or commissioned music. Checks (a SceneTree script) never play it.",
+    "enabled": true,
+    "tracks": {"town": "music.town", "loading": "music.loading", "quiz": "music.quiz", "errands": "music.errands",
+               "mystery": "music.mystery", "focus": "music.focus", "outdoors": "music.outdoors"},
+    "fade_in": 4.0,
+    "fade_out": 1.5
   },
   "voice": {
     "_comment": "Spoken words (24 Nov 2026): one clip per word and language at <folder>/<lang>/<file>.ogg, where <file> is sound.gd voice_file(key). 'enabled' is the master switch: while false, sound.gd say_word() plays nothing. Switched on 24 Nov 2026 (user). tools/voice_manifest.gd lists what to say; tools/voice_generate.py makes the clips with Amazon Polly. 'languages' gives each language's Polly voice. Guide: docs/guides/VOICE.md.",
@@ -64,6 +389,10 @@
   },
   "bindings": [
     {"script": "res://scripts/world/toilet.gd", "play": {"flush_started": "toilet.flush"}},
-    {"script": "res://scripts/world/faucet.gd", "start": {"turned_on": "faucet.run"}, "stop": {"turned_off": "faucet.run"}}
+    {"script": "res://scripts/world/faucet.gd", "start": {"turned_on": "faucet.run"}, "stop": {"turned_off": "faucet.run"}},
+    {"script": "res://scripts/world/stamp_coin.gd", "play": {"collected": "coin.stamp"}},
+    {"script": "res://scripts/world/chapel_bell.gd", "play": {"rung": "bell.chapel"}},
+    {"script": "res://scripts/learning/library_session.gd", "play": {"shelved_right": "answer.correct", "shelved_wrong": "answer.wrong"}},
+    {"script": "res://scripts/world/mystery_door.gd", "play": {"opened": "door.room.open", "slammed": "door.room.close"}}
   ]
 }

@@ -20,9 +20,16 @@ func toggle_gate(from: Variant = null) -> void:
         swing_side = 1.0
         if from is Vector3 and to_local(from).z > 0.0:
             swing_side = -1.0
+    set_process(true)
 
 func _process(delta: float) -> void:
     var alpha := 1.0 - exp(-animation_speed * delta)
     var angle := deg_to_rad(open_angle_degrees) * swing_side
     left_hinge.rotation.y = lerp_angle(left_hinge.rotation.y, -angle if is_open else 0.0, alpha)
-    right_hinge.rotation.y = lerp_angle(right_hinge.rotation.y, angle if is_open else 0.0, alpha)
+    var right_target := angle if is_open else 0.0
+    right_hinge.rotation.y = lerp_angle(right_hinge.rotation.y, right_target, alpha)
+    # Settled: stop until the next toggle_gate() (25 Nov 2026, no per-frame writes at rest).
+    if absf(angle_difference(right_hinge.rotation.y, right_target)) < 0.001:
+        left_hinge.rotation.y = -right_target
+        right_hinge.rotation.y = right_target
+        set_process(false)

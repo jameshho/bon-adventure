@@ -38,7 +38,10 @@ out while Just explore! is ticked; tapping one of its languages turns exploring 
 
 "Welcome to Bon Adventure" runs once for a new profile: wake up in bed, a tour of the house, find
 the hiding friends, buy fruit at the supermarket, visit the statue, then open the journal. It
-can be skipped, and replayed from Settings. No minigame offers appear while it runs. Since 16 Nov
+can be skipped, and replayed from Settings. Since 25 Nov a small pill beside Skip says which part
+is playing ("Part 1 of 3": house, market, park), and Skip asks first: Stay (green, left) carries
+on where it was, Skip (coral, right) ends it
+([views](../evidence/tutorial-progress-20261125/README.md)). No minigame offers appear while it runs. Since 16 Nov
 the rest of the town loads behind the title card after the house tour (with a progress bar), so
 the house tour itself no longer stutters. Since 17 Nov the tour also starts behind the loading screen: the characters,
 rooms and close-ups of the house tour are drawn there first, so the first lines in the house no
@@ -128,7 +131,10 @@ away a word not found ([views](../evidence/journal-sticker-book-20261125/)). Sin
 noun has a picture of its object (also on the results card after a game,
 [results](../evidence/word-pictures-20261123/results.png)); the word card in town stays text only.
 Since 24 Nov a **speaker** on the word card and the journal's word page says the word in the
-language you are learning. Still to come: drawn icons, growth stages, a review round and a
+language you are learning.
+Since 25 Nov a word you **know** (the [word memory](minigames.md#which-words-come-up) remembers it
+well) has a small **daisy** on its sticker and its page says "You know this word".
+Still to come: drawn icons, growth stages, a review round and a
 Topics tab ([design](../guides/JOURNAL.md)).
 [Journal](../guides/JOURNAL.md) ·
 [word pictures](../guides/ARCHITECTURE_REVIEW_PART1.md#word-pictures) ·
@@ -138,12 +144,22 @@ Topics tab ([design](../guides/JOURNAL.md)).
 
 - **Laptop:** WASD to walk, Space to jump, Shift or the Run button to run, E to use things
   (doors, seats, vehicles, toilets, faucets), drag or right-mouse to look around, wheel to zoom,
-  Esc for Settings or to close the top window. F1 shows every key.
+  Esc for Settings or to close the top window; during Library Helper, Grocery Run or Feeding
+  Time! Esc asks whether to stop the game instead (25 Nov). F1 shows every key.
+- **Controls guide** (F1, or **Controls** in Settings; 25 Nov): grouped cards of every key, or,
+  on a touch device, of the on-screen controls (joystick, Jump, E, Run, the HUD buttons and the
+  gestures); the **Keyboard** / **Touch** tabs switch. It scales with the window and never
+  scrolls: what does not fit goes on pages turned with the arrows or a swipe (one page on a
+  laptop, three on a landscape phone).
+  [Renders](../evidence/f1-guide-20261125/README.md)
 - **Camera follows me** (on by default since 14 Nov): walking sideways slowly turns the view,
   so one hand can steer.
 - **Climb** ladders with W and S (or the stick toward / away from the wall); at the top of a
   ladder, walk into the hatch or hold S to climb down; **sit** on chairs, sofas and swings; swivel chairs turn with
-  A and D.
+  A and D. Jump (Space or the touch Jump button) stands you up from a seat, swing or see-saw
+  (25 Nov). If something blocks the space beside a seat or vehicle, you still get out: at the
+  nearest clear spot, or (with no room at all) back outside the building, which ends a game
+  in progress (25 Nov).
 
 [All controls](../../README.md#controls-and-learning)
 
@@ -240,17 +256,48 @@ driver, teacher, gardener, pilot, businessman, chef) and keeps one.
 
 ## Day and night
 
-A day lasts 20 minutes, with sun, moon, sky, street lamps and indoor lights. The clock at the
-top centre can jump an hour forward or back.
+A day lasts 48 minutes (since 25 Nov; was 30), with sun, moon, sky, street lamps and indoor lights.
+The clock at the top centre moves on every half hour, about once a minute, and can jump an hour
+forward or back. Since 25 Nov the sun's light fades out indoors the
+way the moon's does, so rooms look the same by day as at night, with a slightly warmer fill.
 [Day-night cycle](../guides/performance/README.md#day-night-cycle--9-november-2026)
 
 ## Characters
 
 The town's people are plush animals: BonBon the pig (the player), the house friends, shop staff in
 outfits, and the minigame hosts. They blink and make small gestures. Clicking a house friend
-shows its name.
+shows its name. Since 25 Nov whoever you talk to turns to face you while their line shows, and
+BonBon's steps keep pace with her speed (quicker when running, slower when creeping).
 [Plush characters](../guides/COMPONENTS.md#plush-characters)
 
 ## Sound
 
-Only a few sounds exist so far (toilets and faucets); the rest of the game is silent for now.
+- **Music** (25 Nov 2026): a dreamy music-box lofi loop plays on the loading screen, then fades
+  into a gentle lofi loop in the town. Each minigame plays the music of its mood while it runs,
+  then the town music comes back: upbeat for quiz games (Desk Dash, Who's Who?, Flight Finder,
+  Next, Please!, On the Menu), cozy jazz for errands (Grocery Run, Stack & Pack, Library Helper),
+  sneaky for the mysteries (police games, Mystery Doors), calm for puzzles (Mahjong Club,
+  Wire It Up!, Radar Patrol) and playful at the zoo (Feeding Time!). The music dips while a word
+  is spoken. All are demo placeholders made for the game, until licensed or commissioned music
+  replaces them. The Music slider in Settings sets their volume (0 mutes them).
+  [Tracks](../guides/VOICE.md#background-music-25-nov-2026)
+- **Record player** (25 Nov 2026): next to the TV in the home's living room. E (or a tap) zooms
+  onto the turntable; pick any of the seven songs, skip with ◀ / ▶ or stop the record, then ✕.
+  The picked song stays the town's music, also after games, until you change it (not kept
+  after closing the game). The record spins and its label shows the song's colour.
+  [View](../evidence/record-player-20261125/closeup.png),
+  [component](../guides/COMPONENTS.md#record-player)
+- **Spoken words:** the speaker button on the word card and in the journal says the word.
+- **Effects:** toilets, faucets and the emergency vehicles' sirens. Since 25 Nov 2026 also:
+  a sparkly chime when you collect a stamp coin; doors, each kind with its own open and close
+  sound (wooden room doors, sliding doors, the police cell and lockers, the warehouse cabinet,
+  the bank's safe and heavy vault, whose thud comes when it shuts, and the Pizza and Burger shop
+  bell); a ding-dong from the chapel bell, heard across the square; and in Library Helper a
+  marimba chime for the right shelf and two soft falling notes for a wrong one. Engines:
+  cars and other road vehicles hum and rise in pitch as they speed up, trucks, buses and the
+  fire truck have a deeper diesel, the helicopter's rotor winds up and down, and the plane has
+  a propeller drone. Drawers,
+  curtains, the garage, gates and vehicle doors are still silent. The Sound effects slider sets
+  them. [Effects](../guides/VOICE.md#sound-effects-25-nov-2026)
+
+[Sound and spoken words guide](../guides/VOICE.md)

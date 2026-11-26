@@ -68,7 +68,7 @@ checks and the measured frame-time cost are in the
 
 ## Day-night cycle — 9 November 2026
 
-User request: a 20-minute day (30 minutes since 9 Nov 2026, user) with sunrise, midday, golden sunset and a cool blue night,
+User request: a 20-minute day (30 minutes since 9 Nov 2026 and 48 since 25 Nov 2026, user) with sunrise, midday, golden sunset and a cool blue night,
 keeping the cute, colorful look. Performance comes first. The old daylight is the
 baseline, made slightly softer (sun 0.62 → 0.56, ambient 0.50 → 0.54).
 
@@ -87,7 +87,7 @@ baseline, made slightly softer (sun 0.62 → 0.56, ambient 0.50 → 0.54).
   (energy 0.16) without shadows. The light is at zero energy at both switch times, so the
   jump in direction is never visible.
 - The sun turns in steps of 5 game minutes (`SUN_STEP_MINUTES`). That is about 1°, a jump about
-  every 6 s at the 30-minute day. Turning it a little at every refresh (4 times a second)
+  every 10 s at the 48-minute day. Turning it a little at every refresh (4 times a second)
   re-rendered the shadows from a new angle each time, and shadow edges shimmered (user,
   9 Nov 2026: flicker in the background). Colours, sky and lamps still blend at every refresh.
 - A game that holds the player in one view can ask for rarer steps that slide:
@@ -124,11 +124,16 @@ baseline, made slightly softer (sun 0.62 → 0.56, ambient 0.50 → 0.54).
 - **Indoors** means a static roof within 30 m overhead and static walls within 40 m on at
   least 3 of 4 sides. It is probed with 5 rays every 0.25 s, so bridges, awnings and
   porches count as outdoors. Indoors, the warm `indoor` ambient fill blends in (in about
-  1 s), and the shadowless moon fades so it does not shine through roofs. The sun, its
-  shadows and the sky are never changed indoors. (Until the evening of 9 Nov 2026 the light also
+  1 s), and the shadowless moon fades so it does not shine through roofs. Since 25 Nov 2026
+  (improvement plan GFX-03) the sun fades the same way, since no shadows stop it at the roof;
+  half its strength moves into the outdoor ambient meanwhile (`LIGHT_FILL_SHARE`), and the
+  `indoor` fill rose from 0.54 to 0.62 to make up for it
+  ([renders](../../evidence/light-indoor-flight-20261125/indoor.png): café, home and supermarket
+  door at 08:00, 12:00 and 18:30). The sun's direction and colour and the sky are never changed indoors. (Until the evening of 9 Nov 2026 the light also
   switched to noon indoors. The user saw the street outside the hospital door lit like noon
   under a night sky, so that was removed.) Shops lit by fill look the same at any hour. The
-  Home, lit by the sun through its lifted roof by day, is lamp-lit and darker at night.
+  Home was lit by the sun through its lifted roof by day until 25 Nov 2026; it now takes the
+  fill like the shops (the probe still finds its walls and ceiling).
 - **Indoor fill is local (10 Nov 2026).** Until then the fill was the global ambient, so the
   street seen through the hospital door at night was still lit warm and bright like day,
   while the same street looked like night from outside (user screenshots). Now the
@@ -150,12 +155,14 @@ baseline, made slightly softer (sun 0.62 → 0.56, ambient 0.50 → 0.54).
   that changed. A paused clock writes nothing except an indoor blend. Night has no sun
   shadows, so it is cheaper than day.
 - **Clock:** the cycle starts at `game_clock.gd`'s launch "now", so the airport board and
-  the HUD agree at launch. The board keeps that launch time; the HUD clock then runs on
+  the HUD agree at launch. Since 25 Nov 2026 (user) the HUD pill ticks every half hour
+  (`CLOCK_TICK_MINUTES`, `shown_minute()`; about once a real minute at the 48-minute day);
+  the light and `clock_minute()` stay continuous. The board keeps that launch time; the HUD clock then runs on
   its own. The time is not saved.
 - **Time panel:** − / + move exactly one hour (wrapping at midnight) and pause the cycle.
   Resume restarts it; Close and Esc keep the chosen time.
 - **API:** `set_time(minutes)`, `step_hours(n)`, `pause()`, `resume()`,
-  `set_cycle_minutes(m)`, `sample(hour)`, `is_night(hour)`, and the `time_changed(minute)`
+  `set_cycle_minutes(m)`, `clock_minute()`, `shown_minute()`, `sample(hour)`, `is_night(hour)`, and the `time_changed(minute)`
   and `paused_changed(paused)` signals.
 
 **Web build (9 Nov 2026):** `export_presets.cfg` has a single-threaded **Web** preset (export: `godot --headless --path . --export-release "Web" <folder>/index.html`; serve the folder with any static server). On an M5 in headless Chrome it ran at 58 FPS at noon and 72 at midnight at 2× pixel density, and 132 / 153 at 1×. Since the same day, web builds draw the 3D at the page's CSS pixel size (`render_culling.gd` `apply_web_3d_scale()`: scale = 1 / density, at least 0.5; the HUD stays sharp; desktop unchanged), which gives 125 / 148 FPS at 2× ([record](../FINAL_VERIFICATION.md#web-build-of-the-day-night-cycle--9-november-2026)). Since 12 Nov 2026 the preset is also an installable web app (PWA) and exports scenes as text (see the [README](../../../README.md#web-app-pwa)).
@@ -598,7 +605,12 @@ There is no height limit; the chase view also tilts down with height (`FLIGHT_TI
 ground is beyond the view and the plane flies over a pale haze floor. Below the horizon the sky takes the fog
 colour while a view distance is set (`day_night.gd`), so the fogged ground and sea run into it
 with no seam (user, 23 Nov 2026: a hard line under the horizon flying at night, where the
-keyframe's darker `ground_bottom` showed past the view; no frame-rate cost; [night view](../../evidence/flight-view-20261123/night-height-100-m.png)). On the web,
+keyframe's darker `ground_bottom` showed past the view; no frame-rate cost; [night view](../../evidence/flight-view-20261123/night-height-100-m.png)). Above the
+horizon a hard line remained where the sky's blue met the fogged ground; since 25 Nov 2026
+(GFX-04) the view distance past 130 m steps (in tenths, over 150 m) the sky's horizon colour to
+the fog colour, `sky_curve` from 0.15 to 0.6 and `fog_sky_affect` to 0.3, so the haze runs into
+the sky ([day 40 / 100 m, night 100 m, on foot](../../evidence/light-indoor-flight-20261125/flight.png)).
+On foot (130 m) the sky is unchanged; a climb re-renders the 64 px sky radiance about ten times. On the web,
 `nearby_units.gd` loads buildings out to the far plane + 20 m.
 
 **Measured** (native Mac, 1560×720, full town, 2 pm, plane flying north over the town centre;
@@ -1080,3 +1092,31 @@ browser: WebGL 2 uses the same GLES3 code path, so the saving should carry over,
 **Not measured:** an iPhone (`?perf=1`); fill-rate cost of 2x MSAA on a phone GPU; the mahjong
 table during a real game in a graphical run.
 
+
+## Building shell kept at a distance — 25 November 2026
+
+User report (25 Nov 2026, screenshot of the Home from the street: "the house looks broken when not
+rendered properly, and it is a common issue across buildings"). Cause: the render trim's
+mid-tier rule gave every 1–3 m piece under `Buildings`, `RelocatedSites`, `Restaurants` and
+`Airport` `MID_PROP_RANGE` 70 m, cut to 31.5 m by `RANGE_SHARE`. That rule was meant for indoor
+clutter, but it also caught the building's outside: the wall under each window ("Window sill
+wall", 2.2 m), the glazing, mullions, deep sills and outside door slabs. Beyond 31.5 m the windows
+looked like holes down to the floor.
+
+Fix (`render_culling.gd` `_faces_outdoors()`): before giving a 1–3 m building piece the mid-tier
+range, a level ray from its centre along each of the town's four axes looks for open sky (at
+least 1.5 m clear, then no roof above where it stops, within 12 m). A piece that sees the outdoors
+is building shell and keeps no range (the 130 m view and fog end it, as other building parts).
+Rays ignore the body they start in, so a wall piece sees past its own wall; indoor props meet
+walls, solid glazing or a ceiling and keep their range. Main waits one physics frame before
+`build()` and `add_parts()` so the collision is in the space. Pieces under 1 m (the small rule)
+are unchanged.
+
+Full town (`VT_FOCUS=all`, Mac M5): 693 pieces kept, the rays cost 146 ms once at load (on the web
+each unit pays its share as it loads). Yard props under building roots that see the sky (pool
+loungers, planters by the door) are now kept too, as outdoor props of the base world are. Views (Home only
+loaded, four sides at street distance, noon): `docs/evidence/building-ranges-20261125/`
+(`capture.gd`; `before-home.png`, `after-home.png`): the walls under the windows are back. The
+full-town run printed the counts above but stalled while taking views (the window stopped
+drawing), so other buildings were not looked at. **Not measured:** draw calls and frame time;
+a phone; a web build.

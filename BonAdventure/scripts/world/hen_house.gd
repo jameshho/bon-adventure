@@ -3,10 +3,11 @@ extends Node3D
 ## docs/guides/TOWN_DESIGN_BRIEF.md#hen-house-and-eggs--24-november-2026). Built by the barn step
 ## `hen_house` (scripts/buildings/barn.gd) as `Barn/Hen house`, whose frame is the town's (its
 ## local coordinates are town coordinates: +X west, +Z north, Apartment scale 1.3 above it).
-## Children from the bake (step `walk_in_hen_house` since 24 Nov 2026, user: a walk-in coop):
+## Children from the bake (step `roomier_hen_house` since 25 Nov 2026: the walk-in coop of
+## `walk_in_hen_house` 20% bigger, with a fuller interior):
 ## "Coop" (the red hen house BonBon walks into, in the paddock west of the barn), "Egg spots"
 ## (Marker3D: five nest boxes and a corner nest inside, five straw nests in the yard), "Hens" (six
-## park_animals.gd hens, given their yard here) and "Egg crate" (on a table outside the coop's
+## park_animals.gd clay hens, copies of the farm's ParkZoo/Hen, given their yard here) and "Egg crate" (on a table outside the coop's
 ## door, under the egg sign; "Slots": one Marker3D per egg cup).
 ##
 ## The hens lay over time: one roll every ROLL_SECONDS of real time, also while the game is shut
@@ -46,10 +47,10 @@ const FIRST_ROLLS := 15
 ## The farm (LA GRANJA lawn, x 42...90, z 73...109) and a little more, in town coordinates: an
 ## egg carried out of it is dropped.
 const FARM := Rect2(41.0, 72.0, 50.0, 38.0)
-## Where the hen house's hens wander (town x 73.4...88.2, z 74...82): the yard and the walk-in
-## coop (their step test keeps them out of its walls), clear of the barn wall (x 72), the fences
-## and the sheep's ground (from z 82.3).
-const HEN_YARD := Rect2(73.4, 74.0, 14.8, 8.0)
+## Where the hen house's hens wander (town x 73.4...89.2, z 73.9...82): the yard and the walk-in
+## coop (x 81.1...89.5, z 73.4...79.4 since 25 Nov 2026; their step test keeps them out of its
+## walls), clear of the barn wall (x 72), the fences and the sheep's ground (from z 82.3).
+const HEN_YARD := Rect2(73.4, 73.9, 15.8, 8.1)
 ## The arrow over the crate while an egg is carried: height above the crate, bob in metres.
 const ARROW_HEIGHT := 1.25
 const ARROW_BOB := .15
@@ -243,7 +244,7 @@ func _follow_carry() -> void:
 	if egg != null:
 		_toast(UiText.t("toast.egg_take_to_crate"))
 	_arrow.visible = egg != null
-	var tween: Tween = _arrow.get_meta("tween", null)
+	var tween: Tween = _arrow.get_meta("tween") if _arrow.has_meta("tween") else null
 	if tween != null:
 		tween.kill()
 	if egg != null:

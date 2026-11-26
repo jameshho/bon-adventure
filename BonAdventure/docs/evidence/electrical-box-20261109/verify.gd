@@ -40,7 +40,11 @@ func aim(game, eye: Vector3, target: Vector3) -> Node3D:
 		probe.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
 		root.add_child(probe)
 	var keep: Camera3D = game.interaction.camera
+	# Since 20 Nov 2026 picking aims from the camera on screen (interaction_controller.gd
+	# aimed_hit()), so the probe must be the current camera too (updated 25 Nov 2026).
+	var shown: Camera3D = game.get_viewport().get_camera_3d()
 	game.interaction.camera = probe
+	probe.current = true
 	probe.global_position = eye
 	probe.look_at(target)
 	probe.reset_physics_interpolation()
@@ -49,6 +53,8 @@ func aim(game, eye: Vector3, target: Vector3) -> Node3D:
 	var item: Node = game.interaction.aimed_interactable()
 	var found: Node3D = item.get_parent() if item != null else game.interaction.aimed_object()
 	game.interaction.camera = keep
+	if shown != null:
+		shown.current = true
 	return found
 
 ## Drops wire i on right row `row` (the panel's own drop, at that connector's position).

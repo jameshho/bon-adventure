@@ -48,7 +48,11 @@ const Warehouse := preload("res://scripts/world/warehouse.gd")
 const Goods := preload("res://scripts/learning/warehouse_goods.gd")
 const Tasks := preload("res://scripts/learning/warehouse_tasks.gd")
 ## Practice tracking (practice_log.gd): a task tests the word of the thing it names and its
-## colour (decision 6). Any wrong attempt before the task is done is a wrong first answer.
+## colour (decision 6), and since 25 Nov 2026 its position word (warehouse_tasks.gd
+## POSITION_WORDS), each judged apart and recorded when the task is done: picking up a wrong
+## box, or the hint that marks the box, misses the thing's words; putting the right box down in
+## a wrong named place (warehouse_tasks.gd wrong_place()), or the hint that marks the place,
+## misses the position word.
 const PracticeLog := preload("res://scripts/learning/practice_log.gd")
 const ACTIVITY := "warehouse_ramon"
 const CALL_DISTANCE := 30.0
@@ -110,6 +114,10 @@ var _carry_told := false
 var _hint_level := 0
 ## How long the current task's goal has held without a break (placing must settle).
 var _settled := 0.0
+## The current task's practice words missed so far ({word key: true}), and how long the task's
+## box has been let go and waiting to be judged (-1: nothing to judge).
+var _missed := {}
+var _put_wait := -1.0
 ## What went wrong when planning this game ("" when nothing); kept for tests and reports.
 var plan_problems: Array = []
 
@@ -241,6 +249,7 @@ func _build_round() -> void:
 	add_child(goods)
 	goods.setup(main, copy_root, player, interaction, _rng)
 	goods.item_picked.connect(_on_item_picked)
+	goods.item_put.connect(_on_item_put)
 	_carry_told = false
 	twin = copy_root.get_node("Hall/Ramon")
 	host.add_talker(twin)
@@ -292,6 +301,8 @@ func _show_task() -> void:
 	card.show_native = dialogue_panel.show_native
 	var task: Dictionary = tasks[current]
 	var words: Array = writer.words(task)
+	_missed = {}
+	_put_wait = -1.0
 	if not words.is_empty():
 		PracticeLog.shared().begin(ACTIVITY, words)
 	else:
@@ -309,7 +320,10 @@ func task_done() -> bool:
 	goods.clear_mark()
 	_hint = ""
 	if PracticeLog.shared().game_id() == ACTIVITY:
-		PracticeLog.shared().first_answer(true)
+		var right := {}
+		for key in writer.words(tasks[current]):
+			right[key] = not _missed.has(key)
+		PracticeLog.shared().first_answer(right)
 		PracticeLog.shared().complete()
 	var finished: bool = Board.shared().add_success(ACTIVITY)
 	if finished:
@@ -334,8 +348,7 @@ func _complete_task() -> void:
 
 ## A wrong attempt: try again, or be told what went wrong.
 func _wrong(id: String, values: Dictionary, hint: String) -> void:
-	if PracticeLog.shared().game_id() == ACTIVITY:
-		PracticeLog.shared().first_answer(false)
+	_miss(hint)
 	_hint = hint
 	if _talking != "":
 		_close_dialogue()
@@ -363,8 +376,10 @@ func give_hint() -> void:
 	var hint: Dictionary = writer.hint(tasks[current], _hint_level)
 	if str(hint.get("mark", "")) != "":
 		goods.mark_item(hint.mark)
+		_miss("thing")
 	elif not hint.get("region", []).is_empty():
 		goods.mark(hint.region[0], hint.region[1])
+		_miss("place")
 	if _talking != "":
 		_close_dialogue()
 	host.show_line("warehouse.hint", _line(hint.say), [], MESSAGE_SECONDS)
@@ -377,6 +392,23 @@ func _on_item_picked(id: String) -> void:
 	var task: Dictionary = tasks[current]
 	if str(task.get("item", "")) != "" and id != task.item and _talking == "":
 		_wrong("warehouse.wrong_thing", {"item": Tasks.thing(task.item)}, "thing")
+	if id == str(task.get("item", "")):
+		_put_wait = -1.0
+
+## The task's box let go: judged once it rests (_watch_task()).
+func _on_item_put(id: String) -> void:
+	if not tasks.is_empty() and id == str(tasks[current].get("item", "")):
+		_put_wait = 0.0
+
+## Marks the current task's "thing" words (its box's colour) or its "place" word as missed.
+func _miss(part: String) -> void:
+	if tasks.is_empty() or writer == null:
+		return
+	var task: Dictionary = tasks[current]
+	var place := Tasks.place_word(task)
+	for key in writer.words(task):
+		if (key == place) == (part == "place"):
+			_missed[key] = true
 
 ## The "warehouse" input claim (while holding something): on Ramón's twin, talk (he takes what
 ## to him); anywhere else, put the item down where aimed.
@@ -394,6 +426,16 @@ func ask_leave() -> void:
 	if not in_game() or _busy_fading:
 		return
 	host.ask_leave()
+
+## Esc / back with no popup open (Main, the request_leave() contract, docs/guides/MINIGAMES.md;
+## 25 Nov 2026): the leave question, as the task card's Leave (which Esc reaches first while the
+## card shows). True while a game runs.
+func request_leave() -> bool:
+	if host == null or not in_game():
+		return false
+	if not host.is_asking_leave():
+		ask_leave()
+	return true
 
 func _on_leave_answered(leave: bool) -> void:
 	if leave:
@@ -496,6 +538,13 @@ func _watch_task(delta: float) -> void:
 	if _busy_fading or tasks.is_empty() or goods == null:
 		return
 	var task: Dictionary = tasks[current]
+	if _put_wait >= 0.0 and not writer.done(task):
+		# The box put down somewhere: a wrong named place misses the position word.
+		_put_wait += delta
+		if _put_wait >= SETTLE_SECONDS and goods.resting(str(task.get("item", ""))):
+			_put_wait = -1.0
+			if writer.wrong_place(task):
+				_miss("place")
 	if writer.done(task):
 		# A placed thing must be let go and stay in place, not just pass through or bounce.
 		_settled += delta
