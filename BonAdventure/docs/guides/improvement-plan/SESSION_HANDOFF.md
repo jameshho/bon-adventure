@@ -20,21 +20,20 @@ decisions in [DECISION_LOG.md](DECISION_LOG.md#open-decisions).
 ## Wave 2b (25 Nov 2026 evening)
 
 - Merged into `main`: LEARN-04 known words, LEARN-03 real-time review, GAME-02b leave question in
-  every in-world game, GAME-05 unstuck, UI-04 F1 guide. **Not merged:** UI-07 tutorial progress
-  (branch `claude/tutorial-progress-c8eee1`, waiting for the user's yes in its own session).
+  every in-world game, GAME-05 unstuck, UI-04 F1 guide, then UI-07 tutorial progress (`e443af33`;
+  `tutorial`, `app_flow`, `touch_controls`, `language` PASS on main).
 - Full suite on `d12ba83a`: PASS 70, KNOWN 3, NEW 5, all five fixed and re-run (PASS 6)
   ([record](../FINAL_VERIFICATION.md#wave-2b-merged-and-full-suite--25-november-2026)).
-- Nothing pushed.
+- Pushed and published 25 Nov (user).
 
 ## Next step
 
-1. Merge UI-07 once committed; run `tutorial` and `app_flow` on main.
-2. P3: `app_flow`'s one engine segfault (0 in 16 runs since).
-3. Wave 2 left: per-language voice packs (PERF-04), the phone size floor (UI-02, after the user's
+1. P3: `app_flow`'s one engine segfault (0 in 16 runs since).
+2. Wave 2 left: per-language voice packs (PERF-04), the phone size floor (UI-02, after the user's
    phone check).
-4. Wave 3: all designed levels (LEARN-06), the web sculpt cache (PERF-03), shader warm-up
+3. Wave 3: all designed levels (LEARN-06), the web sculpt cache (PERF-03), shader warm-up
    (PERF-06), palette tidy-up and ground tones (P3-22, P3-23), the web and phone perf runs.
-5. Bamboo voice clips need the user's `aws sso login`.
+4. Bamboo voice clips need the user's `aws sso login`.
 
 ## Commit history note (25 Nov 2026, user: leave it)
 

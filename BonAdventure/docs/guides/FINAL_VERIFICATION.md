@@ -8457,3 +8457,6 @@ Also: the new `unstuck` check (GAME-05) is registered in `run_checks.py` (full s
 `run_checks.py --only language,touch_controls,vehicle_doors,mahjong_table,hen_house,unstuck`:
 **PASS 6** (61 s). Not covered: renders of the merged UI, web and phone, the tutorial-progress branch.
 
+**UI-07 merged afterwards:** tutorial progress and Skip confirm (`3a3713d7` → `e443af33`; game guide row
+combined by hand). `run_checks.py --only tutorial,app_flow,touch_controls,language` on `e443af33`,
+`dev_focus.txt` = `all`: **PASS 4** (79 s). All six wave 2b branches are now in `main`.
