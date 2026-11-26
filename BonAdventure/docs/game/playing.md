@@ -20,8 +20,10 @@ A title screen with the **Bon Adventure: Little Town of Words** logo (16 Nov; it
 the text title) and Play, then a character screen with up to three profiles, each
 with its own avatar (one of the house plushes) and its own saves. A new profile picks the
 language it speaks and the one it wants to learn, then the town loads. Each profile remembers
-where the player was and comes back at that building's entrance or on clear ground nearby
-(14 Nov). Since 18 Nov the screens follow the user's mockups ([UI art style](../guides/UI_STYLE.md)):
+where the player was (14 Nov) and since 25 Nov comes back at the same spot, inside a building
+too (else at its entrance or on clear ground nearby); with no usable place it starts outside the
+home (the supermarket until 25 Nov). **Save** in Settings keeps the spot at once ("Saved! You'll
+start here next time."). Since 18 Nov the screens follow the user's mockups ([UI art style](../guides/UI_STYLE.md)):
 a saved player is picked (green, check mark) and played with Next; the character grid shows eight
 plushes (not Sunny), whose headshots are cut from the mockup since 23 Nov (the 22 Nov vtracer traces looked pixelated); the language page has round flags and **Just explore!**, which starts the new
 player with "Show everything in my language" on. Since 24 Nov the "I want to learn" row is greyed
@@ -110,27 +112,33 @@ Chinese shows pinyin under the text.
 
 ## Studying words and the journal
 
-<img src="../evidence/vocabulary-book-20261108/saved-en-es.png" width="480" alt="Journal word list">
+<img src="../evidence/journal-sticker-book-20261125/chapter-flipped.png" width="480" alt="Journal sticker album, the Supermarket chapter">
 
-*Screenshot 8 Nov.*
+*Screenshot 25 Nov.*
 
 Click or tap almost any object to see a **word card** with the word in both languages; that
 counts as studying it (also while walking or jumping, since 23 Nov). A word on a **poster**
 (school, airport, restaurants, warehouse, police, Mystery House) or a menu board opens a
 **close-up of the whole poster** instead (24 Nov): tap a word on it for its card, tap beside it,
 the ✕, Esc or E to go back ([view](../evidence/poster-closeup-20261124/restaurant-menu-board-closeup.png)). Some objects can be **picked up** (books, baskets) and inspected in
-BonBon's hand. The **journal** (J, or the book button top right) lists every word, by category or
-by area, with ★ saved words, ✓ studied words and the right and wrong answers from the tracked
-minigames. Since 23 Nov each noun shows a small picture of its object in the journal and on the
-results card after a game ([journal](../evidence/word-pictures-20261123/journal-furniture.png),
+BonBon's hand. The **journal** (J, or the book button top right) is a **sticker album** since
+25 Nov: a contents page of places (each with "12 of 28" found and a bar, plus Around town for
+words found everywhere and the ★ Pocket of saved words) and, per place, spreads of 8 stickers.
+A found word shows its picture and foreign word (tap: the native word; tap again: its page with
+the speaker, ★, the places it is in and Details with the right and wrong answers from the
+minigames); a word not found yet is a grey silhouette with "?". A word counts as found when
+its card is opened or when you first answer it in a minigame. ← → turn the pages. The header counts
+"N of 758 words found" (words no player can find are left out) and has a search that never gives
+away a word not found ([views](../evidence/journal-sticker-book-20261125/)). Since 23 Nov each
+noun has a picture of its object (also on the results card after a game,
 [results](../evidence/word-pictures-20261123/results.png)); the word card in town stays text only.
-Since 24 Nov a **speaker** on the word card, on every journal row and in a word's journal page
-says the word in the language you are learning ([journal](../evidence/journal-speaker-20261124/journal-rows.png),
-[word page](../evidence/journal-speaker-20261124/journal-detail.png)).
+Since 24 Nov a **speaker** on the word card and the journal's word page says the word in the
+language you are learning.
 Since 25 Nov a word you **know** (the [word memory](minigames.md#which-words-come-up) remembers it
-well) has a small **daisy** on its picture, its page says "You know this word", and the bottom line
-counts the known words ([journal](../evidence/known-words-20261125/journal-studied-laptop.png)).
-[Vocabulary book](../guides/ARCHITECTURE_REVIEW_PART1.md#vocabulary-book) ·
+well) has a small **daisy** on its sticker and its page says "You know this word".
+Still to come: drawn icons, growth stages, a review round and a
+Topics tab ([design](../guides/JOURNAL.md)).
+[Journal](../guides/JOURNAL.md) ·
 [word pictures](../guides/ARCHITECTURE_REVIEW_PART1.md#word-pictures) ·
 [holding things](../guides/HAND_HOLD.md)
 
@@ -172,7 +180,14 @@ when flying high). On the web, a returning player's town
 starts with the buildings near where they come back, and the others appear in the fog as they come
 within about 150 m (further when flying high); a game in the ▶ picker whose building is not there yet builds it first
 (17 Nov, not yet tried on a phone:
-[nearby loading](../guides/performance/README.md#built--17-november-2026)).
+[nearby loading](../guides/performance/README.md#built--17-november-2026)). Since 26 Nov buildings
+more than about 220 m away are freed again (they come back as built: doors shut, carts and
+characters at their places), and far plush characters drop their meshes until you come near
+([freeing far buildings](../guides/performance/README.md#built--26-november-2026-freeing-far-buildings-and-far-plush-meshes)).
+If a phone's browser closes the page itself (usually low memory; the game went back to the
+title screen), the game now comes straight back to the same spot when reopened within 5 minutes
+(25 Nov; tried in a desktop browser, not yet on a phone). The `?perf=1` readout counts these
+restarts and shows the page's memory.
 [Web app](../../README.md#web-app-pwa)
 
 ## Finding places
@@ -290,7 +305,10 @@ BonBon's steps keep pace with her speed (quicker when running, slower when creep
   marimba chime for the right shelf and two soft falling notes for a wrong one. Engines:
   cars and other road vehicles hum and rise in pitch as they speed up, trucks, buses and the
   fire truck have a deeper diesel, the helicopter's rotor winds up and down, and the plane has
-  a propeller drone. Drawers,
+  a propeller drone. Buttons: green ones (Yes, Play, Next) pop upwards, Back and "Not now" pop
+  downwards, Delete and Leave crumple like paper, other buttons make a tiny pop and picking a
+  tile, tab or choice a bell glint. Mahjong: the tiles clack, the calls are spoken in Cantonese
+  and a tune plays when you win. Drawers,
   curtains, the garage, gates and vehicle doors are still silent. The Sound effects slider sets
   them. [Effects](../guides/VOICE.md#sound-effects-25-nov-2026)
 

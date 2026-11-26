@@ -78,6 +78,8 @@ const SHAPES := {
 	# desk monitor: look at the account).
 	"police": '<path d="M12 2.5l7.5 3v6c0 4.6-3.2 8.3-7.5 10-4.3-1.7-7.5-5.4-7.5-10v-6z"/><path d="M12 7.6l1.3 2.6 2.9.4-2.1 2 .5 2.9L12 14.2l-2.6 1.3.5-2.9-2.1-2 2.9-.4z"/>',
 	"person": '<circle cx="12" cy="8" r="4"/><path d="M4 21v-1.5a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6V21"/>',
+	# Settings' Save button (25 Nov 2026): a map pin, "start here next time".
+	"pin": '<path d="M12 21.5s-6.5-6-6.5-11.5a6.5 6.5 0 0 1 13 0c0 5.5-6.5 11.5-6.5 11.5z"/><circle cx="12" cy="10" r="2.4"/>',
 	"screen": '<rect x="2.5" y="4" width="19" height="12.5" rx="1.5"/><path d="M12 16.5v3.5M7.5 20.5h9"/>',
 }
 

@@ -116,11 +116,14 @@ static func load_units(town: Node3D, on_step: Callable = Callable(), keys: Array
 ## [node, parent, index]; the caller puts them back one per frame with put_back() (each plush
 ## sculpts its meshes in _ready, the bulk of a unit's freeze: 13 Nov 2026), then calls
 ## finish_refs(town). Without it everything goes in at once.
-static func add_unit(town: Node3D, key: String, held = null) -> Array:
+## `prepared`: the unit's scene already instanced (nearby_units.gd prepare(), 26 Nov 2026), or null.
+static func add_unit(town: Node3D, key: String, held = null, prepared: Node = null) -> Array:
 	var loaded: Array = town.get_meta("loaded_units", [])
 	if loaded.has(key):
+		if prepared != null:
+			prepared.free()
 		return []
-	var unit := _instance(key)
+	var unit := prepared if prepared != null else _instance(key)
 	if unit == null:
 		return []
 	var refs: Array = unit.get_meta("node_refs", [])
@@ -144,6 +147,62 @@ static func add_unit(town: Node3D, key: String, held = null) -> Array:
 	if not held is Array:
 		finish_refs(town)
 	return parts
+
+## The part nodes of loaded unit `key` in `town` (registry order; missing ones skipped).
+static func unit_parts(town: Node, key: String) -> Array:
+	var parts: Array = []
+	if not (town.get_meta("loaded_units", []) as Array).has(key):
+		return parts
+	for path in registry().get(key, {}).get("parts", []):
+		var part := town.get_node_or_null(NodePath(path))
+		if part != null:
+			parts.append(part)
+	return parts
+
+## Takes loaded unit `key` out of `town` (Main.remove_unit(), the far-unit freeing of
+## nearby_units.gd, 26 Nov 2026) and frees its parts. Links from the rest of the town into the
+## unit (`<meta>` node references made by restore_node_refs()) turn back into `__ref` paths and
+## wait in `pending_node_refs`, so add_unit() restores them when the unit returns. The caller
+## has already told the town-wide systems.
+static func remove_unit(town: Node3D, key: String, parts: Array) -> void:
+	var inside := func(node) -> bool:
+		return node is Node and is_instance_valid(node) and parts.any(func(part) -> bool: return part == node or (part as Node).is_ancestor_of(node))
+	var pending: Array = town.get_meta("pending_node_refs", [])
+	# The holders the bake listed (the base's `node_refs`; a unit's own links stay inside it).
+	var holders: Array = []
+	for holder_path in town.get_meta("node_refs", []):
+		var holder := town.get_node_or_null(NodePath(holder_path))
+		if holder != null and not holders.has(holder):
+			holders.append(holder)
+	for holder: Node in holders:
+		if inside.call(holder):
+			continue
+		var changed := false
+		for meta in holder.get_meta_list():
+			var value: Variant = holder.get_meta(meta)
+			if value is Node and inside.call(value):
+				holder.set_meta(String(meta) + "__ref", town.get_path_to(value))
+				holder.remove_meta(meta)
+				changed = true
+			elif value is Array and not (value as Array).is_empty() and (value as Array).any(func(item) -> bool: return inside.call(item)):
+				var paths: Array = []
+				for item in value:
+					if item is Node and is_instance_valid(item):
+						paths.append(town.get_path_to(item))
+				holder.set_meta(String(meta) + "__refs", paths)
+				holder.remove_meta(meta)
+				changed = true
+		if changed:
+			var path := str(town.get_path_to(holder))
+			if not pending.has(path):
+				pending.append(path)
+	town.set_meta("pending_node_refs", pending)
+	for part: Node in parts:
+		part.get_parent().remove_child(part)
+		part.free()
+	var loaded: Array = town.get_meta("loaded_units", [])
+	loaded.erase(key)
+	town.set_meta("loaded_units", loaded)
 
 ## Puts a plush held by add_unit() back where it was (it builds itself in _ready).
 static func put_back(town: Node3D, entry: Array) -> void:

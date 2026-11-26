@@ -55,6 +55,8 @@ signal music_changed(track: String)
 var cues: Dictionary = {}
 ## script resource path -> binding dictionary (play / start / stop: signal -> cue id).
 var bindings: Dictionary = {}
+## BonStyle button kind -> cue id (the catalogue's "buttons" section, 25 Nov 2026).
+var button_kinds: Dictionary = {}
 ## The catalogue's "voice" section (enabled, folder, bus, volume_db, languages).
 var voice: Dictionary = {}
 ## The catalogue's "music" section (enabled, tracks: name -> cue id, fade_in, fade_out).
@@ -88,6 +90,7 @@ func _init() -> void:
 	cues = data.get("cues", {})
 	voice = data.get("voice", {})
 	music = data.get("music", {})
+	button_kinds = data.get("buttons", {}).get("kinds", {})
 	for binding in data.get("bindings", []):
 		bindings[str(binding["script"])] = binding
 
@@ -148,8 +151,12 @@ func _exit_tree() -> void:
 	if _shared == self:
 		_shared = null
 
-## Connects a node's signals when its script has a binding (once per node).
+## Connects a node's signals when its script has a binding (once per node). Every button gets
+## its press sound hooked up (button_cue() decides at the press, so a restyle needs nothing).
 func _bind(node: Node) -> void:
+	if node is BaseButton and not node.has_meta("sound_button"):
+		node.set_meta("sound_button", true)
+		(node as BaseButton).pressed.connect(_button_pressed.bind(node))
 	var script: Script = node.get_script()
 	if script == null or not bindings.has(script.resource_path) or node.has_meta("sound_bound"):
 		return
@@ -176,6 +183,20 @@ func _play_bound(cue_id: String, node: Node) -> void:
 	if node is Node3D and cues.get(cue_id, {}).has("distance"):
 		play_at(cue_id, node)
 	else:
+		play_ui(cue_id)
+
+## The cue a button plays when pressed (25 Nov 2026): its meta "sound" (a cue id; "none" for
+## silence), else the catalogue's "buttons" cue for the kind BonStyle gave it (meta bon_kind),
+## else "" (a button BonStyle never styled stays silent: touch controls, game pieces).
+func button_cue(button: Node) -> String:
+	var cue_id := str(button.get_meta("sound", ""))
+	if cue_id == "":
+		cue_id = str(button_kinds.get(str(button.get_meta("bon_kind", "")), ""))
+	return cue_id if cues.has(cue_id) else ""
+
+func _button_pressed(button: BaseButton) -> void:
+	var cue_id := button_cue(button)
+	if cue_id != "":
 		play_ui(cue_id)
 
 ## Plays a cue once, not positional (UI and reward sounds: the coin, right and wrong answers;

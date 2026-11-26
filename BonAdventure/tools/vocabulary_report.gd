@@ -11,7 +11,8 @@ extends SceneTree
 ##       also refreshes docs/guides/vocabulary-report/report.csv and summary.md, and the game guide's
 ##       per-game word list docs/game/words.md (16 Nov 2026; the only files it writes): only
 ##       when there is no hard error and the content changed (the date alone is not a change),
-##       so an unchanged town leaves all three untouched. Prints
+##       so an unchanged town leaves all three untouched. Since 25 Nov 2026 it also writes the
+##       journal's baked place index data/journal_places.json (see PLACE_INDEX below). Prints
 ##       "VOCABULARY REPORT FILES: updated" or "unchanged". The full suite runs it this way
 ##       (run_checks.py `vocabulary_report`, user decision 8 Nov 2026), so the report follows
 ##       every change to words, buildings or minigames; commit the refreshed files with it.
@@ -48,6 +49,14 @@ const FlightQuestions := preload("res://scripts/learning/flight_questions.gd")
 const OUT_DIR := "res://docs/guides/vocabulary-report/"
 ## Generated per-game word list of the game guide (docs/game/README.md), 16 Nov 2026.
 const GUIDE_WORDS := "res://docs/game/words.md"
+## The sticker book's place index (25 Nov 2026, docs/guides/JOURNAL.md#baked-place-index): every
+## findable word with the places (data/zones.json ids) where it can be found, so the journal's
+## chapters are complete on the web before the buildings load. Findable = clickable somewhere
+## (its places: the zones of its clickable objects) or tested / shown by a game (a word no click
+## can study gets the places of those games, data/town_map.json `games`). Words nobody can find
+## are listed in `not_findable` and left out of the journal. Written with --write only.
+const PLACE_INDEX := "res://data/journal_places.json"
+const TOWN_MAP := "res://data/town_map.json"
 const WAREHOUSE_GOODS := "res://scripts/learning/warehouse_goods.gd"
 const GRAMMAR_DIR := "res://data/grammar_class/"
 
@@ -67,6 +76,10 @@ var shows: Dictionary = {}
 var removed_placed: Dictionary = {}
 ## key -> clickable objects (the journal's By Area index, area_vocabulary.gd)
 var clickable: Dictionary = {}
+## key -> {zone id: true} of its clickable objects (the place index).
+var clickable_zones: Dictionary = {}
+## game id -> zone id of its NPC or box (data/town_map.json `games`, the place index).
+var game_zones: Dictionary = {}
 
 func _initialize() -> void:
 	run.call_deferred()
@@ -115,6 +128,13 @@ func run() -> void:
 	for target in game.area_vocabulary.assignments:
 		var key: String = game.area_vocabulary.assignments[target].key
 		clickable[key] = int(clickable.get(key, 0)) + 1
+		if not clickable_zones.has(key):
+			clickable_zones[key] = {}
+		clickable_zones[key][str(game.area_vocabulary.assignments[target].zone)] = true
+	var spots: Dictionary = _json(TOWN_MAP).get("games", {})
+	for id in spots:
+		var at: Array = spots[id]
+		game_zones[str(id)] = game.zones.resolve_local(Vector3(float(at[0]), 0.0, float(at[1])))
 	for key in game.area_vocabulary.unknown_keys:
 		check(false, "unknown clickable word key: %s" % key)
 	_labels(game, town)
@@ -397,9 +417,16 @@ func _write(rows: Array, duplicates: Array, slot_phrases: Dictionary, unplaced: 
 	var csv := "\n".join(lines) + "\n"
 	var summary := _summary(rows, duplicates, slot_phrases, unplaced)
 	var guide := _guide_words()
+	var index := _place_index(rows)
+	var index_changed := index != _read(PLACE_INDEX)
+	if index_changed:
+		var out := FileAccess.open(PLACE_INDEX, FileAccess.WRITE)
+		out.store_string(index)
+		out.close()
+		print("VOCABULARY REPORT FILES: updated %s" % PLACE_INDEX)
 	if csv == _read(OUT_DIR + "report.csv") and _undated(summary) == _undated(_read(OUT_DIR + "summary.md")) \
 			and _undated(guide) == _undated(_read(GUIDE_WORDS)):
-		print("VOCABULARY REPORT FILES: unchanged")
+		print("VOCABULARY REPORT FILES: unchanged" if not index_changed else "VOCABULARY REPORT FILES: report unchanged")
 		return
 	var file := FileAccess.open(OUT_DIR + "report.csv", FileAccess.WRITE)
 	file.store_string(csv)
@@ -411,6 +438,50 @@ func _write(rows: Array, duplicates: Array, slot_phrases: Dictionary, unplaced: 
 	file.store_string(guide)
 	file.close()
 	print("VOCABULARY REPORT FILES: updated %sreport.csv, summary.md and %s (commit them with the change)" % [OUT_DIR, GUIDE_WORDS])
+
+## data/journal_places.json (PLACE_INDEX): {"words": {key: [zone ids]}} for every findable word
+## (zones in data/zones.json order), "not_findable": the rest. No date, so it only changes with
+## the town. Around town (4 or more places) is worked out by the journal from these lists.
+func _place_index(rows: Array) -> String:
+	var order: Array = []
+	for zone in _json("res://data/zones.json").get("zones", []):
+		order.append(str(zone.id))
+	var by_order := func(a, b): return order.find(a) < order.find(b)
+	var found: Dictionary = {}
+	var hidden: Array = []
+	var from_games: Array = []
+	for row in rows:
+		var places: Array = clickable_zones.get(row.key, {}).keys()
+		if places.is_empty():
+			from_games.append(row.key)
+			for game in row.tests + row.shows:
+				var zone := str(game_zones.get(game, ""))
+				if zone != "" and not places.has(zone):
+					places.append(zone)
+		if places.is_empty():
+			# Not clickable and no game asks it, or only games with no place on the map.
+			if row.clickable == 0 and row.tests.is_empty() and row.shows.is_empty():
+				hidden.append(row.key)
+				from_games.erase(row.key)
+				continue
+			print("PLACE INDEX: %s has no place (its games are not on the town map)" % row.key)
+			places.append("coast")
+		places.sort_custom(by_order)
+		found[row.key] = places
+	var lines: Array = ["{",
+		'\t"about": "Written by tools/vocabulary_report.gd -- --write (do not edit by hand). The vocabulary journal\'s place index (docs/guides/JOURNAL.md#baked-place-index): every findable word (clickable somewhere in town, or tested or shown by a game) with the data/zones.json places it is found in; a word no click can study has the places of the games that use it (listed in from_games). not_findable: words no player can find, left out of the journal.",',
+		'\t"words": {']
+	var keys: Array = found.keys()
+	keys.sort()
+	for i in keys.size():
+		lines.append('\t\t"%s": %s%s' % [keys[i], JSON.stringify(found[keys[i]]), "," if i < keys.size() - 1 else ""])
+	lines.append("\t},")
+	from_games.sort()
+	lines.append('\t"from_games": %s,' % JSON.stringify(from_games))
+	hidden.sort()
+	lines.append('\t"not_findable": %s' % JSON.stringify(hidden))
+	lines.append("}")
+	return "\n".join(lines) + "\n"
 
 ## The game guide's word list: for every game named in data/phrases.json `games`, the words it
 ## tests and only shows, in English, Spanish and Chinese (16 Nov 2026, user: the guide reflects

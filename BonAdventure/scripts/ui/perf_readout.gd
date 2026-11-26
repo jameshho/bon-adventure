@@ -1,7 +1,9 @@
 extends CanvasLayer
 ## A small performance readout for measuring on a phone (14 Nov 2026): frames per second, the
 ## average and slowest frame time, draw calls, triangles, the view distance (the graphics tier until 23 Nov 2026) and the GPU memory
-## the renderer holds (textures + buffers; added 14 Nov 2026 for the WebGL context loss work), refreshed
+## the renderer holds (textures + buffers; added 14 Nov 2026 for the WebGL context loss work), the
+## engine's own memory (RAM: Godot's allocations; on the web the page's whole WebAssembly memory)
+## and, on the web, recent restarts by the browser (both 25 Nov 2026), refreshed
 ## twice a second in the top-left corner under the minimap label.
 ## On: the page address has ?perf=1 (web), F3 toggles it, or the Settings checkbox "Show FPS".
 ## Never saved. render_culling.gd attaches it when the town is built.
@@ -9,6 +11,9 @@ extends CanvasLayer
 const NODE_NAME := "Perf readout"
 const REFRESH := 0.5
 const DESIGN := Vector2(1100, 800)
+## Restarts by the browser counted over this many seconds (web).
+const RESTART_WINDOW := 3600.0
+const WebResume := preload("res://scripts/core/web_resume.gd")
 
 var _label: Label
 var _panel: PanelContainer
@@ -91,9 +96,20 @@ func _process(delta: float) -> void:
 	var view := "view %d m" % roundi(camera.far) if camera != null else ""
 	var scale := get_viewport().scaling_3d_scale
 	var gpu := RenderingServer.get_rendering_info(RenderingServer.RENDERING_INFO_VIDEO_MEM_USED) / 1048576.0
-	_label.text = "%d fps  %.1f ms (max %.0f)\n%d draws  %.2f M tris\n%s  3D x%.2f\nGPU %d MB" % [
+	var ram := OS.get_static_memory_usage() / 1048576.0
+	if OS.has_feature("web"):
+		# Release web builds do not count Godot's allocations: the page's WebAssembly memory
+		# instead (kept by the Web preset's head_include as window.bonWasmMemory; it only grows).
+		ram = float(JavaScriptBridge.eval("(function () { try { return window.bonWasmMemory ? window.bonWasmMemory.buffer.byteLength : 0; } catch (e) { return 0; } })()", true)) / 1048576.0
+	_label.text = "%d fps  %.1f ms (max %.0f)\n%d draws  %.2f M tris\n%s  3D x%.2f\nGPU %d MB  RAM %d MB" % [
 		roundi(_frames / _elapsed), _elapsed * 1000.0 / _frames, _slowest * 1000.0,
-		draws, triangles / 1.0e6, view, scale, roundi(gpu)]
+		draws, triangles / 1.0e6, view, scale, roundi(gpu), roundi(ram)]
+	if OS.has_feature("web"):
+		# Restarts by the browser (web_resume.gd, 25 Nov 2026): the page was killed, e.g. low memory.
+		var restarts: Array = WebResume.recent_restarts(RESTART_WINDOW)
+		if not restarts.is_empty():
+			_label.text += "\nrestarts %d in 1 h (last %d min ago)" % [restarts.size(),
+				roundi((Time.get_unix_time_from_system() - float(restarts.back())) / 60.0)]
 	_frames = 0
 	_elapsed = 0.0
 	_slowest = 0.0

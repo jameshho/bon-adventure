@@ -629,6 +629,8 @@ func _refresh_dialogue() -> void:
 		_min(button, Vector2(220, 64))
 		_font(button, 30)
 		_set_icon(button, str(choice.get("icon", "")))
+		if str(choice.get("icon", "")) == "no":
+			button.set_meta("sound", "ui.decline")   # "No" / "Not now" (sound.gd button_cue())
 		var id: String = choice.id
 		button.pressed.connect(func() -> void: choice_pressed.emit(id))
 		choice_row.add_child(button)

@@ -40,6 +40,7 @@ extends RefCounted
 ## toggled Home roof are never merged. Rules: docs/guides/performance/README.md; measured
 ## in docs/guides/FINAL_VERIFICATION.md ("render trim").
 
+const ModularTownScript := preload("res://scripts/world/modular_town.gd")
 const SMALL_PROP_SIZE := 1.0
 const SMALL_PROP_RANGE := 60.0
 const MID_PROP_SIZE := 3.0
@@ -108,11 +109,16 @@ var _unit_box := BoxMesh.new()
 var _unit_meshes := {}
 var _light_cells := {}
 var _max_lights := 8
+## Mesh instance id -> [WeakRef of the mesh, triangles].
 var _triangle_counts := {}
 var shell_kept := 0
 var shell_usec := 0
 var _space: PhysicsDirectSpaceState3D
 var _axes: Array[Vector3] = []
+## Building units are freed again when far (nearby_units.gd, 26 Nov 2026): every unit is then
+## batched in its own `Unit_<key>` container, never in the town-wide batches, so removing a unit
+## (remove_unit()) takes all of its pieces with it. Set by build() from NearbyUnits.enabled().
+var per_unit := false
 
 const PerfReadout := preload("res://scripts/ui/perf_readout.gd")
 
@@ -148,7 +154,17 @@ func build(game: Node3D) -> void:
 			continue
 		_trim(child, child.name in MID_ROOTS)
 	_apply_segments()
+	per_unit = preload("res://scripts/world/nearby_units.gd").enabled()
 	_batch(game.apartment, game.doors)
+	if per_unit:
+		var units := ModularTownScript.registry()
+		for key in game.apartment.get_meta("loaded_units", []):
+			var parts: Array = []
+			for path in units.get(key, {}).get("parts", []):
+				var part: Node = game.apartment.get_node_or_null(NodePath(path))
+				if part != null:
+					parts.append(part)
+			_batch_unit(game, parts, key)
 	merge_door_leaves(game.apartment, game.doors)
 	if OS.has_feature("web"):
 		share_label_sizes(game)
@@ -194,14 +210,18 @@ func _triangles(mesh: Mesh) -> int:
 	# Only imported/built ArrayMeshes can be that heavy; primitives are budgeted by _apply_segments().
 	if not mesh is ArrayMesh:
 		return 0
-	if not _triangle_counts.has(mesh):
+	# Keyed by id with a weak reference: holding the mesh kept far plushes' meshes alive
+	# (sculpt_cache.gd strip(), 26 Nov 2026).
+	var known: Array = _triangle_counts.get(mesh.get_instance_id(), [])
+	if known.is_empty() or (known[0] as WeakRef).get_ref() != mesh:
 		var array_mesh := mesh as ArrayMesh
 		var count := 0
 		for i in range(array_mesh.get_surface_count()):
 			var indices: int = array_mesh.surface_get_array_index_len(i)
 			count += (indices if indices > 0 else array_mesh.surface_get_array_len(i)) / 3
-		_triangle_counts[mesh] = count
-	return _triangle_counts[mesh]
+		known = [weakref(mesh), count]
+		_triangle_counts[mesh.get_instance_id()] = known
+	return known[1]
 
 
 # Shortens the short visibility ranges (RANGE_SHARE, up to SHORT_RANGE) and hides heavy meshes
@@ -237,23 +257,9 @@ func add_parts(game: Node3D, parts: Array, key: String) -> void:
 	for part in parts:
 		for light in part.find_children("*", "Light3D", true, false):
 			_index_light(light)
-	var groups := {}
-	var pending: Array = roots.duplicate()
-	while not pending.is_empty():
-		var node: Node = pending.pop_back()
-		if _dynamic(node, game.doors):
-			continue
-		if node is MeshInstance3D:
-			_collect(node as MeshInstance3D, town, groups)
-		pending.append_array(node.get_children())
-	var holder := town.get_node_or_null("StaticRenderBatches")
-	if holder == null:
+	var container := _batch_unit(game, roots, key)
+	if container == null:
 		return
-	var container := Node3D.new()
-	container.name = "Unit_" + key
-	holder.add_child(container)
-	_make_batches(groups, container)
-	town.set_meta("static_batched_mesh_count", merged)
 	for part in roots:
 		if is_instance_valid(part):
 			merge_door_leaves(part, game.doors)
@@ -267,6 +273,56 @@ func add_parts(game: Node3D, parts: Array, key: String) -> void:
 		for part in parts:
 			if is_instance_valid(part):
 				share_label_sizes(part)
+
+
+## The static batches of unit `key`'s `roots` in their own container under StaticRenderBatches
+## ("Unit_<key>"), or null without that holder.
+func _batch_unit(game: Node3D, roots: Array, key: String) -> Node3D:
+	var town: Node3D = game.apartment
+	var groups := {}
+	var pending: Array = roots.duplicate()
+	while not pending.is_empty():
+		var node: Node = pending.pop_back()
+		if _dynamic(node, game.doors):
+			continue
+		if node is MeshInstance3D:
+			_collect(node as MeshInstance3D, town, groups)
+		pending.append_array(node.get_children())
+	var holder := town.get_node_or_null("StaticRenderBatches")
+	if holder == null:
+		return null
+	var old := holder.get_node_or_null("Unit_" + key)
+	if old != null:
+		holder.remove_child(old)
+		old.free()
+	var container := Node3D.new()
+	container.name = "Unit_" + key
+	holder.add_child(container)
+	_make_batches(groups, container)
+	town.set_meta("static_batched_mesh_count", merged)
+	return container
+
+
+## Unit `key` is about to be freed (Main.remove_unit(), nearby_units.gd): its batches go, its
+## lights leave the light index, and the mesh caches let go of its meshes (they are only caches:
+## the triangle counts are measured again when needed; the round-mesh radii were applied).
+func remove_unit(game: Node3D, parts: Array, key: String) -> void:
+	var holder: Node = game.apartment.get_node_or_null("StaticRenderBatches")
+	var container: Node = holder.get_node_or_null("Unit_" + key) if holder != null else null
+	if container != null:
+		holder.remove_child(container)
+		container.free()
+	for cell in _light_cells.keys():
+		var kept: Array = []
+		for light in _light_cells[cell]:
+			if is_instance_valid(light) and not parts.any(func(part) -> bool: return (part as Node).is_ancestor_of(light)):
+				kept.append(light)
+		if kept.is_empty():
+			_light_cells.erase(cell)
+		else:
+			_light_cells[cell] = kept
+	_triangle_counts.clear()
+	_radii.clear()
 
 
 ## Moves every Label3D under `root` to a shared font size (LABEL_SIZES; same size in the world)
@@ -454,9 +510,18 @@ func _batch(town: Node3D, doors: Dictionary) -> void:
 	for child in town.get_children():
 		if not child.name in SKIPPED_ROOTS:
 			pending.append(child)
+	# per_unit: the loaded units' parts are batched on their own (_batch_unit()).
+	var unit_parts := {}
+	if per_unit:
+		var units := ModularTownScript.registry()
+		for key in town.get_meta("loaded_units", []):
+			for path in units.get(key, {}).get("parts", []):
+				var part := town.get_node_or_null(NodePath(path))
+				if part != null:
+					unit_parts[part] = true
 	while not pending.is_empty():
 		var node: Node = pending.pop_back()
-		if _dynamic(node, doors):
+		if _dynamic(node, doors) or unit_parts.has(node):
 			continue
 		if node is MeshInstance3D:
 			_collect(node as MeshInstance3D, town, groups)

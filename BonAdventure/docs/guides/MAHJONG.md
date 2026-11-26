@@ -258,6 +258,13 @@ Simulated results with four NPC players:
      it (UI polish, same day; it was a round button above the bar's right end). The start of
      the player's next turn (a draw or a claim) and a new hand bring it back by themselves; call
      buttons still show while it is hidden (`mahjong_panel.gd` `hand_toggle`, `set_hand_hidden()`).
+     When anyone calls Mahjong the tray tucks itself away so the winning hand on the table shows
+     (user, 25 Nov 2026: "when mahjong, auto collapse my hand"; `mahjong_session.gd`
+     `_on_game_changed()`); the next hand brings it back.
+   - **Sound and music (user, 25 Nov 2026).** The tiles washed at the deal, your draws, every
+     discard, the calls spoken in Cantonese (碰 / 上 / 槓 / 食, for every language) and a tune
+     when you win; the game's own energetic `mahjong` track. Details:
+     [Mahjong sounds](VOICE.md#sound-effects-25-nov-2026).
    - **Playing ahead (user, 9 Nov 2026).** While another player plays, double-click (or tap twice)
      a hand tile to mark it: it lifts with a pink border and a ▶ badge. On the player's next turn
      it is discarded automatically after 0.5 s (`pace.auto_discard`), unless a **Mahjong!** or

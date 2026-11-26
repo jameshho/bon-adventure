@@ -66,6 +66,10 @@ const MIN_FONT := 12.0
 ## The native line under the foreign one, relative to the row font.
 const NATIVE_SCALE := .8
 
+## Controls on top of the screen the card must leave visible and clickable (25 Nov 2026, user:
+## the card covered the HUD's top-right EN, the one language toggle; as money_panel.gd): the
+## card starts below them, and clicks on them pass through the panel.
+var clear_of: Array = []
 var show_native := false
 ## Set by open(): {quiz, title, translate, question, hint, clock {weekday (line), time}, tabs [{id ("dep" /
 ## "arr"), label (line), column (line: the destination / origin header)}],
@@ -338,8 +342,27 @@ func _input(event: InputEvent) -> void:
 		return
 	if event is InputEventKey and (event as InputEventKey).keycode == KEY_ESCAPE:
 		return
+	# Hold L (the "peek" action): the native language, as the HUD's EN (Main handles it).
+	if event.is_action("peek"):
+		return
 	if event is InputEventKey or (event is InputEventMouseButton and event.button_index != MOUSE_BUTTON_LEFT):
 		get_viewport().set_input_as_handled()
+
+## Clicks on a clear_of control go through the panel to it.
+func _has_point(point: Vector2) -> bool:
+	var at := get_global_transform() * point
+	for rect in _clear_rects():
+		if rect.has_point(at):
+			return false
+	return Rect2(Vector2.ZERO, size).has_point(point)
+
+## The screen rects of the clear_of controls showing now.
+func _clear_rects() -> Array:
+	var rects: Array = []
+	for control in clear_of:
+		if is_instance_valid(control) and control.is_visible_in_tree():
+			rects.append(control.get_global_rect())
+	return rects
 
 # --- Drawing -----------------------------------------------------------------------------
 
@@ -362,6 +385,12 @@ func _refresh() -> void:
 	var screen := get_viewport_rect().size
 	_factor = clampf(minf(screen.y / DESIGN.y, screen.x / DESIGN.x), 0.5, 3.0)
 	var f := _factor
+	# Below the controls it keeps clear of (clear_of), where they stand over the card's width.
+	var top := 0.03 * screen.y
+	for rect in _clear_rects():
+		if rect.end.x > _card.anchor_left * screen.x and rect.position.x < _card.anchor_right * screen.x:
+			top = maxf(top, rect.end.y + 8.0 * f)
+	_card.anchor_top = minf(top / screen.y, 0.5)
 	_card.add_theme_stylebox_override("panel", _style(FILL))
 	(_card.get_theme_stylebox("panel") as StyleBoxFlat).set_content_margin_all(14 * f)
 	_stack.add_theme_constant_override("separation", int(6 * f))
@@ -669,6 +698,24 @@ func _layout_content() -> void:
 		_fill_summary()
 	if _board_panel.visible:
 		_fit_rows(_board_rows, _content.size.y - _tabs.get_combined_minimum_size().y - 32 * _factor)
+	_fit_calendar.call_deferred()
+
+## The calendar's day cells shrink when the clock and calendar are taller than the content
+## (25 Nov 2026: the card starts below the HUD's EN, and holding EN adds the native lines and
+## day heads), so the month's last week stays on screen. _rebuild_calendar() resets them.
+func _fit_calendar() -> void:
+	var grid: GridContainer = _calendar_box.get_node_or_null("Days")
+	if grid == null or not _main.visible:
+		return
+	var over := _side.get_combined_minimum_size().y - _content.size.y
+	var cells: Array = grid.get_children().filter(func(child): return child is CenterContainer)
+	if over <= 0.5 or cells.is_empty():
+		return
+	var weeks := ceili(cells.size() / 7.0)
+	var side := maxf(cells[0].custom_minimum_size.y - ceilf(over / weeks), CALENDAR_FONT * 1.2 * _factor)
+	for holder in cells:
+		holder.custom_minimum_size.y = side
+		(holder.get_child(0) as Control).custom_minimum_size = Vector2(side, side)
 
 ## Rows share the height they have (six flights a tab and the feedback lines take room): the
 ## text shrinks a little to fit, but never below MIN_FONT. There is no scroll bar (8 Nov 2026);

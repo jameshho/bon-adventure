@@ -122,6 +122,7 @@ static func build(main) -> void:
 	# Captain Bruno's flight game (airport information desk): same dialogue box and quit card,
 	# plus the flight panel.
 	main.flight_panel = _under_dialogue(main, preload("res://scripts/ui/flight_panel.gd").new())
+	main.flight_panel.clear_of = [main.hud.peek_button]
 	main.flight_panel.visibility_changed.connect(main.sync_player_controls)
 	_when(main, "airport", func() -> void:
 		main.flight_session = preload("res://scripts/learning/flight_session.gd").new()

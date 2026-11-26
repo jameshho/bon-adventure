@@ -38,6 +38,36 @@ Start at the [README](../../README.md); editing contracts are in the
 [architecture guide](ARCHITECTURE_REVIEW_PART1.md), and implementation details and
 six rendered views are in the [Part 2 handoff](../evidence/part2/HANDOFF.md).
 
+## Web restarts, Save button and home spawn — 25 November 2026
+
+User report: on a phone the game went back to the title four times in 15 minutes; then "add a save
+button, respawn at the same location, fallback at the home instead of the grocery store". Changed:
+`web_resume.gd` (running marker, `take()` once per page, restart log), the Web preset's
+`html/head_include` (`pagehide` removes the marker, `bonLeaving`, `window.bonWasmMemory`),
+`perf_readout.gd` (RAM, restarts), `player_place.gd` (same spot inside, `minigame` in the file),
+`main.gd` (`SPAWN_ORDER` home first, `save_game()`, home fallback in `_restore_place()`),
+`app.gd` (nearby loading starts at the home), `settings_panel.gd` (Save), `ui_icons.gd` (`pin`),
+`data/phrases.json` (`settings.save`, `settings.saved`). Full town (`dev_focus.txt` = `all`);
+other sessions' uncommitted work was in the same checkout and in the web build.
+
+- **Checks (`tools/run_checks.py`, once each):** `player_place` PASS (283 checks; the check now
+  expects the home spawn, same spot inside 22 of 23 entrances (Mystery: entrance), a place saved in
+  a minigame at the entrance, an unusable place outside the home, Save writes the place),
+  `unstuck` PASS, `app_flow` PASS (both: Godot crashed on exit after the summary, judged by the
+  summary), `language` NEW then PASS (儲 had no reading: the Chinese text uses 保存).
+- **Web build in the app's Chromium browser (localhost, 800 × 600), not a phone:** new profile,
+  tutorial skipped, town. Settings shows a green Save pill with a pin; it closed Settings, showed
+  "Saved! You'll start here next time." and wrote the note. A simulated kill (a later `unload`
+  listener set the marker again and moved the note 10 m, then `location.reload()`) skipped the
+  title, loaded the town and put the player at the moved note (inside the garage beside the home);
+  `bon-restarts` gained an entry and the readout showed "restarts 2 in 1 h". Found and fixed: an
+  ordinary reload counted as a restart, because the game's hide note runs after the `pagehide`
+  listener and set the marker again (`bonLeaving` since); after the fix an ordinary reload from the
+  town showed the title with no restart counted. Readout in the town: GPU 291 MB, RAM 412 MB.
+- **Not checked:** a real phone kill (iPhone or Android), an installed home-screen app, the resume
+  after an app is swiped away, and whether the kills themselves stop (they will not: memory still
+  grows as buildings load).
+
 ## Civic fixes: garage, school, police lockers, warehouse cabinet, zoo gate — 23 November 2026
 
 [What was built](TOWN_DESIGN_BRIEF.md#civic-fixes-garage-school-police-lockers-warehouse-cabinet-zoo-gate--23-november-2026).
@@ -8259,6 +8289,30 @@ Not run: the full suite, the web export, a hands-on play-test. The sports store 
 scenes were not re-baked (the registry moves the two NPCs at load).
 
 
+## Clay monkey and sheep, hen house flock — 25 November 2026
+
+User request: "update the monkey and sheep, and place few chicken and chick around the hen house,
+have them move naturally" ([record](TOWN_DESIGN_BRIEF.md#hen-house-flock--25-november-2026),
+[animals](ANIMAL_SYSTEM.md#clay-monkey-and-sheep-roam-hen-house-flock-and-the-unrigged-gait-25-nov-2026)).
+Baked once each, base first: `tools/bake_unit.gd -- base` (step `monkey_sheep_clay_roam`; a first
+bake stopped on a print of the freed old node and saved half the step, so `base.scn` was restored
+from git and baked again: monkey 1.063 and sheep 1.313 tall, the old heights) and `-- barn` (step
+`hen_house_flock`: 14 birds, hen 0.975, rooster 1.17, chicks 0.54). `dev_focus.txt` = `all`,
+isolated HOME.
+
+- `docs/evidence/farm-flock-20261125/verify.gd`, headless with `--fixed-fps 60` (runner id
+  `farm_flock`): **26 checks, 0 failures** (40 s of play: every one of the 16 animals went
+  1.0–2.8 from its start, all 16 models posed by the gait, birds in the yard, chicks 0.5–1.8 from
+  their hens). Its first runs found four animals placed overlapping a neighbour that the spacing
+  rule then never let move; `park_animals.gd` now lets overlapping animals step apart, and a chick
+  ignores the spacing to the hen it follows.
+- The same script with a window (`--always-on-top`; a background window crawled) took
+  `yard.png`, `chicks.png`, `sheep.png`, `monkey.png`, `yard-later.png`: 18 checks, 0 failures.
+- `run_checks.py --only hen_house` (the roomier hen house check, updated to count 8 hens and to
+  measure them at rest): PASS, 78 checks, 0 failures (Godot crashed on exit after the summary,
+  exit -6, as the runner notes).
+- Not run: the full suite, a web export or phone, frame time with the extra clay birds.
+
 ## Roomier hen house and clay hens — 25 November 2026
 
 User request: the clay hen replaces every old hen (old files removed); the hen house 20% bigger
@@ -8460,3 +8514,90 @@ Also: the new `unstuck` check (GAME-05) is registered in `run_checks.py` (full s
 **UI-07 merged afterwards:** tutorial progress and Skip confirm (`3a3713d7` → `e443af33`; game guide row
 combined by hand). `run_checks.py --only tutorial,app_flow,touch_controls,language` on `e443af33`,
 `dev_focus.txt` = `all`: **PASS 4** (79 s). All six wave 2b branches are now in `main`.
+
+## Vocabulary journal: sticker book, Places tab — 25 November 2026
+
+[What was built and its rules](JOURNAL.md#built-so-far-25-nov-2026). `dev_focus.txt` = `all`;
+every run with an isolated `HOME`, `VT_FOCUS=all`, `VT_SPAWN=none`; the full town.
+
+| Result | Check |
+| --- | --- |
+| PASS | `vocabulary_report` with `--write` (headless): **5476 checks, 0 failures**; wrote the new `data/journal_places.json` (758 findable words, 42 not findable, 50 in 4 or more places). The same run also rewrote `report.csv`, `summary.md` and `docs/game/words.md`, only because Library Helper's runtime books now count as placed (car, cat … in the library) and the date; those three were left out of this change (unrelated; the next full run refreshes them) |
+| PASS | `journal_sticker_book` (new; replaces `vocabulary_book`, whose table is gone): **50 checks, 0 failures** headless, and with graphics at 1280 × 800 (views in [`journal-sticker-book-20261125/`](../evidence/journal-sticker-book-20261125/)) |
+| PASS | the same at 844 × 390 (phone landscape, `-844x390` views): **50 checks, 0 failures**. One earlier run at this size stalled for 10 minutes waiting for a drawn frame after its third view (the window was probably hidden; Godot draws nothing then) and was stopped; the next run completed |
+| KNOWN-type, not this change | `language`: **5402 checks, 1 failure**: no pinyin reading for 掉 顆 舍, from the hen-house egg lines already committed (`data/phrases.json` at 278d40f1). This change's new Chinese characters (貼 詳 情) got readings in `data/pinyin_zh.json`. **P3:** add the three readings |
+
+Not run: the full suite; `minigame_launcher`, `building_lookup` and `tutorial_polish`, which only
+open and close the journal (`toggle_study_journal`, unchanged); the web export; real touch input
+(swipes and taps were checked through the book's own handlers, not pushed screen events);
+a hands-on play-test.
+
+### Review fixes (same day)
+
+A self-review found that game answers never counted as found (the book read only the studied
+list, so airplane, car, soccer, tennis and bed could never be found). Fixed with: found = studied
+or in the practice log of the language learned; `from_games` in the place index ("Found in a
+game at"); ← → / Page Up / Page Down; footer key hints only with keyboard play; buttons at
+least 44 px and text at least 11 px at the smallest scale; the word page's picture drawn at
+256 px; a scrolling right side on the word page; fewer style allocations; README and
+architecture-guide wording. Runs as above (isolated `HOME`, `VT_FOCUS=all`), each once when the
+change was complete:
+
+| Result | Check |
+| --- | --- |
+| PASS (exit abort) | `vocabulary_report --write`: **5475 checks, 0 failures**; `journal_places.json` gained `from_games` (airplane, bed, car, soccer, tennis). The run's report/word-list churn was reverted as before |
+| PASS (exit abort) | `journal_sticker_book`, now 67 checks headless (+ 1 with graphics: Details fits the window): **67 / 0 headless, 68 / 0 at 1280 × 800 and at 844 × 390**. New: game-answer finding per language, the game-only word page, keys, keyboard-only hint, tap and text floors, the big picture request, Chinese learned (pinyin) with a Spanish interface and a Chinese interface (views `zh-chapter`, `zh-word-page`, `zh-ui-contents`) |
+| Stalled, re-run | The first windowed runs at both sizes stalled waiting for a drawn frame (another session's Godot window opened over them; a covered window draws nothing). They were stopped and run once more with `--always-on-top`, which completed |
+| Found and fixed | The first phone render showed Details pushing the album past the window bottom (taller buttons and text); the right side now scrolls, and the check above covers it |
+| KNOWN-type, not this change | `language`: **5414 checks, 1 failure** (the same missing readings 掉 顆 舍) |
+
+Remaining (P3): on a phone the Details table's "Translated" heading is clipped by the scroll bar;
+the search placeholder capitalises language names in Spanish ("Chino o Español", the existing
+`language.*` names). Old evidence scripts that drove the table no longer run and are not in
+`run_checks.py`: `word-pictures-20261123/verify.gd`, `journal-speaker-20261124/capture.gd`,
+`vocabulary-book-20261108/verify.gd` (and older ones using `set_journal_view`).
+
+### Merged into main (same day)
+
+`claude/modest-murdock-aa66fa` merged with `main` (`3d176900`) for the web build (user: "merge and
+publish"). Conflicts resolved by hand: `vocabulary_book.gd` keeps the sticker book and takes main's
+known words (LEARN-04: the daisy now sits on a found sticker, the word page says "You know this
+word"; the table's known count and drag-to-scroll went with the table); `phrases.json`, the game
+guide and this file keep both sides. `run_checks.py --only journal_sticker_book,language,touch_controls,tutorial`
+(`dev_focus.txt` = `all`): **PASS 3, NEW 1** — the sticker check's "word and translation" label
+expected the bare translation, and apple is now known from the start (C4 seeded words); the check
+now allows the tag and checks it follows the word memory: **PASS** on its re-run. Not run: the full
+suite, renders of the merged journal.
+
+## Freeing far buildings and far plush meshes — 26 November 2026
+
+User: "now free far buildings to fix the memory" (option B), then, relayed from a side chat, also
+arrival spread, shader pre-warming and option C. Changed: `nearby_units.gd` (frees units beyond
+220 m, `prepare()`), `main.gd` (`remove_unit()`, `unit_pin()`, `prepared_units`, a frame between
+batching and the minigame sessions), `modular_town.gd` (`unit_parts()`, `remove_unit()`, prepared
+instance), `render_culling.gd` (per-unit batches on the web, `remove_unit()`, triangle counts no
+longer hold meshes), `indoor_visibility.gd`, `seating_controller.gd`, `area_vocabulary.gd`,
+`reference_world_layout.gd`, `interaction_controller.gd` (drops claims of freed sessions),
+`sculpt_cache.gd` (`forget_freed()`, `strip()`, `unstrip()`), new `far_plush_meshes.gd`, `app.gd`.
+Full town (`dev_focus.txt` = `all`); the 25 Nov stray copies (`main 2.gd` and others) were in
+the checkout, untracked, not this work. Evidence:
+[far-unit-freeing-20261126](../evidence/far-unit-freeing-20261126/README.md).
+
+- **New checks (native, `VT_NEARBY=1`, once each on the finished code):** `verify.gd` 42/42 PASS
+  (video: every unit 370 MB, none 210 MB, a full cycle 372 MB), `verify_plush.gd` 14/14 PASS
+  (20 plushes stripped: 253 → 207 MB), no SCRIPT ERROR in either. Godot exits 137 after the
+  summary (the known shutdown abort).
+- **Existing checks:** `nearby-loading-20261117/verify.gd` 19/19 PASS; `run_checks.py --only
+  player_place,tutorial,minigame_launcher,signs,app_flow,unstuck,interaction,npc_registry,plush_life,seats_swan_boats`:
+  PASS 10 (eight crashed on exit after the summary, judged by the summary). Not the full suite.
+- **Arrival frames** (`time_arrival.gd`): worst frame on a first arrival, restaurants 176 → 122 ms,
+  hospital 349 → 245, home 110 → 69, police 61 → 38. Not the 16–30 ms aimed for. Shader pre-warming
+  was built, measured (no shorter arrival frames, 150–160 ms warm-up frames) and removed.
+- **Web build in the app's Chromium browser (localhost, 800 × 600), not a phone:** the existing
+  profile loaded into the town at the home; readout GPU 299 MB, RAM 412 MB (25 Nov: 291 / 412);
+  no console errors. Not walked across town on the web, so freeing and stripping were not
+  observed there, and whether the page's `user://` accepts the stripped meshes was not checked
+  (the cache files never reach the browser's saved storage; stripping skips a plush whose mesh
+  cannot be saved).
+- **Not checked:** a real phone (does it still get killed?), memory over a long walk on the web,
+  how returning buildings look in the fog, the full suite.

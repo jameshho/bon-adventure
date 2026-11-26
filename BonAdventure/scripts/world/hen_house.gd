@@ -6,8 +6,9 @@ extends Node3D
 ## Children from the bake (step `roomier_hen_house` since 25 Nov 2026: the walk-in coop of
 ## `walk_in_hen_house` 20% bigger, with a fuller interior):
 ## "Coop" (the red hen house BonBon walks into, in the paddock west of the barn), "Egg spots"
-## (Marker3D: five nest boxes and a corner nest inside, five straw nests in the yard), "Hens" (six
-## park_animals.gd clay hens, copies of the farm's ParkZoo/Hen, given their yard here) and "Egg crate" (on a table outside the coop's
+## (Marker3D: five nest boxes and a corner nest inside, five straw nests in the yard), "Hens" (park_animals.gd
+## clay birds given their yard here: six hens copied from the farm's ParkZoo/Hen, and since 25 Nov
+## 2026 (barn step `hen_house_flock`) two more hens, a rooster and five chicks that follow hens) and "Egg crate" (on a table outside the coop's
 ## door, under the egg sign; "Slots": one Marker3D per egg cup).
 ##
 ## The hens lay over time: one roll every ROLL_SECONDS of real time, also while the game is shut

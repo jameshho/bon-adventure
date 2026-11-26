@@ -70,8 +70,10 @@ func run() -> void:
 	check(house.spots.size() == 11, "11 egg spots (%d)" % house.spots.size())
 	check(house.slots.size() == 12, "12 egg cups in the crate (%d)" % house.slots.size())
 	_walk_in()
-	var hens: Array = house.get_node("Hens").get_children()
-	check(hens.size() == 6, "6 hens (%d)" % hens.size())
+	# Since 25 Nov 2026 (barn step `hen_house_flock`) the Hens node also holds two more hens, a
+	# rooster and five chicks (docs/evidence/farm-flock-20261125/verify.gd checks those).
+	var hens: Array = house.get_node("Hens").get_children().filter(func(h): return str(h.name).begins_with("Hen "))
+	check(hens.size() == 8, "8 hens (%d)" % hens.size())
 	check(hens.all(func(h): return h.is_in_group("wandering_animals")), "every hen wanders")
 	var coop_rect := Rect2(Barn.ROOMY_COOP.x - Barn.ROOMY_W2, Barn.ROOMY_COOP.z - Barn.ROOMY_D2, Barn.ROOMY_W2 * 2, Barn.ROOMY_D2 * 2)
 	check(hens.filter(func(h): return coop_rect.has_point(Vector2(h.position.x, h.position.z))).size() == 2, "two hens live inside the coop")
@@ -133,10 +135,14 @@ func _clay_hens(hens: Array) -> void:
 	check(farm_hen != null and farm_hen.has_node("ClayHen") and str(farm_hen.get_meta("word_key", "")) == "hen", "ParkZoo/Hen is the clay hen with the word hen")
 	check(zoo.get_node_or_null("HenClayDisplay") == null, "the still clay hen display is gone")
 	check(not ResourceLoader.exists("res://scenes/animals/hen.tscn"), "the old hen scene is deleted")
+	# Measured at rest: the unrigged gait (park_animals.gd GAITS, 25 Nov 2026) may be mid-hop.
+	for h: Node3D in hens + [farm_hen]:
+		if h.get("_body") != null:
+			h.get("_body").transform = h.get("_body_rest")
 	var height := func(h: Node3D) -> float: return (h.call("_visible_bounds") as AABB).size.y * (ap.global_transform.affine_inverse() * h.global_transform).basis.get_scale().y
 	var want: float = height.call(farm_hen)
 	var clay := hens.filter(func(h): return h.has_node("ClayHen") and h.scene_file_path == "" and str(h.get_meta("word_key", "")) == "hen" and h.has_node("VocabularyArea"))
-	check(clay.size() == 6, "all 6 hen-house hens are clay hens with the word and a picking area (%d)" % clay.size())
+	check(clay.size() == 8, "all 8 hen-house hens are clay hens with the word and a picking area (%d)" % clay.size())
 	check(hens.all(func(h): return absf(height.call(h) - want) < .01), "the hen-house hens are the farm hen's height (%.3f)" % want)
 	var stray := ap.find_children("*", "", true, false).filter(func(n): return n.scene_file_path.ends_with("/hen.tscn"))
 	check(stray.is_empty(), "nothing in the town instances the old hen (%d)" % stray.size())

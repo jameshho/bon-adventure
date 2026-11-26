@@ -78,6 +78,32 @@ func add(root: Node, town: Node3D, zones, vocabulary: Dictionary, aliases: Dicti
 ## count only holds words a click can study. A key stays while another target in that area
 ## still carries it.
 func drop_interactables(town: Node3D) -> void:
+	_drop_interactables(town)
+	# Words of building units freed while far (remove(), 26 Nov 2026) keep counting in their area.
+	for area in _kept:
+		for key in _kept[area]:
+			if groups.has(area) and not groups[area].has(key): groups[area].append(key)
+
+## Area -> word keys of targets in building units freed while far (remove()).
+var _kept: Dictionary = {}
+
+## The targets under `parts` (a building unit about to be freed, Main.remove_unit(), 26 Nov 2026)
+## leave the index, but their words stay in their areas (an area's count must not drop while the
+## building is away); add() indexes them again when the unit returns.
+func remove(parts: Array) -> void:
+	for target in assignments.keys():
+		if is_instance_valid(target) and not parts.any(func(part) -> bool: return part == target or (part as Node).is_ancestor_of(target)):
+			continue
+		var entry: Dictionary = assignments[target]
+		if not _kept.has(entry.zone): _kept[entry.zone] = []
+		if not _kept[entry.zone].has(entry.key): _kept[entry.zone].append(entry.key)
+		assignments.erase(target)
+	for key in targets.keys():
+		targets[key] = (targets[key] as Array).filter(func(target) -> bool:
+			return is_instance_valid(target) and not parts.any(func(part) -> bool: return part == target or (part as Node).is_ancestor_of(target)))
+		if (targets[key] as Array).is_empty(): targets.erase(key)
+
+func _drop_interactables(town: Node3D) -> void:
 	for target in assignments.keys():
 		# An NPC that only chats keeps its role word (npc_chatter.gd, 23 Nov 2026).
 		if Interactable.find_for(target, town) != null and not target.get_meta("talk_keeps_word", false):

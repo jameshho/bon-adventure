@@ -576,7 +576,8 @@ To add, edit or delete a word:
 3. Run `python3 tools/word_data.py`: it validates (unknown category, missing
    Spanish, broken alias, empty category) and re-formats the file.
 4. To show the word in town, give a prop a `word_key` and a clear picking shape.
-   The By Area journal picks it up automatically from where it stands.
+   The journal's places pick it up from where it stands after `tools/vocabulary_report.gd --
+   --write` rebakes `data/journal_places.json` ([journal](JOURNAL.md#baked-place-index)).
 5. To delete a word, remove its line and either strip its `word_key` tags from scenes
    (the object stays as decoration) or list it in `removed_with_objects` (the object
    is removed at load). To rename, add an alias from the old key.
@@ -594,6 +595,10 @@ To add, edit or delete a word:
 
 ### Vocabulary usage report
 
+*25 Nov 2026: with `--write` it also writes the journal's baked place index
+`data/journal_places.json` (findable words and their places;
+[Journal](JOURNAL.md#baked-place-index)).*
+
 **7 Nov 2026 (Stage A of the vocabulary tracking work; replaces `docs/word_audit.gd`).**
 `tools/vocabulary_report.gd` loads the whole town once (headless, isolated `HOME`,
 `VT_FOCUS=all`) and lists every word of `data/words.json`:
@@ -601,7 +606,7 @@ To add, edit or delete a word:
 - **where it is placed:** objects with a `word_key` / `exterior_word` meta per building unit
   (`data/buildings.json` parts, else `base`) and site (town zone), split into *saved* (from
   the saved scenes) and *runtime* (built by scripts at load); world labels bound to the word
-  (`live_labels.gd`); and *clickable* objects (the journal's By Area index);
+  (`live_labels.gd`); and *clickable* objects (the journal's place index, `data/journal_places.json`);
 - **which games test it**, as game ids from `data/activities.json`, following decision 6
   (user, 7 Nov 2026): the shop order item (`sold_in`), the family relative
   (`family_tree.gd` `WORDS`), the restaurant dish, the warehouse item (`warehouse_goods.gd`
@@ -703,6 +708,11 @@ file, then each wired game in the town. Stage C reads these counts in the
 
 ### Vocabulary book
 
+*Superseded 25 Nov 2026: the table below was replaced by the sticker book's Places tab (user's
+redesign; what is built and its rules: [Journal](JOURNAL.md#built-so-far-25-nov-2026)). Kept as
+the record of the 8–24 Nov table; its code is in git history. The practice-log numbers it showed
+are now the word page's Details.*
+
 **8 Nov 2026 (Stage C of the vocabulary tracking work; user decisions 7 Nov 2026).** The J
 journal's body is `scripts/ui/vocabulary_book.gd`, hosted by `vocabulary_hud.gd`
 (`toggle_journal` / `render_journal` hand it the studied words, dictionary, categories, areas
@@ -745,8 +755,9 @@ buttons (now section headings of the table) and the hint stay in the HUD.
 there; pictures go where the object is not).** `scripts/ui/word_pictures.gd` (Main's
 `word_pictures`, `WordPictures.shared()`) draws a word's own town object into a 128 px
 transparent picture, at runtime, so a picture always matches what the player clicked and the
-project ships no image files. It shows in the journal (a picture column after ★, and big in
-the detail view) and on the [results screen](MINIGAMES.md#results-screen) word rows.
+project ships no image files. It shows in the journal (on the stickers, and on the word page
+drawn at 256 px, `fill(rect, key, BIG)`, since 25 Nov 2026; at most `MAX_BIG` = 8 kept, the
+128 px one shown while it draws) and on the [results screen](MINIGAMES.md#results-screen) word rows.
 
 - **Source:** `area_vocabulary.gd` `targets` (word key → every target carrying it,
   interactables included). Only the target's meshes are copied into a SubViewport (no scripts
@@ -1451,9 +1462,9 @@ hint label. A minigame NPC gets its interactable from the host. Check: `docs/evi
 | Part | Where |
 | --- | --- |
 | File | `player_place.json` per profile (`save_store.gd` `PROFILE_FILES`, atomic write): feet in **town** coordinates (`Main.apartment` local frame; the warehouse minigame copy saves the real warehouse spot, the player's `map_position`; driving saves the vehicle's position and `"vehicle": true`), `yaw`, `entrance` (an `ENTRANCES` key or `""`), `time`, `version` |
-| Saving | The keeper node (added by Main once the town is ready): every 10 s when the player moved 1.5 m or more, on a close request, app pause or focus loss, when the town leaves the tree (quit, "Switch profile") and when the web page is hidden (`web_resume.gd` `_on_page_event()`). Only with a profile selected (`PlayerPlace.enabled()`), never while baking (`save_store.gd` `read_only`) |
+| Saving | The keeper node (added by Main once the town is ready): every 10 s when the player moved 1.5 m or more, on a close request, app pause or focus loss, when the town leaves the tree (quit, "Switch profile"), when the web page is hidden (`web_resume.gd` `_on_page_event()`) and with Settings' **Save** button (25 Nov 2026, user; `Main.save_game()`, offered while `Main.can_save()`: a profile plays and no minigame runs; it also writes the web resume note and says "Saved! You'll start here next time."). The file also records `minigame` (a place saved while one ran). Only with a profile selected (`PlayerPlace.enabled()`), never while baking (`save_store.gd` `read_only`) |
 | Which building | Indoors = a static roof overhead and static walls on 3 of 4 sides (as `indoor_visibility.gd`); the unit owning the roof's collider (`data/buildings.json` parts), else the town zone there (`data/zones.json`, `ZONE_UNITS`); then the unit's entrance whose door is nearest. Units with several buildings list each: restaurants (Alta Cocina, Pizza and Burger, Taquería), airport (terminal, `tower`) |
-| Restoring | Before `town_ready`, after two physics frames (every collider in the space): only for a profile that finished the welcome tutorial, with no dev `spawn=`. Inside a building → that entrance's standing point, facing the door (searched within 6 m if blocked). Outdoors → `safe_spot()`: the saved spot, then rings 1.5 m apart to 15 m; each needs walkable ground (normal.y > 0.85) by a downward ray, not the sea (zone `coast`), not more than 2.5 m above the lowest solid below (roofs, decks, vehicle tops), no roof overhead, the player capsule clear (world and figure layers: walls, vehicles, props) and, when the saved spot was standable, in sight of it at waist height. Nothing found, an unknown entrance or a building whose unit is not loaded (dev focus) → the usual supermarket spawn. A new profile has no file: the tutorial start is unchanged. The web resume note (`web_resume.gd`, after a lost WebGL context) still places the player afterwards |
+| Restoring | Before `town_ready`, after two physics frames (every collider in the space): only for a profile that finished the welcome tutorial, with no dev `spawn=`. Inside a building → since 25 Nov 2026 (user: "respawn at the same location") the saved spot on its own floor, else a clear spot within 3 m in sight of it (`INDOOR_RADIUS`, `safe_spot()` level mode), facing the saved way; not for a place saved driving or in a minigame or below town y -3 (the Mystery House hall); otherwise that entrance's standing point, facing the door (searched within 6 m if blocked). Outdoors → `safe_spot()`: the saved spot, then rings 1.5 m apart to 15 m; each needs walkable ground (normal.y > 0.85) by a downward ray, not the sea (zone `coast`), not more than 2.5 m above the lowest solid below (roofs, decks, vehicle tops), no roof overhead, the player capsule clear (world and figure layers: walls, vehicles, props) and, when the saved spot was standable, in sight of it at waist height. Nothing found, an unknown entrance or a building whose unit is not loaded (dev focus) → the usual spawn, since 25 Nov 2026 (user) outside the home's front door (`Main.spawn_position()`, `SPAWN_ORDER`: home, then the supermarket when the home is not loaded; nearby loading on the web adds the home first if needed). Falling out of the town respawns there too. A new profile has no file: the tutorial start is unchanged. The web resume note (`web_resume.gd`, after a lost WebGL context or, since 25 Nov 2026, a page killed by the browser) still places the player afterwards |
 | Check | `player_place` (full suite; [record](FINAL_VERIFICATION.md#save-and-respawn--14-november-2026)) |
 
 ## Naming (16 Nov 2026)

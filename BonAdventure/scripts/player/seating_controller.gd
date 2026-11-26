@@ -119,6 +119,18 @@ func add_seats(under: Node) -> void:
         if not bed.is_empty(): seats.append(bed)
     make_interactables()
 
+## The seats under `parts` (a building unit about to be freed, Main.remove_unit(), 26 Nov 2026)
+## and any already freed leave the lists; add_seats() finds them again when the unit returns.
+func drop_seats(parts: Array) -> void:
+    var gone := func(node) -> bool:
+        return not is_instance_valid(node) or parts.any(func(part) -> bool: return part == node or (part as Node).is_ancestor_of(node))
+    var kept: Array[Dictionary] = []
+    for seat in seats:
+        if not gone.call(seat.node): kept.append(seat)
+    seats = kept
+    for node in by_node.keys():
+        if gone.call(node): by_node.erase(node)
+
 ## One Interactable per seat node (see the header).
 func make_interactables() -> void:
     by_node.clear()
@@ -344,7 +356,11 @@ func sit_on(node: Node3D) -> bool:
         game.player.seat_focus = point+Vector3.UP*1.2
         game.hud.flash_quest_message(UiText.maybe(seat.node.get_meta("sit_message","seats.lying")))
         return true
-    game.hud.flash_quest_message(UiText.maybe(seat.node.get_meta("sit_message","")) if seat.node.has_meta("sit_message") else UiText.t("seats.sitting",{"swivel":UiText.t("seats.swivel_note") if seat.node.get_meta("swivel",false) else ""}))
+    var message: String = seat.node.get_meta("sit_message","")
+    # On a touch screen a message with a "_touch" variant (the swing's) names the joystick, not keys.
+    if game.hud.touch_mode and UiText.has(message+"_touch"):
+        message = message+"_touch"
+    game.hud.flash_quest_message(UiText.maybe(message) if seat.node.has_meta("sit_message") else UiText.t("seats.sitting",{"swivel":UiText.t("seats.swivel_note") if seat.node.get_meta("swivel",false) else ""}))
     return true
 
 ## Seats the player on `node`'s seat from a script (a minigame's table, minigame_table.gd):
@@ -455,10 +471,14 @@ func _physics_process(delta: float) -> void:
                 swing.braking = false
                 stand()
             return
-        # W / S (or Up / Down): one kick per press, forward or backward.
+        # W / S (or Up / Down): one kick per press, forward or backward. The touch joystick
+        # sends only move_forward / move_back (with strength), so pushing it more than halfway
+        # up or down counts as a press too (25 Nov 2026: the swing did nothing on mobile).
         var keys := Vector2.ZERO
         if game.player.controls_enabled:
-            keys = Vector2(float(Input.is_action_pressed("climb_up")),float(Input.is_action_pressed("climb_down")))
+            keys = Vector2(
+                float(Input.is_action_pressed("climb_up") or Input.get_action_strength("move_forward") > 0.5),
+                float(Input.is_action_pressed("climb_down") or Input.get_action_strength("move_back") > 0.5))
         if keys.x > swing_keys.x: swing.kick(1.0)
         elif keys.y > swing_keys.y: swing.kick(-1.0)
         swing_keys = keys

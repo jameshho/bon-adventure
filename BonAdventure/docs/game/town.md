@@ -276,12 +276,14 @@ animal stalls); farm animals graze outside. Tomás the farmer (a bear in overall
 straw hat) stands by the tool rack and chats about farm life (23 Nov, [NPCs](../guides/NPCS.md)).
 [Design record](../guides/TOWN_DESIGN_BRIEF.md#farm-barn-gambrel-roof-hayloft-and-supplies-interior--1-november-2026)
 
-**Hen house** (24 Nov; 20% bigger with a fuller inside and clay hens since 25 Nov): a big red walk-in coop beside the barn where six hens lay eggs over
+**Hen house** (24 Nov; 20% bigger with a fuller inside and clay hens since 25 Nov): a big red walk-in coop beside the barn where the hens lay eggs over
 time (about 3–4 after 15 minutes away, rarely up to 7; now and then a golden one). Walk in and
 pick an egg up from a nest box or a straw nest; an arrow then bobs over the egg crate outside the
 coop door: put it there. The Drop button (or G) drops the egg, and so does carrying it out of
 the farm. Just for fun for now (stars may come later). Inside: nest boxes on a stand with a
 little ladder, a roost, a hanging feeder, a waterer, a dust bath, hay and a lantern.
+Since 25 Nov eight hens, a rooster and five chicks (the chicks keep close to their mother hen)
+hop about the yard, peck and look around ([view](../evidence/farm-flock-20261125/chicks.png)).
 [Views](../evidence/hen-house-roomier-20261125/), [record](../guides/TOWN_DESIGN_BRIEF.md#roomier-hen-house-and-clay-hens--25-november-2026)
 
 ## Playground
@@ -306,8 +308,8 @@ ride (E to sit, W/S to kick).
   Wildlife Plains, with Spanish signs; since 23 Nov the gate opens away from you (inward from
   outside, outward from inside) and the green welcome board outside is gone; the clay-style animals were added 11–12 Nov. Since
   16 Nov the 17 clay animals walk with moving legs, breathe, look around and blink
-  ([each one walking](../evidence/zoo-walk-20261116/walkers.png)); the 9 older piece-built
-  animals (monkey, sheep and others) still glide. Since 17 Nov the zoo's tiger is the new
+  ([each one walking](../evidence/zoo-walk-20261116/walkers.png)); the older piece-built
+  animals (cat, rabbit and others) still glide. Since 17 Nov the zoo's tiger is the new
   clay tiger, a sleepy-eyed cub that walks and blinks like the others
   ([in the zoo](../evidence/tiger-anim-20261117/zoo-close.png),
   [walking](../evidence/tiger-anim-20261117/zoo-walk.png)), and the farm's horse is the new
@@ -321,10 +323,11 @@ ride (E to sit, W/S to kick).
   tail ([view](../evidence/hen-house-roomier-20261125/coop-door.png)),
   and a clay capybara waddles and blinks in Wildlife Plains and teaches *capybara*
   ([view](../evidence/capybara-anim-20261117/zoo-close.png),
-  [walking](../evidence/capybara-anim-20261117/zoo-walk.png)); just inside the zoo gate sits
-  a clay baby monkey, in front of the Bamboo Grove
-  ([view](../evidence/monkey-clay-20261117/zoo-close.png)); the rooster, the chick, the hen and the monkey
-  are still displays with no word yet (the zoo's own piece-built monkey is unchanged).
+  [walking](../evidence/capybara-anim-20261117/zoo-walk.png)); since 25 Nov the zoo's monkey
+  (Bamboo Grove) and the farm's sheep are the clay monkey and clay sheep, which hop and sway as
+  they walk (the sheep stops to graze; [monkey](../evidence/farm-flock-20261125/monkey.png),
+  [sheep](../evidence/farm-flock-20261125/sheep.png)); the rooster and the chick by the farm gate
+  are still displays with no word.
   [Zoo zones](../guides/TOWN_DESIGN_BRIEF.md#zoo-zones--12-november-2026) ·
   [animal sizes and movement](../guides/ANIMAL_SYSTEM.md)
 - **Coast:** a sandy beach with boulders and crabs, and a small deserted island.

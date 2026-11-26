@@ -2,7 +2,8 @@
 
 > **Current sections (23 Nov 2026):** [one graphics setting and the flight view](#one-graphics-setting-and-the-flight-view--23-november-2026),
 > [GPU memory on the web](#gpu-memory-on-the-web--14-november-2026),
-> [nearby buildings on phones](#built--17-november-2026),
+> [nearby buildings on phones](#built--17-november-2026) and
+> [freeing far buildings and far plush meshes](#built--26-november-2026-freeing-far-buildings-and-far-plush-meshes),
 > [indoor visibility](#indoor-visibility-hide-far-keep-near--14-november-2026),
 > [low anti-aliasing and indoor batching](#low-anti-aliasing-and-indoor-batching--17-november-2026),
 > [day-night cycle](#day-night-cycle--9-november-2026) and [lighting and sky](#lighting-and-sky).
@@ -909,7 +910,8 @@ comes back (B only). Answered 17 Nov: the label fix, then A (buildings arrive in
 - **Stage 3, option A:**
   - `scripts/world/nearby_units.gd`: on for the web (`VT_NEARBY=1` / `0` forces
     it; "with Low graphics" until 23 Nov 2026). Every 0.25 s it adds the nearest pending unit within 150 m (or the camera's far plane + 20 m when flying),
-    and with a 3 s look-ahead above 9 m/s; at least 0.5 s between additions; never frees a unit.
+    and with a 3 s look-ahead above 9 m/s; at least 0.5 s between additions; never frees a unit
+    (until 26 Nov 2026: [freeing far buildings](#built--26-november-2026-freeing-far-buildings-and-far-plush-meshes)).
   - `data/nearby_units.json`, written by `tools/nearby_units_data.gd` (run it again after a unit's
     footprint changes or a minigame moves): each unit's part boxes in town coordinates and the unit
     each minigame's session lives in.
@@ -932,6 +934,39 @@ comes back (B only). Answered 17 Nov: the label fix, then A (buildings arrive in
 - **Not verified:** the web build and a phone (GPU line of `?perf=1`, slow frames walking and
   driving across town: stage 4), the full suite, how a building appearing in the fog looks, the
   first-draw shader stall of a late unit on the web. Next: stage 4, then decide on C or B.
+
+### Built — 26 November 2026: freeing far buildings and far plush meshes
+
+After a phone's browser kept killing the page for memory (25 Nov), the user asked for B ("now
+free far buildings to fix the memory"), then also C, arrival spread and shader pre-warming.
+Evidence and numbers: [far-unit-freeing-20261126](../../evidence/far-unit-freeing-20261126/README.md).
+
+- **B, freeing far buildings** (`nearby_units.gd`, `Main.remove_unit()`, `Main.unit_pin()`,
+  `ModularTown.remove_unit()`): with nothing to add, the farthest loaded unit beyond 220 m
+  (`FREE_RADIUS`; further while flying) is freed, one per 0.5 s. Never while the tutorial or a
+  minigame runs, nor the unit the player drives, sits in or holds something from, nor one whose
+  vehicle is near. Remove paths: render batches are per unit on the web (`StaticRenderBatches/
+  Unit_<key>`), indoor visibility, seats, word areas (the unit's words stay in the area's word
+  list), doors, stamp coins, the reference layout's stand-in pivot, vehicles, the unit's minigame
+  sessions (made again by `when_unit_loaded()` when it returns), links from the base into the
+  unit (back to `__ref` paths), the sculpt cache's records and input claims of freed sessions.
+  A returning unit is its saved scene again (doors closed, carts and NPCs at their places).
+  Natively: every unit 370 MB video, none 210 MB, a full cycle 372 MB.
+- **C, far plush meshes** (`far_plush_meshes.gd`, `SculptCache.strip()` / `unstrip()`): on the
+  web a town plush beyond 80 m from the player and camera gives up its meshes (nodes, scripts,
+  collision and costumes stay); within 60 m (plus 1.5 s of the current speed) it gets them back,
+  before its 45 m draw range. One strip per 0.25 s, one restore per frame (natively ≤ 19 ms).
+  Restaurants area: 20 plushes, 46 MB of video memory.
+- **Arrival spread:** `nearby_units.gd prepare()` loads a unit's scene in one frame and instances
+  it in the next while it is 150–190 m away; `add_unit()` takes the prepared instance; a frame now
+  separates batching from the minigame sessions. Worst arrival frames natively, first arrival:
+  restaurants 176 → 122 ms, hospital 349 → 245, home 110 → 69, police 61 → 38. The rest is
+  `load()` (no threads on the web) and adding the nodes; the 16–30 ms aim is not reached.
+- **Shader pre-warm, tried and dropped:** drawing each material once ahead compiled shaders
+  (a second warm-up cost 11–14 ms) but did not shorten the arrival frames and added 150–160 ms
+  frames of its own, natively. Not tried on the web.
+- **Not verified:** a phone; how a building looks coming back in the fog. The web build's memory
+  is in [FINAL_VERIFICATION](../FINAL_VERIFICATION.md#freeing-far-buildings-and-far-plush-meshes--26-november-2026).
 
 ## Indoor visibility: hide far, keep near — 14 November 2026
 

@@ -137,6 +137,32 @@ func _on_unit_added(key: String) -> void:
 		_add_unit_parts(units[key].parts)
 
 
+## Unit parts `parts` are about to be freed (Main.remove_unit(), 26 Nov 2026): their chunks and
+## the unit's batches (`batches`, its Unit_<key> container) are unlinked and left empty (chunk
+## indices stay stable); a returning unit gets new chunks through _on_unit_added().
+func remove_unit_parts(parts: Array, batches: Node) -> void:
+	var inside := func(node) -> bool:
+		if not is_instance_valid(node):
+			return true
+		if batches != null and batches.is_ancestor_of(node):
+			return true
+		return parts.any(func(part) -> bool: return part == node or (part as Node).is_ancestor_of(node))
+	for i in _chunks.size():
+		var chunk: Dictionary = _chunks[i]
+		if chunk.node == null or not inside.call(chunk.node):
+			continue
+		_unlink(i)
+		chunk.node = null
+		chunk.mover = false
+		chunk.batch = false
+		chunk.ready = true
+		chunk.box = AABB()
+		chunk.claimed = 0
+	_movers = _movers.filter(func(chunk) -> bool: return chunk.node != null)
+	_jobs = _jobs.filter(func(job) -> bool: return job[0] == "batch" or not inside.call(job[1]))
+	_dirty = true
+
+
 func _add_unit_parts(paths: Array) -> void:
 	for path in paths:
 		if str(path).begins_with("People/"):

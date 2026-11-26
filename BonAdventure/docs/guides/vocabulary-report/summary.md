@@ -1,6 +1,6 @@
 # Vocabulary usage report
 
-Generated 2026-11-24 by `tools/vocabulary_report.gd -- --write` (whole town loaded; how to run and what each column means: the script's header and [the guide](../ARCHITECTURE_REVIEW_PART1.md#vocabulary-usage-report)). Full table: [report.csv](report.csv).
+Generated 2026-11-25 by `tools/vocabulary_report.gd -- --write` (whole town loaded; how to run and what each column means: the script's header and [the guide](../ARCHITECTURE_REVIEW_PART1.md#vocabulary-usage-report)). Full table: [report.csv](report.csv).
 
 **Dialogue:** only words that fill a `{slot:form}` in `data/phrases.json` are reported (column `phrase_slots`). Words written as plain text inside dialogue lines are not matched, so a word can appear in dialogue and still be listed here as unused.
 
@@ -13,7 +13,7 @@ Generated 2026-11-24 by `tools/vocabulary_report.gd -- --write` (whole town load
 | Clickable somewhere (study by clicking) | 753 |
 | Placed only by scripts at load (runtime) | 0 |
 | Only on a bound world label (poster) | 0 |
-| Tested by a game | 203 |
+| Tested by a game | 207 |
 | Only shown by a game | 50 |
 | Can fill a phrase slot | 36 |
 | **Placed nowhere and used by no game** | **22** |
@@ -40,7 +40,7 @@ Decision 6 (user, 7 Nov 2026). The police lineup is not tracked: each round name
 | `mystery_luna` | 11 | 0 |
 | `restaurant_twinkle` | 38 | 18 |
 | `shop_supermarket` | 61 | 0 |
-| `warehouse_ramon` | 4 | 0 |
+| `warehouse_ramon` | 8 | 0 |
 
 - **evidence_mimi** tests: hard, heavy, light (weight), rough, smooth, soft
 - **family_dr_li** tests: aunt, boyfriend, brother, cousin, daughter, father, girlfriend, granddaughter, grandfather, grandmother, grandson, husband, mother, nephew, niece, sister, son, uncle, wife
@@ -51,7 +51,7 @@ Decision 6 (user, 7 Nov 2026). The police lineup is not tracked: each round name
 - **mystery_luna** tests: blue, circle, green, orange, pink, purple, red, square, star, triangle, yellow
 - **restaurant_twinkle** tests: apple pie, beef with vegetables, brownie, cheese bread, chocolate cake, coffee, cookie, crispy pork, flan, french fries, fruit salad, fruit yogurt, gazpacho, grilled chicken, hard candy, hot chocolate, ice cream, iced tea, lasagna, lemon fish, lemon shrimp, lemonade, meatballs, milkshake, nachos, orange juice, pizza, roast lamb, salad, soda, soup, sparkling water, spicy wings, steak, taco, tea, tiramisu, water
 - **shop_supermarket** tests: apple, avocado, baguette, banana, bell pepper, bread, broccoli, butter, cake, candy, carrot, cheese, cherry, chicken, chili pepper, chocolate, coconut, coffee, cookie, corn, cracker, croissant, cucumber, cupcake, detergent, donut, eggs, fish, garlic, grapes, ham, juice, lemon, lettuce, lime, mango, meat, milk, mushroom, onion, orange, peach, pear, pineapple, potato, salad, sausage, shampoo, shrimp, soap, soda, sponge, steak, strawberry, toilet paper, tomato, toothbrush, toothpaste, water bottle, watermelon, yogurt
-- **warehouse_ramon** tests: blue, green, red, yellow
+- **warehouse_ramon** tests: blue, green, next to, on, red, right, up, yellow
 
 ## Placed nowhere and used by no game (22)
 

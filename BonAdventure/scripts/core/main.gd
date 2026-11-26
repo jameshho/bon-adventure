@@ -138,11 +138,20 @@ var initial_units: Array = []
 var pending_units: Array = []
 ## unit key -> Callables waiting for it (when_unit_loaded(), e.g. a minigame's session).
 var _unit_jobs: Dictionary = {}
+## unit key -> the jobs already run for it, and the nodes they added under Main (its minigame
+## sessions): remove_unit() frees those nodes and queues the jobs again for the unit's return.
+var _unit_jobs_done: Dictionary = {}
+var _unit_nodes: Dictionary = {}
+## Unit scenes instanced ahead of add_unit() and not yet in the tree (nearby_units.gd prepare(),
+## 26 Nov 2026): key -> Node.
+var prepared_units: Dictionary = {}
 var _adding_unit := false
 var render_culling
 var indoor_visibility
 var minimaps: Array = []
 signal unit_added(key: String)
+## A building unit was freed again (remove_unit(), far-unit freeing on the web, 26 Nov 2026).
+signal unit_removed(key: String)
 ## Loading steps besides the building units (the awaits in _ready), weighted by how long the
 ## work before each takes, in building units (17 Nov 2026, first launch, native: a unit about
 ## 0.6 s; the rest of the world 0.55 s, the player 0.8 s, the HUD 1.0 s, shops 0.25 s, the
@@ -420,9 +429,8 @@ func restore_editor_door_states(node: Node) -> void:
 	DoorAnimator.restore_editor_door_states(self, node)
 
 
-## Where the player starts and respawns: on the entrance walk just outside the supermarket
-## door (market-local frame, door at x -33, z 34.25), facing it. Falls back to the layout's
-## spawn point when the supermarket site is missing.
+## The supermarket's entrance walk (market-local frame, door at x -33, z 34.25): its ENTRANCES
+## standing point. The usual spawn until 25 Nov 2026; now the fallback when the home is missing.
 const SPAWN_MARKET_LOCAL := Vector3(-33.0, 0.1, 27.5)
 const SPAWN_MARKET_DOOR := Vector3(-33.0, 0.1, 34.25)
 
@@ -469,24 +477,35 @@ func dev_spawn_site() -> Array:
 	var site := ModularTown.building(apartment, entry[0], entry[1], entry[2])
 	return [] if site == null else [site.to_global(entry[3]), site.to_global(entry[4])]
 
-func spawn_position() -> Vector3:
+## Where the player starts and respawns without a saved place (no save, a fall out of the town,
+## a saved place that cannot be used): on the walk just outside the home's front door, facing it
+## (user, 25 Nov 2026; the supermarket door until then). Falls back to the supermarket's
+## entrance when the home unit is not loaded (dev focus), then to the layout's spawn point.
+## A dev `spawn=` wins.
+const SPAWN_ORDER := ["home", "supermarket"]
+
+func spawn_site() -> Array:
 	var dev := dev_spawn_site()
 	if not dev.is_empty():
-		return dev[0]
-	var market := ModularTown.building(apartment, "supermarket")
-	if market != null:
-		return market.to_global(SPAWN_MARKET_LOCAL)
+		return dev
+	for key in SPAWN_ORDER:
+		var entry: Array = ENTRANCES[key]
+		var site := ModularTown.building(apartment, entry[0], entry[1], entry[2])
+		if site != null:
+			return [site.to_global(entry[3]), site.to_global(entry[4])]
+	return []
+
+func spawn_position() -> Vector3:
+	var site := spawn_site()
+	if not site.is_empty():
+		return site[0]
 	return apartment.to_global(reference_layout.spawn_point if reference_layout != null else Vector3(4.5,.1,23))
 
 func spawn_yaw() -> float:
-	var dev := dev_spawn_site()
-	if not dev.is_empty():
-		var facing: Vector3 = dev[1] - dev[0]
+	var site := spawn_site()
+	if not site.is_empty():
+		var facing: Vector3 = site[1] - site[0]
 		return atan2(-facing.x, -facing.z)
-	var market := ModularTown.building(apartment, "supermarket")
-	if market != null:
-		var toward := market.to_global(SPAWN_MARKET_DOOR) - market.to_global(SPAWN_MARKET_LOCAL)
-		return atan2(-toward.x, -toward.z)
 	return PI if apartment.get_meta("reference_west_positive_x",false) else 0.0
 
 ## A profile's saved game goes on where it was left (scripts/core/player_place.gd, 14 Nov 2026):
@@ -503,6 +522,13 @@ func _restore_place() -> void:
 		await get_tree().physics_frame
 		await get_tree().physics_frame
 		var spot := PlayerPlace.spawn_for(self, place)
+		if spot.is_empty() and pending_units.has(SPAWN_ORDER[0]):
+			# The fallback is outside the home (25 Nov 2026): nearby loading may not have it yet.
+			await ensure_unit(SPAWN_ORDER[0])
+			await get_tree().physics_frame
+			await get_tree().physics_frame
+		if spot.is_empty():
+			spot = {"position": spawn_position(), "yaw": spawn_yaw()}
 		if not spot.is_empty():
 			player.global_position = spot.position
 			player.velocity = Vector3.ZERO
@@ -563,6 +589,7 @@ func make_popups() -> void:
 	hud.ui_root.add_child(settings_panel)
 	settings_panel.visibility_changed.connect(sync_player_controls)
 	settings_panel.controls_requested.connect(open_controls_guide)
+	settings_panel.save_requested.connect(save_game)
 	hud.settings_requested.connect(open_settings)
 	# The HUD's book button and the journal's ✕ work like J (the saved words are its Saved tab).
 	hud.journal_toggle_requested.connect(toggle_study_journal)
@@ -576,8 +603,9 @@ func make_popups() -> void:
 	if Features.FULL_MAP:
 		popups.watch(hud.map_overlay, hud.toggle_map)
 	popups.watch(hud.journal_overlay, toggle_study_journal)
-	# The vocabulary book's word detail sits above the journal: Esc goes back to the table first.
-	popups.watch(hud.journal_book.detail, hud.journal_book.close_detail)
+	# The sticker book's Back button shows inside a chapter or a word page: Esc goes back one
+	# level (word page -> chapter -> contents) before it closes the journal (25 Nov 2026).
+	popups.watch(hud.journal_book.back_button, hud.journal_book.go_back)
 	popups.watch(hud.help_overlay, hud.toggle_help)
 	MinigameWiring.watch_popups(self, popups)
 	popups.watch(settings_panel, settings_panel.close)
@@ -585,7 +613,28 @@ func make_popups() -> void:
 func open_settings() -> void:
 	if not settings_panel.visible:
 		settings_panel.controls_allowed = not hud.in_minigame
+		settings_panel.save_allowed = can_save()
 		settings_panel.open()
+
+## Settings' Save (25 Nov 2026, user): the place can be saved now (a profile plays, the place
+## keeper runs, no minigame; learner saves are always written at once anyway).
+func can_save() -> bool:
+	return is_instance_valid(place_keeper) and not hud.in_minigame
+
+## Settings' Save: writes the player's place now (player_place.gd; the next start comes back
+## here), and on the web the resume note too (web_resume.gd), then closes Settings and says so.
+func save_game() -> void:
+	if not can_save():
+		return
+	var saved: bool = place_keeper.save_now()
+	var app := get_tree().current_scene
+	var resume = app.get("web_resume") if app != null and app != self else null
+	if is_instance_valid(resume):
+		resume.snapshot()
+	settings_panel.close()
+	if saved:
+		var lexicon = Lexicon.shared()
+		hud.flash_quest_message(lexicon.phrase("settings.saved", lexicon.native))
 
 ## Settings' "Controls" (UI-04): the F1 guide, in its touch view on a touch device.
 func open_controls_guide() -> void:
@@ -667,7 +716,97 @@ func when_unit_loaded(key: String, job: Callable) -> void:
 			_unit_jobs[key] = []
 		_unit_jobs[key].append(job)
 	else:
-		job.call()
+		_run_unit_job(key, job)
+
+## Runs a job waiting for unit `key` and remembers it and the nodes it added under Main, so
+## remove_unit() can free them and run the job again when the unit returns.
+func _run_unit_job(key: String, job: Callable) -> void:
+	var before := {}
+	for child in get_children():
+		before[child] = true
+	job.call()
+	if not _unit_jobs_done.has(key):
+		_unit_jobs_done[key] = []
+		_unit_nodes[key] = []
+	_unit_jobs_done[key].append(job)
+	for child in get_children():
+		if not before.has(child):
+			_unit_nodes[key].append(child)
+
+## Why building unit `key` must stay now ("" = it may be freed): the tutorial or any minigame
+## runs, the player drives, sits in or holds something from it, or one of its vehicles is within
+## `near` metres of the player (a parked car the player left far from its garage).
+func unit_pin(key: String, near: float) -> String:
+	var tutorial := get_node_or_null("Tutorial")
+	if tutorial != null and bool(tutorial.get("running")):
+		return "tutorial"
+	var parts := ModularTown.unit_parts(apartment, key)
+	var inside := func(node) -> bool:
+		return node is Node and is_instance_valid(node) and parts.any(func(part) -> bool: return part == node or (part as Node).is_ancestor_of(node))
+	# Any minigame (they are short; some build copies or zones far from their unit).
+	if Board.shared().blocker("") != "" or (hud != null and hud.in_minigame):
+		return "game"
+	if inside.call(active_vehicle):
+		return "vehicle"
+	if player != null and bool(player.get("seated")) and seating != null and inside.call(seating.current.get("node")):
+		return "seat"
+	var hand = player.get("hand") if player != null else null
+	if hand != null and hand.is_holding() and (inside.call(hand.held) or inside.call(hand.get("_home").get("parent"))):
+		return "hand"
+	for vehicle in driveable_vehicles:
+		if player != null and inside.call(vehicle) and vehicle.global_position.distance_to(player.global_position) < near:
+			return "vehicle"
+	return ""
+
+## Frees building unit `key` again (far-unit freeing on the web, nearby_units.gd, 26 Nov 2026):
+## the town-wide systems let go of it first, its minigame sessions are freed and wait for its
+## return, its parts are freed, and it is pending again (add_unit() brings it back as new).
+## False when it is not loaded, a unit is being added, or unit_pin() keeps it.
+func remove_unit(key: String, near := 0.0) -> bool:
+	if _adding_unit or pending_units.has(key) or unit_pin(key, near) != "":
+		return false
+	var parts := ModularTown.unit_parts(apartment, key)
+	if parts.is_empty():
+		return false
+	for node in _unit_nodes.get(key, []):
+		if is_instance_valid(node):
+			remove_child(node)
+			node.free()
+	_unit_nodes.erase(key)
+	_unit_jobs[key] = _unit_jobs_done.get(key, [])
+	_unit_jobs_done.erase(key)
+	var inside := func(node) -> bool:
+		return node is Node and is_instance_valid(node) and parts.any(func(part) -> bool: return part == node or (part as Node).is_ancestor_of(node))
+	if interaction != null and inside.call(interaction.selected):
+		interaction.clear_card()
+	var batches: Node = apartment.get_node_or_null("StaticRenderBatches/Unit_" + key)
+	if indoor_visibility != null:
+		indoor_visibility.remove_unit_parts(parts, batches)
+	if render_culling != null:
+		render_culling.remove_unit(self, parts, key)
+	if seating != null:
+		seating.drop_seats(parts)
+	if area_vocabulary != null:
+		area_vocabulary.remove(parts)
+	for door in doors.keys():
+		if not is_instance_valid(door) or inside.call(door):
+			doors.erase(door)
+	# Stamp coins in the base guarded by a node of the unit (the bank's safe) go; the unit's job
+	# puts them back with it.
+	var coins := apartment.get_node_or_null("StampCoins")
+	if coins != null:
+		for coin in coins.get_children():
+			if inside.call(coin.get("gate")):
+				coins.remove_child(coin)
+				coin.free()
+	ModularTown.remove_unit(apartment, key, parts)
+	pending_units.append(key)
+	if reference_layout != null:
+		reference_layout.remove_unit()
+	register_driveable_vehicles()
+	preload("res://scripts/characters/sculpt_cache.gd").forget_freed()
+	unit_removed.emit(key)
+	return true
 
 ## Adds building unit `key` now if it is still pending (await it), after any unit being added;
 ## nothing when it is loaded or not focused. Nearby loading (nearby_units.gd) uses it for the
@@ -688,7 +827,8 @@ func add_unit(key: String) -> void:
 		return
 	_adding_unit = true
 	var held: Array = []
-	var parts: Array = ModularTown.add_unit(apartment, key, held)
+	var parts: Array = ModularTown.add_unit(apartment, key, held, prepared_units.get(key))
+	prepared_units.erase(key)
 	for entry in held:
 		await get_tree().process_frame
 		ModularTown.put_back(apartment, entry)
@@ -726,11 +866,14 @@ func add_unit(key: String) -> void:
 		# The render trim's building-shell rays need the unit's collision in the physics space.
 		await get_tree().physics_frame
 		render_culling.add_parts(self, parts, key)
+		# Batching (35-54 ms natively) and the minigame sessions (up to 36 ms) used to share a
+		# frame (26 Nov 2026, docs/evidence/far-unit-freeing-20261126/time_arrival.gd).
+		await get_tree().process_frame
 	_adding_unit = false
 	var jobs: Array = _unit_jobs.get(key, [])
 	_unit_jobs.erase(key)
 	for job in jobs:
-		job.call()
+		_run_unit_job(key, job)
 	apply_world_language()
 	update_progress_display()
 	if pending_units.is_empty():

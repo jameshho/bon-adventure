@@ -51,6 +51,15 @@ static var _built := {}
 static var _shared := {}
 ## Key -> WeakRefs of the characters (costumes) using that entry.
 static var _users := {}
+## Far characters without meshes (strip()): instance id -> {node path -> mesh file}.
+static var _stripped := {}
+## Mesh instance id -> [WeakRef of the mesh, its file in STRIP_FOLDER] (saved once, shared).
+static var _mesh_files := {}
+## Mesh file -> WeakRef of the mesh loaded from it, so characters that shared a mesh share it again.
+static var _file_meshes := {}
+static var _next_file := 0
+## Where strip() keeps the meshes of far characters; emptied at the first strip of a launch.
+const STRIP_FOLDER := "user://far_meshes/"
 
 ## Off in the editor, and with the environment variable VT_SCULPT_CACHE=0 (always build); on the
 ## web only where the browser keeps user:// (IndexedDB), else every write is wasted.
@@ -87,6 +96,8 @@ static func dress(costume: Node3D) -> void:
 	_finish(wearer, costume, key, func() -> void: costume.call("_build"))
 
 static func _finish(root: Node3D, costume: Node3D, key: String, make: Callable) -> void:
+	if _stripped.has(root.get_instance_id()):
+		unstrip(root)
 	_drop_unused()
 	if key == "" or not _restore(root, costume, key):
 		var before := _parts(root, costume)
@@ -107,10 +118,21 @@ static func _finish(root: Node3D, costume: Node3D, key: String, make: Callable) 
 	else:
 		_built.erase(root.get_instance_id())
 
+## Forgets the characters that were freed (a building unit freed while far, Main.remove_unit(),
+## 26 Nov 2026) and the shared entries nobody uses any more, so their meshes can be freed.
+static func forget_freed() -> void:
+	for id in _built.keys():
+		if not is_instance_id_valid(id):
+			_built.erase(id)
+	for id in _stripped.keys():
+		if not is_instance_id_valid(id):
+			_stripped.erase(id)
+	_drop_unused()
+
 ## Forgets shared entries whose characters (costumes) are all gone, so their meshes can be freed.
 static func _drop_unused() -> void:
 	for key in _shared.keys():
-		var alive: Array = _users.get(key, []).filter(func(user: WeakRef) -> bool: return user.get_ref() != null)
+		var alive: Array = _users.get(key, []).filter(func(user: WeakRef) -> bool: return user.get_ref() != null and not is_stripped(user.get_ref()))
 		if alive.is_empty():
 			_shared.erase(key)
 			_users.erase(key)
@@ -371,3 +393,115 @@ static func _share_shaders(node: Node) -> void:
 				if material is ShaderMaterial and (material as ShaderMaterial).shader != null:
 					(material as ShaderMaterial).shader = shared_shader((material as ShaderMaterial).shader.code)
 				material = material.next_pass
+
+
+# --- Far characters (26 Nov 2026, option C of docs/guides/performance/README.md "Load only nearby
+# buildings on phones"; driven by far_plush_meshes.gd on the web) ------------------------------
+## A character far away gives up its meshes: each distinct mesh is saved once to STRIP_FOLDER
+## and every reference here lets go (its record in _built, and a shared entry once none of its
+## users keeps meshes), so the GPU and the page's memory can drop them. Its nodes, scripts,
+## collision and costume nodes all stay. unstrip() loads them back (shared again) before it is
+## seen. Only characters that came through build() (a key) are stripped; with a costume, the
+## garments go too. A new build() or dress() of a stripped character unstrips it first.
+
+static func is_stripped(node: Object) -> bool:
+	if node == null or not node is Node:
+		return false
+	if _stripped.has(node.get_instance_id()):
+		return true
+	var parent: Node = (node as Node).get_parent()
+	return parent != null and _stripped.has(parent.get_instance_id())
+
+## The characters build() made (meshes kept here), for far_plush_meshes.gd.
+static func built_characters() -> Array:
+	var found: Array = []
+	for id in _built.keys():
+		if is_instance_id_valid(id):
+			found.append(instance_from_id(id))
+	for id in _stripped.keys():
+		if is_instance_id_valid(id) and not _built.has(id):
+			found.append(instance_from_id(id))
+	return found
+
+## Drops `root`'s meshes (see above). False when there is nothing to drop or a mesh cannot be saved.
+static func strip(root: Node3D) -> bool:
+	var id := root.get_instance_id()
+	if _stripped.has(id):
+		return false
+	if _next_file == 0:
+		_next_file = 1
+		if DirAccess.dir_exists_absolute(STRIP_FOLDER):
+			for file in DirAccess.get_files_at(STRIP_FOLDER):
+				DirAccess.remove_absolute(STRIP_FOLDER + file)
+		DirAccess.make_dir_recursive_absolute(STRIP_FOLDER)
+	var files := {}
+	var nodes: Array = root.find_children("*", "MeshInstance3D", true, false)
+	for node: MeshInstance3D in nodes:
+		if node.mesh == null:
+			continue
+		var file := _file_of(node.mesh)
+		if file == "":
+			return false
+		files[String(root.get_path_to(node))] = file
+	if files.is_empty():
+		return false
+	for path in files:
+		(root.get_node(NodePath(path)) as MeshInstance3D).mesh = null
+	_stripped[id] = files
+	if _built.has(id):
+		_built[id].meshes = {}
+	_drop_unused()
+	return true
+
+## Gives `root` its meshes back (loaded once per file, shared between characters).
+static func unstrip(root: Node3D) -> bool:
+	var id := root.get_instance_id()
+	if not _stripped.has(id):
+		return false
+	var files: Dictionary = _stripped[id]
+	_stripped.erase(id)
+	var meshes := {}
+	for path in files:
+		var node := root.get_node_or_null(NodePath(path)) as MeshInstance3D
+		if node == null:
+			continue
+		var mesh := _mesh_from(files[path])
+		if mesh == null:
+			continue
+		node.mesh = mesh
+		meshes[path] = mesh
+	if _built.has(id):
+		_built[id].meshes = meshes
+	return true
+
+## STRIP_FOLDER file holding `mesh` (saved on first use); "" when it cannot be saved.
+static func _file_of(mesh: Mesh) -> String:
+	var known: Array = _mesh_files.get(mesh.get_instance_id(), [])
+	if not known.is_empty() and (known[0] as WeakRef).get_ref() == mesh:
+		return known[1]
+	var file := STRIP_FOLDER + str(_next_file) + ".res"
+	_next_file += 1
+	if ResourceSaver.save(mesh, file, ResourceSaver.FLAG_COMPRESS) != OK:
+		return ""
+	_mesh_files[mesh.get_instance_id()] = [weakref(mesh), file]
+	_file_meshes[file] = weakref(mesh)
+	return file
+
+static func _mesh_from(file: String) -> Mesh:
+	var alive: Mesh = (_file_meshes[file] as WeakRef).get_ref() if _file_meshes.has(file) else null
+	if alive != null:
+		return alive
+	var mesh := ResourceLoader.load(file, "", ResourceLoader.CACHE_MODE_IGNORE_DEEP) as Mesh
+	if mesh == null:
+		return null
+	mesh.resource_path = ""
+	for surface in mesh.get_surface_count():
+		var material := mesh.surface_get_material(surface)
+		while material != null:
+			material.resource_path = ""
+			if material is ShaderMaterial and (material as ShaderMaterial).shader != null:
+				(material as ShaderMaterial).shader = shared_shader((material as ShaderMaterial).shader.code)
+			material = material.next_pass
+	_mesh_files[mesh.get_instance_id()] = [weakref(mesh), file]
+	_file_meshes[file] = weakref(mesh)
+	return mesh

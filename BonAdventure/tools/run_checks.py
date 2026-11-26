@@ -166,6 +166,9 @@ CHECKS = [
     # the real session (Main saves: isolated HOME).
     dict(id="mystery_house", script="res://docs/evidence/mystery-house-20261109/verify.gd", suites=["full"],
          summary=r"MYSTERY HOUSE: \d+ checks, (?P<n>\d+) failures"),
+    # The mystery doors can be used from the floor, not only mid-jump (25 Nov 2026 bug).
+    dict(id="mystery_door_reach", script="res://docs/evidence/mystery-door-reach-20261125/verify.gd", suites=["full"],
+         summary=r"MYSTERY DOOR REACH: \d+ checks, (?P<n>\d+) failures"),
     # The fitting room outfit picker (9 Nov 2026); writes user://settings.json (isolated HOME).
     # Headless here; with graphics the same script also renders its PNGs.
     dict(id="fitting_room", script="res://docs/evidence/fitting-room-20261109/verify.gd", suites=["full"],
@@ -192,10 +195,11 @@ CHECKS = [
          summary=r"WORLD SIGNS: \d+ checks, (?P<n>\d+) failures"),
     dict(id="practice_log", script="res://docs/evidence/practice-log-20261107/verify.gd", suites=["full"],
          summary=r"PRACTICE LOG: \d+ checks, (?P<n>\d+) failures"),
-    # The vocabulary book (J journal table, filters, word detail; Stage C, 8 Nov 2026). Headless
+    # The vocabulary journal's sticker book (Places tab, baked place index; 25 Nov 2026,
+    # docs/guides/JOURNAL.md); it replaced the table check vocabulary_book (8 Nov 2026). Headless
     # here; with graphics the same script also renders its PNGs.
-    dict(id="vocabulary_book", script="res://docs/evidence/vocabulary-book-20261108/verify.gd", suites=["full"],
-         summary=r"VOCABULARY BOOK: \d+ checks, (?P<n>\d+) failures"),
+    dict(id="journal_sticker_book", script="res://docs/evidence/journal-sticker-book-20261125/verify.gd", suites=["full"],
+         summary=r"JOURNAL STICKER BOOK: \d+ checks, (?P<n>\d+) failures"),
     # Airport flight game logic after the board-only redesign (no town; 7 Nov 2026).
     dict(id="flight_logic", script="res://docs/evidence/flight-board-20261107/verify.gd", suites=["full"],
          summary=r"^(PASS|FAIL): \d+ checks, (?P<n>\d+) failed"),
@@ -281,6 +285,9 @@ CHECKS = [
     # dated evidence).
     dict(id="hen_house", script="res://docs/evidence/hen-house-roomier-20261125/verify.gd", suites=["full"], fps=True,
          summary=r"HEN HOUSE: \d+ checks, (?P<n>\d+) failures"),
+    # Clay monkey and sheep roam, the hen house flock (rooster, chicks) and the unrigged gait (25 Nov 2026).
+    dict(id="farm_flock", script="res://docs/evidence/farm-flock-20261125/verify.gd", suites=["full"], fps=True,
+         summary=r"FARM FLOCK: \d+ checks, (?P<n>\d+) failures"),
     # Day-night cycle, lamp glow, indoor light and the HUD clock (9 Nov 2026).
     dict(id="day_night", script="res://docs/evidence/day-night-20261109/verify.gd", suites=["full"],
          summary=r"DAY NIGHT: \d+ checks, (?P<n>\d+) failures"),

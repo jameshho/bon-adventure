@@ -5,7 +5,7 @@ extends RefCounted
 ## 12 x 9 foundation. Barn frame: town units (Apartment scale 1.3 applies), door on local -Z,
 ## walls centred on x +-6 and z +-4.5. The constants were moved here from the deleted startup
 ## pass barn_interior.gd (6 Nov 2026); docs/evidence/barn-20261101/verify.gd uses them.
-const STEPS := ["coplanar_gaps", "coplanar_gaps_2", "glass_windows", "hen_house", "walk_in_hen_house", "roomier_hen_house"]
+const STEPS := ["coplanar_gaps", "coplanar_gaps_2", "glass_windows", "hen_house", "walk_in_hen_house", "roomier_hen_house", "hen_house_flock"]
 
 const W2 := 6.0
 const D2 := 4.5
@@ -687,6 +687,64 @@ func roomier_hen_house(town: Node3D, game) -> void:
     big.basis = Basis.from_scale(Vector3(1.0, 1.3, 1.0)) * Basis(Vector3.BACK, PI / 2)
     _part(game, sign, "Egg sign crate", Vector3(-.06, -.28, 0), Vector3(.03, .14, .56), Color("c9a679"))
     _part(game, sign, "Egg sign arrow", Vector3(-.055, -.12, 0), Vector3(.02, .1, .06), COOP_RED)
+
+## More birds round the hen house (user, 25 Nov 2026: "place few chicken and chick around the hen
+## house, have them move naturally"): two more clay hens (copies of Hen 1, word "hen"), the clay
+## rooster (rooster_clay.tscn, 1.2 times a hen's height) and five clay chicks (chick_clay.tscn,
+## 0.55 times a hen's height), all under `Hen house/Hens`, so hen_house.gd gives them the hen yard.
+## The rooster and chicks have no word (no picking area); their `wander_profile` meta names their
+## park_animals.gd profile. Three chicks follow Hen 1 and two follow Hen 4 (meta "follow"): their
+## home moves to their hen whenever they choose where to go. Movement: park_animals.gd GAITS.
+const FLOCK_HENS := [Vector2(74.4, 80.6), Vector2(80.4, 80.7)]
+const FLOCK_ROOSTER := Vector2(78.0, 75.6)
+const FLOCK_CHICKS := [[Vector2(75.3, 80.2), "Hen 1"], [Vector2(76.7, 80.3), "Hen 1"], [Vector2(76.5, 78.7), "Hen 1"],
+    [Vector2(74.6, 77.6), "Hen 4"], [Vector2(76.1, 76.4), "Hen 4"]]
+const ROOSTER_SIZE := 1.2
+const CHICK_SIZE := .55
+
+func hen_house_flock(town: Node3D, _game) -> void:
+    var hens: Node3D = town.get_node("Barn/Hen house/Hens")
+    var first: Node3D = hens.get_node("Hen 1")
+    var bounds: AABB = first.call("_visible_bounds")
+    var hen_size: float = first.transform.basis.get_scale().x
+    var hen_h: float = bounds.size.y * hen_size
+    for i in FLOCK_HENS.size():
+        var hen: Node3D = first.duplicate()
+        hen.name = "Hen %d" % (hens.get_child_count() + 1)
+        hen.transform = Transform3D(Basis(Vector3.UP, 1.1 + i * 2.7).scaled(Vector3.ONE * hen_size), Vector3(FLOCK_HENS[i].x, LAWN - bounds.position.y * hen_size, FLOCK_HENS[i].y))
+        hens.add_child(hen)
+        for node in [hen] + hen.find_children("*", "", true, false):
+            node.owner = town
+    _flock_bird(town, hens, "Rooster", "rooster", hen_h * ROOSTER_SIZE, FLOCK_ROOSTER, 2.2, "")
+    for i in FLOCK_CHICKS.size():
+        _flock_bird(town, hens, "Chick %d" % (i + 1), "chick", hen_h * CHICK_SIZE, FLOCK_CHICKS[i][0], i * 1.9, FLOCK_CHICKS[i][1])
+    print("HEN HOUSE FLOCK: %d birds, hen %.3f tall" % [hens.get_child_count(), hen_h])
+
+## One wandering clay bird without a word under `hens` (house frame = town coordinates): the
+## clay model turned half round (it faces -Z, wanderers +Z), its Footprint body off, `height`
+## tall, soles on the lawn, stored as plain nodes (the web export leaves the clay prefabs out).
+func _flock_bird(town: Node3D, hens: Node3D, title: String, prefab: String, height: float, at: Vector2, yaw: float, follow: String) -> void:
+    var bird := Node3D.new()
+    bird.name = title
+    bird.set_script(preload("res://scripts/world/park_animals.gd"))
+    bird.set_meta("wander_profile", prefab)
+    if follow != "":
+        bird.set_meta("follow", follow)
+    var model: Node3D = load("res://scenes/animals/%s_clay.tscn" % prefab).instantiate()
+    model.name = "Clay" + prefab.capitalize()
+    model.rotation.y = PI
+    var footprint := model.get_node("Footprint") as CollisionObject3D
+    footprint.collision_layer = 0
+    footprint.collision_mask = 0
+    bird.add_child(model)
+    hens.add_child(bird)
+    var box: AABB = bird.call("_visible_bounds")
+    var size := height / box.size.y
+    bird.transform = Transform3D(Basis(Vector3.UP, yaw).scaled(Vector3.ONE * size), Vector3(at.x, LAWN - box.position.y * size, at.y))
+    model.scene_file_path = ""
+    for node in [bird] + bird.find_children("*", "", true, false):
+        node.owner = town
+    print("hen house flock: %s %.3f tall at %s" % [title, box.size.y * size, bird.position])
 
 func _node(parent: Node3D, title: String, pos: Vector3) -> Node3D:
     var node := Node3D.new()

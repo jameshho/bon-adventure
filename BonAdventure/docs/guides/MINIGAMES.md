@@ -197,7 +197,8 @@ moment later, as the supermarket door's "pay first" (`cashier_session.gd`, `DOOR
   never leaves a half-open game.
 - `data/activities.json`: offer chance and progress target ([activity board](ARCHITECTURE_REVIEW_PART1.md#shared-dialogue-popups-and-settings--4-november-2026));
   a `progress_bar.gd` in the game's panel or card. Since 25 Nov 2026 also `"music"`: the
-  background track while the game runs (`quiz`, `errands`, `mystery`, `focus` or `outdoors`;
+  background track while the game runs (`quiz`, `errands`, `mystery`, `focus`, `outdoors` or
+  Mahjong's own `mahjong`;
   none = the town track). Nothing else to do: `sound.gd` switches on the board's started /
   ended ([music](VOICE.md#background-music-25-nov-2026)).
 - `data/phrases.json` group `<group>` in every language (es, en, zh), plus `games.<activity>`
