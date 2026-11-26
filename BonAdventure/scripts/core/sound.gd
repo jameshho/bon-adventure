@@ -18,6 +18,11 @@ extends Node
 ## tools/voice_generate.py. say_word() plays it on the Voice bus, not positional, one word at a
 ## time. While "voice.enabled" is false (user, 24 Nov 2026) it plays nothing and has_voice() is
 ## false, so no speaker button or automatic word ever shows or sounds.
+## Web packs (PERF-04, decision D7, 25 Nov 2026): the Web export leaves audio/voice/ out of
+## index.pck. tools/voice_packs.gd writes one pack per language next to the page (voice/), and
+## ensure_voice() downloads only the language being learned (Lexicon foreign, checked again
+## whenever it changes), keeps it in user://voice/ for offline play and mounts it. Until it is
+## mounted, or when there is no pack, has_voice() is false: the speaker simply does not show.
 ##
 ## Background music (25 Nov 2026, user: a lofi BGM for the demo, and a different soundtrack for
 ## the loading screen): the catalogue's "music" section names one looping cue per track ("town",
@@ -46,11 +51,18 @@ const Board := preload("res://scripts/learning/activity_board.gd")
 const DUCK_BUS := "MusicDuck"
 ## How far the music dips while a word is said.
 const DUCK_DB := -9.0
+const Lexicon := preload("res://scripts/language/lexicon.gd")
+## Web voice packs: the folder next to index.html (tools/voice_packs.gd) and the local copies.
+const VOICE_PACK_URL := "voice/"
+const VOICE_PACK_CACHE := "user://voice"
+const VOICE_PACK_TIMEOUT := 20.0
 
 static var _shared
 
 ## The track play_music() or stop_music() now asks for ("" = quiet); the record player follows it.
 signal music_changed(track: String)
+## A language's spoken-word pack is mounted (web) and its clips can be said.
+signal voice_ready(lang: String)
 
 var cues: Dictionary = {}
 ## script resource path -> binding dictionary (play / start / stop: signal -> cue id).
@@ -74,6 +86,9 @@ var _web := OS.has_feature("web")
 ## The page starts with its audio suspended (the Web preset's head script).
 var _web_awake := false
 var _web_check := 0.0
+## Web voice packs: language -> "loading", "ready" or "none" (no pack); the language last asked for.
+var _voice_packs: Dictionary = {}
+var _voice_lang := ""
 
 static func shared():
 	return _shared
@@ -101,6 +116,8 @@ func _ready() -> void:
 	var board = Board.shared()
 	board.started.connect(_on_activity_started)
 	board.ended.connect(_on_activity_ended)
+	if _web:
+		ensure_voice(Lexicon.shared().foreign)
 
 func _process(delta: float) -> void:
 	if not _web:
@@ -109,6 +126,9 @@ func _process(delta: float) -> void:
 	if _web_check > 0.0:
 		return
 	_web_check = WEB_IDLE_CHECK
+	# The learned language changed (Settings, another profile): fetch that language's pack.
+	if Lexicon.shared().foreign != _voice_lang:
+		ensure_voice(Lexicon.shared().foreign)
 	if _web_awake and not is_playing():
 		_web_suspend()
 
@@ -442,6 +462,86 @@ func voice_path(key: String, lang: String) -> String:
 ## True when spoken words are switched on and this word has a clip in `lang`.
 func has_voice(key: String, lang: String) -> bool:
 	return voice_enabled() and lang != "" and ResourceLoader.exists(voice_path(key, lang))
+
+## --- Web voice packs (PERF-04) -------------------------------------------------------------
+
+## Whether `lang`'s clips are in res:// now: always in the editor and desktop runs; on the web
+## once its pack is mounted.
+func voice_present(lang: String) -> bool:
+	return lang != "" and DirAccess.dir_exists_absolute("%s/%s" % [str(voice.get("folder", "res://audio/voice")), lang])
+
+## Makes sure the learned language's clips can be said. Nothing to do when they are already in
+## res:// (or spoken words are off). On the web: reads voice/index.json next to the page; uses the
+## pack kept in user://voice/ when it is the current one, else downloads it there; then mounts
+## it. Offline, or when the index cannot be read, the kept pack is mounted as it is. A language
+## with no pack, or a failed download, leaves its words silent (no speaker), with no error.
+func ensure_voice(lang: String) -> void:
+	_voice_lang = lang
+	if lang == "" or not voice_enabled() or _voice_packs.has(lang):
+		return
+	if voice_present(lang):
+		_voice_packs[lang] = "ready"
+		return
+	if not _web:
+		_voice_packs[lang] = "none"
+		return
+	_voice_packs[lang] = "loading"
+	var text := (await _fetch(VOICE_PACK_URL + "index.json?t=%d" % int(Time.get_unix_time_from_system()))).get_string_from_utf8()
+	var index: Variant = JSON.parse_string(text) if text.begins_with("{") else null
+	var packs: Variant = index.get("packs") if index is Dictionary else null
+	var entry: Variant = packs.get(lang) if packs is Dictionary else null
+	DirAccess.make_dir_recursive_absolute(VOICE_PACK_CACHE)
+	var kept := _kept_packs(lang)
+	# Offline, or the download fails: the pack kept last time, as it is.
+	var file: String = kept[-1] if not kept.is_empty() else ""
+	if entry is Dictionary and str(entry.get("file", "")).is_valid_filename():
+		var wanted := str(entry.file)
+		if kept.has(wanted):
+			file = wanted
+		else:
+			var body := await _fetch(VOICE_PACK_URL + wanted)
+			if not body.is_empty() and (not entry.has("bytes") or body.size() == int(entry.bytes)):
+				var out := FileAccess.open("%s/%s" % [VOICE_PACK_CACHE, wanted], FileAccess.WRITE)
+				if out != null:
+					out.store_buffer(body)
+					out.close()
+					file = wanted
+		if file == wanted:
+			# Older packs of this language are never needed again.
+			for old in kept:
+				if old != wanted:
+					DirAccess.remove_absolute("%s/%s" % [VOICE_PACK_CACHE, old])
+	elif packs is Dictionary:
+		file = ""  # the build has no pack for this language
+	if file != "" and ProjectSettings.load_resource_pack("%s/%s" % [VOICE_PACK_CACHE, file]) and voice_present(lang):
+		_voice_packs[lang] = "ready"
+		voice_ready.emit(lang)
+	else:
+		_voice_packs[lang] = "none"
+
+## The packs of `lang` kept in user://voice/ (<lang>-<hash>.pck).
+func _kept_packs(lang: String) -> Array:
+	var kept := []
+	for name in DirAccess.get_files_at(VOICE_PACK_CACHE):
+		if name.begins_with(lang + "-") and name.ends_with(".pck") and name.length() == lang.length() + 13:
+			kept.append(name)
+	return kept
+
+## GETs a file next to the page; empty on any failure (offline, missing, not the web).
+func _fetch(relative: String) -> PackedByteArray:
+	var url = JavaScriptBridge.eval("new URL('%s', window.location.href).href" % relative.c_escape())
+	if not url is String or url == "":
+		return PackedByteArray()
+	var request := HTTPRequest.new()
+	request.timeout = VOICE_PACK_TIMEOUT
+	add_child(request)
+	var body := PackedByteArray()
+	if request.request(url) == OK:
+		var result: Array = await request.request_completed
+		if result[0] == HTTPRequest.RESULT_SUCCESS and int(result[1]) == 200:
+			body = result[3]
+	request.queue_free()
+	return body
 
 ## Says a word in `lang` (stopping any word still being said). Returns false and plays nothing
 ## while spoken words are off or the clip is missing.

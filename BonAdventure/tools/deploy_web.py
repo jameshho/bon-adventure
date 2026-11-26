@@ -15,13 +15,17 @@ folder "/"). The script:
      the manifest's "name" (DISPLAY_NAME) and "short_name" (SHORT_NAME, the label under the
      installed icon) and the page <title>. Godot would write config/name there, the short
      "Bon Adventure" (desktop saves, user://, are keyed to it);
-  3. refuses files over GitHub's 100 MB limit and prints the sizes;
+  3. writes the spoken-word packs into <out>/voice/ (tools/voice_packs.gd: one pack per
+     language plus index.json; PERF-04, decision D7, 25 Nov 2026). The preset leaves audio/voice/
+     out of index.pck, so a player downloads only the language being learned (sound.gd
+     ensure_voice(), docs/guides/VOICE.md "Web packs");
+  4. refuses files over GitHub's 100 MB limit and prints the sizes;
      before exporting, it refuses a build when a scene still names a file the preset leaves out
      (the clay zoo animals, scenes/animals/*_clay.*: base.scn stores them as plain nodes since
      13 Nov 2026, base step `clay_animals_unpacked`, saving 33 MB of download; since 16 Nov 2026
      their meshes are separate compressed files in scenes/animals/clay_meshes/, which the pack
      includes and base.scn names);
-  4. with --publish: makes `gh-pages` ONE new commit holding only the build (no parent, so old
+  5. with --publish: makes `gh-pages` ONE new commit holding only the build (no parent, so old
      builds do not pile up in history). It never pushes and never touches the checked-out
      branch or the working tree: check the build, then
        git push --force origin gh-pages
@@ -113,14 +117,20 @@ def main() -> int:
         return 1
     with open(page_path, "w", encoding="utf-8") as f:
         f.write(page)
+    result = subprocess.run([args.godot, "--headless", "--path", project, "--script", "res://tools/voice_packs.gd",
+                             "--", "--out", os.path.join(out, "voice")])
+    if result.returncode != 0 or not os.path.exists(os.path.join(out, "voice", "index.json")):
+        print("deploy_web: the spoken-word packs failed (tools/voice_packs.gd)")
+        return 1
     too_big = []
-    for name in sorted(os.listdir(out)):
-        path = os.path.join(out, name)
-        if os.path.isfile(path):
+    for folder, _dirs, names in sorted(os.walk(out)):
+        for name in sorted(names):
+            path = os.path.join(folder, name)
+            rel = os.path.relpath(path, out)
             size = os.path.getsize(path)
-            print(f"{size / 1e6:9.2f} MB  {name}")
+            print(f"{size / 1e6:9.2f} MB  {rel}")
             if size > LIMIT:
-                too_big.append(name)
+                too_big.append(rel)
     if too_big:
         print("deploy_web: over GitHub's 100 MB file limit: " + ", ".join(too_big))
         return 1

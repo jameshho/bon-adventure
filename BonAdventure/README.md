@@ -284,6 +284,10 @@ the export templates copied in), then serve the folder over HTTPS or `localhost`
   the preset also leaves out the 17 clay zoo animal scenes (`scenes/animals/*_clay.*`, 33 MB):
   `base.scn` stores them as plain nodes (base step `clay_animals_unpacked`), so the pck is 54 MB
   (about 48 MB sent gzipped). `deploy_web.py` refuses a build whose scenes still name one.
+  Since 25 Nov 2026 (PERF-04) the spoken-word clips are not in the pck either: `deploy_web.py`
+  writes one pack per language into `voice/` and the game downloads only the language being
+  learned, kept for offline play (`index.pck` 71.5 → 50.6 MB; a pack is about 7 MB;
+  [web packs](docs/guides/VOICE.md#web-packs)).
 - **Chinese font (13 Nov 2026):** browsers give the game no system fonts, so Chinese showed as
   empty boxes on the web. `fonts/NotoSansTC-SemiBold-subset.ttf` (Noto Sans TC at weight 600,
   [SIL OFL 1.1](docs/guides/licenses/noto-sans-tc-OFL.txt), about 320 KB in the pck) holds only the
