@@ -255,6 +255,7 @@ Four orders right at the first send win. Tracked. Since 23 Nov the tablet sits b
 wrong order is sent back at once ("Can you try again?"): the tablet reopens with the right dishes
 kept and each wrong dish marked ✗ and blocked; a fixed order does not count
 ([record](../guides/TOWN_DESIGN_BRIEF.md#on-the-menu-sent-back-orders--24-november-2026)).
+Since 25 Nov Esc mid-game asks whether to stop, as the entrance does, instead of opening Settings.
 [Design](../guides/TOWN_DESIGN_BRIEF.md#alta-cocina-restaurant-game--6-november-2026) ·
 [11 Nov flow](../guides/TOWN_DESIGN_BRIEF.md#restaurant-game-reception-tables-and-order-tablet--11-november-2026)
 
@@ -460,7 +461,8 @@ up from the queue, each with a story (a new bike, cakes for the grandchildren, a
 ask once for an amount in words while their account shows on the teller monitor; count out the
 cash with $5, $10, $50 and $100 bills, or tell them politely that there is not enough money.
 You sit on window 2's chair for the whole game, and a customer's thanks moves on to the next one
-by itself (24 Nov; [screenshots](../evidence/bank-teller-polish-20261124/)). One
+by itself (24 Nov; [screenshots](../evidence/bank-teller-polish-20261124/)); since 25 Nov getting
+up (Space or Jump) sits you back down and asks whether to stop, and so does Esc. One
 customer a session only wants change and must get no $100 bills back. Since 21 Nov the monitor
 shows the account's name, balance and the owner's photo (its words follow EN); since 23 Nov it
 stands beside the window, so one view shows the photo and the customer's face together

@@ -1119,6 +1119,15 @@ func ask_leave() -> void:
 	player.set_controls_enabled(false)
 	host.ask_leave()
 
+## Esc / back with no popup open (Main, the request_leave() contract, docs/guides/MINIGAMES.md;
+## 25 Nov 2026): ask_leave() as the card's Leave and the doorway do (nothing during a fade or a
+## door's change). True while a game runs, so Settings does not open mid-game.
+func request_leave() -> bool:
+	if host == null or not in_game():
+		return false
+	ask_leave()
+	return true
+
 func _on_leave_answered(leave: bool) -> void:
 	if state != "paused":
 		return

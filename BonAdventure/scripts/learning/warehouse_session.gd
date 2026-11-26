@@ -427,6 +427,16 @@ func ask_leave() -> void:
 		return
 	host.ask_leave()
 
+## Esc / back with no popup open (Main, the request_leave() contract, docs/guides/MINIGAMES.md;
+## 25 Nov 2026): the leave question, as the task card's Leave (which Esc reaches first while the
+## card shows). True while a game runs.
+func request_leave() -> bool:
+	if host == null or not in_game():
+		return false
+	if not host.is_asking_leave():
+		ask_leave()
+	return true
+
 func _on_leave_answered(leave: bool) -> void:
 	if leave:
 		end_game("warehouse.left_early")

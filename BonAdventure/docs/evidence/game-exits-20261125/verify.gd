@@ -7,8 +7,12 @@ extends SceneTree
 ## - Feeding Time!: walking out of the zoo puts the player back inside and asks; stay keeps them
 ##   in; Esc asks; yes stops (GAME-03, request_leave).
 ## - Radar console and electrical box: "finish the other task first" while another game runs.
+## - The other in-world games (wave 2b, 25 Nov 2026): On the Menu, Next, Please!, Stack & Pack,
+##   Desk Dash and Mystery Doors: request_leave() is false with no game; mid-game it asks the
+##   leave question and Esc asks it instead of opening Settings; stay keeps the game, yes ends it.
+##   Next, Please!: getting up from window 2's chair mid-game sits the player back down and asks.
 ## - The "jump" action (Space or the touch Jump button) stands the player up from a seat.
-## HOME=<scratch> VT_FOCUS=library,supermarket VT_SPAWN=none \
+## HOME=<scratch> VT_FOCUS=all VT_SPAWN=none \
 ##   godot --path . --resolution 1280x800 --script res://docs/evidence/game-exits-20261125/verify.gd
 ## Headless: checks only. With graphics it writes leave-question.png here. Saves go to the
 ## isolated HOME only.
@@ -154,6 +158,12 @@ func run() -> void:
 		check(not zoo.playing, "zoo: yes stops the game")
 		zoo.host.close_dialogue()
 		await frames(2)
+	# --- The other in-world games (wave 2b, 25 Nov 2026)
+	player.set_physics_process(true)
+	for spec in [["On the Menu", "RestaurantSession", "restaurant_twinkle"], ["Next, Please!", "TellerSession", "teller_bank"],
+			["Stack & Pack", "WarehouseSession", "warehouse_ramon"], ["Desk Dash", "GrammarSession", "grammar_lana"],
+			["Mystery Doors", "MysterySession", "mystery_luna"]]:
+		await _leave_game(spec[0], spec[1], spec[2])
 	# --- C8: the jump action stands the player up from a seat
 	var seat: Dictionary = game.seating.nearest_seat_to(host.npc.global_position)
 	check(not seat.is_empty(), "a seat in the library")
@@ -177,6 +187,55 @@ func run() -> void:
 		await create_timer(1.5).timeout
 		check(not player.seated, "Space still stands the player up")
 	finish()
+
+## request_leave() and Esc on an in-world game started through its host (the picker's launch).
+func _leave_game(label: String, node_name: String, activity: String) -> void:
+	var s = game.find_child(node_name, true, false)
+	check(s != null and s.host != null, "%s: session found" % label)
+	if s == null or s.host == null:
+		return
+	var host = s.host
+	var panel = host.dialogue_panel
+	check(not s.request_leave(), "%s: request_leave() is false with no game" % label)
+	host.launch()
+	await create_timer(3.0).timeout
+	host.close_dialogue()
+	await frames(2)
+	check(Board.shared().blocker("") == activity, "%s: the game runs (%s)" % [label, Board.shared().blocker("")])
+	if host.is_asking_leave():
+		# Closing a customer's question asks by itself (Next, Please!): stay first.
+		panel.quit_answered.emit(false)
+		await frames(3)
+		host.close_dialogue()
+		await frames(2)
+	check(s.request_leave() and host.is_asking_leave(), "%s: request_leave() asks the leave question" % label)
+	panel.quit_answered.emit(false)
+	await frames(3)
+	check(Board.shared().blocker("") == activity and not host.is_asking_leave(), "%s: stay keeps the game" % label)
+	if label == "Next, Please!":
+		check(game.player.seated, "%s: seated at window 2" % label)
+		game.seating.stand()
+		await create_timer(1.5).timeout
+		check(host.is_asking_leave() and (game.player.seated or game.player.sit_transition), "%s: getting up mid-game sits the player back down and asks" % label)
+		panel.quit_answered.emit(false)
+		await create_timer(1.0).timeout
+		check(game.player.seated and Board.shared().blocker("") == activity, "%s: stay keeps the player seated and the game" % label)
+	# Esc with no popup over the game (a first Esc may close a line or card that asks itself).
+	host.close_dialogue()
+	await frames(2)
+	for i in 3:
+		if host.is_asking_leave():
+			break
+		_back()
+		await frames(2)
+	check(host.is_asking_leave() and not game.settings_panel.visible, "%s: Esc mid-game asks the leave question, not Settings" % label)
+	panel.quit_answered.emit(true)
+	await create_timer(2.5).timeout
+	check(Board.shared().blocker("") == "", "%s: yes ends the game" % label)
+	host.close_dialogue()
+	if game.settings_panel.visible:
+		game.settings_panel.close()
+	await frames(2)
 
 ## The first point around `centre` (rings out to 60 m) that is not in the library zone.
 func _outside(centre: Vector3) -> Vector3:

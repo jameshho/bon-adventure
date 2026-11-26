@@ -931,6 +931,16 @@ func _on_money_close() -> void:
 	money.hide_panel()
 	host.ask_leave()
 
+## Esc / back with no popup open (Main, the request_leave() contract, docs/guides/MINIGAMES.md;
+## 25 Nov 2026), e.g. while a customer walks up: the leave question; "no" carries on. True while
+## a game runs.
+func request_leave() -> bool:
+	if host == null or not playing:
+		return false
+	if not zone.fading and not host.is_asking_leave():
+		host.ask_leave()
+	return true
+
 func _on_leave_answered(leave: bool) -> void:
 	if not playing:
 		return
@@ -1248,4 +1258,17 @@ func _process(delta: float) -> void:
 		_step_walkers(delta)
 	if playing:
 		_show_self()
+		_keep_seated()
 	host.tick(delta)
+
+## Getting up from window 2's chair mid-game (Space or the touch Jump button stands up from any
+## seat): sat back down and asked the leave question, as walking out of Library Helper puts the
+## player back inside and asks (25 Nov 2026). Not during the fades in and out.
+func _keep_seated() -> void:
+	if zone.fading or player.get("seated") or player.get("sit_transition"):
+		return
+	if bank.get_node_or_null(TELLER_SEAT) == null or main.get("seating") == null:
+		return
+	_sit_down()
+	if not host.is_asking_leave():
+		host.ask_leave()
