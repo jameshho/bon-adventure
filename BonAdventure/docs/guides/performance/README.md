@@ -1120,3 +1120,35 @@ loaded, four sides at street distance, noon): `docs/evidence/building-ranges-202
 full-town run printed the counts above but stalled while taking views (the window stopped
 drawing), so other buildings were not looked at. **Not measured:** draw calls and frame time;
 a phone; a web build.
+
+## Late buildings: sculpt cache and material warm-up — 25 November 2026
+
+Improvement plan PERF-03 and PERF-06. Probe, every run and its conditions:
+[evidence/web-start-20261125](../../evidence/web-start-20261125/README.md).
+
+- **Sculpt cache on the web (PERF-03).** `sculpt_cache.gd` keys on the source of the
+  character's scripts. Exported builds pack scripts without their source, so the web never
+  cached: each launch and each late building sculpted every plush again.
+  - Every export now writes the script hashes into the pack
+    (`addons/web_export/sculpt_hashes.gd` → `res://sculpt_hashes.json`).
+  - The entries go to IndexedDB through `user://` (only where `OS.is_userfs_persistent()`).
+  - Web, warm browser, cache off → warm (worst frame in brackets): restaurants
+    2,689 (682) → 921 (260) ms, police 916 (440) → 217 (63) ms, hospital 1,511 (359) → 532 (162) ms,
+    school 643 (331) → 389 (159) ms.
+  - Town with the home only: 4.5 → 3.9 s.
+  - Cost: about 39 MB of browser storage for the home and 4 units, about 74 MB for the whole
+    town.
+- **Material warm-up (PERF-06).** `scripts/world/unit_warmup.gd`, connected in `app.gd`. A unit
+  added after the town is ready has each new material and vertex-layout pairing drawn once, 4 per
+  frame, with its own mesh shrunk below a pixel in front of the camera. Its first draw then
+  compiles nothing new.
+  - Native first-sight stall: restaurants 285 → 180 ms, hospital 270 → 165 ms (second sight
+    5–17 ms).
+  - Web: the warm-up frames took the compiling on a cold browser (restaurants up to 886 ms in
+    one frame).
+  - A cold-web before/after could not be repeated on this Mac: macOS keeps Chrome's Metal
+    shader cache across profiles.
+- **Still open (follow-up):** about 140–150 ms natively on the first arrival at a newly added
+  building is not drawing. It stays with the whole unit hidden. It is CPU work not yet traced
+  (word areas, interactables, room lookup and the HUD's first text are candidates).
+  Not measured on a phone.

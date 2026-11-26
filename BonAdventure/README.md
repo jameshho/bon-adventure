@@ -189,7 +189,9 @@ There are no name fields: a new profile is named after its character. Since 15 N
 the title, character and loading screens show "Last update on 11-15 at 19:25" small in the
 bottom-right corner: every export writes its local date and time into the pack
 (`addons/web_export/build_stamp.gd` → `res://build_stamp.txt`, read by
-`scripts/core/build_stamp.gd`); a run from the project shows nothing. When the town is built
+`scripts/core/build_stamp.gd`); a run from the project shows nothing. Every export also writes
+`res://sculpt_hashes.json` (`addons/web_export/sculpt_hashes.gd`), so the plush sculpt cache
+works in the exported game (PERF-03, 25 Nov 2026). When the town is built
 the loading screen stays up ("Getting everything ready…", `app.gd` `_warm_up()`): the camera turns
 once around the player so every direction is drawn (shaders compile on first draw, a stall on
 the web), then it waits for 20 steady frames (under 1/24 s; at most 8 s) before play starts. The screens are `scripts/ui/app_screens.gd` (text `app.*` in

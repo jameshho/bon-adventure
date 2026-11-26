@@ -65,6 +65,7 @@ The table below collects the most recent numbers recorded before this programme,
 | Web FPS | 125 (noon) / 148 (midnight) | headless Chrome, M5, 2× density, **before the 23 Nov one-setting change: stale** | same, 9 Nov |
 | Web Play → playable | 7.1–7.3 s warm; cold first launch about 20.7 s of shader compiling | M5 Chrome | [FINAL_VERIFICATION](../FINAL_VERIFICATION.md), 13 Nov |
 | Building load hitch (web) | 0.35–0.8 s per building (restaurants 0.8 s; sculpt 1,258 ms uncached against 109 ms cached, native) | | same, 13 Nov |
+| Building add on the web (sculpt cache off → warm, PERF-03) | restaurants 2,689 → 921 ms (worst frame 682 → 260), hospital 1,511 → 532 ms (359 → 162); cold first launch 4,545 ms (1,852) | headless Chrome, M5, warm browser | [web-start evidence](../../evidence/web-start-20261125/README.md), 25 Nov |
 | Web download | `index.pck` 91.4 MB (voice about 20–30 MB), `index.wasm` about 40 MB (about 10 MB gzipped) | | [VOICE.md](../VOICE.md), 24 Nov |
 
 ## Not measured anywhere

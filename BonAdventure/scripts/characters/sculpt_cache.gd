@@ -15,7 +15,8 @@ extends RefCounted
 ## Keys hash the source of the whole script chain (and the outfit data), every script
 ## variable, and the transforms of the parts, so an edit simply builds and caches again.
 ## Older entries of an edited script are deleted. Never used in the editor; VT_SCULPT_CACHE=0
-## turns the files off.
+## turns the files off. Exported builds (the web) read the script hashes from a list the export
+## writes, since their scripts carry no source (PERF-03, 25 Nov 2026; _exported_hashes()).
 ##
 ## Shared meshes (17 Nov 2026, WebGL context loss, docs/guides/performance/README.md "GPU memory
 ## on the web"): characters and costumes with the same key get the same mesh and material
@@ -38,6 +39,10 @@ const FORMAT := "3"
 const COSTUME_DATA := "res://data/plush_costumes.json"
 ## What a build may change on a mesh part; only the changed ones are stored and restored.
 const FIELDS := ["mesh", "transform", "cast_shadow", "visible"]
+## Script hashes of an exported build (_exported_hashes()), and the folder they are made for.
+const HASHES := "res://sculpt_hashes.json"
+const CHARACTER_SCRIPTS := "res://scripts/characters/"
+static var _exported: Variant = null
 static var _shaders := {}
 static var _source_hashes := {}
 ## Characters whose current meshes all came through here: instance id -> {key, meshes}.
@@ -47,9 +52,11 @@ static var _shared := {}
 ## Key -> WeakRefs of the characters (costumes) using that entry.
 static var _users := {}
 
-## Off in the editor, and with the environment variable VT_SCULPT_CACHE=0 (always build).
+## Off in the editor, and with the environment variable VT_SCULPT_CACHE=0 (always build); on the
+## web only where the browser keeps user:// (IndexedDB), else every write is wasted.
 static func enabled() -> bool:
-	return not Engine.is_editor_hint() and OS.get_environment("VT_SCULPT_CACHE") != "0"
+	return not Engine.is_editor_hint() and OS.get_environment("VT_SCULPT_CACHE") != "0" \
+		and (not OS.has_feature("web") or OS.is_userfs_persistent())
 
 ## Characters with the same key share meshes in memory (see the header); off in the editor.
 static func sharing() -> bool:
@@ -121,16 +128,36 @@ static func _parts(root: Node3D, skip: Node) -> Dictionary:
 
 static func _source_hash(script: Script) -> String:
 	if not _source_hashes.has(script):
-		var sources := ""
-		var level := script
-		while level != null:
-			if level.source_code == "":
-				sources = ""
-				break
-			sources += level.resource_path + "\n" + level.source_code
-			level = level.get_base_script()
-		_source_hashes[script] = (FORMAT + sources).sha256_text().substr(0, 16) if sources != "" else ""
+		var hash := source_hash_of(script)
+		if hash == "":
+			hash = str(_exported_hashes().get(script.resource_path, ""))
+		_source_hashes[script] = hash
 	return _source_hashes[script]
+
+## Hash of the source of `script` and its base scripts; "" when a level has no source (an
+## exported build packs scripts as tokens: _exported_hashes()).
+static func source_hash_of(script: Script) -> String:
+	var sources := ""
+	var level := script
+	while level != null:
+		if level.source_code == "":
+			return ""
+		sources += level.resource_path + "\n" + level.source_code
+		level = level.get_base_script()
+	return (FORMAT + sources).sha256_text().substr(0, 16)
+
+## Exported builds (the web, PERF-03, 25 Nov 2026): the pack keeps scripts as tokens without
+## their source, so the cache had no key there and every launch and late building sculpted
+## again. The export writes source_hash_of() for each script in CHARACTER_SCRIPTS into HASHES
+## (addons/web_export/sculpt_hashes.gd), computed from the same sources it packs.
+static func _exported_hashes() -> Dictionary:
+	if _exported == null:
+		_exported = {}
+		if FileAccess.file_exists(HASHES):
+			var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(HASHES))
+			if parsed is Dictionary:
+				_exported = parsed
+	return _exported
 
 ## Script variables of `node` as text; "" when one cannot be compared (a callback set
 ## from outside before the build).

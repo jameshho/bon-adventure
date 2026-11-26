@@ -49,6 +49,7 @@ const WebResume := preload("res://scripts/core/web_resume.gd")
 const NearbyUnits := preload("res://scripts/world/nearby_units.gd")
 const PlayerPlace := preload("res://scripts/core/player_place.gd")
 const DevFocus := preload("res://scripts/core/dev_focus.gd")
+const UnitWarmup := preload("res://scripts/world/unit_warmup.gd")
 
 ## Warm-up: the camera looks in WARM_HEADINGS directions, one drawn frame each (70° tall view,
 ## about 100° wide in landscape, so six overlap all round), then needs this many steady frames
@@ -150,6 +151,9 @@ func start_town(id: String) -> void:
 		if loading != null:
 			loading.set_progress(lerpf(FILE_SHARE, TOWN_SHARE, fraction)))
 	main.town_ready.connect(_on_town_ready, CONNECT_ONE_SHOT)
+	# A building added later compiles its new materials a few per frame while still out of sight
+	# (PERF-06, unit_warmup.gd), not all on the frame it is first seen.
+	main.unit_added.connect(func(key: String) -> void: UnitWarmup.warm(main, key))
 	if OS.has_feature("web") and web_resume == null:
 		web_resume = WebResume.new()
 		web_resume.name = "WebResume"

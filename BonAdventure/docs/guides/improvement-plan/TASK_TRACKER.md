@@ -131,7 +131,8 @@ The common rollback for every task is to revert that milestone's single commit. 
 - **Acceptance:** the export prints a smaller pck, and the zoo and farm animals all appear in the web build.
 - **Tests:** one web export; zoo and farm in the browser.
 
-### PERF-03 Web sculpt cache (A1, C, Pending: M0 baseline)
+### PERF-03 Web sculpt cache (A1, C, Built 25 Nov, waiting for commit approval)
+- **Result (25 Nov):** the cache was off in every exported build: scripts are packed without source, so the key was empty. Each export now writes the script hashes into the pack (`addons/web_export/sculpt_hashes.gd`); `sculpt_cache.gd` reads them. Web, warm browser, sculpt cache off → warm (worst frame in brackets): restaurants 2,689 (682) → 921 (260) ms, police 916 (440) → 217 (63), hospital 1,511 (359) → 532 (162), school 643 (331) → 389 (159); town with the home only 4.5 → 3.9 s. Cold first launch (everything cold): restaurants 4,545 ms (worst 1,852). Storage: about 39 MB for the home plus 4 units, about 74 MB for the whole town. Checks (25 Nov, once each, dev_focus all): `app_flow`, `tutorial`, `plush_life` PASS (the known exit -6 after the summary). [Evidence](../../evidence/web-start-20261125/README.md).
 - **Objective:** stop re-sculpting plushes on every web launch and building load. Restaurants take 1,258 ms without the cache and 109 ms with it.
 - **Files:** `scripts/characters/sculpt_cache.gd`, `addons/web_export/*` (script-hash manifest), possibly `plush_sculpt.gd`.
 - **Risk:** medium (cache-key correctness, browser storage quota).
@@ -255,7 +256,7 @@ Owner, evidence and status are given for each. Each task is specified fully only
 | GFX-04 | A2 | C | Completed (`634bc575`) | No horizon seam while flying (`fog_sky_affect` / `sky_curve` above 130 m) | `day_night.gd`, maybe `vehicle_controls.gd` | flight captures 40/100/200 m, day and night |
 | GFX-05 | A2 | S | Ready | Near plane grows with flight height | `vehicle_controls.gd` | flicker diff at 100 m |
 | PERF-05 | A1 | C/S | Pending (PERF-01) | Measure flight on a phone; lower `FLIGHT_VIEW_MAX` or the ranges if slow | `vehicle_controls.gd`, `render_culling.gd` | flight captures |
-| PERF-06 | A1 | C/S | Pending (PERF-01) | Warm up material variants for late buildings | `app.gd`, `main.gd` (`add_unit`) | cold web timing |
+| PERF-06 | A1 | C/S | Built 25 Nov (waiting for commit approval) | Warm up material variants for late buildings: `unit_warmup.gd` from `app.gd` on `unit_added`, real meshes below a pixel, 4 per frame. Native first sight restaurants 285 → 180 ms, hospital 270 → 165 ms; the cold-web A/B could not be repeated (macOS keeps Chrome's Metal cache across profiles). About 140 ms of first arrival is CPU work, not drawing (follow-up). [Evidence](../../evidence/web-start-20261125/README.md) | `app.gd`, `scripts/world/unit_warmup.gd` | cold web timing |
 | PERF-07 | A1 | C | Pending (PERF-01) | Free or hide far plushes in long web sessions (option C) | `nearby_units.gd`, plush code | video MB over a session; high risk |
 | ARCH-06 | A7 | C/S | Pending (M1) | `practice_log` checks shapes before typed assignment; `"v"` field on the next format change | `practice_log.gd` (lines 62–70) | `practice_log` |
 | QA-02 | A8 | C | Completed (25 Nov suite at `dfd2be4c`: PASS 73, KNOWN 3, NEW 1, CRASH 1) | FINAL_VERIFICATION "Current state" states the gap since 16 Nov; one full suite with `dev_focus=all` | `FINAL_VERIFICATION.md` | suite labels against the expected-failures list |
