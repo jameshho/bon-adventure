@@ -566,6 +566,7 @@
       "standing": {"es": "Poniéndose de pie", "en": "Standing up", "zh": "正在站起"},
       "seesaw_message": {"es": "En el balancín: el lado alto baja hasta el suelo. E o Espacio: bajarse.", "en": "On the seesaw — the high end sinks to the ground. E or Space: get off.", "zh": "在蹺蹺板上 — 高的一端會沉到地面。按 E 或空格鍵下來。"},
       "swing_message": {"es": "En el columpio: pulsa W y S al ritmo del columpio para subir más. E o Espacio: bajarse.", "en": "On the swing — press W and S in time with the swing to go higher. E or Space: get off.", "zh": "在鞦韆上 — 配合鞦韆的節奏按 W 和 S 就能盪得更高。按 E 或空格鍵下來。"},
+      "swing_message_touch": {"es": "En el columpio: empuja el joystick arriba y abajo al ritmo del columpio para subir más. Botón E o salto: bajarse.", "en": "On the swing — push the joystick up and down in time with the swing to go higher. E or jump button: get off.", "zh": "在鞦韆上 — 配合鞦韆的節奏把搖桿往上、往下推就能盪得更高。按 E 或跳躍按鈕下來。", "note": "swing_message on a touch screen (25 Nov 2026)."},
       "fitting_message": {"es": "Probador: haz clic en un conjunto para probártelo · Esc: cancelar", "en": "Fitting room — click an outfit to try it on · Esc: cancel", "zh": "試身室 — 點擊服裝試穿 · Esc：取消"},
       "swan_message": {"es": "Llevas el barco cisne: W/S pedalear · A/D girar · E: ponerse de pie", "en": "Steering the swan boat — W/S pedal · A/D steer · E: stand up", "zh": "正在駕駛天鵝船 — W/S 踩 · A/D 轉向 · E：站起"},
       "outfit_keep": {"es": "Quedarme con este look", "en": "Keep this look", "zh": "保留這套打扮"},
