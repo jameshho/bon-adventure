@@ -20,6 +20,8 @@ Improvement plan tasks PERF-03 and PERF-06
   - It uses one of the unit's own meshes, shrunk far below a pixel, in front of the camera.
   - A stand-in quad warmed only about a third as much (native: restaurants' first-sight stall
     285 → 180 ms with quads, no better with real meshes).
+  - On `Main.unit_removed` (far-unit freeing, merged 26 Nov), `forget()` drops the unit's
+    signatures, so a returning unit is warmed again.
   - Material property names are listed once per class. This cut the scan on the web from
     43/75 ms to 11/15 ms (restaurants/hospital).
 

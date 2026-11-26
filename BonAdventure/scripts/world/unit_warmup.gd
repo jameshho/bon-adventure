@@ -14,7 +14,9 @@ extends RefCounted
 ## MultiMeshes (the renderer's instanced variant), the rest as plain meshes. Materials count as
 ## seen by their shader-shaping settings (_signature()), so a colour or a texture image alone is
 ## not drawn again.
-## app.gd connects it to Main.unit_added; checks that load main.tscn directly do not run it.
+## app.gd connects it to Main.unit_added, and forget() to Main.unit_removed: a unit freed far away
+## (web, 26 Nov 2026) may take the last user of a shader with it, so its materials are drawn
+## again when it returns. Checks that load main.tscn directly do not run it.
 ## VT_WARM_UNITS=0 turns it off (measuring).
 const ModularTown := preload("res://scripts/world/modular_town.gd")
 ## Materials drawn per frame.
@@ -28,6 +30,8 @@ static var on := OS.get_environment("VT_WARM_UNITS") != "0"
 ## Signatures already drawn (or loaded with the start town and drawn by app.gd's warm-up).
 static var _seen := {}
 static var _signatures := {}
+## Unit key -> the signatures its warm() marked seen (forget()).
+static var _by_unit := {}
 ## Class -> names of its stored on/off, mode and resource settings (_signature()).
 static var _shaping := {}
 ## The last warm(): milliseconds spent finding the materials, and how many were drawn (probe).
@@ -78,6 +82,8 @@ static func materials(game: Node, key: String) -> Array:
 	if batches != null:
 		nodes.append_array(batches.find_children("*", "MultiMeshInstance3D", true, false))
 	var todo: Array = []
+	var marked: Array = _by_unit.get(key, [])
+	_by_unit[key] = marked
 	for node in nodes:
 		if node is MultiMeshInstance3D:
 			var multimesh := (node as MultiMeshInstance3D).multimesh
@@ -85,15 +91,23 @@ static func materials(game: Node, key: String) -> Array:
 				continue
 			for surface in multimesh.mesh.get_surface_count():
 				var material: Material = node.material_override if node.material_override != null else multimesh.mesh.surface_get_material(surface)
-				_add(todo, material, true, multimesh.mesh, surface)
+				_add(todo, material, true, multimesh.mesh, surface, marked)
 		elif node is MeshInstance3D and (node as MeshInstance3D).mesh != null and not node.has_meta("render_batched"):
 			var mesh_node := node as MeshInstance3D
 			for surface in mesh_node.mesh.get_surface_count():
-				_add(todo, mesh_node.get_active_material(surface), false, mesh_node.mesh, surface)
-				_add(todo, mesh_node.material_overlay, false, mesh_node.mesh, surface)
+				_add(todo, mesh_node.get_active_material(surface), false, mesh_node.mesh, surface, marked)
+				_add(todo, mesh_node.material_overlay, false, mesh_node.mesh, surface, marked)
 	return todo
 
-static func _add(todo: Array, material: Material, instanced: bool, mesh: Mesh, surface: int) -> void:
+## Unit `key` was freed: its signatures are new again, and the per-material cache (keyed by
+## instance ids that may be reused) starts over.
+static func forget(key: String) -> void:
+	for signature in _by_unit.get(key, []):
+		_seen.erase(signature)
+	_by_unit.erase(key)
+	_signatures.clear()
+
+static func _add(todo: Array, material: Material, instanced: bool, mesh: Mesh, surface: int, marked: Array) -> void:
 	if material == null:
 		return
 	# The vertex layout: an ArrayMesh's surface format, a primitive mesh's class.
@@ -102,6 +116,7 @@ static func _add(todo: Array, material: Material, instanced: bool, mesh: Mesh, s
 	if _seen.has(signature):
 		return
 	_seen[signature] = true
+	marked.append(signature)
 	todo.append([material, instanced, mesh])
 
 ## What decides the shader a material compiles to: its class and its on/off and mode settings and

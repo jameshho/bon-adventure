@@ -1177,6 +1177,8 @@ Improvement plan PERF-03 and PERF-06. Probe, every run and its conditions:
   added after the town is ready has each new material and vertex-layout pairing drawn once, 4 per
   frame, with its own mesh shrunk below a pixel in front of the camera. Its first draw then
   compiles nothing new.
+  - Since the merge with far-unit freeing (26 Nov 2026), `Main.unit_removed` calls `forget()`.
+    A freed unit may take the last user of a shader with it, so a returning unit is warmed again.
   - Native first-sight stall: restaurants 285 → 180 ms, hospital 270 → 165 ms (second sight
     5–17 ms).
   - Web: the warm-up frames took the compiling on a cold browser (restaurants up to 886 ms in

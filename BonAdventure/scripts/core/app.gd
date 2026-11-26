@@ -155,6 +155,7 @@ func start_town(id: String) -> void:
 	# A building added later compiles its new materials a few per frame while still out of sight
 	# (PERF-06, unit_warmup.gd), not all on the frame it is first seen.
 	main.unit_added.connect(func(key: String) -> void: UnitWarmup.warm(main, key))
+	main.unit_removed.connect(UnitWarmup.forget)
 	if OS.has_feature("web") and web_resume == null:
 		web_resume = WebResume.new()
 		web_resume.name = "WebResume"
