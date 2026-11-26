@@ -163,3 +163,10 @@ renderer/rendering_method.mobile="gl_compatibility"
 reflections/reflection_atlas/reflection_size=16
 reflections/reflection_atlas/reflection_count=1
 limits/opengl/max_renderable_lights=256
+
+[shader_globals]
+
+glass_sky_colour={
+"type": "color",
+"value": Color(0.64, 0.79, 0.93, 1)
+}

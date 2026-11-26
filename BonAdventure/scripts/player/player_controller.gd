@@ -97,7 +97,18 @@ var gait_weight := 0.0
 const GAIT_STRIDE := 0.61
 ## The fastest the gait phase may turn (rad/s), for hyper speed.
 const GAIT_MAX_RATE := 22.0
+## Arms up and feet tucked for a jump (0 rest ... 1 take-off). Eased since 25 Nov 2026 (P3-19;
+## it used to snap to 1 on take-off and drop linearly on landing): take-off sets jump_kick, which
+## fades over about half a second, and the pose eases toward the larger of the kick and the
+## airborne hold, quickly going up (JUMP_POSE_RISE) and softer on the way down.
 var jump_pose := 0.0
+var jump_kick := 0.0
+## BonBon's own blinker (bind_model()).
+var blinker: Node
+const JUMP_AIR_POSE := 0.55
+const JUMP_KICK_FADE := 1.6
+const JUMP_POSE_RISE := 16.0
+const JUMP_POSE_SETTLE := 8.0
 var riding_vehicle: DriveableVehicle
 var saved_collision_layer := 1
 var saved_collision_mask := 1
@@ -161,6 +172,16 @@ func bind_model() -> void:
     else:
         hand.rebind(parts["Arm"], rest_poses["Arm"])
     measure_lying()
+    # BonBon blinks too (P3-19, 25 Nov 2026): her own PlushLife, no gestures (they would move the
+    # player's model). She is not in "figures" (that group marks occupied seats). Lying holds her
+    # eyes shut, so the blinker leaves them alone while she sleeps.
+    if blinker == null:
+        blinker = PlushLife.new()
+        blinker.gestures = false
+        add_child(blinker)
+        blinker.setup([$Visual/BonBon])
+    else:
+        blinker.set_figures([$Visual/BonBon])
 
 ## A profile's avatar (PWA phase 3): another cast plush (data/npcs.json) replaces
 ## BonBon's model. Every plush has the same Arm / Arm_2 / Foot / Foot_2 parts and BonBon's size at
@@ -580,7 +601,7 @@ func _physics_process(delta: float) -> void:
         # A new press resets upward velocity even at the apex or during a fall.
         consecutive_jumps += 1
         velocity.y = next_jump_speed()
-        jump_pose = 1.0
+        jump_kick = 1.0
     elif not is_on_floor():
         velocity.y -= gravity * delta
     else:
@@ -655,7 +676,9 @@ func animate_bonbon(delta: float, speed: float) -> void:
     # stick push steps slowly, a sprint quickly. GAIT_STRIDE keeps walk_speed's cadence as it was
     # (7 + 8 * walk/sprint rad/s); GAIT_MAX_RATE stops hyper speed from blurring the feet.
     gait_phase += minf(speed / GAIT_STRIDE, GAIT_MAX_RATE) * delta
-    jump_pose = move_toward(jump_pose, 0.0 if grounded else 0.55, delta * 5.0)
+    jump_kick = move_toward(jump_kick, 0.0, delta * JUMP_KICK_FADE)
+    var jump_goal := maxf(jump_kick, 0.0 if grounded else JUMP_AIR_POSE)
+    jump_pose = lerpf(jump_pose, jump_goal, 1.0 - exp(-(JUMP_POSE_RISE if jump_goal > jump_pose else JUMP_POSE_SETTLE) * delta))
     visual.position.y = absf(sin(gait_phase)) * 0.055 * gait_weight
     for key in parts:
         var part: Node3D = parts[key]
@@ -755,5 +778,6 @@ func finish_standing() -> void:
     velocity = Vector3.ZERO
     consecutive_jumps = 0
     jump_pose = 0
+    jump_kick = 0
     gait_weight = 0
     effects.set_enabled(hyper_enabled)

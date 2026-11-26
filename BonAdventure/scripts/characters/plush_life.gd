@@ -31,7 +31,14 @@ extends Node
 
 const Interactable := preload("res://scripts/core/interactable.gd")
 const BLINK_GAP := Vector2(4.0, 10.0)
-const BLINK_SECONDS := 0.13
+## A blink (P3-19, 25 Nov 2026; was one 0.13 s snap shut and open): three steps, written only
+## when the step changes: the lids drop to BLINK_HALF open, shut, come back to BLINK_HALF, then
+## open. BLINK_STEPS are the seconds from the blink's start at which each step ends. With
+## `soft_blink` off a blink is the old single shut step of BLINK_STEPS[2] seconds.
+const BLINK_STEPS := [0.04, 0.1, 0.16]
+## How open the eyes are on the half steps (0 shut ... 1 open). Below about 0.4 eyes_shut()
+## already counts them shut, so a blink reads as shut from its first frame.
+const BLINK_HALF := 0.35
 const GESTURE_GAP := Vector2(10.0, 20.0)
 ## The town blinker's gap (user, 13 Nov 2026: "not so frequently").
 const TOWN_BLINK_GAP := Vector2(6.0, 14.0)
@@ -67,6 +74,8 @@ const FACE_MAX_DISTANCE := 5.0
 
 ## Seconds between one figure's blinks (min, max).
 @export var blink_gap := BLINK_GAP
+## The three-step blink (BLINK_STEPS); off = shut and open in one step each.
+@export var soft_blink := true
 ## Whether one figure at a time also makes a small move, and how often (min, max seconds).
 @export var gestures := true
 @export var gesture_gap := GESTURE_GAP
@@ -76,7 +85,7 @@ var _rng: RandomNumberGenerator
 var _time := 0.0
 var _next_gesture := 0.0
 var _blink_at: Dictionary = {}   # figure -> time of its next blink
-var _shut: Dictionary = {}       # figure -> true while this node holds its eyes shut for a blink
+var _shut: Dictionary = {}       # figure -> the blink step (0-2) while this node holds its eyes for a blink
 var _busy: Dictionary = {}       # figure -> its gesture tween
 var _group := ""
 var _follow_in := 0.0
@@ -157,21 +166,37 @@ func _process(delta: float) -> void:
 		if not is_instance_valid(figure):
 			continue
 		if _shut.has(figure):
-			if _time >= at + BLINK_SECONDS:
+			var step := _blink_step(_time - at)
+			if step >= 3:
 				_shut.erase(figure)
 				if not eyes_held(figure):
 					set_eyes_open(figure, 1.0)
 				_blink_at[figure] = _time + _rng.randf_range(blink_gap.x, blink_gap.y)
+			elif step != int(_shut[figure]):
+				_shut[figure] = step
+				if not eyes_held(figure):
+					set_eyes_open(figure, 0.0 if step == 1 else BLINK_HALF)
 		elif eyes_held(figure) or not figure.is_visible_in_tree():
 			_blink_at[figure] = _time + _rng.randf_range(blink_gap.x, blink_gap.y)
 		else:
-			_shut[figure] = true
-			set_eyes_open(figure, 0.0)
+			var step := _blink_step(_time - at)
+			_shut[figure] = step
+			set_eyes_open(figure, 0.0 if step == 1 else BLINK_HALF)
 	if gestures and _time >= _next_gesture:
 		_next_gesture = _time + _rng.randf_range(gesture_gap.x, gesture_gap.y)
 		var ready: Array = figures.filter(func(f) -> bool: return is_instance_valid(f) and f.is_visible_in_tree() and not _busy.has(f) and not _calling(f) and not facing(f))
 		if not ready.is_empty():
 			gesture(ready[_rng.randi() % ready.size()], GESTURES[_rng.randi() % GESTURES.size()])
+
+## The step of a blink `elapsed` seconds in: 0 closing (half), 1 shut, 2 opening (half), 3 done.
+## A hard blink (soft_blink off) is shut (1) until BLINK_STEPS[2], then done.
+func _blink_step(elapsed: float) -> int:
+	if not soft_blink:
+		return 1 if elapsed < BLINK_STEPS[2] else 3
+	for i in BLINK_STEPS.size():
+		if elapsed < BLINK_STEPS[i]:
+			return i
+	return 3
 
 ## An NPC hopping with its "!" (npc_presence.gd owns its position meanwhile).
 static func _calling(figure: Node3D) -> bool:

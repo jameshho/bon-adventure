@@ -36,6 +36,8 @@ extends Node
 ## sun looked outdated) the disc is a soft glow (shaders/sky_disc.gdshader) on a camera-facing quad
 ## just inside the camera's far limit, so all scenery covers it, and it sinks into the haze colour
 ## at the horizon instead of being cut off by the nearby ground.
+## Window glass reflects the hour's sky (P3-20, 25 Nov 2026) through one global shader parameter
+## (GLASS_SKY), so every glass material follows with one write and no per-window work.
 
 signal time_changed(minute: int)
 signal paused_changed(paused: bool)
@@ -53,6 +55,11 @@ const REFRESH_INTERVAL := 0.25
 ## 9 Nov 2026, was 20; 48 on 25 Nov 2026). Colours, sky and lamps still blend at every refresh.
 ## (No sun shadows since 23 Nov 2026; the steps stay.)
 const SUN_STEP_MINUTES := 5.0
+## The sky colour window glass reflects (materials/glass/window_glass.gdshader; a global shader
+## parameter declared in project.godot) and how far from the horizon colour toward the top it is.
+const GLASS_SKY := &"glass_sky_colour"
+const GLASS_SKY_MIX := 0.3
+var _glass_sky := Color(0, 0, 0, 0)
 ## A game can ask for rarer, sliding steps while it holds the player in one view
 ## (set_sun_steps(); mahjong: about every 30 s with a 1 s slide). Time itself runs the same.
 var sun_step_minutes := SUN_STEP_MINUTES
@@ -492,6 +499,13 @@ func _apply() -> void:
 	_apply_fill()
 	for material in cloud_materials:
 		_write(material, "albedo_color", s.clouds)
+	# Window glass reflects this hour's sky (P3-20, 25 Nov 2026): one global shader parameter
+	# for every glass material, written only when it changes. GLASS_SKY_MIX of the way from the
+	# horizon to the top gives the old fixed reflection colour at noon.
+	var glass_sky: Color = s.sky_horizon.lerp(s.sky_top, GLASS_SKY_MIX)
+	if not glass_sky.is_equal_approx(_glass_sky):
+		_glass_sky = glass_sky
+		RenderingServer.global_shader_parameter_set(GLASS_SKY, glass_sky)
 	if sky_disc != null:
 		var size: float = clampf(s.moon_size, 0.0, 1.0) if _night else 1.0
 		var toward := Basis.from_euler(disc_rotation(hour) * (PI / 180.0)).z
