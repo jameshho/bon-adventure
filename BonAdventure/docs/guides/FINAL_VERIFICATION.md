@@ -4,14 +4,15 @@
 
 Read this first; everything below is a dated log, and each entry describes only its own run.
 
-- **Last full suite:** 25 Nov 2026 afternoon, after the improvement plan's fast track
-  (`dfd2be4c` plus another session's uncommitted sound, door and sheep work):
-  **PASS 73, KNOWN 3, NEW 1, CRASH 1** of 78
-  ([record](#full-suite-after-the-fast-track--25-november-2026)). NEW: `bank_rework`, traced the same day to the check
-  paying an impostor before it reached the window, and fixed
-  ([record](#bank_rework-manager-failure-traced--25-november-2026)). CRASH: `app_flow` segfaulted once in the loading
-  screen; 16 later runs alone passed (P3: engine crash, see the record).
-- **Before that:** 16 Nov 2026, `run_checks.py full`, `dev_focus.txt` = `all`: PASS 47,
+- **Last full suite:** 25 Nov 2026 evening, after merging five wave 2b branches (`d12ba83a`
+  plus other sessions' uncommitted sheep and journal-note work): **PASS 70, KNOWN 3, NEW 5** of 78
+  ([record](#wave-2b-merged-and-full-suite--25-november-2026)). All five NEW were stale checks or
+  missing data, fixed the same evening; the five plus the new `unstuck` check re-run once: **PASS 6**.
+- **Before that:** 25 Nov 2026 afternoon, `dfd2be4c`: PASS 73, KNOWN 3, NEW 1, CRASH 1
+  ([record](#full-suite-after-the-fast-track--25-november-2026)). NEW `bank_rework` traced and fixed
+  ([record](#bank_rework-manager-failure-traced--25-november-2026)); CRASH `app_flow` segfaulted once
+  in the loading screen, 16 later runs alone passed (P3: engine crash).
+- **Earlier:** 16 Nov 2026, `run_checks.py full`, `dev_focus.txt` = `all`: PASS 47,
   NEW 6, TIMEOUT 3 ([record](#docs-reorganised-into-game--guides--evidence--archive--16-november-2026)).
   All 9 were traced to game changes and their checks fixed; the 9 re-run once: **PASS 7, KNOWN 2,
   NEW 0** ([triage](#triage-of-the-16-november-full-run-failures--16-november-2026)).
@@ -8429,3 +8430,30 @@ them alongside two heavy checks. Game code was traced temporarily and restored e
 impostor asks before paying. A one-line DIAG print stays for a missed manager visit. Result:
 `bank_rework` **54 checks, 0 failures** (one run, `dev_focus` all, isolated HOME). The
 `bank_teller_polish` loop already waits for each customer to ask, so it is not affected.
+
+## Wave 2b merged and full suite — 25 November 2026
+
+Five worktree branches merged into `main` with `git merge --no-ff` (user: "merge all six"):
+known words LEARN-04 (`38879640` → `9a429f85`), capped real-time review LEARN-03 (`b1d3987f` →
+`c89ad4e4`; `word_memory.gd` `_on_recorded` and its check combined by hand), leave question in every
+in-world game GAME-02b (`e7a45549` → `251bd912`), last-resort unstuck GAME-05 (`916f4558` →
+`cb3982bd`), F1 controls guide UI-04 (`2af58e72` → `d12ba83a`). The sixth, tutorial progress UI-07
+(`claude/tutorial-progress-c8eee1`), had no commit yet and is not merged. Each session's own checks
+are in its tracker row ([tracker](improvement-plan/TASK_TRACKER.md)).
+
+**Full suite**, `d12ba83a`, `dev_focus.txt` = `all`, `python3 tools/run_checks.py full` (1141 s), with
+other sessions' uncommitted sheep model and journal-note docs in the working tree:
+**PASS 70, KNOWN 3, NEW 5** of 78 (KNOWN: `map_facades`, `rooftops`, `voice_backbone`).
+
+| NEW | Cause | Fix |
+| --- | --- | --- |
+| `language` | no zh reading for 播 首 歌 碌 刻 (record player, music titles) | readings added to `data/pinyin_zh.json`; the CJK font subset was also missing 播歌碌首, rebuilt (`tools/build_cjk_font.py`, 0 missing) |
+| `touch_controls` | the check's locking-panel list lacked `record_player_panel` (57f1d7fb) | list updated |
+| `vehicle_doors` (27) | "no temporary geometry" counted every child node; the engine sound (d5011886) leaves a fading `AudioStreamPlayer3D` under the vehicle | the check counts `Node3D` geometry, not sound players |
+| `mahjong_table` | "sun steps rarely" expected > 20 game minutes; the fixed 30 s real step is 15 game minutes since the 48-minute day (fd2def38) | the check compares with twice the normal step |
+| `hen_house` (2) | egg toast and crate arrow not yet shown after 30 frames: the hen house polls every 0.25 s and the check ran without fixed fps | `fps=True` in `run_checks.py`; also fixed a real error on the first carry (`get_meta("tween", null)` with no tween) in `hen_house.gd` |
+
+Also: the new `unstuck` check (GAME-05) is registered in `run_checks.py` (full suite). Re-run once,
+`run_checks.py --only language,touch_controls,vehicle_doors,mahjong_table,hen_house,unstuck`:
+**PASS 6** (61 s). Not covered: renders of the merged UI, web and phone, the tutorial-progress branch.
+

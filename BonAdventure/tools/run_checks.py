@@ -279,7 +279,7 @@ CHECKS = [
     # flickering faces, laying odds, carry to the crate (arrow), Drop button, dropping off the farm
     # (the earlier coops' checks, hen-house-20261124/ and hen-house-walkin-20261124/, are kept as
     # dated evidence).
-    dict(id="hen_house", script="res://docs/evidence/hen-house-roomier-20261125/verify.gd", suites=["full"],
+    dict(id="hen_house", script="res://docs/evidence/hen-house-roomier-20261125/verify.gd", suites=["full"], fps=True,
          summary=r"HEN HOUSE: \d+ checks, (?P<n>\d+) failures"),
     # Day-night cycle, lamp glow, indoor light and the HUD clock (9 Nov 2026).
     dict(id="day_night", script="res://docs/evidence/day-night-20261109/verify.gd", suites=["full"],
@@ -313,6 +313,9 @@ CHECKS = [
     # game, radar/electrical box "finish first", touch Jump stands up. Headless writes no PNGs.
     dict(id="game_exits", script="res://docs/evidence/game-exits-20261125/verify.gd", suites=["full"],
          summary=r"GAME EXITS: \d+ checks, (?P<n>\d+) failures"),
+    # GAME-05 (25 Nov 2026): last-resort unstuck from a blocked seat or vehicle; a respawn ends the game.
+    dict(id="unstuck", script="res://docs/evidence/unstuck-20261125/verify.gd", suites=["full"], fps=True,
+         summary=r"UNSTUCK: \d+ checks, (?P<n>\d+) failures"),
 ]
 # Not listed on purpose: check_animals.gd (writes docs/evidence/animals-review/measurements.json),
 # capture_*/render_*/feature capture scripts (overwrite PNGs).

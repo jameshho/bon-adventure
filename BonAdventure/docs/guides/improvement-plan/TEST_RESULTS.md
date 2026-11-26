@@ -19,6 +19,7 @@ project record: milestone results are also written there.
 | 25 Nov 2026 | QA-02 full suite after the fast track | `dfd2be4c` + another session's uncommitted sound/door/sheep work | all | `run_checks.py full --jobs 2` (615 s) | **PASS 73, KNOWN 3, NEW 1, CRASH 1**: NEW `bank_rework` (manager timing race, as 24 Nov); CRASH `app_flow` (segfault in the loading screen; passed alone once) | web, phone, renders |
 | 25 Nov 2026 | `bank_rework` trace | `6093c685` + uncommitted sound work | all | `run_checks.py --only bank_rework` (10 runs: 9 traced, 3 failing; then 1 with the fix) | cause: the check paid an impostor before it reached the window (8-turn guard); fixed, **54/0** | other bank checks: loop not affected, not re-run |
 | 25 Nov 2026 | `app_flow` crash rate | `522321d6` + uncommitted sound work | all | `run_checks.py --only app_flow` × 15 | **15 PASS, 0 CRASH** (the suite's one segfault not reproduced) | load from parallel checks |
+| 25 Nov 2026 | Wave 2b merged (5 of 6) | `d12ba83a` + other sessions' uncommitted sheep/journal-note work | all | `run_checks.py full` (1141 s) | **PASS 70, KNOWN 3, NEW 5**: `language`, `touch_controls`, `vehicle_doors`, `mahjong_table`, `hen_house` (stale checks or missing data, [triage](../FINAL_VERIFICATION.md#wave-2b-merged-and-full-suite--25-november-2026)); fixed and re-run with the new `unstuck`: **PASS 6** | tutorial-progress (not merged), renders, web, phone |
 
 ### NEW labels from the 25 Nov suite (triage)
 

@@ -244,7 +244,7 @@ func _follow_carry() -> void:
 	if egg != null:
 		_toast(UiText.t("toast.egg_take_to_crate"))
 	_arrow.visible = egg != null
-	var tween: Tween = _arrow.get_meta("tween", null)
+	var tween: Tween = _arrow.get_meta("tween") if _arrow.has_meta("tween") else null
 	if tween != null:
 		tween.kill()
 	if egg != null:
