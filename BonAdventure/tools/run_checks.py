@@ -166,6 +166,9 @@ CHECKS = [
     # the real session (Main saves: isolated HOME).
     dict(id="mystery_house", script="res://docs/evidence/mystery-house-20261109/verify.gd", suites=["full"],
          summary=r"MYSTERY HOUSE: \d+ checks, (?P<n>\d+) failures"),
+    # The mystery doors can be used from the floor, not only mid-jump (25 Nov 2026 bug).
+    dict(id="mystery_door_reach", script="res://docs/evidence/mystery-door-reach-20261125/verify.gd", suites=["full"],
+         summary=r"MYSTERY DOOR REACH: \d+ checks, (?P<n>\d+) failures"),
     # The fitting room outfit picker (9 Nov 2026); writes user://settings.json (isolated HOME).
     # Headless here; with graphics the same script also renders its PNGs.
     dict(id="fitting_room", script="res://docs/evidence/fitting-room-20261109/verify.gd", suites=["full"],
