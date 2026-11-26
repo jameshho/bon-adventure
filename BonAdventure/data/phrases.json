@@ -51,6 +51,8 @@
       "close": {"es": "Cerrar", "en": "Close", "zh": "關閉"},
       "open": {"es": "Ajustes (Esc)", "en": "Settings (Esc)", "zh": "設定（Esc）", "note": "Tooltip of the gear button on the HUD."},
       "switch_profile": {"es": "Cambiar de jugador", "en": "Switch player", "zh": "切換玩家", "note": "Settings button (PWA phase 3): back to the profile select."},
+      "save": {"es": "Guardar", "en": "Save", "zh": "保存", "note": "Settings button (25 Nov 2026, user): saves the player's place now (Main.save_game(); player_place.gd), so the game starts there next time."},
+      "saved": {"es": "¡Guardado! La próxima vez empiezas aquí.", "en": "Saved! You'll start here next time.", "zh": "已保存！下次會從這裡開始。", "note": "HUD message after Settings' Save button."},
       "show_fps": {"es": "Mostrar FPS", "en": "Show FPS", "zh": "顯示FPS", "note": "Settings checkbox: the perf readout (perf_readout.gd; also ?perf=1 on the web or F3). Not saved."},
       "follow_camera": {"es": "La cámara me sigue", "en": "Camera follows me", "zh": "鏡頭跟著我", "note": "Settings checkbox (14 Nov 2026): walking sideways turns the view (player_controller.gd follow_view()). On by default."},
       "volume_master": {"es": "Volumen general", "en": "Main volume", "zh": "總音量", "note": "Settings sound sliders (24 Nov 2026; game_settings.gd VOLUME_BUSES): every sound."},

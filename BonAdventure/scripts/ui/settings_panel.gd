@@ -21,6 +21,9 @@ extends Control
 ## "Controls" (25 Nov 2026, improvement plan UI-04): opens the F1 controls guide, which shows the
 ## touch controls on a touch device (the only way to it without a keyboard); it emits
 ## controls_requested and Main closes this window and opens the guide.
+## "Save" (25 Nov 2026, user): saves the player's place now; it emits save_requested and Main
+## (save_game()) writes the place, closes this window and says so. Shown while Main can save
+## (save_allowed: a profile is playing and no minigame runs).
 const GameSettings := preload("res://scripts/core/game_settings.gd")
 const Lexicon := preload("res://scripts/language/lexicon.gd")
 const UiIcons := preload("res://scripts/ui/ui_icons.gd")
@@ -32,6 +35,9 @@ const DIM := BonStyle.INK_SOFT
 const DESIGN := Vector2(1100, 800)
 
 signal controls_requested
+signal save_requested
+## Main shows the Save button only when the place can be saved (Main.can_save()).
+var save_allowed := false
 ## Main hides the Controls button while a minigame runs (the guide is closed then).
 var controls_allowed := true
 
@@ -47,6 +53,7 @@ var _close_button: Button
 var _switch_button: Button
 var _replay_button: Button
 var _controls_button: Button
+var _save_button: Button
 var _profile_row: HBoxContainer
 var _x_button: Button
 var _show_fps: CheckBox
@@ -154,6 +161,11 @@ func _init() -> void:
 		var app := get_tree().current_scene
 		if app != null and app.has_method("switch_profile"):
 			app.switch_profile())
+	_save_button = _button()
+	_save_button.name = "Save"
+	_save_button.icon = UiIcons.texture("pin", 64)
+	_save_button.pressed.connect(func() -> void: save_requested.emit())
+	_profile_row.add_child(_save_button)
 	_profile_row.add_child(_switch_button)
 	_replay_button = _button()
 	_replay_button.pressed.connect(func() -> void:
@@ -223,7 +235,9 @@ func refresh() -> void:
 	_replay_button.visible = app != null and app.has_method("replay_tutorial")
 	_controls_button.text = lexicon.phrase("help.title", lang)
 	_controls_button.visible = controls_allowed
-	_profile_row.visible = _switch_button.visible or _replay_button.visible or _controls_button.visible
+	_save_button.text = lexicon.phrase("settings.save", lang)
+	_save_button.visible = save_allowed
+	_profile_row.visible = _save_button.visible or _switch_button.visible or _replay_button.visible or _controls_button.visible
 	_x_button.tooltip_text = _close_button.text
 	_layout()
 
@@ -256,6 +270,7 @@ func _apply_layout(screen: Vector2) -> void:
 		BonStyle.style_check(check, f, 24 if check == _show_fps else 26)
 	for pick in [_native_pick, _foreign_pick]:
 		BonStyle.style_option(pick, f, 26)
+	BonStyle.style_button(_save_button, "primary", f, 26)
 	BonStyle.style_button(_switch_button, "soft", f, 26)
 	BonStyle.style_button(_replay_button, "soft", f, 26)
 	BonStyle.style_button(_controls_button, "soft", f, 26)

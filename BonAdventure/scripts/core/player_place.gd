@@ -17,10 +17,12 @@ extends RefCounted
 ## run without one, so they never save or restore a place) and never while baking (read_only).
 ##
 ## Reopening (Main._restore_place(), before town_ready, profiles that finished the tutorial, no
-## dev `spawn=`): inside a building -> just outside its entrance (the ENTRANCES standing point,
-## facing the door, as the dev spawn); outdoors -> the nearest safe spot within SEARCH_RADIUS
-## (safe_spot()); otherwise, or when that building's unit is not loaded, the usual supermarket
-## spawn. Indoors means a static roof overhead and static walls on 3 of 4 sides (as
+## dev `spawn=`): inside a building -> the same spot on the same floor when it is clear
+## (INDOOR_RADIUS; since 25 Nov 2026, user), else just outside its entrance (the ENTRANCES
+## standing point, facing the door, as the dev spawn); outdoors -> the nearest safe spot within
+## SEARCH_RADIUS (safe_spot()); otherwise, or when that building's unit is not loaded, the usual
+## spawn outside the home (Main.spawn_position(); the supermarket until 25 Nov 2026). Settings'
+## Save button (Main.save_game()) writes the place at once. Indoors means a static roof overhead and static walls on 3 of 4 sides (as
 ## indoor_visibility.gd); the building is the unit (data/buildings.json) owning the roof's
 ## collider, else the town zone (data/zones.json) there.
 ##
@@ -37,6 +39,12 @@ const MOVE_METRES := 1.5
 ## Outdoor search: rings RING_STEP apart out to SEARCH_RADIUS around the saved spot.
 const SEARCH_RADIUS := 15.0
 const RING_STEP := 1.5
+## Inside a building (25 Nov 2026, user: come back at the same spot): the saved spot on its own
+## floor (safe_spot() level mode), else a clear spot within this radius in sight of it, else
+## the entrance. Not for a place saved while driving or in a minigame, nor below INDOOR_MIN_Y
+## (town metres; the Mystery House's endless hall lies about 11 m down).
+const INDOOR_RADIUS := 3.0
+const INDOOR_MIN_Y := -3.0
 ## Around an entrance's standing point (it should be clear already; a parked car may not be).
 const ENTRANCE_RADIUS := 6.0
 const ROOF_RAY := 30.0
@@ -103,6 +111,7 @@ static func capture(main) -> Dictionary:
 		"yaw": float(player.get("camera_yaw")),
 		"entrance": "" if driving else entrance_at(main, point),
 		"vehicle": driving,
+		"minigame": bool(main.hud.in_minigame) if main.get("hud") != null else false,
 		"time": Time.get_unix_time_from_system(),
 	}
 
@@ -178,6 +187,13 @@ static func spawn_for(main, place: Dictionary) -> Dictionary:
 		var site := ModularTown.building(town, entry[0], entry[1], entry[2])
 		if site == null:
 			return {}
+		# The same spot inside (25 Nov 2026, user): on the saved floor, within INDOOR_RADIUS.
+		var saved := town.to_global(Vector3(float(place.x), float(place.y), float(place.z)))
+		if not bool(place.get("vehicle", false)) and not bool(place.get("minigame", false)) \
+				and float(place.y) > INDOOR_MIN_Y:
+			var inside: Variant = safe_spot(main, saved, INDOOR_RADIUS, saved.y)
+			if inside != null:
+				return {"position": inside, "yaw": float(place.get("yaw", 0.0)), "how": "inside"}
 		var stand := site.to_global(entry[3])
 		var spot: Variant = safe_spot(main, stand, ENTRANCE_RADIUS)
 		if spot == null:

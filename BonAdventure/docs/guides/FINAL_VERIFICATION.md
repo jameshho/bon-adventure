@@ -38,6 +38,36 @@ Start at the [README](../../README.md); editing contracts are in the
 [architecture guide](ARCHITECTURE_REVIEW_PART1.md), and implementation details and
 six rendered views are in the [Part 2 handoff](../evidence/part2/HANDOFF.md).
 
+## Web restarts, Save button and home spawn — 25 November 2026
+
+User report: on a phone the game went back to the title four times in 15 minutes; then "add a save
+button, respawn at the same location, fallback at the home instead of the grocery store". Changed:
+`web_resume.gd` (running marker, `take()` once per page, restart log), the Web preset's
+`html/head_include` (`pagehide` removes the marker, `bonLeaving`, `window.bonWasmMemory`),
+`perf_readout.gd` (RAM, restarts), `player_place.gd` (same spot inside, `minigame` in the file),
+`main.gd` (`SPAWN_ORDER` home first, `save_game()`, home fallback in `_restore_place()`),
+`app.gd` (nearby loading starts at the home), `settings_panel.gd` (Save), `ui_icons.gd` (`pin`),
+`data/phrases.json` (`settings.save`, `settings.saved`). Full town (`dev_focus.txt` = `all`);
+other sessions' uncommitted work was in the same checkout and in the web build.
+
+- **Checks (`tools/run_checks.py`, once each):** `player_place` PASS (283 checks; the check now
+  expects the home spawn, same spot inside 22 of 23 entrances (Mystery: entrance), a place saved in
+  a minigame at the entrance, an unusable place outside the home, Save writes the place),
+  `unstuck` PASS, `app_flow` PASS (both: Godot crashed on exit after the summary, judged by the
+  summary), `language` NEW then PASS (儲 had no reading: the Chinese text uses 保存).
+- **Web build in the app's Chromium browser (localhost, 800 × 600), not a phone:** new profile,
+  tutorial skipped, town. Settings shows a green Save pill with a pin; it closed Settings, showed
+  "Saved! You'll start here next time." and wrote the note. A simulated kill (a later `unload`
+  listener set the marker again and moved the note 10 m, then `location.reload()`) skipped the
+  title, loaded the town and put the player at the moved note (inside the garage beside the home);
+  `bon-restarts` gained an entry and the readout showed "restarts 2 in 1 h". Found and fixed: an
+  ordinary reload counted as a restart, because the game's hide note runs after the `pagehide`
+  listener and set the marker again (`bonLeaving` since); after the fix an ordinary reload from the
+  town showed the title with no restart counted. Readout in the town: GPU 291 MB, RAM 412 MB.
+- **Not checked:** a real phone kill (iPhone or Android), an installed home-screen app, the resume
+  after an app is swiped away, and whether the kills themselves stop (they will not: memory still
+  grows as buildings load).
+
 ## Civic fixes: garage, school, police lockers, warehouse cabinet, zoo gate — 23 November 2026
 
 [What was built](TOWN_DESIGN_BRIEF.md#civic-fixes-garage-school-police-lockers-warehouse-cabinet-zoo-gate--23-november-2026).

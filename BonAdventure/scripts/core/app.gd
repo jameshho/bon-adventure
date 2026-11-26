@@ -211,7 +211,7 @@ func _first_units() -> Array:
 	return first if not first.is_empty() else focused
 
 ## Nearby loading: the units near where this profile comes back (the web resume note, else its
-## saved place, else the supermarket spawn), with the saved building's unit and the dev spawn's.
+## saved place, else the home spawn), with the saved building's unit and the dev spawn's.
 func _nearby_first_units() -> Array:
 	var apartment: Node3D = main.get_node("Apartment")
 	var entrances: Dictionary = main.get_script().get_script_constant_map()["ENTRANCES"]
@@ -231,9 +231,9 @@ func _nearby_first_units() -> Array:
 	if not dev.is_empty():
 		must.append(dev[0])
 	if not at.is_finite():
-		# The usual spawn, outside the supermarket (Main.spawn_position()).
-		must.append("supermarket")
-		var boxes: Array = NearbyUnits.data().get("boxes", {}).get("supermarket", [])
+		# The usual spawn, outside the home (Main.spawn_position(); the supermarket until 25 Nov 2026).
+		must.append("home")
+		var boxes: Array = NearbyUnits.data().get("boxes", {}).get("home", [])
 		at = Vector2((boxes[0][0] + boxes[0][2]) * 0.5, (boxes[0][1] + boxes[0][3]) * 0.5) if not boxes.is_empty() else Vector2.ZERO
 	return NearbyUnits.initial_for(at, apartment.transform.basis.get_scale().x, must)
 

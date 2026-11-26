@@ -420,9 +420,8 @@ func restore_editor_door_states(node: Node) -> void:
 	DoorAnimator.restore_editor_door_states(self, node)
 
 
-## Where the player starts and respawns: on the entrance walk just outside the supermarket
-## door (market-local frame, door at x -33, z 34.25), facing it. Falls back to the layout's
-## spawn point when the supermarket site is missing.
+## The supermarket's entrance walk (market-local frame, door at x -33, z 34.25): its ENTRANCES
+## standing point. The usual spawn until 25 Nov 2026; now the fallback when the home is missing.
 const SPAWN_MARKET_LOCAL := Vector3(-33.0, 0.1, 27.5)
 const SPAWN_MARKET_DOOR := Vector3(-33.0, 0.1, 34.25)
 
@@ -469,24 +468,35 @@ func dev_spawn_site() -> Array:
 	var site := ModularTown.building(apartment, entry[0], entry[1], entry[2])
 	return [] if site == null else [site.to_global(entry[3]), site.to_global(entry[4])]
 
-func spawn_position() -> Vector3:
+## Where the player starts and respawns without a saved place (no save, a fall out of the town,
+## a saved place that cannot be used): on the walk just outside the home's front door, facing it
+## (user, 25 Nov 2026; the supermarket door until then). Falls back to the supermarket's
+## entrance when the home unit is not loaded (dev focus), then to the layout's spawn point.
+## A dev `spawn=` wins.
+const SPAWN_ORDER := ["home", "supermarket"]
+
+func spawn_site() -> Array:
 	var dev := dev_spawn_site()
 	if not dev.is_empty():
-		return dev[0]
-	var market := ModularTown.building(apartment, "supermarket")
-	if market != null:
-		return market.to_global(SPAWN_MARKET_LOCAL)
+		return dev
+	for key in SPAWN_ORDER:
+		var entry: Array = ENTRANCES[key]
+		var site := ModularTown.building(apartment, entry[0], entry[1], entry[2])
+		if site != null:
+			return [site.to_global(entry[3]), site.to_global(entry[4])]
+	return []
+
+func spawn_position() -> Vector3:
+	var site := spawn_site()
+	if not site.is_empty():
+		return site[0]
 	return apartment.to_global(reference_layout.spawn_point if reference_layout != null else Vector3(4.5,.1,23))
 
 func spawn_yaw() -> float:
-	var dev := dev_spawn_site()
-	if not dev.is_empty():
-		var facing: Vector3 = dev[1] - dev[0]
+	var site := spawn_site()
+	if not site.is_empty():
+		var facing: Vector3 = site[1] - site[0]
 		return atan2(-facing.x, -facing.z)
-	var market := ModularTown.building(apartment, "supermarket")
-	if market != null:
-		var toward := market.to_global(SPAWN_MARKET_DOOR) - market.to_global(SPAWN_MARKET_LOCAL)
-		return atan2(-toward.x, -toward.z)
 	return PI if apartment.get_meta("reference_west_positive_x",false) else 0.0
 
 ## A profile's saved game goes on where it was left (scripts/core/player_place.gd, 14 Nov 2026):
@@ -503,6 +513,13 @@ func _restore_place() -> void:
 		await get_tree().physics_frame
 		await get_tree().physics_frame
 		var spot := PlayerPlace.spawn_for(self, place)
+		if spot.is_empty() and pending_units.has(SPAWN_ORDER[0]):
+			# The fallback is outside the home (25 Nov 2026): nearby loading may not have it yet.
+			await ensure_unit(SPAWN_ORDER[0])
+			await get_tree().physics_frame
+			await get_tree().physics_frame
+		if spot.is_empty():
+			spot = {"position": spawn_position(), "yaw": spawn_yaw()}
 		if not spot.is_empty():
 			player.global_position = spot.position
 			player.velocity = Vector3.ZERO
@@ -563,6 +580,7 @@ func make_popups() -> void:
 	hud.ui_root.add_child(settings_panel)
 	settings_panel.visibility_changed.connect(sync_player_controls)
 	settings_panel.controls_requested.connect(open_controls_guide)
+	settings_panel.save_requested.connect(save_game)
 	hud.settings_requested.connect(open_settings)
 	# The HUD's book button and the journal's ✕ work like J (the saved words are its Saved tab).
 	hud.journal_toggle_requested.connect(toggle_study_journal)
@@ -586,7 +604,28 @@ func make_popups() -> void:
 func open_settings() -> void:
 	if not settings_panel.visible:
 		settings_panel.controls_allowed = not hud.in_minigame
+		settings_panel.save_allowed = can_save()
 		settings_panel.open()
+
+## Settings' Save (25 Nov 2026, user): the place can be saved now (a profile plays, the place
+## keeper runs, no minigame; learner saves are always written at once anyway).
+func can_save() -> bool:
+	return is_instance_valid(place_keeper) and not hud.in_minigame
+
+## Settings' Save: writes the player's place now (player_place.gd; the next start comes back
+## here), and on the web the resume note too (web_resume.gd), then closes Settings and says so.
+func save_game() -> void:
+	if not can_save():
+		return
+	var saved: bool = place_keeper.save_now()
+	var app := get_tree().current_scene
+	var resume = app.get("web_resume") if app != null and app != self else null
+	if is_instance_valid(resume):
+		resume.snapshot()
+	settings_panel.close()
+	if saved:
+		var lexicon = Lexicon.shared()
+		hud.flash_quest_message(lexicon.phrase("settings.saved", lexicon.native))
 
 ## Settings' "Controls" (UI-04): the F1 guide, in its touch view on a touch device.
 func open_controls_guide() -> void:

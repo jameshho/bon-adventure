@@ -77,7 +77,8 @@ building (interior **and** exterior) is left out, while the base world always lo
 are the keys of `data/buildings.json` (`tower` is an alias of `airport`). `all` (the committed
 default) or an empty file loads everything; the environment variable `VT_FOCUS` overrides the file.
 Reset it to `all` before committing or running final verification. Shop and minigame sessions of
-missing buildings print a warning and stay off. The player spawns outside the supermarket door
+missing buildings print a warning and stay off. The player spawns outside the home's front door
+(the supermarket door until 25 Nov 2026; the supermarket when the home is not loaded)
 unless the file also has `spawn=<name>`: any building name (`police`, `school`, `airport`, `warehouse`, ... plus `mystery`), `restaurant` (Alta Cocina door), `burger`/`pizza` (same door) or `taqueria`; the building must be listed or `all` (places in
 `main.gd` `ENTRANCES`, shared with the saved-place respawn since 14 Nov 2026, plus `tower`; door points measured 10 Nov 2026 and checked in rendered views 10 Nov 2026; `VT_SPAWN` overrides). Headless boot, 6 Nov 2026 (Apple M5): full town
 16.0 s before → 8.5 s modular; `restaurants, police` 7.5 s before → 4.0 s modular. Windowed to
@@ -228,11 +229,13 @@ Device-wide settings belong in `user://device.json`. Check: `profiles` (quick su
 Since 18 Nov 2026 each profile also keeps its minigame levels and stars in `game_progress.json`
 ([progression](docs/guides/MINIGAMES.md#progression); no file means level 1 everywhere, so older saves need no migration).
 Since 14 Nov 2026 (user) each profile also keeps the player's last place in `player_place.json`:
-reopening a game that finished the welcome tutorial puts the player outside the entrance of the
-building they were in, or at the nearest safe spot near where they stood outdoors (vehicles are
-not saved; a driver stands beside where the vehicle was), else outside the supermarket as before.
-Saved every 10 s after moving, on quit, profile switch, app pause and when the web page is
-hidden; never without a profile (checks, tools). Details:
+reopening a game that finished the welcome tutorial puts the player back where they stood: since
+25 Nov 2026 (user) inside a building at the same spot when it is clear (else outside its
+entrance; always the entrance for a place saved in a minigame), outdoors at the nearest safe
+spot (vehicles are not saved; a driver stands beside where the vehicle was), else outside the
+home (the supermarket until 25 Nov 2026). Saved every 10 s after moving, on quit, profile switch,
+app pause, when the web page is hidden and with Settings' **Save** button (25 Nov 2026, user:
+"Saved! You'll start here next time."); never without a profile (checks, tools). Details:
 [saved place](docs/guides/ARCHITECTURE_REVIEW_PART1.md#saved-place-and-respawn). Check: `player_place` (full suite).
 
 Progress is kept per foreign language as canonical-key arrays in
@@ -332,6 +335,22 @@ the export templates copied in), then serve the folder over HTTPS or `localhost`
   reloading again by themselves. Learner saves are unchanged: they are written at once as before. When the page is
   hidden the profile's [saved place](docs/guides/ARCHITECTURE_REVIEW_PART1.md#saved-place-and-respawn) is
   written too (14 Nov 2026), so a closed tab reopens near the same spot.
+- **Restarts by the browser (25 Nov 2026, user report: on a phone the game went back to the
+  title four times in 15 minutes):** a phone browser short of memory kills the page with no
+  event and opens it again, so the game started at the title. In the town `web_resume.gd` sets
+  `localStorage["bon-running"]` with each resume note; the Web preset's `html/head_include`
+  removes it on `pagehide` (a reload, closing or leaving the page; `window.bonLeaving` stops the
+  game's late note from setting it again). A page that starts with it still set was killed:
+  `WebResume.take()` (once per page) records it in `localStorage["bon-restarts"]` and, with a note
+  at most 5 min old, loads that profile's town at the note like a lost-graphics reload (an app
+  swiped away may skip `pagehide` too, so reopening it within 5 min also resumes). The `?perf=1`
+  readout shows "restarts N in 1 h" and, since the same day, "RAM": on the web the page's whole
+  WebAssembly memory (kept by the preset as `window.bonWasmMemory`; it only grows), 412 MB in
+  the town in the app's Chromium browser. This recovers; it does not stop the kills: the town's
+  memory still grows as nearby units load (never freed; see the
+  [performance guide](docs/guides/performance/README.md#gpu-memory-on-the-web--14-november-2026)).
+  Tried in the app's Chromium browser (record in
+  [FINAL_VERIFICATION](docs/guides/FINAL_VERIFICATION.md#web-restarts-save-button-and-home-spawn--25-november-2026)); not yet on a phone.
 - **New builds reach installed apps (15 Nov 2026, user):** Godot's service worker serves the
   game from its cache, and each export has a new `CACHE_VERSION`. The browser checks the worker
   when the app opens, and the Web preset's second `html/head_include` script asks again

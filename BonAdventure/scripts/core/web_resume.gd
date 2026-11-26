@@ -24,6 +24,17 @@ extends Node
 ## switches to it at once (JavaScriptBridge.pwa_update() reloads the page). In the town,
 ## offer_update() asks in the dialogue box (app.update_ready) when the player is free; Update
 ## writes the resume note and reloads with RELOAD_FLAG, so the new build starts at the same spot.
+##
+## Restarts by the browser (25 Nov 2026, user report: on a phone the game went back to the title
+## four times in 15 minutes). A phone browser that runs short of memory kills the page without
+## any event and opens it again, so the game started at the title. Each snapshot also sets
+## localStorage[RUNNING_KEY]; the page shell removes it on `pagehide` (a reload, closing the tab,
+## leaving the page) and sets window.bonLeaving, so a snapshot arriving after that does not set it
+## again; the game's own reloads pass through pagehide too. A page that
+## starts with the marker still set ended without pagehide: take() counts it in
+## localStorage[RESTARTS_KEY] (shown by the ?perf=1 readout) and, when the note is at most
+## CRASH_MAX_AGE_SECONDS old, resumes from it like a lost-graphics reload. take() looks only once
+## per page, so switching profile (which reloads app.tscn, not the page) never resumes.
 const ProfileManager := preload("res://scripts/core/profile_manager.gd")
 const Lexicon := preload("res://scripts/language/lexicon.gd")
 
@@ -39,6 +50,17 @@ const MOVE_OLD_NOTE_JS := "(function () { try { var old = localStorage.getItem('
 const SNAPSHOT_SECONDS := 5.0
 ## A note older than this is not used (the player came back much later: start normally).
 const MAX_AGE_SECONDS := 30 * 60
+## Set while the town runs; removed by the page shell on pagehide (see the header).
+const RUNNING_KEY := "bon-running"
+## Times (unix seconds) of the last restarts by the browser, newest last, at most RESTARTS_KEPT.
+const RESTARTS_KEY := "bon-restarts"
+const RESTARTS_KEPT := 20
+## After a restart by the browser, a note at most this old is resumed from. Shorter than
+## MAX_AGE_SECONDS: an app swiped away may also skip pagehide, and opened much later it should
+## start at the title.
+const CRASH_MAX_AGE_SECONDS := 5 * 60
+## take() has run in this page (static: survives app.tscn reloads, not page reloads).
+static var _taken := false
 
 var main: Node
 var _callback: JavaScriptObject
@@ -51,23 +73,51 @@ const UPDATE_YES := "app_update_yes"
 const UPDATE_NO := "app_update_no"
 
 
-## The resume note to use now, or {} (not the web, no reload after a lost context, an old note,
-## or a profile that is gone). Clears the reload flag, so a later reload starts normally.
+## The resume note to use now, or {} (not the web, no reload after a lost context or a restart
+## by the browser, an old note, a profile that is gone, or not this page's first call). Clears
+## the reload flag and the running marker, so a later reload starts normally.
 static func take() -> Dictionary:
-	if not OS.has_feature("web"):
+	if not OS.has_feature("web") or _taken:
 		return {}
+	_taken = true
 	JavaScriptBridge.eval(move_old_note_js(), true)
 	var flag: Variant = JavaScriptBridge.eval("(function () { try { var f = sessionStorage.getItem('%s') || sessionStorage.getItem('%s'); sessionStorage.removeItem('%s'); sessionStorage.removeItem('%s'); return f || ''; } catch (e) { return ''; } })()" % [RELOAD_FLAG, OLD_RELOAD_FLAG, RELOAD_FLAG, OLD_RELOAD_FLAG], true)
+	var crashed := _take_running_marker()
+	var max_age := MAX_AGE_SECONDS
 	if str(flag) != "1":
-		return {}
+		if not crashed:
+			return {}
+		max_age = CRASH_MAX_AGE_SECONDS
 	var text: Variant = JavaScriptBridge.eval("(function () { try { return localStorage.getItem('%s') || ''; } catch (e) { return ''; } })()" % STORE_KEY, true)
 	var note: Variant = JSON.parse_string(str(text)) if str(text) != "" else null
 	if not note is Dictionary:
 		return {}
 	var age := Time.get_unix_time_from_system() - float(note.get("time", 0.0))
-	if age > MAX_AGE_SECONDS or ProfileManager.shared().get_profile(str(note.get("profile", ""))).is_empty():
+	if age > max_age or ProfileManager.shared().get_profile(str(note.get("profile", ""))).is_empty():
 		return {}
 	return note
+
+
+## True when the last page ended without pagehide (RUNNING_KEY still set); records that restart
+## in RESTARTS_KEY. Removes the marker either way.
+static func _take_running_marker() -> bool:
+	var js := "(function () { try { var on = localStorage.getItem('%s') === '1'; localStorage.removeItem('%s'); if (on) { var list = JSON.parse(localStorage.getItem('%s') || '[]'); list.push(Date.now() / 1000); localStorage.setItem('%s', JSON.stringify(list.slice(-%d))); } return on ? '1' : ''; } catch (e) { return ''; } })()"
+	return str(JavaScriptBridge.eval(js % [RUNNING_KEY, RUNNING_KEY, RESTARTS_KEY, RESTARTS_KEY, RESTARTS_KEPT], true)) == "1"
+
+
+## Restarts by the browser in the last `seconds` (the ?perf=1 readout), and the newest's time.
+static func recent_restarts(seconds: float) -> Array:
+	if not OS.has_feature("web"):
+		return []
+	var text: Variant = JavaScriptBridge.eval("(function () { try { return localStorage.getItem('%s') || '[]'; } catch (e) { return '[]'; } })()" % RESTARTS_KEY, true)
+	var list: Variant = JSON.parse_string(str(text))
+	var now := Time.get_unix_time_from_system()
+	var recent := []
+	if list is Array:
+		for t in list:
+			if now - float(t) <= seconds:
+				recent.append(float(t))
+	return recent
 
 
 ## MOVE_OLD_NOTE_JS with the key names filled in.
@@ -163,7 +213,9 @@ func snapshot() -> void:
 		"yaw": player.camera_yaw,
 		"time": Time.get_unix_time_from_system(),
 	}
-	JavaScriptBridge.eval("try { localStorage.setItem('%s', %s); } catch (e) {}" % [STORE_KEY, JSON.stringify(JSON.stringify(note))], true)
+	# The marker only while the page is not being left (the shell's bonLeaving: this call can
+	# run just after its pagehide listener removed the marker).
+	JavaScriptBridge.eval("try { localStorage.setItem('%s', %s); if (!window.bonLeaving) { localStorage.setItem('%s', '1'); } } catch (e) {}" % [STORE_KEY, JSON.stringify(JSON.stringify(note)), RUNNING_KEY], true)
 
 
 # --- New builds ------------------------------------------------------------------------------

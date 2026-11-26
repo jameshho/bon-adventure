@@ -5,8 +5,12 @@ extends SceneTree
 ## a point just inside its door is recognised as that building and respawns outside the entrance
 ## with a clear capsule and ground below (plus the upper hospital floors, the control tower and
 ## the warehouse minigame copy); outdoor points inside a wall, a vehicle, on a roof, at sea and
-## from a flying vehicle; an unloaded unit and no save fall back to the supermarket spawn; a
+## from a flying vehicle; an unloaded unit and no save fall back to the usual spawn; a
 ## profile's saved place is restored by Main and saved again by the keeper.
+## Since 25 Nov 2026 (user): the usual spawn is outside the home (was the supermarket); a place
+## inside a building comes back at the same spot when it is clear (else the entrance; a place
+## saved in a minigame always the entrance); an unusable saved place restores outside the home;
+## Settings' Save (Main.save_game()) writes the place at once.
 ## Writes only in user:// (the isolated HOME): user://player-place-check/ and one test profile
 ## under user://profiles/, both removed at the end. Refuses to run when saves already exist.
 const PlayerPlace := preload("res://scripts/core/player_place.gd")
@@ -44,9 +48,9 @@ func run() -> void:
 	check(not PlayerPlace.enabled(), "no profile: saving and restoring are off")
 	check(game.place_keeper == null, "no profile: no keeper")
 	check(PlayerPlace.read().is_empty() and PlayerPlace.spawn_for(game, {}).is_empty(), "no save: no place")
-	var market: Array = game.ENTRANCES.supermarket
-	var market_site := ModularTown.building(town, market[0])
-	check(start.distance_to(market_site.to_global(market[3])) < 0.5, "no save: the supermarket spawn")
+	var home: Array = game.ENTRANCES.home
+	var home_site := ModularTown.building(town, home[0])
+	check(start.distance_to(home_site.to_global(home[3])) < 0.5, "no save: the home spawn")
 	await physics_frame
 	await physics_frame
 	_entrances()
@@ -122,7 +126,15 @@ func _entrances() -> void:
 			_good_spot(near.get("position"), "playground nearby")
 			continue
 		check(found != "" and game.ENTRANCES[found][0] == entry[0], "inside %s is unit %s (got '%s')" % [key, entry[0], found])
-		var spawn := PlayerPlace.spawn_for(game, _place(inside, found))
+		# The same spot inside (25 Nov 2026), unless something stands there (then the entrance).
+		var same := PlayerPlace.spawn_for(game, _place(inside, found))
+		check(same.get("how") in ["inside", "entrance"], "inside %s: same spot or entrance (got %s)" % [key, same.get("how")])
+		if same.get("how") == "inside":
+			check((same.position as Vector3).distance_to(inside) <= PlayerPlace.INDOOR_RADIUS + 0.3 \
+					and absf((same.position as Vector3).y - inside.y) <= PlayerPlace.LEVEL_STEP + PlayerPlace.LIFT, key + ": back at the same spot inside")
+		print("inside ", key, " -> ", same.get("how"))
+		# Saved in a minigame: always the entrance.
+		var spawn := PlayerPlace.spawn_for(game, _place(inside, found, false, true))
 		check(spawn.get("how") == "entrance", "respawn outside " + key)
 		if spawn.get("how") != "entrance":
 			continue
@@ -135,9 +147,9 @@ func _entrances() -> void:
 		print("entrance ", key, " -> ", found, " at ", spawn.position)
 
 
-func _place(point: Vector3, entrance: String, vehicle := false) -> Dictionary:
+func _place(point: Vector3, entrance: String, vehicle := false, minigame := false) -> Dictionary:
 	var local := town.to_local(point)
-	return {"x": local.x, "y": local.y, "z": local.z, "yaw": 0.4, "entrance": entrance, "vehicle": vehicle}
+	return {"x": local.x, "y": local.y, "z": local.z, "yaw": 0.4, "entrance": entrance, "vehicle": vehicle, "minigame": minigame}
 
 
 func _inside(key: String, depth: float) -> Vector3:
@@ -268,12 +280,25 @@ func _profile_restore() -> void:
 	manager.update(id, {"tutorial": {"act": "", "done": true}})
 	manager.select(id)
 	check(PlayerPlace.enabled(), "with a profile: saving on")
-	PlayerPlace.write(_place(_inside("bank", 3.0), "bank"))
+	var in_bank := _inside("bank", 3.0)
+	PlayerPlace.write(_place(in_bank, "bank"))
 	await game._restore_place()
-	var bank: Array = game.ENTRANCES.bank
-	var bank_site := ModularTown.building(town, bank[0])
-	check(game.player.global_position.distance_to(bank_site.to_global(bank[3])) < 1.0, "Main restores the place outside the bank")
+	check(game.player.global_position.distance_to(in_bank) <= PlayerPlace.INDOOR_RADIUS + 0.3, "Main restores the place inside the bank (at %s, saved %s)" % [game.player.global_position, in_bank])
 	check(game.place_keeper != null, "Main starts the keeper")
+	# An unusable place (unknown entrance): outside the home.
+	if game.place_keeper != null:
+		game.place_keeper.free()
+	PlayerPlace.write(_place(Vector3.ZERO, "no_such_door"))
+	await game._restore_place()
+	var home: Array = game.ENTRANCES.home
+	check(game.player.global_position.distance_to(ModularTown.building(town, home[0]).to_global(home[3])) < 0.5, "an unusable place: outside the home")
+	# Settings' Save writes the place at once.
+	if game.place_keeper != null:
+		game.player.global_position = _inside("bank", 4.0)
+		check(game.can_save(), "Save is offered")
+		game.save_game()
+		var written := PlayerPlace.read()
+		check(written.get("entrance") == "bank" and town.to_global(Vector3(written.x, written.y, written.z)).distance_to(_inside("bank", 4.0)) < 0.01, "Save wrote the place")
 	if game.place_keeper != null:
 		game.player.global_position = _inside("library", 3.0)
 		check(game.place_keeper.save_now(), "the keeper saves")

@@ -20,8 +20,10 @@ A title screen with the **Bon Adventure: Little Town of Words** logo (16 Nov; it
 the text title) and Play, then a character screen with up to three profiles, each
 with its own avatar (one of the house plushes) and its own saves. A new profile picks the
 language it speaks and the one it wants to learn, then the town loads. Each profile remembers
-where the player was and comes back at that building's entrance or on clear ground nearby
-(14 Nov). Since 18 Nov the screens follow the user's mockups ([UI art style](../guides/UI_STYLE.md)):
+where the player was (14 Nov) and since 25 Nov comes back at the same spot, inside a building
+too (else at its entrance or on clear ground nearby); with no usable place it starts outside the
+home (the supermarket until 25 Nov). **Save** in Settings keeps the spot at once ("Saved! You'll
+start here next time."). Since 18 Nov the screens follow the user's mockups ([UI art style](../guides/UI_STYLE.md)):
 a saved player is picked (green, check mark) and played with Next; the character grid shows eight
 plushes (not Sunny), whose headshots are cut from the mockup since 23 Nov (the 22 Nov vtracer traces looked pixelated); the language page has round flags and **Just explore!**, which starts the new
 player with "Show everything in my language" on. Since 24 Nov the "I want to learn" row is greyed
@@ -179,6 +181,10 @@ starts with the buildings near where they come back, and the others appear in th
 within about 150 m (further when flying high); a game in the ▶ picker whose building is not there yet builds it first
 (17 Nov, not yet tried on a phone:
 [nearby loading](../guides/performance/README.md#built--17-november-2026)).
+If a phone's browser closes the page itself (usually low memory; the game went back to the
+title screen), the game now comes straight back to the same spot when reopened within 5 minutes
+(25 Nov; tried in a desktop browser, not yet on a phone). The `?perf=1` readout counts these
+restarts and shows the page's memory.
 [Web app](../../README.md#web-app-pwa)
 
 ## Finding places
