@@ -49,6 +49,9 @@ extends SceneTree
 ##   follow what is missing, the money panel with only $1 bills and quarters, a wrong then a right
 ##   payment, "Wait!" at the door before paying;
 ## - the park: the statue's card reads "statue of George Washington", the journal, the picnic.
+## UI-07 (25 Nov 2026, tutorial-progress-20261125): the act marker beside Skip says "Part n of 3"
+## in each act, and at the replay Skip asks first: Stay (green, left) keeps the tutorial where it
+## was (steps and the player held meanwhile), Skip (coral, right) ends it.
 ## With graphics (no --headless) it also saves views in this folder (see shot() calls).
 ## Writes profile saves: isolated HOME, refuses to run when saves exist:
 ## HOME=<scratch>/home VT_FOCUS=all VT_SPAWN=none godot --headless --path . --script res://docs/evidence/tutorial-polish-20261118/verify.gd
@@ -247,8 +250,45 @@ func replay() -> void:
 	check(sleeper.bed.is_empty() and not sleeper.npc.visible, "the napping twin is back in its seat and hidden")
 	check(main.player.seated, "the player wakes on the bed again")
 	await shot("replay-wake")
-	tutorial.skip()
-	await wait_until(func() -> bool: return not tutorial.running, 10.0)
+	await skip_confirm()
+
+## The act marker: "Part n of 3" (UI-07).
+func check_progress(n: int) -> void:
+	var text := phrase("tutorial.progress", {"n": n, "total": 3})
+	check(tutorial.progress_text() == text and tutorial._progress_label.text == text, "the act marker says '%s' (%s)" % [text, tutorial._progress_label.text])
+
+## Skip asks first (UI-07): Stay keeps the tutorial where it was, Skip ends it.
+func skip_confirm() -> void:
+	var panel: Node = main.shop_panel
+	check(await wait_until(func() -> bool: return tutorial._skip_button.visible, 10.0) and tutorial._progress_pill.visible, "the Skip button and the act marker show at the replay")
+	check_progress(1)
+	var line: Dictionary = panel.current_line()
+	var step: Dictionary = tutorial.step
+	tutorial._skip_button.pressed.emit()
+	await frames(2)
+	check(tutorial.running and tutorial.asking_skip and panel.is_quit_open(), "Skip asks first (the tutorial still runs)")
+	check(panel.quit_label.text == phrase("tutorial.skip_confirm") and panel.quit_no.text == phrase("tutorial.skip_stay") and panel.quit_yes.text == phrase("tutorial.skip_yes"),
+		"the card asks to skip, Stay and Skip (%s / %s / %s)" % [panel.quit_label.text, panel.quit_no.text, panel.quit_yes.text])
+	check(panel.quit_no.get_global_rect().position.x < panel.quit_yes.get_global_rect().position.x, "Stay is on the left, Skip on the right")
+	check(not tutorial._skip_button.visible and not tutorial._progress_pill.visible, "the Skip button and the marker hide while the card is up")
+	# A click on the world while it asks does not move a line on.
+	tutorial._advance = false
+	var click := InputEventMouseButton.new()
+	click.button_index = MOUSE_BUTTON_LEFT
+	click.pressed = true
+	click.position = Vector2(40, 400)
+	tutorial._input(click)
+	check(not tutorial._advance, "a click elsewhere while it asks does not move the line on")
+	await create_timer(2.0).timeout
+	check(tutorial.step == step and panel.current_line() == line and not main.player.look_allowed and not main.player.move_allowed, "the steps and the player are held while it asks")
+	await shot("skip-confirm")
+	panel.quit_no.pressed.emit()
+	await frames(2)
+	check(tutorial.running and not tutorial.asking_skip and not panel.is_quit_open() and tutorial.step == step, "Stay closes the card and the tutorial carries on where it was")
+	tutorial._skip_button.pressed.emit()
+	await frames(2)
+	panel.quit_yes.pressed.emit()
+	check(await wait_until(func() -> bool: return not tutorial.running, 10.0) and not panel.is_quit_open(), "Skip on the card ends the tutorial")
 
 # --- Act 1 -----------------------------------------------------------------------------------
 
@@ -260,6 +300,7 @@ func act_house() -> void:
 	var first: Dictionary = main.shop_panel.current_line()
 	check(not player.look_allowed and not player.move_allowed and not main.interaction.interact_allowed, "only E works in bed")
 	check(player.seated, "the player wakes lying on the bed")
+	check_progress(1)
 	check(absf(float(main.day_night.minutes) - Tutorial.START_MINUTES) < 30.0, "the tutorial starts at noon (%.0f min)" % float(main.day_night.minutes))
 	check(not main.hud.peek_button.visible and not main.hud.bookmark_button.visible and main.hud.tutorial_hidden.get("picker", false) and main.hud.tutorial_hidden.get("run", false), "the EN, journal, minigame and Run buttons are hidden")
 	check(is_equal_approx(tutorial._walk_speed(), float(player.walk_speed)), "the cast walks at the player's walking speed (%.1f m/s)" % tutorial._walk_speed())
@@ -489,6 +530,7 @@ func find_friends(site: Node3D) -> void:
 
 func act_market() -> void:
 	check(await wait_until(func() -> bool: return tutorial.act == 1 and shown() == phrase("tutorial.picnic"), 30.0), "the market act opens at the supermarket with the picnic idea")
+	check_progress(2)
 	fast = false
 	# The cast stands behind the player (user, 18 Nov 2026) and stays put the whole act.
 	var ahead: Vector3 = -main.player.global_basis.z
@@ -639,6 +681,7 @@ func act_market() -> void:
 
 func act_park() -> void:
 	check(await wait_until(func() -> bool: return tutorial.act == 2 and shown() == phrase("tutorial.look_over_there"), 30.0), "the park act: look over there")
+	check_progress(3)
 	await wait_until(func() -> bool: return str(tutorial.step.get("for", "")) == "study")
 	check(tutorial.strip.text == phrase("tutorial.ui_click_statue"), "the strip: click the statue")
 	var statue: Node3D = main.apartment.get_node("WashingtonStatue")
