@@ -64,6 +64,10 @@ const NPC := "Librarian"
 const ACTIVITY := "library_rosa"
 const BOOKS_MIN := 3
 const BOOKS_MAX := 6
+## Level 4's plain spines (user idea, 17 Nov 2026; LEARN-06, 25 Nov 2026): one kraft-paper
+## colour for every cart book, so the spine no longer matches its category's shelves.
+const PLAIN_SPINE := Color("d8c39b")
+const Progress := preload("res://scripts/learning/game_progress.gd")
 ## Meta on this game's books (the display's own books carry return_book instead).
 const SORT_META := "sort_book"
 ## Where a book stands in a gap (gap frame: on the shelf, spine side -Z): spine out, its cover
@@ -101,6 +105,9 @@ var gaps: Array = []
 var catalog: Array = []
 ## This game's books.
 var books: Array = []
+## The level the cart was filled at (data/activities.json library_rosa "levels": "books"
+## [min, max] and "plain_spines"); a cart of another level is refilled when a game starts.
+var _cart_level := 0
 var rng := RandomNumberGenerator.new()
 ## Rosa has introduced herself this run (later visits use library.greeting_again).
 var met := false
@@ -173,7 +180,7 @@ func busy() -> bool:
 ## "Yes" on the greeting (or the minigame picker): sorting the books waiting on the cart (a fresh
 ## cart when none is waiting, e.g. after "I'll help later" or from the picker during a rest).
 func _start() -> void:
-	if books.is_empty() or books.any(func(b): return not _on_cart(b)):
+	if books.is_empty() or books.any(func(b): return not _on_cart(b)) or _cart_level != Progress.shared().level(ACTIVITY):
 		_fill_cart()
 	if books.is_empty():
 		push_error("library: return cart or collection missing")
@@ -185,7 +192,7 @@ func _start() -> void:
 	_asked.clear()
 	playing = true
 	_finishing = false
-	Board.shared().begin(ACTIVITY)
+	Board.shared().begin(ACTIVITY, books.size())
 	host.say("library.start", [], 4.0)
 
 ## Clears this game's books (borrowed from the shelves, or left on the cart) and puts 3-6 new
@@ -202,9 +209,18 @@ func _fill_cart() -> void:
 	picks.sort_custom(func(a, b): return ranked.find(str(a.word)) < ranked.find(str(b.word)))
 	var places := slots.duplicate()
 	_shuffle(places)
-	var count := mini(rng.randi_range(BOOKS_MIN, BOOKS_MAX), mini(picks.size(), places.size()))
+	var settings: Dictionary = Progress.shared().params(ACTIVITY)
+	_cart_level = Progress.shared().level(ACTIVITY)
+	var sizes: Array = settings.get("books", [BOOKS_MIN, BOOKS_MAX])
+	var low: int = int(sizes[0]) if not sizes.is_empty() else BOOKS_MIN
+	var high: int = int(sizes[sizes.size() - 1]) if not sizes.is_empty() else BOOKS_MAX
+	var count := mini(rng.randi_range(low, high), mini(picks.size(), places.size()))
 	for i in count:
-		books.append(_cart_book(picks[i], places[i]))
+		var entry: Dictionary = picks[i]
+		if bool(settings.get("plain_spines", false)):
+			entry = entry.duplicate()
+			entry["color"] = PLAIN_SPINE
+		books.append(_cart_book(entry, places[i]))
 
 func _on_cart(book: Node3D) -> bool:
 	return is_instance_valid(book) and slots.has(book.get_parent())
@@ -431,6 +447,9 @@ func _answer(book: Node3D, right: bool) -> void:
 	if _asked.has(book):
 		return
 	_asked.append(book)
+	# A book's first placement on a wrong shelf: one star miss (game_progress.gd).
+	if not right and playing:
+		Board.shared().add_miss(ACTIVITY)
 	if _asking == book and PracticeLog.shared().game_id() == ACTIVITY:
 		PracticeLog.shared().first_answer(right)
 		PracticeLog.shared().complete()

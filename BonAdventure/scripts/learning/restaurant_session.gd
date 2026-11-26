@@ -39,6 +39,7 @@ extends Node
 ## Text: the Lexicon (data/phrases.json group "restaurant").
 const Board := preload("res://scripts/learning/activity_board.gd")
 const Orders := preload("res://scripts/learning/restaurant_orders.gd")
+const Progress := preload("res://scripts/learning/game_progress.gd")
 const Host := preload("res://scripts/learning/minigame_host.gd")
 const Presence := preload("res://scripts/learning/npc_presence.gd")
 const Currency := preload("res://scripts/learning/currency.gd")
@@ -69,6 +70,8 @@ const INTRO_SECONDS := 2.0
 ## Courses per visit (user, 11 Nov 2026: "2 to 3 items each time").
 const ITEMS_MIN := 2
 const ITEMS_MAX := 3
+## Courses a customer orders at the current level ([min, max]; ITEMS_MIN..ITEMS_MAX without one).
+var _items: Array = [ITEMS_MIN, ITEMS_MAX]
 ## The entrance in the dining room's frame (Restaurants/Pizza, the seats' parent): the door gap
 ## x -1.8..1.8 in the front wall at z -7.7, floor y .09. DOOR_WALL holds the gap while a game
 ## runs (player only: FIGURE_LAYER); DOOR_ASK is the question zone just inside it.
@@ -411,6 +414,14 @@ func open_game() -> void:
 	_practised.clear()
 	current = -1
 	finished = false
+	# Levels (LEARN-06, 25 Nov 2026; docs/game/minigames.md#on-the-menu): "courses" [min, max]
+	# per order and "difficulty" settings merged over data/restaurant_game.json's (how many needs
+	# an order names, un poco / muy, no / sin).
+	var settings: Dictionary = Progress.shared().params(ACTIVITY)
+	var courses: Array = settings.get("courses", [ITEMS_MIN, ITEMS_MAX])
+	_items = [int(courses[0]), int(courses[courses.size() - 1])] if not courses.is_empty() else [ITEMS_MIN, ITEMS_MAX]
+	orders.difficulty = Orders.data().get("difficulty", {}).duplicate(true)
+	orders.difficulty.merge(settings.get("difficulty", {}), true)
 	Board.shared().begin(ACTIVITY)
 	_next_visit()
 
@@ -430,7 +441,7 @@ func _next_visit() -> void:
 		var t = picked[k]
 		picked[k] = picked[j]
 		picked[j] = t
-	picked = picked.slice(0, mini(all.size(), _rng.randi_range(ITEMS_MIN, ITEMS_MAX)))
+	picked = picked.slice(0, mini(all.size(), _rng.randi_range(int(_items[0]), int(_items[1]))))
 	var chosen: Array = all.filter(func(c): return picked.has(c))
 	requests = _make_requests(chosen, _served, _recent)
 	if requests.is_empty():

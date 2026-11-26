@@ -133,6 +133,8 @@ var rounds: Array = []
 var current := -1
 ## Whether no wrong door was tried in this round yet.
 var _first_try := true
+## Doors opened at the first try in the finished game (complete() then fills the board's count).
+var _first_right := -1
 var _timer := 0.0
 ## Toad phases: "in" (puff, then the toad), "toad", "out" (puff, then the player again).
 var _toad_phase := ""
@@ -284,25 +286,32 @@ func busy() -> bool:
 ## the same clue never twice in a row.
 ## `first`: the doors the first round keeps (the mystery room's, as they look now: user, 9 Nov
 ## 2026); its target is picked at random.
-static func make_rounds(count: int, rng: RandomNumberGenerator, first: Array = []) -> Array:
+## Levels (LEARN-06, 25 Nov 2026; data/activities.json mystery_luna "levels"): `kinds` are the
+## clue kinds in their order (KINDS when empty: shape, colour, both, a third each) and `colors`
+## the door colours (all of Mystery.COLORS when empty); the room's own doors are kept for the
+## first round only when their colours are all allowed.
+static func make_rounds(count: int, rng: RandomNumberGenerator, first: Array = [], kinds: Array = [], colors: Array = []) -> Array:
 	var made: Array = []
+	var order: Array = kinds if not kinds.is_empty() else KINDS
+	if not colors.is_empty() and first.any(func(look): return not colors.has(str(look[0]))):
+		first = []
 	for i in count:
-		var kind: String = KINDS[mini(2, i * 3 / maxi(count, 1))]
+		var kind: String = str(order[mini(order.size() - 1, i * order.size() / maxi(count, 1))])
 		if i == 0 and first.size() == 3:
 			made.append({"kind": kind, "doors": first.duplicate(true), "target": rng.randi_range(0, 2)})
 		else:
 			# A few tries for a round whose words the word memory wants (word_memory.gd, 24 Nov 2026).
 			var previous: Dictionary = made.back() if not made.is_empty() else {}
-			made.append(preload("res://scripts/learning/word_memory.gd").shared().pick_round(func(): return make_round(kind, rng, previous), tested_words))
+			made.append(preload("res://scripts/learning/word_memory.gd").shared().pick_round(func(): return make_round(kind, rng, previous, colors), tested_words))
 	return made
 
 ## One round: {"kind", "doors": [[colour, shape] x3], "target": the right door's index}.
 ## Shape and colour rounds give every door its own colour and shape; a "both" round gives one
 ## other door the target's colour and the other its shape.
-static func make_round(kind: String, rng: RandomNumberGenerator, previous: Dictionary = {}) -> Dictionary:
+static func make_round(kind: String, rng: RandomNumberGenerator, previous: Dictionary = {}, allowed: Array = []) -> Dictionary:
 	var made: Dictionary = {}
 	for attempt in 12:
-		var colors: Array = Mystery.COLORS.keys()
+		var colors: Array = allowed.duplicate() if allowed.size() >= 3 else Mystery.COLORS.keys()
 		var shapes: Array = Mystery.SHAPES.duplicate()
 		_shuffle(colors, rng)
 		_shuffle(shapes, rng)
@@ -594,6 +603,9 @@ func _right(index: int) -> void:
 	_set_back(hall_walls[1], index)
 
 func _wrong(index: int) -> void:
+	# A door missed at its first try: one star miss (game_progress.gd).
+	if _first_try:
+		Board.shared().add_miss(ACTIVITY)
 	_first_try = false
 	var leaf: Node3D = _round_doors()[index].leaf
 	leaf.rattle()
@@ -1005,8 +1017,10 @@ func _play() -> void:
 	_begin_rounds(looks)
 
 func _begin_rounds(first: Array = []) -> void:
-	Board.shared().begin(ACTIVITY)
-	rounds = make_rounds(Board.shared().rounds(ACTIVITY), _rng, first)
+	var settings: Dictionary = preload("res://scripts/learning/game_progress.gd").shared().params(ACTIVITY)
+	Board.shared().begin(ACTIVITY, int(settings.get("doors", 0)))
+	_first_right = -1
+	rounds = make_rounds(Board.shared().rounds(ACTIVITY), _rng, first, settings.get("kinds", []), settings.get("colors", []))
 	current = -1
 	card.show_native = dialogue_panel.show_native
 	card.open(_title(), lexicon.line("mystery.card_hint"), lexicon.line("common.show_translation"), 0, rounds.size())
@@ -1034,11 +1048,15 @@ func _next_round() -> void:
 func _finish_rounds() -> void:
 	state = "over"
 	card.hide_card()
+	_first_right = Board.shared().done(ACTIVITY)
+	# Every door played: the session is complete, also with misses (stars, missions, results;
+	# LEARN-06, 25 Nov 2026: before this only a game with every door right at the first try was).
+	Board.shared().complete(ACTIVITY)
 	_offer_again()
 
 func _offer_again() -> void:
 	host.zoom(true)
-	_say("mystery.final", [host.choice("replay", "mystery.replay", "retry"), host.choice("finish", "mystery.finish", "check")], 0.0, {"total": rounds.size(), "first": Board.shared().done(ACTIVITY)})
+	_say("mystery.final", [host.choice("replay", "mystery.replay", "retry"), host.choice("finish", "mystery.finish", "check")], 0.0, {"total": rounds.size(), "first": _first_right if _first_right >= 0 else Board.shared().done(ACTIVITY)})
 
 func end_game(farewell: String, to_luna := false) -> void:
 	if not in_game():

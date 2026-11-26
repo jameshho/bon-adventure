@@ -35,6 +35,7 @@ func frames(n: int) -> void:
 func run():
 	var game = load("res://scenes/main.tscn").instantiate()
 	root.add_child(game)
+	preload("res://scripts/learning/game_progress.gd").shared().unlock("warehouse_ramon", 3)  # the level this check tests (a new profile starts at level 1; LEARN-06, 25 Nov 2026)
 	game.player.set_physics_process(false)
 	await frames(3)
 	var town: Node3D = game.apartment
@@ -237,6 +238,30 @@ func plan_checks(session) -> void:
 	check(broken.is_empty(), "30 more plans keep every rule: %s" % [broken.slice(0, 2)])
 	check(different.size() >= 20, "plans differ (%d different of 30)" % different.size())
 	check(entry_counts.size() == 4, "plans use all four kinds: %s" % [entry_counts])
+	# Levels (LEARN-06, 25 Nov 2026): L1 only "on" and the top shelf, L2 adds "next to"; every
+	# plan still keeps the rules (each of L1's two places may take 3 of 5 tasks).
+	for positions in [["on", "top_shelf"], ["on", "top_shelf", "next_to"]]:
+		writer.positions = positions
+		var level_broken: Array = []
+		var used_entries := {}
+		for n in 20:
+			var planned: Dictionary = writer.plan(5)
+			var found: Array = planned.problems + writer.validate(planned.tasks)
+			if not found.is_empty() or planned.tasks.size() != 5:
+				level_broken.append(found)
+			for t in planned.tasks:
+				used_entries[t.entry] = true
+		var only: bool = used_entries.keys().all(func(e): return positions.has(e))
+		check(level_broken.is_empty() and only and used_entries.size() == positions.size(), "level plans with %s keep every rule (%s): %s" % [positions, used_entries.keys(), level_broken.slice(0, 2)])
+	writer.positions = []
+	session.level = {"hints_after_miss": true}
+	session._task_missed = false
+	check(not session.hints_allowed(), "level 4: no hint before a wrong try")
+	session._miss("thing")
+	check(session.hints_allowed() and session._task_missed, "level 4: a wrong try unlocks the hints and counts one miss")
+	session.level = {}
+	session._task_missed = false
+	session._missed = {}
 	# Practice words: the colour the box's name says (no cardboard box since 21 Nov 2026).
 	check(writer.words({"kind": "place", "item": "box_red"}) == ["red"], "a red box task practises red")
 	check(lexicon.text(Tasks.thing("box_red"), "es") == "la caja roja", "box name: la caja roja")

@@ -22,6 +22,7 @@ signal box_closed(box: Node3D)
 
 const Board := preload("res://scripts/learning/activity_board.gd")
 const ElectricalBox := preload("res://scripts/world/electrical_box.gd")
+const Progress := preload("res://scripts/learning/game_progress.gd")
 const ID := "electrical_box"
 const GROUP := "electrical_box_session"
 ## 0.88 s: 10 % slower than the first 0.8 s (user, 10 Nov 2026).
@@ -46,12 +47,19 @@ var state := ""
 var _camera: Camera3D
 var _tween: Tween
 var _player_was_visible := true
+## A wire went to a wrong socket in this opening (the stars count one miss).
+var _missed := false
 
 func setup(box_panel, game) -> void:
 	panel = box_panel
 	main = game
 	panel.close_requested.connect(close_box)
 	panel.solved.connect(_on_solved)
+	# A wire dropped on the wrong socket: one star miss per opening (LEARN-06, 25 Nov 2026).
+	panel.wire_rejected.connect(func(_index: int) -> void:
+		if state == "playing" and not _missed:
+			_missed = true
+			Board.shared().add_miss(ID))
 	# The minimap, clock and help would show through the close-up (as in radar_patrol_session.gd).
 	panel.visibility_changed.connect(func() -> void:
 		if main.hud != null:
@@ -69,6 +77,13 @@ func open_box(target: Node3D) -> bool:
 	state = "opening"
 	# On top of every HUD part added after it.
 	panel.get_parent().move_child(panel, -1)
+	# Levels (data/activities.json electrical_box "levels" "wires"; docs/game/minigames.md#wire-it-up):
+	# how many wires the puzzle has. A box with its own wire colours keeps them.
+	var wires := int(Progress.shared().params(ID).get("wires", 0))
+	if wires > 0 and box.wire_colors.is_empty():
+		box.wire_count = wires
+	Board.shared().begin(ID)
+	_missed = false
 	panel.begin(box.palette(), box)
 	main.interaction.clear_card()
 	var from: Camera3D = main.player.camera
@@ -132,6 +147,8 @@ func _on_solved() -> void:
 	if state != "playing":
 		return
 	state = "solved"
+	# A repaired box finishes the opening: stars and level (a pastime counts only this way).
+	Board.shared().complete(ID)
 	if is_instance_valid(box):
 		box.set_repaired(true)
 		box_repaired.emit(box)

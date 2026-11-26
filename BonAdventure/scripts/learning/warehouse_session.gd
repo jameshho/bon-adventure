@@ -54,6 +54,7 @@ const Tasks := preload("res://scripts/learning/warehouse_tasks.gd")
 ## a wrong named place (warehouse_tasks.gd wrong_place()), or the hint that marks the place,
 ## misses the position word.
 const PracticeLog := preload("res://scripts/learning/practice_log.gd")
+const Progress := preload("res://scripts/learning/game_progress.gd")
 const ACTIVITY := "warehouse_ramon"
 const CALL_DISTANCE := 30.0
 const WALK_AWAY_DISTANCE := 14.0
@@ -120,6 +121,13 @@ var _missed := {}
 var _put_wait := -1.0
 ## What went wrong when planning this game ("" when nothing); kept for tests and reports.
 var plan_problems: Array = []
+## The current level's settings (data/activities.json warehouse_ramon "levels"; LEARN-06,
+## 25 Nov 2026): "positions" (the kinds of task; all when missing) and "hints_after_miss"
+## (true: no hint, from the card's "?" or Ramón, until the task has gone wrong once).
+var level: Dictionary = {}
+## The current task went wrong at least once (a wrong box or place, or a hint that marked it):
+## one star miss per task (activity_board.gd add_miss()), and it unlocks hints at level 4.
+var _task_missed := false
 
 func setup(shared_lexicon, shared_dialogue_panel, task_card, interaction_controller, explorer: Node3D, town: Node3D, game) -> void:
 	name = "WarehouseSession"
@@ -174,7 +182,11 @@ func _host_talk(talker: Node3D) -> bool:
 	if talker != twin or not in_game():
 		return true
 	_zoom_twin(true)
-	_say("warehouse.task_again", [host.choice("stay", "warehouse.keep_going", "check"), host.choice("ask_hint", "warehouse.ask_hint", "question"), host.choice("leave", "warehouse.leave", "exit")], 0.0, {"task": tasks[current]})
+	var choices: Array = [host.choice("stay", "warehouse.keep_going", "check")]
+	if hints_allowed():
+		choices.append(host.choice("ask_hint", "warehouse.ask_hint", "question"))
+	choices.append(host.choice("leave", "warehouse.leave", "exit"))
+	_say("warehouse.task_again", choices, 0.0, {"task": tasks[current]})
 	return true
 
 ## In the copy the player walks about with the task open: no line closes by distance there.
@@ -215,6 +227,7 @@ func start_game() -> void:
 	await zone.fade_to(1.0)
 	_return = {"position": player.global_position, "yaw": player.rotation.y, "camera_yaw": player.camera_yaw}
 	ramon.visible = false
+	level = Progress.shared().params(ACTIVITY)
 	Board.shared().begin(ACTIVITY)
 	# The whole game is planned before the copy is shown; a new arrangement when no plan
 	# keeps every rule (the problems are reported, never silently ignored).
@@ -258,6 +271,7 @@ func _build_round() -> void:
 	add_child(twin_presence)
 	twin_presence.setup(twin, player)
 	writer = Tasks.new(goods, twin, _rng)
+	writer.positions = level.get("positions", [])
 	# The ways out of the copy (warehouse.gd marks them "warehouse_exit"): E asks to leave.
 	for exit_node in copy_root.find_children("*", "", true, false):
 		if exit_node is Node3D and exit_node.has_meta("warehouse_exit"):
@@ -287,6 +301,7 @@ func _free_round() -> void:
 ## impossible or already done is replaced by a backup written for the warehouse as it is.
 func _new_task() -> void:
 	_hint_level = 0
+	_task_missed = false
 	_settled = 0.0
 	if writer.still_valid(tasks[current]):
 		return
@@ -308,6 +323,15 @@ func _show_task() -> void:
 	else:
 		_practice_abandon()
 	card.open(lexicon.line("warehouse.task_title", {"n": current + 1, "total": total}), _line(tasks[current]), lexicon.line("common.show_translation"), Board.shared().done(ACTIVITY), total, {"hint": str(lexicon.line("warehouse.hint_button").get("native", "")), "leave": str(lexicon.line("warehouse.leave").get("native", ""))})
+	_update_hint_button()
+
+## Hints are always there, except at a level with "hints_after_miss" until the task went wrong.
+func hints_allowed() -> bool:
+	return not bool(level.get("hints_after_miss", false)) or _task_missed
+
+func _update_hint_button() -> void:
+	if card.hint_button != null:
+		card.hint_button.visible = hints_allowed()
 
 func _line(ref: Dictionary) -> Dictionary:
 	return {"foreign": lexicon.text(ref, lexicon.foreign), "native": lexicon.text(ref, lexicon.native)}
@@ -370,7 +394,7 @@ func _point_out() -> void:
 ## for the next level (1: a general clue; 2: the thing, or once carried its place, marked in
 ## green; asking again at 2 marks what fits now). The task and the game go on meanwhile.
 func give_hint() -> void:
-	if not in_game() or _busy_fading or tasks.is_empty():
+	if not in_game() or _busy_fading or tasks.is_empty() or not hints_allowed():
 		return
 	_hint_level = mini(_hint_level + 1, 2)
 	var hint: Dictionary = writer.hint(tasks[current], _hint_level)
@@ -404,6 +428,10 @@ func _on_item_put(id: String) -> void:
 func _miss(part: String) -> void:
 	if tasks.is_empty() or writer == null:
 		return
+	if not _task_missed:
+		_task_missed = true
+		Board.shared().add_miss(ACTIVITY)
+		_update_hint_button()
 	var task: Dictionary = tasks[current]
 	var place := Tasks.place_word(task)
 	for key in writer.words(task):

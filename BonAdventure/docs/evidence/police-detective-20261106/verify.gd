@@ -40,6 +40,8 @@ func box_clear(space: PhysicsDirectSpaceState3D, xform: Transform3D, size: Vecto
 func run() -> void:
 	var game = load("res://scenes/main.tscn").instantiate()
 	root.add_child(game)
+	preload("res://scripts/learning/game_progress.gd").shared().unlock("lineup_rocco", 3)  # the level this check tests (a new profile starts at level 1; LEARN-06, 25 Nov 2026)
+	preload("res://scripts/learning/game_progress.gd").shared().unlock("evidence_mimi", 3)  # the level this check tests (a new profile starts at level 1; LEARN-06, 25 Nov 2026)
 	game.player.set_physics_process(false)
 	game.interaction.set_physics_process(false)
 	var town: Node3D = game.apartment

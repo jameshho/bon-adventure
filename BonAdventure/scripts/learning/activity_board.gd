@@ -48,6 +48,10 @@ var _rounds: Dictionary = {}
 var _misses: Dictionary = {}
 ## id -> {"needed", "custom"} recorded by begin() for the ended summary.
 var _began: Dictionary = {}
+## id -> rounds the current level asks for (begin()'s `level_rounds`; LEARN-06, 25 Nov 2026).
+var _level_rounds: Dictionary = {}
+## Pastimes with no target that the game marked finished with complete() (Wire It Up!).
+var _marked: Dictionary = {}
 
 static var _shared
 
@@ -70,10 +74,17 @@ func chance(id: String) -> float:
 	return clampf(float(activities.get(id, {}).get("chance", 1.0)), 0.0, 1.0)
 
 ## Rounds a session needs; 0 means no progress bar and no target. The test launcher's
-## choice (set_rounds()) wins over the data.
+## choice (set_rounds()) wins over the data. A level's round count (begin()'s `level_rounds`)
+## replaces the data's while the picker's choice is the data's own (the picker always sets one).
 func target(id: String) -> int:
-	if _rounds.has(id):
+	if _rounds.has(id) and (int(_rounds[id]) != data_rounds(id) or not _level_rounds.has(id)):
 		return int(_rounds[id])
+	if _level_rounds.has(id):
+		return int(_level_rounds[id])
+	return data_rounds(id)
+
+## The data's "progress" (0 = none).
+func data_rounds(id: String) -> int:
 	return maxi(0, int(activities.get(id, {}).get("progress", 0)))
 
 ## Rounds one session plays: the target, at least 1 (games whose data says 0, such as the
@@ -134,28 +145,36 @@ func watch() -> void:
 	if now != "":
 		started.emit(now)
 
-## A new session starts at 0.
-func begin(id: String) -> void:
+## A new session starts at 0. `level_rounds` > 0: the current level's round count (a game's
+## "levels" setting, e.g. Who's Who? L1 has 10 questions), used unless the picker chose another.
+func begin(id: String, level_rounds := 0) -> void:
 	# The word memory listens from the first session on (word_memory.gd: every recorded
 	# question is one step, also in games that pick their words another way).
 	preload("res://scripts/learning/word_memory.gd").shared()
 	_done[id] = 0
 	_misses[id] = 0
-	var data_rounds := maxi(1, int(activities.get(id, {}).get("progress", 0)))
-	_began[id] = {"needed": rounds(id), "custom": rounds(id) != data_rounds}
+	_marked.erase(id)
+	if level_rounds > 0:
+		_level_rounds[id] = level_rounds
+	else:
+		_level_rounds.erase(id)
+	var expected := level_rounds if level_rounds > 0 else maxi(1, data_rounds(id))
+	_began[id] = {"needed": rounds(id), "custom": rounds(id) != expected}
 
 ## The session reached its end: all its rounds (a game with no target plays one, e.g. Grocery
 ## Run; since 21 Nov 2026, it was target > 0 only, so such games never completed), or the game
 ## said so with complete(). Pastimes with no target stay never completed, as before.
 func _completed(id: String) -> bool:
 	if target(id) <= 0 and kind(id) == "pastime":
-		return false
+		return _marked.has(id)
 	return done(id) >= rounds(id)
 
 ## A game whose end is not a count of rounds (Library Helper: a cart of 3-6 books; Desk Dash:
 ## its final question) marks its session finished (21 Nov 2026).
+## A pastime with no target counts as finished only this way (Wire It Up!'s levels, 25 Nov 2026).
 func complete(id: String) -> void:
 	_done[id] = maxi(done(id), rounds(id))
+	_marked[id] = true
 
 func done(id: String) -> int:
 	return int(_done.get(id, 0))

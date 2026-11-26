@@ -50,6 +50,14 @@ const HOURS := [1, 3]
 
 var schedule
 var lexicon
+## The current level's settings (data/activities.json flight_bruno "levels"; LEARN-06,
+## 25 Nov 2026; docs/game/minigames.md#flight-finder), each optional, {} = the game as in
+## data/flight_game.json: "kinds" (weights replacing the data's), "days" [first, last] (the
+## day offsets a day or clock question may name: [-1, 1] leaves out anteayer and pasado mañana),
+## "near_miss" (false: rule 3 is not required), "target_rows", "min_decoys" (override the
+## data's) and "named_chance" (how often a short question names the country; 0 = never, so
+## the verb, salir or llegar, decides between the two tabs).
+var level: Dictionary = {}
 
 func _init(flight_schedule, shared_lexicon) -> void:
 	schedule = flight_schedule
@@ -58,12 +66,13 @@ func _init(flight_schedule, shared_lexicon) -> void:
 static func kinds() -> Dictionary:
 	return Schedule.rules().get("kinds", {})
 
-## A uniformly weighted kind, not `avoid` when another exists.
-static func pick_kind(rng: RandomNumberGenerator, avoid: String = "") -> String:
+## A uniformly weighted kind, not `avoid` when another exists. `only`: a level's weights.
+static func pick_kind(rng: RandomNumberGenerator, avoid: String = "", only: Dictionary = {}) -> String:
 	var pool: Array = []
-	for kind in kinds():
-		if kind != avoid or kinds().size() == 1:
-			for i in int(kinds()[kind]):
+	var weights: Dictionary = only if not only.is_empty() else kinds()
+	for kind in weights:
+		if kind != avoid or weights.size() == 1:
+			for i in int(weights[kind]):
 				pool.append(kind)
 	return str(pool[rng.randi_range(0, pool.size() - 1)]) if not pool.is_empty() else ""
 
@@ -82,7 +91,7 @@ func design(kind: String, rng: RandomNumberGenerator) -> Dictionary:
 	var data := Schedule.rules()
 	var pool: Array = data.get("countries", []).duplicate()
 	var rows := int(data.get("tab_rows", 6))
-	var keep := int(data.get("target_rows", 3))
+	var keep := int(level.get("target_rows", data.get("target_rows", 3)))
 	var most := int(data.get("max_per_country", 3))
 	var choices: Array = data.get("cluster_for", {}).get(kind, [])
 	if choices.is_empty() or pool.size() < 6:
@@ -93,13 +102,13 @@ func design(kind: String, rng: RandomNumberGenerator) -> Dictionary:
 		var other := "dep" if dir == "arr" else "arr"
 		var home := str(pool[0])
 		var cluster: Array = schedule._cluster(str(choices[rng.randi_range(0, choices.size() - 1)]), rng, {})
-		var fitting: Array = cluster.filter(func(f): return not time_for(kind, f).is_empty())
+		var fitting: Array = cluster.filter(func(f): return not time_for(kind, f).is_empty() and _level_day(kind, f))
 		if fitting.is_empty():
 			continue
 		var target: Dictionary = fitting[rng.randi_range(0, fitting.size() - 1)]
 		var rest: Array = cluster.filter(func(f): return f != target)
 		Schedule._shuffle(rest, rng)
-		var named := not _long(kind) and rng.randf() < .5
+		var named := not _long(kind) and rng.randf() < float(level.get("named_chance", .5))
 		var placed: Array = []
 		for f in [target] + rest.slice(0, keep - 1):
 			placed.append(schedule.make(schedule.offset(f), int(f.minutes), home, dir))
@@ -204,13 +213,24 @@ func valid(question: Dictionary) -> bool:
 	if target.is_empty() or not matches(question, target) or count_matches(question) != 1:
 		return false
 	var pool := decoys(question)
-	if pool.size() < int(Schedule.rules().get("min_decoys", 2)):
+	if pool.size() < int(level.get("min_decoys", Schedule.rules().get("min_decoys", 2))):
 		return false
 	if str(question.country) == "" and schedule.mixed() and verb_misses(question).is_empty() and not _long(str(question.kind)):
 		return false
 	if too_long(question):
 		return false
+	if not bool(level.get("near_miss", true)):
+		return true
 	return not near_misses(question, pool).is_empty()
+
+## Whether a level allows `flight` as the answer of a `kind` question: a day or clock question
+## names only the level's "days" (weekday, part and hours questions are not limited).
+func _level_day(kind: String, flight: Dictionary) -> bool:
+	var days: Array = level.get("days", [])
+	if days.size() < 2 or not kind in ["day", "clock"]:
+		return true
+	var off: int = schedule.offset(flight)
+	return off >= int(days[0]) and off <= int(days[1])
 
 ## Decoys that differ from the target only in the tested expression (see the header).
 func near_misses(question: Dictionary, pool: Array = []) -> Array:

@@ -42,6 +42,7 @@ const PlushLife := preload("res://scripts/characters/plush_life.gd")
 ## The lineup blinks a little more often than the town (as since 6 Nov 2026).
 const LINEUP_BLINK_GAP := Vector2(2.5, 6.0)
 const EvidenceProps := preload("res://scripts/learning/evidence_props.gd")
+const Progress := preload("res://scripts/learning/game_progress.gd")
 const PracticeLog := preload("res://scripts/learning/practice_log.gd")
 ## Path inside the police unit (ModularTown.building()) where the case anchors live.
 const STATION := "Interior/"
@@ -56,7 +57,7 @@ const TOOL_STAGGER := .32
 ## Size of the one object of a report round, against the table's four.
 const REPORT_SCALE := 1.5
 const MODES := {
-	"lineup": {"officer": "People/CrocodilePoliceOfficer", "activity": "lineup_rocco", "name": "police.rocco", "greeting": "police.lineup_greeting", "hint": "police.lineup_hint", "camera": "LineupCamera", "stage": "LineupStage", "two": "police.lineup_two", "one": "police.lineup_one", "correct": "police.correct_suspect", "choose_first": "police.choose_first_suspect", "complete": "police.lineup_complete"},
+	"lineup": {"officer": "People/CrocodilePoliceOfficer", "activity": "lineup_rocco", "name": "police.rocco", "greeting": "police.lineup_greeting", "hint": "police.lineup_hint", "camera": "LineupCamera", "stage": "LineupStage", "two": "police.lineup_two", "three": "police.lineup_three", "one": "police.lineup_one", "correct": "police.correct_suspect", "choose_first": "police.choose_first_suspect", "complete": "police.lineup_complete"},
 	"evidence": {"officer": "People/CatEvidenceOfficer", "activity": "evidence_mimi", "name": "police.mimi", "greeting": "police.evidence_greeting", "hint": "police.evidence_hint", "camera": "EvidenceCamera", "stage": "EvidenceTable", "correct": "police.correct_found", "complete": "police.evidence_complete"},
 }
 ## The evidence tools; each reveals the property pair data "evidence.dims" gives it.
@@ -100,6 +101,8 @@ var _finished := false
 var _tool := ""
 ## Evidence: whether the round's first answer was right, and whether one was given yet.
 var _first_try := true
+## The current round went wrong at least once (one star miss per round, game_progress.gd).
+var _round_missed := false
 var _answered := false
 ## Counts tool presses and rounds, so a delayed tool step from an earlier press or round
 ## does nothing.
@@ -166,6 +169,8 @@ func start_game() -> void:
 	if _running:
 		return
 	_running = true
+	# Levels (LEARN-06, 25 Nov 2026; docs/game/minigames.md#spot-the-suspect, #feel-the-clues).
+	clues.set_level(Progress.shared().params(str(spec.activity)))
 	Board.shared().begin(str(spec.activity))
 	clues.reset()
 	_finished = false
@@ -232,6 +237,7 @@ func new_round() -> void:
 	_tool_serial += 1
 	_first_try = true
 	_answered = false
+	_round_missed = false
 	if mode == "lineup":
 		_build_lineup()
 	else:
@@ -267,7 +273,9 @@ func _clue_line() -> Dictionary:
 			return _each_language(func(lang: String) -> Dictionary: return {"phrase": "police.report", "values": {"object": {"word": word}, "a": {"phrase": _agreed(str(round.options[0].adjective), word, lang)}, "b": {"phrase": _agreed(str(round.options[1].adjective), word, lang)}}})
 		return lexicon.line("police.find", {"a": {"phrase": parts[0].phrase}})
 	var ref: Dictionary
-	if parts.size() >= 2:
+	if parts.size() >= 3:
+		ref = {"phrase": spec.three, "values": {"a": {"phrase": parts[0].phrase}, "b": {"phrase": parts[1].phrase}, "c": {"phrase": parts[2].phrase}}}
+	elif parts.size() >= 2:
 		ref = {"phrase": spec.two, "values": {"a": {"phrase": parts[0].phrase}, "b": {"phrase": parts[1].phrase}}}
 	else:
 		ref = {"phrase": spec.one, "values": {"a": {"phrase": parts[0].phrase}}}
@@ -459,6 +467,7 @@ func accuse() -> void:
 		card.set_solved(lexicon.line("police.finish" if _finished else "police.next"), Board.shared().done(str(spec.activity)), total)
 		_celebrate(_nodes[_selected])
 		return
+	_count_miss()
 	card.set_feedback(lexicon.line("police.wrong", {"clue": {"phrase": failing.get("phrase", round.clues[0].phrase)}}), false)
 	_shake(_nodes[_selected])
 	_selected = -1
@@ -473,6 +482,7 @@ func _answer_object(index: int) -> void:
 	if right:
 		_solve(index, _object_line(str(spec.correct), item, str(clue.dim)))
 		return
+	_count_miss()
 	card.set_feedback(_object_line("police.wrong_found", item, str(clue.dim)), false)
 	_shake(_nodes[index])
 	_selected = -1
@@ -491,11 +501,18 @@ func answer(index: int) -> void:
 		return
 	# Show what the right tool finds on this object, so the word meets the feeling.
 	var tool := str(clue.get("tool", ""))
+	_count_miss()
 	card.set_feedback(lexicon.line("police.wrong_report", {"tool": {"phrase": "police.tool_" + tool}}), false)
 	_shake(_nodes[int(round.target)])
 	get_tree().create_timer(.45).timeout.connect(func() -> void:
 		if _running and not _solved:
 			_on_tool(tool))
+
+## A wrong answer: the round's one star miss (activity_board.gd add_miss(), the first time).
+func _count_miss() -> void:
+	if not _round_missed:
+		_round_missed = true
+		Board.shared().add_miss(str(spec.activity))
 
 ## The first answer of an evidence round is the practice result (practice_log.gd).
 func _first_answer(right: bool) -> void:

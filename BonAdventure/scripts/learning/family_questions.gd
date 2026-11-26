@@ -27,8 +27,10 @@ static func kinds() -> Dictionary:
 	return preload("res://scripts/learning/family_tree.gd").rules().get("kinds", {})
 
 ## A weighted random kind, never `last` (no immediate repetition) when another exists.
-static func pick_kind(rng: RandomNumberGenerator, last: String = "") -> String:
-	var weights: Dictionary = kinds()
+## `only`: the current level's weights (data/activities.json family_dr_li "levels" "kinds";
+## LEARN-06, 25 Nov 2026) instead of the data's.
+static func pick_kind(rng: RandomNumberGenerator, last: String = "", only: Dictionary = {}) -> String:
+	var weights: Dictionary = only if not only.is_empty() else kinds()
 	var total := 0.0
 	for kind in weights:
 		if kind != last or weights.size() == 1:
