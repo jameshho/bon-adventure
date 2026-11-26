@@ -191,6 +191,10 @@ moment later, as the supermarket door's "pay first" (`cashier_session.gd`, `DOOR
   Who?, Flight Finder, the police games, Mahjong Club, Radar Patrol and Wire It Up! run only while
   their panel or card shows, and Esc reaches it first. Check: `game_exits`
   (`docs/evidence/game-exits-20261125/verify.gd`).
+- **Required: `end_activity()`** ends the game at once with its NPC's goodbye, no question. Main calls
+  it on a language change and, since 25 Nov 2026 (GAME-05), on any respawn (`Main.respawn()`: a fall
+  below `FALL_RESPAWN_Y`, or the last-resort unstuck from a blocked seat or vehicle), so a respawn
+  never leaves a half-open game.
 - `data/activities.json`: offer chance and progress target ([activity board](ARCHITECTURE_REVIEW_PART1.md#shared-dialogue-popups-and-settings--4-november-2026));
   a `progress_bar.gd` in the game's panel or card. Since 25 Nov 2026 also `"music"`: the
   background track while the game runs (`quiz`, `errands`, `mystery`, `focus` or `outdoors`;

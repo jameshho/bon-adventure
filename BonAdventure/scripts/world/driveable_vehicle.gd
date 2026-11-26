@@ -585,7 +585,8 @@ func safe_exit(player: CharacterBody3D) -> Dictionary:
             ray.from = global_position+Vector3.UP*1.2
             ray.to = point+Vector3.UP*1.2
             if space.intersect_ray(ray).is_empty(): return {"ok":true,"point":point,"door":index<door_count}
-    return {"ok":false,"reason":UiText.t("vehicle.exit_blocked")}
+    # Stopped with every exit blocked: vehicle_controls.gd takes the last-resort unstuck (GAME-05).
+    return {"ok":false,"reason":UiText.t("vehicle.exit_blocked"),"blocked":true}
 
 ## Sideways distance (world metres from the centre) where BonBon is let out of a moving vehicle:
 ## clear of the body, the rotor disk (radius 5.3 m) or the wings (half span 8.8 m).

@@ -25,6 +25,7 @@ var swing_keys := Vector2.ZERO
 var swing_exit := false
 ## Seats whose node has meta "swivel" turn with A / D while seated (rad/s).
 const UiText := preload("res://scripts/language/ui_text.gd")
+const PlayerPlace := preload("res://scripts/core/player_place.gd")
 const Interactable := preload("res://scripts/core/interactable.gd")
 ## Ranking: a seat behind the player that faces them (between rows) counts this many metres
 ## farther, unless the player faces it (7 Nov 2026).
@@ -405,7 +406,7 @@ func stand() -> void:
         return
     var exit := safe_stand_position()
     if exit.is_empty():
-        game.hud.flash_quest_message(UiText.t("seats.blocked"))
+        unstuck(swing)
         return
     if swing:
         swing.release()
@@ -414,6 +415,26 @@ func stand() -> void:
         game.player.rotation = Vector3(0,game.player.rotation.y,0)
     game.player.end_sitting(exit.point)
     game.hud.flash_quest_message(UiText.t("seats.standing"))
+
+## No clear spot beside the seat (GAME-05, 25 Nov 2026): the last-resort unstuck instead of a dead
+## E. A clear spot further off on the same floor and in sight (PlayerPlace.rescue_spot()), else a
+## respawn outside the building (Main.respawn(), which also ends a running game).
+func unstuck(swing) -> void:
+    var ignore: Array[RID] = []
+    ignore.append_array(current.get("rids", []))
+    var spot := PlayerPlace.rescue_spot(game, current.point, return_position.y, ignore)
+    if swing:
+        swing.release()
+        swing_exit = false
+    game.player.rotation = Vector3(0, spot.yaw, 0)
+    if spot.how == "nearby":
+        game.player.end_sitting(spot.position)
+        game.hud.flash_quest_message(UiText.t("seats.standing"))
+        return
+    if game.player.sit_tween: game.player.sit_tween.kill()
+    game.player.finish_standing()
+    game.respawn(spot.position, spot.yaw)
+    game.hud.flash_quest_message(UiText.t("toast.unstuck"))
 
 ## Space (the "jump" action, so the touch Jump button too) gets up like E from any seat or
 ## bed. Swings and seesaws (meta playground_swing) take it themselves; vehicles never reach

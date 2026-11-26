@@ -142,7 +142,9 @@ counts the known words ([journal](../evidence/known-words-20261125/journal-studi
 - **Climb** ladders with W and S (or the stick toward / away from the wall); at the top of a
   ladder, walk into the hatch or hold S to climb down; **sit** on chairs, sofas and swings; swivel chairs turn with
   A and D. Jump (Space or the touch Jump button) stands you up from a seat, swing or see-saw
-  (25 Nov).
+  (25 Nov). If something blocks the space beside a seat or vehicle, you still get out: at the
+  nearest clear spot, or (with no room at all) back outside the building, which ends a game
+  in progress (25 Nov).
 
 [All controls](../../README.md#controls-and-learning)
 

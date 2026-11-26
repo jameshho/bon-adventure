@@ -194,6 +194,7 @@ card, the translation lines while EN is held) everything inside shrinks to fit (
 | --- | --- | --- |
 | Player | `seating_controller.gd` finds and offers seats; `player_controller.gd` `begin_sitting()` / `end_sitting()` blends the pose | Seats are found by word or meta; nothing to write per chair |
 | Player, from a script | `seating.sit_at(node, stand_back)` | Minigame tables (`minigame_table.gd`) |
+| Player, no clear spot to stand up or leave a vehicle (GAME-05, 25 Nov 2026) | `seating.unstuck()` / `VehicleControls.unstuck()` through `PlayerPlace.rescue_spot()`; a far move goes through `Main.respawn()` | Never a dead E: the nearest clear spot on the same floor in sight, else outside the building's entrance, else the spawn. `Main.respawn()` (also the fall below `FALL_RESPAWN_Y`) ends a running game through its `end_activity()` |
 | NPC | `house_characters.gd` `_sit()` computes a seated pose from the figure's own meshes; `seated()` places one on any seat; `Bedtime` moves nappers between seat and bed while unseen | NPCs snap into the pose, they do not animate |
 
 The two poses are different by nature (the player's blends each frame, an NPC's is computed
