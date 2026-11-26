@@ -216,7 +216,12 @@ Which words a learning game asks about (24 Nov 2026; design and numbers owned by
 [game guide](../game/minigames.md#which-words-come-up)). `scripts/learning/word_memory.gd`,
 `WordMemory.shared()`: FSRS-4.5 (default weights) on a clock of **steps**, one per question the
 [practice tracker](ARCHITECTURE_REVIEW_PART1.md#practice-tracker) records (`recorded` signal),
-`STEPS_PER_DAY` = 8. Grades: positive = Good, negative or translated = Again. New words are
+`STEPS_PER_DAY` = 8, plus **time away** (25 Nov 2026, LEARN-03, user decision D8): the real days
+since the word was last answered, 1 FSRS day each, capped at 7 (`AWAY_DAY_WEIGHT`,
+`AWAY_DAYS_CAP`; `away_days(key)`). A word due only because of that term counts as due for at
+most `AWAY_REVIEWS_PER_SESSION` (8) per session, most forgotten first (`away_budget()`; a session
+starts after `SESSION_GAP_SECONDS`, 3 h, without a question); the others stay first among the
+known. Checks set `now_for_test` (unix seconds). Grades: positive = Good, negative or translated = Again. New words are
 allowed by a gap in steps that grows with the words being learned (`new_gap()`, `new_allowed()`).
 "Being learned" (since 25 Nov 2026, improvement plan LEARN-01): stability under
 `LEARNED_STABILITY`, a key the lexicon has, and either in the pool the game asks about
@@ -241,7 +246,9 @@ game's own `rng` so seeded runs repeat. A new game that records practice should 
 with one of these.
 
 **Save:** `word_memory.json` per profile (`PROFILE_FILES`; reset with the singletons), keyed by
-learned language: `{"es": {"step", "last_new", "words": {key: {s, d, last, reps, lapses}}}}`. A
+learned language: `{"es": {"step", "last_new", "unix", "away_left", "words": {key: {s, d, last, reps, lapses, unix}}}}`
+(`unix` and `away_left` since 25 Nov 2026: additive, an older build ignores them; a word without
+`unix` uses its language's, and an old save adds no time away until its next question). A
 language without memory is seeded once from the practice log; a word seeded Good starts at
 `LEARNED_STABILITY` at least (25 Nov 2026; languages seeded earlier keep their memory). The activity board creates the
 memory when a session begins, so it hears every recorded question.
@@ -249,7 +256,8 @@ memory when a session begins, so it hears every recorded question.
 **Check:** `docs/evidence/word-memory-20261124/verify.gd` (headless, no town): FSRS updates, the
 new-word gap, order/want/pick_round, saving, seeding and reset, a 600-question simulated
 learner, the Desk Dash, Mystery Doors and Feel the Clues pickers and (25 Nov 2026) a learner who
-saturates one game and still meets new words in a second, plus Feeding Time!'s due animal first.
+saturates one game and still meets new words in a second, plus Feeding Time!'s due animal first,
+and (LEARN-03) 1-, 7- and 60-day gaps, the per-session cap and old saves without times.
 
 ## Minigame picker
 

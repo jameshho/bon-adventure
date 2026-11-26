@@ -16,7 +16,7 @@
 | 25 Nov 2026 | D6 contact shadows: **roll out everywhere** (characters, animals, vehicles, props), measuring draw cost as it goes | user | GFX-01 |
 | 25 Nov 2026 | D6 **reversed**: no contact shadows. After playing the zoo build the user saw a dark sideways wedge from the plants and chose to remove them rather than fix them ("doesn't really affect the gameplay feel"); the C9 work was reverted uncommitted | user | GFX-01 |
 | 25 Nov 2026 | D7 voice: per-language packs downloaded when a language is chosen, cached for offline | user | PERF-04 |
-| 25 Nov 2026 | D8 review timing: add a capped real-time term (additive save field) | user | LEARN-03 |
+| 25 Nov 2026 | D8 review timing: add a capped real-time term (additive save field). Numbers (built 25 Nov, coordinator session, tune by play): 1 real day = 1 FSRS day (`AWAY_DAY_WEIGHT`) added to the step clock, at most 7 days (`AWAY_DAYS_CAP`; a 2-month break counts as a week, so only words with stability under about a week come due); at most 8 words due only by time away count as due per session (`AWAY_REVIEWS_PER_SESSION`, most forgotten first; a session starts after 3 h without a question), the rest rank first among known words, so new words keep coming. Save: `unix` per word and per language, `away_left` per language; old saves add no time until their next question | user | LEARN-03 |
 | 25 Nov 2026 | D9 known words: known = remembered well by the word memory; shown in the journal and on the results card | user | LEARN-04 |
 | 25 Nov 2026 | D10 word pools: grow Stack & Pack and Feel the Clues first (from words.json/game data only) | user | LEARN-05 |
 | 25 Nov 2026 | D11 levels: build **all** designed levels in one milestone | user | LEARN-06 |

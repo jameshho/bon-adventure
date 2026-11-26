@@ -9,7 +9,9 @@ extends SceneTree
 ## - the games' pickers run with the memory (Desk Dash, Mystery Doors, Feel the Clues),
 ## - (25 Nov 2026, LEARN-01/02) "being learned" counts only lexicon words in the game's pool or
 ##   answered recently: a learner who saturates one game meets new words in the next; seeded Good
-##   words start learned; Feeding Time! asks a due animal first, never the same one twice in a row.
+##   words start learned; Feeding Time! asks a due animal first, never the same one twice in a row,
+## - (25 Nov 2026, LEARN-03/D8) time away: a 1-day, 7-day and 60-day gap (capped at a week), at
+##   most AWAY_REVIEWS_PER_SESSION away-due words per session, and old saves without the times.
 ## Words whose being-learned state matters are real lexicon keys (real()); fillers are not.
 ## Writes user:// saves: run with an isolated HOME. Plays no sound.
 ##   HOME=<scratch>/home godot --headless --path . --script res://docs/evidence/word-memory-20261124/verify.gd
@@ -159,7 +161,7 @@ func run():
 	var saved: Variant = SaveStore.read_json(SaveStore.path(WordMemory.FILE))
 	check(saved is Dictionary and saved.has("es") and saved.es.words.has("apple"), "saved per language")
 	WordMemory._shared = null
-	check(WordMemory.shared().state("apple").size() == 5, "loaded back")
+	check(WordMemory.shared().state("apple").size() == 6, "loaded back (with the answer's time)")
 	fresh()
 	PracticeLog.shared().counts = {"es": {"dog": {"g": {"positive": 3, "negative": 1, "translated": 0}}, "fish": {"g": {"positive": 0, "negative": 2, "translated": 1}}}}
 	memory = WordMemory.shared()
@@ -230,6 +232,8 @@ func run():
 
 	two_games()
 	zoo_due_first()
+	time_away()
+	old_save_without_times()
 
 	print("WORD MEMORY CHECK: %d checks, %d failures" % [checks, failures])
 	quit(0 if failures == 0 else 1)
@@ -310,3 +314,91 @@ func zoo_due_first() -> void:
 	session.free()
 	for node in feeder.nodes:
 		node.free()
+
+## A word the learner has answered at `unix` (now, by steps), with stability `s`.
+func answered_at(memory, key: String, s: float, unix: float) -> void:
+	memory._memory().words[key] = {"s": s, "d": 5.0, "last": memory.step(), "reps": 2, "lapses": 0, "unix": int(unix)}
+
+## LEARN-03 (D8): real days since a word was answered add to its elapsed time, capped at a week;
+## away-due words count as due only AWAY_REVIEWS_PER_SESSION per session.
+func time_away() -> void:
+	fresh()
+	var memory = WordMemory.shared()
+	var t0 := 1.8e9
+	memory.now_for_test = t0
+	answer(["filler"], true)
+	var learned: String = real(600)
+	var strong: String = real(601)
+	answered_at(memory, learned, WordMemory.LEARNED_STABILITY, t0)
+	answered_at(memory, strong, 40.0, t0)
+	check(is_equal_approx(memory.retrievability(learned), 1.0) and not memory.is_due(learned), "no time away: nothing added")
+	# 1 day away: one FSRS day added; a learned word is not due yet.
+	memory.now_for_test = t0 + 86400.0
+	check(is_equal_approx(memory.away_days(learned), 1.0) and is_equal_approx(memory.retrievability(learned), WordMemory._r(1.0, WordMemory.LEARNED_STABILITY)), "1 day away adds one FSRS day (R %.3f)" % memory.retrievability(learned))
+	check(not memory.is_due(learned) and not memory.is_due(strong), "1 day away: a learned word is not due")
+	# 7 days away: the learned word comes due, a well-known one does not.
+	memory.now_for_test = t0 + 7 * 86400.0
+	check(is_equal_approx(memory.away_days(learned), 7.0) and memory.is_due(learned), "7 days away: a learned word is due (R %.3f)" % memory.retrievability(learned))
+	check(not memory.is_due(strong), "7 days away: a well-known word is not due")
+	# 60 days away: counted as AWAY_DAYS_CAP.
+	memory.now_for_test = t0 + 60 * 86400.0
+	check(is_equal_approx(memory.away_days(learned), WordMemory.AWAY_DAYS_CAP) and is_equal_approx(memory.retrievability(learned), WordMemory._r(WordMemory.AWAY_DAYS_CAP, WordMemory.LEARNED_STABILITY)), "60 days away counts as %d (R %.3f)" % [WordMemory.AWAY_DAYS_CAP, memory.retrievability(learned)])
+	check(memory.is_due(learned) and not memory.is_due(strong), "60 days away: the learned word is due, the well-known one still is not")
+	var r_away: float = memory.retrievability(learned)
+	answer([learned], true)
+	check(float(memory.state(learned).s) > WordMemory.LEARNED_STABILITY and int(memory.state(learned).unix) == int(t0 + 60 * 86400.0) and not memory.is_due(learned), "a review after time away grows stability and saves the time (R was %.3f)" % r_away)
+
+	# The flood cap: 20 learned words answered 60 days ago, plus one word due by steps.
+	fresh()
+	memory = WordMemory.shared()
+	memory.now_for_test = t0
+	answer(["filler"], true)
+	var missed: String = real(650)
+	answer([missed], false)
+	for i in 40:
+		answer(["filler"], true)
+	knows(memory, "filler")
+	var pool: Array = []
+	for i in 20:
+		pool.append(real(620 + i))
+		answered_at(memory, pool[i], WordMemory.LEARNED_STABILITY + 0.1 * i, t0)
+	var back := t0 + 60 * 86400.0
+	memory.now_for_test = back
+	var due_now: Array = pool.filter(func(k): return memory.is_due(k))
+	check(due_now == pool.slice(0, WordMemory.AWAY_REVIEWS_PER_SESSION), "60 days away: only the %d most forgotten count as due (%d)" % [WordMemory.AWAY_REVIEWS_PER_SESSION, due_now.size()])
+	check(memory.is_due(missed), "a word due by steps is due whatever the cap")
+	var fresh_word: String = real(700)
+	var ranked: Array = memory.order(pool + [fresh_word, missed])
+	check(ranked.slice(0, 1 + WordMemory.AWAY_REVIEWS_PER_SESSION).has(missed) and ranked.find(fresh_word) == 1 + WordMemory.AWAY_REVIEWS_PER_SESSION, "order: the capped due words, then the new word, then the other away words (%s)" % [ranked.find(fresh_word)])
+	for i in WordMemory.AWAY_REVIEWS_PER_SESSION:
+		memory.now_for_test = back + 60.0 * (i + 1)
+		answer([memory.order(pool)[0]], true)
+	var still: Array = pool.filter(func(k): return memory.is_due(k))
+	check(memory.away_budget() == 0 and still.is_empty(), "after %d away reviews no other away word is due this session (%d)" % [WordMemory.AWAY_REVIEWS_PER_SESSION, still.size()])
+	check(memory.retrievability(pool[19]) < WordMemory.TARGET_RETENTION and memory.order(pool)[0] == pool[WordMemory.AWAY_REVIEWS_PER_SESSION], "the other away words still come first among the known")
+	memory.now_for_test = back + 600.0 + WordMemory.SESSION_GAP_SECONDS
+	still = pool.filter(func(k): return memory.is_due(k))
+	check(memory.away_budget() == WordMemory.AWAY_REVIEWS_PER_SESSION and still.size() == WordMemory.AWAY_REVIEWS_PER_SESSION, "next session: %d more come due (%d)" % [WordMemory.AWAY_REVIEWS_PER_SESSION, still.size()])
+
+## Old saves (no "unix" times) load unchanged and add no time away until a question is answered;
+## new saves keep every field an older build reads.
+func old_save_without_times() -> void:
+	fresh()
+	var old := {"es": {"step": 50, "last_new": 10, "words": {"apple": {"s": 4.0, "d": 5.0, "last": 50, "reps": 2, "lapses": 0}}}}
+	SaveStore.write_json(SaveStore.path(WordMemory.FILE), old)
+	var memory = WordMemory.shared()
+	var t0 := 1.8e9
+	memory.now_for_test = t0
+	check(memory.step() == 50 and memory.state("apple").size() == 5 and is_equal_approx(memory.away_days("apple"), 0.0), "old save loads unchanged, no time away")
+	check(is_equal_approx(memory.retrievability("apple"), 1.0) and not memory.is_due("apple") and memory.away_budget() == WordMemory.AWAY_REVIEWS_PER_SESSION, "old save: same recall as before")
+	answer(["bread"], true)
+	memory.now_for_test = t0 + 7 * 86400.0
+	check(is_equal_approx(memory.away_days("apple"), 7.0) and memory.is_due("apple"), "an old word counts time away from the language's last question")
+	var saved: Variant = SaveStore.read_json(SaveStore.path(WordMemory.FILE))
+	var ok: bool = saved is Dictionary and saved.has("es") and saved.es.has("step") and saved.es.has("last_new")
+	if ok:
+		for key in saved.es.words:
+			var w: Dictionary = saved.es.words[key]
+			for field in ["s", "d", "last", "reps", "lapses"]:
+				ok = ok and w.has(field)
+	check(ok and saved.es.has("unix") and saved.es.words.bread.has("unix") and not saved.es.words.apple.has("unix"), "new save keeps every older field; times are added (%s)" % [saved.es.words if saved is Dictionary else saved])
