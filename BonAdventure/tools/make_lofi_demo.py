@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Synthesises the demo lofi music loops (25 Nov 2026, user: "a lofi BGM just for the demo";
 later the same day: "add a different soundtrack for loading screen", then mood tracks for the
-minigames: quiz, errands, mystery, focus and outdoors; data/activities.json "music").
+minigames: quiz, errands, mystery, focus and outdoors; data/activities.json "music"; then an
+energetic one for Mahjong).
 
 Original music made here from sine/noise oscillators: no samples, recordings or third-party
 material. Pure Python (no numpy). Writes seamless mono 16-bit WAV loops; Godot imports them as
@@ -49,6 +50,10 @@ _FA = [([61, 64, 66, 69], 38), ([61, 62, 66, 69], 35), ([59, 62, 66, 69], 43), (
 # Outdoors (playful zoo, F): F Dm Gm7 C7 | F F7 Bb C7.
 _OA = [([60, 65, 69], 41), ([60, 62, 65, 69], 38), ([62, 65, 67, 70], 43), ([58, 64, 67], 36),
        ([60, 65, 69], 41), ([60, 63, 65, 69], 41), ([62, 65, 70], 46), ([58, 64, 67, 70], 36)]
+# Mahjong (energetic tea-house groove, D pentatonic; 25 Nov 2026, user: "something more
+# energizing"): D Bm G A | D Bm Em7 A7sus.
+_JA = [([62, 66, 69, 74], 38), ([59, 62, 66, 71], 35), ([59, 62, 67, 71], 43), ([61, 64, 69, 73], 45),
+       ([62, 66, 69, 74], 38), ([59, 62, 66, 71], 35), ([59, 62, 64, 67], 40), ([62, 64, 67, 69], 45)]
 # Each chord: MIDI notes of a voicing and its bass root. "style" picks the arrangement (ARRANGE);
 # the town and loading tracks use the original "lofi" one.
 TRACKS = {
@@ -72,6 +77,9 @@ TRACKS = {
     "focus": {"file": "focus_lofi_demo.wav", "style": "focus", "bpm": 60, "seed": 61, "progression": _FA * 4,
               "cutoff": 5000,
               "echo": {"beats": 1.5, "feedback": 0.35, "mix": 0.35, "cutoff": 1800}},
+    # User pick 25 Nov 2026: the marimba take (seed 97), at the zither take's 124 BPM (132 was too fast).
+    "mahjong": {"file": "mahjong_lofi_demo.wav", "style": "mahjong", "bpm": 124, "seed": 97, "progression": _JA + _JA,
+                "cutoff": 8500, "drum_cutoff": 10000, "duck": 0.3, "lead": "marimba"},
     "outdoors": {"file": "outdoors_lofi_demo.wav", "style": "outdoors", "bpm": 108, "seed": 71, "progression": _OA + _OA,
                  "cutoff": 8000, "drum_cutoff": 9500, "duck": 0.25},
 }
@@ -477,8 +485,60 @@ def arrange_outdoors(cfg, rng, beat, bar_len, length):
     return music, drums, kicks
 
 
+def arrange_mahjong(cfg, rng, beat, bar_len, length):
+    """Energetic tea-house groove: off-beat keyboard stabs, a driving eighth-note bass, a
+    pentatonic zither riff (an octave up in the second half), four-on-the-floor kick, claps on 2
+    and 4, sixteenth hats, a woodblock answer and a fill every eighth bar."""
+    music, drums, kicks = [0.0] * length, [0.0] * length, []
+    penta = [74, 76, 78, 81, 83, 86, 88, 90, 93]
+    # (eighth, scale step) riffs: a call, its answer and a run for the eighth bar.
+    riff_a = [(0, 2), (1, 3), (2, 4), (3, 3), (4, 2), (5, 0), (6, 1), (7, 2)]
+    riff_b = [(0, 4), (1, 3), (2, 2), (3, 0), (4, 1), (6, 2)]
+    riff_c = [(0, 0), (1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6), (7, 8)]
+    prog = cfg["progression"]
+    lead = cfg.get("lead", "pluck")
+    for b, (chord, root) in enumerate(prog):
+        t0 = b * bar_len
+        up = 3 if b >= len(prog) // 2 else 0
+        # Stabs on every off-beat ("and" of each beat), short and bright.
+        for k in range(4):
+            for j, n in enumerate(chord):
+                add(music, at(t0 + (k + 0.5) * beat + j * 0.004), keys(n, 0.28 * beat, 0.085 * rng.uniform(0.9, 1.0), rng.uniform(0, 6.28),
+                                                                       decay=3.0, release=18.0, wow_depth=0.001, trem_rate=5.5))
+        # Driving bass: root, octave, fifth, with a pickup into the next bar.
+        line = [root, root, root + 12, root, root + 7, root, root + 12, root + 10 if b % 2 else root + 7]
+        for e, n in enumerate(line):
+            add(music, at(t0 + e * beat / 2), bass(n, 0.42 * beat, 0.34 if e % 2 == 0 else 0.26))
+        riff = riff_c if b % 8 == 7 else (riff_a if b % 2 == 0 else riff_b)
+        for step, idx in riff:
+            note = penta[min(len(penta) - 1, idx + up)]
+            when = t0 + step * beat / 2 + rng.uniform(0, 0.006)
+            if lead == "pluck":
+                add(music, at(when), pluck(note, 0.13, decay=6.0, length=0.45))
+            else:
+                add(music, at(when), marimba(note, 0.13))
+            if up and step % 4 == 0:
+                add(music, at(when), bell(note + 12, 0.035, 1.2))
+        for s in range(16):
+            tt = t0 + s * beat / 4
+            if s % 4 == 0:
+                kicks.append(tt)
+                add(drums, at(tt), kick(0.72))
+            if s in (4, 12):
+                add(drums, at(tt), clap(rng, 0.3))
+                add(drums, at(tt), snare(rng, 0.14))
+            add(drums, at(tt), hat(rng, (0.085 if s % 4 == 2 else 0.04) * rng.uniform(0.85, 1.0)))
+        if b % 2 == 1:
+            add(drums, at(t0 + 3.75 * beat), tock(1250, 0.2))
+            add(drums, at(t0 + 3.25 * beat), tock(950, 0.16))
+        if b % 8 == 7:
+            for i in range(6):
+                add(drums, at(t0 + 2.5 * beat + i * beat / 4), snare(rng, 0.06 + 0.025 * i))
+    return music, drums, kicks
+
+
 ARRANGE = {"lofi": arrange_lofi, "quiz": arrange_quiz, "errands": arrange_errands, "mystery": arrange_mystery,
-           "focus": arrange_focus, "outdoors": arrange_outdoors}
+           "focus": arrange_focus, "outdoors": arrange_outdoors, "mahjong": arrange_mahjong}
 
 
 def render(cfg):

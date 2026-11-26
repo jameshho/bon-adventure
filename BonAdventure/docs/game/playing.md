@@ -302,7 +302,10 @@ BonBon's steps keep pace with her speed (quicker when running, slower when creep
   marimba chime for the right shelf and two soft falling notes for a wrong one. Engines:
   cars and other road vehicles hum and rise in pitch as they speed up, trucks, buses and the
   fire truck have a deeper diesel, the helicopter's rotor winds up and down, and the plane has
-  a propeller drone. Drawers,
+  a propeller drone. Buttons: green ones (Yes, Play, Next) pop upwards, Back and "Not now" pop
+  downwards, Delete and Leave crumple like paper, other buttons make a tiny pop and picking a
+  tile, tab or choice a bell glint. Mahjong: the tiles clack, the calls are spoken in Cantonese
+  and a tune plays when you win. Drawers,
   curtains, the garage, gates and vehicle doors are still silent. The Sound effects slider sets
   them. [Effects](../guides/VOICE.md#sound-effects-25-nov-2026)
 

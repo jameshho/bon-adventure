@@ -7,13 +7,24 @@ extends SceneTree
 ## stamp coin added to the tree gets its signal bound. Vehicle engines (added 25 Nov 2026): the car,
 ## truck, helicopter and plane loops (forward loop, QOA, mono, positional), sound.gd's engine_cue()
 ## for every vehicle kind in the town, and the engine hooks in driveable_vehicle.gd and
-## turboprop.gd. Silent: never plays a sound, never emits a
+## turboprop.gd. Buttons (added 25 Nov 2026): the five button cues, the catalogue's kind map, the
+## cue a BonStyle button of each kind gets (and an unstyled one: none), the meta override, and
+## that a button added to the tree has its press hooked once (never pressed). Mahjong (added 25 Nov
+## 2026): the tile, call (Cantonese, Polly) and win cues, the session's bindings, and whole hands
+## played by four NPC players through mahjong_session.gd _on_game_changed() (the session is
+## never added to the tree, so nothing is bound or played): its signals fire for the deal, the
+## player's draws, every discard and each call, and a Mahjong call tucks the player's tray away.
+## Silent: never plays a sound, never emits a
 ## bound signal, loads no town (the four unit scenes are instantiated, never added). Writes no
 ## files.
 ##   godot --headless --path . --script res://docs/evidence/sfx-20261125/verify.gd
 const Sound := preload("res://scripts/core/sound.gd")
 const DoorAnimator := preload("res://scripts/core/door_animator.gd")
 const StampCoin := preload("res://scripts/world/stamp_coin.gd")
+const BonStyle := preload("res://scripts/ui/bon_style.gd")
+const MahjongSession := preload("res://scripts/learning/mahjong_session.gd")
+const MahjongGame := preload("res://scripts/learning/mahjong_game.gd")
+const MahjongAI := preload("res://scripts/learning/mahjong_ai.gd")
 
 const DOOR_KINDS := ["room", "sliding", "cell", "locker", "cabinet", "safe", "vault", "glass"]
 ## cue -> [bus, positional, longest seconds]
@@ -22,6 +33,19 @@ const CUES := {
 	"answer.correct": ["UI", false, 1.0],
 	"answer.wrong": ["UI", false, 1.0],
 	"bell.chapel": ["SFX", true, 4.05],
+	"ui.confirm": ["UI", false, 0.5],
+	"ui.decline": ["UI", false, 0.5],
+	"ui.tap": ["UI", false, 0.5],
+	"ui.select": ["UI", false, 0.5],
+	"ui.delete": ["UI", false, 0.5],
+	"mahjong.discard": ["SFX", false, 0.5],
+	"mahjong.draw": ["SFX", false, 0.5],
+	"mahjong.shuffle": ["SFX", false, 2.3],
+	"mahjong.win": ["SFX", false, 2.05],
+	"mahjong.call.pung": ["SFX", false, 1.0],
+	"mahjong.call.chow": ["SFX", false, 1.0],
+	"mahjong.call.kong": ["SFX", false, 1.0],
+	"mahjong.call.sik": ["SFX", false, 1.0],
 }
 ## unit scene -> [node name, expected kind]; a door scene's kind is its `sound`.
 const BAKED := {
@@ -43,6 +67,9 @@ const BOUND := {
 	"res://scripts/world/chapel_bell.gd": {"rung": "bell.chapel"},
 	"res://scripts/learning/library_session.gd": {"shelved_right": "answer.correct", "shelved_wrong": "answer.wrong"},
 	"res://scripts/world/mystery_door.gd": {"opened": "door.room.open", "slammed": "door.room.close"},
+	"res://scripts/learning/mahjong_session.gd": {"hand_dealt": "mahjong.shuffle", "tile_drawn": "mahjong.draw",
+		"tile_discarded": "mahjong.discard", "called_pung": "mahjong.call.pung", "called_chow": "mahjong.call.chow",
+		"called_kong": "mahjong.call.kong", "called_win": "mahjong.call.sik", "you_won": "mahjong.win"},
 }
 
 var checks := 0
@@ -78,7 +105,7 @@ func _initialize() -> void:
 			check(clip.loop_mode == AudioStreamWAV.LOOP_DISABLED, cue_id + ": imported without a loop")
 			check(clip.format == AudioStreamWAV.FORMAT_QOA, cue_id + ": imported as QOA")
 			check(not clip.stereo, cue_id + ": mono")
-			check(clip.get_length() > 0.2 and clip.get_length() <= want[2], "%s: %.2f s (at most %.2f)" % [cue_id, clip.get_length(), want[2]])
+			check(clip.get_length() > 0.03 and clip.get_length() <= want[2], "%s: %.2f s (at most %.2f)" % [cue_id, clip.get_length(), want[2]])
 			bytes += clip.data.size()
 	print("SFX: %d new cues, %.1f KB imported" % [expected.size(), bytes / 1024.0])
 	for cue_id in sound.cues:
@@ -154,6 +181,53 @@ func _initialize() -> void:
 		check(_has_method(vehicle, method), "driveable_vehicle.gd has " + method)
 	for method in ["engine_level", "engine_running"]:
 		check(_own_method(plane, method), "turboprop.gd overrides " + method)
+	# Buttons: every kind's cue exists; each BonStyle kind gets its cue; an unstyled button none.
+	for kind in sound.button_kinds:
+		check(sound.cues.has(str(sound.button_kinds[kind])), "button kind %s -> %s exists" % [kind, sound.button_kinds[kind]])
+	var made: Array = []
+	for pair in [["primary", "ui.confirm"], ["back", "ui.decline"], ["danger", "ui.delete"], ["minor", "ui.tap"],
+			["soft", "ui.tap"], ["soft_quiet", "ui.tap"], ["quiet", "ui.tap"]]:
+		var styled: Button = BonStyle.button("x", pair[0], "", 1.0)
+		made.append(styled)
+		check(sound.button_cue(styled) == pair[1], "%s button -> %s (%s)" % [pair[0], pair[1], sound.button_cue(styled)])
+	var tile: Button = BonStyle.tile(null, "x", false, 1.0)
+	var toggle := Button.new()
+	BonStyle.style_toggle(toggle, 1.0)
+	var box := CheckBox.new()
+	BonStyle.style_check(box, 1.0)
+	var pick := OptionButton.new()
+	BonStyle.style_option(pick, 1.0)
+	for node in [tile, toggle, box, pick]:
+		made.append(node)
+		check(sound.button_cue(node) == "ui.select", "%s -> ui.select (%s)" % [node.get_class(), sound.button_cue(node)])
+	var plain := Button.new()
+	made.append(plain)
+	check(sound.button_cue(plain) == "", "an unstyled button is silent")
+	var no_choice: Button = BonStyle.button("x", "minor", "", 1.0)
+	no_choice.set_meta("sound", "ui.decline")
+	made.append(no_choice)
+	check(sound.button_cue(no_choice) == "ui.decline", "meta sound overrides the kind")
+	var hushed: Button = BonStyle.button("x", "primary", "", 1.0)
+	hushed.set_meta("sound", "none")
+	made.append(hushed)
+	check(sound.button_cue(hushed) == "", "meta sound none is silent")
+	var shop: Script = load("res://scripts/ui/shop_order_panel.gd")
+	check(shop.source_code.contains('button.set_meta("sound", "ui.decline")'), "the dialogue's 'no' choice declines")
+	var hooked: Button = BonStyle.button("x", "primary", "", 1.0)
+	root.add_child(hooked)
+	await process_frame
+	check(hooked.has_meta("sound_button") and hooked.get_signal_connection_list("pressed").size() >= 1, "a button added to the tree has its press hooked")
+	sound._bind(hooked)
+	var to_sound := 0
+	for info in hooked.get_signal_connection_list("pressed"):
+		if info["callable"].get_object() == sound:
+			to_sound += 1
+	check(to_sound == 1, "hooked once (%d)" % to_sound)
+	hooked.free()
+	for node in made:
+		node.free()
+	# Mahjong: whole NPC hands through the session's change watcher (never in the tree).
+	_mahjong_hands()
 	# A stamp coin added to the tree is bound (its signal connected); nothing is emitted.
 	var coin: Node3D = StampCoin.make("")
 	root.add_child(coin)
@@ -176,3 +250,60 @@ func _has_method(script: Script, method: String) -> bool:
 
 func _own_method(script: Script, method: String) -> bool:
 	return script.source_code.contains("func %s(" % method)
+
+## Plays hands with four NPC players (any fan, so they end sooner) through a session that is not
+## in the tree, counting its sound signals; a stub panel records the tray tucking away.
+func _mahjong_hands() -> void:
+	var stub := GDScript.new()
+	stub.source_code = "extends Node\nvar hidden := false\nfunc set_hand_hidden(h: bool) -> void:\n\thidden = h\n"
+	stub.reload()
+	var counts := {}
+	var wins := 0
+	var tucked := 0
+	for seed in 12:
+		var session = MahjongSession.new()
+		var panel: Node = stub.new()
+		session.panel = panel
+		for signal_name in ["hand_dealt", "tile_drawn", "tile_discarded", "called_pung", "called_chow", "called_kong", "called_win"]:
+			session.connect(signal_name, func() -> void: counts[signal_name] = int(counts.get(signal_name, 0)) + 1)
+		var g = MahjongGame.new()
+		session.game = g
+		session._seen = session._snapshot()
+		g.changed.connect(session._on_game_changed)
+		var rng := RandomNumberGenerator.new()
+		rng.seed = 900 + seed
+		var draws_before := int(counts.get("tile_drawn", 0))
+		g.start(rng, seed % 4, 0)
+		check(int(counts.get("tile_drawn", 0)) == draws_before, "the deal makes no draw sound (hand %d)" % seed)
+		for i in 3000:
+			if g.phase == "over":
+				break
+			_mahjong_step(g)
+		check(g.phase == "over", "mahjong hand %d ends" % seed)
+		if int(g.result.get("winner", -1)) >= 0:
+			wins += 1
+			if panel.hidden:
+				tucked += 1
+		else:
+			check(not panel.hidden, "a drawn hand leaves the tray (hand %d)" % seed)
+		panel.free()
+		session.free()
+	print("SFX MAHJONG: %s, %d wins" % [counts, wins])
+	check(int(counts.get("tile_discarded", 0)) > 100, "discards sound (%d)" % int(counts.get("tile_discarded", 0)))
+	check(int(counts.get("tile_drawn", 0)) > 10, "the player's draws sound (%d)" % int(counts.get("tile_drawn", 0)))
+	check(int(counts.get("tile_drawn", 0)) < int(counts.get("tile_discarded", 0)) / 2, "only the player's draws sound")
+	check(int(counts.get("called_pung", 0)) + int(counts.get("called_chow", 0)) + int(counts.get("called_kong", 0)) > 0, "calls sound")
+	check(int(counts.get("called_win", 0)) == wins and wins > 0, "every win calls (%d of %d)" % [int(counts.get("called_win", 0)), wins])
+	check(tucked == wins, "a Mahjong call tucks the tray away (%d of %d)" % [tucked, wins])
+
+func _mahjong_step(g) -> void:
+	match str(g.phase):
+		"turn":
+			var action := MahjongAI.turn_action(g, g.turn)
+			match str(action.type):
+				"win": g.declare_self_win(g.turn)
+				"kong": g.declare_kong(g.turn, int(action.tile))
+				_: g.discard(g.turn, int(action.tile))
+		"claim":
+			for seat in g.waiting.keys():
+				g.respond(seat, MahjongAI.claim_answer(g, seat, g.waiting[seat]))

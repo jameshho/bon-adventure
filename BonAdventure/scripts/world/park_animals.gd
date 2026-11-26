@@ -20,7 +20,24 @@ const PROFILES := {
     "zebra":[.7,2.5,2.0,.25], "bear cub":[.55,2.0,2.0,.25],
     "flamingo":[.3,1.8,3.0,.3],
     # Clay capybara (17 Nov 2026): slow and mostly resting.
-    "capybara":[.3,2.0,4.0,.45]
+    "capybara":[.3,2.0,4.0,.45],
+    # Hen house rooster and chicks (25 Nov 2026, barn step `hen_house_flock`; no word, so their
+    # `wander_profile` meta names the profile). Chicks keep close to the hen they follow.
+    "rooster":[.5,2.8,1.6,.15], "chick":[.45,1.6,.7,.08]
+}
+## Procedural gait for the clay animals that have no rig (user, 25 Nov 2026: "have them move
+## naturally"): while walking the model child bobs (a hop per stride, `hop` of its height), rolls
+## side to side (`roll` radians) and leans into the step (`lean`); `stride` is the ground covered
+## per hop in body heights. While idle it now and then pecks (birds: a quick dip, `peck` radians)
+## or grazes (a slow dip held a while), and glances about (`glance` radians of head-and-body yaw).
+## The root keeps its place, so homes, footprints, picking and feeding are unchanged; rigged
+## animals (clay_animator.gd) are left to their animator.
+const GAITS := {
+    "hen": {"hop": .045, "stride": .55, "roll": .09, "lean": .10, "peck": .55, "peck_time": .32, "graze": false, "glance": .45},
+    "rooster": {"hop": .04, "stride": .6, "roll": .08, "lean": .06, "peck": .45, "peck_time": .36, "graze": false, "glance": .5},
+    "chick": {"hop": .08, "stride": .45, "roll": .12, "lean": .08, "peck": .6, "peck_time": .26, "graze": false, "glance": .6},
+    "sheep": {"hop": .025, "stride": .5, "roll": .035, "lean": .0, "peck": .16, "peck_time": 2.6, "graze": true, "glance": .25},
+    "monkey": {"hop": .14, "stride": .8, "roll": .03, "lean": .12, "peck": .0, "peck_time": .0, "graze": false, "glance": .45}
 }
 ## Species display sizes (docs/guides/ANIMAL_SYSTEM.md): visible height in the zoo's town units, or
 ## length for the aquatic animals, with a fixed minimum world height measured from the snake.
@@ -112,6 +129,20 @@ const TURN_RATE := 5.0
 ## Arrivals: the animal slows down over the last stretch but never below this share of its speed.
 const ARRIVE_MIN := .15
 var _pace := 0.0
+## Unrigged gait (GAITS): the model child, its rest transform, body height (root-local), phases.
+var _gait: Dictionary = {}
+var _body: Node3D
+var _body_rest := Transform3D.IDENTITY
+var _body_h := 1.0
+var _stride_phase := 0.0
+var _move := 0.0
+var _peck_clock := -1.0
+var _peck_wait := 1.0
+var _glance := 0.0
+var _glance_to := 0.0
+var _glance_wait := 1.0
+## A chick follows a sibling hen (meta "follow": its name): its home moves to the hen at each choice.
+var _leader: Node3D
 
 func _ready() -> void:
     home=position
@@ -144,7 +175,7 @@ func _setup_in_zoo() -> void:
         _to_town=preload("res://scripts/world/modular_town.gd").town_transform(town,zoo)
         _from_town=_to_town.affine_inverse()
         _load_ground(town,floor_mesh)
-        var reach: float=PROFILES.get(str(get_meta("word_key","")).to_lower(),[0,radius])[1]*1.3
+        var reach: float=PROFILES.get(species(),[0,radius])[1]*1.3
         var origin:=_to_town*position
         if maxf(_park_height(origin),maxf(_park_height(origin+Vector3(reach,0,0)),_park_height(origin-Vector3(reach,0,0))))>.001:
             # Keep the saved clearance above the ground at home (feet, perch or swim depth).
@@ -191,10 +222,14 @@ func _ground_height(local: Vector3) -> float:
     p.y=_ground_offset+_park_height(p)
     return (_from_town*p).y
 
+## Profile key: the `wander_profile` meta (animals without a word), else the word.
+func species() -> String:
+    return str(get_meta("wander_profile",get_meta("word_key",""))).to_lower()
+
 func configure(box: AABB, enclosure: Rect2, ground_bodies: Array[RID]=[]) -> void:
     home=position
     target=home
-    var profile: Array=PROFILES.get(str(get_meta("word_key","")).to_lower(),[.4,radius,2.0,.25])
+    var profile: Array=PROFILES.get(species(),[.4,radius,2.0,.25])
     speed=profile[0]
     radius=profile[1]
     pause=profile[2]
@@ -214,6 +249,62 @@ func configure(box: AABB, enclosure: Rect2, ground_bodies: Array[RID]=[]) -> voi
     _query.collide_with_areas=false
     _configured=true
     add_to_group("wandering_animals")
+    if has_meta("follow") and get_parent()!=null:
+        _leader=get_parent().get_node_or_null(str(get_meta("follow"))) as Node3D
+    _setup_gait(box)
+
+func _setup_gait(box: AABB) -> void:
+    if _body!=null or not GAITS.has(species()): return
+    for child in get_children():
+        if child is Node3D and not child is CollisionObject3D and not child.find_children("*","Skeleton3D",true,false).size():
+            _body=child
+            break
+    if _body==null: return
+    _gait=GAITS[species()]
+    _body_rest=_body.transform
+    _body_h=maxf(box.size.y,.01)
+    _peck_wait=_rng.randf_range(.3,2.0)
+    _glance_wait=_rng.randf_range(.5,2.5)
+
+## Moves the model child for the unrigged gait (`moved`: root-local distance walked this frame).
+func _gait_pose(dt: float, moved: float) -> void:
+    if _body==null or not is_instance_valid(_body): return
+    var g:=_gait
+    var walking:=state=="walking" and moved>0.0
+    _move=move_toward(_move,1.0 if walking else 0.0,dt*6.0)
+    _stride_phase=fmod(_stride_phase+moved/(g.stride*_body_h),2.0)
+    var swing:=sin(_stride_phase*PI)
+    var hop: float=absf(swing)*g.hop*_body_h*_move
+    var roll: float=sin(_stride_phase*PI*.5)*g.roll*_move
+    var pitch: float=g.lean*_move
+    # Idle: pecks or grazing dips, glances about (not while resting).
+    if state=="idle" and g.peck>0.0:
+        if _peck_clock<0.0:
+            _peck_wait-=dt
+            if _peck_wait<=0.0: _peck_clock=0.0
+        else:
+            _peck_clock+=dt
+            var t: float=_peck_clock/g.peck_time
+            pitch+=(smoothstep(0.0,.15,t)*(1.0-smoothstep(.85,1.0,t)) if g.graze else sin(PI*clampf(t,0.0,1.0)))*g.peck
+            if t>=1.0:
+                _peck_clock=-1.0
+                # Birds peck in quick runs of two or three, then look up a while.
+                _peck_wait=_rng.randf_range(.08,.2) if not g.graze and _rng.randf()<.55 else _rng.randf_range(.8,3.0)*(2.5 if g.graze else 1.0)
+    else:
+        _peck_clock=-1.0
+    if state!="resting":
+        _glance_wait-=dt
+        if _glance_wait<=0.0:
+            _glance_to=0.0 if walking or absf(_glance_to)>.01 and _rng.randf()<.5 else _rng.randf_range(-1.0,1.0)*g.glance
+            _glance_wait=_rng.randf_range(.6,2.2)
+    else:
+        _glance_to=0.0
+    # Birds snap their heads round; mammals turn smoothly.
+    _glance=lerp_angle(_glance,_glance_to,1.0-exp(-(18.0 if g.peck_time<1.0 and g.peck>0.0 else 4.0)*dt))
+    # Tip about a point a little ahead of the feet, so a peck dips the head, not the chest, into the grass.
+    var pivot:=Vector3(0,0,.18*_body_h)
+    var turn:=Basis(Vector3.UP,_glance)*Basis(Vector3.RIGHT,pitch)*Basis(Vector3.BACK,roll)
+    _body.transform=Transform3D(turn,pivot-turn*pivot+Vector3(0,hop,0))*_body_rest
 
 func inside(point: Vector3) -> bool:
     if Vector2(point.x-home.x,point.z-home.z).length()>radius: return false
@@ -232,11 +323,16 @@ func _clear_step(destination: Vector3) -> bool:
     # Only nearby peers; never scan meshes or allocate navigation agents per tick.
     for other in get_tree().get_nodes_in_group("wandering_animals"):
         if other==self or other.get_parent()!=parent: continue
+        # A chick may tuck in beside the hen it follows (and she beside it).
+        if other==_leader or other.get("_leader")==self: continue
         var separation:=Vector2(destination.x-other.position.x,destination.z-other.position.z).length()
-        if separation<footprint+other.footprint+.1: return false
+        # Two that already overlap (placed close, 25 Nov 2026 hen yard) may still step apart.
+        if separation<footprint+other.footprint+.1 and separation<=Vector2(position.x-other.position.x,position.z-other.position.z).length(): return false
     return true
 
 func _choose_target() -> void:
+    if _leader!=null and is_instance_valid(_leader):
+        home=Vector3(_leader.position.x,home.y,_leader.position.z)
     for attempt in range(8):
         var angle:=_rng.randf_range(-PI,PI)
         var distance:=sqrt(_rng.randf())*radius
@@ -356,9 +452,11 @@ func _process(delta: float) -> void:
     _timer-=dt
     _probe_timer-=dt
     if feeding():
+        if _body!=null: _body.transform=_body_rest
         _feed_step(dt)
         return
     if state!="walking":
+        _gait_pose(dt,0.0)
         if _timer<=0 and _probe_timer<=0:
             _probe_timer=.1
             _choose_target()
@@ -379,5 +477,6 @@ func _process(delta: float) -> void:
     if not inside(next):
         _stop(.4)
         return
+    if _body!=null: _gait_pose(dt,Vector2(next.x-position.x,next.z-position.z).length())
     position=next
     if ground.is_valid(): position.y=ground.call(position)

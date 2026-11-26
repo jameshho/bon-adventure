@@ -5,9 +5,10 @@ extends SceneTree
 ## plays anything and loads no town. Writes no files.
 ##   godot --headless --path . --script res://docs/evidence/lofi-music-20261125/verify.gd
 const Sound := preload("res://scripts/core/sound.gd")
-## Track -> expected length in seconds (tools/make_lofi_demo.py).
+## Track -> expected length in seconds (tools/make_lofi_demo.py). "mahjong" added 25 Nov 2026
+## (user: Mahjong's music "more energizing"; it had used "focus").
 const LENGTHS := {"town": 53.3, "loading": 34.3, "quiz": 36.9, "errands": 41.7, "mystery": 41.7,
-		"focus": 64.0, "outdoors": 35.6}
+		"focus": 64.0, "outdoors": 35.6, "mahjong": 31.0}
 const Board := preload("res://scripts/learning/activity_board.gd")
 
 var failures := 0
@@ -46,7 +47,7 @@ func _initialize() -> void:
 		used[track] = true
 		check(tracks.has(track), "%s: music track %s exists" % [id, track])
 		check(Board.shared().activities[id].has("music"), id + ": names its music")
-	for mood in ["quiz", "errands", "mystery", "focus", "outdoors"]:
+	for mood in ["quiz", "errands", "mystery", "focus", "outdoors", "mahjong"]:
 		check(used.has(mood), mood + ": used by a game")
 	check(not sound.play_music("loading") and not sound.play_music("town"), "play_music refuses in a check")
 	Board.shared().started.emit("grammar_lana")

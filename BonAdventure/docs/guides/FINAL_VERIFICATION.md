@@ -8289,6 +8289,30 @@ Not run: the full suite, the web export, a hands-on play-test. The sports store 
 scenes were not re-baked (the registry moves the two NPCs at load).
 
 
+## Clay monkey and sheep, hen house flock — 25 November 2026
+
+User request: "update the monkey and sheep, and place few chicken and chick around the hen house,
+have them move naturally" ([record](TOWN_DESIGN_BRIEF.md#hen-house-flock--25-november-2026),
+[animals](ANIMAL_SYSTEM.md#clay-monkey-and-sheep-roam-hen-house-flock-and-the-unrigged-gait-25-nov-2026)).
+Baked once each, base first: `tools/bake_unit.gd -- base` (step `monkey_sheep_clay_roam`; a first
+bake stopped on a print of the freed old node and saved half the step, so `base.scn` was restored
+from git and baked again: monkey 1.063 and sheep 1.313 tall, the old heights) and `-- barn` (step
+`hen_house_flock`: 14 birds, hen 0.975, rooster 1.17, chicks 0.54). `dev_focus.txt` = `all`,
+isolated HOME.
+
+- `docs/evidence/farm-flock-20261125/verify.gd`, headless with `--fixed-fps 60` (runner id
+  `farm_flock`): **26 checks, 0 failures** (40 s of play: every one of the 16 animals went
+  1.0–2.8 from its start, all 16 models posed by the gait, birds in the yard, chicks 0.5–1.8 from
+  their hens). Its first runs found four animals placed overlapping a neighbour that the spacing
+  rule then never let move; `park_animals.gd` now lets overlapping animals step apart, and a chick
+  ignores the spacing to the hen it follows.
+- The same script with a window (`--always-on-top`; a background window crawled) took
+  `yard.png`, `chicks.png`, `sheep.png`, `monkey.png`, `yard-later.png`: 18 checks, 0 failures.
+- `run_checks.py --only hen_house` (the roomier hen house check, updated to count 8 hens and to
+  measure them at rest): PASS, 78 checks, 0 failures (Godot crashed on exit after the summary,
+  exit -6, as the runner notes).
+- Not run: the full suite, a web export or phone, frame time with the extra clay birds.
+
 ## Roomier hen house and clay hens — 25 November 2026
 
 User request: the clay hen replaces every old hen (old files removed); the hen house 20% bigger

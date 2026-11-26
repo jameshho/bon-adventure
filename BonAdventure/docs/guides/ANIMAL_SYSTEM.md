@@ -1216,6 +1216,37 @@ a rig, so the clay hens glide like the old hen did (no stepping legs or blinking
 about 116,000 triangles (seven of them on the farm). Check:
 `docs/evidence/hen-house-roomier-20261125/verify.gd` (views `coop-door.png`, `inside.png`, `aerial.png`).
 
+## Clay monkey and sheep roam, hen house flock and the unrigged gait (25 Nov 2026)
+
+User, 25 Nov 2026: "update the monkey and sheep, and place few chicken and chick around the hen
+house, have them move naturally".
+
+- **Monkey and sheep.** Base step `monkey_sheep_clay_roam` (`scripts/buildings/base.gd`)
+  replaces the piece-built `ParkZoo/Monkey` (Bamboo Grove) and `ParkZoo/Sheep` (farm) with the
+  clay monkey and the clay sheep like `hen_clay_roams`: same name, home, facing, child index and
+  word, `display_height()` (monkey 1.063, sheep 1.313, the old heights), soles where the old ones'
+  were, stored as plain nodes. The still `MonkeyClayDisplay` inside the zoo gate went. The old
+  `monkey.tscn` and `sheep.tscn` are no longer in the town but were not deleted (the user did not
+  ask). The sheep is the clay sheep as it stands in the working tree on 25 Nov (Blender head
+  pass, `docs/evidence/sheep-blender-20261125/`), not yet committed.
+- **Flock.** Barn step `hen_house_flock`: two more hens, a rooster and five chicks in the hen
+  yard ([record](TOWN_DESIGN_BRIEF.md#hen-house-flock--25-november-2026)). Animals without a word
+  name their profile with the `wander_profile` meta (`park_animals.gd` `species()`; profiles
+  `rooster`, `chick`); a `follow` meta (a sibling's name) moves the home to that animal at each
+  choice, so the chicks keep near their hen.
+- **Unrigged gait** (`park_animals.gd` `GAITS`, for hen, rooster, chick, sheep and monkey; rigged
+  animals are left to `clay_animator.gd`): the model child (not the root, so homes, footprints,
+  picking and feeding are unchanged) hops once per stride (stride measured in body heights, so
+  feet and distance agree), rolls side to side and leans into the step, easing in and out with
+  the walk. Idle birds peck (a dip tipped about a point just ahead of the feet) in quick runs of
+  two or three, and snap their heads about; the sheep grazes (a slow dip held a few seconds) and
+  turns its head smoothly; the monkey bounds (a big hop per stride) and looks about. Feeding
+  resets the pose. Cost: one transform per animal per frame.
+
+Not done: rigs (no stepping legs or blinking for these five species). Triangles: each clay hen is
+about 116,000; the farm now has nine hens, a rooster and five chicks (and the still rooster and
+chick displays by the farm gate stay). Check: `docs/evidence/farm-flock-20261125/verify.gd`.
+
 ## Zoo zones (12 Nov 2026)
 
 User design (see the [design record](TOWN_DESIGN_BRIEF.md#zoo-zones--12-november-2026)): the 16

@@ -28,48 +28,48 @@ roughness = 0.7
 [sub_resource type="BoxShape3D" id="BoxShape3D_8w3rc"]
 size = Vector3(0.75, 1.0500001, 1.095)
 
-[node name="SheepClayDisplay" type="Node3D" unique_id=1522642041]
+[node name="SheepClayDisplay" type="Node3D" unique_id=791118448]
 metadata/source = "User's Sheep Character Blueprint, relaxed idle (24 Nov 2026)"
 
-[node name="Body" type="MeshInstance3D" parent="." unique_id=1761906954]
+[node name="Body" type="MeshInstance3D" parent="." unique_id=2016162871]
 material_override = SubResource("StandardMaterial3D_44cib")
 mesh = ExtResource("1_eogox")
 
-[node name="Wool" type="MeshInstance3D" parent="." unique_id=427960705]
+[node name="Wool" type="MeshInstance3D" parent="." unique_id=109782422]
 material_override = SubResource("StandardMaterial3D_44cib")
 mesh = ExtResource("2_gxnel")
 
-[node name="Hooves" type="MeshInstance3D" parent="." unique_id=2122209894]
+[node name="Hooves" type="MeshInstance3D" parent="." unique_id=572578245]
 material_override = SubResource("StandardMaterial3D_44cib")
 mesh = ExtResource("3_mtcpj")
 
-[node name="Ears" type="MeshInstance3D" parent="." unique_id=458029960]
+[node name="Ears" type="MeshInstance3D" parent="." unique_id=465760078]
 material_override = SubResource("StandardMaterial3D_44cib")
 mesh = ExtResource("4_362px")
 
-[node name="Nose" type="MeshInstance3D" parent="." unique_id=953112741]
+[node name="Nose" type="MeshInstance3D" parent="." unique_id=146631327]
 material_override = SubResource("StandardMaterial3D_44cib")
 mesh = ExtResource("5_8kd4o")
 
-[node name="LeftEye" type="MeshInstance3D" parent="." unique_id=653754475]
-transform = Transform3D(-0.86602545, 0.13650809, -0.48100471, 0, 0.9620095, 0.27301618, 0.5, 0.23643896, -0.83312464, -0.13200001, 0.672, -0.4211472)
+[node name="LeftEye" type="MeshInstance3D" parent="." unique_id=525817291]
+transform = Transform3D(-0.86602545, 0.105154864, -0.48881742, 0, 0.9776348, 0.21030973, 0.50000006, 0.18213356, -0.8466566, -0.13200001, 0.67800003, -0.41891393)
 material_override = SubResource("StandardMaterial3D_fqigp")
 cast_shadow = 0
 mesh = ExtResource("6_xg17n")
 
-[node name="RightEye" type="MeshInstance3D" parent="." unique_id=494199284]
-transform = Transform3D(-0.86602545, -0.13650809, 0.48100471, 0, 0.9620095, 0.27301618, -0.5, 0.23643896, -0.83312464, 0.13200001, 0.672, -0.4211472)
+[node name="RightEye" type="MeshInstance3D" parent="." unique_id=1095124247]
+transform = Transform3D(-0.86602545, -0.105154864, 0.48881742, 0, 0.9776348, 0.21030973, -0.50000006, 0.18213356, -0.8466566, 0.13200001, 0.67800003, -0.41891393)
 material_override = SubResource("StandardMaterial3D_fqigp")
 cast_shadow = 0
 mesh = ExtResource("7_mf8w3")
 
-[node name="Face details" type="MeshInstance3D" parent="." unique_id=1637390598]
+[node name="Face details" type="MeshInstance3D" parent="." unique_id=1803403923]
 material_override = SubResource("StandardMaterial3D_7teqj")
 cast_shadow = 0
 mesh = ExtResource("8_q38pm")
 
-[node name="Footprint" type="StaticBody3D" parent="." unique_id=1620888419]
+[node name="Footprint" type="StaticBody3D" parent="." unique_id=1097717769]
 
-[node name="@CollisionShape3D@2" type="CollisionShape3D" parent="Footprint" unique_id=172002901]
+[node name="@CollisionShape3D@2" type="CollisionShape3D" parent="Footprint" unique_id=46258494]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.52500004, -0.058499977)
 shape = SubResource("BoxShape3D_8w3rc")

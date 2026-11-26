@@ -17,7 +17,7 @@
     "library_rosa": {"music": "errands", "chance": 1.0, "progress": 0},
     "teller_bank": {"music": "quiz", "chance": 1.0, "progress": 5},
     "feeding_nico": {"music": "outdoors", "chance": 1.0, "progress": 5, "mission_xp": 30, "levels": [{"requests": 3, "tiers": [2]}, {"requests": 5, "tiers": [2]}, {"requests": 5, "tiers": [2, 3]}, {"requests": 6, "tiers": [2, 3, 4]}]},
-    "mahjong_mei": {"music": "focus", "chance": 1.0, "progress": 0, "kind": "pastime"},
+    "mahjong_mei": {"music": "mahjong", "chance": 1.0, "progress": 0, "kind": "pastime"},
     "radar_patrol": {"music": "focus", "chance": 0.0, "progress": 0, "kind": "pastime"},
     "electrical_box": {"music": "focus", "chance": 0.0, "progress": 0, "kind": "pastime"}
   }

@@ -372,7 +372,9 @@ first asks whether to carry on, with the same hand and points (23 Nov,
 see your own tiles on the table (24 Nov, [screenshots](../evidence/mahjong-hand-toggle-20261124/)).
 UI polish (24 Nov): a smaller status card and soft call buttons with their tiles apart
 ([screenshots](../evidence/mahjong-ui-polish-20261124/); the nameplates and cream counter shown
-there were removed again on 25 Nov).
+there were removed again on 25 Nov). Sound (25 Nov): tiles clack, calls are spoken in Cantonese
+(碰 / 上 / 槓 / 食) in every language, a tune plays when you win, and the music is a livelier
+tea-house groove; the hand tray tucks away by itself when anyone calls Mahjong.
 [Guide](../guides/MAHJONG.md)
 
 | Learning card | |

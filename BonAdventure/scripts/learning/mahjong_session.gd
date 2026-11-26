@@ -28,6 +28,26 @@ extends Node
 ## at the same hand with the same scores (a new hand when the last one had ended); No, a new
 ## game goes on to the lesson and mode questions as before (the old save stays until the new
 ## game is saved over it).
+##
+## Sound (25 Nov 2026, user: "also add sound effect to the Mahjong game", calls in Cantonese):
+## the signals below play cues through data/sounds.json bindings (sound.gd); the session never
+## plays a sound itself. _on_game_changed() compares the game with the last look to tell what
+## just happened. When anyone calls Mahjong the player's tile tray tucks away so the table shows
+## (user, 25 Nov 2026: "when mahjong, auto collapse my hand").
+
+## A fresh hand is dealt (the tiles are washed).
+signal hand_dealt
+## The player takes a tile from the wall on their turn (a kong's replacement too).
+signal tile_drawn
+## Any player puts a tile down.
+signal tile_discarded
+signal called_pung
+signal called_chow
+signal called_kong
+## Anyone calls Mahjong (from a discard or the wall).
+signal called_win
+## The player won the hand: the result card is up.
+signal you_won
 const Board := preload("res://scripts/learning/activity_board.gd")
 const Host := preload("res://scripts/learning/minigame_host.gd")
 const PlushLife := preload("res://scripts/characters/plush_life.gd")
@@ -144,6 +164,8 @@ var _declined_turn := -1   # the turn on which the player chose Keep playing ove
 var _queued := -1
 var _wait := 0.0
 var _shown_call: Dictionary = {}
+## What the game looked like at its last change (_snapshot(); for the sound signals).
+var _seen: Dictionary = {}
 var _result_shown := false
 var _call_words: Array = [null, null, null, null]   # PopWord3D per seat, made on first use
 var _call_hold := 0.0   # the extra pause after a call, added to the next wait
@@ -365,6 +387,7 @@ func _open_game() -> void:
 func _new_hand() -> void:
 	game = Game.new()
 	game.changed.connect(func() -> void: _dirty = true)
+	game.changed.connect(_on_game_changed)
 	_result_shown = false
 	_shown_call = {}
 	_declined_turn = -1
@@ -372,6 +395,8 @@ func _new_hand() -> void:
 	_hide_call_words()
 	panel.open()
 	_fresh = true
+	_seen = _snapshot()
+	hand_dealt.emit()
 	game.start(_rng, _rng.randi_range(0, 3), _mode)
 	_dirty = true
 
@@ -381,7 +406,9 @@ func _resume_hand(saved_hand: Dictionary) -> bool:
 	if not restored.restore(saved_hand):
 		return false
 	game = restored
+	_seen = _snapshot()
 	game.changed.connect(func() -> void: _dirty = true)
+	game.changed.connect(_on_game_changed)
 	_result_shown = false
 	_shown_call = {}
 	_declined_turn = -1
@@ -604,6 +631,35 @@ func _on_action(id: String, data: int) -> void:
 			answer["tile"] = data
 		game.respond(0, answer)
 
+# --- Sounds ------------------------------------------------------------------------------
+
+## The counts the sound signals compare: discards on the table, tiles taken from the wall, the
+## last call.
+func _snapshot() -> Dictionary:
+	var down := 0
+	for pile in game.discards:
+		down += Array(pile).size()
+	return {"down": down, "taken": game.drawn_front + game.drawn_back, "call": game.last_call.duplicate()}
+
+## After every action of the game: emits what just happened (the deal takes many tiles at once
+## and makes no draw sound; a claimed tile leaving the discards is not a discard).
+func _on_game_changed() -> void:
+	var now := _snapshot()
+	if now.down > int(_seen.get("down", 0)):
+		tile_discarded.emit()
+	if now.taken == int(_seen.get("taken", 0)) + 1 and game.phase == "turn" and game.turn == 0 and game.drawn >= 0:
+		tile_drawn.emit()
+	var call: Dictionary = now.call
+	if not call.is_empty() and call != _seen.get("call", {}):
+		match str(call.type):
+			"pung": called_pung.emit()
+			"chow": called_chow.emit()
+			"kong": called_kong.emit()
+			"win", "self_win":
+				called_win.emit()
+				panel.set_hand_hidden(true)
+	_seen = now
+
 # --- Calls ---------------------------------------------------------------------------------
 
 func _pop_call(seat: int, type: String) -> void:
@@ -652,6 +708,8 @@ func _show_result() -> void:
 	_update_scores()
 	_hide_call_words()
 	panel.show_result(data, _again_label(), lexicon.line("mahjong.leave"))
+	if winner == 0:
+		you_won.emit()
 
 ## The scoreboard card's rows (the star button shows the first, the player's total).
 func _update_scores() -> void:

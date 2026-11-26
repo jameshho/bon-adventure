@@ -43,8 +43,9 @@ tracks on the Music bus: the loading screen, the town, and one per minigame mood
 | `quiz` | upbeat: keyboard stabs, octave bass, marimba hook, claps (D, 104 BPM) | Desk Dash, Who's Who?, Flight Finder, Next, Please!, On the Menu | 36.9 s |
 | `errands` | cozy shopping jazz: walking bass, vibes, swung brushes (Bb, 92 BPM) | Grocery Run, Stack & Pack, Library Helper | 41.7 s |
 | `mystery` | sneaky: pizzicato, woodblock, falling bass, soft pad (A minor, 92 BPM) | Spot the Suspect, Feel the Clues, Mystery Doors | 41.7 s |
-| `focus` | calm puzzles: slow soft chords, a few bells, quiet shaker (D, 60 BPM) | Mahjong Club, Wire It Up!, Radar Patrol | 64.0 s |
+| `focus` | calm puzzles: slow soft chords, a few bells, quiet shaker (D, 60 BPM) | Wire It Up!, Radar Patrol (Mahjong Club until 25 Nov) | 64.0 s |
 | `outdoors` | playful: ukulele strum, oom-pah bass, hopping marimba (F, 108 BPM) | Feeding Time! | 35.6 s |
+| `mahjong` | energetic tea-house groove: off-beat stabs, driving bass, pentatonic marimba riff, four-on-the-floor kick, claps, woodblock (D pentatonic, 124 BPM; user 25 Nov: "more energizing", picked by ear: the marimba take at the slower tempo) | Mahjong Club | 31.0 s |
 
 - **Files:** `audio/music/<track>_lofi_demo.wav`, original music synthesised by
   `tools/make_lofi_demo.py` (pure Python, no samples or third-party material; one `TRACKS` entry
@@ -121,7 +122,8 @@ tracks on the Music bus: the loading screen, the town, and one per minigame mood
   `play_music()` and a game starting play nothing and add no duck bus. 25 Nov 2026: 0 failures.
   Throwaway probe scenes (Dummy audio driver, normal run) confirmed: loading then town with the
   crossfade; each mood starts with its game (Desk Dash → quiz, Grocery Run → errands, Spot the
-  Suspect → mystery, Mahjong → focus, Feeding Time! → outdoors) and town comes back when it ends;
+  Suspect → mystery, Mahjong → focus (Mahjong has its own `mahjong` track since 25 Nov), Feeding
+  Time! → outdoors) and town comes back when it ends;
   the duck bus sends to Music, dips to −9 dB and returns to 0; a game starting during loading
   keeps the loading music; a freed service leaves no connection on the board. Quick suite the
   same day: PASS 10, KNOWN 1 (voice_backbone, expected). **Not verified:** how the five mood
@@ -145,6 +147,8 @@ picked every sound by ear from 2–5 candidates each (cabinet, safe and vault to
 | `bell.chapel` | The chapel bell is rung (`chapel_bell.gd` signal `rung`) | At the bell, SFX bus, −6 dB, unit size 8 m, heard up to 90 m, `restart` |
 | `answer.correct` / `answer.wrong` | Library Helper: a book on the right shelf or a wrong one (`library_session.gd` signals `shelved_right`, `shelved_wrong`) | Flat, UI bus. Named for any game's right and wrong answers; only Library Helper uses them so far |
 | `vehicle.engine`, `vehicle.truck`, `vehicle.helicopter`, `vehicle.plane` | A vehicle is driven or flown (`driveable_vehicle.gd` `update_engine_sound()` each drive step) | A loop at the vehicle, SFX bus, pitch and volume rise with speed (see Engines) |
+| `ui.confirm`, `ui.decline`, `ui.tap`, `ui.select`, `ui.delete` | A button is pressed (see Buttons) | Flat, UI bus, −6 to −12 dB |
+| `mahjong.shuffle`, `.draw`, `.discard`, `.call.pung` / `.chow` / `.kong` / `.sik`, `.win` | Mahjong Club (see Mahjong) | Flat, SFX bus |
 
 - **Door kinds:** `door_animator.gd` `sound_kind()` reads the door state's `"sound"`, else a
   hinged door is `room` and a sliding door (`safe_slide`) `sliding`; drawers and curtains have
@@ -156,6 +160,31 @@ picked every sound by ear from 2–5 candidates each (cabinet, safe and vault to
   `DoorAnimator.set_sound_kind(game, node, kind)`. Mystery House doors play the room sounds
   through their own `opened` and `slammed` signals (bindings). Not included (user, 25 Nov 2026):
   garage, vehicle doors, zoo and farm gates, lift doors.
+- **Buttons** (user, 25 Nov 2026: "add sound effect when user click on confirm or decline", then
+  every kind of button; picked by ear). `bon_style.gd` tags every button it styles with meta
+  `bon_kind`; `sound.gd` hooks every button's `pressed` as it enters the tree and plays
+  `button_cue()`: the button's meta `sound` (a cue id, `"none"` for silence), else the cue for its
+  kind in `data/sounds.json` `"buttons"`. Green (`primary`: Yes / Play, Next, Start, Continue,
+  Go, Done, Stay) → `ui.confirm`, two rising bubble pops; `back` (Back, Cancel) and the
+  dialogue's "No / Not now" choice (icon `no`, set in `shop_order_panel.gd`) → `ui.decline`, two
+  falling pops; coral `danger` (Delete, Leave) → `ui.delete`, a CC0 paper crush (user: "like
+  folding paper"); cream and soft buttons (✕, HUD, Settings rows, map chips) → `ui.tap`, one
+  tiny pop; tiles, choices, toggles, checkboxes and drop-downs → `ui.select`, a bell glint.
+  Buttons BonStyle never styled (touch controls, money coins, mahjong tiles) stay silent. A
+  dialogue choice picked with a number key is not a press and makes no sound.
+- **Mahjong** (user, 25 Nov 2026: "also add sound effect to the Mahjong game", one set for
+  every language, the calls in Cantonese; picked by ear). `mahjong_session.gd` emits
+  argument-free signals, bound in `data/sounds.json`: `hand_dealt` → `mahjong.shuffle` (tiles
+  washed, CC0 recording), `tile_drawn` (the player's own draws only, a kong's replacement too) →
+  `mahjong.draw`, `tile_discarded` (every player) → `mahjong.discard` (CC0 domino recordings),
+  `called_pung` / `called_chow` / `called_kong` / `called_win` (anyone) → a Cantonese voice
+  saying 碰 / 上 / 槓 / 食 (Amazon Polly, Hiujin, readings pinned with Jyutping pung3, soeng5,
+  gong3, sik6), and `you_won` (the result card after the player wins) → `mahjong.win`, a
+  pentatonic tune climbing to a held top note (`tools/make_sfx.py` `win_a`). No sound when
+  someone else wins or the wall runs out (user). `_on_game_changed()` compares the game with its
+  last look (`_snapshot()`); the deal and a claimed tile leaving the discards make no sound. The
+  panel's own buttons and tiles are not BonStyle buttons and stay silent. Files:
+  `audio/sfx/mahjong/`. To remake a call: the SSML in its cue's `source`.
 - **Engines** (user, 25 Nov 2026: a sound for driving, then the helicopter, plane and truck;
   each picked by ear from four CC0 Freesound loops). `sound.gd` `engine(vehicle, running, speed,
   kind)` starts the cue's loop under the vehicle, sets `pitch_scale` from the cue's
@@ -178,7 +207,8 @@ picked every sound by ear from 2–5 candidates each (cabinet, safe and vault to
   peak −1 dBFS, imported as QOA without a loop (about 231 KB in all once imported). Engines:
   `audio/sfx/vehicles/engine.wav`, `truck.wav`, `helicopter.wav`, `plane.wav`, 1.1–3 s seamless
   loops (an equal-power crossfade of the tail into the head, 40 Hz high-pass), imported as QOA
-  forward loops (about 88 KB).
+  forward loops (about 88 KB). Buttons: `audio/sfx/ui/button_<confirm|decline|tap|select|delete>.wav`
+  (about 8 KB).
 - **Sources:** the doors and the bell are CC0 Freesound recordings (HQ previews, the licence
   checked on each sound's own page), trimmed and faded; each cue's `source` and `licence` in
   `data/sounds.json` name the page and the cut. The bell is one strike made into a lower

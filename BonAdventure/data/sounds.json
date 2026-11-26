@@ -129,6 +129,14 @@
       "source": "Synthesised for this game by tools/make_lofi_demo.py --track loading (25 Nov 2026): demo dreamy lofi loop in A, music-box arpeggio, soft echo and brushes, 8 bars at 56 BPM, 34 s",
       "licence": "Original, no third-party material; 44.1 kHz 16-bit mono, clean (no hiss or crackle), imported as a QOA forward loop"
     },
+    "music.mahjong": {
+      "file": "res://audio/music/mahjong_lofi_demo.wav",
+      "bus": "Music",
+      "volume_db": -9.5,
+      "loop": true,
+      "source": "Synthesised for this game by tools/make_lofi_demo.py --track mahjong (25 Nov 2026, user: Mahjong's music 'more energizing'): demo tea-house groove in D pentatonic: off-beat stabs, driving bass, marimba riff, four-on-the-floor kick, claps, woodblock, 16 bars at 124 BPM, 31 s; picked by ear",
+      "licence": "Original, no third-party material; 44.1 kHz 16-bit mono, clean (no hiss or crackle), imported as a QOA forward loop"
+    },
     "music.quiz": {
       "file": "res://audio/music/quiz_lofi_demo.wav",
       "bus": "Music",
@@ -362,13 +370,129 @@
       "loop": false,
       "source": "Synthesised for this game by tools/make_sfx.py (wrong_a, 25 Nov 2026): two soft falling marimba notes A3-F3, 0.95 s; flat (no distance), picked by ear",
       "licence": "Original, no third-party material; 22.05 kHz 16-bit mono"
+    },
+    "ui.confirm": {
+      "file": "res://audio/sfx/ui/button_confirm.wav",
+      "bus": "UI",
+      "volume_db": -8.0,
+      "loop": false,
+      "source": "Synthesised for this game by tools/make_sfx.py (confirm_b, 25 Nov 2026): two bubble pops sliding up, 0.14 s; flat (no distance), picked by ear",
+      "licence": "Original, no third-party material; 22.05 kHz 16-bit mono"
+    },
+    "ui.decline": {
+      "file": "res://audio/sfx/ui/button_decline.wav",
+      "bus": "UI",
+      "volume_db": -8.0,
+      "loop": false,
+      "source": "Synthesised for this game by tools/make_sfx.py (decline_b, 25 Nov 2026): two bubble pops sliding down, 0.15 s; flat (no distance), picked by ear",
+      "licence": "Original, no third-party material; 22.05 kHz 16-bit mono"
+    },
+    "ui.tap": {
+      "file": "res://audio/sfx/ui/button_tap.wav",
+      "bus": "UI",
+      "volume_db": -12.0,
+      "loop": false,
+      "source": "Synthesised for this game by tools/make_sfx.py (tap_b, 25 Nov 2026): one tiny bubble pop, 0.05 s; flat (no distance), picked by ear",
+      "licence": "Original, no third-party material; 22.05 kHz 16-bit mono"
+    },
+    "ui.select": {
+      "file": "res://audio/sfx/ui/button_select.wav",
+      "bus": "UI",
+      "volume_db": -12.0,
+      "loop": false,
+      "source": "Synthesised for this game by tools/make_sfx.py (select_c, 25 Nov 2026): a small bell glint (G6), 0.18 s; flat (no distance), picked by ear",
+      "licence": "Original, no third-party material; 22.05 kHz 16-bit mono"
+    },
+    "mahjong.discard": {
+      "file": "res://audio/sfx/mahjong/discard.wav",
+      "bus": "SFX",
+      "volume_db": -6.0,
+      "loop": false,
+      "source": "https://freesound.org/people/Macif/sounds/329099/",
+      "licence": "CC0 (Freesound, HQ preview, Domino pieces 1); 4.34-4.62 s, faded, 16-bit mono 22.05 kHz; picked by ear 25 Nov 2026"
+    },
+    "mahjong.draw": {
+      "file": "res://audio/sfx/mahjong/draw.wav",
+      "bus": "SFX",
+      "volume_db": -10.0,
+      "loop": false,
+      "source": "https://freesound.org/people/poenia/sounds/745032/",
+      "licence": "CC0 (Freesound, HQ preview, Domino_sfx_takeChip); 0-0.2 s, faded, 16-bit mono 22.05 kHz; picked by ear 25 Nov 2026"
+    },
+    "mahjong.shuffle": {
+      "file": "res://audio/sfx/mahjong/shuffle.wav",
+      "bus": "SFX",
+      "volume_db": -6.0,
+      "loop": false,
+      "source": "https://freesound.org/people/RobertWulfman/sounds/220839/",
+      "licence": "CC0 (Freesound, HQ preview, Shuffling Dominos); 2.0-4.2 s, faded, 16-bit mono 22.05 kHz; picked by ear 25 Nov 2026"
+    },
+    "mahjong.win": {
+      "file": "res://audio/sfx/mahjong/win.wav",
+      "bus": "SFX",
+      "volume_db": -6.0,
+      "loop": false,
+      "source": "Synthesised for this game by tools/make_sfx.py (win_a, 25 Nov 2026): a pentatonic tune climbing two octaves to a held top note, soft wooden notes; flat (no distance), picked by ear",
+      "licence": "Original, no third-party material; 22.05 kHz 16-bit mono"
+    },
+    "mahjong.call.pung": {
+      "file": "res://audio/sfx/mahjong/call_pung.wav",
+      "bus": "SFX",
+      "volume_db": -3.0,
+      "loop": false,
+      "source": "Amazon Polly text-to-speech (neural, Hiujin, Cantonese yue-CN), SSML <phoneme alphabet='x-amazon-jyutping' ph='pung3'>碰</phoneme>, silence trimmed (25 Nov 2026, user: the Mahjong calls in Cantonese, one set for every language)",
+      "licence": "Polly output, used under the AWS Service Terms; no third-party recordings; 16-bit mono 22.05 kHz; take picked by ear"
+    },
+    "mahjong.call.chow": {
+      "file": "res://audio/sfx/mahjong/call_chow.wav",
+      "bus": "SFX",
+      "volume_db": -3.0,
+      "loop": false,
+      "source": "Amazon Polly text-to-speech (neural, Hiujin, Cantonese yue-CN), SSML <phoneme alphabet='x-amazon-jyutping' ph='soeng5'>上</phoneme>, silence trimmed (25 Nov 2026, user: the Mahjong calls in Cantonese, one set for every language)",
+      "licence": "Polly output, used under the AWS Service Terms; no third-party recordings; 16-bit mono 22.05 kHz; take picked by ear"
+    },
+    "mahjong.call.kong": {
+      "file": "res://audio/sfx/mahjong/call_kong.wav",
+      "bus": "SFX",
+      "volume_db": -3.0,
+      "loop": false,
+      "source": "Amazon Polly text-to-speech (neural, Hiujin, Cantonese yue-CN), SSML <phoneme alphabet='x-amazon-jyutping' ph='gong3'>槓</phoneme>, silence trimmed (25 Nov 2026, user: the Mahjong calls in Cantonese, one set for every language)",
+      "licence": "Polly output, used under the AWS Service Terms; no third-party recordings; 16-bit mono 22.05 kHz; take picked by ear"
+    },
+    "mahjong.call.sik": {
+      "file": "res://audio/sfx/mahjong/call_sik.wav",
+      "bus": "SFX",
+      "volume_db": -3.0,
+      "loop": false,
+      "source": "Amazon Polly text-to-speech (neural, Hiujin, Cantonese yue-CN), SSML <phoneme alphabet='x-amazon-jyutping' ph='sik6'>食</phoneme>, silence trimmed (25 Nov 2026, user: the Mahjong calls in Cantonese, one set for every language)",
+      "licence": "Polly output, used under the AWS Service Terms; no third-party recordings; 16-bit mono 22.05 kHz; take picked by ear"
+    },
+    "ui.delete": {
+      "file": "res://audio/sfx/ui/button_delete.wav",
+      "bus": "UI",
+      "volume_db": -6.0,
+      "loop": false,
+      "source": "https://freesound.org/people/gynation/sounds/82375/",
+      "licence": "CC0 (Freesound, HQ preview, paper crush short 4); 0.02-0.36 s, faded, 16-bit mono 22.05 kHz; a folding-paper sound (user: like folding paper), picked by ear 25 Nov 2026"
+    }
+  },
+  "buttons": {
+    "_comment": "Button sounds (25 Nov 2026, user: a sound for confirm and decline, then every kind of button; each picked by ear). BonStyle tags each button it styles with meta bon_kind; sound.gd plays this map's cue for that kind when the button is pressed (flat, play_ui). A button's meta 'sound' overrides it (a cue id, or 'none' for silence; the dialogue's 'no' choice uses ui.decline). Buttons BonStyle never styled (touch controls, game pieces) stay silent.",
+    "kinds": {
+      "primary": "ui.confirm",
+      "back": "ui.decline",
+      "danger": "ui.delete",
+      "minor": "ui.tap", "soft": "ui.tap", "soft_quiet": "ui.tap", "quiet": "ui.tap", "flat": "ui.tap", "dialogue": "ui.tap", "tag": "ui.tap",
+      "tile": "ui.select", "tile_on": "ui.select", "choice": "ui.select", "choice_on": "ui.select", "pill": "ui.select", "pill_on": "ui.select",
+      "explore": "ui.select", "explore_on": "ui.select", "toggle": "ui.select", "check": "ui.select", "option": "ui.select"
     }
   },
   "music": {
     "_comment": "Background music (25 Nov 2026, user: a lofi BGM for the demo, and a different soundtrack for the loading screen). tracks: name -> cue; sound.gd play_music(name) fades the playing track out over 'fade_out' s and the new one in over 'fade_in' s, on its cue's bus, not positional. App plays 'loading' with the loading screen and 'town' when it lifts. A minigame plays its activities.json 'music' track while it runs and the town track after (25 Nov 2026, user: different songs for different activities). Each cue's volume_db evens out the tracks' loudness (about -26.5 dB average with the cue's volume). 'enabled' false silences all music. Placeholders until licensed or commissioned music. Checks (a SceneTree script) never play it.",
     "enabled": true,
     "tracks": {"town": "music.town", "loading": "music.loading", "quiz": "music.quiz", "errands": "music.errands",
-               "mystery": "music.mystery", "focus": "music.focus", "outdoors": "music.outdoors"},
+               "mystery": "music.mystery", "focus": "music.focus", "outdoors": "music.outdoors",
+               "mahjong": "music.mahjong"},
     "fade_in": 4.0,
     "fade_out": 1.5
   },
@@ -392,6 +516,9 @@
     {"script": "res://scripts/world/faucet.gd", "start": {"turned_on": "faucet.run"}, "stop": {"turned_off": "faucet.run"}},
     {"script": "res://scripts/world/stamp_coin.gd", "play": {"collected": "coin.stamp"}},
     {"script": "res://scripts/world/chapel_bell.gd", "play": {"rung": "bell.chapel"}},
+    {"script": "res://scripts/learning/mahjong_session.gd", "play": {"hand_dealt": "mahjong.shuffle", "tile_drawn": "mahjong.draw",
+      "tile_discarded": "mahjong.discard", "called_pung": "mahjong.call.pung", "called_chow": "mahjong.call.chow",
+      "called_kong": "mahjong.call.kong", "called_win": "mahjong.call.sik", "you_won": "mahjong.win"}},
     {"script": "res://scripts/learning/library_session.gd", "play": {"shelved_right": "answer.correct", "shelved_wrong": "answer.wrong"}},
     {"script": "res://scripts/world/mystery_door.gd", "play": {"opened": "door.room.open", "slammed": "door.room.close"}}
   ]

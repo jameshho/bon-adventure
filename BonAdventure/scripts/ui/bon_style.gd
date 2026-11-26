@@ -130,6 +130,7 @@ static func flat(fill: Color = SKY, radius := 18, rim := 4, shadow := true) -> S
 ## Sets a Button's four states as flat() boxes: `fill` normal, lighter on hover, darker pressed,
 ## greyed when disabled; text and icons `ink` (white on green / coral fills).
 static func flat_button(button: Button, fill: Color = SKY, radius := 18, ink: Color = INK) -> void:
+	button.set_meta("bon_kind", "flat")
 	var looks := {"normal": fill, "hover": fill.lightened(0.25) if fill == SKY else fill.lightened(0.1),
 			"pressed": fill.darkened(0.1), "hover_pressed": fill.darkened(0.06), "disabled": fill.lerp(Color(0.86, 0.88, 0.88), 0.6)}
 	for state in looks:
@@ -286,6 +287,8 @@ static func text_color(kind: String) -> Color:
 ## Styles `button` as `kind` for every state (hover lighter, pressed darker), with the font, its
 ## colour, a soft shadow under white text and the icon tinted to match. `size`: font size.
 static func style_button(button: Button, kind: String, f: float, size := 34.0) -> void:
+	# Its press sound (sound.gd button_cue(), data/sounds.json "buttons"; 25 Nov 2026).
+	button.set_meta("bon_kind", kind)
 	for state in ["normal", "hover", "pressed", "disabled", "hover_pressed"]:
 		var look: BonBox = box(kind, f)
 		match state:
@@ -362,11 +365,13 @@ static func style_toggle(button: Button, f: float, size := 28.0) -> void:
 		look.content_margin_right = button.get_theme_stylebox("normal").content_margin_right
 		button.add_theme_stylebox_override(state, look)
 	on.free()
+	button.set_meta("bon_kind", "toggle")
 	for name in ["font_pressed_color", "font_hover_pressed_color", "icon_pressed_color", "icon_hover_pressed_color"]:
 		button.add_theme_color_override(name, Color.WHITE)
 
 ## A checkbox: `INK` words beside a cream rounded box that turns green with a white tick.
 static func style_check(box_button: CheckBox, f: float, size := 26.0) -> void:
+	box_button.set_meta("bon_kind", "check")
 	use_font(box_button, 600)
 	box_button.add_theme_font_size_override("font_size", roundi(size * f))
 	for name in ["font_color", "font_pressed_color", "font_hover_color", "font_hover_pressed_color", "font_focus_color"]:
@@ -382,6 +387,7 @@ static func style_check(box_button: CheckBox, f: float, size := 26.0) -> void:
 ## A drop-down: a cream pill with `BROWN` words and a brown chevron; its list is a cream card.
 static func style_option(pick: OptionButton, f: float, size := 26.0) -> void:
 	style_button(pick, "soft", f, size)
+	pick.set_meta("bon_kind", "option")
 	pick.add_theme_icon_override("arrow", _sized("chevron_ink", roundi(size * f)))
 	pick.add_theme_constant_override("arrow_margin", roundi(22 * f))
 	var popup := pick.get_popup()

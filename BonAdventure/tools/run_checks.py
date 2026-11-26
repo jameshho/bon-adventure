@@ -285,6 +285,9 @@ CHECKS = [
     # dated evidence).
     dict(id="hen_house", script="res://docs/evidence/hen-house-roomier-20261125/verify.gd", suites=["full"], fps=True,
          summary=r"HEN HOUSE: \d+ checks, (?P<n>\d+) failures"),
+    # Clay monkey and sheep roam, the hen house flock (rooster, chicks) and the unrigged gait (25 Nov 2026).
+    dict(id="farm_flock", script="res://docs/evidence/farm-flock-20261125/verify.gd", suites=["full"], fps=True,
+         summary=r"FARM FLOCK: \d+ checks, (?P<n>\d+) failures"),
     # Day-night cycle, lamp glow, indoor light and the HUD clock (9 Nov 2026).
     dict(id="day_night", script="res://docs/evidence/day-night-20261109/verify.gd", suites=["full"],
          summary=r"DAY NIGHT: \d+ checks, (?P<n>\d+) failures"),
