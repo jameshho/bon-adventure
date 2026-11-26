@@ -134,6 +134,12 @@ says the word in the language you are learning ([journal](../evidence/journal-sp
   (doors, seats, vehicles, toilets, faucets), drag or right-mouse to look around, wheel to zoom,
   Esc for Settings or to close the top window; during Library Helper, Grocery Run or Feeding
   Time! Esc asks whether to stop the game instead (25 Nov). F1 shows every key.
+- **Controls guide** (F1, or **Controls** in Settings; 25 Nov): grouped cards of every key, or,
+  on a touch device, of the on-screen controls (joystick, Jump, E, Run, the HUD buttons and the
+  gestures); the **Keyboard** / **Touch** tabs switch. It scales with the window and never
+  scrolls: what does not fit goes on pages turned with the arrows or a swipe (one page on a
+  laptop, three on a landscape phone).
+  [Renders](../evidence/f1-guide-20261125/README.md)
 - **Camera follows me** (on by default since 14 Nov): walking sideways slowly turns the view,
   so one hand can steer.
 - **Climb** ladders with W and S (or the stick toward / away from the wall); at the top of a

@@ -45,6 +45,9 @@ const SHAPES := {
 	"landing": '<path d="M3 20.5h18"/><path d="M5 4.5l12 11"/><path d="M17 9v6.5h-6.5"/>',
 	"down": '<path d="M6 9.5l6 6 6-6"/>',
 	# The flying controls' ascend button (touch_controls.gd, 23 Nov 2026; descend uses down).
+	# The F1 guide's touch view (UI-04): the joystick and a two-finger pinch.
+	"stick": '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4" fill="#ffffff"/>',
+	"pinch": '<path d="M3.5 3.5l6 6M9.5 4.5v5h-5"/><path d="M20.5 20.5l-6-6M14.5 19.5v-5h5"/>',
 	"up": '<path d="M6 14.5l6-6 6 6"/>',
 	"bell": '<path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.6 2.2H4.4z"/><path d="M10 20.6a2 2 0 0 0 4 0"/><path d="M12 3.2V5"/>',
 	"star": '<path d="M12 3.2l2.7 5.5 6.1.9-4.4 4.3 1 6.1L12 17.1l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/>',

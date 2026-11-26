@@ -18,6 +18,9 @@ extends Control
 ## Sound (24 Nov 2026, user): Main volume, Music, Sound effects and Spoken words sliders in a
 ## 2 x 2 grid (GameSettings.set_volume; game_settings.gd VOLUME_BUSES); a drag sets the sound at
 ## once and saves when it ends.
+## "Controls" (25 Nov 2026, improvement plan UI-04): opens the F1 controls guide, which shows the
+## touch controls on a touch device (the only way to it without a keyboard); it emits
+## controls_requested and Main closes this window and opens the guide.
 const GameSettings := preload("res://scripts/core/game_settings.gd")
 const Lexicon := preload("res://scripts/language/lexicon.gd")
 const UiIcons := preload("res://scripts/ui/ui_icons.gd")
@@ -27,6 +30,10 @@ const BonStyle := preload("res://scripts/ui/bon_style.gd")
 const GOLD := BonStyle.INK
 const DIM := BonStyle.INK_SOFT
 const DESIGN := Vector2(1100, 800)
+
+signal controls_requested
+## Main hides the Controls button while a minigame runs (the guide is closed then).
+var controls_allowed := true
 
 var _card: PanelContainer
 var _stack: VBoxContainer
@@ -39,6 +46,7 @@ var _foreign_pick: OptionButton
 var _close_button: Button
 var _switch_button: Button
 var _replay_button: Button
+var _controls_button: Button
 var _profile_row: HBoxContainer
 var _x_button: Button
 var _show_fps: CheckBox
@@ -154,6 +162,11 @@ func _init() -> void:
 			close()
 			app.replay_tutorial())
 	_profile_row.add_child(_replay_button)
+	_controls_button = _button()
+	_controls_button.name = "Controls"
+	_controls_button.icon = UiIcons.texture("question", 64)
+	_controls_button.pressed.connect(func() -> void: controls_requested.emit())
+	_profile_row.add_child(_controls_button)
 	_close_button = _button()
 	_close_button.icon = UiIcons.texture("close", 64)
 	_close_button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
@@ -208,7 +221,9 @@ func refresh() -> void:
 	_switch_button.visible = app != null and app.has_method("switch_profile")
 	_replay_button.text = lexicon.phrase("tutorial.replay", lang)
 	_replay_button.visible = app != null and app.has_method("replay_tutorial")
-	_profile_row.visible = _switch_button.visible or _replay_button.visible
+	_controls_button.text = lexicon.phrase("help.title", lang)
+	_controls_button.visible = controls_allowed
+	_profile_row.visible = _switch_button.visible or _replay_button.visible or _controls_button.visible
 	_x_button.tooltip_text = _close_button.text
 	_layout()
 
@@ -243,14 +258,16 @@ func _apply_layout(screen: Vector2) -> void:
 		BonStyle.style_option(pick, f, 26)
 	BonStyle.style_button(_switch_button, "soft", f, 26)
 	BonStyle.style_button(_replay_button, "soft", f, 26)
+	BonStyle.style_button(_controls_button, "soft", f, 26)
 	BonStyle.style_button(_close_button, "primary", f, 28)
 	BonStyle.style_button(_x_button, "soft_quiet", f, 26)
-	for button in [_close_button, _switch_button, _replay_button, _native_pick, _foreign_pick]:
+	for button in [_close_button, _switch_button, _replay_button, _controls_button, _native_pick, _foreign_pick]:
 		button.custom_minimum_size = Vector2(0, 64 * f)
 		button.add_theme_constant_override("icon_max_width", roundi(26 * f))
 	_close_button.custom_minimum_size = Vector2(220 * f, 66 * f)
 	_switch_button.custom_minimum_size = Vector2(220 * f, 64 * f)
 	_replay_button.custom_minimum_size = Vector2(220 * f, 64 * f)
+	_controls_button.custom_minimum_size = Vector2(180 * f, 64 * f)
 	_profile_row.add_theme_constant_override("separation", roundi(14 * f))
 	_x_button.custom_minimum_size = Vector2(56 * f, 56 * f)
 	_x_button.add_theme_constant_override("icon_max_width", roundi(24 * f))
