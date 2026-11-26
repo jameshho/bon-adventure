@@ -322,6 +322,47 @@ static func style_button(button: Button, kind: String, f: float, size := 34.0) -
 	else:
 		button.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0))
 	button.add_theme_constant_override("h_separation", roundi(14.0 * f))
+	button.set_meta("bon_pad", 26.0 * f if button.text != "" else 10.0 * f)
+	if not button.has_meta("bon_centred"):
+		button.set_meta("bon_centred", true)
+		button.draw.connect(center_contents.bind(button), CONNECT_DEFERRED)
+
+## Centres a button's icon and words as one group (user, 26 Nov 2026): Godot draws the icon at
+## the left edge, so an icon-only button gets its icon centred and a button with an icon and
+## words, wider than both, gets equal side padding sized to its minimum width. Runs on every
+## draw, deferred (a change made mid-draw would not redraw; the text can change with the
+## language) and touches the button only when it differs.
+## A button whose words are deliberately left- or right-aligned (list rows) is left alone.
+static func center_contents(button: Button) -> void:
+	if button.icon == null or button.alignment != HORIZONTAL_ALIGNMENT_CENTER:
+		return
+	if button.text == "":
+		if button.icon_alignment == HORIZONTAL_ALIGNMENT_LEFT:
+			button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		return
+	if button.icon_alignment != HORIZONTAL_ALIGNMENT_LEFT:
+		return
+	var normal := button.get_theme_stylebox("normal")
+	var font := button.get_theme_font("font")
+	var font_size := button.get_theme_font_size("font_size")
+	var text_width := 0.0
+	for line in button.text.split("\n"):
+		text_width = maxf(text_width, font.get_string_size(line, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x)
+	var icon_size := Vector2(button.icon.get_size())
+	if button.expand_icon:
+		var tall := maxf(1.0, button.size.y - normal.content_margin_top - normal.content_margin_bottom)
+		icon_size = Vector2(tall * icon_size.x / maxf(1.0, icon_size.y), tall)
+	var max_width := button.get_theme_constant("icon_max_width")
+	if max_width > 0 and icon_size.x > max_width:
+		icon_size.x = max_width
+	var group := text_width + icon_size.x + button.get_theme_constant("h_separation")
+	var pad := maxf(float(button.get_meta("bon_pad", normal.content_margin_left)), floorf((button.custom_minimum_size.x - group) * 0.5))
+	if absf(normal.content_margin_left - pad) < 1.0:
+		return
+	for state in ["normal", "hover", "pressed", "disabled", "hover_pressed"]:
+		var look := button.get_theme_stylebox(state)
+		look.content_margin_left = pad
+		look.content_margin_right = pad
 
 ## A finished button: `kind` primary / back / minor / danger / quiet; `icon` a BonStyle icon
 ## (play, arrow_left, arrow_right, trash, plus, check, close) or a ui_icons.gd name.

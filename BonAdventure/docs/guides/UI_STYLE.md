@@ -96,6 +96,7 @@ resizes `StyleBoxFlat` fields uses `BonStyle.flat()` / `flat_button()`.
 | **Back button** | Same pill in blue, left arrow | kind `"back"` |
 | **Minor button** | Cream pill, `BROWN` text and icon (Delete) | kind `"minor"` |
 | **Danger button** | Coral pill (confirming a delete) | kind `"danger"` |
+| **Centred contents** | Every button's icon and words sit in the middle as one group, and an icon-only button's icon is centred (user, 26 Nov 2026; the record player's ◀ ▶ were off to the left). Automatic for every button styled by `BonStyle.style_button` with centred words; list rows with left-aligned words are left alone | `BonStyle.center_contents()` |
 | **Tile** | Cream rounded square (radius 24), white rim, soft shadow; a cream name pill at the bottom; selected = green gradient and a green check badge top-right | `BonStyle.tile(...)` |
 | **Choice pill** | Cream pill with a round flag; selected = green with white text and a check | `BonStyle.choice(...)` |
 | **Section band** | `BAND` rounded strip with heading (`INK`, 30) and hint (`INK_SOFT`, 20) | `BonStyle.band(...)` |

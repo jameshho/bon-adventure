@@ -381,6 +381,7 @@ func _style_button(button: Button, kind: String, factor: float) -> void:
 		if button.icon != null:
 			group += float(button.get_meta("base_icon", 28)) * factor + 10.0   # h_separation (_set_icon)
 		pad = maxf(pad, ((button.get_meta("base_min") as Vector2).x * factor - group) * 0.5)
+	button.set_meta("bon_pad", pad)   # BonStyle.center_contents() keeps this padding
 	for state in ["normal", "hover", "pressed", "disabled", "hover_pressed"]:
 		var look := button.get_theme_stylebox(state)
 		look.content_margin_left = pad
