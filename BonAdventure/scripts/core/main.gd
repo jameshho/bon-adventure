@@ -872,13 +872,32 @@ func toggle_study_journal() -> void:
 ## player to the supermarket with the game still running (mystery_session.gd _guard_place).
 const FALL_RESPAWN_Y := -30.0
 
+## Puts the player at `position` (world) facing `yaw` (NAN keeps the view) as a respawn: a fall
+## below FALL_RESPAWN_Y and the last-resort unstuck from a blocked seat or vehicle (GAME-05,
+## 25 Nov 2026, PlayerPlace.rescue_spot()). A minigame running then ends through its own
+## end_activity() (the stop a language change uses, with its NPC's goodbye), so no game is left
+## half open with the player somewhere else.
+func respawn(position: Vector3, yaw: float = NAN) -> void:
+	end_running_game()
+	player.global_position = position
+	player.velocity = Vector3.ZERO
+	if not is_nan(yaw):
+		player.camera_yaw = yaw
+		player.rotation.y = yaw
+	player.reset_camera()
+
+## Ends the minigame in progress (Board.blocker("")) through its end_activity(), if it has one.
+func end_running_game() -> void:
+	var running: String = Board.shared().blocker("")
+	var session: Object = Board.shared().session(running) if running != "" else null
+	if session != null and session.has_method("end_activity"):
+		session.end_activity()
+
 func _process(delta: float) -> void:
 	# Minigame started / ended signals (activity_board.gd watch(), PWA phase 4).
 	preload("res://scripts/learning/activity_board.gd").shared().watch()
 	if player.global_position.y < FALL_RESPAWN_Y and not player.noclip_enabled and not is_instance_valid(active_vehicle):
-		player.global_position = spawn_position()
-		player.velocity = Vector3.ZERO
-		player.reset_camera()
+		respawn(spawn_position())
 	sync_minigame_hud()
 	# Also when something else (a fade's end, minigame_zone.gd) switched the controls back on.
 	if talk_locked() != player_talk_locked or (player_talk_locked and player.controls_enabled):

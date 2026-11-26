@@ -185,6 +185,10 @@ moment later, as the supermarket door's "pay first" (`cashier_session.gd`, `DOOR
   Built: `library_session.gd`, `shop_session.gd` (the basket in the world and on its way back),
   `zoo_feeding_session.gd` (Feeding Time!; walking out of the zoo also puts the player back inside
   first, GAME-03). Not yet: the other in-world games (follow-up).
+- **Required: `end_activity()`** ends the game at once with its NPC's goodbye, no question. Main calls
+  it on a language change and, since 25 Nov 2026 (GAME-05), on any respawn (`Main.respawn()`: a fall
+  below `FALL_RESPAWN_Y`, or the last-resort unstuck from a blocked seat or vehicle), so a respawn
+  never leaves a half-open game.
 - `data/activities.json`: offer chance and progress target ([activity board](ARCHITECTURE_REVIEW_PART1.md#shared-dialogue-popups-and-settings--4-november-2026));
   a `progress_bar.gd` in the game's panel or card. Since 25 Nov 2026 also `"music"`: the
   background track while the game runs (`quiz`, `errands`, `mystery`, `focus` or `outdoors`;

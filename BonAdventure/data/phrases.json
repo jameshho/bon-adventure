@@ -588,6 +588,7 @@
       "helicopter_fly": {"es": "Helicóptero: ▲ ▼ subir / bajar · W/S adelante / atrás · A/D girar", "en": "Helicopter: ▲ ▼ up / down · W/S forward / back · A/D turn", "zh": "直升機：▲ ▼ 上升／下降 · W/S 前進／後退 · A/D 轉彎"},
       "driving_help": {"es": "Conducir: W acelerar · S frenar / marcha atrás · A/D girar · Espacio frena · E salir (también en marcha)", "en": "Driving: W accelerate · S brake / reverse · A/D steer · Space brakes · E exit (also while moving)", "zh": "駕駛：W 加速 · S 剎車／倒車 · A/D 轉向 · 空格鍵 剎車 · 按 E 下車（行駛中也可以）"},
       "exited": {"es": "Has bajado del vehículo. Haz clic en los objetos para estudiar.", "en": "Exited vehicle. Click objects to study.", "zh": "已下車。點擊物件來學習。"},
+      "unstuck": {"es": "Aquí no había sitio para salir, así que empiezas otra vez fuera.", "en": "There was no room to get out here, so you start again outside.", "zh": "這裏沒有地方出來，所以你在外面重新開始。", "note": "Last-resort unstuck (GAME-05): a blocked seat or vehicle exit with no clear spot nearby respawns the player outside."},
       "zoo_open": {"es": "Puerta del zoo abierta", "en": "Zoo gate opened", "zh": "動物園閘門已打開"},
       "zoo_closed": {"es": "Puerta del zoo cerrada", "en": "Zoo gate closed", "zh": "動物園閘門已關上"},
       "garage_opening": {"es": "La puerta del garaje se abre", "en": "Garage door opening", "zh": "車房門正在打開"},
