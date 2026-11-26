@@ -3,7 +3,7 @@ extends RefCounted
 ## bank unit (scenes/town/bank.scn).
 ## Bake:  godot --headless --path . --script res://tools/bake_unit.gd -- bank
 ## Never rename or remove a baked step (add a new one that undoes it).
-const STEPS := ["coplanar_gaps", "coplanar_gaps_2", "glass_windows", "palette_interior", "shared_doors", "door_labels", "atm_art", "vault_art", "chair_backs", "vault_safe", "rear_annex", "deposit_boxes", "staff_door", "heavy_vault_door", "teller_side_monitor", "coplanar_gaps_3", "wider_staff_door", "teller_seats", "door_sounds"]
+const STEPS := ["coplanar_gaps", "coplanar_gaps_2", "glass_windows", "palette_interior", "shared_doors", "door_labels", "atm_art", "vault_art", "chair_backs", "vault_safe", "rear_annex", "deposit_boxes", "staff_door", "heavy_vault_door", "teller_side_monitor", "coplanar_gaps_3", "wider_staff_door", "teller_seats", "door_sounds", "palette_snap"]
 
 ## Faces that shared a plane and flickered are set apart (10 Nov 2026,
 ## scripts/buildings/coplanar_gaps.gd).
@@ -759,3 +759,10 @@ func door_sounds(town: Node3D, game) -> void:
 	if tagged != 2:
 		push_error("bank door_sounds: expected 2 doors, tagged %d" % tagged)
 	print("BANK door_sounds: %d doors" % tagged)
+
+
+## Colours snapped to the game palette with the hue guard (P3-22, decision D14: approved by the
+## user 26 Nov 2026 after the library/police trial; scripts/buildings/palette_snap.gd,
+## docs/evidence/pastel-20261125/).
+func palette_snap(town: Node3D, _game) -> void:
+	preload("res://scripts/buildings/palette_snap.gd").snap(town, "bank")

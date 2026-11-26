@@ -13,7 +13,7 @@ extends RefCounted
 ## the checks in docs/police-*/ use them.
 const STEPS := ["solid_roofs", "evidence_poster_words", "evidence_shelf_objects", "lobby_layout", "reception_officer_chairs",
 	"interiors_polish",
-	"coplanar_gaps", "coplanar_gaps_2", "glass_windows", "real_windows", "two_lockers", "door_sounds"]
+	"coplanar_gaps", "coplanar_gaps_2", "glass_windows", "real_windows", "two_lockers", "door_sounds", "palette_snap"]
 
 const LEFT := 33.12
 const RIGHT := 52.88
@@ -664,3 +664,9 @@ func door_sounds(town: Node3D, game) -> void:
 	if tagged != 3:
 		push_error("police door_sounds: expected 3 doors, tagged %d" % tagged)
 	print("POLICE door_sounds: %d doors" % tagged)
+
+
+## Colours snapped to the game palette (P3-22 trial, decision D14, 25 Nov 2026:
+## scripts/buildings/palette_snap.gd; before/after in docs/evidence/pastel-20261125/).
+func palette_snap(town: Node3D, _game) -> void:
+	preload("res://scripts/buildings/palette_snap.gd").snap(town, "police")

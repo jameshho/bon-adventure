@@ -7,7 +7,7 @@ extends RefCounted
 ##   const STEPS := ["add_bench", ...]          # applied in this order, each exactly once
 ##   func add_bench(town: Node3D, game) -> void # town = Main's Apartment, scale 1.3, town coords
 ## Never rename or remove a baked step (add a new one that undoes it).
-const STEPS := ["solid_roofs", "remove_bird", "tulip_beds", "plaza_fountains", "bronze_statue", "statue_blueprint", "statue_traced", "statue_traced_refit", "statue_reference", "statue_reference_finish", "statue_angular_portrait", "statue_temple_hair", "statue_hair_relief_fit", "statue_single_bronze", "bench_placement", "statue_patina", "statue_patina_warm", "toy_scooter", "toy_scooter_full_size", "statue_town_bronze", "mystery_house_site", "coplanar_gaps", "coplanar_gaps_2", "lion_blueprint_display", "lion_clay_display", "lion_clay_face_rework", "lion_clay_ears_fit", "lion_clay_eyes_mane", "lion_clay_ears_mane_two_layers", "giraffe_clay_display", "giraffe_clay_colours", "giraffe_clay_refine", "elephant_clay_display", "red_panda_clay_display", "elephant_clay_colours", "panda_clay_display", "cow_clay_display", "gorilla_clay_display", "panda_clay_face", "gorilla_clay_refine", "cow_clay_colours_eyes", "deer_clay_display", "cow_clay_muzzle", "gorilla_clay_eyelids", "deer_clay_eyes_ears", "cow_clay_lower_lip", "cow_clay_muzzle_reverted", "kangaroo_clay_display", "lion_clay_second_pass", "lion_crawl_display", "lion_crawl_colours", "lion_mix_display", "lion_temp_marks", "lion_temp_marks_lower", "rhino_clay_display", "zebra_clay_display", "lion_clay_roams", "lion_designs_removed", "black_bear_clay_display", "black_bear_clay_front_row", "black_bear_clay_soles", "flamingo_clay_display", "flamingo_clay_colours", "black_bear_cub_beside_bear", "black_bear_cub_clear_of_zebra", "flamingo_clay_back_feathers", "black_bear_cub_body", "golden_retriever_clay_display", "black_bear_cub_body_reverted", "black_bear_adult_clay_display", "black_bears_front_row_pair", "black_bear_cub_baby", "black_bear_cub_young_face", "golden_retriever_clay_coat", "duck_clay_display", "black_bear_cub_lighter_fur", "pig_clay_display", "clay_animals_roam", "clay_animals_spacing", "animals_bigger", "zoo_zones", "chapel_old_outline", "home_expansion_ground", "home_side_pad_trim", "statue_word", "clay_animals_unpacked", "parked_vehicles", "warehouse_entrance_walk", "spawn_clear_car", "clay_meshes_external", "pig_clay_walks", "clay_animals_walk", "rooster_clay_display", "capybara_clay_display", "tiger_clay_walks", "monkey_clay_display", "horse_clay_walks", "capybara_clay_walks", "chick_clay_display", "tutorial_lot_clear", "fish_under_water", "zoo_plaza_benches_removed", "zoo_welcome_sign_removed", "zoo_food_booth", "hen_clay_display", "zoo_food_booth_sign_fit", "hen_clay_roams", "monkey_sheep_clay_roam"]
+const STEPS := ["solid_roofs", "remove_bird", "tulip_beds", "plaza_fountains", "bronze_statue", "statue_blueprint", "statue_traced", "statue_traced_refit", "statue_reference", "statue_reference_finish", "statue_angular_portrait", "statue_temple_hair", "statue_hair_relief_fit", "statue_single_bronze", "bench_placement", "statue_patina", "statue_patina_warm", "toy_scooter", "toy_scooter_full_size", "statue_town_bronze", "mystery_house_site", "coplanar_gaps", "coplanar_gaps_2", "lion_blueprint_display", "lion_clay_display", "lion_clay_face_rework", "lion_clay_ears_fit", "lion_clay_eyes_mane", "lion_clay_ears_mane_two_layers", "giraffe_clay_display", "giraffe_clay_colours", "giraffe_clay_refine", "elephant_clay_display", "red_panda_clay_display", "elephant_clay_colours", "panda_clay_display", "cow_clay_display", "gorilla_clay_display", "panda_clay_face", "gorilla_clay_refine", "cow_clay_colours_eyes", "deer_clay_display", "cow_clay_muzzle", "gorilla_clay_eyelids", "deer_clay_eyes_ears", "cow_clay_lower_lip", "cow_clay_muzzle_reverted", "kangaroo_clay_display", "lion_clay_second_pass", "lion_crawl_display", "lion_crawl_colours", "lion_mix_display", "lion_temp_marks", "lion_temp_marks_lower", "rhino_clay_display", "zebra_clay_display", "lion_clay_roams", "lion_designs_removed", "black_bear_clay_display", "black_bear_clay_front_row", "black_bear_clay_soles", "flamingo_clay_display", "flamingo_clay_colours", "black_bear_cub_beside_bear", "black_bear_cub_clear_of_zebra", "flamingo_clay_back_feathers", "black_bear_cub_body", "golden_retriever_clay_display", "black_bear_cub_body_reverted", "black_bear_adult_clay_display", "black_bears_front_row_pair", "black_bear_cub_baby", "black_bear_cub_young_face", "golden_retriever_clay_coat", "duck_clay_display", "black_bear_cub_lighter_fur", "pig_clay_display", "clay_animals_roam", "clay_animals_spacing", "animals_bigger", "zoo_zones", "chapel_old_outline", "home_expansion_ground", "home_side_pad_trim", "statue_word", "clay_animals_unpacked", "parked_vehicles", "warehouse_entrance_walk", "spawn_clear_car", "clay_meshes_external", "pig_clay_walks", "clay_animals_walk", "rooster_clay_display", "capybara_clay_display", "tiger_clay_walks", "monkey_clay_display", "horse_clay_walks", "capybara_clay_walks", "chick_clay_display", "tutorial_lot_clear", "fish_under_water", "zoo_plaza_benches_removed", "zoo_welcome_sign_removed", "zoo_food_booth", "hen_clay_display", "zoo_food_booth_sign_fit", "hen_clay_roams", "monkey_sheep_clay_roam", "pastel_ground"]
 const Plaza = preload("res://scripts/buildings/monument_plaza.gd")
 
 ## Collision for the decorative gazebo roof cap (7 Nov 2026; scripts/buildings/roof_solids.gd).
@@ -2064,3 +2064,31 @@ func _pick_area(parent: Node3D, at: Vector3, size: Vector3) -> void:
 	area.add_child(shape)
 	parent.add_child(area)
 
+## Pastel ground tones (P3-23, decision D14: approved by the user 26 Nov 2026,
+## docs/evidence/pastel-20261125/). Grass and sand are the shared files shaders/grass.tres and
+## sand.tres (edited there); the road and paving materials are stored in this scene, one per old
+## colour, and get a recoloured copy each (never changed in place).
+const PASTEL_GROUND := {
+	"road.gdshader": {"586b6e": Color("66767d"), "65777a": Color("72838a")},
+	"paving.gdshader": {"d2cbb7": Color("e6dcc6"), "a8aba8": Color("c4c2bb"), "dbc8a6": Color("ead9b8")},
+}
+
+func pastel_ground(town: Node3D, _game) -> void:
+	var copies := {}
+	var count := 0
+	for node: GeometryInstance3D in town.find_children("*", "GeometryInstance3D", true, false):
+		var material := node.material_override as ShaderMaterial
+		if material == null or material.shader == null:
+			continue
+		if not copies.has(material):
+			copies[material] = null
+			var table: Dictionary = PASTEL_GROUND.get(material.shader.resource_path.get_file(), {})
+			var old = material.get_shader_parameter("base_color")
+			if old is Color and table.has((old as Color).to_html(false)):
+				var copy := material.duplicate() as ShaderMaterial
+				copy.set_shader_parameter("base_color", table[(old as Color).to_html(false)])
+				copies[material] = copy
+		if copies[material] != null:
+			node.material_override = copies[material]
+			count += 1
+	print("BASE pastel_ground: %d ground meshes, %d materials" % [count, copies.values().filter(func(c): return c != null).size()])

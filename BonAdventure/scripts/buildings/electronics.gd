@@ -3,7 +3,7 @@ extends RefCounted
 ## electronics unit (scenes/town/electronics.scn).
 ## Bake:  godot --headless --path . --script res://tools/bake_unit.gd -- electronics
 ## Never rename or remove a baked step (add a new one that undoes it).
-const STEPS := ["coplanar_gaps", "coplanar_gaps_2", "glass_windows", "shop_row_style", "clay_makeover", "bigger_products"]
+const STEPS := ["coplanar_gaps", "coplanar_gaps_2", "glass_windows", "shop_row_style", "clay_makeover", "bigger_products", "palette_snap"]
 
 ## Faces that shared a plane and flickered are set apart (10 Nov 2026,
 ## scripts/buildings/coplanar_gaps.gd).
@@ -42,3 +42,10 @@ func clay_makeover(town: Node3D, game) -> void:
 ## docs/guides/TOWN_DESIGN_BRIEF.md "Electronics store makeover", 23 Nov 2026 addendum.
 func bigger_products(town: Node3D, _game) -> void:
 	print("electronics bigger_products: ", preload("res://scripts/buildings/electronics_makeover.gd").new().bigger(town))
+
+
+## Colours snapped to the game palette with the hue guard (P3-22, decision D14: approved by the
+## user 26 Nov 2026 after the library/police trial; scripts/buildings/palette_snap.gd,
+## docs/evidence/pastel-20261125/).
+func palette_snap(town: Node3D, _game) -> void:
+	preload("res://scripts/buildings/palette_snap.gd").snap(town, "electronics")

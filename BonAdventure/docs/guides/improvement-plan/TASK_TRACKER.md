@@ -290,7 +290,7 @@ Done on 25 Nov: P3-01 in part (settled zoo gate, cached player in the crab: `e8a
 | P3-19 | A3 | C | Ease BonBon's jump pose; optional 3-step blink | `player_controller.gd`, `plush_life.gd` |
 | P3-20 | A2 | C | Glass reflects the time of day (one shared material write) | `day_night.gd` |
 | P3-21 | A2 | S | Night-only glow, kept only if cheap on phones | `day_night.gd` |
-| P3-22 | A2 | C | Palette clustering report, then snapping per building (D14: try, before/after) | `tools/material_palette.gd`, bakes |
-| P3-23 | A2 | S | Ground shader tones toward the pastel palette (D14: try, before/after) | `shaders/*.tres` |
+| P3-22 | A2 | C | **Done 26 Nov** (branch `claude/pastel-f9b9c5`): clustering report `tools/palette_report.gd`; hue-guarded snap `scripts/buildings/palette_snap.gd`, step `palette_snap` baked in all 19 units ([evidence](../../evidence/pastel-20261125/README.md)) | `tools/material_palette.gd`, bakes |
+| P3-23 | A2 | S | **Done 26 Nov** (same branch): pastel grass and sand (`shaders/grass.tres`, `sand.tres`), roads and paving by base step `pastel_ground` | `shaders/*.tres`, `base.gd` |
 | P3-24 | A2 | C | Three shared clay materials (after the sheep work lands) | `scenes/animals/*_clay.tscn` |
 | P3-25 | A2/A8 | C | Mark the 14 Nov "Graphics tiers" entry superseded; relabel `performance/latest.png` | `FINAL_VERIFICATION.md`, performance README |

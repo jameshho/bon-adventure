@@ -7,7 +7,7 @@ extends RefCounted
 ## islands and the salesperson.
 ## Bake:  godot --headless --path . --script res://tools/bake_unit.gd -- furniture
 ## Never rename or remove a baked step (add a new one that undoes it).
-const STEPS := ["showroom_tidy", "coplanar_gaps", "coplanar_gaps_2", "shop_row_style"]
+const STEPS := ["showroom_tidy", "coplanar_gaps", "coplanar_gaps_2", "shop_row_style", "palette_snap"]
 
 const Y0 := .03
 const FIGURE_LAYER: int = preload("res://scripts/characters/house_characters.gd").FIGURE_LAYER
@@ -142,3 +142,10 @@ func coplanar_gaps_2(town: Node3D, _game) -> void:
 func shop_row_style(town: Node3D, game) -> void:
 	var ShopRow := preload("res://scripts/buildings/shop_row.gd")
 	print("shop_row furniture: ", ShopRow.restyle(town, game, "furniture"))
+
+
+## Colours snapped to the game palette with the hue guard (P3-22, decision D14: approved by the
+## user 26 Nov 2026 after the library/police trial; scripts/buildings/palette_snap.gd,
+## docs/evidence/pastel-20261125/).
+func palette_snap(town: Node3D, _game) -> void:
+	preload("res://scripts/buildings/palette_snap.gd").snap(town, "furniture")

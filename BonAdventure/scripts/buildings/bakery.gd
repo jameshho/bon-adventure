@@ -4,7 +4,7 @@ extends RefCounted
 ## Bake:  godot --headless --path . --script res://tools/bake_unit.gd -- bakery
 ## Never rename or remove a baked step (add a new one that undoes it).
 ## Record: docs/guides/TOWN_DESIGN_BRIEF.md "Supermarket product art — 8 November 2026" (reuse).
-const STEPS := ["shop_products", "coplanar_gaps", "coplanar_gaps_2", "glass_windows", "shop_row_style", "table_meals"]
+const STEPS := ["shop_products", "coplanar_gaps", "coplanar_gaps_2", "glass_windows", "shop_row_style", "table_meals", "palette_snap"]
 const Products = preload("res://scripts/buildings/supermarket_products.gd")
 const INTERIOR := "Buildings/BakeryCafe/Interior"
 ## Plain bottles in the drinks fridge by colour, and the three drink words, as product models.
@@ -98,3 +98,10 @@ func table_meals(town: Node3D, _game) -> void:
 		cafe.move_child(root, index)
 		done += 1
 	print("BAKERY table_meals: %d meals redrawn" % done)
+
+
+## Colours snapped to the game palette with the hue guard (P3-22, decision D14: approved by the
+## user 26 Nov 2026 after the library/police trial; scripts/buildings/palette_snap.gd,
+## docs/evidence/pastel-20261125/).
+func palette_snap(town: Node3D, _game) -> void:
+	preload("res://scripts/buildings/palette_snap.gd").snap(town, "bakery")

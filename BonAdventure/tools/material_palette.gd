@@ -143,3 +143,66 @@ func route(object: Object, visited: Dictionary) -> void:
 		elif value is Resource and not value is Script and town_owned(value) and not visited.has(value):
 			visited[value] = true
 			route(value, visited)
+
+# --- Colour distance to the game palette (P3-22, 25 Nov 2026; tools/palette_report.gd) ---------
+# Distances are in OKLab (perceptual; 0.02 is about the smallest step most people see, 0.04 the
+# 18 Nov building review's "near-identical" bound). The targets are every named colour in
+# scripts/core/game_palette.gd (surfaces, UI, icon and the five accent families).
+
+## sRGB colour -> OKLab (L, a, b).
+static func oklab(colour: Color) -> Vector3:
+	var c := colour.srgb_to_linear()
+	var l := 0.4122214708 * c.r + 0.5363325363 * c.g + 0.0514459929 * c.b
+	var m := 0.2119034982 * c.r + 0.6806995451 * c.g + 0.1073969566 * c.b
+	var s := 0.0883024619 * c.r + 0.2817188376 * c.g + 0.6299787005 * c.b
+	l = pow(maxf(l, 0.0), 1.0 / 3.0)
+	m = pow(maxf(m, 0.0), 1.0 / 3.0)
+	s = pow(maxf(s, 0.0), 1.0 / 3.0)
+	return Vector3(0.2104542553 * l + 0.7936177850 * m - 0.0040720468 * s,
+		1.9779984951 * l - 2.4285922050 * m + 0.4505937099 * s,
+		0.0259040371 * l + 0.7827717662 * m - 0.8086757660 * s)
+
+static func distance(a: Color, b: Color) -> float:
+	return oklab(a).distance_to(oklab(b))
+
+## Every named colour of the game palette: [[name, Color], ...] (accents as "sky 1" etc.).
+static func palette_targets() -> Array:
+	var script: Script = load("res://scripts/core/game_palette.gd")
+	var result := []
+	var constants := script.get_script_constant_map()
+	for name in constants:
+		if constants[name] is Color:
+			result.append([name, constants[name]])
+	for family in constants.ACCENTS:
+		for tone in 3:
+			result.append(["%s %d" % [family, tone], constants.ACCENTS[family][tone]])
+	return result
+
+## Hue guard (user, 26 Nov 2026, after the trial turned navy and slate teal): a colour only
+## matches a palette colour of a similar hue (within HUE_LIMIT degrees when both have colour)
+## and never gains more than CHROMA_GAIN of colourfulness (a grey stays grey, not teal or beige).
+const HUE_LIMIT := 20.0
+const CHROMA_GAIN := 0.04
+const GREY := 0.03
+
+static func compatible(colour: Color, target: Color) -> bool:
+	var a := oklab(colour)
+	var b := oklab(target)
+	var ca := Vector2(a.y, a.z).length()
+	var cb := Vector2(b.y, b.z).length()
+	if cb > ca + CHROMA_GAIN:
+		return false
+	if ca < GREY or cb < GREY:
+		return true
+	return absf(angle_difference(atan2(a.z, a.y), atan2(b.z, b.y))) <= deg_to_rad(HUE_LIMIT)
+
+## Nearest palette colour: [name, Color, distance]; `guarded` applies the hue guard.
+static func nearest(colour: Color, targets: Array, guarded := true) -> Array:
+	var best := ["", Color.BLACK, INF]
+	for target in targets:
+		if guarded and not compatible(colour, target[1]):
+			continue
+		var d := distance(colour, target[1])
+		if d < best[2]:
+			best = [target[0], target[1], d]
+	return best

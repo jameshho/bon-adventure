@@ -3,7 +3,7 @@ extends RefCounted
 ## restaurants unit (scenes/town/restaurants.scn).
 ## Bake:  godot --headless --path . --script res://tools/bake_unit.gd -- restaurants
 ## Never rename or remove a baked step (add a new one that undoes it).
-const STEPS := ["solid_roofs", "dining_room_refresh", "pizza_burger_refit", "coplanar_gaps", "coplanar_gaps_2", "dining_game_tables", "glass_windows", "glass_windows_2", "fine_dining_dark_glass", "fine_dining_dark_glass_2", "fine_dining_real_windows", "fine_dining_real_windows_2", "fine_dining_real_windows_3", "fine_dining_single_glass", "fine_dining_single_glass_2", "facade_sign_padding", "pizza_burger_door", "taqueria_tray", "door_sounds"]
+const STEPS := ["solid_roofs", "dining_room_refresh", "pizza_burger_refit", "coplanar_gaps", "coplanar_gaps_2", "dining_game_tables", "glass_windows", "glass_windows_2", "fine_dining_dark_glass", "fine_dining_dark_glass_2", "fine_dining_real_windows", "fine_dining_real_windows_2", "fine_dining_real_windows_3", "fine_dining_single_glass", "fine_dining_single_glass_2", "facade_sign_padding", "pizza_burger_door", "taqueria_tray", "door_sounds", "palette_snap"]
 
 ## Alta Cocina dining room (Restaurants/Pizza, local frame): inside faces of the walls at
 ## x = ±14.70 and z = ±7.70, floor y .09, ceiling y 6.44. Front wall (entrance, z < 0) has the
@@ -992,3 +992,10 @@ func door_sounds(town: Node3D, game) -> void:
 		push_error("restaurants door_sounds: no Pizza and Burger entrance")
 		return
 	print("RESTAURANTS door_sounds: 1 door")
+
+
+## Colours snapped to the game palette with the hue guard (P3-22, decision D14: approved by the
+## user 26 Nov 2026 after the library/police trial; scripts/buildings/palette_snap.gd,
+## docs/evidence/pastel-20261125/).
+func palette_snap(town: Node3D, _game) -> void:
+	preload("res://scripts/buildings/palette_snap.gd").snap(town, "restaurants")

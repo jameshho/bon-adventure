@@ -9,7 +9,7 @@ extends RefCounted
 ## scale 1.3 applies). The shell runs x -12..12, front wall z -12.2 (entrance at x 0), rear
 ## wall z 5.675 (inner face about 5.55); the divider stands at x 0 from z -3.2 to the rear wall.
 ## The general classroom is the x < 0 half.
-const STEPS := ["grammar_classroom", "coplanar_gaps", "coplanar_gaps_2", "glass_windows", "bigger_board", "science_room"]
+const STEPS := ["grammar_classroom", "coplanar_gaps", "coplanar_gaps_2", "glass_windows", "bigger_board", "science_room", "palette_snap"]
 
 ## Lana, the sheep teacher, under Buildings/School.
 const LANA := "TeacherLana"
@@ -287,3 +287,10 @@ func _plaque_name(plaque: Node3D, text: String, back: bool) -> void:
 	if back:
 		label.rotation.y = PI
 	plaque.add_child(label)
+
+
+## Colours snapped to the game palette with the hue guard (P3-22, decision D14: approved by the
+## user 26 Nov 2026 after the library/police trial; scripts/buildings/palette_snap.gd,
+## docs/evidence/pastel-20261125/).
+func palette_snap(town: Node3D, _game) -> void:
+	preload("res://scripts/buildings/palette_snap.gd").snap(town, "school")

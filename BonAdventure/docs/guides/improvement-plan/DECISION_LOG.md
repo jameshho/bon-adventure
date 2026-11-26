@@ -23,6 +23,7 @@
 | 25 Nov 2026 | D12 NPCs: face the player while talking (whole figure, eased back); no extra idle gestures | user | ANIM-07 |
 | 25 Nov 2026 | D13 BonBon gait: try cadence-follows-distance; user compares walk/sprint/slow-stick renders before it is kept | user | ANIM-03 |
 | 25 Nov 2026 | D14 look: try all three (light veil, pastel ground tones, palette tidy-up), each shown as before/after renders | user | P3-15, P3-23, P3-22 |
+| 26 Nov 2026 | D14 palette and ground: after the library/police trial the user asked for a hue guard (no navy or slate turning teal), then approved rolling out the guarded snap to every building plus the pastel ground ([evidence](../../evidence/pastel-20261125/README.md)) | user | P3-22, P3-23 |
 | 25 Nov 2026 | Journal redesign approved (separate session): a sticker book of places and topics, not built; it supersedes UI-03 and shows LEARN-04's "known" as a flower ([Journal](../JOURNAL.md)) | user | UI-03, LEARN-04 |
 
 ## Open decisions

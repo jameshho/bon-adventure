@@ -14,7 +14,7 @@ extends RefCounted
 ## -X): local x runs south (+x = town -Z), local z runs west (+z = town +X). Shell x -12..12,
 ## z -15 (front) .. 15 (rear); floor top FLOOR. Hall z -15..-5; mystery room z -5..15 with the
 ## door wall at z DOOR_WALL and the three alcoves behind it.
-const STEPS := ["build_house", "endless_hall", "hinges_right", "zodiac_signs", "door_faces", "room_ceiling", "room_twin", "coplanar_gaps", "coplanar_gaps_2", "entry_ramp", "interaction_metas"]
+const STEPS := ["build_house", "endless_hall", "hinges_right", "zodiac_signs", "door_faces", "room_ceiling", "room_twin", "coplanar_gaps", "coplanar_gaps_2", "entry_ramp", "interaction_metas", "palette_snap"]
 
 const ROOT := "MysteryHouse"
 ## Town position of the house centre and its turn (local -Z -> town -X, toward the road).
@@ -1756,3 +1756,10 @@ func entry_ramp(town: Node3D, _game) -> void:
 ## system; scripts/buildings/interaction_metas.gd): their objects have Interactables now.
 func interaction_metas(town: Node3D, _game) -> void:
 	preload("res://scripts/buildings/interaction_metas.gd").strip(town, "mystery")
+
+
+## Colours snapped to the game palette with the hue guard (P3-22, decision D14: approved by the
+## user 26 Nov 2026 after the library/police trial; scripts/buildings/palette_snap.gd,
+## docs/evidence/pastel-20261125/).
+func palette_snap(town: Node3D, _game) -> void:
+	preload("res://scripts/buildings/palette_snap.gd").snap(town, "mystery")
