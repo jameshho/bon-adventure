@@ -715,6 +715,13 @@ buttons (now section headings of the table) and the hint stay in the HUD.
   [word pictures](#word-pictures)). The ★ toggles the existing bookmark
   (`vocabulary_hud.gd` `toggle_bookmark()`, saved at once to `VocabularyProgress.BOOKMARKS_FILE`;
   the card star uses the same function).
+- **Known words** (25 Nov 2026, decision D9, improvement plan LEARN-04): a word that
+  `WordMemory.is_known()` accepts ([word memory](MINIGAMES.md#word-memory): stability at least
+  `LEARNED_STABILITY`) has a small daisy in the corner of its picture cell (static
+  `known_badge()` / `show_known()`, kept small so the sticker-book journal can reuse them), the
+  footer adds "· N known" (`known_total()`) and the detail line adds "You know this word".
+  `set_data()` reads it once per open into `words[key].known`. Check and renders:
+  `docs/evidence/known-words-20261125/verify.gd`.
 - **Filters:** All / Studied / Saved (the bookmarked words; the game calls them "saved"),
   search in either language (case and Spanish accents ignored), category, sorting (foreign
   A–Z, native A–Z, most right, most wrong; sorting is inside each section). Area sections

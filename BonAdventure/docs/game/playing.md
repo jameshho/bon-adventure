@@ -124,6 +124,9 @@ results card after a game ([journal](../evidence/word-pictures-20261123/journal-
 Since 24 Nov a **speaker** on the word card, on every journal row and in a word's journal page
 says the word in the language you are learning ([journal](../evidence/journal-speaker-20261124/journal-rows.png),
 [word page](../evidence/journal-speaker-20261124/journal-detail.png)).
+Since 25 Nov a word you **know** (the [word memory](minigames.md#which-words-come-up) remembers it
+well) has a small **daisy** on its picture, its page says "You know this word", and the bottom line
+counts the known words ([journal](../evidence/known-words-20261125/journal-studied-laptop.png)).
 [Vocabulary book](../guides/ARCHITECTURE_REVIEW_PART1.md#vocabulary-book) ·
 [word pictures](../guides/ARCHITECTURE_REVIEW_PART1.md#word-pictures) ·
 [holding things](../guides/HAND_HOLD.md)
