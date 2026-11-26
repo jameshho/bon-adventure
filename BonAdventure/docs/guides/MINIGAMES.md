@@ -309,7 +309,9 @@ never go under 52 px (touch UI rule, 9 Nov 2026), and it fits a 1280 × 720 wind
 scroll bar.
 
 A game whose building is left out by `dev_focus.txt` shows "Building not loaded"; Play is off
-while any game runs or the player is in a vehicle. Owner: `scripts/ui/game_launcher.gd`
+while any game runs or the player is in a vehicle. F9 during a running game (P3-05, 25 Nov 2026)
+opens no picker: Main calls that game's `request_leave()` like Esc, so the leave question offers
+the stop; a panel game ignores it (`toggle()` also refuses while `hud.in_minigame`). Owner: `scripts/ui/game_launcher.gd`
 (built in `minigame_wiring.gd`, `PANELS`, locking the player; F9 in `main.gd`); text in the
 `launcher`, `games`, `games_host` and `games_learn` groups of `data/phrases.json` (native
 language). Check:

@@ -359,6 +359,10 @@
       "move_walk": {"es": "CAMINAR  |  Shift: correr  H: hiper", "en": "WALK  |  Shift: sprint  H: hyper", "zh": "步行  |  Shift：疾跑  H：超高速"},
       "move_hyper_touch": {"es": "HIPERVELOCIDAD", "en": "HYPER SPEED", "zh": "超高速", "note": "The same line on a touch screen, which has no keys (the lightning button turns it off; 13 Nov 2026)."},
       "move_sprint_touch": {"es": "CORRER", "en": "SPRINT", "zh": "疾跑"},
+      "name_settings": {"es": "Ajustes", "en": "Settings", "zh": "設定", "note": "Name tag under the HUD gear for touch players (no tooltips; P3-16, 25 Nov 2026). Keep it short: it fits under a square button."},
+      "name_journal": {"es": "Diario", "en": "Journal", "zh": "日記", "note": "Name tag under the HUD journal button for touch players (P3-16). Short."},
+      "name_map": {"es": "Mapa", "en": "Map", "zh": "地圖", "note": "Name tag under the HUD map button for touch players (P3-16). Short."},
+      "name_games": {"es": "Juegos", "en": "Games", "zh": "遊戲", "note": "Name tag under the HUD ▶ minigame picker button for touch players (P3-16). Short."},
       "run_button": {"es": "Correr", "en": "Run", "zh": "跑", "note": "The Run toggle button bottom right (lit while running is on)."},
       "jump_toggle": {"es": "Salto infinito: {state}  (I para cambiar)", "en": "Infinite jump: {state}  (I to toggle)", "zh": "無限跳躍：{state}  （按 I 切換）", "note": "{state} is hud.on or hud.off."},
       "on": {"es": "SÍ", "en": "ON", "zh": "開", "note": "A toggle that is on (F1 guide pills and messages)."},
@@ -606,6 +610,7 @@
       "farmer": {"es": "Granjero", "en": "Farmer", "zh": "農夫", "note": "The farmer outfit (barn farmer Tomás, 23 Nov 2026)."}
     },
     "toast": {
+      "walk_closer": {"es": "Acércate más.", "en": "Walk closer.", "zh": "走近一點。", "note": "A tap or click on something out of reach (interaction_controller.gd, P3-06, 25 Nov 2026)."},
       "walk_to_entrance": {"es": "Acércate a la entrada libre del vehículo para subir.", "en": "Walk to the vehicle's clear entrance to board.", "zh": "請走到車輛沒有阻擋的入口上車。"},
       "turboprop_fly": {"es": "Avión: W o ▲ despegar · ▲ ▼ subir / bajar · A/D girar", "en": "Plane: W or ▲ take off · ▲ ▼ up / down · A/D turn", "zh": "飛機：W 或 ▲ 起飛 · ▲ ▼ 上升／下降 · A/D 轉彎"},
       "helicopter_fly": {"es": "Helicóptero: ▲ ▼ subir / bajar · W/S adelante / atrás · A/D girar", "en": "Helicopter: ▲ ▼ up / down · W/S forward / back · A/D turn", "zh": "直升機：▲ ▼ 上升／下降 · W/S 前進／後退 · A/D 轉彎"},

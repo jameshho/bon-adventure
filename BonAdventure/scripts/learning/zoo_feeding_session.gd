@@ -230,7 +230,8 @@ func _on_fed(animal_key: String, _food: String, ate: bool) -> void:
 		return
 	host.say("zoo.yummy")
 	get_tree().create_timer(NEXT_DELAY).timeout.connect(func() -> void:
-		if playing:
+		# P3-09: guard the host the next request talks through.
+		if playing and is_inside_tree() and is_instance_valid(host):
 			_next_request())
 
 ## Every request fed: Nico thanks the player; the results card follows (results_flow.gd).

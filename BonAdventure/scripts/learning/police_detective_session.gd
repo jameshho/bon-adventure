@@ -494,7 +494,8 @@ func answer(index: int) -> void:
 	card.set_feedback(lexicon.line("police.wrong_report", {"tool": {"phrase": "police.tool_" + tool}}), false)
 	_shake(_nodes[int(round.target)])
 	get_tree().create_timer(.45).timeout.connect(func() -> void:
-		if _running and not _solved:
+		# P3-09: the session may have left the tree before the timer fires.
+		if _running and not _solved and is_inside_tree():
 			_on_tool(tool))
 
 ## The first answer of an evidence round is the practice result (practice_log.gd).
@@ -582,7 +583,7 @@ func _on_tool(id: String) -> void:
 		EvidenceProps.badge(_nodes[i], "")
 		var index := i
 		get_tree().create_timer(i * TOOL_STAGGER).timeout.connect(func() -> void:
-			if serial == _tool_serial and index < _nodes.size() and is_instance_valid(_nodes[index]):
+			if is_inside_tree() and serial == _tool_serial and index < _nodes.size() and is_instance_valid(_nodes[index]):
 				_examine(_nodes[index], round.candidates[index], id, dim))
 
 ## The property pair (data "evidence.dims") a tool reveals: "hardness", "texture", "weight".

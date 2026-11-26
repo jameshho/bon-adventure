@@ -799,7 +799,12 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif event.is_action_pressed("debug_fps"):
 			hud.toggle_fps()
 		elif event.is_action_pressed("games"):
-			if game_launcher != null:
+			# F9 during a running game (P3-05, 25 Nov 2026): no picker over it; the game asks
+			# its shared leave question instead (request_leave(), as Esc does), so "Stop" is one
+			# answer away. A panel game (no request_leave) just ignores it.
+			if hud.in_minigame:
+				_request_leave()
+			elif game_launcher != null:
 				game_launcher.toggle()
 		elif event.is_action_pressed("use"):
 			use_pressed()

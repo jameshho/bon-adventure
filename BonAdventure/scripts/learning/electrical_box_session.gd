@@ -136,7 +136,8 @@ func _on_solved() -> void:
 		box.set_repaired(true)
 		box_repaired.emit(box)
 	get_tree().create_timer(SUCCESS_SECONDS).timeout.connect(func() -> void:
-		if state == "solved":
+		# P3-09: the session may have left the tree (town unloaded) before the timer fires.
+		if is_inside_tree() and state == "solved":
 			close_box())
 
 func _on_returned() -> void:

@@ -538,7 +538,8 @@ func _make_door() -> void:
 		"asking": _door_line_up,
 		"cancel": func() -> void:
 			get_tree().create_timer(DOOR_LINE_LINGER).timeout.connect(func() -> void:
-				if is_instance_valid(door) and not door.zone.overlaps_body(player) and _door_line_up():
+				# P3-09: the door, its zone and the player may be gone when the timer fires.
+				if is_inside_tree() and is_instance_valid(door) and is_instance_valid(door.zone) and is_instance_valid(player) and not door.zone.overlaps_body(player) and _door_line_up():
 					host.close_dialogue()),
 		"layer": HouseCharacters.FIGURE_LAYER})
 

@@ -266,24 +266,26 @@ All of these are **Pending**. Each is small and taken up when its file is alread
 
 Done on 25 Nov: P3-01 in part (settled zoo gate, cached player in the crab: `e8a8edfe`), P3-04 (`a0ae5a25`), P3-15 (`9298019b`), and P3-17's bug (a peek in the flight game now counts as translated: `89f59536`; the bridge refactor is still open).
 
+Also done on 25 Nov (wave 3, branch `claude/touch-fixes-d101e6`, [evidence](../../evidence/touch-fixes-20261125/README.md)): P3-05 (F9 during a game asks that game's leave question, never the picker), P3-06 ("Walk closer" toast), P3-07 (closing hinged doors re-open on the player), P3-09 (SceneTreeTimer guards in the five sessions) and P3-16 (name tags on the icon-only HUD buttons for touch players).
+
 | ID | Owner | Ev. | Item | Files |
 | --- | --- | --- | --- | --- |
 | P3-01 | A1 | C | Per-frame trims: room lookup on the 0.25 s timer, cached door type, settled zoo gate, cached player in crab, far-animal skip | `main.gd`, `door_animator.gd`, `zoo_gate.gd`, `crab.gd`, `park_animals.gd` |
 | P3-02 | A1 | S | Merge same-material static meshes per cell (L, high risk) | `render_culling.gd`, `indoor_visibility.gd` |
 | P3-03 | A1/A2 | C | A coarser second mesh for the heaviest clay animals (zebra 313k tris) | clay build tools, `base.scn` |
 | P3-04 | A4 | C | Touch Jump stands you up (`is_action_pressed("jump")`) | `seating_controller.gd`, `playground_swing.gd`, `playground_seesaw.gd` |
-| P3-05 | A4 | C | F9 picker during a game: check `in_minigame` or offer "Stop" | `main.gd`, `game_launcher.gd` |
-| P3-06 | A4 | C | "Walk closer" toast on an out-of-range tap | `interaction_controller.gd`, `phrases.json` |
-| P3-07 | A4 | S | Hinged doors check the player before closing | `door_animator.gd` |
+| P3-05 | A4 | C | **Completed 25 Nov.** F9 picker during a game: check `in_minigame` or offer "Stop" | `main.gd`, `game_launcher.gd` |
+| P3-06 | A4 | C | **Completed 25 Nov.** "Walk closer" toast on an out-of-range tap | `interaction_controller.gd`, `phrases.json` |
+| P3-07 | A4 | S | **Completed 25 Nov.** Hinged doors check the player before closing | `door_animator.gd` |
 | P3-08 | A4 | C | Grocery Run walk-out moves to the zone door guard (only when the store is next edited) | `shop_session.gd` |
-| P3-09 | A7 | S | `is_instance_valid` guards in SceneTreeTimer lambdas | teller, zoo feeding, police, electrical, cashier sessions |
+| P3-09 | A7 | S | **Completed 25 Nov.** `is_instance_valid` guards in SceneTreeTimer lambdas | teller, zoo feeding, police, electrical, cashier sessions |
 | P3-10 | A7 | C | Typed `main.shop_panel` access instead of `main.get(...)` | `touch_controls.gd` |
 | P3-11 | A7 | C | One `tools/build_clay.gd -- <animal>` | `tools/build_*_clay.gd` |
 | P3-12 | A6 | C | FSRS details: lapse on first Again; tune the constants by play | `word_memory.gd` |
 | P3-13 | A6 | C/S | Normalise aliases in the log and memory (non-destructive) | `practice_log.gd`, `word_memory.gd` |
 | P3-14 | A6 | C | "Words due" nudge on the Passport (**decision**) | `missions.gd`, `passport_panel.gd` |
 | P3-15 | A5 | C | Light veil instead of dark shades, per UI_STYLE (D14: try, before/after) | `vocabulary_hud.gd`, `bon_style.gd` |
-| P3-16 | A5 | S | Name the icon-only HUD buttons for touch players | `vocabulary_hud.gd` |
+| P3-16 | A5 | S | **Completed 25 Nov.** Name the icon-only HUD buttons for touch players | `vocabulary_hud.gd` |
 | P3-17 | A5 | C | `translate_button.gd` becomes a non-visual peek bridge | `translate_button.gd` |
 | P3-18 | A3 | S | Bob or waddle for wandering animals without a rig (after the sheep/hen work lands) | `park_animals.gd` |
 | P3-19 | A3 | C | Ease BonBon's jump pose; optional 3-step blink | `player_controller.gd`, `plush_life.gd` |
