@@ -8258,6 +8258,36 @@ Not run: the full suite, the web export, a hands-on play-test. The sports store 
 scenes were not re-baked (the registry moves the two NPCs at load).
 
 
+## Roomier hen house and clay hens — 25 November 2026
+
+User request: the clay hen replaces every old hen (old files removed); the hen house 20% bigger
+with an improved interior; the flickering nest boxes fixed
+([record](TOWN_DESIGN_BRIEF.md#roomier-hen-house-and-clay-hens--25-november-2026),
+[animals](ANIMAL_SYSTEM.md#farm-hens-are-the-clay-hen-25-nov-2026)). Baked once each, base first:
+`tools/bake_unit.gd -- base` (step `hen_clay_roams`: old hen 0.975 tall, clay hen 0.975 at the
+same home and soles) and `-- barn` (step `roomier_hen_house`: 6 hens, 11 egg spots; baked a
+second time from the pre-step `barn.scn` after the flicker scan found slivers in the first
+version, with the old `hen.tscn` restored for that load only and deleted again). Neither saved
+scene names `hen.tscn` or `hen_clay.tscn` (the clay hen is stored as plain nodes sharing
+`clay_meshes/hen/`). The barn's box in `data/nearby_units.json` taken from a fresh
+`tools/nearby_units_data.gd` run (barn entry only: 59.4…89.8 × 72.9…85.7; the run also picked up
+other sessions' uncommitted changes in other units). The runner's `hen_house` check now runs
+`docs/evidence/hen-house-roomier-20261125/verify.gd`. `dev_focus.txt` = `all`, isolated HOME.
+
+| Result | Check |
+| --- | --- |
+| PASS (exit abort) | `hen-house-roomier-20261125/verify.gd`, headless, VT_FOCUS=barn: **78 checks, 0 failures**: every coop size 1.2× the walk-in coop's; BonBon fits outside the door, in the doorway, inside and by the nest boxes, not through the back wall; 11 spots, 12 cups, 6 hens (2 inside); ParkZoo/Hen and all six hen-house hens are clay hens with the word *hen*, a picking area and the same 0.975 height; the clay display and `hen.tscn` are gone and nothing instances it; **flicker scan: 165 axis-aligned parts of the saved hen house, 0 overlapping same-plane face pairs of different colours** (the same scan finds 37 in the old walk-in hen house, nest-box shelf, dividers and lip among them, and 45 in this step's first version); odds as before; every spot clear and reachable; egg carry, crate, Drop and off-farm drop as before |
+| PASS | runner `runtime_resources` |
+| PASS (exit abort) | runner `barn`: 56 checks, 0 failures |
+
+Views (windowed run, VT_FOCUS=barn): `aerial`, `coop-door`, `inside` inspected (coop clear of
+the west and south fences, hay bale and crate outside, interior parts in place, clay hens in
+the yard and inside). That run stalled at its fourth picture (as the walk-in run once did) and
+was stopped; the other views (`inside-to-door`, `nest-boxes`, `roost`, `feeder-dust-bath`,
+`farm-hen`, carrying, dropped) were not taken. A still picture cannot show flicker; the scan is
+the evidence. Not run: the full suite, the web export, a hands-on play-test. The clay hens are
+not rigged (they glide, no blinking); seven hens of about 116,000 triangles each on the farm.
+
 ## Walk-in hen house — 24 November 2026
 
 User request (same day): the hen house at least 3× bigger and walk-in, a clear place to deposit

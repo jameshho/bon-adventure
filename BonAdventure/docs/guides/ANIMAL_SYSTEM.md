@@ -127,10 +127,11 @@ it. Walking bouts last 3–8 seconds or end on reaching the destination. Zoo/far
 home radii are 2–3.5 town units; meadow/pond animals retain their smaller existing
 1.1/1.8-unit habitat ranges. Animals do not migrate between exhibits.
 
-Since 24 Nov 2026 six more hens (`hen.tscn`, the paddock hen's size) live at the farm's hen
-house in the barn unit (`Barn/Hen house/Hens`, not ParkZoo): `hen_house.gd` calls
-`configure()` with their yard (town x 73.4…84.6, z 74…82) as the habitat
-([record](TOWN_DESIGN_BRIEF.md#hen-house-and-eggs--24-november-2026)).
+Since 24 Nov 2026 six more hens live at the farm's hen house in the barn unit
+(`Barn/Hen house/Hens`, not ParkZoo): `hen_house.gd` calls `configure()` with their yard (town
+x 73.4…89.2, z 73.9…82 since 25 Nov) as the habitat. Since 25 Nov 2026 they are copies of the
+clay farm hen ([below](#farm-hens-are-the-clay-hen-25-nov-2026);
+[record](TOWN_DESIGN_BRIEF.md#roomier-hen-house-and-clay-hens--25-november-2026)).
 
 ### Boundaries, obstacles and recovery
 
@@ -1178,8 +1179,8 @@ tweaks: cream all over (no orange head or red-brown saddle); a smaller, lower co
 smaller wattles (0.82); no eyebrows; a pink blush on each cheek; wings shaded cream at the top
 to warm brown at the bottom; a short upright brown tail fan (the rooster's sickles cut short
 with round ends); 0.5 town units to the top of the comb (provisional), about 116,000 triangles.
-Part names are the rooster's. The old piece-built `scenes/animals/hen.tscn` and the barn
-paddock's hens are unchanged.
+Part names are the rooster's. (Until 25 Nov 2026 the old piece-built `scenes/animals/hen.tscn`
+and the hen house's hens stayed as they were; see the next section.)
 
 Approved by the user on 24 Nov 2026 and placed: one instance, `ParkZoo/HenClayDisplay`, stands
 on the farm lawn at town (70.9, 0.12, 103.6), in a row with the clay rooster and chick (0.8 town
@@ -1196,6 +1197,24 @@ hackle tongues instead of the sheet's round scallops. Town views (`capture.gd --
 `zoo-front.png`, `zoo-side.png`, `zoo-location.png`; printed display y 0.156 world, physics
 ground beside it -0.046, the offset the other clay displays use; the feet meet the grass in the
 views. The bake applied 1 step. No test suite was run.
+
+## Farm hens are the clay hen (25 Nov 2026)
+
+User, 25 Nov 2026: "the new hen should replace the old ones, remove all the old ones and related
+files". Base step `hen_clay_roams` (`scripts/buildings/base.gd`) replaces the wandering farm hen
+`ParkZoo/Hen` (piece-built `hen.tscn`) with the clay hen the way `tiger_clay_walks` did the
+tiger: `_clay_roamer` with the same name, home, facing, child index and word (*hen*), the model
+`ClayHen` turned half round with its Footprint body off, a fitted VocabularyArea, scaled to
+`display_height("Hen")` = 0.975 town units (the old hen's height), soles where the old hen's
+were; stored as plain nodes (`unpack_clay_animals`). The still display `HenClayDisplay` went.
+The barn step `roomier_hen_house` copies `ParkZoo/Hen` six times for the hen house, so all seven
+hens share the clay meshes in `scenes/animals/clay_meshes/hen/`.
+
+Deleted: `scenes/animals/hen.tscn` and its instance in the legacy `scenes/world/park_zoo.tscn`.
+The baked steps `hen_house` and `walk_in_hen_house` still name it and never run again. Not done:
+a rig, so the clay hens glide like the old hen did (no stepping legs or blinking); each hen is
+about 116,000 triangles (seven of them on the farm). Check:
+`docs/evidence/hen-house-roomier-20261125/verify.gd` (views `coop-door.png`, `inside.png`, `aerial.png`).
 
 ## Zoo zones (12 Nov 2026)
 
