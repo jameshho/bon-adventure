@@ -225,10 +225,12 @@ weak word ever logged counted, so 12 in one game stopped new words in all of the
 
 | Call | Use |
 | --- | --- |
-| `order(pool, rng)` | the pool best first: due, allowed new (by `words.json` `tier`), known, other new. For games that pick items from a list |
+| `order(pool, rng)` | the pool best first: due, allowed new (by `words.json` `tier`), familiar (seen, not due), other new. For games that pick items from a list |
 | `choose(pool, n, rng)` | the first n of `order()` |
-| `want(keys)` | 2 due, 1 allowed new, 0 known only, -1 too many new: for comparing candidate questions |
+| `want(keys)` | 2 due, 1 allowed new, 0 familiar only, -1 too many new: for comparing candidate questions |
 | `pick_round(make, words_of, tries)` | for generators that build a whole round (`make` replaces the game's state each call): keeps the first round with `want() >= 1`, else the last. A round that tests no word is taken as it comes, but never replaces a turned-down round with words (25 Nov 2026: word-less rounds record no step, so the new-word gate could stay shut) |
+| `is_known(key)`, `known_state(state)` (static), `known_count(keys)` | **the one meaning of "known"** (decision D9, 25 Nov 2026, improvement plan LEARN-04): stability at least `LEARNED_STABILITY` (4 FSRS days). The journal and the results card ask only this |
+| `known_changed(game_id, key, known)` (signal) | a recorded answer moved a word across the threshold (runtime only); `session_words.gd` collects a session's newly known words from it |
 | `state(key)`, `retrievability(key)`, `is_due`, `is_new`, `learning_count(pool)`, `step()` | inspection |
 
 Wired in: `shop_order.gd` (`_generate_order`), `library_session.gd` (`_fill_cart`),
@@ -350,8 +352,11 @@ locks the player while it shows, Esc = Continue) and `scripts/learning/session_w
   record ever in the learned language: a first meaningful encounter) or **practiced** (recorded
   before); **struggled** = a wrong answer or a translation shown this session. Stat bubbles show
   the counts (a zero is left out). At most **4** words are listed, new first, struggled before the
-  rest; **See all** shows every word as small chips. Mastery is not shown (it waits for a real
-  threshold, e.g. the planned FSRS work).
+  rest; **See all** shows every word as small chips. **Known** (since 25 Nov 2026, decision D9):
+  words whose word-memory stability crossed the learned threshold on this session's answers
+  (`WordMemory.is_known()`, `session_words.gd` `"known"`; a word that drops back below is taken
+  off) get a *Words you now know* bubble and a daisy *Known* tag on their row, and are listed after
+  the new and struggled words. Still no scores ([view](../evidence/known-words-20261125/results-known-laptop.png)).
 - **No new words** (a replay): the card becomes *Great Practice!* "You practiced 12 familiar
   words!" with one *Vocabulary practice* bubble, never "0 new words".
 - **Rewards**: a town mission done by this game (`missions.gd`, the user's "quests") shows as a
@@ -383,7 +388,8 @@ either. Pastimes with no target still never complete.
 Fits a landscape phone (two columns, no scrolling; checked at 844 × 390). Check:
 `docs/evidence/results-screen-20261121/verify.gd` (`results_screen`); renders `results-laptop`,
 `results-see-all`, `results-practice`, `results-quest` (Spot the Suspect with its mission),
-`results-phone` in the same folder. The stars card
+`results-phone` in the same folder; known words: `docs/evidence/known-words-20261125/verify.gd`
+(journal and results card at 1280 × 800 and 844 × 390). The stars card
 (`star_card.gd`, games with levels) still shows on its own; folding it into this card waits for the
 stars and coins design.
 

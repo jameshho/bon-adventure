@@ -17,7 +17,8 @@ extends RefCounted
 ##   1. due      seen words whose R has fallen under TARGET_RETENTION, most forgotten first;
 ##   2. new      up to new_allowed() never-seen words, lowest word tier first (data/words.json
 ##               "tier", draft), random within a tier;
-##   3. known    other seen words, least well remembered first;
+##   3. familiar other seen words (not due), least well remembered first ("known" means only
+##               is_known(), below);
 ##   4. the remaining new words (so a game always has enough).
 ## New words come in gradually, by an interval in steps: after a new word is first answered,
 ## the next one is allowed new_gap() steps later (NEW_GAP_BASE, +1 for every LEARNING_PER_STEP
@@ -27,6 +28,10 @@ extends RefCounted
 ## low-stability word ever logged counted, so a player with 12 of them in one game never met a
 ## new word in another). So a player who keeps getting words right meets new words often; one who
 ## struggles reviews first.
+## Known (decision D9, 25 Nov 2026, improvement plan LEARN-04): a word is "known" when its stability
+## is at least LEARNED_STABILITY. is_known() is the one test: the journal's known count and marker
+## (vocabulary_book.gd) and the results card's "words you now know" (session_words.gd, through
+## known_changed) all ask it; learning_count() counts the other seen words.
 ## Games with a fixed generator (a family tree, a flight board) keep their own generator and
 ## ask wants(keys) to pick among a few generated questions instead (see pick_round()).
 ##
@@ -61,6 +66,10 @@ const LEARNED_STABILITY := 4.0
 const RECENT_STEPS := 16
 ## Tier of a word without one (data/words.json "tier" is a draft, 24 Nov 2026).
 const DEFAULT_TIER := 2
+
+## A recorded answer moved `key` across LEARNED_STABILITY (known true: it is known now; false: it
+## was known and is not any more). `game_id` is the game that recorded it. Runtime only.
+signal known_changed(game_id: String, key: String, known: bool)
 
 static var _shared
 
@@ -124,6 +133,23 @@ func retrievability(key: String) -> float:
 func is_due(key: String) -> bool:
 	return not is_new(key) and retrievability(key) < TARGET_RETENTION
 
+## Whether `state` (a word's saved state) counts as known: the one meaning of "known" (D9).
+static func known_state(state: Dictionary) -> bool:
+	return not state.is_empty() and float(state.get("s", 0.0)) >= LEARNED_STABILITY
+
+## Whether the learner knows `key` in the language being learned (see known_state()).
+func is_known(key: String) -> bool:
+	return known_state(state(key))
+
+## How many of `keys` are known (every word in the memory when `keys` is empty).
+func known_count(keys: Array = []) -> int:
+	var words: Dictionary = _memory().words
+	var n := 0
+	for key in (words.keys() if keys.is_empty() else keys):
+		if known_state(words.get(str(key), {})):
+			n += 1
+	return n
+
 ## Seen words still being learned (stability under LEARNED_STABILITY) that are in the lexicon
 ## and in `pool` (the words the game asks about) or answered in the last RECENT_STEPS steps.
 func learning_count(pool: Array = []) -> int:
@@ -136,7 +162,7 @@ func learning_count(pool: Array = []) -> int:
 	var n := 0
 	for key in memory.words:
 		var s: Dictionary = memory.words[key]
-		if float(s.s) >= LEARNED_STABILITY or not lexicon.has(key):
+		if known_state(s) or not lexicon.has(key):
 			continue
 		if in_pool.has(key) or now - int(s.last) <= RECENT_STEPS:
 			n += 1
@@ -162,7 +188,7 @@ func new_allowed(pool: Array = []) -> int:
 func order(pool: Array, rng: RandomNumberGenerator = null) -> Array:
 	var due: Array = []
 	var fresh: Array = []
-	var known: Array = []
+	var familiar: Array = []
 	for key in pool:
 		var k := str(key)
 		var jitter := rng.randf() * 0.001 if rng != null else 0.0
@@ -171,12 +197,12 @@ func order(pool: Array, rng: RandomNumberGenerator = null) -> Array:
 		elif is_due(k):
 			due.append([retrievability(k) + jitter, k])
 		else:
-			known.append([retrievability(k) + jitter, k])
-	for list in [due, fresh, known]:
+			familiar.append([retrievability(k) + jitter, k])
+	for list in [due, fresh, familiar]:
 		list.sort_custom(func(a, b): return a[0] < b[0])
 	var quota := mini(new_allowed(pool), fresh.size())
 	var ranked: Array = []
-	for list in [due, fresh.slice(0, quota), known, fresh.slice(quota)]:
+	for list in [due, fresh.slice(0, quota), familiar, fresh.slice(quota)]:
 		for item in list:
 			ranked.append(item[1])
 	return ranked
@@ -186,7 +212,7 @@ func choose(pool: Array, count: int, rng: RandomNumberGenerator = null) -> Array
 	return order(pool, rng).slice(0, count)
 
 ## How much a question testing `keys` is wanted now: 2 a due word, 1 an allowed new word,
-## 0 only known words, -1 a new word while none is allowed.
+## 0 only familiar (seen, not due) words, -1 a new word while none is allowed.
 func want(keys: Array) -> int:
 	var best := 0
 	var new_words := 0
@@ -235,22 +261,29 @@ func tier(key: String) -> int:
 	return int(value)
 
 ## One recorded question: one step, then every word's FSRS update.
-func _on_recorded(_game_id: String, outcomes: Dictionary) -> void:
+func _on_recorded(game_id: String, outcomes: Dictionary) -> void:
 	var language: String = Lexicon.shared().foreign
 	if not data.has(language):
 		data[language] = _seeded(language, outcomes)
 	var memory := _memory()
 	memory.step = int(memory.get("step", 0)) + 1
 	var now: int = memory.step
+	var changed: Array = []
 	for key in outcomes:
 		var grade := GOOD if str(outcomes[key]) == "positive" else AGAIN
 		var s: Dictionary = memory.words.get(str(key), {})
+		var was_known := known_state(s)
 		if s.is_empty():
 			memory.words[str(key)] = _first_state(grade, now)
 			memory.last_new = now
 		else:
 			memory.words[str(key)] = _review(s, grade, now)
+		var now_known := known_state(memory.words[str(key)])
+		if now_known != was_known:
+			changed.append([str(key), now_known])
 	save()
+	for change in changed:
+		known_changed.emit(game_id, change[0], change[1])
 
 func _first_state(grade: int, now: int) -> Dictionary:
 	return {"s": W[grade - 1], "d": _d0(grade), "last": now, "reps": 1, "lapses": 1 if grade == AGAIN else 0}

@@ -19,6 +19,10 @@ extends VBoxContainer
 ## UI art style (user, 18 Nov 2026; docs/guides/UI_STYLE.md): a light cream table on the HUD's mint
 ## card, dark teal and brown Fredoka text, BonStyle pills for tabs, menus and toggles (green when
 ## chosen), restyled at every window scale (apply_scale()).
+## Known words (decision D9, 25 Nov 2026, LEARN-04): a word the word memory knows
+## (word_memory.gd is_known(), the one test) has a small daisy on its picture cell (known_badge(),
+## shared so the sticker-book journal can reuse it), the footer counts the known words, and the
+## detail view says so.
 const PracticeLog := preload("res://scripts/learning/practice_log.gd")
 const Lexicon := preload("res://scripts/language/lexicon.gd")
 const UiText := preload("res://scripts/language/ui_text.gd")
@@ -27,6 +31,7 @@ const UiIcons := preload("res://scripts/ui/ui_icons.gd")
 const BonStyle := preload("res://scripts/ui/bon_style.gd")
 const Sound := preload("res://scripts/core/sound.gd")
 const WordPictures := preload("res://scripts/ui/word_pictures.gd")
+const WordMemory := preload("res://scripts/learning/word_memory.gd")
 
 ## Light palette (UI art style, 18 Nov 2026; was the dark HUD colours).
 const GOLD := Color("e9a91f")
@@ -57,6 +62,8 @@ const SCROLL_WIDTH := 24.0
 const STAR_WIDTH := 52.0
 const NUMBER_WIDTH := 96.0
 const PICTURE_WIDTH := 52.0
+## The known daisy on a row's picture cell (square, at scale 1).
+const KNOWN_BADGE := 24.0
 ## Drag to scroll (25 Nov 2026, improvement plan UI-03): a press on the list (a row, its star or
 ## speaker, or the empty space) that travels more than this many pixels at scale 1 (at least
 ## DRAG_SLOP_MIN) scrolls the list with the finger and is no longer a tap, so the row, star or
@@ -469,6 +476,7 @@ func _make_row(is_header: bool) -> Control:
 		art.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		art.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		art.set_meta("base_width", PICTURE_WIDTH)
+		art.add_child(known_badge())
 		line.add_child(art)
 	for spec in [[0.0, 1.3], [0.0, 1.1], [NUMBER_WIDTH, 0.0], [NUMBER_WIDTH, 0.0], [NUMBER_WIDTH, 0.0]]:
 		var cell := _cell(spec[0], spec[1])
@@ -674,6 +682,7 @@ func set_data(new_studied: Dictionary, new_dictionary: Dictionary, new_categorie
 	by_area = new_by_area
 	var lexicon = Lexicon.shared()
 	var log = PracticeLog.shared()
+	var memory = WordMemory.shared()
 	words.clear()
 	for key in dictionary:
 		var foreign := UiText.word(str(key), lexicon.foreign)
@@ -682,6 +691,7 @@ func set_data(new_studied: Dictionary, new_dictionary: Dictionary, new_categorie
 		entry.foreign = foreign
 		entry.native = native
 		entry.search = fold(foreign + "\n" + native)
+		entry.known = memory.is_known(str(key))
 		words[str(key)] = entry
 	_refresh_texts()
 	rebuild()
@@ -705,6 +715,38 @@ func games_for(key: String) -> Dictionary:
 ## A readable game name (data/phrases.json games.<id>); the id when there is none.
 static func game_name(id: String) -> String:
 	return UiText.t("games." + id) if UiText.has("games." + id) else id
+
+## How many of the journal's words are known (word_memory.gd is_known()).
+func known_total() -> int:
+	return words.keys().filter(func(k): return bool(words[k].get("known", false))).size()
+
+## The small daisy that marks a known word, for a picture cell (its parent): bottom-right corner,
+## hidden until show_known() turns it on. Shared so other journal views can mark known words.
+static func known_badge() -> TextureRect:
+	var daisy := TextureRect.new()
+	daisy.name = "Known"
+	daisy.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	daisy.texture = BonStyle.icon_texture("daisy", 64)
+	daisy.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	daisy.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	daisy.visible = false
+	daisy.anchor_left = 1.0
+	daisy.anchor_top = 1.0
+	daisy.anchor_right = 1.0
+	daisy.anchor_bottom = 1.0
+	return daisy
+
+## Shows or hides `cell`'s known daisy, sized for the window scale `f`.
+static func show_known(cell: Control, known: bool, f: float) -> void:
+	var daisy: Control = cell.get_node_or_null("Known")
+	if daisy == null:
+		return
+	daisy.visible = known
+	var px := KNOWN_BADGE * f
+	daisy.offset_left = -px
+	daisy.offset_top = -px
+	daisy.offset_right = 0.0
+	daisy.offset_bottom = 0.0
 
 func filter_count(id: String) -> int:
 	match id:
@@ -786,6 +828,9 @@ func rebuild() -> void:
 			unique[key] = true
 	shown_words = unique.size()
 	footer.text = UiText.t("journal.showing", {"shown": shown_words, "total": words.size()}) if shown_words > 0 else UiText.t("journal.no_match")
+	var known := known_total()
+	if shown_words > 0 and known > 0:
+		footer.text += "  ·  " + UiText.t("journal.known_count", {"n": known})
 	# The Saved tab with nothing saved explains how to save a word.
 	var nothing_saved: bool = filter == "saved" and filter_count("saved") == 0
 	empty_label.visible = items.is_empty()
@@ -932,6 +977,7 @@ func _draw_rows() -> void:
 		cells[0].text = "★" if saved else "☆"
 		cells[0].tooltip_text = UiText.t("card.unsave" if saved else "card.save")
 		_show_picture(cells[1], key)
+		show_known(cells[1], bool(word.get("known", false)), factor)
 		cells[2].text = word.foreign
 		cells[3].text = word.native
 		cells[4].text = "✓" if studied.has(key) else "–"
@@ -1034,6 +1080,8 @@ func _render_detail() -> void:
 	detail_picture.visible = _show_picture(detail_picture, key)
 	PinyinText.show(detail_reading, {"foreign": word.foreign})
 	detail_native.text = word.native + "  ·  " + UiText.named("categories", str(categories.get(key, "Everyday")))
+	if bool(word.get("known", false)):
+		detail_native.text += "  ·  " + UiText.t("journal.known_tag")
 	var saved := bookmarks.has(key)
 	detail_star.text = "★" if saved else "☆"
 	detail_speaker.visible = can_say(key)

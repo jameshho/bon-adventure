@@ -230,6 +230,7 @@ func run():
 
 	two_games()
 	zoo_due_first()
+	known_words()
 
 	print("WORD MEMORY CHECK: %d checks, %d failures" % [checks, failures])
 	quit(0 if failures == 0 else 1)
@@ -310,3 +311,35 @@ func zoo_due_first() -> void:
 	session.free()
 	for node in feeder.nodes:
 		node.free()
+
+## LEARN-04 / D9 (25 Nov 2026): one meaning of "known" (stability >= LEARNED_STABILITY), the
+## known_changed signal and the session's "known" words (session_words.gd).
+func known_words() -> void:
+	fresh()
+	var SessionWords := preload("res://scripts/learning/session_words.gd")
+	SessionWords._shared = null
+	var memory = WordMemory.shared()
+	var words = SessionWords.shared()
+	var changes: Array = []
+	memory.known_changed.connect(func(g, k, known): changes.append([g, k, known]))
+	words.start("check")
+	var key := real(10)
+	answer([key], true)
+	check(not memory.is_known(key) and WordMemory.W[2] < WordMemory.LEARNED_STABILITY, "one right answer is not known yet (S %.2f)" % float(memory.state(key).s))
+	check(memory.is_known(key) == WordMemory.known_state(memory.state(key)) and not memory.is_known("never_seen_word"), "is_known follows known_state; an unseen word is not known")
+	for i in 40:
+		answer(["filler"], true)
+	answer([key], true)
+	check(memory.is_known(key) and float(memory.state(key).s) >= WordMemory.LEARNED_STABILITY, "a right review after a gap makes it known (S %.2f)" % float(memory.state(key).s))
+	check(changes.has(["check", key, true]), "known_changed told the game (%s)" % [changes])
+	check(words.summary().known.has(key) and words.became_known(key), "the session lists it as known (%s)" % [words.summary().known])
+	check(memory.known_count([key, "filler"]) == (2 if memory.is_known("filler") else 1), "known_count counts the known keys")
+	check(memory.learning_count([key]) == 0, "a known word is not being learned")
+	for i in 400:
+		answer(["filler"], true)
+	answer([key], false)
+	answer([key], false)
+	check(not memory.is_known(key) and changes.back() == ["check", key, false] and not words.summary().known.has(key), "lapses below the threshold: not known, and off the session's list (S %.2f)" % float(memory.state(key).s))
+	words.start("other")
+	check(words.summary().known.is_empty(), "a new session starts with no known words")
+	SessionWords._shared = null

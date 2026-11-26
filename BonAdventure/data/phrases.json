@@ -423,6 +423,8 @@
       "col_game": {"es": "Juego", "en": "Game", "zh": "遊戲"},
       "showing": {"es": "Se muestran {shown} de {total} palabras", "en": "Showing {shown} of {total} words", "zh": "顯示{shown}個詞語，共{total}個"},
       "no_match": {"es": "Ninguna palabra coincide.", "en": "No words match.", "zh": "沒有符合的詞語。"},
+      "known_count": {"es": "{n} ya las sabes", "en": "{n} known", "zh": "學會了{n}個", "note": "Footer count of known words (word_memory.gd is_known(), decision D9)."},
+      "known_tag": {"es": "Ya la sabes", "en": "You know this word", "zh": "你學會了這個詞"},
       "back": {"es": "Volver", "en": "Back", "zh": "返回"},
       "detail_hint": {"es": "Aciertos y fallos cuentan la primera respuesta de cada pregunta. Con traducción: se mostró la traducción.", "en": "Right and Wrong count the first answer of each question. Translated: the translation was shown.", "zh": "答對和答錯只計每道題的第一個答案。看了翻譯：作答時顯示過翻譯。"},
       "no_games": {"es": "Todavía no has practicado esta palabra en un juego.", "en": "You have not practised this word in a game yet.", "zh": "你還沒有在遊戲中練習過這個詞語。"}
@@ -1481,6 +1483,8 @@
       "words_practiced": {"es": "Palabras que practicaste", "en": "Words you practiced", "zh": "你練習的詞"},
       "new_count": {"es": "{count} nuevas", "en": "{count} new", "zh": "{count} 個新詞"},
       "new_tag": {"es": "Nueva", "en": "New", "zh": "新"},
+      "stat_known": {"es": "Palabras que ya sabes", "en": "Words you now know", "zh": "你學會的詞", "note": "Words that became known this session (word_memory.gd is_known(), decision D9)."},
+      "known_tag": {"es": "¡La sabes!", "en": "Known", "zh": "學會了"},
       "see_all": {"es": "Ver las {count}", "en": "See all {count}", "zh": "看全部 {count} 個"},
       "see_less": {"es": "Ver menos", "en": "Show fewer", "zh": "少看一點"},
       "quest_updated": {"es": "¡Misión actualizada!", "en": "Quest updated!", "zh": "任務更新了！"},

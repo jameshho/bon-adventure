@@ -21,8 +21,10 @@ Word lists are **not** written here: [words.md](words.md) is generated from the 
 *Since 21 Nov 2026 (user design).* When a learning game is finished (not left early), a results
 card follows the character's thanks: a title for that game (*Case Closed!*, *Books Sorted!*…), one
 line of what you did, the words you **practiced** and **discovered for the first time** (up to
-four, new and tricky ones first, "See all" for the rest), and a town mission it completed with its
-XP. No scores or percentages; a replay with no new words says *Great Practice!* instead of "0 new
+four, new and tricky ones first, "See all" for the rest), the words you **now know** (since 25 Nov:
+a daisy *Known* tag and a *Words you now know* bubble when the word memory counts a word as known
+for the first time; [view](../evidence/known-words-20261125/results-known-laptop.png)), and a town
+mission it completed with its XP. No scores or percentages; a replay with no new words says *Great Practice!* instead of "0 new
 words". Buttons: **Continue exploring** and **Play again**. Details:
 [MINIGAMES.md → Results screen](../guides/MINIGAMES.md#results-screen).
 
@@ -76,7 +78,7 @@ reviews the ones they are about to forget. The code is in
   new word comes until some are known. A player who keeps getting words right meets new ones
   often; one who struggles reviews first.
 - **Order of words in a round:** words about to be forgotten first, then the new words allowed
-  now (lowest [word tier](#word-tiers) first), then known words least well remembered first,
+  now (lowest [word tier](#word-tiers) first), then other words you have met, least well remembered first,
   then the other new words (so a game always has enough).
 - **Per game:** Grocery Run, Library Helper and On the Menu order their items by it; Stack & Pack
   picks the box; Desk Dash puts the wanted nouns' questions first; Feel the Clues picks the clue;
@@ -86,8 +88,11 @@ reviews the ones they are about to forget. The code is in
   record (each word once).
 - Simulated learner (check, 24 Nov): about 21 new words per 100 questions, all 120 met by 600,
   86% right.
-- **Not yet:** day-based review (time between sessions); showing a word's memory in the journal;
-  tuning the numbers by play.
+- **Known words** (25 Nov, user decision D9): a word is *known* when the memory says it is
+  remembered well (stability of at least 4 FSRS days, usually two right answers some questions
+  apart). The journal marks it with a daisy and counts it; the results card names the words that
+  became known in that game.
+- **Not yet:** day-based review (time between sessions); tuning the numbers by play.
 
 ## Word tiers
 
