@@ -77,7 +77,8 @@ radius has its own 22 px minimum). At 844 × 390 (a landscape phone) `f` is 0.5,
 parts are half their laptop size; measured sizes and renders are in
 [ui-scale-20261125](../evidence/ui-scale-20261125/). A touch-size floor (UI-02) waits for the
 user's phone check (decision D5). The HUD's status texts (FPS, flight, sprint, noclip, quest
-toast) scale with `maxf(f, 0.75)` so they stay readable on a phone (UI-06).
+toast) scale with `maxf(f, 0.75)` so they stay readable on a phone (UI-06), and so does the F1
+controls guide (UI-04), which pages its cards instead of shrinking them further.
 
 ## Parts
 

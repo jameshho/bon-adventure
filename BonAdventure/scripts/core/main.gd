@@ -562,6 +562,7 @@ func make_popups() -> void:
 	settings_panel = preload("res://scripts/ui/settings_panel.gd").new()
 	hud.ui_root.add_child(settings_panel)
 	settings_panel.visibility_changed.connect(sync_player_controls)
+	settings_panel.controls_requested.connect(open_controls_guide)
 	hud.settings_requested.connect(open_settings)
 	# The HUD's book button and the journal's ✕ work like J (the saved words are its Saved tab).
 	hud.journal_toggle_requested.connect(toggle_study_journal)
@@ -583,7 +584,14 @@ func make_popups() -> void:
 
 func open_settings() -> void:
 	if not settings_panel.visible:
+		settings_panel.controls_allowed = not hud.in_minigame
 		settings_panel.open()
+
+## Settings' "Controls" (UI-04): the F1 guide, in its touch view on a touch device.
+func open_controls_guide() -> void:
+	settings_panel.close()
+	if not hud.is_help_open() and not hud.in_minigame:
+		hud.toggle_help()
 
 ## The Display Mode or a language changed (L, the HUD button or Settings): every open text
 ## re-renders. Text already built from the old languages (a family tree in progress) keeps

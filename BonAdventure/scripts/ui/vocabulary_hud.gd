@@ -69,7 +69,26 @@ var movement_label: Label
 var noclip_label: Label
 var map_overlay: ColorRect
 var help_overlay: PanelContainer
-var help_scroll: ScrollContainer
+## The F1 guide's view and pages (build_help_content(), _paginate_help()).
+var help_scale := 1.0
+var help_touch := false
+var help_page := 0
+## Pages -> columns -> card pieces {title, color, rows, keys}.
+var help_pages: Array = []
+var help_column_width := 350.0
+var help_header: HBoxContainer
+var help_title: Label
+var help_close_hint: Label
+var help_tabs: Array = []
+var help_prev: Button
+var help_next: Button
+var help_page_label: Label
+## The page area (a plain Control, so a page can never stretch the card) and its columns.
+var help_body: Control
+var help_columns: HBoxContainer
+## The card's size for this window (_layout_hud()).
+var help_size := Vector2(1240, 700)
+var _help_press_x := NAN
 ## The F1 guide's ✕ (14 Nov 2026, user: touch had no way to close it), as big as a corner button.
 var help_close: Button
 ## Toggle id -> {label, style}: pills in the F1 guide that mirror each toggle live.
@@ -490,7 +509,6 @@ func _ready() -> void:
 
     help_overlay = PanelContainer.new()
     help_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
-    help_overlay.add_theme_stylebox_override("panel", make_light_card(BonStyle.MINT_TOP, 30))
     help_overlay.visible = false
     ui_root.add_child(help_overlay)
     build_help_content()
@@ -624,9 +642,13 @@ func _layout_hud() -> void:
         button.add_theme_font_size_override("font_size", roundi(17 * f))
         button.custom_minimum_size = Vector2(0, 48 * f)
     journal_book.apply_scale(f)
-    help_overlay.size = Vector2(minf(1240.0, viewport_size.x - 40.0), minf(660.0, viewport_size.y - 40.0))
+    help_scale = maxf(f, HELP_MIN_SCALE)
+    help_size = Vector2(minf(1240.0 * help_scale, viewport_size.x - 32.0), minf(700.0 * help_scale, viewport_size.y - 32.0))
+    help_overlay.size = help_size
     help_overlay.position = (viewport_size - help_overlay.size) * 0.5
-    _size_help_close()
+    _style_help()
+    if help_overlay.visible:
+        _paginate_help()
     map_overlay.position = Vector2.ZERO
     map_overlay.size = viewport_size
 
@@ -1073,215 +1095,549 @@ func render_journal() -> void:
     journal_hint.text = UiText.t("journal.hint_area" if journal_by_area else "journal.hint_category")
     journal_book.set_data(journal_studied, journal_dictionary, journal_categories, journal_areas, journal_area_names, bookmarks, journal_by_area)
 
+## The F1 controls guide (UI-04, 25 Nov 2026; docs/game/playing.md#controls). Two views: the
+## keys ("Keyboard") and the on-screen touch controls ("Touch"); it opens in the touch view on a
+## touch device (touch_mode, or no key pressed yet on a touch screen) and its tabs switch.
+## It scales with the window (help_scale: BonStyle.factor(), never under HELP_MIN_SCALE so a
+## landscape phone stays readable) and never scrolls: the section cards are packed into columns
+## and pages that fit (_paginate_help(), measured with the fonts), turned with ‹ › or a swipe.
+## Settings opens it too (its "Controls" button; Main.open_controls_guide()).
 const HELP_PLAIN_TOKENS := ["/", "+", "hold", "then"]
 ## Words on key caps, shown in the native language; other caps are printed key names.
 const KEY_WORDS := {"hold": "help.key_hold", "then": "help.key_then", "Right-click": "help.key_right_click", "Left-click": "help.key_left_click", "Scroll": "help.key_scroll", "Space": "help.key_space"}
 const HELP_ON := Color("45a83c")
 const HELP_OFF := Color("c9e5e8")
+const HELP_MIN_SCALE := 0.75
+## The touch controls' own colours (touch_controls.gd FILL, EDGE, GOLD, made opaque): the stick,
+## E and jump chips look like the real ones.
+const TOUCH_FILL := Color("2d4652")
+const TOUCH_EDGE := Color("7abfb3")
+const TOUCH_GOLD := Color("fff1c5")
+## Touch chips: token -> [kind, icon, phrase id]. "gesture": a teal pill with a white hand and a
+## word; "round": a dark circle like the stick, E and jump; "hud": a soft blue HUD button with
+## its icon ("@journal": the pastel journal) or its word; "badge": the peek badge's letters.
+const TOUCH_CHIPS := {
+    "tap": ["gesture", "touch", "help.touch_tap"],
+    "drag": ["gesture", "touch", "help.touch_drag"],
+    "pinch": ["gesture", "pinch", "help.touch_pinch"],
+    "stick": ["round", "stick", ""],
+    "E": ["round", "", ""],
+    "jump": ["round", "up", ""],
+    "bolt": ["round", "bolt", ""],
+    "up": ["hud", "up", ""],
+    "down": ["hud", "down", ""],
+    "run": ["hud", "", "hud.run_button"],
+    "lights": ["hud", "", "vehicle.lights_button"],
+    "siren": ["hud", "", "vehicle.siren_button"],
+    "reset": ["hud", "", "vehicle.reset_plane"],
+    "drop": ["hud", "drop", ""],
+    "journal": ["hud", "@journal", ""],
+    "map": ["hud", "map", ""],
+    "games": ["hud", "play", ""],
+    "passport": ["hud", "passport", ""],
+    "gear": ["hud", "gear", ""],
+    "badge": ["badge", "", ""],
+}
 
-## Every key in the game, grouped; rows are [keys, description, optional toggle id];
-## titles and descriptions are phrase ids (help.*), key words are KEY_WORDS.
+## Every key in the game, by section in reading order; rows are [keys, description, optional
+## toggle id]; titles and descriptions are phrase ids (help.*), key words are KEY_WORDS.
 func help_sections() -> Array:
     return [
-        [
-            ["help.toggles", BonStyle.BROWN, [
-                [["Shift"], "help.sprint", "sprint"],
-                [["H"], "help.hyper", "hyper"] if Features.HYPER_SPEED else [],
-                [["I"], "help.jump", "jump"],
-                [["N"], "help.noclip", "noclip"],
-                [["B"], "help.zones", "zones"],
-                [["F3"], "help.fps", "fps"]]],
-            ["help.move", Color("3f9a35"), [
-                [["W", "A", "S", "D"], "help.walk"],
-                [["Space"], "help.jump_row"],
-                [["W", "/", "S"], "help.ladder"],
-                [["hold", "Right-click"], "help.orbit"],
-                [["Scroll"], "help.zoom"],
-                [["Space", "/", "Ctrl"], "help.fly"]]],
-        ],
-        [
-            ["help.learn", Color("2f87cf"), [
-                [["Left-click"], "help.study"],
-                [["E"], "help.use"],
-                [["G"], "help.drop"],
-                [["J"], "help.journal"],
-                [["M"], "help.map"] if Features.FULL_MAP else [],
-                [["hold", "L"], "help.peek"],
-                [["F1"], "help.guide"],
-                [["Esc"], "help.esc"]]],
-            ["help.cars", BonStyle.TERM, [
-                [["W", "/", "S"], "help.accelerate"],
-                [["A", "/", "D"], "help.steer"],
-                [["Space", "/", "R"], "help.brake"],
-                [["F"], "help.headlights"],
-                [["Q"], "help.siren"],
-                [["E"], "help.get_out"]]],
-            ["help.seats", Color("9a5bb5"), [
-                [["A", "/", "D"], "help.swivel"],
-                [["W", "/", "S"], "help.swan"],
-                [["E", "then", "W", "/", "S"], "help.swing"],
-                [["1", "/", "2", "/", "3"], "help.elevator"]]],
-        ],
-        [
-            # One set of flying controls for both aircraft (23 Nov 2026, user): ▲ / ▼ on screen.
-            ["help.helicopter", BonStyle.TERM, [
-                [["Space", "/", "Shift"], "help.fly_up_down"],
-                [["W", "/", "S"], "help.fly_speed"],
-                [["A", "/", "D"], "help.fly_turn"],
-                [["E"], "help.heli_exit"]]],
-            ["help.turboprop", BonStyle.TERM, [
-                [["Space", "/", "Shift"], "help.fly_up_down"],
-                [["W", "/", "S"], "help.fly_speed"],
-                [["A", "/", "D"], "help.fly_turn"],
-                [["W", "/", "Space"], "help.fly_take_off"],
-                [["E"], "help.heli_exit"]]],
-        ],
+        ["help.toggles", BonStyle.BROWN, [
+            [["Shift"], "help.sprint", "sprint"],
+            [["H"], "help.hyper", "hyper"] if Features.HYPER_SPEED else [],
+            [["I"], "help.jump", "jump"],
+            [["N"], "help.noclip", "noclip"],
+            [["B"], "help.zones", "zones"],
+            [["F3"], "help.fps", "fps"]]],
+        ["help.move", Color("3f9a35"), [
+            [["W", "A", "S", "D"], "help.walk"],
+            [["Space"], "help.jump_row"],
+            [["W", "/", "S"], "help.ladder"],
+            [["hold", "Right-click"], "help.orbit"],
+            [["Scroll"], "help.zoom"],
+            [["Space", "/", "Ctrl"], "help.fly"]]],
+        ["help.learn", Color("2f87cf"), [
+            [["Left-click"], "help.study"],
+            [["E"], "help.use"],
+            [["G"], "help.drop"],
+            [["J"], "help.journal"],
+            [["M"], "help.map"] if Features.FULL_MAP else [],
+            [["hold", "L"], "help.peek"],
+            [["F1"], "help.guide"],
+            [["Esc"], "help.esc"]]],
+        ["help.cars", BonStyle.TERM, [
+            [["W", "/", "S"], "help.accelerate"],
+            [["A", "/", "D"], "help.steer"],
+            [["Space", "/", "R"], "help.brake"],
+            [["F"], "help.headlights"],
+            [["Q"], "help.siren"],
+            [["E"], "help.get_out"]]],
+        ["help.seats", Color("9a5bb5"), [
+            [["A", "/", "D"], "help.swivel"],
+            [["W", "/", "S"], "help.swan"],
+            [["E", "then", "W", "/", "S"], "help.swing"],
+            [["1", "/", "2", "/", "3"], "help.elevator"]]],
+        # One set of flying controls for both aircraft (23 Nov 2026, user): ▲ / ▼ on screen.
+        # One card for both since UI-04 (they had the same rows).
+        ["help.t_flying", BonStyle.TERM, [
+            [["Space", "/", "Shift"], "help.fly_up_down"],
+            [["W", "/", "S"], "help.fly_speed"],
+            [["A", "/", "D"], "help.fly_turn"],
+            [["W", "/", "Space"], "help.fly_take_off"],
+            [["E"], "help.heli_exit"]]],
     ]
 
-func make_keycap(text: String) -> PanelContainer:
-    var cap := PanelContainer.new()
-    cap.mouse_filter = Control.MOUSE_FILTER_IGNORE
-    var style := StyleBoxFlat.new()
-    style.bg_color = BonStyle.RIM
-    style.border_color = BonStyle.SKY_EDGE
-    style.set_border_width_all(1)
-    style.border_width_bottom = 3
-    style.set_corner_radius_all(5)
-    style.content_margin_left = 7
-    style.content_margin_right = 7
-    style.content_margin_top = 1
-    style.content_margin_bottom = 1
-    cap.add_theme_stylebox_override("panel", style)
+## The same for the on-screen controls (touch_controls.gd): rows are [chips, description];
+## chips are TOUCH_CHIPS tokens or HELP_PLAIN_TOKENS. No debug toggles (they need keys).
+func touch_help_sections() -> Array:
+    return [
+        ["help.move", Color("3f9a35"), [
+            [["stick"], "help.t_walk"],
+            [["jump"], "help.jump_row"],
+            [["run"], "help.t_run"],
+            [["bolt"], "help.hyper"] if Features.HYPER_SPEED else [],
+            [["drag"], "help.orbit"],
+            [["pinch"], "help.zoom"],
+            [["stick"], "help.t_ladder"]]],
+        ["help.learn", Color("2f87cf"), [
+            [["tap"], "help.t_study"],
+            [["E"], "help.use"],
+            [["drop"], "help.drop"],
+            [["journal"], "help.journal"],
+            [["map"], "help.map"] if Features.FULL_MAP else [],
+            [["games"], "launcher.open"],
+            [["passport"], "help.t_passport"],
+            [["hold", "badge"], "help.peek"],
+            [["gear"], "help.t_settings"]]],
+        ["help.cars", BonStyle.TERM, [
+            [["stick"], "help.t_drive"],
+            [["jump"], "help.brake"],
+            [["lights"], "help.headlights"],
+            [["siren"], "help.siren"],
+            [["E"], "help.get_out"]]],
+        ["help.t_flying", BonStyle.TERM, [
+            [["up", "/", "down"], "help.fly_up_down"],
+            [["stick"], "help.t_fly_stick"],
+            [["reset"], "help.t_reset"],
+            [["E"], "help.heli_exit"]]],
+        ["help.seats", Color("9a5bb5"), [
+            [["stick"], "help.t_seats"],
+            [["E", "then", "stick"], "help.t_swing"],
+            [["E"], "help.t_elevator"]]],
+    ]
+
+## Design sizes (1100 × 800) times help_scale.
+func _help_sizes() -> Dictionary:
+    var g := help_scale
+    return {"title": roundi(30 * g), "heading": roundi(18 * g), "body": roundi(17 * g), "key": roundi(15 * g),
+        "plain": roundi(14 * g), "pad_x": roundf(14 * g), "pad_y": roundf(10 * g), "row_gap": roundf(6 * g),
+        "card_gap": roundf(12 * g), "column_gap": roundf(14 * g), "key_gap": roundf(4 * g), "row_sep": roundf(10 * g),
+        "key_pad": roundf(7 * g), "chip": roundf((32 if help_touch else 28) * g), "column": 350.0 * g, "pill": roundf(60 * g),
+        "margin": roundf(18 * g)}
+
+func _help_text(token: String) -> String:
+    if help_touch and TOUCH_CHIPS.has(token):
+        var spec: Array = TOUCH_CHIPS[token]
+        if spec[0] == "badge":
+            return GameSettings.shared().native_badge()
+        if spec[0] == "round" and spec[1] == "":
+            return token
+        return UiText.t(spec[2]) if spec[2] != "" else ""
+    return UiText.maybe(KEY_WORDS.get(token, token))
+
+func _text_width(text: String, size: int) -> float:
+    return BonStyle.font(700).get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, size).x
+
+## A chip's width in pixels (what _help_chip() builds; the pages are packed from these).
+func _help_chip_width(token: String, s: Dictionary) -> float:
+    var chip: float = s.chip
+    var pad: float = s.key_pad
+    var text := _help_text(token)
+    if token in HELP_PLAIN_TOKENS:
+        return _text_width(text, s.plain)
+    if not help_touch:
+        return maxf(chip, _text_width(text, s.key) + 2.0 * pad)
+    var spec: Array = TOUCH_CHIPS.get(token, ["hud", "", ""])
+    match spec[0]:
+        "gesture":
+            return roundf(chip * 0.62) + s.key_gap + _text_width(text, s.key) + 2.0 * pad
+        "round":
+            return chip
+    return chip if text == "" else maxf(chip, _text_width(text, s.key) + 2.0 * pad)
+
+func _help_keys_width(chips: Array, s: Dictionary) -> float:
+    var width := 0.0
+    for token in chips:
+        width += _help_chip_width(token, s)
+    return width + s.key_gap * maxi(0, chips.size() - 1)
+
+## Text height of `text` wrapped at `width` as a Label wraps it (AUTOWRAP_WORD_SMART, no line
+## spacing): lines × the font's height. (Font.get_multiline_string_size() undercounts the lines.)
+func _wrapped_height(text: String, width: float, size: int, weight: int) -> float:
+    var font := BonStyle.font(weight)
+    var paragraph := TextParagraph.new()
+    paragraph.break_flags = TextServer.BREAK_MANDATORY | TextServer.BREAK_WORD_BOUND | TextServer.BREAK_ADAPTIVE
+    paragraph.width = maxf(width, 20.0)
+    paragraph.add_string(text, font, size)
+    return maxi(1, paragraph.get_line_count()) * font.get_height(size)
+
+## The area under the header where the pages go, in pixels.
+func _help_area() -> Vector2:
+    var s := _help_sizes()
+    var inner: Vector2 = help_size - Vector2(2.0, 2.0) * s.margin
+    return Vector2(inner.x, inner.y - help_header.get_combined_minimum_size().y - s.row_sep - 4.0)
+
+## Packs the sections into pages of columns that fit the window; a section taller than the page
+## is split (its heading repeats). Then shows the current page.
+func _paginate_help() -> void:
+    var s := _help_sizes()
+    var area := _help_area()
+    var gap: float = s.column_gap
+    var columns := maxi(1, int((area.x + gap) / (float(s.column) + gap)))
+    help_column_width = floorf((area.x - gap * (columns - 1)) / columns)
+    help_pages = []
+    var page: Array = []
+    var used: Array = []
+    for section in (touch_help_sections() if help_touch else help_sections()):
+        var rows: Array = section[2].filter(func(row: Array) -> bool: return not row.is_empty())
+        var key_width: float = s.column * 0.2
+        for row in rows:
+            key_width = maxf(key_width, _help_keys_width(row[0], s))
+        key_width = minf(key_width, help_column_width * 0.55)
+        var inner: float = help_column_width - 2.0 * s.pad_x
+        var heading := _wrapped_height(UiText.t(section[0]).to_upper(), inner, s.heading, 700)
+        var heights: Array = []
+        for row in rows:
+            # A little slack (4 px narrower): rounding makes the real text column a touch narrower.
+            var text_width: float = inner - maxf(key_width, _help_keys_width(row[0], s)) - s.row_sep - 4.0
+            if row.size() > 2:
+                text_width -= s.pill + s.row_sep
+            heights.append(maxf(s.chip, _wrapped_height(UiText.t(row[1]), text_width, s.body, 600)))
+        var start := 0
+        while start < rows.size():
+            var height: float = 2.0 * s.pad_y + heading
+            var end := start
+            while end < rows.size() and (end == start or height + s.row_gap + heights[end] <= area.y):
+                height += s.row_gap + heights[end]
+                end += 1
+            var piece := {"title": section[0], "color": section[1], "rows": rows.slice(start, end), "keys": key_width}
+            # First fit: the first column of this page with room (so a short card fills a gap).
+            var placed := false
+            for i in page.size():
+                if used[i] + s.card_gap + height <= area.y:
+                    page[i].append(piece)
+                    used[i] += s.card_gap + height
+                    placed = true
+                    break
+            if not placed:
+                if page.size() >= columns:
+                    help_pages.append(page)
+                    page = []
+                    used = []
+                page.append([piece])
+                used.append(height)
+            start = end
+    if not page.is_empty():
+        help_pages.append(page)
+    _show_help_page()
+
+func _show_help_page() -> void:
+    for child in help_columns.get_children():
+        help_columns.remove_child(child)
+        child.queue_free()
+    help_pills.clear()
+    help_page = clampi(help_page, 0, maxi(0, help_pages.size() - 1))
+    var s := _help_sizes()
+    help_columns.add_theme_constant_override("separation", roundi(s.column_gap))
+    if not help_pages.is_empty():
+        for pieces in help_pages[help_page]:
+            var stack := VBoxContainer.new()
+            stack.mouse_filter = Control.MOUSE_FILTER_IGNORE
+            stack.custom_minimum_size.x = help_column_width
+            stack.add_theme_constant_override("separation", roundi(s.card_gap))
+            help_columns.add_child(stack)
+            for piece in pieces:
+                stack.add_child(_help_card(piece, s))
+    for id in ["sprint", "hyper", "jump", "noclip", "zones", "fps"]:
+        var state: Array = help_states.get(id, [id == "jump" and Features.INFINITE_JUMP_AT_START, ""])
+        set_help_state(id, state[0], state[1])
+    var count := help_pages.size()
+    for node in [help_prev, help_next, help_page_label]:
+        node.visible = count > 1
+    help_page_label.text = UiText.t("help.page", {"page": help_page + 1, "count": count})
+    help_overlay.size = help_size
+    help_overlay.position = (get_viewport().get_visible_rect().size - help_size) * 0.5
+    help_prev.disabled = help_page == 0
+    help_next.disabled = help_page >= count - 1
+
+func _turn_help_page(step: int) -> void:
+    var page := clampi(help_page + step, 0, maxi(0, help_pages.size() - 1))
+    if page != help_page:
+        help_page = page
+        _show_help_page()
+
+## A swipe across the pages turns them (touch sends emulated mouse clicks; a mouse drag works too).
+func _help_swipe(event: InputEvent) -> void:
+    var press := event as InputEventMouseButton
+    if press == null or press.button_index != MOUSE_BUTTON_LEFT:
+        return
+    if press.pressed:
+        _help_press_x = press.position.x
+    elif not is_nan(_help_press_x):
+        var dx := press.position.x - _help_press_x
+        _help_press_x = NAN
+        if absf(dx) >= 60.0 * help_scale:
+            _turn_help_page(-1 if dx > 0.0 else 1)
+
+func _help_card(piece: Dictionary, s: Dictionary) -> PanelContainer:
+    var card := PanelContainer.new()
+    card.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    var look := BonStyle.flat(BonStyle.SKY, roundi(18 * help_scale), maxi(2, roundi(3 * help_scale)), false)
+    look.content_margin_left = s.pad_x
+    look.content_margin_right = s.pad_x
+    look.content_margin_top = s.pad_y
+    look.content_margin_bottom = s.pad_y
+    card.add_theme_stylebox_override("panel", look)
+    var rows := VBoxContainer.new()
+    rows.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    rows.add_theme_constant_override("separation", roundi(s.row_gap))
+    card.add_child(rows)
+    var heading := _help_label(UiText.t(piece["title"]).to_upper(), s.heading, piece["color"], 700)
+    heading.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+    rows.add_child(heading)
+    for entry in piece["rows"]:
+        rows.add_child(make_help_row(entry[0], entry[1], entry[2] if entry.size() > 2 else "", piece["keys"], s))
+    return card
+
+func _help_label(text: String, size: int, color: Color, weight := 600) -> Label:
     var label := Label.new()
     label.text = text
-    label.add_theme_font_size_override("font_size", 13)
-    label.add_theme_color_override("font_color", BonStyle.INK)
-    label.add_theme_font_override("font", BonStyle.font(700))
-    cap.add_child(label)
+    label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    BonStyle.use_font(label, weight)
+    label.add_theme_font_size_override("font_size", size)
+    label.add_theme_color_override("font_color", color)
+    label.add_theme_constant_override("line_spacing", 0)
+    return label
+
+## A small chip box: `fill` with a rim of `edge` (BonStyle.flat()), `radius` corners.
+func _chip_box(fill: Color, edge: Color, rim: int, radius: float, pad: float) -> StyleBoxFlat:
+    var look := BonStyle.flat(fill, roundi(radius), rim, false)
+    look.border_color = edge
+    look.content_margin_left = pad
+    look.content_margin_right = pad
+    look.content_margin_top = 0
+    look.content_margin_bottom = 0
+    return look
+
+## A key cap (keyboard view) or a picture of a touch control (touch view), s.chip high.
+func make_keycap(token: String, s: Dictionary) -> Control:
+    var text := _help_text(token)
+    var chip: float = s.chip
+    var cap := PanelContainer.new()
+    cap.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    cap.custom_minimum_size = Vector2(chip, chip)
+    cap.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+    if not help_touch:
+        var look := _chip_box(BonStyle.RIM, BonStyle.SKY_EDGE, 1, 6.0 * help_scale, s.key_pad)
+        look.border_width_bottom = maxi(2, roundi(3 * help_scale))
+        cap.add_theme_stylebox_override("panel", look)
+        cap.add_child(_chip_text(text, s.key, BonStyle.INK))
+        return cap
+    var spec: Array = TOUCH_CHIPS.get(token, ["hud", "", ""])
+    var ink := BonStyle.INK
+    match spec[0]:
+        "gesture":
+            cap.add_theme_stylebox_override("panel", _chip_box(BonStyle.INK_SOFT, BonStyle.INK_SOFT, 0, chip * 0.5, s.key_pad))
+            var line := HBoxContainer.new()
+            line.mouse_filter = Control.MOUSE_FILTER_IGNORE
+            line.add_theme_constant_override("separation", roundi(s.key_gap))
+            cap.add_child(line)
+            line.add_child(_chip_icon(spec[1], roundf(chip * 0.62), Color.WHITE))
+            line.add_child(_chip_text(text, s.key, Color.WHITE))
+        "round":
+            cap.add_theme_stylebox_override("panel", _chip_box(TOUCH_FILL, TOUCH_EDGE, maxi(1, roundi(2 * help_scale)), chip * 0.5, chip * 0.16))
+            if spec[1] == "":
+                cap.add_child(_chip_text(text, s.key, TOUCH_GOLD))
+            else:
+                cap.add_child(_chip_icon(spec[1], roundf(chip * 0.62), TOUCH_GOLD))
+        _:
+            cap.add_theme_stylebox_override("panel", _chip_box(BonStyle.SKY, BonStyle.SKY_EDGE, maxi(1, roundi(2 * help_scale)), 8.0 * help_scale, s.key_pad if text != "" else chip * 0.16))
+            if text != "":
+                cap.add_child(_chip_text(text, s.key, ink))
+            else:
+                cap.add_child(_chip_icon(spec[1], roundf(chip * (0.68 if spec[1].begins_with("@") else 0.62)), ink))
     return cap
 
-func make_help_row(keys: Array, description: String, toggle_id: String) -> HBoxContainer:
+func _chip_text(text: String, size: int, color: Color) -> Label:
+    var label := _help_label(text, size, color, 700)
+    label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+    label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+    return label
+
+func _chip_icon(icon: String, side: float, color: Color) -> TextureRect:
+    var picture := TextureRect.new()
+    picture.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    picture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+    picture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+    picture.custom_minimum_size = Vector2(side, side)
+    if icon.begins_with("@"):
+        picture.texture = BonStyle.icon_texture(icon.substr(1), roundi(side * 2))
+    else:
+        picture.texture = UiIcons.texture(icon, roundi(side * 2))
+        picture.self_modulate = color
+    picture.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+    picture.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+    return picture
+
+func make_help_row(keys: Array, description: String, toggle_id: String, key_width: float, s: Dictionary) -> HBoxContainer:
     var row := HBoxContainer.new()
-    row.add_theme_constant_override("separation", 8)
+    row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    row.add_theme_constant_override("separation", roundi(s.row_sep))
     var key_box := HBoxContainer.new()
-    key_box.add_theme_constant_override("separation", 4)
-    key_box.custom_minimum_size.x = 112
+    key_box.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    key_box.add_theme_constant_override("separation", roundi(s.key_gap))
+    key_box.custom_minimum_size.x = key_width
     key_box.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
     for key in keys:
         if key in HELP_PLAIN_TOKENS:
-            var plain := Label.new()
-            plain.text = UiText.maybe(KEY_WORDS.get(key, str(key)))
-            plain.add_theme_font_size_override("font_size", 12)
-            plain.add_theme_color_override("font_color", BonStyle.INK_SOFT)
+            var plain := _help_label(_help_text(key), s.plain, BonStyle.INK_SOFT)
+            plain.custom_minimum_size.y = s.chip
+            plain.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+            plain.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
             key_box.add_child(plain)
         else:
-            key_box.add_child(make_keycap(UiText.maybe(KEY_WORDS.get(key, str(key)))))
+            key_box.add_child(make_keycap(key, s))
     row.add_child(key_box)
-    var text := Label.new()
-    text.text = UiText.t(description)
+    var text := _help_label(UiText.t(description), s.body, Color("3d5560"))
     text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-    text.custom_minimum_size.x = 90
+    text.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+    text.custom_minimum_size = Vector2(40, s.chip)
     text.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-    text.add_theme_font_size_override("font_size", 14)
-    text.add_theme_color_override("font_color", Color("3d5560"))
     row.add_child(text)
     if not toggle_id.is_empty():
         var pill := PanelContainer.new()
         pill.mouse_filter = Control.MOUSE_FILTER_IGNORE
-        pill.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
-        pill.custom_minimum_size.x = 58
-        var style := StyleBoxFlat.new()
-        style.bg_color = HELP_OFF
-        style.set_corner_radius_all(9)
-        style.content_margin_left = 6
-        style.content_margin_right = 6
-        style.content_margin_top = 1
-        style.content_margin_bottom = 1
+        pill.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+        pill.custom_minimum_size.x = s.pill
+        var style := _chip_box(HELP_OFF, HELP_OFF, 0, 10.0 * help_scale, 6.0 * help_scale)
         pill.add_theme_stylebox_override("panel", style)
-        var state := Label.new()
-        state.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-        state.add_theme_font_size_override("font_size", 12)
+        var state := _chip_text("", s.plain, BonStyle.INK_SOFT)
         pill.add_child(state)
         row.add_child(pill)
         help_pills[toggle_id] = {"label": state, "style": style}
     return row
 
+## The header (title, Keyboard / Touch tabs, ‹ page › and ✕) and the page area; refresh_language()
+## rebuilds it. The cards are made per page (_paginate_help()).
 func build_help_content() -> void:
     var body := VBoxContainer.new()
-    body.add_theme_constant_override("separation", 8)
+    body.name = "Help body"
+    body.mouse_filter = Control.MOUSE_FILTER_IGNORE
     help_overlay.add_child(body)
-    var header := HBoxContainer.new()
-    body.add_child(header)
-    var title := Label.new()
-    title.text = UiText.t("help.title").to_upper()
-    title.add_theme_font_size_override("font_size", 26)
-    title.add_theme_color_override("font_color", BonStyle.INK)
-    title.add_theme_font_override("font", BonStyle.font(700))
-    header.add_child(title)
-    var spacer := Control.new()
-    spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-    header.add_child(spacer)
-    var close_hint := Label.new()
-    close_hint.text = UiText.t("help.close")
-    close_hint.add_theme_font_size_override("font_size", 14)
-    close_hint.add_theme_color_override("font_color", BonStyle.INK_SOFT)
-    header.add_child(close_hint)
-    help_close = Button.new()
+    help_header = HBoxContainer.new()
+    help_header.alignment = BoxContainer.ALIGNMENT_END
+    body.add_child(help_header)
+    help_title = _help_label(UiText.t("help.title").to_upper(), 30, BonStyle.INK, 700)
+    help_title.clip_text = true
+    help_title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+    help_title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+    help_header.add_child(help_title)
+    help_close_hint = _help_label(UiText.t("help.close"), 14, BonStyle.INK_SOFT)
+    help_close_hint.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+    help_header.add_child(help_close_hint)
+    help_tabs = []
+    for view in [["help.tab_keys", false], ["help.tab_touch", true]]:
+        var tab := _help_button(UiText.t(view[0]))
+        tab.name = "Help tab " + ("touch" if view[1] else "keys")
+        tab.toggle_mode = true
+        var touch: bool = view[1]
+        tab.pressed.connect(func() -> void: set_help_view(touch))
+        help_header.add_child(tab)
+        help_tabs.append(tab)
+    help_prev = _help_button("")
+    help_prev.name = "Help previous page"
+    help_prev.icon = UiIcons.texture("back", 64)
+    help_prev.tooltip_text = UiText.t("help.prev")
+    help_prev.pressed.connect(_turn_help_page.bind(-1))
+    help_header.add_child(help_prev)
+    help_page_label = _help_label("", 18, BonStyle.INK, 700)
+    help_page_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+    help_header.add_child(help_page_label)
+    help_next = _help_button("")
+    help_next.name = "Help next page"
+    help_next.icon = UiIcons.texture("next", 64)
+    help_next.tooltip_text = UiText.t("help.next")
+    help_next.pressed.connect(_turn_help_page.bind(1))
+    help_header.add_child(help_next)
+    help_close = _help_button("")
     help_close.name = "Close help"
-    help_close.focus_mode = Control.FOCUS_NONE
-    help_close.mouse_filter = Control.MOUSE_FILTER_STOP
-    help_close.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-    help_close.expand_icon = true
-    help_close.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
     help_close.icon = UiIcons.texture("close", 64)
     help_close.tooltip_text = UiText.t("help.close")
-    help_close.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-    journal_book.style_button(help_close, "plain")
     help_close.pressed.connect(toggle_help)
-    header.add_child(help_close)
+    help_header.add_child(help_close)
+    help_body = Control.new()
+    help_body.name = "Help pages"
+    help_columns = HBoxContainer.new()
+    help_columns.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    help_body.add_child(help_columns)
+    help_body.clip_contents = true
+    help_body.mouse_filter = Control.MOUSE_FILTER_STOP
+    help_body.size_flags_vertical = Control.SIZE_EXPAND_FILL
+    help_body.gui_input.connect(_help_swipe)
+    body.add_child(help_body)
+    _style_help()
+    if help_overlay.visible:
+        _paginate_help()
+
+func _help_button(text: String) -> Button:
+    var button := Button.new()
+    button.text = text
+    button.focus_mode = Control.FOCUS_NONE
+    button.mouse_filter = Control.MOUSE_FILTER_STOP
+    button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+    button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+    button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+    return button
+
+## Sizes the card and header for help_scale; buttons stay finger-sized (≥ 44 px, the ✕ a corner
+## button's size).
+func _style_help() -> void:
+    if help_header == null:
+        return
+    var s := _help_sizes()
+    var g := help_scale
+    var look := BonStyle.flat(BonStyle.MINT_TOP, roundi(30 * g), maxi(3, roundi(6 * g)))
+    look.shadow_size = roundi(18 * g)
+    look.shadow_offset = Vector2(0, 6) * g
+    for side in [SIDE_LEFT, SIDE_TOP, SIDE_RIGHT, SIDE_BOTTOM]:
+        look.set_content_margin(side, s.margin)
+    help_overlay.add_theme_stylebox_override("panel", look)
+    (help_overlay.get_child(0) as VBoxContainer).add_theme_constant_override("separation", roundi(s.row_sep))
+    help_header.add_theme_constant_override("separation", roundi(10 * g))
+    help_title.add_theme_font_size_override("font_size", s.title)
+    help_close_hint.add_theme_font_size_override("font_size", roundi(15 * g))
+    help_close_hint.visible = not help_touch and help_size.x >= 1000.0
+    var tall := maxf(48.0 * g, 44.0)
+    for i in help_tabs.size():
+        var tab: Button = help_tabs[i]
+        BonStyle.style_toggle(tab, g, 20)
+        tab.custom_minimum_size = Vector2(0, tall)
+        tab.set_pressed_no_signal((i == 1) == help_touch)
+    for button in [help_prev, help_next]:
+        BonStyle.style_button(button, "soft", g, 20)
+        button.custom_minimum_size = Vector2(tall, tall)
+        button.add_theme_constant_override("icon_max_width", roundi(tall * 0.45))
+    help_page_label.add_theme_font_size_override("font_size", roundi(18 * g))
+    BonStyle.style_button(help_close, "soft_quiet", g, 26)
     _size_help_close()
-    help_scroll = ScrollContainer.new()
-    help_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-    help_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
-    body.add_child(help_scroll)
-    # A light scroll bar like the journal's (UI art style, 18 Nov 2026).
-    var bar := help_scroll.get_v_scroll_bar()
-    for part in [["scroll", Color("cfe8eb")], ["grabber", Color("9fcfd5")], ["grabber_highlight", Color("8cc6cd")], ["grabber_pressed", BonStyle.GREEN_BOTTOM]]:
-        var look := StyleBoxFlat.new()
-        look.bg_color = part[1]
-        look.set_corner_radius_all(8)
-        bar.add_theme_stylebox_override(part[0], look)
-    var flow := HFlowContainer.new()
-    flow.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-    flow.add_theme_constant_override("h_separation", 14)
-    flow.add_theme_constant_override("v_separation", 14)
-    help_scroll.add_child(flow)
-    for column in help_sections():
-        var stack := VBoxContainer.new()
-        stack.custom_minimum_size.x = 345
-        stack.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-        stack.add_theme_constant_override("separation", 12)
-        flow.add_child(stack)
-        for section in column:
-            var card := PanelContainer.new()
-            card.add_theme_stylebox_override("panel", make_ui_card(BonStyle.SKY, BonStyle.RIM, 18))
-            stack.add_child(card)
-            var rows := VBoxContainer.new()
-            rows.add_theme_constant_override("separation", 5)
-            card.add_child(rows)
-            var heading := Label.new()
-            heading.text = UiText.t(section[0]).to_upper()
-            heading.add_theme_font_size_override("font_size", 15)
-            heading.add_theme_font_override("font", BonStyle.font(700))
-            heading.add_theme_color_override("font_color", section[1])
-            rows.add_child(heading)
-            for entry in section[2]:
-                if entry.is_empty():
-                    continue   # a switched-off feature's row (Features)
-                rows.add_child(make_help_row(entry[0], entry[1], entry[2] if entry.size() > 2 else ""))
-    for id in ["sprint", "hyper", "jump", "noclip", "zones", "fps"]:
-        var state: Array = help_states.get(id, [id == "jump" and Features.INFINITE_JUMP_AT_START, ""])
-        set_help_state(id, state[0], state[1])
+
+## Shows the keyboard or the touch view (the tabs; open_help()).
+func set_help_view(touch: bool) -> void:
+    help_touch = touch
+    help_page = 0
+    _style_help()
+    _paginate_help()
 
 ## Updates a toggle pill in the F1 guide; text overrides the default ON / OFF.
 func set_help_state(id: String, on: bool, text: String = "") -> void:
@@ -1299,14 +1655,22 @@ func set_infinite_jump(enabled: bool) -> void:
     set_help_state("jump", enabled)
     flash_quest_message(UiText.t("hud.jump_toggle", {"state": UiText.t("hud.on" if enabled else "hud.off")}))
 
+## Opens or closes the guide; it opens on page 1 in the touch view on a touch device.
 func toggle_help() -> void:
+    if not help_overlay.visible:
+        help_touch = touch_mode or not keyboard_hints
+        help_page = 0
     help_overlay.visible = not help_overlay.visible
+    if help_overlay.visible:
+        _style_help()
+        _paginate_help()
     help_toggled.emit()
 
-## The ✕ is a finger-sized square: the corner buttons' size (bottom_slot(), never under 52 px).
+## The ✕ is a finger-sized square: 56 design pixels, never under 52 px (it was a corner
+## button's size until UI-04, which made the header twice as tall).
 func _size_help_close() -> void:
-    if help_close != null and is_inside_tree():
-        var side: float = bottom_slot(0).size.x
+    if help_close != null:
+        var side: float = maxf(roundf(56.0 * help_scale), 52.0)
         help_close.custom_minimum_size = Vector2(side, side)
         help_close.add_theme_constant_override("icon_max_width", roundi(side * 0.5))
 
