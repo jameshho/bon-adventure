@@ -184,7 +184,13 @@ moment later, as the supermarket door's "pay first" (`cashier_session.gd`, `DOOR
   opens. A game that is all in one panel gets Esc from the panel's `PANELS` entry instead.
   Built: `library_session.gd`, `shop_session.gd` (the basket in the world and on its way back),
   `zoo_feeding_session.gd` (Feeding Time!; walking out of the zoo also puts the player back inside
-  first, GAME-03). Not yet: the other in-world games (follow-up).
+  first, GAME-03); since 25 Nov 2026 (wave 2b) also `restaurant_session.gd`, `teller_session.gd`
+  (getting up from window 2's chair mid-game sits the player back down and asks, `_keep_seated`),
+  `warehouse_session.gd`, `grammar_session.gd` and `mystery_session.gd` (these three call their
+  own `ask_leave()`, the same as the card's Leave and the doorway). Panel games need none: Who's
+  Who?, Flight Finder, the police games, Mahjong Club, Radar Patrol and Wire It Up! run only while
+  their panel or card shows, and Esc reaches it first. Check: `game_exits`
+  (`docs/evidence/game-exits-20261125/verify.gd`).
 - `data/activities.json`: offer chance and progress target ([activity board](ARCHITECTURE_REVIEW_PART1.md#shared-dialogue-popups-and-settings--4-november-2026));
   a `progress_bar.gd` in the game's panel or card. Since 25 Nov 2026 also `"music"`: the
   background track while the game runs (`quiz`, `errands`, `mystery`, `focus` or `outdoors`;

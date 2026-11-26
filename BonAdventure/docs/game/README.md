@@ -52,17 +52,17 @@ be forgotten come back.
 | [Pay Up!](minigames.md#pay-up) (retired) | Supermarket till | No | 4 Nov | 21 Nov (became Grocery Run's checkout) |
 | [Who's Who?](minigames.md#whos-who) | Hospital entrance | Yes | 4 Nov | 4 Nov |
 | [Flight Finder](minigames.md#flight-finder) | Airport information desk | Yes | 5 Nov | 8 Nov |
-| [Stack & Pack](minigames.md#stack--pack) | Warehouse | Yes | 5 Nov | 25 Nov (also tracks the position words on, next to, right, up); 21 Nov (two-level shelf, tap to place; no cardboard box) |
-| [On the Menu](minigames.md#on-the-menu) | Alta Cocina | Yes | 6 Nov | 24 Nov (wrong order sent back at once, retry with wrong dishes blocked) |
+| [Stack & Pack](minigames.md#stack--pack) | Warehouse | Yes | 5 Nov | 25 Nov (Esc mid-game always asks whether to stop); 25 Nov (also tracks the position words on, next to, right, up); 21 Nov (two-level shelf, tap to place; no cardboard box) |
+| [On the Menu](minigames.md#on-the-menu) | Alta Cocina | Yes | 6 Nov | 25 Nov (Esc mid-game asks whether to stop instead of opening Settings); 24 Nov (wrong order sent back at once, retry with wrong dishes blocked) |
 | [Spot the Suspect](minigames.md#spot-the-suspect) | Police station lobby | No | 6 Nov | 6 Nov |
 | [Feel the Clues](minigames.md#feel-the-clues) | Police evidence room | Yes | 6 Nov | 8 Nov (redesign) |
-| [Desk Dash](minigames.md#desk-dash) | School classroom | Chinese measure words only | 7 Nov | 23 Nov (card translated by holding the HUD's EN button) |
-| [Mystery Doors](minigames.md#mystery-doors) | Mystery House | Yes | 9 Nov | 10 Nov |
+| [Desk Dash](minigames.md#desk-dash) | School classroom | Chinese measure words only | 7 Nov | 25 Nov (Esc mid-game always asks whether to stop); 23 Nov (card translated by holding the HUD's EN button) |
+| [Mystery Doors](minigames.md#mystery-doors) | Mystery House | Yes | 9 Nov | 25 Nov (Esc mid-game always asks whether to stop); 10 Nov |
 | [Mahjong Club](minigames.md#mahjong-club) | Table in front of the home | No | 9 Nov | 25 Nov (nameplates and cream counter removed; 24 Nov: UI polish, soft call buttons, pull tab; hide the hand to see your tiles; 23 Nov: carry on an unfinished game; one EN button, top right; Mahjong! still offered after a pung) |
 | [Radar Patrol](minigames.md#radar-patrol) | Airport control tower | No (pastime) | 9 Nov | 15 Nov (easier taps) |
 | [Wire It Up!](minigames.md#wire-it-up) | Electrical box at the home | No (pastime) | 9 Nov | 9 Nov |
 | [Library Helper](minigames.md#library-helper) | Library | Yes | 13 Nov | 25 Nov (walking out of the library or Esc mid-game asks whether to stop; [view](../evidence/game-exits-20261125/leave-question.png)); 25 Nov (a marimba chime on the right shelf, two soft falling notes on a wrong one, [sound](playing.md#sound)); 21 Nov (book close-up on pick-up, bigger right-shelf burst, thanks with a zoom on Rosa, results card, new cart after walking away) |
-| [Next, Please!](minigames.md#next-please) | Bank teller window 2 | No | 18 Nov | 24 Nov (seated at window 2, one request line, thanks move on by themselves, a hidden red alarm button instead of "Call the police"; [screenshots](../evidence/bank-teller-polish-20261124/); 23 Nov: monitor and customer in one view, the bank manager) |
+| [Next, Please!](minigames.md#next-please) | Bank teller window 2 | No | 18 Nov | 25 Nov (Esc mid-game asks whether to stop instead of opening Settings; getting up from the chair sits you back down and asks); 24 Nov (seated at window 2, one request line, thanks move on by themselves, a hidden red alarm button instead of "Call the police"; [screenshots](../evidence/bank-teller-polish-20261124/); 23 Nov: monitor and customer in one view, the bank manager) |
 | [Feeding Time!](minigames.md#feeding-time) | Zoo food booth, inside the gate | Yes | 24 Nov | 25 Nov (walking out of the zoo on foot mid-game puts you back by Nico and asks whether to stop); 24 Nov (food booth, paper bag, free feeding, 4 levels; [screenshots](../evidence/zoo-feeding-20261124/)) |
 
 ### Start screens and app
