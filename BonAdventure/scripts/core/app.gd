@@ -47,6 +47,7 @@ const Tutorial := preload("res://scripts/learning/tutorial.gd")
 const Lexicon := preload("res://scripts/language/lexicon.gd")
 const WebResume := preload("res://scripts/core/web_resume.gd")
 const NearbyUnits := preload("res://scripts/world/nearby_units.gd")
+const FarPlushMeshes := preload("res://scripts/characters/far_plush_meshes.gd")
 const PlayerPlace := preload("res://scripts/core/player_place.gd")
 const DevFocus := preload("res://scripts/core/dev_focus.gd")
 
@@ -241,10 +242,16 @@ func _nearby_first_units() -> Array:
 ## player comes near (nearby_units.gd); otherwise all of it now, behind a loading screen.
 func _finish_loading(town: Node) -> void:
 	if NearbyUnits.enabled():
-		if not town.pending_units.is_empty() and not town.has_node("NearbyUnits"):
+		# Also with every unit loaded: it frees far units again (26 Nov 2026).
+		if not town.has_node("NearbyUnits"):
 			var nearby := NearbyUnits.new()
 			nearby.setup(town)
 			town.add_child(nearby)
+		# Far plushes give up their meshes (option C, 26 Nov 2026).
+		if not town.has_node("FarPlushMeshes"):
+			var plushes := FarPlushMeshes.new()
+			plushes.setup(town)
+			town.add_child(plushes)
 		return
 	await _load_rest_now(town)
 

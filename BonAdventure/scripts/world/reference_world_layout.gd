@@ -51,6 +51,22 @@ func restore(scene) -> void:
     town.set_meta("reference_map_sites",entries)
     town.set_meta("reference_map_details",details)
 
+## A unit freed again (Main.remove_unit(), 26 Nov 2026): its site gets back an empty stand-in
+## pivot (as restore() makes for an absent unit) and its map entries and details leave the layout.
+func remove_unit() -> void:
+    for key in sites:
+        var pivot: Node3D=town.get_node_or_null("RelocatedSites/"+key)
+        if pivot==null:
+            pivot=Node3D.new()
+            pivot.name=key
+            pivot.set_meta("unit_placeholder",true)
+            pivot.transform=sites[key].pose
+            town.get_node("RelocatedSites").add_child(pivot)
+        pivots[key]=pivot
+    entries.assign(entries.filter(func(entry): return is_instance_valid(entry.node)))
+    details.assign(details.filter(func(node): return is_instance_valid(node)))
+    _blur_pick()
+
 ## A unit added after restore() (the app's staged loading, 13 Nov 2026): its site pivot,
 ## map entries and details join the layout, as restore() would have read them.
 func add_unit() -> void:

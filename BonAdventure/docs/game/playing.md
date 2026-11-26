@@ -180,7 +180,10 @@ when flying high). On the web, a returning player's town
 starts with the buildings near where they come back, and the others appear in the fog as they come
 within about 150 m (further when flying high); a game in the ▶ picker whose building is not there yet builds it first
 (17 Nov, not yet tried on a phone:
-[nearby loading](../guides/performance/README.md#built--17-november-2026)).
+[nearby loading](../guides/performance/README.md#built--17-november-2026)). Since 26 Nov buildings
+more than about 220 m away are freed again (they come back as built: doors shut, carts and
+characters at their places), and far plush characters drop their meshes until you come near
+([freeing far buildings](../guides/performance/README.md#built--26-november-2026-freeing-far-buildings-and-far-plush-meshes)).
 If a phone's browser closes the page itself (usually low memory; the game went back to the
 title screen), the game now comes straight back to the same spot when reopened within 5 minutes
 (25 Nov; tried in a desktop browser, not yet on a phone). The `?perf=1` readout counts these

@@ -346,9 +346,11 @@ the export templates copied in), then serve the folder over HTTPS or `localhost`
   swiped away may skip `pagehide` too, so reopening it within 5 min also resumes). The `?perf=1`
   readout shows "restarts N in 1 h" and, since the same day, "RAM": on the web the page's whole
   WebAssembly memory (kept by the preset as `window.bonWasmMemory`; it only grows), 412 MB in
-  the town in the app's Chromium browser. This recovers; it does not stop the kills: the town's
-  memory still grows as nearby units load (never freed; see the
-  [performance guide](docs/guides/performance/README.md#gpu-memory-on-the-web--14-november-2026)).
+  the town in the app's Chromium browser. This recovers; since 26 Nov 2026 the
+  town also frees buildings beyond 220 m and the meshes of plush characters beyond 80 m, so its
+  memory no longer only grows (the page's WebAssembly memory never shrinks, but freed space is
+  reused; see the
+  [performance guide](docs/guides/performance/README.md#built--26-november-2026-freeing-far-buildings-and-far-plush-meshes)).
   Tried in the app's Chromium browser (record in
   [FINAL_VERIFICATION](docs/guides/FINAL_VERIFICATION.md#web-restarts-save-button-and-home-spawn--25-november-2026)); not yet on a phone.
 - **New builds reach installed apps (15 Nov 2026, user):** Godot's service worker serves the

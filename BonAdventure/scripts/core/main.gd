@@ -138,11 +138,20 @@ var initial_units: Array = []
 var pending_units: Array = []
 ## unit key -> Callables waiting for it (when_unit_loaded(), e.g. a minigame's session).
 var _unit_jobs: Dictionary = {}
+## unit key -> the jobs already run for it, and the nodes they added under Main (its minigame
+## sessions): remove_unit() frees those nodes and queues the jobs again for the unit's return.
+var _unit_jobs_done: Dictionary = {}
+var _unit_nodes: Dictionary = {}
+## Unit scenes instanced ahead of add_unit() and not yet in the tree (nearby_units.gd prepare(),
+## 26 Nov 2026): key -> Node.
+var prepared_units: Dictionary = {}
 var _adding_unit := false
 var render_culling
 var indoor_visibility
 var minimaps: Array = []
 signal unit_added(key: String)
+## A building unit was freed again (remove_unit(), far-unit freeing on the web, 26 Nov 2026).
+signal unit_removed(key: String)
 ## Loading steps besides the building units (the awaits in _ready), weighted by how long the
 ## work before each takes, in building units (17 Nov 2026, first launch, native: a unit about
 ## 0.6 s; the rest of the world 0.55 s, the player 0.8 s, the HUD 1.0 s, shops 0.25 s, the
@@ -707,7 +716,97 @@ func when_unit_loaded(key: String, job: Callable) -> void:
 			_unit_jobs[key] = []
 		_unit_jobs[key].append(job)
 	else:
-		job.call()
+		_run_unit_job(key, job)
+
+## Runs a job waiting for unit `key` and remembers it and the nodes it added under Main, so
+## remove_unit() can free them and run the job again when the unit returns.
+func _run_unit_job(key: String, job: Callable) -> void:
+	var before := {}
+	for child in get_children():
+		before[child] = true
+	job.call()
+	if not _unit_jobs_done.has(key):
+		_unit_jobs_done[key] = []
+		_unit_nodes[key] = []
+	_unit_jobs_done[key].append(job)
+	for child in get_children():
+		if not before.has(child):
+			_unit_nodes[key].append(child)
+
+## Why building unit `key` must stay now ("" = it may be freed): the tutorial or any minigame
+## runs, the player drives, sits in or holds something from it, or one of its vehicles is within
+## `near` metres of the player (a parked car the player left far from its garage).
+func unit_pin(key: String, near: float) -> String:
+	var tutorial := get_node_or_null("Tutorial")
+	if tutorial != null and bool(tutorial.get("running")):
+		return "tutorial"
+	var parts := ModularTown.unit_parts(apartment, key)
+	var inside := func(node) -> bool:
+		return node is Node and is_instance_valid(node) and parts.any(func(part) -> bool: return part == node or (part as Node).is_ancestor_of(node))
+	# Any minigame (they are short; some build copies or zones far from their unit).
+	if Board.shared().blocker("") != "" or (hud != null and hud.in_minigame):
+		return "game"
+	if inside.call(active_vehicle):
+		return "vehicle"
+	if player != null and bool(player.get("seated")) and seating != null and inside.call(seating.current.get("node")):
+		return "seat"
+	var hand = player.get("hand") if player != null else null
+	if hand != null and hand.is_holding() and (inside.call(hand.held) or inside.call(hand.get("_home").get("parent"))):
+		return "hand"
+	for vehicle in driveable_vehicles:
+		if player != null and inside.call(vehicle) and vehicle.global_position.distance_to(player.global_position) < near:
+			return "vehicle"
+	return ""
+
+## Frees building unit `key` again (far-unit freeing on the web, nearby_units.gd, 26 Nov 2026):
+## the town-wide systems let go of it first, its minigame sessions are freed and wait for its
+## return, its parts are freed, and it is pending again (add_unit() brings it back as new).
+## False when it is not loaded, a unit is being added, or unit_pin() keeps it.
+func remove_unit(key: String, near := 0.0) -> bool:
+	if _adding_unit or pending_units.has(key) or unit_pin(key, near) != "":
+		return false
+	var parts := ModularTown.unit_parts(apartment, key)
+	if parts.is_empty():
+		return false
+	for node in _unit_nodes.get(key, []):
+		if is_instance_valid(node):
+			remove_child(node)
+			node.free()
+	_unit_nodes.erase(key)
+	_unit_jobs[key] = _unit_jobs_done.get(key, [])
+	_unit_jobs_done.erase(key)
+	var inside := func(node) -> bool:
+		return node is Node and is_instance_valid(node) and parts.any(func(part) -> bool: return part == node or (part as Node).is_ancestor_of(node))
+	if interaction != null and inside.call(interaction.selected):
+		interaction.clear_card()
+	var batches: Node = apartment.get_node_or_null("StaticRenderBatches/Unit_" + key)
+	if indoor_visibility != null:
+		indoor_visibility.remove_unit_parts(parts, batches)
+	if render_culling != null:
+		render_culling.remove_unit(self, parts, key)
+	if seating != null:
+		seating.drop_seats(parts)
+	if area_vocabulary != null:
+		area_vocabulary.remove(parts)
+	for door in doors.keys():
+		if not is_instance_valid(door) or inside.call(door):
+			doors.erase(door)
+	# Stamp coins in the base guarded by a node of the unit (the bank's safe) go; the unit's job
+	# puts them back with it.
+	var coins := apartment.get_node_or_null("StampCoins")
+	if coins != null:
+		for coin in coins.get_children():
+			if inside.call(coin.get("gate")):
+				coins.remove_child(coin)
+				coin.free()
+	ModularTown.remove_unit(apartment, key, parts)
+	pending_units.append(key)
+	if reference_layout != null:
+		reference_layout.remove_unit()
+	register_driveable_vehicles()
+	preload("res://scripts/characters/sculpt_cache.gd").forget_freed()
+	unit_removed.emit(key)
+	return true
 
 ## Adds building unit `key` now if it is still pending (await it), after any unit being added;
 ## nothing when it is loaded or not focused. Nearby loading (nearby_units.gd) uses it for the
@@ -728,7 +827,8 @@ func add_unit(key: String) -> void:
 		return
 	_adding_unit = true
 	var held: Array = []
-	var parts: Array = ModularTown.add_unit(apartment, key, held)
+	var parts: Array = ModularTown.add_unit(apartment, key, held, prepared_units.get(key))
+	prepared_units.erase(key)
 	for entry in held:
 		await get_tree().process_frame
 		ModularTown.put_back(apartment, entry)
@@ -766,11 +866,14 @@ func add_unit(key: String) -> void:
 		# The render trim's building-shell rays need the unit's collision in the physics space.
 		await get_tree().physics_frame
 		render_culling.add_parts(self, parts, key)
+		# Batching (35-54 ms natively) and the minigame sessions (up to 36 ms) used to share a
+		# frame (26 Nov 2026, docs/evidence/far-unit-freeing-20261126/time_arrival.gd).
+		await get_tree().process_frame
 	_adding_unit = false
 	var jobs: Array = _unit_jobs.get(key, [])
 	_unit_jobs.erase(key)
 	for job in jobs:
-		job.call()
+		_run_unit_job(key, job)
 	apply_world_language()
 	update_progress_display()
 	if pending_units.is_empty():

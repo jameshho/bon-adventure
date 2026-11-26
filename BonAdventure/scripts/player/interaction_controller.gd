@@ -223,10 +223,14 @@ func release_claim(id: String) -> void:
         if _claims[i].id == id:
             _claims.remove_at(i)
 
-## The claim that holds input now ({} when none).
+## The claim that holds input now ({} when none). A claim whose owner was freed (a far unit's
+## minigame session, Main.remove_unit()) is dropped.
 func active_claim() -> Dictionary:
     for i in range(_claims.size() - 1, -1, -1):
         var entry: Dictionary = _claims[i]
+        if not (entry.wants as Callable).is_valid():
+            _claims.remove_at(i)
+            continue
         if entry.wants.call():
             return entry
     return {}

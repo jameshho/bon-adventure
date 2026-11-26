@@ -8568,3 +8568,36 @@ guide and this file keep both sides. `run_checks.py --only journal_sticker_book,
 expected the bare translation, and apple is now known from the start (C4 seeded words); the check
 now allows the tag and checks it follows the word memory: **PASS** on its re-run. Not run: the full
 suite, renders of the merged journal.
+
+## Freeing far buildings and far plush meshes — 26 November 2026
+
+User: "now free far buildings to fix the memory" (option B), then, relayed from a side chat, also
+arrival spread, shader pre-warming and option C. Changed: `nearby_units.gd` (frees units beyond
+220 m, `prepare()`), `main.gd` (`remove_unit()`, `unit_pin()`, `prepared_units`, a frame between
+batching and the minigame sessions), `modular_town.gd` (`unit_parts()`, `remove_unit()`, prepared
+instance), `render_culling.gd` (per-unit batches on the web, `remove_unit()`, triangle counts no
+longer hold meshes), `indoor_visibility.gd`, `seating_controller.gd`, `area_vocabulary.gd`,
+`reference_world_layout.gd`, `interaction_controller.gd` (drops claims of freed sessions),
+`sculpt_cache.gd` (`forget_freed()`, `strip()`, `unstrip()`), new `far_plush_meshes.gd`, `app.gd`.
+Full town (`dev_focus.txt` = `all`); the 25 Nov stray copies (`main 2.gd` and others) were in
+the checkout, untracked, not this work. Evidence:
+[far-unit-freeing-20261126](../evidence/far-unit-freeing-20261126/README.md).
+
+- **New checks (native, `VT_NEARBY=1`, once each on the finished code):** `verify.gd` 42/42 PASS
+  (video: every unit 370 MB, none 210 MB, a full cycle 372 MB), `verify_plush.gd` 14/14 PASS
+  (20 plushes stripped: 253 → 207 MB), no SCRIPT ERROR in either. Godot exits 137 after the
+  summary (the known shutdown abort).
+- **Existing checks:** `nearby-loading-20261117/verify.gd` 19/19 PASS; `run_checks.py --only
+  player_place,tutorial,minigame_launcher,signs,app_flow,unstuck,interaction,npc_registry,plush_life,seats_swan_boats`:
+  PASS 10 (eight crashed on exit after the summary, judged by the summary). Not the full suite.
+- **Arrival frames** (`time_arrival.gd`): worst frame on a first arrival, restaurants 176 → 122 ms,
+  hospital 349 → 245, home 110 → 69, police 61 → 38. Not the 16–30 ms aimed for. Shader pre-warming
+  was built, measured (no shorter arrival frames, 150–160 ms warm-up frames) and removed.
+- **Web build in the app's Chromium browser (localhost, 800 × 600), not a phone:** the existing
+  profile loaded into the town at the home; readout GPU 299 MB, RAM 412 MB (25 Nov: 291 / 412);
+  no console errors. Not walked across town on the web, so freeing and stripping were not
+  observed there, and whether the page's `user://` accepts the stripped meshes was not checked
+  (the cache files never reach the browser's saved storage; stripping skips a plush whose mesh
+  cannot be saved).
+- **Not checked:** a real phone (does it still get killed?), memory over a long walk on the web,
+  how returning buildings look in the fog, the full suite.

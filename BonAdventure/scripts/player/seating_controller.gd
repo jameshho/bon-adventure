@@ -119,6 +119,18 @@ func add_seats(under: Node) -> void:
         if not bed.is_empty(): seats.append(bed)
     make_interactables()
 
+## The seats under `parts` (a building unit about to be freed, Main.remove_unit(), 26 Nov 2026)
+## and any already freed leave the lists; add_seats() finds them again when the unit returns.
+func drop_seats(parts: Array) -> void:
+    var gone := func(node) -> bool:
+        return not is_instance_valid(node) or parts.any(func(part) -> bool: return part == node or (part as Node).is_ancestor_of(node))
+    var kept: Array[Dictionary] = []
+    for seat in seats:
+        if not gone.call(seat.node): kept.append(seat)
+    seats = kept
+    for node in by_node.keys():
+        if gone.call(node): by_node.erase(node)
+
 ## One Interactable per seat node (see the header).
 func make_interactables() -> void:
     by_node.clear()
