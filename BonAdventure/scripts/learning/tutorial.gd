@@ -137,6 +137,13 @@ var _skip_layer: CanvasLayer
 var _skip_button: Button
 ## The window scale the Skip button was last styled for.
 var _skip_scale := 0.0
+## The act marker beside Skip ("Part 1 of 3", UI-07, 25 Nov 2026): a soft blue pill, no button.
+var _progress_pill: PanelContainer
+var _progress_label: Label
+## The Skip button asks first (UI-07, 25 Nov 2026): the dialogue panel's shared quit card (Stay
+## green left, Skip coral right). While it is up the steps hold (until()), the player is held
+## (_apply_gate()) and clicks do not move a line on (_input()).
+var asking_skip := false
 var _cutscene: CanvasLayer
 ## "confine" step: the player stays inside these world XZ rects (none = free); `_confine_line`
 ## flashes when the player is held back (at most every CONFINE_FLASH_MS).
@@ -274,6 +281,7 @@ func setup(game) -> void:
 			panel.hide_dialogue()
 			_closed = true)
 	game.interaction.word_studied.connect(func(key: String) -> void: studied[key] = true)
+	panel.quit_answered.connect(_on_skip_answered)
 	_make_skip_button()
 	_cue_layer = CanvasLayer.new()
 	_cue_layer.name = "TutorialCueLayer"
@@ -338,6 +346,24 @@ func start(from_act: int) -> void:
 	_skip_layer.visible = true
 	_play(_run)
 
+## The Skip button: asks first (Stay or Skip) on the dialogue panel's quit card; nothing when
+## another question already has the card.
+func ask_skip() -> void:
+	if not running or asking_skip or panel.is_quit_open():
+		return
+	asking_skip = true
+	_apply_gate()
+	panel.show_quit(narration("tutorial.skip_confirm"), narration("tutorial.skip_yes"), narration("tutorial.skip_stay"))
+
+func _on_skip_answered(leave: bool) -> void:
+	if not asking_skip:
+		return
+	asking_skip = false
+	panel.hide_quit()
+	_apply_gate()
+	if leave:
+		skip()
+
 ## Skip: ends the tutorial for this profile and puts the player outside the home.
 func skip() -> void:
 	if not running:
@@ -399,7 +425,7 @@ func _alive(run: int) -> bool:
 ## Waits until `test` is true (checked every frame); false when the tutorial stopped meanwhile.
 func until(test: Callable) -> bool:
 	var run := _run
-	while _alive(run) and not test.call():
+	while _alive(run) and (asking_skip or not test.call()):
 		await get_tree().process_frame
 	return _alive(run)
 
@@ -633,7 +659,8 @@ func remark(role: String, id: String, values: Dictionary = {}) -> void:
 ## A click or tap (not on a button: the box's ✕, Skip), E or Enter moves the line on. A line
 ## waiting for a reply moves on only by its button, or E / Enter.
 func _input(event: InputEvent) -> void:
-	if not running:
+	# The Skip question is up: its buttons answer; nothing moves a line on.
+	if not running or asking_skip:
 		return
 	var at: Variant = _press_position(event)
 	if _speaking or _pausing:
@@ -671,7 +698,7 @@ func _on_button(at: Vector2) -> bool:
 ## back (player_controller.gd look_allowed / move_allowed, interaction_controller.gd
 ## interact_allowed).
 func _apply_gate() -> void:
-	var held := running and _speaking
+	var held := running and (_speaking or asking_skip)
 	main.player.look_allowed = bool(_gate.get("look", true)) and not held
 	main.player.move_allowed = bool(_gate.get("move", true)) and not held
 	main.interaction.interact_allowed = bool(_gate.get("use", true)) and not held
@@ -1683,8 +1710,14 @@ func _make_skip_button() -> void:
 	# The in-game soft blue pill (docs/guides/UI_STYLE.md, kind "soft"); restyled in _process
 	# only when the window scale changes.
 	_skip_button = BonStyle.button("", "soft", "", 1.0, 24.0, Vector2(150, 56))
-	_skip_button.pressed.connect(skip)
+	_skip_button.pressed.connect(ask_skip)
 	_skip_layer.add_child(_skip_button)
+	_progress_pill = PanelContainer.new()
+	_progress_pill.name = "TutorialProgress"
+	_progress_pill.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_progress_label = BonStyle.label("", 22.0, BonStyle.INK, 1.0)
+	_progress_pill.add_child(_progress_label)
+	_skip_layer.add_child(_progress_pill)
 
 func _process(_delta: float) -> void:
 	if running:
@@ -1703,22 +1736,44 @@ func _process(_delta: float) -> void:
 	var screen := get_viewport().get_visible_rect().size
 	var f := BonStyle.factor(screen, 0.6)
 	var text: String = lexicon.phrase("tutorial.skip", lexicon.native)
-	if _skip_button.text != text or not is_equal_approx(_skip_scale, f):
+	var progress := progress_text()
+	if _skip_button.text != text or _progress_label.text != progress or not is_equal_approx(_skip_scale, f):
 		_skip_button.text = text
 		_skip_scale = f
 		BonStyle.style_button(_skip_button, "soft", f, 24.0)
 		_skip_button.custom_minimum_size = Vector2(150, 56) * f
+		_progress_label.text = progress
+		_progress_label.add_theme_font_size_override("font_size", roundi(22.0 * f))
+		var look := BonStyle.box("soft_quiet", f)
+		look.content_margin_left = 20.0 * f
+		look.content_margin_right = 20.0 * f
+		look.content_margin_top = 6.0 * f
+		look.content_margin_bottom = 8.0 * f
+		_progress_pill.add_theme_stylebox_override("panel", look)
 	_skip_button.size = _skip_button.get_minimum_size()
+	_progress_pill.size = _progress_pill.get_minimum_size()
 	# Top centre where the HUD clock is (hidden meanwhile); out of the way of the journal, map, help
-	# and Settings, and of an instruction strip (user, 18 Nov 2026: hidden while one shows).
-	_skip_button.position = Vector2((screen.x - _skip_button.size.x) * 0.5, SKIP_TOP * f)
-	_skip_button.visible = _strip_spec.is_empty() and not (main.hud.is_journal_open() or main.hud.is_map_open() or main.hud.is_help_open() or main.settings_panel.visible)
+	# and Settings, and of an instruction strip (user, 18 Nov 2026: hidden while one shows). The
+	# act marker sits to its left, the pair centred, the marker's middle level with the button's.
+	var gap := 12.0 * f
+	var left := (screen.x - _progress_pill.size.x - gap - _skip_button.size.x) * 0.5
+	_progress_pill.position = Vector2(left, SKIP_TOP * f + (_skip_button.size.y - _progress_pill.size.y) * 0.5)
+	_skip_button.position = Vector2(left + _progress_pill.size.x + gap, SKIP_TOP * f)
+	_skip_button.visible = not asking_skip and _strip_spec.is_empty() and not (main.hud.is_journal_open() or main.hud.is_map_open() or main.hud.is_help_open() or main.settings_panel.visible)
+	_progress_pill.visible = _skip_button.visible
+
+## "Part 1 of 3": the act being played and the tutorial's act count (data/tutorial.json).
+func progress_text() -> String:
+	return lexicon.phrase("tutorial.progress", lexicon.native, {"n": mini(act + 1, data.acts.size()), "total": data.acts.size()})
 
 ## Ends the tutorial (skip or the last step): the cast leaves, the house twins come back, and
 ## everything it opened closes.
 func _stop() -> void:
 	running = false
 	_run += 1
+	if asking_skip:
+		asking_skip = false
+		panel.hide_quit()
 	if is_instance_valid(shop):
 		shop.stop()
 		shop.queue_free()

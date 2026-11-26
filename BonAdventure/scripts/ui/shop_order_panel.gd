@@ -840,7 +840,8 @@ func _refresh_quit() -> void:
 	var shown: Array = GameSettings.shared().view(_quit.prompt, show_native)
 	quit_label.text = shown[0]
 	quit_native.text = shown[1]
-	quit_native.visible = shown[1] != ""
+	# A narration prompt (the tutorial's Skip question) is the same text in both slots.
+	quit_native.visible = shown[1] != "" and shown[1] != shown[0]
 	quit_yes.text = GameSettings.shared().stacked(_quit.yes, show_native)
 	quit_no.text = GameSettings.shared().stacked(_quit.no, show_native)
 	_rescale()

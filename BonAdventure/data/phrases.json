@@ -1471,6 +1471,10 @@
       "after_leo_2": {"es": "Estoy llenísimo... bueno, quizás una manzana más.", "en": "I'm so full... well, maybe one more apple.", "zh": "我吃不下了……嗯，可能再吃一個蘋果。"},
       "after_leo_3": {"es": "¡Ven a saludarnos cuando quieras!", "en": "Come and say hi any time!", "zh": "隨時回來跟我們打招呼呀！"},
       "skip": {"es": "Saltar tutorial", "en": "Skip tutorial", "zh": "跳過教學", "note": "Button (native language) at the top while the tutorial runs: ends it and puts the player outside the home. Says what it skips (user, 14 Nov 2026)."},
+      "skip_confirm": {"es": "¿Saltar el tutorial? Puedes repetirlo cuando quieras en Ajustes.", "en": "Skip the tutorial? You can replay it any time in Settings.", "zh": "要跳過教學嗎？隨時可以在設定裡重玩。", "note": "Confirm card (native language) after the Skip button (UI-07, 25 Nov 2026): Stay (green, left) or Skip (coral, right)."},
+      "skip_stay": {"es": "Quedarme", "en": "Stay", "zh": "留下", "note": "Skip confirm card: the green button on the left; the tutorial carries on."},
+      "skip_yes": {"es": "Saltar", "en": "Skip", "zh": "跳過", "note": "Skip confirm card: the coral button on the right; ends the tutorial."},
+      "progress": {"es": "Parte {n} de {total}", "en": "Part {n} of {total}", "zh": "第{n}部分（共{total}部分）", "note": "Small pill beside the Skip button while the tutorial runs (UI-07, 25 Nov 2026): the act being played and how many acts there are."},
       "replay": {"es": "Repetir la bienvenida", "en": "Replay the welcome tour", "zh": "重玩新手導覽", "note": "Settings button: plays the tutorial again from the start."}
     },
     "launcher": {

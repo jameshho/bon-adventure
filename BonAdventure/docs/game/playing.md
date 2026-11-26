@@ -38,7 +38,10 @@ out while Just explore! is ticked; tapping one of its languages turns exploring 
 
 "Welcome to Bon Adventure" runs once for a new profile: wake up in bed, a tour of the house, find
 the hiding friends, buy fruit at the supermarket, visit the statue, then open the journal. It
-can be skipped, and replayed from Settings. No minigame offers appear while it runs. Since 16 Nov
+can be skipped, and replayed from Settings. Since 25 Nov a small pill beside Skip says which part
+is playing ("Part 1 of 3": house, market, park), and Skip asks first: Stay (green, left) carries
+on where it was, Skip (coral, right) ends it
+([views](../evidence/tutorial-progress-20261125/README.md)). No minigame offers appear while it runs. Since 16 Nov
 the rest of the town loads behind the title card after the house tour (with a progress bar), so
 the house tour itself no longer stutters. Since 17 Nov the tour also starts behind the loading screen: the characters,
 rooms and close-ups of the house tour are drawn there first, so the first lines in the house no
