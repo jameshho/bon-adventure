@@ -6,6 +6,14 @@ extends RefCounted
 ##
 ## Clock: STEPS, not days. Every recorded question (practice_log.gd `recorded`, any game) is one
 ## step; elapsed = steps since the word was last answered. FSRS's day is STEPS_PER_DAY steps.
+## Time away (25 Nov 2026, user decision D8, improvement plan LEARN-03): elapsed also adds the
+## real days since the word was last answered, AWAY_DAY_WEIGHT FSRS days per day, at most
+## AWAY_DAYS_CAP (a two-month break counts as a week). A word due only because of that term
+## ("away-due") counts as due only for the AWAY_REVIEWS_PER_SESSION most forgotten of them per
+## session (a session starts after SESSION_GAP_SECONDS without a question); the others stay
+## first among the known words, so a long break never floods a game with reviews or holds new
+## words back for long. Words without a saved time (older saves) use the time of the language's
+## last question, and add nothing until one is saved.
 ##
 ## Memory per word (FSRS-4.5, default weights W): stability S (in FSRS days: the elapsed time at
 ## which recall drops to 90 %), difficulty D (1-10), retrievability R = (1 + F * t / S) ^ DECAY.
@@ -35,8 +43,10 @@ extends RefCounted
 ## Games with a fixed generator (a family tree, a flight board) keep their own generator and
 ## ask wants(keys) to pick among a few generated questions instead (see pick_round()).
 ##
-## Saved per profile: word_memory.json {"es": {"step": 41, "last_new": 37, "words": {"apple":
-## {"s": 3.7, "d": 5.1, "last": 12, "reps": 2, "lapses": 0}}}}. A language without memory is
+## Saved per profile: word_memory.json {"es": {"step": 41, "last_new": 37, "unix": 1795600000,
+## "away_left": 6, "words": {"apple": {"s": 3.7, "d": 5.1, "last": 12, "reps": 2, "lapses": 0,
+## "unix": 1795590000}}}} ("unix" and "away_left" since 25 Nov 2026: additive, an older build
+## ignores them). A language without memory is
 ## seeded once from the practice log (one review per word: Good when right answers outnumber
 ## the others; a Good word starts at LEARNED_STABILITY at least, since 25 Nov 2026, so a player's
 ## well-known words do not hold back new ones; languages seeded before keep their memory). Games started from the ▶ picker record like any other (practice_log.gd).
@@ -64,6 +74,13 @@ const NEW_AT_ONCE := 3
 const LEARNED_STABILITY := 4.0
 ## Words answered this many steps ago or less count as being learned in any game (two FSRS days).
 const RECENT_STEPS := 16
+## Time away (LEARN-03, D8): FSRS days per real day since a word was last answered, the cap in
+## real days, the away-due words that count as due per session and the pause that starts one.
+const AWAY_DAY_WEIGHT := 1.0
+const AWAY_DAYS_CAP := 7.0
+const AWAY_REVIEWS_PER_SESSION := 8
+const SESSION_GAP_SECONDS := 3 * 3600
+const SECONDS_PER_DAY := 86400.0
 ## Tier of a word without one (data/words.json "tier" is a draft, 24 Nov 2026).
 const DEFAULT_TIER := 2
 
@@ -73,8 +90,13 @@ signal known_changed(game_id: String, key: String, known: bool)
 
 static var _shared
 
-## language -> {"step", "last_new", "words": {key: state}}.
+## language -> {"step", "last_new", "unix", "away_left", "words": {key: state}}.
 var data: Dictionary = {}
+## Checks set the wall clock (unix seconds); below 0 = the system clock.
+var now_for_test := -1.0
+## The away-due words that count as due now, cached per language, step, budget and hour.
+var _away_cache_key := ""
+var _away_due: Dictionary = {}
 
 static func shared():
 	if _shared == null:
@@ -86,6 +108,7 @@ static func shared():
 func load_saved() -> void:
 	var parsed: Variant = SaveStore.read_json(SaveStore.path(FILE))
 	data = parsed if parsed is Dictionary else {}
+	_away_cache_key = ""
 
 func save() -> void:
 	SaveStore.write_json(SaveStore.path(FILE), data)
@@ -123,15 +146,65 @@ func state(key: String) -> Dictionary:
 func is_new(key: String) -> bool:
 	return state(key).is_empty()
 
-## Recall probability now (1.0 for a new word, which is not due).
+## Recall probability now (1.0 for a new word, which is not due): steps plus capped time away.
 func retrievability(key: String) -> float:
 	var s := state(key)
 	if s.is_empty():
 		return 1.0
-	return _r(float(step() - int(s.last)) / STEPS_PER_DAY, float(s.s))
+	return _r(_step_days(s) + away_days(key), float(s.s))
 
+## Due: by steps alone, or away-due and among this session's AWAY_REVIEWS_PER_SESSION.
 func is_due(key: String) -> bool:
-	return not is_new(key) and retrievability(key) < TARGET_RETENTION
+	var s := state(key)
+	if s.is_empty():
+		return false
+	if _r(_step_days(s), float(s.s)) < TARGET_RETENTION:
+		return true
+	return _away_due_now().has(key)
+
+func now_unix() -> float:
+	return now_for_test if now_for_test >= 0.0 else Time.get_unix_time_from_system()
+
+## The time-away term of a word in FSRS days (0 without a saved time; capped at AWAY_DAYS_CAP).
+func away_days(key: String) -> float:
+	var memory := _memory()
+	var s: Dictionary = memory.words.get(key, {})
+	var since := float(s.get("unix", memory.get("unix", -1.0)))
+	if s.is_empty() or since < 0.0:
+		return 0.0
+	return AWAY_DAY_WEIGHT * clampf((now_unix() - since) / SECONDS_PER_DAY, 0.0, AWAY_DAYS_CAP)
+
+## Away-due words that may still count as due this session (a new session after a pause).
+func away_budget() -> int:
+	var memory := _memory()
+	if now_unix() - float(memory.get("unix", -1e12)) >= SESSION_GAP_SECONDS:
+		return AWAY_REVIEWS_PER_SESSION
+	return maxi(0, int(memory.get("away_left", AWAY_REVIEWS_PER_SESSION)))
+
+func _step_days(s: Dictionary) -> float:
+	return float(step() - int(s.last)) / STEPS_PER_DAY
+
+## The away_budget() most forgotten away-due words of the language (key -> true).
+func _away_due_now() -> Dictionary:
+	var budget := away_budget()
+	var cache_key := "%s|%d|%d|%d|%d" % [Lexicon.shared().foreign, step(), budget, int(now_unix() / 3600.0), _memory().words.size()]
+	if cache_key == _away_cache_key:
+		return _away_due
+	var candidates: Array = []
+	var words: Dictionary = _memory().words
+	if budget > 0:
+		for key in words:
+			var s: Dictionary = words[key]
+			if _r(_step_days(s), float(s.s)) >= TARGET_RETENTION:
+				var r := retrievability(str(key))
+				if r < TARGET_RETENTION:
+					candidates.append([r, str(key)])
+	candidates.sort_custom(func(a, b): return a[0] < b[0] or (a[0] == b[0] and a[1] < b[1]))
+	_away_due = {}
+	for item in candidates.slice(0, budget):
+		_away_due[item[1]] = true
+	_away_cache_key = cache_key
+	return _away_due
 
 ## Whether `state` (a word's saved state) counts as known: the one meaning of "known" (D9).
 static func known_state(state: Dictionary) -> bool:
@@ -266,9 +339,16 @@ func _on_recorded(game_id: String, outcomes: Dictionary) -> void:
 	if not data.has(language):
 		data[language] = _seeded(language, outcomes)
 	var memory := _memory()
+	var budget := away_budget()
+	var away_reviewed := 0
+	for key in outcomes:
+		var k := str(key)
+		if memory.words.has(k) and is_due(k) and _r(_step_days(memory.words[k]), float(memory.words[k].s)) >= TARGET_RETENTION:
+			away_reviewed += 1
 	memory.step = int(memory.get("step", 0)) + 1
 	var now: int = memory.step
 	var changed: Array = []
+	var unix := int(now_unix())
 	for key in outcomes:
 		var grade := GOOD if str(outcomes[key]) == "positive" else AGAIN
 		var s: Dictionary = memory.words.get(str(key), {})
@@ -277,10 +357,14 @@ func _on_recorded(game_id: String, outcomes: Dictionary) -> void:
 			memory.words[str(key)] = _first_state(grade, now)
 			memory.last_new = now
 		else:
-			memory.words[str(key)] = _review(s, grade, now)
+			# Time away counts towards the review (FSRS's elapsed time), as in retrievability().
+			memory.words[str(key)] = _review(s, grade, now, away_days(str(key)))
+		memory.words[str(key)].unix = unix
 		var now_known := known_state(memory.words[str(key)])
 		if now_known != was_known:
 			changed.append([str(key), now_known])
+	memory.unix = unix
+	memory.away_left = maxi(0, budget - away_reviewed)
 	save()
 	for change in changed:
 		known_changed.emit(game_id, change[0], change[1])
@@ -288,10 +372,10 @@ func _on_recorded(game_id: String, outcomes: Dictionary) -> void:
 func _first_state(grade: int, now: int) -> Dictionary:
 	return {"s": W[grade - 1], "d": _d0(grade), "last": now, "reps": 1, "lapses": 1 if grade == AGAIN else 0}
 
-func _review(s: Dictionary, grade: int, now: int) -> Dictionary:
+func _review(s: Dictionary, grade: int, now: int, away := 0.0) -> Dictionary:
 	var stability := float(s.s)
 	var difficulty := float(s.d)
-	var r := _r(float(now - int(s.last)) / STEPS_PER_DAY, stability)
+	var r := _r(float(now - int(s.last)) / STEPS_PER_DAY + away, stability)
 	var next_d := clampf(W[7] * _d0(4) + (1.0 - W[7]) * (difficulty - W[6] * (grade - 3)), 1.0, 10.0)
 	var next_s: float
 	if grade == AGAIN:

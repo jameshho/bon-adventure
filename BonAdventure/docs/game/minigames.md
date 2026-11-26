@@ -73,6 +73,12 @@ reviews the ones they are about to forget. The code is in
   long it is remembered) and a difficulty, and its recall chance drops as other questions pass.
   A right first answer makes the word last longer; a wrong one or a shown translation makes it
   come back soon.
+- **Time away counts too, up to a week** *(25 Nov 2026, user decision D8)*. Each real day since
+  a word was last answered counts as one more memory day, but a break longer than a week counts
+  as a week. So a word learned last week can come back after a few days away, while words known
+  well are not asked again. After a long break at most 8 such words come back per session
+  (a session starts after 3 hours without a question), most forgotten first; the rest wait for
+  later sessions and new words keep coming.
 - **New words come in gradually.** At most 3 at a time. After a new word, the next one waits 3
   questions, plus 1 for every 3 words still being learned; with 12 words still being learned no
   new word comes until some are known. A player who keeps getting words right meets new ones
@@ -92,7 +98,7 @@ reviews the ones they are about to forget. The code is in
   remembered well (stability of at least 4 FSRS days, usually two right answers some questions
   apart). The journal marks it with a daisy and counts it; the results card names the words that
   became known in that game.
-- **Not yet:** day-based review (time between sessions); tuning the numbers by play.
+- **Not yet:** tuning the numbers by play.
 
 ## Word tiers
 
