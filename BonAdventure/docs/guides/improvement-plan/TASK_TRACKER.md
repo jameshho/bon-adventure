@@ -139,8 +139,17 @@ The common rollback for every task is to revert that milestone's single commit. 
 - **Acceptance:** a warm web launch loads a building without the hitch.
 - **Tests:** web timing cold and warm; `app_flow`.
 
-### PERF-04 Voice clips per language (A1, C, Ready: D7 per-language packs, 25 Nov)
+### PERF-04 Voice clips per language (A1, C, Under Review 25 Nov: built on `claude/voice-packs-0b0e14`, D7 per-language packs)
 - **Objective:** download only the voice languages in use. Today all 3 are about 30 MB.
+- **Result (25 Nov):** the Web preset leaves `audio/voice/` out of `index.pck`; `tools/voice_packs.gd`
+  (run by `deploy_web.py`) writes `voice/<lang>-<hash>.pck` per language with clips plus
+  `voice/index.json`; `sound.gd` `ensure_voice()` downloads only `Lexicon.foreign`'s pack on the web,
+  keeps it in `user://voice/` for offline and fetches again when the learned language changes.
+  `index.pck` 71.51 → 50.64 MB; packs 6.86–7.51 MB. Missing pack or clip: no speaker, no error.
+  Checks: `voice_backbone` KNOWN (32 checks, only the missing bamboo clips), `sound_ui`, `language`,
+  `app_flow` PASS. Not tried: Safari,
+  phone, offline start, a word said from a mounted pack in the browser
+  ([Web packs](../VOICE.md#web-packs)).
 - **Files:** `scripts/core/sound.gd`, export/pack step, `docs/guides/VOICE.md`.
 - **Risk:** medium (offline PWA cache, language switch).
 - **Tests:** offline, Safari, language switch.

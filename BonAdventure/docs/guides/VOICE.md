@@ -250,6 +250,7 @@ picked every sound by ear from 2–5 candidates each (cabinet, safe and vault to
 | `data/sounds.json` `"voice"` | Master switch `enabled`, folder `res://audio/voice`, bus `Voice`, volume, and the Polly voice per language |
 | `scripts/core/sound.gd` | `voice_file(key)` (clip name: `apple pie` → `apple_pie`), `voice_path()`, `has_voice()`, `say_word(key, lang)`. Plays one word at a time on the Voice bus, not positional |
 | `tools/voice_manifest.gd` | What to say: one SSML line per word and language. It reads `data/words.json` through the Lexicon and fails on clashing clip names, missing text or pinyin it cannot split |
+| `tools/voice_packs.gd` | Web only: one resource pack per language, `voice/<lang>-<md5 8>.pck`, plus `voice/index.json`, written by `tools/deploy_web.py` next to the page ([Web packs](#web-packs)) |
 | `tools/voice_generate.py` | Sends the manifest to Polly with the AWS CLI. Writes `<out>/<lang>/<file>.ogg` (Ogg Vorbis, 22.05 kHz) and `<lang>/generated.json` (a fingerprint per clip, so only changed words are redone) |
 
 What is said:
@@ -263,6 +264,50 @@ What is said:
   `data/pinyin_zh.json`). For example 蘋果 → `ping2 guo3`, 綠色 → `lv4 se4`, 爺爺 → `ye2 ye5`.
   Polly therefore says the same pinyin the game shows and does not guess readings of the
   Traditional characters. If the pinyin data is wrong, fix it there; the voice follows.
+
+## Web packs
+
+Decision D7 (user, 25 Nov 2026; PERF-04): on the web a player downloads only the spoken words of
+the language being learned, when that language is chosen, and keeps them for offline play.
+
+- **Build:** the Web preset's `exclude_filter` leaves all of `audio/voice/` out of `index.pck`.
+  `tools/deploy_web.py` then runs `tools/voice_packs.gd -- --out <build>/voice`, which writes one
+  Godot resource pack per language listed in `data/languages.json` that has a clip folder: each
+  clip's `.import` file and its imported stream from `.godot/imported/` (so it runs after the
+  export's import). The file name carries the first 8 hex digits of the pack's MD5, so a changed
+  clip gives a new name and no browser keeps a stale pack. `index.json` is
+  `{"format": 1, "packs": {lang: {"file", "bytes", "clips"}}}`. A clip with no imported file is
+  left out with a warning. No language code is written anywhere: a new language with clips gets
+  a pack by itself.
+- **Game:** `sound.gd` `ensure_voice(lang)`, on the web only, for `Lexicon.foreign` when the
+  service starts (the loading screen) and again whenever it changes (Settings, another
+  profile; checked every 0.5 s). It fetches `voice/index.json` (with a time query, past HTTP
+  caches), downloads the listed pack unless `user://voice/` (IndexedDB on the web, shared by
+  every profile) already holds that file, removes older packs of that language and mounts it
+  with `ProjectSettings.load_resource_pack()`; `voice_ready(lang)` then fires. Offline (the
+  index cannot be read) it mounts the pack kept last time. A language switched to and back is
+  not fetched again in the same run (a mounted pack stays mounted). Outside the web the clips
+  are in `res://` already (`voice_present()`), so nothing is fetched.
+- **Degrading quietly:** until the pack is mounted, with no pack (no index entry, a failed
+  download, a word with no clip such as `bamboo` until it is made), `has_voice()` is false and
+  the speaker button and journal speaker simply do not show. No error is shown or logged.
+  The HUD and journal decide per word when it is shown, so a pack that arrives mid-card shows
+  its speaker from the next word on.
+- **Sizes** (25 Nov 2026, `deploy_web.py --out`, same revision, before and after): `index.pck`
+  71.51 → 50.64 MB; packs en 6.96, es 7.51, zh 6.86 MB (799 clips each). A Spanish learner's
+  first download falls from 71.51 to 58.15 MB (−13.4 MB); an update that changes no clip
+  re-downloads only `index.pck`.
+- **Verified** (evidence `docs/evidence/voice-packs-20261125/`): the Spanish pack mounted in an
+  empty Godot project (`probe.gd`): `res://audio/voice/es/` appears, `apple`, `apple_pie` and
+  `doctor` load as Ogg Vorbis, `bamboo` does not exist. The web build served on localhost in the
+  app's built-in Chromium: after Play and a profile, the page fetched `voice/index.json` and
+  only `voice/es-….pck`, and IndexedDB `/userfs` then held `…/voice/es-4d80516d.pck`.
+  `voice_backbone` covers the preset filter, the deploy step and `ensure_voice()` outside the
+  web. Checks 25 Nov 2026 (`run_checks.py --only`): `voice_backbone` KNOWN (32 checks, 1 failure:
+  no `bamboo` clip in es/en/zh yet, which needs the user's AWS login); `sound_ui`, `language`,
+  `app_flow` PASS (sound_ui and app_flow with the known crash after the summary). **Not verified:** a word said from a mounted pack in the browser (the tutorial could not
+  be driven to a word card there), a language switch on the web, offline start (the pane could
+  not register the service worker), Safari and phones.
 
 ## Making clips
 
@@ -284,7 +329,7 @@ neural voices: it refused with "The selected engine is not supported in this reg
 24 Nov 2026. About 800 words × 3 languages
 cost cents and fit the Polly free tier. `--jobs N` (default 4) makes N clips at once; all
 2,397 took a few minutes on 24 Nov 2026. The Web export leaves out the `generated.json` records
-(`export_presets.cfg` `exclude_filter`).
+(`export_presets.cfg` `exclude_filter`; since 25 Nov 2026 all of `audio/voice/`, see [Web packs](#web-packs)).
 
 ## Checks
 
@@ -322,14 +367,12 @@ cost cents and fit the Polly free tier. `--jobs N` (default 4) makes N clips at 
   `suspended`. The console showed no errors. **Not tried:** a real sound playing on the web
   (nothing may play yet), Safari, and a phone. `index.pck` is now 91.4 MB, of which about 20 MB
   is the clips; GitHub's limit is 100 MB per file.
-- **P1:** the Web pack is near GitHub's 100 MB file limit. Ship only the language being learned,
-  or split the clips out of `index.pck`, before adding more audio or music. Since 25 Nov 2026
-  (commit 5525310a) the pack is 65.5 MB; the sound effects add about 0.32 MB (engines included) and the five mood
-  tracks more (not measured here).
+- Done 25 Nov 2026 (PERF-04, D7): the clips left `index.pck` for per-language
+  [web packs](#web-packs); `index.pck` 71.51 → 50.64 MB.
 - **P2:** decide whether to also say words on the results card, and whether
   the card should say the word by itself when it opens.
-- **P2:** web size. All three languages are in the Web export (about 20 MB in total). Consider
-  shipping or downloading only the language being learned.
+- **P2:** web packs not yet tried in Safari, on a phone or offline, nor a word said from a
+  mounted pack in the browser ([Web packs](#web-packs)).
 - **P3:** review the English clips by ear. The Spanish and Chinese ones were only spot-checked
   through the 22 samples.
 - **P3:** phrases and NPC lines, and the credits entry for Polly.

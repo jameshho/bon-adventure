@@ -54,6 +54,26 @@ func _initialize() -> void:
 	sound.voice["enabled"] = false
 	_check(sound.has_voice("apple", "es") == false, "has_voice false again once switched off")
 	_check(sound.get_child_count() == players, "still no audio player")
+	# Web packs (PERF-04, 25 Nov 2026, VOICE.md "Web packs"): the Web preset leaves the clips out
+	# of index.pck (tools/voice_packs.gd packs them per language); outside the web every voice
+	# language is already in res:// and ensure_voice() downloads nothing; an unknown language
+	# is quietly marked as having no pack.
+	sound.voice["enabled"] = true
+	for lang in langs:
+		_check(sound.voice_present(lang), "%s clips are in res:// outside the web" % lang)
+		sound.ensure_voice(lang)
+		_check(sound._voice_packs.get(lang) == "ready", "ensure_voice %s: ready, nothing fetched" % lang)
+	sound.ensure_voice("xx")
+	_check(sound._voice_packs.get("xx") == "none" and not sound.has_voice("apple", "xx"), "ensure_voice of a language with no clips: silent")
+	_check(sound.get_child_count() == players, "ensure_voice made no request outside the web")
+	var presets := ConfigFile.new()
+	presets.load("res://export_presets.cfg")
+	var excluded := []
+	for pattern in str(presets.get_value("preset.0", "exclude_filter", "")).split(",", false):
+		excluded.append(pattern.strip_edges())
+	_check(excluded.has("audio/voice/*"), "the Web preset leaves audio/voice/ out of index.pck")
+	_check(FileAccess.file_exists("res://tools/voice_packs.gd") and FileAccess.get_file_as_string("res://tools/deploy_web.py").contains("voice_packs.gd"), "deploy_web.py builds the per-language packs")
+	sound.voice["enabled"] = false
 	var tokens: Array = Lexicon.shared().reading_tokens("蘋果", "zh")
 	_check(tokens.size() == 1 and tokens[0]["reading"] == "píngguǒ", "reading_tokens 蘋果")
 	sound.free()
