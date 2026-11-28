@@ -29,9 +29,9 @@ You play BonBon, a plush pig, in a small 3D town. Every object you click shows i
 language you are learning (Spanish, Chinese or English) and your own language. Plush characters
 around town run short minigames that practise words and phrases in context: shopping, paying,
 family, flights, ordering food, grammar, describing people, colours and shapes. A journal keeps
-every word you have studied and how you did in the games. Grocery Run has levels and 1–3 stars
-per session (18 Nov; Pay Up! had them too until it became Grocery Run's checkout on 21 Nov); the
-other games will follow. It runs on a laptop and as a landscape
+every word you have studied and how you did in the games. Every learning game except Next,
+Please! has levels and 1–3 stars per session (Grocery Run since 18 Nov, Feeding Time! since
+24 Nov, the rest since 25 Nov). It runs on a laptop and as a landscape
 web app on phones and tablets.
 
 ## Status at a glance
@@ -39,7 +39,7 @@ web app on phones and tablets.
 "Last change" is the most recent dated record or commit for that feature (all 2026). A screenshot can be
 older than that change; each page dates its screenshot. "Tracked" means the game records right
 and wrong answers per word in the journal. **Levels** ([how games get harder](minigames.md#how-games-get-harder),
-18 Nov): built for Grocery Run (and Pay Up! until 21 Nov); designed, not built, for the other learning games.
+18 Nov): built for Grocery Run (and Pay Up! until 21 Nov), Feeding Time! (24 Nov) and, on 25 Nov, every other game with a designed ladder (Wire It Up! too); Next, Please! gets harder only within a session.
 **Which words come up** ([word memory](minigames.md#which-words-come-up), 24 Nov): every tracked
 game picks its words from one shared memory, so new words come in gradually and words about to
 be forgotten come back.
@@ -50,18 +50,18 @@ be forgotten come back.
 | --- | --- | --- | --- | --- |
 | [Grocery Run](minigames.md#grocery-run) | Supermarket door and till | Yes | 3 Nov | 25 Nov (Esc mid-game asks whether to stop); 21 Nov (paid at the till; prices; free shopping with a basket) |
 | [Pay Up!](minigames.md#pay-up) (retired) | Supermarket till | No | 4 Nov | 21 Nov (became Grocery Run's checkout) |
-| [Who's Who?](minigames.md#whos-who) | Hospital entrance | Yes | 4 Nov | 4 Nov |
-| [Flight Finder](minigames.md#flight-finder) | Airport information desk | Yes | 5 Nov | 8 Nov |
-| [Stack & Pack](minigames.md#stack--pack) | Warehouse | Yes | 5 Nov | 25 Nov (Esc mid-game always asks whether to stop); 25 Nov (also tracks the position words on, next to, right, up); 21 Nov (two-level shelf, tap to place; no cardboard box) |
-| [On the Menu](minigames.md#on-the-menu) | Alta Cocina | Yes | 6 Nov | 25 Nov (Esc mid-game asks whether to stop instead of opening Settings); 24 Nov (wrong order sent back at once, retry with wrong dishes blocked) |
-| [Spot the Suspect](minigames.md#spot-the-suspect) | Police station lobby | No | 6 Nov | 6 Nov |
-| [Feel the Clues](minigames.md#feel-the-clues) | Police evidence room | Yes | 6 Nov | 8 Nov (redesign) |
-| [Desk Dash](minigames.md#desk-dash) | School classroom | Chinese measure words only | 7 Nov | 25 Nov (Esc mid-game always asks whether to stop); 23 Nov (card translated by holding the HUD's EN button) |
-| [Mystery Doors](minigames.md#mystery-doors) | Mystery House | Yes | 9 Nov | 25 Nov (Esc mid-game always asks whether to stop); 10 Nov |
+| [Who's Who?](minigames.md#whos-who) | Hospital entrance | Yes | 4 Nov | 25 Nov (4 [levels](minigames.md#how-games-get-harder): relations only at first, 10 questions) |
+| [Flight Finder](minigames.md#flight-finder) | Airport information desk | Yes | 5 Nov | 25 Nov (4 [levels](minigames.md#how-games-get-harder): near days without near misses first, the verb decides at level 4) |
+| [Stack & Pack](minigames.md#stack--pack) | Warehouse | Yes | 5 Nov | 25 Nov (4 [levels](minigames.md#how-games-get-harder): *on* and the top shelf first; hints only after a wrong try at level 4); 25 Nov (Esc mid-game always asks whether to stop); 25 Nov (also tracks the position words on, next to, right, up); 21 Nov (two-level shelf, tap to place; no cardboard box) |
+| [On the Menu](minigames.md#on-the-menu) | Alta Cocina | Yes | 6 Nov | 25 Nov (4 [levels](minigames.md#how-games-get-harder): two one-need courses first, three needs per course at level 4); 25 Nov (Esc mid-game asks whether to stop instead of opening Settings); 24 Nov (wrong order sent back at once, retry with wrong dishes blocked) |
+| [Spot the Suspect](minigames.md#spot-the-suspect) | Police station lobby | No | 6 Nov | 25 Nov (4 [levels](minigames.md#how-games-get-harder): four suspects first, three clues at level 4) |
+| [Feel the Clues](minigames.md#feel-the-clues) | Police evidence room | Yes | 6 Nov | 25 Nov (4 [levels](minigames.md#how-games-get-harder): three-object finds first, five objects at level 4); 8 Nov (redesign) |
+| [Desk Dash](minigames.md#desk-dash) | School classroom | Chinese measure words only | 7 Nov | 25 Nov (4 [levels](minigames.md#how-games-get-harder): 15, 10, 10 and 7 seconds; harder questions still to be written); 25 Nov (Esc mid-game always asks whether to stop); 23 Nov (card translated by holding the HUD's EN button) |
+| [Mystery Doors](minigames.md#mystery-doors) | Mystery House | Yes | 9 Nov | 25 Nov (4 [levels](minigames.md#how-games-get-harder): 4 colour doors first, 8 combined-clue doors at level 4); 25 Nov (Esc mid-game always asks whether to stop); 10 Nov |
 | [Mahjong Club](minigames.md#mahjong-club) | Table in front of the home | No | 9 Nov | 25 Nov (tile, Cantonese call and win sounds, an energetic music track, the hand tray tucks away on Mahjong, [sound](../guides/VOICE.md#sound-effects-25-nov-2026); not heard in the game yet); 25 Nov (nameplates and cream counter removed; 24 Nov: UI polish, soft call buttons, pull tab; hide the hand to see your tiles; 23 Nov: carry on an unfinished game; one EN button, top right; Mahjong! still offered after a pung) |
 | [Radar Patrol](minigames.md#radar-patrol) | Airport control tower | No (pastime) | 9 Nov | 15 Nov (easier taps) |
-| [Wire It Up!](minigames.md#wire-it-up) | Electrical box at the home | No (pastime) | 9 Nov | 9 Nov |
-| [Library Helper](minigames.md#library-helper) | Library | Yes | 13 Nov | 25 Nov (walking out of the library or Esc mid-game asks whether to stop; [view](../evidence/game-exits-20261125/leave-question.png)); 25 Nov (a marimba chime on the right shelf, two soft falling notes on a wrong one, [sound](playing.md#sound)); 21 Nov (book close-up on pick-up, bigger right-shelf burst, thanks with a zoom on Rosa, results card, new cart after walking away) |
+| [Wire It Up!](minigames.md#wire-it-up) | Electrical box at the home | No (pastime) | 9 Nov | 25 Nov (3 [levels](minigames.md#how-games-get-harder): 3, 4 and 6 wires) |
+| [Library Helper](minigames.md#library-helper) | Library | Yes | 13 Nov | 25 Nov (4 [levels](minigames.md#how-games-get-harder): 3 books first, plain spines at level 4); 25 Nov (walking out of the library or Esc mid-game asks whether to stop; [view](../evidence/game-exits-20261125/leave-question.png)); 25 Nov (a marimba chime on the right shelf, two soft falling notes on a wrong one, [sound](playing.md#sound)); 21 Nov (book close-up on pick-up, bigger right-shelf burst, thanks with a zoom on Rosa, results card, new cart after walking away) |
 | [Next, Please!](minigames.md#next-please) | Bank teller window 2 | No | 18 Nov | 25 Nov (Esc mid-game asks whether to stop instead of opening Settings; getting up from the chair sits you back down and asks); 24 Nov (seated at window 2, one request line, thanks move on by themselves, a hidden red alarm button instead of "Call the police"; [screenshots](../evidence/bank-teller-polish-20261124/); 23 Nov: monitor and customer in one view, the bank manager) |
 | [Feeding Time!](minigames.md#feeding-time) | Zoo food booth, inside the gate | Yes | 24 Nov | 25 Nov (walking out of the zoo on foot mid-game puts you back by Nico and asks whether to stop); 24 Nov (food booth, paper bag, free feeding, 4 levels; [screenshots](../evidence/zoo-feeding-20261124/)) |
 

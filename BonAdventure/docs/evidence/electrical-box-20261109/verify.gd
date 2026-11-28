@@ -64,6 +64,7 @@ func drop(panel, i: int, row: int) -> void:
 func run():
 	var game = load("res://scenes/main.tscn").instantiate()
 	root.add_child(game)
+	preload("res://scripts/learning/game_progress.gd").shared().unlock("electrical_box", 2)  # the level this check tests (a new profile starts at level 1; LEARN-06, 25 Nov 2026)
 	for i in range(20): await process_frame
 	var home: Node3D = ModularTown.building(game.apartment, "home")
 	check(home != null, "home loaded (VT_FOCUS must include it)")

@@ -119,6 +119,7 @@ func right_letter() -> String:
 func run():
 	game = load("res://scenes/main.tscn").instantiate()
 	root.add_child(game)
+	preload("res://scripts/learning/game_progress.gd").shared().unlock("grammar_lana", 2)  # the level this check tests (a new profile starts at level 1; LEARN-06, 25 Nov 2026)
 	game.set_process(false)
 	game.interaction.set_physics_process(false)
 	await physics_frame

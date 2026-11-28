@@ -58,8 +58,12 @@ func _init(session_goods, ramon_twin: Node3D, random: RandomNumberGenerator) -> 
 	boss = ramon_twin
 	rng = random
 
+## The current level's positions (data/activities.json warehouse_ramon "levels" "positions";
+## LEARN-06, 25 Nov 2026); empty = all of POSITIONS.
+var positions: Array = []
+
 func entries() -> Array:
-	return POSITIONS.duplicate()
+	return positions.duplicate() if not positions.is_empty() else POSITIONS.duplicate()
 
 ## The next task: entries are drawn without repeats until all were used.
 func next() -> Dictionary:
@@ -163,6 +167,11 @@ static func place_key(task: Dictionary) -> String:
 static func share_limit(count: int) -> int:
 	return maxi(1, floori(count * MAX_SHARE))
 
+## How many of a game's tasks may send the player to one place: share_limit(), or more when a
+## level has few positions (level 1's table and top shelf take turns, so each gets its share).
+func place_limit(count: int) -> int:
+	return maxi(share_limit(count), ceili(float(count) / float(maxi(1, entries().size()))))
+
 ## How often each thing (by id) and each place ("@" + place_key) comes up in `list`.
 static func _uses(list: Array) -> Dictionary:
 	var used := {}
@@ -217,16 +226,19 @@ func _planned(list: Array, count: int, strict: bool) -> Dictionary:
 		for entry in pool:
 			for variant in 3:
 				var task := make(entry, variant == 0)
-				if not task.is_empty() and _allowed(task, used, last, share_limit(count), strict):
+				if not task.is_empty() and _allowed(task, used, last, share_limit(count), strict, place_limit(count)):
 					_unused.erase(entry)
 					return task
 	return {}
 
-func _allowed(task: Dictionary, used: Dictionary, last: Dictionary, limit: int, strict: bool) -> bool:
+## `place_limit`: how many tasks may send the player to one place (place_limit()).
+func _allowed(task: Dictionary, used: Dictionary, last: Dictionary, limit: int, strict: bool, at_place := -1) -> bool:
+	if at_place < 0:
+		at_place = limit
 	for id in objects(task):
 		if int(used.get(id, 0)) >= limit:
 			return false
-	if place_key(task) != "" and int(used.get("@" + place_key(task), 0)) >= limit:
+	if place_key(task) != "" and int(used.get("@" + place_key(task), 0)) >= at_place:
 		return false
 	if strict and not last.is_empty():
 		var before := objects(last)
@@ -253,6 +265,7 @@ func validate(list: Array) -> Array:
 	var problems: Array = []
 	var used := {}
 	var limit := share_limit(list.size())
+	var most_at_place := place_limit(list.size())
 	for i in list.size():
 		var task: Dictionary = list[i]
 		if not still_valid(task):
@@ -262,8 +275,9 @@ func validate(list: Array) -> Array:
 			keys.append("@" + place_key(task))
 		for key in keys:
 			used[key] = int(used.get(key, 0)) + 1
-			if used[key] == limit + 1:
-				problems.append("%s comes up in more than %d tasks" % [key, limit])
+			var most := most_at_place if str(key).begins_with("@") else limit
+			if used[key] == most + 1:
+				problems.append("%s comes up in more than %d tasks" % [key, most])
 		goods.apply(task)
 	goods = live
 	return problems
@@ -305,7 +319,7 @@ func backup(list: Array, index: int) -> Dictionary:
 		for entry in pool:
 			for variant in 3:
 				var task := make(entry, variant == 0)
-				if not task.is_empty() and _allowed(task, used, last, share_limit(list.size()), strict):
+				if not task.is_empty() and _allowed(task, used, last, share_limit(list.size()), strict, place_limit(list.size())):
 					return task
 	return {}
 

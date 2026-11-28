@@ -196,6 +196,9 @@ func launch_game(id: String) -> void:
 	await seconds(1.6)
 	# Games without rounds (launcher ENDLESS; mahjong since 15 Nov 2026) keep the data's (none).
 	var want: int = 0 if launcher.ENDLESS.has(id) else 3
+	# Library Helper's session needs its cart's books (its level, LEARN-06, 25 Nov 2026).
+	if id == "library_rosa":
+		want = s.books.size()
 	check(Board.shared().target(id) == want, id + ": %d rounds while testing (%d)" % [want, Board.shared().target(id)])
 	check(not PracticeLog.shared().paused, id + ": practice records")
 	check(s.busy() or s.activity_running(), id + ": the game started")
@@ -221,7 +224,7 @@ func launch_game(id: String) -> void:
 		game.shop_panel.hide_dialogue()
 	await seconds(1.0)
 	check(launcher.testing == "", id + ": test over")
-	check(Board.shared().target(id) != 3 or id == "lineup_rocco" and false, id + ": data rounds back (%d)" % Board.shared().target(id))
+	check(Board.shared().target(id) != 3 or id == "library_rosa", id + ": data rounds back (%d)" % Board.shared().target(id))
 	launcher.chosen.erase(id)
 
 func finish() -> void:

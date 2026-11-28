@@ -102,6 +102,16 @@ func params(id: String) -> Dictionary:
 	var settings: Variant = levels[level(id) - 1]
 	return settings if settings is Dictionary else {}
 
+## Unlocks levels up to `n` and makes `n` current (checks that test one level of a game: a new
+## profile starts at level 1; LEARN-06, 25 Nov 2026). Not used by the game.
+func unlock(id: String, n: int) -> void:
+	if not has_levels(id):
+		return
+	var entry := _entry(id)
+	entry["unlocked"] = clampi(maxi(n, unlocked(id)), 1, count(id))
+	entry["level"] = clampi(n, 1, count(id))
+	_store(id, entry)
+
 ## The picker's level stepper: any unlocked level.
 func set_level(id: String, n: int) -> void:
 	if not has_levels(id):

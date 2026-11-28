@@ -48,6 +48,11 @@ const PINYIN_FONT := preload("res://fonts/NotoSans-SemiBold.ttf")
 const PracticeLog := preload("res://scripts/learning/practice_log.gd")
 const ACTIVITY := "grammar_lana"
 const ANSWER_SECONDS := 10.0
+const Progress := preload("res://scripts/learning/game_progress.gd")
+## The current level's seconds per question and harder-question level (data/activities.json
+## grammar_lana "levels": "seconds", "min_level"; LEARN-06, 25 Nov 2026).
+var answer_seconds := ANSWER_SECONDS
+var _min_level := 1
 const FEEDBACK_SECONDS := 2.0
 ## After a wrong or missed answer the explanation stays up until the player presses Continue
 ## (the card's Confirm button, relabelled) or this many seconds pass (user, 9 Nov 2026).
@@ -349,14 +354,18 @@ func start_class() -> void:
 		state = "over"
 		# A smaller dialogue box at the bottom keeps the board and desks in view (user, 7 Nov 2026).
 		dialogue_panel.set_compact(true))
-	dialogue_panel.toast(lexicon.line("grammar.intro"), 5.0)
+	var seconds := int(Progress.shared().params(ACTIVITY).get("seconds", ANSWER_SECONDS))
+	dialogue_panel.toast(lexicon.line("grammar.intro", {"seconds": seconds}), 5.0)
 	_begin_questions()
 
 ## A new class of 5 questions where the player stands (start and Replay).
 func _begin_questions() -> void:
 	# 5 a class (data/activities.json "grammar_lana"; the test launcher may choose another number).
 	# Own copies: a class marks its misses ("missed") without touching the bank.
-	questions = bank.pick(Board.shared().rounds(ACTIVITY), _rng).map(func(q: Dictionary) -> Dictionary: return q.duplicate())
+	var settings: Dictionary = Progress.shared().params(ACTIVITY)
+	answer_seconds = float(settings.get("seconds", ANSWER_SECONDS))
+	_min_level = int(settings.get("min_level", 1))
+	questions = bank.pick(Board.shared().rounds(ACTIVITY), _rng, _min_level).map(func(q: Dictionary) -> Dictionary: return q.duplicate())
 	points = 0
 	current = -1
 	card.show_native = GameSettings.shared().peeking
@@ -391,7 +400,7 @@ func _next_question() -> void:
 		_set_answer(letters[i], str(answers[i]))
 	_practice_begin(question)
 	_show_board(Questions.blanked(question))
-	time_left = ANSWER_SECONDS
+	time_left = answer_seconds
 	_submitted = false
 	state = "question"
 	card.set_round(_title(), points, questions.size())
@@ -481,6 +490,9 @@ func submit() -> void:
 	var status := "grammar.right" if right else ("grammar.no_answer" if chosen == null else "grammar.wrong")
 	var sentence := {"foreign": Questions.filled(question), "native": str(question.get("meaning", {}).get(lexicon.native, ""))}
 	if not right:
+		# A question missed the first time it is asked (not its review): one star miss.
+		if not question.get("review", false):
+			Board.shared().add_miss(ACTIVITY)
 		question["missed"] = true
 		_queue_review(question)
 	card.set_round(_title(), points, questions.size())

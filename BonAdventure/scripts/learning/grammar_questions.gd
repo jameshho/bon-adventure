@@ -36,7 +36,9 @@ static func has_bank(code: String) -> bool:
 
 ## `count` different questions (all of them when the bank is smaller): those on a noun the word
 ## memory wants first (word_memory.gd, 24 Nov 2026: due, then allowed new), the rest in random order.
-func pick(count: int, rng: RandomNumberGenerator) -> Array:
+## `min_level` > 1 (Desk Dash levels 3 and 4, LEARN-06, 25 Nov 2026): questions of that
+## "level" or higher come first; the rest of the bank fills the class while it has too few.
+func pick(count: int, rng: RandomNumberGenerator, min_level := 1) -> Array:
 	var order: Array = questions.duplicate()
 	shuffle(order, rng)
 	var nouns: Array = order.map(func(q): return str(q.get("noun", ""))).filter(func(n): return n != "")
@@ -46,6 +48,9 @@ func pick(count: int, rng: RandomNumberGenerator) -> Array:
 			var i := ranked.find(str(q.get("noun", "")))
 			return i if i >= 0 else ranked.size()
 		order.sort_custom(func(a, b): return rank.call(a) < rank.call(b))
+	if min_level > 1:
+		var hard: Array = order.filter(func(q): return int(q.get("level", 1)) >= min_level)
+		order = hard + order.filter(func(q): return int(q.get("level", 1)) < min_level)
 	return order.slice(0, mini(count, order.size()))
 
 ## The question's four answers in random desk order.

@@ -91,12 +91,13 @@ func run() -> void:
 	check(session.gaps.size() >= 18 and session.gaps.all(func(g): return Interactable.on(g) != null), "every gap has an Interactable (%d)" % session.gaps.size())
 	check(not session.has_method("_check") and not session.has_method("_host_calling"), "Rosa no longer checks or calls with an empty cart")
 	check(str(lexicon.line("library.start_signs").get("native", "")) != "" and not str(lexicon.line("library.start_signs")).contains("Put each book"), "the second start line is reworded: %s" % lexicon.line("library.start_signs"))
-	# 3-6 books, at random
+	# A level's books (LEARN-06, 25 Nov 2026: level 2 has 4-5 at random; before levels 3-6)
 	var counts := {}
+	preload("res://scripts/learning/game_progress.gd").shared().unlock("library_rosa", 2)
 	for i in 40:
 		session._fill_cart()
 		counts[session.books.size()] = true
-	check(counts.keys().all(func(n): return n >= 3 and n <= 6) and counts.size() >= 3, "a cart holds a random 3-6 books (%s)" % [counts.keys()])
+	check(counts.keys().all(func(n): return n >= 4 and n <= 5) and counts.size() == 2, "a level 2 cart holds a random 4-5 books (%s)" % [counts.keys()])
 	for id in ["ask_done", "done", "not_yet", "cart_left", "keep_going", "stop", "wrong_animals", "wrong_space", "recap"]:
 		check(not lexicon.phrases.has("library." + id), "phrase library.%s removed" % id)
 	# --- the first greeting, then the game

@@ -23,6 +23,7 @@ const Host := preload("res://scripts/learning/minigame_host.gd")
 ## Practice tracking (practice_log.gd): only relation questions test one word (the relative,
 ## decision 6); the first tap is the answer, solving it completes the question.
 const PracticeLog := preload("res://scripts/learning/practice_log.gd")
+const Progress := preload("res://scripts/learning/game_progress.gd")
 const NPC := "DrLi"
 const CALL_DISTANCE := 30.0
 const WALK_AWAY_DISTANCE := 14.0
@@ -44,6 +45,8 @@ var question: Dictionary = {}
 var _asked_in_family := 0
 var _last_kind := ""
 var _last_template := ""
+## The current level's question kinds and weights ({} = data/family_game.json "kinds").
+var _kinds: Dictionary = {}
 var _rng := RandomNumberGenerator.new()
 const ACTIVITY := "family_dr_li"
 ## Whether Dr. Li offers the game now (rolled on approach; kept on the host).
@@ -90,7 +93,11 @@ func open_game() -> void:
 	interaction.clear_card()
 	panel.show_native = dialogue_panel.show_native
 	tree = null
-	Board.shared().begin(ACTIVITY)
+	# Levels (LEARN-06, 25 Nov 2026; docs/game/minigames.md#whos-who): the question kinds
+	# and how many questions a session asks.
+	var settings: Dictionary = Progress.shared().params(ACTIVITY)
+	_kinds = settings.get("kinds", {})
+	Board.shared().begin(ACTIVITY, int(settings.get("questions", 0)))
 	next_question()
 	panel.set_progress(0, Board.shared().target(ACTIVITY))
 
@@ -113,7 +120,7 @@ func next_question() -> void:
 	# 24 Nov 2026); the other kinds test no word and are taken as they come.
 	var make := func() -> Dictionary:
 		for attempt in 10:
-			var kind := Questions.pick_kind(_rng, _last_kind)
+			var kind := Questions.pick_kind(_rng, _last_kind, _kinds)
 			var made: Dictionary = Questions.generate(tree, kind, _rng)
 			if not made.is_empty():
 				_last_kind = kind
@@ -166,6 +173,8 @@ func _on_answer(answer: String) -> void:
 	# Only a question answered right on the first tap counts toward progress.
 	var first_try: bool = not panel.marks.values().has(false)
 	panel.mark(answer, right, lexicon.line("family.correct" if right else "family.wrong"))
+	if not right and first_try:
+		Board.shared().add_miss(ACTIVITY)
 	if PracticeLog.shared().game_id() == ACTIVITY:
 		PracticeLog.shared().first_answer(right)
 		if right:

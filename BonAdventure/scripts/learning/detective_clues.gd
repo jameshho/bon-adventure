@@ -21,6 +21,12 @@ extends RefCounted
 const PATH := "res://data/detective_game.json"
 
 var data: Dictionary = {}
+## The current level's settings (data/activities.json lineup_rocco / evidence_mimi "levels";
+## LEARN-06, 25 Nov 2026), merged over the mode's data by set_level(): the lineup's
+## "suspects", "clue_count" and "negation" (false leaves out the clues with "not": no beard),
+## the evidence's "objects_on_table" and "rounds".
+var _lineup_data: Dictionary = {}
+var _evidence_data: Dictionary = {}
 ## clue id -> times used this session (keeps the tested words balanced).
 var _usage: Dictionary = {}
 var _last_pair: Array = []
@@ -30,6 +36,19 @@ func _init() -> void:
 	data = parsed if parsed is Dictionary else {}
 	if data.is_empty():
 		push_error("detective_clues: cannot read " + PATH)
+	set_level({})
+
+## Merges a level's settings over the data ({} = the game as in the data).
+func set_level(settings: Dictionary) -> void:
+	_lineup_data = (data.get("lineup", {}) as Dictionary).duplicate()
+	_evidence_data = (data.get("evidence", {}) as Dictionary).duplicate()
+	for key in settings:
+		if key in ["objects_on_table", "rounds"]:
+			_evidence_data[key] = settings[key]
+		else:
+			_lineup_data[key] = settings[key]
+	if not bool(_lineup_data.get("negation", true)):
+		_lineup_data["clues"] = (_lineup_data.get("clues", []) as Array).filter(func(c): return not (c as Dictionary).has("not"))
 
 func reset() -> void:
 	_usage.clear()
@@ -110,7 +129,7 @@ static func _same_look(a: Dictionary, b: Dictionary) -> bool:
 # --- Lineup ------------------------------------------------------------------------------
 
 func _lineup() -> Dictionary:
-	return data.get("lineup", {})
+	return _lineup_data
 
 func random_suspect(rng: RandomNumberGenerator) -> Dictionary:
 	var attributes: Dictionary = _lineup().get("attributes", {})
@@ -188,7 +207,7 @@ func generate_lineup(rng: RandomNumberGenerator) -> Dictionary:
 # Redesigned 8 Nov 2026: one property word decides each round (data "evidence.rounds").
 
 func _evidence() -> Dictionary:
-	return data.get("evidence", {})
+	return _evidence_data
 
 const DIMENSIONS := ["size", "length", "color", "hardness", "texture", "weight"]
 

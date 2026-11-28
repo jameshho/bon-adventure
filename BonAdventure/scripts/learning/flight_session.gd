@@ -35,6 +35,7 @@ const InteractIcons := preload("res://scripts/ui/interact_badge.gd")
 const GameClock := preload("res://scripts/learning/game_clock.gd")
 const Schedule := preload("res://scripts/learning/flight_schedule.gd")
 const Questions := preload("res://scripts/learning/flight_questions.gd")
+const Progress := preload("res://scripts/learning/game_progress.gd")
 const Host := preload("res://scripts/learning/minigame_host.gd")
 const NPC := "PilotBruno"
 const ACTIVITY := "flight_bruno"
@@ -84,6 +85,8 @@ var _practised: Array = []
 var _missed: Array = []
 var _last_kind := ""
 var _wrong_flight := ""
+## The current level's settings (flight_questions.gd `level`), read when a game opens.
+var _level: Dictionary = {}
 ## The last session reached its target (Finish then asks to play again).
 var _completed := false
 var _rng := RandomNumberGenerator.new()
@@ -153,9 +156,11 @@ func _new_schedule() -> void:
 	schedule = Schedule.new()
 	schedule.setup(GameClock.shared(), _rng)
 	questions = Questions.new(schedule, lexicon)
+	questions.level = _level
 
 func open_game() -> void:
 	interaction.clear_card()
+	_level = Progress.shared().params(ACTIVITY)
 	_new_schedule()
 	quiz = true
 	_completed = false
@@ -177,7 +182,7 @@ func next_question() -> void:
 	# 24 Nov 2026). Each try builds a new board, so the last one made is the one shown.
 	var make := func() -> Dictionary:
 		for attempt in 10:
-			var kind := Questions.pick_kind(_rng, _last_kind)
+			var kind := Questions.pick_kind(_rng, _last_kind, _level.get("kinds", {}))
 			_new_schedule()
 			var made: Dictionary = questions.design(kind, _rng)
 			if not made.is_empty():
@@ -305,6 +310,9 @@ func _on_flight(id: String) -> void:
 			PracticeLog.shared().complete()
 	panel.mark(id, right, lexicon.line("flight.correct" if right else "flight.wrong"))
 	if not right:
+		# A question missed on its first tap (once): the stars count it (game_progress.gd).
+		if first_try:
+			Board.shared().add_miss(ACTIVITY)
 		return
 	for ref in question.words:
 		if not _practised.has(ref):

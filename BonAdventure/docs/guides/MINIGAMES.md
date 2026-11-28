@@ -60,7 +60,7 @@ Reuse these for any new minigame instead of building parallel ones.
 | **HUD during any minigame** (user, 12 Nov 2026): while any game's `activity_running()` is true, the full map and minimap, the journal / map / games / help corner buttons, the day clock and the other `GAME_HIDDEN_GROUP` parts are off, and M, J and F1 do nothing; open map, journal, help or picker windows close. Only the Settings gear and the peek badge stay. Nothing to do per game: register on the activity board | `main.gd` `sync_minigame_hud()` (activity board `blocker("")`), `vocabulary_hud.gd` `in_minigame` and `hide_for_game(hide, reason)` (any reason also hides the corner buttons since 23 Nov 2026); check `docs/evidence/electrical-box-20261109/verify.gd` | all registered games |
 | **A word popping up in the world** (grows in, stays, fades; same size on screen at any distance): `PopWord3D.new()`, add it, place it, `pop(text, outline_colour, seconds, camera)` | `scripts/ui/pop_word_3d.gd` (9 Nov 2026) | mahjong (call words) |
 | **Lively NPC plushes** (a blink every 4-10 s each; one small hop, body shake, bow or lean every 10-20 s across the group; always back to rest; `blink_gap`, `gestures`, `gesture_gap` are settings): `PlushLife.new()`, add it, `setup([plushes], rng)`; one move on demand: `PlushLife.play(self, figure, kind)`. Moves turn the whole figure, never its `Head` node ([why](COMPONENTS.md#plush-characters)) | `scripts/characters/plush_life.gd` (9 Nov 2026; the one owner of plush eyes and gestures since 13 Nov 2026) | mahjong players, lineup suspects; every other plush NPC blinks through `main.plush_life` |
-| **Levels and stars** ([progression](#progression), 18 Nov 2026): a level's settings from `data/activities.json` `"levels"`, 1–3 stars per finished session, unlocks, saved per profile; the picker's level pills and stepper, the greeting's level badge, the end-of-session star card | `scripts/learning/game_progress.gd`, `Board.add_miss()`; UI: `game_launcher.gd`, `minigame_host.gd` `show_level()`, `shop_order_panel.gd` `show_level()`, `scripts/ui/star_card.gd`, `BonStyle.stars()` | Pay Up!, Grocery Run (the rest designed, not built) |
+| **Levels and stars** ([progression](#progression), 18 Nov 2026): a level's settings from `data/activities.json` `"levels"`, 1–3 stars per finished session, unlocks, saved per profile; the picker's level pills and stepper, the greeting's level badge, the end-of-session star card | `scripts/learning/game_progress.gd`, `Board.add_miss()`; UI: `game_launcher.gd`, `minigame_host.gd` `show_level()`, `shop_order_panel.gd` `show_level()`, `scripts/ui/star_card.gd`, `BonStyle.stars()` | Grocery Run (Pay Up! until 21 Nov), Feeding Time! (24 Nov), and since 25 Nov (LEARN-06) Who's Who?, Flight Finder, Stack & Pack, On the Menu, Spot the Suspect, Feel the Clues, Desk Dash, Mystery Doors, Library Helper, Wire It Up! |
 | Offer chance, progress target, one activity at a time; `hold` keeps every game quiet while the welcome tutorial runs ([guide](ARCHITECTURE_REVIEW_PART1.md#welcome-tutorial)) | `scripts/learning/activity_board.gd`, `data/activities.json` (the host registers and rolls) | all |
 | Started / ended signals (12 Nov 2026): `started(id)`, `ended(id, summary)` with `rounds`, `target`, `completed`; `running_id` | `activity_board.gd` `watch()`, called once a frame by Main; a game needs nothing extra (it only has to report `activity_running()`) | all |
 | Hop, face camera (avoids walls, hides the player in the shot); the "!" since 12 Nov 2026 is drawn by the shared interaction icons from the NPC interactable's `calling` | `scripts/learning/npc_presence.gd` (made by the host), `scripts/ui/interact_badge.gd` | all |
@@ -298,7 +298,7 @@ undone once the game neither talks nor plays.
 | Game | What a round is |
 | --- | --- |
 | Customer order | one order; with more than 1 the clerk asks for another after each (`shop.another_order`) |
-| Cashier, family, flight, restaurant, police, warehouse, Mystery Doors | the progress bar's target |
+| Cashier, family, flight, restaurant, police, warehouse, Mystery Doors | the progress bar's target (a level's `questions` / `doors` count applies while the picker's number is the data's own) |
 | Feeding Time! | requests in the session (instead of the level's `requests`) |
 | Grammar | questions in the class |
 | Mahjong | not used since 15 Nov 2026 (user: keep playing): in `ENDLESS`, so no stepper and always "Play again" (before: hands, "Next hand" until the last, then only Leave) |
@@ -419,8 +419,9 @@ stars and coins design.
 Levels and stars for the minigames (user approval, 18 Nov 2026). The player-facing design, the
 star rule and each game's level ladder are owned by the [game guide](../game/minigames.md#how-games-get-harder);
 this section is the code. Built for Grocery Run (and Pay Up! until it was retired into Grocery
-Run's checkout on 21 Nov 2026); the other learning games are designed (their learning cards) but
-not wired yet.
+Run's checkout on 21 Nov 2026) and Feeding Time! (24 Nov), and on 25 Nov 2026 (LEARN-06, decision
+D11 "all designed levels") for every other game whose learning card has a ladder, Wire It Up! included.
+Next, Please! (progress within a session), Mahjong Club and Radar Patrol have no levels.
 
 **Data.** `data/activities.json`, per game:
 - `"levels"`: a list of settings dictionaries, level 1 first. The keys belong to the game:
@@ -429,6 +430,25 @@ not wired yet.
   21 Nov 2026 `order_tiers` n, the products of the store's first n price tiers; `retries` is gone).
   Pay Up! read `max_cents` and `step` until it was retired. An empty `{}`
   is the game as it is in the data.
+- The other games' keys (25 Nov 2026; what each level holds is on the game's learning card):
+
+  | Game (id) | Keys | Read in |
+  | --- | --- | --- |
+  | Who's Who? (`family_dr_li`) | `questions` (the session's count), `kinds` (weights replacing `family_game.json`'s) | `family_session.gd` `open_game()`, `family_questions.gd` `pick_kind()` |
+  | Flight Finder (`flight_bruno`) | `kinds`, `days` [first, last] (day and clock questions), `near_miss` (false: rule 3 off), `target_rows`, `min_decoys`, `named_chance` (0: no country, the verb decides) | `flight_questions.gd` `level` |
+  | Stack & Pack (`warehouse_ramon`) | `positions` (task kinds), `hints_after_miss` | `warehouse_session.gd` `level`, `warehouse_tasks.gd` `positions`, `place_limit()` |
+  | On the Menu (`restaurant_twinkle`) | `courses` [min, max], `difficulty` (merged over `restaurant_game.json`'s) | `restaurant_session.gd` `open_game()` |
+  | Spot the Suspect / Feel the Clues (`lineup_rocco`, `evidence_mimi`) | `suspects`, `clue_count`, `negation` / `objects_on_table`, `rounds` (merged over `detective_game.json`) | `detective_clues.gd` `set_level()`; three clues use `police.lineup_three` |
+  | Desk Dash (`grammar_lana`) | `seconds`, `min_level` (bank questions of that `level` first) | `grammar_session.gd` `_begin_questions()`, `grammar_questions.gd` `pick()` |
+  | Mystery Doors (`mystery_luna`) | `doors`, `kinds` (clue kinds in order), `colors` | `mystery_session.gd` `make_rounds()` |
+  | Library Helper (`library_rosa`) | `books` [min, max], `plain_spines` | `library_session.gd` `_fill_cart()` (a cart of another level is refilled at the start) |
+  | Wire It Up! (`electrical_box`) | `wires` | `electrical_box_session.gd` `open_box()` |
+
+  A level's round count goes to `Board.begin(id, level_rounds)`: it replaces the data's
+  `progress` (and is the stars' `needed`) unless the picker chose another number. A pastime with
+  no target counts as completed only through `Board.complete(id)` (Wire It Up!'s repaired box).
+  Every one of these games calls `add_miss()` once per round that went wrong; Mystery Doors also
+  calls `complete()` after its last door since 25 Nov, so a game with misses scores too.
 - `"stars_at"` (optional, default `[1.0, 0.6]`): the share of rounds right first time for ★★★ and ★★.
   Grocery Run uses `[1.0, 0.5]` so one retry is ★★.
 
@@ -464,7 +484,8 @@ singletons on a profile switch), keyed by learned language then activity id:
 `cashier_supermarket` record from Pay Up! stays in the file, unused). Saves without
 the file start at level 1; nothing to migrate.
 
-**Check:** `docs/evidence/minigame-progression-20261118/verify.gd` (`minigame_progression`, full suite).
+**Check:** `docs/evidence/minigame-progression-20261118/verify.gd` (`minigame_progression`, full suite;
+since 25 Nov also every LEARN-06 game's levels, Stack & Pack's plans in `warehouse_game`).
 With graphics it saves `picker.png`, `greeting.png` and `star-card.png` there.
 
 **Rolling it out to another game:** add its `"levels"` from its learning card, read `params()` in

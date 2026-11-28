@@ -35,7 +35,9 @@ words". Buttons: **Continue exploring** and **Play again**. Details:
 ## How games get harder
 
 *Approved by the user on 18 Nov 2026; built for Grocery Run (and Pay Up! until it became Grocery
-Run's checkout on 21 Nov), the other games are designed but not built.* One shared system for every learning game; the code and data are
+Run's checkout on 21 Nov) and Feeding Time! (24 Nov), and for every other game with a designed
+ladder on 25 Nov (decision D11, "all designed levels").* Next, Please! still grows harder only
+within a session; Mahjong Club and Radar Patrol are pastimes with none. One shared system for every learning game; the code and data are
 described in [MINIGAMES.md → Progression](../guides/MINIGAMES.md#progression).
 
 - **Levels.** Each learning game has up to four levels. Level 1 is the easiest, often today's
@@ -190,8 +192,8 @@ older and younger, before and after. The school's posters teach the words first.
 | Purpose | Family relationships, ages, birthdays and months, by reading a family tree. |
 | Words | [Generated list](words.md#whos-who) |
 | Tracked in the journal | Yes: the relative in each relation question |
-| Session | 20 questions, first try counts |
-| Progression | Designed 18 Nov, not built: L1 relation questions only, 10 questions · L2 + ages, older and younger · L3 + birthdays, months, before and after, 20 questions (today) · L4 more yes/no traps |
+| Session | 20 questions (10 at levels 1–2), first try counts |
+| Progression | **Built 25 Nov (LEARN-06, D11).** L1 relation questions only, 10 questions · L2 + ages, oldest and youngest, older and younger, still 10 · L3 + birthdays, months, years, before and after, 20 questions (the game before levels) · L4 the same with about twice as many yes/no traps. Stars from first-try answers |
 
 ## Flight Finder
 
@@ -212,7 +214,7 @@ clock times and countries. Tracked.
 | Words | [Generated list](words.md#flight-finder) |
 | Tracked in the journal | Yes: the time word and the destination country |
 | Session | 5 flights, first try counts |
-| Progression | Designed 18 Nov, not built: L1 yesterday, today, tomorrow and weekdays, no near miss · L2 + clock times and a near miss (today) · L3 + anteayer, pasado mañana, hace / dentro de · L4 departures and arrivals mixed, more decoys |
+| Progression | **Built 25 Nov (LEARN-06, D11).** L1 yesterday, today, tomorrow and weekdays, no near miss (one flight of the question's kind) · L2 + clock times and parts of the day (*esta mañana*, *anoche*), with a near miss · L3 + *anteayer*, *pasado mañana*, *hace* / *dentro de* (the game before levels) · L4 departures and arrivals mixed: no country named, so the verb (*salir* / *llegar*) decides, and at least three decoys. Stars from first-tap finds |
 
 ## Stack & Pack
 
@@ -236,7 +238,7 @@ puts the box there ([details](../guides/WAREHOUSE.md#shelf-and-placing-21-nov-20
 | Words | [Generated list](words.md#stack--pack) |
 | Tracked in the journal | Yes: the colour of the box and the position word of each task (on, next to, right, up), judged apart. A wrong box, or the hint that marks the box, misses the colour; the right box put down in a wrong place (the table, a shelf, the wrong side of the green box), or the hint that marks the place, misses the position word (25 Nov) |
 | Session | 5 tasks, a task counts when done |
-| Progression | Designed 18 Nov, not built: L1 *on* and the top shelf · L2 + next to · L3 + to the right of (today) · L4 hints only after a wrong try |
+| Progression | **Built 25 Nov (LEARN-06, D11).** L1 *on* (the table) and the top shelf · L2 + next to · L3 + to the right of (the game before levels) · L4 hints only after a wrong try: the card's "?" and "Can you give me a hint?" appear once the task has gone wrong. Stars: a task that went wrong (a wrong box or place, or a hint that marked it) is a miss |
 
 ## On the Menu
 
@@ -264,8 +266,8 @@ Since 25 Nov Esc mid-game asks whether to stop, as the entrance does, instead of
 | Purpose | Dish names, courses and describing food (taste, temperature, intensity, ingredients). |
 | Words | [Generated list](words.md#on-the-menu) |
 | Tracked in the journal | Yes: the dish served |
-| Session | 4 orders of 2-3 courses; an order counts when every dish is right at the first send; a wrong order is sent back and retried (wrong dishes blocked) but does not count; only the first send is tracked |
-| Progression | Designed 18 Nov, not built: L1 two courses, one need each · L2 + *un poco* / *muy* (today) · L3 three courses with a *no* / *sin* · L4 three needs per course |
+| Session | 4 orders of 2-3 courses (2 at level 1, 3 at levels 3–4); an order counts when every dish is right at the first send; a wrong order is sent back and retried (wrong dishes blocked) but does not count; only the first send is tracked |
+| Progression | **Built 25 Nov (LEARN-06, D11).** L1 two courses, one need each · L2 2–3 courses, 1–2 needs, + *un poco* / *muy* (the game before levels) · L3 three courses; about one order in three adds a *no* / *sin* · L4 three needs per course (fewer only when the menu cannot tell the dishes apart with three). Stars: an order sent back is a miss |
 
 ## Spot the Suspect
 
@@ -286,7 +288,7 @@ Not tracked yet.
 | Words | [Generated list](words.md#spot-the-suspect) |
 | Tracked in the journal | No: each round has two clue words and the answer is a suspect, so no single tested word (user decision, 7 Nov) |
 | Session | 4 rounds, a round counts when solved |
-| Progression | Designed 18 Nov, not built: L1 four suspects, two clues, no negation · L2 five suspects (today) · L3 + negation · L4 six suspects, three clues |
+| Progression | **Built 25 Nov (LEARN-06, D11).** L1 four suspects, two clues, no negation · L2 five suspects · L3 + negation (*no tiene barba*; the game before levels) · L4 five suspects and three clues (user, 25 Nov: the lineup room has five numbered spots, so not the six first designed). Stars: a wrong suspect is a miss |
 
 ## Feel the Clues
 
@@ -307,7 +309,7 @@ heavy/light with ten everyday objects. Tracked.
 | Words | [Generated list](words.md#feel-the-clues) |
 | Tracked in the journal | Yes: the property word deciding each round |
 | Session | 4 rounds, a round counts when solved |
-| Progression | Designed 18 Nov, not built: L1 *find* rounds with three objects · L2 four objects (today) · L3 + *report* rounds with agreement · L4 mixed, more objects |
+| Progression | **Built 25 Nov (LEARN-06, D11).** L1 *find* rounds with three objects · L2 four objects · L3 + *report* rounds with agreement (*¿Es la piedra dura o blanda?*), alternating with *find* (the game before levels) · L4 the same mix with five objects. Stars: a wrong answer is a miss |
 
 ## Desk Dash
 
@@ -330,7 +332,7 @@ EN button to translate the card and see the question's meaning (23 Nov; the card
 | Words | [Generated list](words.md#desk-dash) |
 | Tracked in the journal | Points only; the noun of Chinese measure-word questions is tracked |
 | Session | 5 questions plus each miss once more (at most 10) |
-| Progression | Designed 18 Nov, not built: L1 15 s per question · L2 10 s (today) · L3 harder questions (needs difficulty tags in the question bank) · L4 7 s |
+| Progression | **Built 25 Nov (LEARN-06, D11).** L1 15 s per question · L2 10 s (the game before levels) · L3 harder questions first (a question bank `level` of 2 or more) · L4 the same at 7 s. Lana's intro says the level's seconds. **Open:** every bank question is still level 1, so L3 plays like L2 until harder questions are written (and reviewed) in each language. Stars: a question missed the first time is a miss |
 
 ## Mystery Doors
 
@@ -350,8 +352,8 @@ with "Door 5 of 6" still showing; [evidence](../evidence/ui-fixes-20261123/verif
 | Purpose | Colours and shapes in a clue sentence. |
 | Words | [Generated list](words.md#mystery-doors) |
 | Tracked in the journal | Yes: the colour or shape a door's clue names |
-| Session | 6 doors, first try counts |
-| Progression | Designed 18 Nov, not built: L1 one clue type, 4 doors · L2 shape, colour and both (today) · L3 more colours · L4 8 doors, combined clues only |
+| Session | 6 doors (4 at level 1, 8 at level 4), first try counts |
+| Progression | **Built 25 Nov (LEARN-06, D11).** L1 colour clues only, 4 doors, four basic colours (red, blue, green, yellow) · L2 shape, colour and both, 6 doors, the same four colours · L3 all seven colours (+ purple, orange, pink; the game before levels) · L4 8 doors, combined clues only. Stars: a door missed at the first try is a miss; since 25 Nov a game with misses also completes |
 
 ## Mahjong Club
 
@@ -421,8 +423,8 @@ Open the box and connect the wires by colour. A pastime; the box itself teaches 
 | Purpose | Fun only; the box teaches *electrical box*. |
 | Words | [Generated list](words.md#wire-it-up) |
 | Tracked in the journal | No |
-| Session | One puzzle per opening |
-| Progression | Designed 18 Nov, not built: L1 fewer wires · L2 today · L3 more wires |
+| Session | One puzzle per opening (3, 4 or 6 wires by level) |
+| Progression | **Built 25 Nov (LEARN-06, D11).** L1 3 wires · L2 4 wires (the game before levels) · L3 6 wires (the most a box holds). A repaired box finishes the opening; a wire dropped on a wrong socket is a miss, so a clean repair unlocks the next level |
 
 ## Library Helper
 
@@ -446,8 +448,8 @@ walked away the books are borrowed and a new cart of 3–6 arrives. Tracked: eac
 | Purpose | Book topics (dogs, pizza, guitar…) and the six category words (animal, sport, music, food, vehicle, plant; 3 books each) by sorting returned books. |
 | Words | [Generated list](words.md#library-helper) |
 | Tracked in the journal | Yes (17 Nov): a book's first placement in a cart tests its topic word and its category word |
-| Session | One cart of 3–6 books; the next cart once the player has walked away from a perfect one (21 Nov) |
-| Progression | Designed 18 Nov, not built: L1 3 books · L2 4–5 books · L3 6 books · L4 plain spines, so the colours no longer match the shelves (user idea, 17 Nov 2026) |
+| Session | One cart of 3–6 books (by level); the next cart once the player has walked away from a perfect one (21 Nov) |
+| Progression | **Built 25 Nov (LEARN-06, D11).** L1 3 books · L2 4–5 books · L3 6 books · L4 6 books with plain kraft-paper spines, so the colours no longer match the shelves (user idea, 17 Nov 2026). A waiting cart of another level is refilled when a game starts. Stars: a book's first placement on a wrong shelf is a miss |
 
 ## Next, Please!
 
