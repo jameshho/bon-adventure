@@ -61,6 +61,14 @@ so a unit scene stores only the window root and its exports.
   none. Its "reflection" is a sky/ground colour gradient chosen by the reflected view direction
   and lit like the rest of the surface (it dims at night): no screen texture, reflection probe,
   refraction or per-frame code. It uses only built-ins of the Compatibility renderer (web).
+- **The sky in the glass follows the hour (P3-20, 25 Nov 2026).** The reflected sky colour is the
+  global shader parameter `glass_sky_colour` (declared in `project.godot` `[shader_globals]`,
+  default the old noon colour). `day_night.gd` sets it from the hour's sky (30% of the way from
+  the horizon colour to the top) with one `RenderingServer.global_shader_parameter_set()` when it
+  changes, at most 4 times a second, so the shared file and every cached per-tint copy follow
+  without a per-material or per-window write. Cost: one value in the global uniform buffer; the
+  shader does the same arithmetic as before (no new texture, pass or branch). The opaque fallback
+  material does not change. Views: [glass at 07:00, 12:00, 18:40, 22:00, old | new](../evidence/bonbon-life-20261125/glass.png).
 - **Opaque where nothing is behind.** 46 of the 84 panes sit directly on a wall (see below),
   so they stay in the opaque pass. Only the 38 real openings pay for transparency.
 - **Fallback:** set the project setting `vocabulary_town/rendering/glass_mode` to `"opaque"`

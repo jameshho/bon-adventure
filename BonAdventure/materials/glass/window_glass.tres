@@ -11,5 +11,4 @@ shader_parameter/inside_tint = Color(0.66, 0.78, 0.86, 0.3)
 shader_parameter/outside_tint = Color(0.17, 0.2, 0.22, 0.8)
 shader_parameter/inside_reflection = 0.08
 shader_parameter/outside_reflection = 0.38
-shader_parameter/sky_colour = Color(0.64, 0.79, 0.93, 1)
 shader_parameter/ground_colour = Color(0.36, 0.4, 0.38, 1)

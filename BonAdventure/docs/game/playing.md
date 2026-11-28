@@ -269,6 +269,8 @@ A day lasts 48 minutes (since 25 Nov; was 30), with sun, moon, sky, street lamps
 The clock at the top centre moves on every half hour, about once a minute, and can jump an hour
 forward or back. Since 25 Nov the sun's light fades out indoors the
 way the moon's does, so rooms look the same by day as at night, with a slightly warmer fill.
+Since 25 Nov shop windows reflect the sky of the hour: warmer in the morning, rose at dusk and
+deep blue at night ([views](../evidence/bonbon-life-20261125/glass.png)).
 [Day-night cycle](../guides/performance/README.md#day-night-cycle--9-november-2026)
 
 ## Characters
@@ -277,6 +279,9 @@ The town's people are plush animals: BonBon the pig (the player), the house frie
 outfits, and the minigame hosts. They blink and make small gestures. Clicking a house friend
 shows its name. Since 25 Nov whoever you talk to turns to face you while their line shows, and
 BonBon's steps keep pace with her speed (quicker when running, slower when creeping).
+Since 25 Nov BonBon blinks too, every blink closes softly in three steps instead of snapping,
+and her arms ease up and down when she jumps instead of jumping to a pose
+([blink](../evidence/bonbon-life-20261125/blink.png), [jump before](../evidence/bonbon-life-20261125/jump-before.png) / [after](../evidence/bonbon-life-20261125/jump-after.png)).
 [Plush characters](../guides/COMPONENTS.md#plush-characters)
 
 ## Sound

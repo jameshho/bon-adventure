@@ -296,8 +296,8 @@ Done on 25 Nov: P3-01 in part (settled zoo gate, cached player in the crab: `e8a
 | P3-16 | A5 | S | Name the icon-only HUD buttons for touch players | `vocabulary_hud.gd` |
 | P3-17 | A5 | C | `translate_button.gd` becomes a non-visual peek bridge | `translate_button.gd` |
 | P3-18 | A3 | S | Bob or waddle for wandering animals without a rig (after the sheep/hen work lands) | `park_animals.gd` |
-| P3-19 | A3 | C | Ease BonBon's jump pose; optional 3-step blink | `player_controller.gd`, `plush_life.gd` |
-| P3-20 | A2 | C | Glass reflects the time of day (one shared material write) | `day_night.gd` |
+| P3-19 | A3 | C | Ease BonBon's jump pose; optional 3-step blink — **Under Review 25 Nov** (built: eased jump pose, three-step blink, BonBon blinks; [evidence](../../evidence/bonbon-life-20261125/README.md)) | `player_controller.gd`, `plush_life.gd` |
+| P3-20 | A2 | C | Glass reflects the time of day (one shared material write) — **Under Review 25 Nov** (built as one global shader parameter; cost note in [WINDOWS.md](../WINDOWS.md#performance-design)) | `day_night.gd` |
 | P3-21 | A2 | S | Night-only glow, kept only if cheap on phones | `day_night.gd` |
 | P3-22 | A2 | C | **Done 26 Nov** (branch `claude/pastel-f9b9c5`): clustering report `tools/palette_report.gd`; hue-guarded snap `scripts/buildings/palette_snap.gd`, step `palette_snap` baked in all 19 units ([evidence](../../evidence/pastel-20261125/README.md)) | `tools/material_palette.gd`, bakes |
 | P3-23 | A2 | S | **Done 26 Nov** (same branch): pastel grass and sand (`shaders/grass.tres`, `sand.tres`), roads and paving by base step `pastel_ground` | `shaders/*.tres`, `base.gd` |

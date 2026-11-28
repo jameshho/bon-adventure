@@ -254,6 +254,11 @@ PlushLife.play(self, figure, "nod")     # "hop", "shake", "nod", "tilt"; returns
 PlushLife.face_while(self, npc, player, func() -> bool: return panel.is_dialogue_visible())
 ```
 
+A blink (P3-19, 25 Nov 2026) has three steps, each written once: the lids drop to
+`BLINK_HALF` (0.35 open), shut, come back to half, then open, ending at 0.04, 0.1 and 0.16 s
+(`BLINK_STEPS`). `soft_blink = false` gives the old single shut step. Half-open already counts as
+shut for `eyes_shut()`. [Blink sheet](../evidence/bonbon-life-20261125/blink.png).
+
 Facing the player (ANIM-07, user decision D12, 25 Nov 2026; no other idle moves): a `Facing`
 node under `host` turns the figure's `rotation.y` toward the player on physics ticks (at most
 75°, `FACE_MAX_TURN`), and eases back to the yaw it had once `keep` is false or the player is
@@ -273,7 +278,8 @@ Who uses it:
 | Mahjong players | Their own `PlushLife` (blink 4–10 s, a gesture every 10–20 s) |
 | Police lineup | Its own `PlushLife` (blink 2.5–6 s, no random gestures); `_hop` and `_shake` call `PlushLife.play()`. Its breathing and lean toward the pointer stay in the session |
 | Napping house characters | `hold_eyes()` and `breath_scale()` |
-| The player lying in a bed | `hold_eyes()`, `set_eyes_open()` with the pose blend, `breath_scale()`. The player does not blink |
+| The player | Her own `PlushLife` (`player_controller.gd` `blinker`, made in `bind_model()`; blink 4–10 s, no gestures; since 25 Nov 2026). She is not in `figures` (that group marks occupied seats); an avatar swap re-binds it |
+| The player lying in a bed | `hold_eyes()`, `set_eyes_open()` with the pose blend, `breath_scale()`; the hold keeps her blinker away |
 
 ### Ownership and priority
 
