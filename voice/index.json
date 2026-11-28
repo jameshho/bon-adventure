@@ -1,0 +1,20 @@
+{
+  "format": 1,
+  "packs": {
+    "en": {
+      "bytes": 6960556,
+      "clips": 799,
+      "file": "en-977be639.pck"
+    },
+    "es": {
+      "bytes": 7506508,
+      "clips": 799,
+      "file": "es-4d80516d.pck"
+    },
+    "zh": {
+      "bytes": 6864748,
+      "clips": 799,
+      "file": "zh-efd695d4.pck"
+    }
+  }
+}

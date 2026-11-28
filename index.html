@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+		<title>Bon Adventure: Little Town of Words</title>
+		<style>
+html, body, #canvas {
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+body {
+	color: white;
+	background-color: black;
+	overflow: hidden;
+	touch-action: none;
+}
+
+#canvas {
+	display: block;
+}
+
+#canvas:focus {
+	outline: none;
+}
+
+#status, #status-splash, #status-progress {
+	position: absolute;
+	left: 0;
+	right: 0;
+}
+
+#status, #status-splash {
+	top: 0;
+	bottom: 0;
+}
+
+#status {
+	background-color: #242424;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	visibility: hidden;
+}
+
+#status-splash {
+	max-height: 100%;
+	max-width: 100%;
+	margin: auto;
+}
+
+#status-splash.show-image--false {
+	display: none;
+}
+
+#status-splash.fullsize--true {
+	height: 100%;
+	width: 100%;
+	object-fit: contain;
+}
+
+#status-splash.use-filter--false {
+	image-rendering: pixelated;
+}
+
+#status-progress, #status-notice {
+	display: none;
+}
+
+#status-progress {
+	bottom: 10%;
+	width: 50%;
+	margin: 0 auto;
+}
+
+#status-notice {
+	background-color: #5b3943;
+	border-radius: 0.5rem;
+	border: 1px solid #9b3943;
+	color: #e0e0e0;
+	font-family: 'Noto Sans', 'Droid Sans', Arial, sans-serif;
+	line-height: 1.3;
+	margin: 0 2rem;
+	overflow: hidden;
+	padding: 1rem;
+	text-align: center;
+	z-index: 1;
+}
+		</style>
+		<link id="-gd-engine-icon" rel="icon" type="image/png" href="index.icon.png" />
+<link rel="apple-touch-icon" href="index.apple-touch-icon.png"/>
+<link rel="manifest" href="index.manifest.json">
+<script>
+// Landscape only (user, 13 Nov 2026): on a touch device held upright the game is drawn turned
+// 90 degrees, so it still sees a landscape screen and every menu, joystick and button keeps its
+// layout. The page reports a landscape window to Godot (innerWidth/innerHeight swapped), the
+// canvas is rotated with CSS, and each touch and mouse event gets the rotated canvas's
+// coordinates in a capture listener before Godot reads it. Turned sideways, nothing changes.
+// See README.md, Web app (PWA). Keep this script free of double quotes (export_presets.cfg).
+(function () {
+	var wide = Object.getOwnPropertyDescriptor(window, 'innerWidth') || Object.getOwnPropertyDescriptor(Window.prototype, 'innerWidth');
+	var tall = Object.getOwnPropertyDescriptor(window, 'innerHeight') || Object.getOwnPropertyDescriptor(Window.prototype, 'innerHeight');
+	if (!wide || !wide.get || !tall || !tall.get) {
+		return;
+	}
+	function realW() { return wide.get.call(window); }
+	function realH() { return tall.get.call(window); }
+	function upright() { return navigator.maxTouchPoints > 0 && realH() > realW(); }
+	Object.defineProperty(window, 'innerWidth', { configurable: true, get: function () { return upright() ? realH() : realW(); } });
+	Object.defineProperty(window, 'innerHeight', { configurable: true, get: function () { return upright() ? realW() : realH(); } });
+	// A point on the screen -> the same point on the turned canvas (its top edge runs down the
+	// right side of the screen).
+	function toGame(x, y) { return [y, realW() - x]; }
+	function mouse(e) {
+		if (!upright()) {
+			return;
+		}
+		var p = toGame(e.clientX, e.clientY);
+		var mx = e.movementX || 0;
+		var my = e.movementY || 0;
+		try {
+			Object.defineProperties(e, { clientX: { value: p[0] }, clientY: { value: p[1] }, movementX: { value: my }, movementY: { value: -mx } });
+		} catch (err) {}
+	}
+	function turned(list) {
+		var out = [];
+		for (var i = 0; i < list.length; i++) {
+			var t = list[i];
+			var p = toGame(t.clientX, t.clientY);
+			out.push({ identifier: t.identifier, target: t.target, clientX: p[0], clientY: p[1], pageX: p[0], pageY: p[1], screenX: t.screenX, screenY: t.screenY, force: t.force, radiusX: t.radiusY, radiusY: t.radiusX, rotationAngle: t.rotationAngle });
+		}
+		return out;
+	}
+	function touch(e) {
+		if (!upright()) {
+			return;
+		}
+		try {
+			Object.defineProperties(e, { touches: { value: turned(e.touches) }, targetTouches: { value: turned(e.targetTouches) }, changedTouches: { value: turned(e.changedTouches) } });
+		} catch (err) {}
+	}
+	['mousedown', 'mouseup', 'mousemove', 'pointerdown', 'pointerup', 'pointermove', 'wheel'].forEach(function (type) {
+		window.addEventListener(type, mouse, true);
+	});
+	['touchstart', 'touchmove', 'touchend', 'touchcancel'].forEach(function (type) {
+		window.addEventListener(type, touch, { capture: true, passive: false });
+	});
+	var canvas = null;
+	function place() {
+		if (canvas) {
+			canvas.style.transformOrigin = '0 0';
+			canvas.style.transform = upright() ? 'translate(' + realW() + 'px, 0) rotate(90deg)' : '';
+		}
+	}
+	window.addEventListener('resize', place);
+	window.addEventListener('orientationchange', place);
+	document.addEventListener('DOMContentLoaded', function () {
+		canvas = document.getElementById('canvas');
+		var rect = canvas.getBoundingClientRect;
+		// Godot measures the canvas to place events: in portrait, the unturned landscape box.
+		canvas.getBoundingClientRect = function () {
+			if (!upright()) {
+				return rect.call(canvas);
+			}
+			var w = realH();
+			var h = realW();
+			return { x: 0, y: 0, left: 0, top: 0, right: w, bottom: h, width: w, height: h };
+		};
+		place();
+	});
+	// Browsers that allow it (mostly Android, installed or full screen) keep the screen sideways.
+	window.addEventListener('pointerdown', function () {
+		try {
+			var o = screen.orientation;
+			if (o && o.lock) {
+				o.lock('landscape').catch(function () {});
+			}
+		} catch (err) {}
+	}, { capture: true, once: true });
+})();
+</script>
+<script>
+// Audio (24 Nov 2026, user: the browser tab always showed a speaker icon). Godot keeps its
+// AudioContext running and sends silence, so the browser counts the page as playing. This
+// remembers every AudioContext the page makes in window.bonAudioContexts and keeps it suspended
+// until the game wants sound: Godot's own resume() (on the first click or key) only resumes
+// while window.bonAudioWanted is true. scripts/core/sound.gd sets it and resumes just before a
+// sound starts, and suspends again while none plays. See docs/guides/VOICE.md. Keep this script
+// free of double quotes (export_presets.cfg).
+(function () {
+	var Made = window.AudioContext || window.webkitAudioContext;
+	if (!Made) {
+		return;
+	}
+	window.bonAudioContexts = [];
+	window.bonAudioWanted = false;
+	function Tracked(options) {
+		var context = options === undefined ? new Made() : new Made(options);
+		var resume = context.resume.bind(context);
+		context.resume = function () {
+			return window.bonAudioWanted ? resume() : Promise.resolve();
+		};
+		window.bonAudioContexts.push(context);
+		context.suspend().catch(function () {});
+		return context;
+	}
+	Tracked.prototype = Made.prototype;
+	window.AudioContext = Tracked;
+	if (window.webkitAudioContext) {
+		window.webkitAudioContext = Tracked;
+	}
+})();
+</script>
+<script>
+// WebGL context loss (user, 14 Nov 2026: reduce + recover). A phone browser can drop the game's
+// graphics (low memory, or the tab was in the background); Godot cannot get them back and would
+// show an alert. This listener runs first (capture on window), stops that alert, lets the game
+// write its resume note (window.vtResume, scripts/core/web_resume.gd), shows a short notice
+// (window.vtLostText, set by the game in the player's language) and reloads with the
+// sessionStorage flag bon-resume-now, so the game goes straight back to the same spot. After
+// three losses in two minutes it waits for a tap instead. The game is also told when the page is
+// hidden or closed, to keep its note fresh. See README.md, Web app (PWA). No double quotes here.
+(function () {
+	var lost = false;
+	function note(reason) {
+		try {
+			if (window.vtResume) {
+				window.vtResume(reason);
+			}
+		} catch (err) {}
+	}
+	function recentLosses() {
+		var now = Date.now();
+		var list = [];
+		try {
+			list = JSON.parse(sessionStorage.getItem('vt-losses') || '[]').filter(function (t) { return now - t < 120000; });
+		} catch (err) {}
+		list.push(now);
+		try {
+			sessionStorage.setItem('vt-losses', JSON.stringify(list));
+		} catch (err) {}
+		return list.length;
+	}
+	function reload() {
+		try {
+			sessionStorage.setItem('bon-resume-now', '1');
+		} catch (err) {}
+		window.location.reload();
+	}
+	function notice(wait) {
+		var box = document.createElement('div');
+		box.id = 'vt-lost';
+		box.style.cssText = 'position:fixed;inset:0;z-index:1000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:#142a38;color:#e8fff4;font:600 24px system-ui,sans-serif;text-align:center;padding:24px;';
+		var line = document.createElement('div');
+		line.textContent = window.vtLostText || 'Reloading the graphics...';
+		box.appendChild(line);
+		if (wait) {
+			var button = document.createElement('button');
+			button.textContent = window.vtTapText || 'Tap to reload';
+			button.style.cssText = 'font:600 22px system-ui,sans-serif;padding:16px 32px;min-height:64px;border:0;border-radius:16px;background:#e8fff4;color:#142a38;';
+			button.addEventListener('click', reload);
+			box.appendChild(button);
+		}
+		document.body.appendChild(box);
+	}
+	window.addEventListener('webglcontextlost', function (e) {
+		e.stopImmediatePropagation();
+		e.preventDefault();
+		if (lost) {
+			return;
+		}
+		lost = true;
+		note('lost');
+		var wait = recentLosses() > 2;
+		notice(wait);
+		if (wait) {
+			return;
+		}
+		function go() {
+			if (document.hidden) {
+				document.addEventListener('visibilitychange', go, { once: true });
+				return;
+			}
+			setTimeout(reload, 1200);
+		}
+		go();
+	}, true);
+	document.addEventListener('visibilitychange', function () {
+		if (document.hidden) {
+			note('hide');
+		} else {
+			checkForUpdate();
+		}
+	});
+	// New builds (15 Nov 2026): the browser checks the service worker when the app opens; an
+	// installed app is often only paused, so ask again each time it comes back to the front.
+	// Godot sees a new build install (JavaScriptBridge.pwa_update_available) and the game
+	// switches to it (scripts/core/app.gd, web_resume.gd). No double quotes here.
+	function checkForUpdate() {
+		try {
+			if (navigator.serviceWorker) {
+				navigator.serviceWorker.getRegistration().then(function (reg) {
+					if (reg) {
+						reg.update().catch(function () {});
+					}
+				}).catch(function () {});
+			}
+		} catch (err) {}
+	}
+	// Rename (16 Nov 2026): Godot's service worker names its offline cache after config/name and
+	// only clears its own, so the build cached under the old name would stay on the device. Once
+	// a cache of the new name exists, drop the old one. Saves are not in it (IndexedDB /userfs).
+	try {
+		if (window.caches) {
+			caches.keys().then(function (keys) {
+				var current = keys.some(function (k) { return k.indexOf('Bon Adventure') === 0; });
+				keys.forEach(function (k) {
+					if (current && k.indexOf('Vocabulary Town-sw-cache-') === 0) {
+						caches.delete(k);
+					}
+				});
+			}).catch(function () {});
+		}
+	} catch (err) {}
+	// Restarts by the browser (25 Nov 2026): the game marks a running town in localStorage
+	// (bon-running, web_resume.gd); an ordinary end of the page removes it here, so a page that
+	// starts with the marker still set was killed (low memory) and goes back to the same spot.
+	// The game's WebAssembly memory (25 Nov 2026), for the ?perf=1 readout (perf_readout.gd):
+	// it only grows, and a phone kills the page when the page's memory gets too large.
+	function keepMemory(imports, result) {
+		try {
+			var seen = [];
+			var env = imports || {};
+			Object.keys(env).forEach(function (m) {
+				Object.keys(env[m] || {}).forEach(function (k) { seen.push(env[m][k]); });
+			});
+			var exports = (result.instance || result).exports || {};
+			Object.keys(exports).forEach(function (k) { seen.push(exports[k]); });
+			seen.forEach(function (v) {
+				if (v instanceof WebAssembly.Memory) {
+					window.bonWasmMemory = v;
+				}
+			});
+		} catch (err) {}
+		return result;
+	}
+	['instantiate', 'instantiateStreaming'].forEach(function (name) {
+		var original = WebAssembly[name];
+		if (original) {
+			WebAssembly[name] = function (source, imports) {
+				return original.apply(WebAssembly, arguments).then(function (result) { return keepMemory(imports, result); });
+			};
+		}
+	});
+	// The game's call above runs a moment later, after this listener: bonLeaving stops it from
+	// setting the marker again (web_resume.gd snapshot()).
+	window.addEventListener('pagehide', function () {
+		window.bonLeaving = true;
+		note('hide');
+		try {
+			localStorage.removeItem('bon-running');
+		} catch (err) {}
+	});
+	window.addEventListener('pageshow', function () { window.bonLeaving = false; });
+})();
+</script>
+	</head>
+	<body>
+		<canvas id="canvas">
+			Your browser does not support the canvas tag.
+		</canvas>
+
+		<noscript>
+			Your browser does not support JavaScript.
+		</noscript>
+
+		<div id="status">
+			<img id="status-splash" class="show-image--true fullsize--true use-filter--true" src="index.png" alt="">
+			<progress id="status-progress"></progress>
+			<div id="status-notice"></div>
+		</div>
+
+		<script src="index.js"></script>
+		<script>
+const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":false,"executable":"index","experimentalVK":true,"fileSizes":{"index.pck":51667920,"index.wasm":39514754},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4,"serviceWorker":"index.service.worker.js"};
+const GODOT_THREADS_ENABLED = false;
+const engine = new Engine(GODOT_CONFIG);
+
+(function () {
+	const statusOverlay = document.getElementById('status');
+	const statusProgress = document.getElementById('status-progress');
+	const statusNotice = document.getElementById('status-notice');
+
+	let initializing = true;
+	let statusMode = '';
+
+	function setStatusMode(mode) {
+		if (statusMode === mode || !initializing) {
+			return;
+		}
+		if (mode === 'hidden') {
+			statusOverlay.remove();
+			initializing = false;
+			return;
+		}
+		statusOverlay.style.visibility = 'visible';
+		statusProgress.style.display = mode === 'progress' ? 'block' : 'none';
+		statusNotice.style.display = mode === 'notice' ? 'block' : 'none';
+		statusMode = mode;
+	}
+
+	function setStatusNotice(text) {
+		while (statusNotice.lastChild) {
+			statusNotice.removeChild(statusNotice.lastChild);
+		}
+		const lines = text.split('\n');
+		lines.forEach((line) => {
+			statusNotice.appendChild(document.createTextNode(line));
+			statusNotice.appendChild(document.createElement('br'));
+		});
+	}
+
+	function displayFailureNotice(err) {
+		console.error(err);
+		if (err instanceof Error) {
+			setStatusNotice(err.message);
+		} else if (typeof err === 'string') {
+			setStatusNotice(err);
+		} else {
+			setStatusNotice('An unknown error occurred.');
+		}
+		setStatusMode('notice');
+		initializing = false;
+	}
+
+	const missing = Engine.getMissingFeatures({
+		threads: GODOT_THREADS_ENABLED,
+	});
+
+	if (missing.length !== 0) {
+		if (GODOT_CONFIG['serviceWorker'] && GODOT_CONFIG['ensureCrossOriginIsolationHeaders'] && 'serviceWorker' in navigator) {
+			let serviceWorkerRegistrationPromise;
+			try {
+				serviceWorkerRegistrationPromise = navigator.serviceWorker.getRegistration();
+			} catch (err) {
+				serviceWorkerRegistrationPromise = Promise.reject(new Error('Service worker registration failed.'));
+			}
+			// There's a chance that installing the service worker would fix the issue
+			Promise.race([
+				serviceWorkerRegistrationPromise.then((registration) => {
+					if (registration != null) {
+						return Promise.reject(new Error('Service worker already exists.'));
+					}
+					return registration;
+				}).then(() => engine.installServiceWorker()),
+				// For some reason, `getRegistration()` can stall
+				new Promise((resolve) => {
+					setTimeout(() => resolve(), 2000);
+				}),
+			]).then(() => {
+				// Reload if there was no error.
+				window.location.reload();
+			}).catch((err) => {
+				console.error('Error while registering service worker:', err);
+			});
+		} else {
+			// Display the message as usual
+			const missingMsg = 'Error\nThe following features required to run Godot projects on the Web are missing:\n';
+			displayFailureNotice(missingMsg + missing.join('\n'));
+		}
+	} else {
+		setStatusMode('progress');
+		engine.startGame({
+			'onProgress': function (current, total) {
+				if (current > 0 && total > 0) {
+					statusProgress.value = current;
+					statusProgress.max = total;
+				} else {
+					statusProgress.removeAttribute('value');
+					statusProgress.removeAttribute('max');
+				}
+			},
+		}).then(() => {
+			setStatusMode('hidden');
+		}, displayFailureNotice);
+	}
+}());
+		</script>
+	</body>
+</html>
+
