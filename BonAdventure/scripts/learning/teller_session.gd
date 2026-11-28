@@ -587,7 +587,8 @@ func _officer_arrived() -> void:
 func _later(seconds: float, expect: String, then: Callable) -> void:
 	var customer := current
 	get_tree().create_timer(seconds).timeout.connect(func() -> void:
-		if playing and current == customer and step == expect:
+		# P3-09: the session (and the customer's node) may be gone when the timer fires.
+		if is_inside_tree() and playing and current == customer and step == expect and (not customer.has("node") or is_instance_valid(customer.node)):
 			then.call())
 
 ## How long a line without a button stays (its foreign text's length).
@@ -756,7 +757,7 @@ func _turn_player(direction: Vector3) -> void:
 ## Calls `then` after `seconds` if the game is still in `expect` (scenes with no customer).
 func _after(seconds: float, expect: String, then: Callable) -> void:
 	get_tree().create_timer(seconds).timeout.connect(func() -> void:
-		if playing and step == expect:
+		if is_inside_tree() and playing and step == expect:
 			then.call())
 
 ## A mistake with this customer: the customer no longer counts, and the session reports one
@@ -852,7 +853,7 @@ func _send_off() -> void:
 			if is_instance_valid(leaving.node):
 				leaving.node.visible = false)
 		get_tree().create_timer(OFFICER_LAG).timeout.connect(func() -> void:
-			if is_instance_valid(officer):
+			if is_inside_tree() and is_instance_valid(officer):
 				_walk(officer, EXIT_PATH, func() -> void: _remove(leaving)))
 	else:
 		_walk(leaving.node, EXIT_PATH, func() -> void: _remove(leaving))

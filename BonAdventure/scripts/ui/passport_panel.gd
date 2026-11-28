@@ -99,6 +99,8 @@ func setup(game) -> void:
 	main.hud.style_corner_button(corner_button)
 	corner_button.pressed.connect(toggle)
 	main.hud.ui_root.add_child(corner_button)
+	# Its name under it for touch players (P3-16, 25 Nov 2026).
+	main.hud.add_name_tag(corner_button, "passport.title")
 	get_viewport().size_changed.connect(_layout)
 	var missions = Missions.shared()
 	missions.changed.connect(func() -> void:

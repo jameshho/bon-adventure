@@ -12,10 +12,13 @@ extends SceneTree
 ## box shows; the F1 guide has a finger-sized ✕.
 ## 16 Nov 2026 (user): the word card beats the stick; Run works with a second finger
 ## (card_and_run()).
+## 25 Nov 2026 (P3-16): the icon-only HUD buttons (gear, journal, map, ▶ picker, Passport) carry
+## a name tag for touch players: shown after a touch, hidden after a key press (name_tags()).
 ## Isolated HOME (Main runs):
 ## HOME=<scratch>/home VT_FOCUS=all VT_SPAWN=none godot --headless --path . --script res://docs/evidence/touch-controls-20261112/verify.gd
 ## Prints "TOUCH CONTROLS: N checks, M failures".
 const MinigameWiring := preload("res://scripts/core/minigame_wiring.gd")
+const UiText := preload("res://scripts/language/ui_text.gd")
 var controls: Control
 var failures := 0
 var checks := 0
@@ -187,6 +190,7 @@ func run():
 	check(MinigameWiring.locks_player(game) and not controls.visible, "a locking panel locks the player and hides the touch controls")
 	game.money_panel.visible = false
 	game.sync_player_controls()
+	name_tags(game)
 	game.hud.minimap_side = map_side
 	for button in muted:
 		button.mouse_filter = muted[button]
@@ -479,3 +483,27 @@ func stick_on_screen(r: float, view: Vector2) -> void:
 	touch(2, Vector2(-300, edge.y), false)
 	await frames(1)
 	check(not Input.is_action_pressed("move_left") and controls._stick_center == controls._stick_home, "released at the edge: the stick goes home")
+
+## P3-16: name tags on the icon-only HUD buttons, the opposite of the key hints.
+func name_tags(game: Node) -> void:
+	var hud = game.hud
+	var buttons := {hud.settings_button: "hud.name_settings", hud.bookmark_button: "hud.name_journal", hud.map_button: "hud.name_map", game.game_launcher.corner_button: "hud.name_games", game.passport.corner_button: "passport.title"}
+	var tagged := 0
+	for button in buttons:
+		for tag in hud.name_tags:
+			if is_instance_valid(tag) and tag.get_parent() == button and str(tag.get_meta("phrase")) == buttons[button]:
+				tagged += 1
+	check(tagged == buttons.size(), "every icon-only HUD button has its name tag (%d of %d)" % [tagged, buttons.size()])
+	var key := InputEventKey.new()
+	key.keycode = KEY_K
+	key.pressed = true
+	hud._input(key)
+	check(hud.name_tags.all(func(tag) -> bool: return not tag.visible), "a key press hides the name tags")
+	var finger := InputEventScreenTouch.new()
+	finger.pressed = true
+	hud._input(finger)
+	check(hud.name_tags.all(func(tag) -> bool: return tag.visible), "a touch shows the name tags")
+	for tag in hud.name_tags:
+		var button: Control = tag.get_parent()
+		check(tag.size.x == button.size.x and tag.position.y + tag.size.y <= button.size.y + tag.size.y * 0.25, "%s: the tag sits on the button's bottom edge" % button.name)
+		check(UiText.t(str(tag.get_meta("phrase"))) != str(tag.get_meta("phrase")), "%s: the tag's phrase exists" % button.name)

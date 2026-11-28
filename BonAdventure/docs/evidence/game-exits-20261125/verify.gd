@@ -11,13 +11,21 @@ extends SceneTree
 ##   Desk Dash and Mystery Doors: request_leave() is false with no game; mid-game it asks the
 ##   leave question and Esc asks it instead of opening Settings; stay keeps the game, yes ends it.
 ##   Next, Please!: getting up from window 2's chair mid-game sits the player back down and asks.
+## - A closing hinged door that would hit the player opens again (P3-07); "Walk closer" for an
+##   interactable out of click reach (P3-06).
+## - F9 / the games action mid-game asks the leave question and opens no picker (P3-05).
 ## - The "jump" action (Space or the touch Jump button) stands the player up from a seat.
 ## HOME=<scratch> VT_FOCUS=all VT_SPAWN=none \
 ##   godot --path . --resolution 1280x800 --script res://docs/evidence/game-exits-20261125/verify.gd
-## Headless: checks only. With graphics it writes leave-question.png here. Saves go to the
+## Headless: checks only. With graphics it writes leave-question.png here, and the touch fixes'
+## walk-closer-and-name-tags(-phone).png in docs/evidence/touch-fixes-20261125/. Saves go to the
 ## isolated HOME only.
 const OUT := "res://docs/evidence/game-exits-20261125"
+## The touch fixes' render batch (P3-06 toast, P3-16 name tags; 25 Nov 2026).
+const TOUCH_FIXES := "res://docs/evidence/touch-fixes-20261125"
 const Board := preload("res://scripts/learning/activity_board.gd")
+const DoorAnimator := preload("res://scripts/core/door_animator.gd")
+const UiText := preload("res://scripts/language/ui_text.gd")
 var checks := 0
 var failures := 0
 var game
@@ -77,6 +85,17 @@ func run() -> void:
 	await frames(3)
 	check(session.playing and not host.is_asking_leave() and not panel.is_quit_open(), "stay keeps the game going")
 	check(game.zones.resolve_global(player.global_position) == "library" and player.controls_enabled, "after stay the player is inside and can move")
+	# --- F9 / the games action mid-game (P3-05): no picker over the game, the leave question
+	host.close_dialogue()
+	await frames(2)
+	_action("games")
+	await frames(2)
+	check(host.is_asking_leave() and not game.game_launcher.visible, "F9 mid-game asks the leave question, no picker")
+	game.game_launcher.toggle()
+	check(not game.game_launcher.visible, "the picker does not open over a running game")
+	panel.quit_answered.emit(false)
+	await frames(3)
+	check(session.playing, "stay after F9 keeps the game going")
 	# --- Esc / back mid-game asks too (no popup open)
 	host.close_dialogue()
 	await frames(2)
@@ -186,7 +205,95 @@ func run() -> void:
 		game.seating._unhandled_input(space)
 		await create_timer(1.5).timeout
 		check(not player.seated, "Space still stands the player up")
+	await _door_and_reach()
 	finish()
+
+## P3-07: a closing hinged room door that would hit the player opens again with the "doorway
+## occupied" toast; with the player clear it shuts. P3-06: an interactable out of click reach
+## counts as too far and the "Walk closer" toast shows (function level: no aimed click).
+func _door_and_reach() -> void:
+	var player = game.player
+	player.set_physics_process(false)
+	var leaf: Node3D = null
+	for node in game.doors:
+		var state: Dictionary = game.doors[node]
+		if not is_instance_valid(node) or str(state.get("type", "")) != "hinge" or float(state.get("seconds", 0.0)) > 0.0 or str(state.get("spin", "")) != "" or not node.get_meta("door_partners", []).is_empty():
+			continue
+		var bounds := _local_bounds(node)
+		if bounds.size.y > 1.8 and maxf(bounds.size.x, bounds.size.z) > 0.7 and node.find_children("*", "CollisionShape3D", true, false).size() > 0:
+			leaf = node
+			break
+	check(leaf != null, "a hinged room door found")
+	if leaf == null:
+		return
+	var state: Dictionary = game.doors[leaf]
+	var open_angle := float(state.get("angle", -1.75))
+	state["open"] = true
+	leaf.rotation.y = open_angle
+	var centre := _local_bounds(leaf).get_center()
+	var closed := Transform3D(Basis.from_euler(Vector3(leaf.rotation.x, 0.0, leaf.rotation.z), leaf.rotation_order) * Basis.from_scale(leaf.scale), leaf.position)
+	var spot: Vector3 = (leaf.get_parent() as Node3D).global_transform * closed * centre
+	player.global_position = spot - Vector3(0, 0.9, 0)
+	await physics_frame
+	await physics_frame
+	game.hud.quest_toast.text = ""
+	DoorAnimator.toggle(game, leaf)
+	# Time, not frames: a headless frame is so short the swing barely starts in a few frames.
+	await create_timer(2.0).timeout
+	check(bool(game.doors[leaf]["open"]), "a closing hinged door that would hit the player opens again (%s)" % leaf.name)
+	check(game.hud.quest_toast.text == UiText.t("toast.doorway_occupied"), "the doorway-occupied toast shows")
+	player.global_position = spot + Vector3(8, 0, 8)
+	await physics_frame
+	await physics_frame
+	DoorAnimator.toggle(game, leaf)
+	await create_timer(2.0).timeout
+	check(not bool(game.doors[leaf]["open"]) and absf(angle_difference(leaf.rotation.y, 0.0)) < 0.01, "with the player clear the door shuts")
+	# P3-06
+	var item = leaf.get_node_or_null("Interactable")
+	if item == null:
+		for child in leaf.get_children():
+			if child.get_script() == preload("res://scripts/core/interactable.gd"):
+				item = child
+	check(item != null, "the door's interactable found")
+	if item != null:
+		player.global_position = spot + Vector3(8, 0, 8)
+		check(game.interaction._too_far(item), "8 m away the door is too far to click")
+		player.global_position = spot - Vector3(0, 0.9, 0)
+		check(not game.interaction._too_far(item), "at the door it is in reach")
+	game.hud.quest_toast.text = ""
+	game.interaction._walk_closer()
+	check(game.hud.quest_toast.text == UiText.t("toast.walk_closer") and game.hud.quest_toast.text != "toast.walk_closer", "the Walk closer toast shows its phrase")
+	if graphics:
+		# One render batch (P3-06 and P3-16): the toast and the touch name tags, laptop and phone.
+		# Slow frames after a teleport outlast the 4 s toast, and a real key press reaching the
+		# window would switch the tags to key hints: hold the toast, keep the HUD's input off.
+		player.global_position = spot + Vector3(8, 0, 8)
+		game.hud.set_process_input(false)
+		game.hud.set_keyboard_hints(false)
+		game.interaction._walk_closer()
+		game.hud.quest_toast_time = 60.0
+		await frames(10)
+		await shot("walk-closer-and-name-tags", TOUCH_FIXES)
+		var keep := root.size
+		root.size = Vector2i(844, 390)
+		await frames(10)
+		game.hud.quest_toast_time = 60.0
+		game.hud.quest_toast.visible = true
+		await shot("walk-closer-and-name-tags-phone", TOUCH_FIXES)
+		root.size = keep
+		game.hud.set_process_input(true)
+
+func _local_bounds(node: Node3D) -> AABB:
+	var bounds := AABB()
+	var first := true
+	var to_local := node.global_transform.affine_inverse()
+	for mesh in node.find_children("*", "MeshInstance3D", true, false):
+		if mesh.mesh == null:
+			continue
+		var box: AABB = (to_local * mesh.global_transform) * mesh.mesh.get_aabb()
+		bounds = box if first else bounds.merge(box)
+		first = false
+	return bounds
 
 ## request_leave() and Esc on an in-world game started through its host (the picker's launch).
 func _leave_game(label: String, node_name: String, activity: String) -> void:
@@ -247,15 +354,18 @@ func _outside(centre: Vector3) -> Vector3:
 	return Vector3.INF
 
 func _back() -> void:
+	_action("back")
+
+func _action(action: String) -> void:
 	var event := InputEventAction.new()
-	event.action = "back"
+	event.action = action
 	event.pressed = true
 	game._unhandled_input(event)
 
-func shot(title: String) -> void:
+func shot(title: String, folder: String = OUT) -> void:
 	for i in 4: await process_frame
 	await RenderingServer.frame_post_draw
-	root.get_texture().get_image().save_png("%s/%s.png" % [OUT, title])
+	root.get_texture().get_image().save_png("%s/%s.png" % [folder, title])
 	print("CAPTURE ", title)
 
 func finish() -> void:

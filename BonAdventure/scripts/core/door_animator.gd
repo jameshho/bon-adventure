@@ -104,7 +104,7 @@ static func restore_editor_door_states(main, node: Node) -> void:
 		restore_editor_door_states(main, child)
 
 ## Animates every door toward its state without teleporting geometry. A closing "safe_slide"
-## door that would hit the player opens again.
+## door, and since 25 Nov 2026 a closing hinged door (P3-07), that would hit the player opens again.
 static func animate(main, delta: float) -> void:
 	var doors: Dictionary = main.doors
 	for obj in doors.keys():
@@ -118,13 +118,16 @@ static func animate(main, delta: float) -> void:
 			if str(state.get("spin", "")) != "" and _spin(obj, state, delta):
 				continue
 			if float(state.get("seconds", 0.0)) > 0.0:
-				_heavy_swing(obj, state, delta)
+				_heavy_swing(main, obj, state, delta)
 				continue
 			var target: float = float(state.get("angle", -1.75)) if bool(state["open"]) else 0.0
 			if absf(angle_difference(obj.rotation.y, target)) < 0.001:
 				if obj.rotation.y != target: obj.rotation.y = target
 				continue
-			obj.rotation.y = lerp_angle(obj.rotation.y, target, alpha)
+			var next_angle: float = lerp_angle(obj.rotation.y, target, alpha)
+			if not bool(state["open"]) and _blocked_closing(main, obj, state, next_angle):
+				continue
+			obj.rotation.y = next_angle
 		elif str(state["type"]) == "curtain":
 			# Shower curtains (13 Nov 2026, home_furnishing.gd): the node's origin is the end fixed
 			# to the wall and the cloth runs along local +X; closed (open = false) it is bunched
@@ -160,12 +163,14 @@ static func animate(main, delta: float) -> void:
 ## a timed swing over "seconds" that starts slowly, then settles softly (smootherstep, eased in
 ## a little more), so the door seems to weigh a lot. Reversing mid-swing goes back from where it
 ## is. Progress 0 (shut) to 1 (open) is kept in state "swing".
-static func _heavy_swing(obj: Node3D, state: Dictionary, delta: float) -> void:
+static func _heavy_swing(main, obj: Node3D, state: Dictionary, delta: float) -> void:
 	var goal := 1.0 if bool(state["open"]) else 0.0
 	var t: float = float(state.get("swing", 0.0))
 	if t == goal:
 		return
 	t = move_toward(t, goal, delta / float(state["seconds"]))
+	if goal == 0.0 and _blocked_closing(main, obj, state, float(state.get("angle", -1.75)) * heavy_curve(t)):
+		return
 	state["swing"] = t
 	obj.rotation.y = float(state.get("angle", -1.75)) * heavy_curve(t)
 	if t == 0.0:
@@ -187,3 +192,60 @@ static func _spin(obj: Node3D, state: Dictionary, delta: float) -> bool:
 	if absf(wheel.rotation.z - turn) > 0.001:
 		wheel.rotation.z = lerpf(wheel.rotation.z, turn, minf(1.0, 7.0 * delta))
 	return opening and absf(wheel.rotation.z - turn) > 0.6
+
+## Player check for closing hinged doors (P3-07, 25 Nov 2026): within PLAYER_NEAR metres, the
+## leaf's collision shapes are tested at the next angle (no node is moved for the test); if one
+## overlaps the player the door opens again with the "doorway occupied" toast, like safe_slide.
+const PLAYER_NEAR := 4.0
+
+static func _blocked_closing(main, obj: Node3D, state: Dictionary, angle: float) -> bool:
+	if not _leaf_hits_player(main, obj, angle):
+		return false
+	state["open"] = true
+	for partner in obj.get_meta("door_partners", []):
+		if is_instance_valid(partner) and main.doors.has(partner):
+			main.doors[partner]["open"] = true
+	if main.get("hud") != null:
+		main.hud.flash_quest_message(preload("res://scripts/language/ui_text.gd").t("toast.doorway_occupied"))
+	return true
+
+## Whether hinged leaf `obj`, turned to `angle` about its Y, overlaps the player: the player's
+## capsule (three spheres along its axis) against each box collision shape of the leaf at that
+## angle, in plain geometry (no physics query, so walls and layers cannot hide the player).
+static func _leaf_hits_player(main, obj: Node3D, angle: float) -> bool:
+	var player = main.get("player")
+	if not is_instance_valid(player) or not obj.is_inside_tree() or obj.get_parent() is not Node3D:
+		return false
+	if obj.global_position.distance_squared_to(player.global_position) > PLAYER_NEAR * PLAYER_NEAR:
+		return false
+	var radius := 0.3
+	var reach := 0.4
+	var centre: Vector3 = player.global_position + Vector3.UP * 0.7
+	var axis := Vector3.UP
+	for child in player.get_children():
+		if child is CollisionShape3D and not child.disabled and child.shape != null:
+			var body_scale: float = child.global_basis.get_scale().x
+			if child.shape is CapsuleShape3D:
+				radius = child.shape.radius * body_scale
+				reach = maxf(0.0, child.shape.height * 0.5 * body_scale - radius)
+			elif child.shape is SphereShape3D:
+				radius = child.shape.radius * body_scale
+				reach = 0.0
+			centre = child.global_position
+			axis = child.global_basis.y.normalized()
+			break
+	var turned := Transform3D(Basis.from_euler(Vector3(obj.rotation.x, angle, obj.rotation.z), obj.rotation_order) * Basis.from_scale(obj.scale), obj.position)
+	var pose: Transform3D = (obj.get_parent() as Node3D).global_transform * turned
+	var back: Transform3D = obj.global_transform.affine_inverse()
+	for found in obj.find_children("*", "CollisionShape3D", true, false):
+		var piece := found as CollisionShape3D
+		if piece.disabled or piece.shape is not BoxShape3D:
+			continue
+		var at: Transform3D = pose * (back * piece.global_transform)
+		var half: Vector3 = (piece.shape as BoxShape3D).size * at.basis.get_scale().abs() * 0.5
+		var to_box := Transform3D(at.basis.orthonormalized(), at.origin).affine_inverse()
+		for step in [-1.0, 0.0, 1.0]:
+			var point: Vector3 = to_box * (centre + axis * reach * step)
+			if point.distance_to(point.clamp(-half, half)) < radius:
+				return true
+	return false

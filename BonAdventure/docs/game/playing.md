@@ -147,7 +147,9 @@ Topics tab ([design](../guides/JOURNAL.md)).
 - **Laptop:** WASD to walk, Space to jump, Shift or the Run button to run, E to use things
   (doors, seats, vehicles, toilets, faucets), drag or right-mouse to look around, wheel to zoom,
   Esc for Settings or to close the top window; during Library Helper, Grocery Run or Feeding
-  Time! Esc asks whether to stop the game instead (25 Nov). F1 shows every key.
+  Time! Esc asks whether to stop the game instead (25 Nov); F9 during a game asks the same
+  instead of opening the game picker (25 Nov). F1 shows every key. A door that would close on
+  you swings open again (25 Nov).
 - **Controls guide** (F1, or **Controls** in Settings; 25 Nov): grouped cards of every key, or,
   on a touch device, of the on-screen controls (joystick, Jump, E, Run, the HUD buttons and the
   gestures); the **Keyboard** / **Touch** tabs switch. It scales with the window and never
@@ -173,7 +175,9 @@ Topics tab ([design](../guides/JOURNAL.md)).
 
 The game also runs as an installable web app in landscape on phones and tablets. A floating
 joystick appears where the left thumb touches; buttons on the right jump, use (E) and run; drag
-to look, pinch to zoom, tap to use. A phone held upright shows the landscape game turned 90°.
+to look, pinch to zoom, tap to use; a tap on something too far away says "Walk closer", and the
+round HUD buttons show their names (Settings, Journal, Map, Games, Passport) once you touch the
+screen (25 Nov, [view](../evidence/touch-fixes-20261125/README.md)). A phone held upright shows the landscape game turned 90°.
 New builds load automatically (15 Nov). There is one graphics setting for every device since
 23 Nov: the phone-friendly look (no sun shadows, a fogged 130 m view that reaches up to 330 m
 when flying high). On the web, a returning player's town

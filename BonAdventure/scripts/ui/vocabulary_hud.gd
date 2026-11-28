@@ -174,6 +174,12 @@ const Sound := preload("res://scripts/core/sound.gd")
 ## comes from the action's binding in project.godot, so the circle always matches the input map.
 var key_hints: Array = []
 var keyboard_hints := false
+## Name tags (P3-16, 25 Nov 2026): a small cream pill with the button's name ("Map", "Journal")
+## over the bottom edge of an icon-only HUD button, for touch players, who get no tooltips. The
+## opposite of the key hints: shown while keyboard_hints is off (after a touch), hidden on a
+## keyboard. add_name_tag(button, phrase id); other HUD owners call it too (the ▶ picker, the
+## Passport).
+var name_tags: Array = []
 ## The gear and book buttons' boxes (size and margins follow the window in _layout_hud).
 var corner_styles: Array = []
 var bookmarks: Dictionary = {}
@@ -343,6 +349,7 @@ func _ready() -> void:
     settings_button.pressed.connect(func() -> void: settings_requested.emit())
     ui_root.add_child(settings_button)
     add_key_hint(settings_button, "back")
+    add_name_tag(settings_button, "hud.name_settings")
     peek_button = Button.new()
     peek_button.name = "Peek native"
     peek_button.focus_mode = Control.FOCUS_NONE
@@ -515,6 +522,9 @@ func refresh_language() -> void:
     map_button.tooltip_text = UiText.t("map.title") + " (M)"
     help_button.tooltip_text = UiText.t("help.title") + " (F1)"
     journal_close.tooltip_text = UiText.t("journal.close")
+    for tag in name_tags:
+        if is_instance_valid(tag):
+            tag.queue_redraw()
     for child in help_overlay.get_children():
         help_overlay.remove_child(child)
         child.queue_free()
@@ -826,8 +836,10 @@ func build_bookmarks() -> void:
     bookmark_button.pressed.connect(func() -> void: journal_toggle_requested.emit())
     ui_root.add_child(bookmark_button)
     add_key_hint(bookmark_button, "journal")
+    add_name_tag(bookmark_button, "hud.name_journal")
     map_button = _cluster_button("Map button", "map", toggle_map)
     add_key_hint(map_button, "map")
+    add_name_tag(map_button, "hud.name_map")
     help_button = _cluster_button("Help button", "question", toggle_help)
 
 ## A bottom-right cluster button (style_corner_button, an icon, sized in _layout_hud).
@@ -1698,7 +1710,55 @@ func _draw_key_hint(hint: Control) -> void:
     var baseline := Vector2(center.x - text_size.x * 0.5, center.y + (font.get_ascent(font_size) - font.get_descent(font_size)) * 0.5)
     hint.draw_string(font, baseline, key, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, Color.WHITE)
 
-## Shows or hides every key hint circle (keyboard play on, touch off).
+## Adds a name tag to an icon-only HUD button (see name_tags); `id` is its phrase.
+func add_name_tag(button: Control, id: String) -> void:
+    var tag := Control.new()
+    tag.name = "Name tag"
+    tag.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    tag.set_meta("phrase", id)
+    tag.draw.connect(_draw_name_tag.bind(tag))
+    tag.visible = not keyboard_hints
+    button.add_child(tag)
+    button.resized.connect(_place_name_tag.bind(tag))
+    _place_name_tag(tag)
+    name_tags.append(tag)
+
+## The tag's box: the button's width, a quarter of its height, three quarters of it inside the
+## button's bottom edge (the second row of buttons is 10 px below the first).
+func _place_name_tag(tag: Control) -> void:
+    var button := tag.get_parent() as Control
+    var tall := roundf(clampf(button.size.x * 0.27, 18.0, 44.0))
+    tag.size = Vector2(button.size.x, tall)
+    tag.position = Vector2(0, button.size.y - tall * 0.8)
+    tag.queue_redraw()
+
+func _draw_name_tag(tag: Control) -> void:
+    var text := UiText.t(str(tag.get_meta("phrase")))
+    var tall: float = tag.size.y
+    var font: Font = BonStyle.font(600)
+    var font_size := roundi(tall * 0.62)
+    var text_size: Vector2 = font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size)
+    # A long name shrinks to stay within the button's width plus a little.
+    var room: float = tag.size.x * 1.08 - tall * 0.6
+    if text_size.x > room and text_size.x > 0.0:
+        font_size = maxi(9, floori(font_size * room / text_size.x))
+        text_size = font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size)
+    var width := text_size.x + tall * 0.6
+    var box := StyleBoxFlat.new()
+    box.bg_color = BonStyle.CREAM
+    box.border_color = BonStyle.RIM
+    box.set_border_width_all(maxi(2, roundi(tall * 0.08)))
+    box.set_corner_radius_all(roundi(tall * 0.5))
+    box.anti_aliasing = true
+    box.shadow_color = Color(0.1, 0.27, 0.32, 0.25)
+    box.shadow_size = roundi(tall * 0.12)
+    var center_x: float = tag.size.x * 0.5
+    box.draw(tag.get_canvas_item(), Rect2(Vector2(center_x - width * 0.5, 0), Vector2(width, tall)))
+    var baseline := Vector2(center_x - text_size.x * 0.5, tall * 0.5 + (font.get_ascent(font_size) - font.get_descent(font_size)) * 0.5)
+    tag.draw_string(font, baseline, text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, BonStyle.INK)
+
+## Shows or hides every key hint circle (keyboard play on, touch off) and the name tags (the
+## other way round).
 func set_keyboard_hints(on: bool) -> void:
     keyboard_hints = on
     # The journal's footer names the ← → keys and Hold L only with keyboard play.
@@ -1707,6 +1767,9 @@ func set_keyboard_hints(on: bool) -> void:
     for hint in key_hints:
         if is_instance_valid(hint):
             hint.visible = on
+    for tag in name_tags:
+        if is_instance_valid(tag):
+            tag.visible = not on
 
 func _input(event: InputEvent) -> void:
     if event is InputEventKey and event.pressed and not keyboard_hints:

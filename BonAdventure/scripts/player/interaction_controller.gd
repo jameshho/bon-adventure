@@ -402,6 +402,8 @@ func click() -> void:
     if item != null:
         if item == focus or _clickable(item):
             activate(item)
+        elif can_focus() and _shown(item.get_parent()) and _too_far(item):
+            _walk_closer()
         return
     var obj: Node3D = aimed_object()
     if pick_hook.is_valid():
@@ -416,6 +418,8 @@ func click() -> void:
         return
     if not is_instance_valid(obj) or (word_filter.is_valid() and not word_filter.call(obj)):
         clear_card()
+        if not is_instance_valid(obj) and _far_word():
+            _walk_closer()
     elif selected == obj:
         clear_card()
     else:
@@ -442,6 +446,28 @@ func _clickable(item: Node) -> bool:
         return false
     var state: Variant = item.check()
     return not (state is bool and not state)
+
+## Out of reach (P3-06, 25 Nov 2026): a tap or click on an interactable beyond its click range,
+## or on a word between INTERACT_DISTANCE and EXTERIOR_DISTANCE, says "Walk closer" instead of
+## doing nothing (a touch player cannot see why).
+func _too_far(item: Node) -> bool:
+    var at: Vector3 = item.point(player.global_position)
+    return at.distance_to(player.global_position) > item.prompt_distance + CLICK_SLACK + MAX_RISE \
+            or Vector2(at.x - player.global_position.x, at.z - player.global_position.z).length() > item.prompt_distance + CLICK_SLACK
+
+func _far_word() -> bool:
+    var hit: Dictionary = aimed_hit()
+    if hit.is_empty():
+        return false
+    var far: float = player.global_position.distance_to(hit["position"])
+    if far <= INTERACT_DISTANCE or far > EXTERIOR_DISTANCE or Interactable.find_for(hit["collider"], apartment) != null:
+        return false
+    return vocabulary_target(hit["collider"], apartment) != null
+
+## The "Walk closer" toast (the HUD's quest toast, native language).
+func _walk_closer() -> void:
+    if hud != null and hud.has_method("flash_quest_message"):
+        hud.flash_quest_message(UiText.t("toast.walk_closer"))
 
 ## Whether any minigame (activity_board.gd) is in progress: word cards are off meanwhile.
 func minigame_running() -> bool:

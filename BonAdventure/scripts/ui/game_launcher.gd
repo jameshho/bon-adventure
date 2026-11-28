@@ -152,6 +152,8 @@ func setup(game) -> void:
 	main.hud.ui_root.add_child(corner_button)
 	# Its key (F9) in a hint circle while playing with a keyboard (vocabulary_hud.gd, 24 Nov 2026).
 	main.hud.add_key_hint(corner_button, "games")
+	# Its name under it for touch players (P3-16, 25 Nov 2026).
+	main.hud.add_name_tag(corner_button, "hud.name_games")
 	get_viewport().size_changed.connect(_layout)
 	refresh_display()
 
@@ -231,7 +233,8 @@ func _build_detail() -> void:
 func toggle() -> void:
 	if visible:
 		close()
-	elif enabled and not main.hud.tutorial_hidden.get("picker", false):
+	elif enabled and not main.hud.tutorial_hidden.get("picker", false) and not main.hud.in_minigame:
+		# Never over a running game (P3-05): Main's F9 asks that game's leave question instead.
 		open()
 
 func open() -> void:
